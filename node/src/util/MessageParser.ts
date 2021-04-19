@@ -1301,10 +1301,10 @@ export default class MessageParser {
 			return `<a href="${linkUrl}">${linkText}</a>`;
 		} else if (/^\/[a-zA-Z0-9-_#/.]+$/.test(linkUrl)) {
 			if (linkUrl.endsWith('.pdf')) {
-				return `<a href="${linkUrl}" type="application/pdf">${linkText}<img src="/image/icon/pdf.png" alt="(PDF)" class="c-link-icon"></a>`;
+				return `<a href="https://w0s.jp${linkUrl}" type="application/pdf">${linkText}<img src="/image/icon/pdf.png" alt="(PDF)" class="c-link-icon"></a>`;
 			}
 
-			return `<a href="${linkUrl}">${linkText}</a>`;
+			return `<a href="https://w0s.jp${linkUrl}">${linkText}</a>`;
 		} else if (/^asin:[0-9A-Z]{10}$/.test(linkUrl)) {
 			return `<a href="https://www.amazon.co.jp/dp/${linkUrl.substring(
 				5
