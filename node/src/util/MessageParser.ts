@@ -1171,8 +1171,18 @@ export default class MessageParser {
 			htmlFragment = StringEscapeHtml.escape(htmlFragment); // 注釈がここを通るのは2回目なので処理不要
 		}
 
-		htmlFragment = htmlFragment.replace(/\*\*(.+?)\*\*/g, (_match, p1: string) => `<em class="c-topic-emphasis">${p1}</em>`);
-		htmlFragment = htmlFragment.replace(/`(.+?)`/g, (_match, p1: string) => `<code class="c-topic-code">${p1}</code>`);
+		htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, p1: string, p2: string) => {
+			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
+				return `**${p2.substring(0, p2.length - 1)}**`;
+			}
+			return `${p1}<em class="c-topic-emphasis">${p2}</em>`;
+		});
+		htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, p1: string, p2: string) => {
+			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
+				return `\`${p2.substring(0, p2.length - 1)}\``;
+			}
+			return `${p1}<code class="c-topic-code">${p2}</code>`;
+		});
 		htmlFragment = htmlFragment.replace(
 			/{{(\d{1,5}-\d{1,7}-\d{1,7}-[\dX]|97[8-9]-\d{1,5}-\d{1,7}-\d{1,7}-\d) ([^{}]+)}}/g,
 			(_match, p1: string, p2: string) => `<q class="c-topic-quote" cite="urn:ISBN:${p1}">${p2}</q>`
