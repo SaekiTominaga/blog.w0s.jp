@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>富永日記帳</title>
+
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+		<link rel="stylesheet" href="/style/error.css" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+		<script src="/script/error.mjs" type="module"></script>
+	</head>
+	<body>
+		<div class="l-page">
+			<main id="main" class="l-main">
+				<h1 class="p-err-title">
+					<span class="p-err-title__code">403 Forbidden</span> <span class="p-err-title__msg">このコンテンツにはアクセスできません</span>
+				</h1>
+
+				<div class="p-err-text">
+					<p>他の記事をお探しの場合は<a href="/">トップページ</a>からリンクを辿るか、下記のサイト内検索をご利用ください。</p>
+				</div>
+
+				<div class="p-err-topthumb">
+					<w0s-portal class="p-err-topthumb__portal" id="top-portal" hidden=""></w0s-portal>
+				</div>
+
+				<form action="https://www.google.com/search" class="p-err-search" role="search">
+					<fieldset>
+						<legend class="p-err-search__legend">サイト内検索（Google 検索）</legend>
+						<div class="p-err-search__ctrl">
+							<span class="p-err-search__ctrl-site">
+								<input type="hidden" name="as_sitesearch" value="blog.w0s.jp" />
+							</span>
+							<span class="p-err-search__ctrl-query">
+								<input type="search" name="q" required="" title="キーワード" />
+							</span>
+							<span class="p-err-search__ctrl-submit">
+								<button>
+									<svg role="img" aria-labelledby="search-button">
+										<title id="search-button">検索</title>
+										<use xlink:href="/image/icon/search.svg#icon"></use>
+									</svg>
+								</button>
+							</span>
+						</div>
+					</fieldset>
+				</form>
+			</main>
+		</div>
+	</body>
+</html>

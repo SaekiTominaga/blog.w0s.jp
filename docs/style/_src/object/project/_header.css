@@ -1,0 +1,152 @@
+/* ==============================
+ *   ページヘッダー
+ * ============================== */
+
+/* ===== サイトロゴ ===== */
+.p-header-site {
+	display: flex;
+	flex-flow: wrap;
+	align-items: end;
+}
+
+/* サイト名 */
+.p-header-site__name {
+	margin-right: 0.5em;
+	color: #f00;
+	font: 700 2rem/var(--line-height--narrow) var(--font-mincho);
+	font-feature-settings: "palt";
+	text-shadow: 0.05em 0.05em 0.1em #ccc;
+
+	& :any-link {
+		margin: -0.25em;
+		padding: 0.25em;
+		display: inline-block;
+		color: inherit;
+		background: transparent;
+		text-decoration: none;
+
+		&:focus,
+		&:hover {
+			color: inherit;
+			text-shadow: 0 0 1em #aaa;
+		}
+	}
+}
+
+/* サイト概要 */
+.p-header-site__summary {
+	margin-top: 0.75em;
+	margin-bottom: 0.2em;
+	color: #666;
+	font-size: calc(1rem / var(--font-ratio-4));
+}
+
+/* ===== ナビゲーション ===== */
+.p-header-nav {
+}
+
+.p-header-nav__link {
+	--color: #000;
+	--bg-color: #fff;
+	--border-color: #999;
+
+	padding: 0.375em 0.5em;
+	border: 1px solid var(--border-color);
+	border-radius: 0.25em;
+	display: inline-block;
+	color: var(--color);
+	background: var(--bg-color);
+	font-size: calc(1rem * var(--font-ratio-1));
+	font-weight: bold;
+	line-height: var(--line-height--narrow);
+	text-decoration: none;
+	text-shadow: 1px 1px #fff;
+	outline-offset: 0.1em;
+
+	&:focus,
+	&:hover {
+		color: var(--color);
+		box-shadow: 0 0 1px #ffb211;
+	}
+
+	&.-feed {
+		--color: #444;
+		--bg-color: #fff4dd;
+		--border-color: #ffb211; /* darken(#fff4dd, 40%) */
+	}
+}
+
+.p-header-nav__link-icon {
+	margin-right: 0.25em;
+	display: inline-block;
+	height: 1.25em;
+	width: auto;
+	vertical-align: middle;
+}
+
+/* ===== サイト内検索 ===== */
+.p-header-search {
+}
+
+.p-header-search__ctrl {
+	display: flex;
+	border: 1px solid #999;
+	border-radius: 3px;
+	color: #333;
+	background: #faffff;
+	font-size: 0.9rem;
+
+	&:focus-within,
+	&:hover {
+		border-color: var(--focus-ring-color);
+	}
+
+	&:focus-within {
+		box-shadow: 0 0 3px #ccc;
+	}
+}
+
+/* キーワード入力欄 */
+.p-header-search__ctrl-query {
+	& input {
+		all: initial;
+		padding: 0.25em 0.5em;
+		width: 15em;
+
+		@media screen and (max-width: 24em) {
+			width: 100%;
+		}
+
+		&:invalid {
+			box-shadow: none; /* for Firefox */
+		}
+	}
+}
+
+/* 送信ボタン */
+.p-header-search__ctrl-submit {
+	& button {
+		all: initial;
+		margin: 3px;
+		padding: 3px;
+		display: flex;
+		width: 1.5em;
+		height: 1.5em;
+		color: #25b;
+		cursor: revert;
+		fill: currentColor; /* SVG */
+
+		&:focus {
+			outline: 1px dotted #000;
+		}
+
+		&:hover {
+			color: #3e73dc; /* lighten(#25b, 12%) */
+		}
+
+		& svg {
+			height: 100%;
+			width: 100%;
+		} /* Firefox は無くても平気だけど Chrome は必要 */
+	}
+}

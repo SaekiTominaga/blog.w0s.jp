@@ -1,0 +1,243 @@
+/* ==============================
+ *   メインエリア
+ * ============================== */
+
+/* ===== ページタイトル ===== */
+.p-category-title {
+	padding: 1.25em 1.5%;
+	border: 1px solid #000;
+	border-radius: 0.1em;
+	background: linear-gradient(#fff, #eee);
+}
+
+.p-category-title__hdg {
+	font-size: clamp(calc(1rem * var(--font-ratio-2)), 7vw, calc(1rem * var(--font-ratio-10) * var(--font-ratio-1)));
+
+	@supports not (font-size: clamp(0px, 0px, 0px)) {
+		/* for Safari 13.0- */
+		font-size: max(calc(1rem * var(--font-ratio-2)), min(7vw, calc(1rem * var(--font-ratio-10) * var(--font-ratio-1))));
+	}
+
+	font-weight: bold;
+	line-height: var(--line-height--narrow);
+	text-shadow: 1px 1px 1px #999;
+}
+
+/* ===== ページ送り ===== */
+.p-page-nav {
+}
+
+.p-page-nav__list {
+	display: flex;
+	flex-flow: wrap;
+	justify-content: center;
+	gap: 0.5em 5%;
+}
+
+.p-page-nav__link {
+	padding: 0.6em 1em;
+	border: 1px solid #ccc;
+	border-radius: 0.25em;
+	display: inline-block;
+	background: #fff;
+	line-height: var(--line-height--narrow);
+	text-decoration: none;
+	white-space: nowrap;
+	outline-offset: 0.1em;
+
+	&:hover {
+		background-color: #f9f9f9;
+	}
+
+	&.-start::before,
+	&.-prev::before,
+	&.-next::after {
+		display: inline-block;
+		font: bold 50% YuGothic, sans-serif;
+		letter-spacing: -0.1em;
+		vertical-align: 0.3em;
+		transform: scaleY(2.2);
+	}
+
+	&.-start::before {
+		margin-right: 1em;
+		content: "≪≪";
+	}
+
+	&.-prev::before {
+		margin-right: 1em;
+		content: "≪";
+	}
+
+	&.-next::after {
+		margin-left: 1em;
+		content: "≫";
+	}
+}
+
+/* ===== 記事タイトルリスト ===== */
+.p-title-list {
+	--bullet-width: 0.45em;
+	--bullet-height: 0.75em;
+	--bullet-color: #0bb;
+	--bullet-gap: 0.5em;
+
+	& > li {
+		padding: 24px 0;
+		border-bottom: 1px solid #ccc;
+		display: flow-root;
+		line-height: var(--line-height--narrow);
+
+		@media (--viewport-main-full) {
+			padding-left: var(--page-side-padding);
+			padding-right: var(--page-side-padding);
+		}
+
+		@media screen and (max-width: 37.5em) {
+			padding-left: calc(var(--page-side-padding) + var(--bullet-width) + var(--bullet-gap));
+		}
+	}
+
+	&.-list {
+		border-top: 1px solid #ccc;
+	}
+}
+
+.p-title-list__thumb {
+	--image-border-width: 1px;
+	--image-aspect-ratio: 1.5;
+	--image-width: 180px;
+
+	margin-right: calc(30px + var(--bullet-width) + var(--bullet-gap));
+	float: left;
+	display: flex;
+	justify-content: center;
+	width: calc(var(--image-width) + var(--image-border-width) * 2);
+	pointer-events: none;
+
+	@media screen and (max-width: 37.5em) {
+		--image-width: min(120px, 30vw);
+
+		margin-left: 15px;
+		margin-right: 0;
+		float: right;
+	}
+}
+
+.p-title-list__image {
+	border: var(--image-border-width) solid #000;
+	display: block;
+	max-width: var(--image-width);
+	max-height: calc(var(--image-width) / var(--image-aspect-ratio));
+	pointer-events: auto;
+
+	@nest :any-link:focus &, :any-link:hover & {
+		box-shadow: 0 0 5px #999;
+	}
+}
+
+.p-title-list__text {
+	margin-left: calc(0px - var(--bullet-width) - var(--bullet-gap));
+	font-size: clamp(1rem, 3vw, calc(1rem * var(--font-ratio-5)));
+
+	@supports not (font-size: clamp(0px, 0px, 0px)) {
+		/* for Safari 13.0- */
+		font-size: max(1rem, min(3vw, calc(1rem * var(--font-ratio-5))));
+	}
+
+	&::before {
+		margin-right: var(--bullet-gap);
+		content: "";
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		width: var(--bullet-width);
+		height: var(--bullet-height);
+		background: var(--bullet-color);
+	}
+
+	@nest :any-link:focus &, :any-link:hover & {
+		--bullet-color: var(--anchor-hover-color);
+	}
+}
+
+/* 公開日、更新日 */
+.p-title-list__time {
+	margin-top: 0.5em;
+	overflow: hidden;
+	font-size: clamp(calc(1rem / var(--font-ratio-2)), 2.5vw, 1rem);
+
+	& time {
+		margin-left: 0.25em;
+	}
+}
+
+/* ===== 著書紹介 ===== */
+.p-bookcm {
+	padding: 15px;
+	border: 1px solid #999;
+	border-radius: 0.5em;
+	background: #fefefe;
+
+	@media (--viewport-main-full) {
+		margin-left: var(--page-side-padding);
+		margin-right: var(--page-side-padding);
+	}
+}
+
+.p-bookcm__hdg {
+	font-size: calc(1rem * var(--font-ratio-5));
+	font-weight: bold;
+}
+
+.p-bookcm__list {
+	--bullet-width: 0.45em;
+	--bullet-height: 0.75em;
+	--bullet-color: #0bb;
+	--bullet-gap: 0.5em;
+
+	margin-top: 15px;
+	display: grid;
+	gap: 30px;
+	line-height: var(--line-height--narrow);
+
+	@media screen and (min-width: 40em) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.p-bookcm__image {
+	margin-right: calc(15px + var(--bullet-width) + var(--bullet-gap));
+	border: 1px solid #000;
+	float: left;
+	height: auto;
+	max-width: 40%;
+
+	@nest :any-link:focus &, :any-link:hover & {
+		box-shadow: 0 0 5px #999;
+	}
+}
+
+.p-bookcm__title {
+	margin-left: calc(0px - var(--bullet-width) - var(--bullet-gap));
+	font-weight: bold;
+
+	&::before {
+		margin-right: var(--bullet-gap);
+		content: "";
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		width: var(--bullet-width);
+		height: var(--bullet-height);
+		background: var(--bullet-color);
+	}
+
+	@nest :any-link:focus &, :any-link:hover & {
+		--bullet-color: var(--anchor-hover-color);
+	}
+}
+
+.p-bookcm__text {
+	margin-top: 0.5em;
+	overflow: hidden;
+	line-height: var(--line-height--normal);
+}

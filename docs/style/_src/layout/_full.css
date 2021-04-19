@@ -1,0 +1,19 @@
+/* ==============================
+ *   通常表示
+ * ============================== */
+.l-page {
+	grid-template-areas:
+		"header           header            header header           header  header             header           "
+		"main-margin-left main-padding-left main   gap-main-sidebar sidebar main-padding-right main-margin-right"
+		"footer           footer            footer footer           footer  footer             footer           ";
+	grid-template-columns: calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) var(--page-side-padding) 1fr 26px 230px var(--page-side-padding) calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding));
+
+	@media (--viewport-main-full) {
+		grid-template-areas:
+			"header               header  header               "
+			"main-padding-left    main    main-padding-right   "
+			"sidebar-padding-left sidebar sidebar-padding-right"
+			"footer               footer  footer               ";
+		grid-template-columns: var(--page-side-padding) 1fr var(--page-side-padding);
+	}
+}

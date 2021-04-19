@@ -1,0 +1,16 @@
+{
+	"endOfLine": "lf",
+	"printWidth": 160,
+	"singleQuote": true,
+	"useTabs": true,
+
+	"overrides": [
+		{
+			"files": "*.css",
+			"options": {
+				"printWidth": 9999,
+				"singleQuote": false
+			}
+		}
+	]
+}

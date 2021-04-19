@@ -1,0 +1,117 @@
+.c-topic-emphasis {
+	font-weight: bold;
+}
+
+.c-topic-code {
+	padding: 0.25em;
+	border-radius: 0.25em;
+	color: #080;
+	background: #fcfffc;
+	font-family: monospace;
+	font-weight: bold;
+}
+
+.c-topic-quote {
+	background: linear-gradient(transparent, transparent 75%, #ff9 75%);
+	font-weight: bold;
+	quotes: "\201C""\201D""\2018""\2019";
+
+	&::before {
+		padding-left: 0.2em;
+		content: open-quote;
+		font-weight: normal;
+	}
+
+	&::after {
+		padding-right: 0.2em;
+		content: close-quote;
+		font-weight: normal;
+	}
+}
+
+/* highlight.js */
+.hljs-comment,
+.hljs-quote {
+	color: #767676; /* original: #998 */
+	font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+	color: #333;
+	font-weight: bold;
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+	color: #008080;
+}
+
+.hljs-string,
+.hljs-doctag {
+	color: #d14;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+	color: #900;
+	font-weight: bold;
+}
+
+.hljs-subst {
+	font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+	color: #458;
+	font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+	color: #000080;
+	font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+	color: #008a26; /* original: #009926 */
+}
+
+.hljs-symbol,
+.hljs-bullet {
+	color: #990073;
+}
+
+.hljs-built_in,
+.hljs-builtin-name {
+	color: #007eb3; /* original: #0086b3 */
+}
+
+.hljs-meta {
+	color: #767676; /* original: #999 */
+	font-weight: bold;
+}
+
+.hljs-deletion {
+	background: #fdd;
+}
+
+.hljs-addition {
+	background: #dfd;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}

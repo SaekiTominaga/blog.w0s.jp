@@ -1,0 +1,113 @@
+/* ==============================
+ *   ページレイアウト共通
+ * ============================== */
+.l-page {
+	display: grid;
+}
+
+/* ===== ページヘッダー ===== */
+.l-header {
+	grid-column: header;
+	padding: 20px 0 40px;
+	display: grid;
+	grid-template-areas: "margin-left padding-left content padding-right margin-right";
+	grid-template-columns: calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) var(--page-side-padding) 1fr var(--page-side-padding) calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding));
+}
+
+/* ヘッダーメイン */
+.l-header__main {
+	grid-column: content;
+	display: grid;
+	gap: 20px;
+	grid-template-areas: "site nav";
+
+	@media screen and (max-width: 60em) {
+		grid-template-areas:
+			"site"
+			"nav";
+	}
+}
+
+/* サイトロゴ */
+.l-header__site {
+	grid-column: site;
+}
+
+/* ナビゲーション */
+.l-header__nav {
+	grid-column: nav;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 10px 0;
+
+	& .p-header-nav {
+		margin-right: 20px; /* TODO: Safari が gap for Flexbox に対応するまでの暫定対応 */
+	}
+
+	@media screen and (max-width: 60em) {
+		flex-wrap: wrap;
+	}
+
+	@media screen and (max-width: 36em) {
+		justify-content: flex-start;
+	}
+}
+
+/* ===== メインエリア ===== */
+.l-main {
+	grid-column: main;
+
+	@media (--viewport-main-full) {
+		grid-column: main-padding-left / main-padding-right;
+	}
+}
+
+.l-main__header {
+}
+
+.l-main__main {
+	@nest .l-main__header + & {
+		margin-top: 30px;
+	}
+}
+
+.l-main__footer {
+	margin-top: 60px;
+}
+
+/* ===== サイドバー ===== */
+.l-sidebar {
+	grid-column: sidebar;
+
+	@media (--viewport-main-full) {
+		margin-top: 80px;
+	}
+}
+
+/* ===== ページフッター ===== */
+.l-footer {
+	grid-column: footer;
+	margin-top: 80px;
+	padding: 40px 0;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	display: grid;
+	grid-template-columns: [full-start] calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) var(--page-side-padding) [content-start] 1fr [content-end] var(--page-side-padding) calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) [full-end];
+	background: #fcfcfc;
+}
+
+/* ===== サイト横断ナビゲーション ===== */
+.l-footer__nav {
+	grid-column: content;
+
+	&:not(:first-child) {
+		margin-top: 20px;
+	}
+}
+
+/* ===== アドセンス ===== */
+.l-footer__ads {
+	margin-top: 100px;
+	grid-column: content;
+}

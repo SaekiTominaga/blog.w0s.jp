@@ -1,0 +1,1 @@
+@custom-media --viewport-main-full screen and (max-width: 60em); /* これ以下の画面サイズの場合、メインエリアを全幅表示にする 60em≒960px */

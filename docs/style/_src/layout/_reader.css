@@ -1,0 +1,13 @@
+/* ==============================
+ *   リーダー表示
+ * ============================== */
+.l-page {
+	grid-template-areas: "main";
+	grid-template-columns: 1fr;
+}
+
+.l-header,
+.l-sidebar,
+.l-footer {
+	display: none;
+}

@@ -1,0 +1,141 @@
+/* ==============================
+ *   エラーページ
+ * ============================== */
+
+/* ===== ページタイトル ===== */
+.p-err-title {
+	margin-bottom: 5em;
+	padding-bottom: 2em;
+	border-bottom: 1px dashed #999;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 1em;
+	font-weight: bold;
+	line-height: var(--line-height--narrow);
+}
+
+/* エラーコード */
+.p-err-title__code {
+	padding: 0.5em 0.75em;
+	border: 1px solid;
+	border-radius: 0.25em;
+	background-color: #fcfcfc;
+	font-size: calc(1rem * var(--font-ratio-5));
+}
+
+/* エラーメッセージ */
+.p-err-title__msg {
+	font-size: calc(1rem * var(--font-ratio-10));
+}
+
+/* ===== トップページの埋め込み ===== */
+.p-err-topthumb {
+	margin-top: 2em;
+}
+
+.p-err-topthumb__portal {
+	--portal-width: calc(var(--page-max-width) / 2);
+	--portal-height: calc(var(--portal-width) * 0.5625); /* 16:9 */
+	--portal-scale: 0.5;
+	--portal-animation-duration: 0.5s;
+	--portal-outline-width: 2px;
+	--portal-outline-color: var(--focus-ring-color);
+	--portal-outline-offset: 3px;
+
+	@media (prefers-reduced-motion) {
+		--portal-animation-duration: 0.001s;
+	}
+}
+
+/* ===== サイト内検索 ===== */
+.p-err-search {
+	margin-top: 5em;
+	display: grid;
+	grid-template-areas:
+		"legend"
+		"ctrl";
+	grid-template-columns: 30em;
+	justify-content: center;
+
+	@media screen and (max-width: 32em) {
+		grid-template-columns: 1fr;
+	}
+
+	& > fieldset {
+		display: contents;
+	}
+}
+
+.p-err-search__legend {
+	grid-area: legend;
+	font-weight: bold;
+}
+
+.p-err-search__ctrl {
+	grid-area: ctrl;
+	border: 1px solid #999;
+	border-radius: 3px;
+	display: flex;
+	color: #333;
+	background: #faffff;
+	font-size: calc(1rem * var(--font-ratio-4));
+
+	&:focus-within,
+	&:hover {
+		border-color: var(--focus-ring-color);
+	}
+
+	&:focus-within {
+		box-shadow: 0 0 3px #ccc;
+	}
+}
+
+/* キーワード入力欄 */
+.p-err-search__ctrl-query {
+	display: flex;
+	flex: 1; /* Firefox は無くても平気だけど Chrome は必要 */
+
+	& input {
+		all: initial;
+		padding: 0.25em 0.5em;
+		box-sizing: border-box;
+		width: 100%;
+		font-size: inherit;
+
+		&:invalid {
+			box-shadow: none; /* for Firefox */
+		}
+	}
+}
+
+/* 送信ボタン */
+.p-err-search__ctrl-submit {
+	display: flex;
+
+	& button {
+		all: initial;
+		margin: 5px;
+		padding: 10px;
+		display: flex;
+		height: 1.5em;
+		width: 1.5em;
+		color: #25b;
+		cursor: revert;
+		fill: currentColor; /* SVG */
+
+		&:focus {
+			outline: 1px dotted #000;
+		}
+
+		&:hover {
+			color: #3e73dc; /* lighten(#25b, 12%) */
+		}
+
+		& svg {
+			height: 100%;
+			width: 100%;
+		} /* Firefox は無くても平気だけど Chrome は必要 */
+	}
+}

@@ -1,0 +1,46 @@
+<header role="banner" id="header" class="l-header">
+	<div class="l-header__main">
+		<div class="l-header__site">
+			<div class="p-header-site">
+				<% if (heading) { %><% if (url === '/') { %>
+				<h1 class="p-header-site__name" itemprop="name"><a aria-current="page">富永日記帳</a></h1>
+				<% } else { %>
+				<h1 class="p-header-site__name" itemprop="name"><a href="/">富永日記帳</a></h1>
+				<% } %>
+				<p class="p-header-site__summary" itemprop="description">ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ</p>
+				<% } else { %>
+				<p class="p-header-site__name"><a href="/">富永日記帳</a></p>
+				<p class="p-header-site__summary">ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ</p>
+				<% } %>
+			</div>
+		</div>
+		<div class="l-header__nav">
+			<div class="p-header-nav">
+				<a href="/feed" type="application/atom+xml" class="p-header-nav__link -feed"
+					><img src="/image/icon/feed.svg" alt="" class="p-header-nav__link-icon" /> フィード</a
+				>
+			</div>
+
+			<form action="https://www.google.com/search" role="search" class="p-header-search" aria-label="サイト内検索">
+				<div class="p-header-search__ctrl">
+					<span class="p-header-search__ctrl-site">
+						<input type="hidden" name="as_sitesearch" value="blog.w0s.jp" />
+					</span>
+
+					<span class="p-header-search__ctrl-query">
+						<input type="search" name="q" required="" title="検索キーワード" />
+					</span>
+
+					<span class="p-header-search__ctrl-submit">
+						<button>
+							<svg role="img" aria-labelledby="header-search-button">
+								<title id="header-search-button">検索</title>
+								<use xlink:href="/image/icon/search.svg#icon"></use>
+							</svg>
+						</button>
+					</span>
+				</div>
+			</form>
+		</div>
+	</div>
+</header>

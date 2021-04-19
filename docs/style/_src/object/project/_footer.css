@@ -1,0 +1,68 @@
+/* ==============================
+ *   ページフッター
+ * ============================== */
+
+/* ===== ナビゲーション ===== */
+.p-footer-nav {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	gap: 0.5em 0;
+	font-size: calc(var(--page-font-size) * var(--font-ratio-2));
+
+	@media screen and (min-width: 30em) {
+		flex-direction: row;
+		justify-content: center;
+
+		& > li {
+			&:not(:last-child)::after {
+				margin: 0 2em;
+				content: "";
+				display: inline-block;
+				width: 1px;
+				height: 0.8em;
+				background-color: var(--page-color);
+				vertical-align: middle;
+				transform: rotate(22.5deg);
+			}
+		}
+	}
+
+	& > li {
+		& > a {
+			--bullet-size: 0.75em;
+			--bullet-color: #0bb;
+
+			display: inline-block;
+			outline-offset: 0.1em;
+
+			&::before {
+				margin-right: 0.5em;
+				content: "";
+				display: inline-block;
+				clip-path: var(--shape-link-triangle);
+				width: calc(var(--bullet-size) * 0.6);
+				height: var(--bullet-size);
+				background: var(--bullet-color);
+			}
+
+			&:any-link {
+				&:focus,
+				&:hover {
+					--bullet-color: var(--anchor-hover-color);
+				}
+			}
+		}
+	}
+}
+
+/* ===== アドセンス ===== */
+.p-footer-ads {
+	margin: auto;
+	width: min(100%, 960px);
+
+	& .adsbygoogle {
+		display: block;
+	}
+}

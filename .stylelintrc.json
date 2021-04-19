@@ -1,0 +1,22 @@
+{
+	"extends": ["stylelint-config-standard"],
+	"ignoreFiles": ["**/*.html", "**/*.svg", "*.cjs"],
+	"rules": {
+		"at-rule-empty-line-before": ["always", { "except": ["first-nested"], "ignore": ["after-comment"], "ignoreAtRules": ["import", "custom-media"] }],
+		"block-no-empty": null,
+		"custom-property-empty-line-before": ["always", { "except": ["after-comment", "after-custom-property", "first-nested"] }],
+		"declaration-block-no-duplicate-properties": [true, { "ignore": ["consecutive-duplicates-with-different-values"] }],
+		"declaration-colon-newline-after": "always-multi-line",
+		"declaration-no-important": true,
+		"indentation": "tab",
+		"length-zero-no-unit": null,
+		"linebreaks": "unix",
+		"max-nesting-depth": 5,
+		"no-descending-specificity": null,
+		"no-duplicate-selectors": true,
+		"selector-max-id": 0,
+		"selector-max-universal": 0,
+		"string-quotes": "double",
+		"value-keyword-case": null
+	}
+}

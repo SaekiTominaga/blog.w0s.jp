@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		/* Project Options */
+		"incremental": true,
+		"module": "ES2020",
+		"target": "ES2020",
+
+		/* Strict Checks */
+		"strict": true,
+		"alwaysStrict": false,
+
+		/* Module Resolution */
+		"moduleResolution": "node",
+
+		/* Linter Checks */
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+
+		/* Advanced */
+		"allowUnreachableCode": false,
+		"forceConsistentCasingInFileNames": true,
+		"newLine": "LF"
+	},
+	"include": ["docs/script/_src/**/*.ts"]
+}

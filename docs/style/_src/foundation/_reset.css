@@ -1,0 +1,90 @@
+body {
+	margin: 0;
+}
+
+hr {
+	margin: 0;
+	border: none;
+	color: inherit;
+}
+
+blockquote,
+dl,
+dd,
+figure,
+p,
+pre {
+	margin: 0;
+}
+
+ol,
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	font-size: 100%;
+	font-weight: normal;
+}
+
+address,
+em,
+dfn,
+cite {
+	font-style: normal;
+}
+
+img,
+iframe {
+	border: none;
+}
+
+table {
+	border-collapse: collapse;
+	font-size: inherit;
+}
+
+input,
+select,
+button,
+textarea {
+	font: inherit;
+	outline-offset: 0; /* for Chrome */
+}
+
+optgroup {
+	font-style: inherit;
+}
+
+textarea {
+	overflow: auto; /* for IE */
+}
+
+button {
+	&::-moz-focus-inner {
+		padding: 0; /* for Firefox */
+		border: none; /* for Firefox */
+	}
+}
+
+fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+	min-width: 0;
+}
+
+legend {
+	padding: 0;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>プッシュ通知登録</title>
+
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+		<link rel="stylesheet" href="/style/push.css" />
+		<link rel="manifest" href="/push/manifest.webmanifest" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+		<script src="/script/trusted-types.js"></script>
+		<script src="/script/push.mjs" type="module"></script>
+		<script src="https://w0s-jp.web.app/__/firebase/8.1.1/firebase-app.js" defer=""></script>
+		<script src="https://w0s-jp.web.app/__/firebase/8.1.1/firebase-messaging.js" defer=""></script>
+		<script src="https://w0s-jp.web.app/__/firebase/init.js" defer=""></script>
+		<script src="https://www.googletagmanager.com/gtag/js?id=G-SZYWFCF4JS" defer=""></script>
+		<script src="/script/google-analytics.js" defer=""></script>
+	</head>
+	<body>
+		<div class="l-page">
+			<main role="main" id="main" class="l-main">
+				<div class="l-main__main">
+					<div class="p-push-hdg">
+						<h1 class="p-push-hdg__hdg">プッシュ通知登録</h1>
+					</div>
+
+					<div class="p-push-buttons">
+						<button type="button" class="c-push-button -regist" id="js-push-regist-button">
+							<svg width="512" height="512" viewBox="0 0 512 512" class="c-push-button__icon">
+								<g>
+									<path
+										d="M448.282,367.411H63.712c-19.812,0-35.928,16.114-35.928,35.924c0,19.814,16.116,35.932,35.928,35.932h384.57c19.814,0,35.934-16.118,35.934-35.932C484.216,383.526,468.096,367.411,448.282,367.411z"
+									/>
+									<path
+										d="M425.958,340.707c-8.653-14.375-13.226-30.765-13.226-47.396v-78.824c0-78.145-57.706-144.27-134.748-155.09c5.693-6.534,8.793-14.759,8.793-23.474c0-19.81-16.12-35.924-35.934-35.924c-19.808,0-35.924,16.114-35.924,35.924c0,9.324,3.729,18.272,10.326,24.996C152.058,75.478,99.269,139.562,99.269,214.488v78.824c0,16.627-4.573,33.016-13.224,47.396l-1.45,2.41h342.813L425.958,340.707z"
+									/>
+									<path d="M201.956,470.773C206.051,494.663,226.61,512,250.84,512c24.235,0,44.8-17.337,48.896-41.227l0.32-1.86h-98.42L201.956,470.773z" />
+								</g>
+							</svg>
+							登録
+						</button>
+						<button type="button" class="c-push-button" id="js-push-unregist-button">登録解除</button>
+					</div>
+
+					<div class="p-push-message -success">
+						<p id="js-message-regist-success" hidden="">プッシュ通知が登録されました。</p>
+						<p id="js-message-unregist-success" hidden="">プッシュ通知が解除されました。</p>
+					</div>
+
+					<div class="p-push-message -error">
+						<p id="js-push-nosupport" hidden="">
+							<strong>お使いの環境はプッシュ通知に対応していません。</strong
+							><a href="/diary/feed" type="application/atom+xml">フィード</a>など別手段の新着情報をご利用ください。（※<span class="htmlbuild-datetime"
+								>2018年7月</span
+							>現在、iOSの各ブラウザは最新バージョンでもプッシュ通知に対応していません）
+						</p>
+						<p id="js-cookie-disabled" hidden="">
+							<strong>プッシュ通知の登録にはストレージへのアクセス権限が必要です。</strong>「w0s.jp」ドメインに対してファーストパーティ Cookie
+							を有効にしてください。
+						</p>
+						<p id="js-message-token-exist" hidden=""><strong>すでに登録ずみです。</strong></p>
+						<p id="js-message-token-nothing" hidden=""><strong>登録されていないので解除処理は行われませんでした。</strong>（解除の必要はありません）</p>
+						<p id="js-message-permission-nogranted" hidden=""><strong>通知が許可されていないため、購読できません。</strong></p>
+						<p id="js-message-error" hidden=""><strong>何らかのエラーが発生しました。</strong></p>
+					</div>
+
+					<div class="p-push-back">
+						<p><a href="/diary/">「富永日記帳」へ戻る</a></p>
+					</div>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,49 @@
+/* テキスト */
+.c-annotate {
+	margin: 0 0.5em 0 0.25em;
+	font-size: 75%;
+	-webkit-text-decoration-skip: none; /* for Safari */
+	text-decoration-skip-ink: none;
+	vertical-align: text-top;
+
+	@supports (font-variant-position: super) and (text-underline-offset: 0) {
+		font-size: inherit;
+		font-variant-position: super;
+		text-underline-offset: 0;
+		vertical-align: baseline;
+	}
+
+	& :target {
+		padding: 0.2em;
+		border: 1px solid #f00;
+		border-radius: 0.5em;
+		background: #fee;
+		font-weight: bold;
+	}
+
+	& :focus:not(:focus-visible) {
+		outline: none;
+	}
+
+	& :focus:not(:-moz-focusring) {
+		outline: none;
+	}
+
+	& a[role="button"] {
+		/* JS 有効時のみ */
+		cursor: default;
+
+		&:focus,
+		&:hover {
+			color: revert;
+		}
+	}
+}
+
+/* ドメイン表記 */
+.c-domain {
+	margin: 0 0.25em;
+	color: #666;
+	font-size: 85%;
+	font-weight: normal;
+}

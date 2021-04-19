@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		/* Project Options */
+		"incremental": true,
+		"module": "ES2020",
+		"outDir": "node/dist",
+		"target": "ESNext",
+
+		/* Strict Checks */
+		"strict": true,
+		"alwaysStrict": false,
+
+		/* Module Resolution */
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+
+		/* Linter Checks */
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": false, // for Express
+
+		/* Advanced */
+		"allowUnreachableCode": false,
+		"forceConsistentCasingInFileNames": true,
+		"newLine": "LF"
+	},
+	"include": ["node/src/**/*.ts"]
+}
