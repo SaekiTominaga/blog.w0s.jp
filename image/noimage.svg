@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="120" viewBox="0 0 180 120">
+<style type="text/css">
+text {
+	fill: #767676;
+	font: 16px sans-serif;
+}
+</style>
+<text x="50%" y="50%" text-anchor="middle" dominant-baseline="central">No Image</text>
+</svg>

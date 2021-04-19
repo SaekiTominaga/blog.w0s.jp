@@ -11,8 +11,6 @@
 
 /log/
 
-/image/
-
 /node/configure/*.json
 /node/coverage/
 /node/dist/
