@@ -36,6 +36,7 @@
 	/* ===== フォーカスリング（Outline） ===== */
 	--focus-ring-width: 1px;
 	--focus-ring-color: #4d90fe;
+	--focus-ring-offset: 1px;
 
 	/* ===== 図形 ===== */
 	--shape-link-triangle: polygon(0 0, 100% 50%, 0 100%); /* リンクアイコン ( ▶ ) */

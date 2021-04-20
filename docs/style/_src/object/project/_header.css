@@ -25,9 +25,7 @@
 		background: transparent;
 		text-decoration: none;
 
-		&:focus,
 		&:hover {
-			color: inherit;
 			text-shadow: 0 0 1em #aaa;
 		}
 	}
@@ -61,9 +59,8 @@
 	line-height: var(--line-height--narrow);
 	text-decoration: none;
 	text-shadow: 1px 1px #fff;
-	outline-offset: 0.1em;
+	outline-offset: 2px;
 
-	&:focus,
 	&:hover {
 		color: var(--color);
 		box-shadow: 0 0 1px #ffb211;

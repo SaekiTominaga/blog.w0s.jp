@@ -26,10 +26,6 @@
 
 .p-sidebar-profile__address {
 	font-weight: bold;
-
-	& a {
-		outline-offset: 0.1em;
-	}
 }
 
 /* アバター */
@@ -38,7 +34,7 @@
 	float: left;
 	transition: box-shadow var(--anchor-hover-transition-delay);
 
-	@nest :any-link:hover &, :any-link:focus & {
+	@nest :any-link:hover & {
 		box-shadow: 0 0 5px #999;
 	}
 }
@@ -76,12 +72,9 @@
 	line-height: var(--line-height--narrow);
 	text-align: center;
 	text-decoration: none;
-	outline-offset: 0.1em;
 
 	&:any-link {
-		&:hover,
-		&:focus {
-			color: var(--color);
+		&:hover {
 			box-shadow: 0 0 1px 1px #ccc;
 		}
 	}
@@ -190,6 +183,7 @@
 			display: block;
 			position: relative;
 			background: var(--background);
+			outline-offset: 0;
 
 			&:any-link {
 				--background: #fff;
@@ -294,6 +288,7 @@
 			position: relative;
 			min-height: 2em;
 			background: var(--background);
+			outline-offset: 0;
 
 			&:any-link {
 				--background: #fff;
@@ -349,7 +344,7 @@
 	& a {
 		display: block;
 		text-decoration: none;
-		outline-offset: 0.2em;
+		outline-offset: 2px;
 	}
 }
 
@@ -397,7 +392,7 @@
 	height: auto;
 	transition: box-shadow var(--anchor-hover-transition-delay);
 
-	@nest :any-link:focus &, :any-link:hover & {
+	@nest :any-link:hover & {
 		box-shadow: 0 0 3px 3px #f92;
 	}
 }

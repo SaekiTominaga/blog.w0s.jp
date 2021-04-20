@@ -10,7 +10,6 @@
 	font-size: calc(1rem * var(--font-ratio-3));
 	line-height: 1;
 	cursor: revert;
-	outline-offset: 0.1em;
 
 	&:disabled {
 		color: #7d7d7d;

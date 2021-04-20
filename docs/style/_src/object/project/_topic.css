@@ -340,7 +340,6 @@
 			text-indent: calc(0em - var(--bullet-width) - var(--bullet-gap));
 			display: inline-block;
 			font-size: calc(var(--topic-font-size) * var(--font-ratio-2));
-			outline-offset: 0.1em;
 
 			&::before {
 				margin-right: var(--bullet-gap);
@@ -377,6 +376,11 @@
 	width: min(var(--image-max-width) + var(--image-border-width) * 2, 100%);
 	position: relative;
 
+	& picture,
+	& source {
+		display: block; /* for Firefox */
+	}
+
 	& img {
 		border: var(--image-border-width) solid var(--image-border-color);
 		display: block;
@@ -386,6 +390,9 @@
 
 	& > a {
 		--image-border-width: 1px;
+
+		display: block;
+		outline-offset: 0;
 
 		&::before {
 			padding: var(--expand-icon-padding);
@@ -522,7 +529,6 @@
 	line-height: var(--line-height--narrow);
 	text-decoration: none;
 	transition: color var(--anchor-hover-transition-delay), background-color var(--anchor-hover-transition-delay);
-	outline-offset: 0.1em;
 
 	&:any-link {
 		color: #444;
@@ -808,10 +814,9 @@
 		background: #fff;
 		white-space: nowrap;
 		text-decoration: none;
-		outline-offset: 0.1em;
+		outline-offset: 2px;
 
-		&:hover,
-		&:focus {
+		&:hover {
 			box-shadow: 0 0 3px #ccc;
 		}
 	}
@@ -846,13 +851,12 @@
 	line-height: var(--line-height--narrow);
 	text-decoration: none;
 	text-shadow: 1px 1px #fff;
-	outline-offset: 0.1em;
+	outline-offset: 2px;
 
 	&:disabled {
 		display: none;
 	}
 
-	&:focus,
 	&:hover {
 		color: var(--color);
 		box-shadow: 0 0 2px var(--border-color);
@@ -868,7 +872,7 @@
 .p-topic-social__button-icon {
 	margin-right: 0.25em;
 	display: inline-block;
-	height: 1.25em;
+	height: 1em;
 	width: auto;
 	vertical-align: middle;
 }
@@ -936,7 +940,7 @@
 	max-height: calc(var(--image-width) / var(--image-aspect-ratio));
 	pointer-events: auto;
 
-	@nest :any-link:focus &, :any-link:hover & {
+	@nest :any-link:hover & {
 		box-shadow: 0 0 5px #999;
 	}
 }

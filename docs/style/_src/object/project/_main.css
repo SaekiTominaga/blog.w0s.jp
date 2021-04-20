@@ -43,7 +43,7 @@
 	line-height: var(--line-height--narrow);
 	text-decoration: none;
 	white-space: nowrap;
-	outline-offset: 0.1em;
+	outline-offset: 2px;
 
 	&:hover {
 		background-color: #f9f9f9;
@@ -101,6 +101,10 @@
 	&.-list {
 		border-top: 1px solid #ccc;
 	}
+
+	& a {
+		outline-offset: 3px;
+	}
 }
 
 .p-title-list__thumb {
@@ -131,7 +135,7 @@
 	max-height: calc(var(--image-width) / var(--image-aspect-ratio));
 	pointer-events: auto;
 
-	@nest :any-link:focus &, :any-link:hover & {
+	@nest :any-link:hover & {
 		box-shadow: 0 0 5px #999;
 	}
 }

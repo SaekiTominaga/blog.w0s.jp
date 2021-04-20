@@ -1,3 +1,7 @@
+:focus {
+	outline-offset: 0; /* for Chrome */
+}
+
 body {
 	margin: 0;
 }
@@ -60,7 +64,6 @@ select,
 button,
 textarea {
 	font: inherit;
-	outline-offset: 0; /* for Chrome */
 }
 
 optgroup {
