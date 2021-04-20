@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://schema.w0s.jp/Blog.json",
+	"$id": "https://blog.w0s.jp/Topic.json",
 	"type": "object",
 	"title": "記事",
 	"required": ["view","sidebar"],
