@@ -70,10 +70,10 @@ export default class MessageParser {
 	/**
 	 * コンストラクタ
 	 *
-	 * @param {number} topicId - 記事 ID
 	 * @param {BlogDao} dao - Dao
+	 * @param {number} topicId - 記事 ID
 	 */
-	constructor(topicId: number, dao: BlogDao) {
+	constructor(dao: BlogDao, topicId = 0) {
 		/* Logger */
 		this.logger = Log4js.getLogger(this.constructor.name);
 

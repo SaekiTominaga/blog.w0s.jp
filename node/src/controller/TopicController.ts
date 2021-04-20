@@ -59,7 +59,7 @@ export default class TopicController extends Controller implements ControllerInt
 			const topicCountOfCategoryListDto = values[2];
 			const newlyTopicDataListDto = values[3];
 
-			const messageParser = new MessageParser(paramTopicId, dao);
+			const messageParser = new MessageParser(dao, paramTopicId);
 
 			let ogImage: string | null = null;
 			if (topicDataDto.image_internal !== null) {
