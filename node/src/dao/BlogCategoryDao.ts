@@ -12,7 +12,7 @@ export default class BlogCategoryDao extends BlogDao {
 	 *
 	 * @returns {Array} 記事データ（該当する記事が存在しない場合は空配列）
 	 */
-	async getTopics(categoryName: string): Promise<BlogDto.TopicData[]> {
+	async getTopics(categoryName: string): Promise<Partial<BlogDto.TopicData>[]> {
 		const dbh = await this._getDbh();
 
 		const sth = await dbh.prepare(`
@@ -42,7 +42,7 @@ export default class BlogCategoryDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const topicDataList: BlogDto.TopicData[] = [];
+		const topicDataList: Partial<BlogDto.TopicData>[] = [];
 		for (const row of rows) {
 			topicDataList.push({
 				id: Number(row.id),

@@ -186,7 +186,7 @@ export default class BlogDao {
 	 *
 	 * @returns {object} Amazon 商品情報
 	 */
-	async getAmazon(asin: string): Promise<BlogDto.AmazonData | null> {
+	async getAmazon(asin: string): Promise<Partial<BlogDto.AmazonData> | null> {
 		const dbh = await this._getDbh();
 
 		const sth = await dbh.prepare(`

@@ -12,7 +12,7 @@ export default class BlogTopicDao extends BlogDao {
 	 *
 	 * @returns {object} 記事データ
 	 */
-	async getTopic(topicId: number): Promise<BlogDto.TopicData | null> {
+	async getTopic(topicId: number): Promise<Partial<BlogDto.TopicData> | null> {
 		const dbh = await this._getDbh();
 
 		const sth = await dbh.prepare(`
@@ -60,7 +60,7 @@ export default class BlogTopicDao extends BlogDao {
 	 *
 	 * @returns {Array} カテゴリー情報
 	 */
-	async getCategories(topicId: number): Promise<BlogDto.CategoryMaster[]> {
+	async getCategories(topicId: number): Promise<Partial<BlogDto.CategoryMaster>[]> {
 		const dbh = await this._getDbh();
 
 		const sth = await dbh.prepare(`
@@ -87,7 +87,7 @@ export default class BlogTopicDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const categoryDataList: BlogDto.CategoryMaster[] = [];
+		const categoryDataList: Partial<BlogDto.CategoryMaster>[] = [];
 		for (const row of rows) {
 			categoryDataList.push({
 				id: row.id,
@@ -107,7 +107,7 @@ export default class BlogTopicDao extends BlogDao {
 	 *
 	 * @returns {Array} 関連記事データ
 	 */
-	async getRelations(topicId: number): Promise<BlogDto.TopicData[]> {
+	async getRelations(topicId: number): Promise<Partial<BlogDto.TopicData>[]> {
 		const dbh = await this._getDbh();
 
 		const sth = await dbh.prepare(`
@@ -134,7 +134,7 @@ export default class BlogTopicDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const relationDataList: BlogDto.TopicData[] = [];
+		const relationDataList: Partial<BlogDto.TopicData>[] = [];
 		for (const row of rows) {
 			relationDataList.push({
 				id: row.id,
