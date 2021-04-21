@@ -1,3 +1,4 @@
+import AmazonImageController from './controller/api/AmazonImageController.js';
 import CategoryController from './controller/CategoryController.js';
 import compression from 'compression';
 import cors from 'cors';
@@ -147,6 +148,18 @@ const corsPreflightedRequestCallback = cors({
 });
 const corsCallback = cors({
 	origin: config.cors.allow_origins,
+});
+
+/**
+ * API・Amazon 商品画像取得
+ */
+app.options('/api/amazon-image', corsPreflightedRequestCallback);
+app.post('/api/amazon-image', corsCallback, async (req, res, next) => {
+	try {
+		await new AmazonImageController().execute(req, res);
+	} catch (e) {
+		next(e);
+	}
 });
 
 /**
