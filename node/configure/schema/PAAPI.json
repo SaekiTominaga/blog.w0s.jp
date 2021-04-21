@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://blog.w0s.jp/PAAPI.json",
+	"type": "object",
+	"title": "PA-API",
+	"description": "https://webservices.amazon.com/paapi5/documentation/common-request-parameters.html",
+	"required": ["partner_tag", "access_key", "secret_key", "marketplace", "host", "region"],
+	"properties": {
+		"partner_tag": {
+			"type": "string",
+			"title": "パートナーを一意に識別する英数字トークン",
+			"examples": ["store-22"]
+		},
+		"access_key": {
+			"type": "string",
+			"title": "認証キー",
+			"description": "https://affiliate.amazon.co.jp/assoc_credentials/home"
+		},
+		"secret_key": {
+			"type": "string",
+			"title": "シークレットキー",
+			"description": "https://affiliate.amazon.co.jp/assoc_credentials/home"
+		},
+		"marketplace": {
+			"type": "string",
+			"title": "Target Amazon Locale",
+			"description": "https://webservices.amazon.com/paapi5/documentation/locale-reference.html",
+			"examples": ["www.amazon.co.jp"]
+		},
+		"host": {
+			"type": "string",
+			"title": "The host value of the target locale to which you are sending requests",
+			"description": "https://webservices.amazon.com/paapi5/documentation/common-request-parameters.html#host-and-region",
+			"examples": ["webservices.amazon.co.jp"]
+		},
+		"region": {
+			"type": "string",
+			"title": "The AWS region of the target locale to which you are sending requests",
+			"description": "https://webservices.amazon.com/paapi5/documentation/common-request-parameters.html#host-and-region",
+			"examples": ["us-west-2"]
+		}
+	},
+	"additionalProperties": false
+}
