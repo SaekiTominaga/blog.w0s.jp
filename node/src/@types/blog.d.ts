@@ -24,14 +24,14 @@ declare namespace BlogDto {
 
 	export interface AmazonData {
 		asin: string;
-		url: string;
-		title: string;
-		binding: string | null;
-		product_group: string | null;
-		date: Date | null;
-		image_url: string | null;
-		image_width: number | null;
-		image_height: number | null;
+		url?: string;
+		title?: string;
+		binding?: string | null;
+		product_group?: string | null;
+		date?: Date | null;
+		image_url?: string | null;
+		image_width?: number | null;
+		image_height?: number | null;
 		last_update?: Date;
 	}
 
@@ -55,4 +55,13 @@ declare namespace BlogView {
 		insert_date: Dayjs;
 		last_update?: Dayjs | null;
 	}
+}
+
+declare namespace BlogApi {
+	export interface AmazonImage {
+		errors: string[];
+		images: Map<string, string>;
+	}
+
+	export type TweetImage = string[];
 }

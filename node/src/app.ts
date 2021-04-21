@@ -1,5 +1,6 @@
 import CategoryController from './controller/CategoryController.js';
 import compression from 'compression';
+import cors from 'cors';
 import Express, { NextFunction, Request, Response } from 'express';
 import fs from 'fs';
 import HttpResponse from './util/HttpResponse.js';
@@ -8,6 +9,7 @@ import Log4js from 'log4js';
 import MessagePreviewController from './controller/MessagePreviewController.js';
 import path from 'path';
 import TopicController from './controller/TopicController.js';
+import TweetImageController from './controller/api/TweetImageController.js';
 import { NoName as Configure } from '../configure/type/Common.js';
 import { TypeMap } from 'mime';
 
@@ -31,10 +33,11 @@ app.use((req, res, next) => {
 	const requestUrl = req.url;
 
 	const feed = ['/feed'].includes(requestUrl);
-	const html = !feed && /(^\/[^.]*$)|(\.x?html$)/.test(requestUrl);
+	const api = /^\/api\//.test(requestUrl);
 	const css = /^\/style\/.+\.css$/.test(requestUrl);
 	const js = /^\/script\/.+\.m?js$/.test(requestUrl);
 	const svg = requestUrl.endsWith('.svg');
+	const html = !feed && !api && /(^\/[^.]*$)|(\.x?html$)/.test(requestUrl);
 
 	/* HSTS */
 	res.setHeader('Strict-Transport-Security', config.response.header.hsts);
@@ -130,6 +133,29 @@ app.get('/category/:category_name', async (req, res, next) => {
 app.post('/message-preview', async (req, res, next) => {
 	try {
 		await new MessagePreviewController().execute(req, new HttpResponse(res, config));
+	} catch (e) {
+		next(e);
+	}
+});
+
+/**
+ * API
+ */
+const corsPreflightedRequestCallback = cors({
+	origin: config.cors.allow_origins,
+	methods: ['POST'],
+});
+const corsCallback = cors({
+	origin: config.cors.allow_origins,
+});
+
+/**
+ * API・ツイート画像取得
+ */
+app.options('/api/tweet-image', corsPreflightedRequestCallback);
+app.post('/api/tweet-image', corsCallback, async (req, res, next) => {
+	try {
+		await new TweetImageController().execute(req, res);
 	} catch (e) {
 		next(e);
 	}

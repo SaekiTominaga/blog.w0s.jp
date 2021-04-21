@@ -1,9 +1,9 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://schema.w0s.jp/Blog.json",
+	"$id": "https://blog.w0s.jp/Common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "static", "response", "views", "errorpage", "logger"],
+	"required": ["port", "static", "cors", "response", "views", "errorpage", "logger"],
 	"properties": {
 		"port": {
 			"type": "integer",
@@ -84,6 +84,21 @@
 						}
 					},
 					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"cors": {
+			"type": "object",
+			"title": "CORS",
+			"required": ["allow_origins"],
+			"properties": {
+				"allow_origins": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"title": "許可するオリジン"
 				}
 			},
 			"additionalProperties": false

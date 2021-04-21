@@ -43,22 +43,24 @@ export type MaxAge = string;
  * Redirect to trailing “/” when the pathname is a directory.
  */
 export type Redirect = boolean;
+export type NoName4 = string[];
 export type StrictTransportSecurity = string;
 export type ContentSecurityPolicyHTML = string;
 export type ContentSecurityPolicyHTML1 = string;
 export type ContentSecurityPolicyReportOnlyHTML = string;
 export type Threshold = string;
-export type NoName7 = string;
+export type NoName8 = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
-export type NoName9 = string;
+export type NoName10 = string;
 
 export interface NoName {
   port: HTTP;
   static: NoName1;
-  response: NoName4;
-  views: NoName7;
-  errorpage: NoName8;
+  cors: CORS;
+  response: NoName5;
+  views: NoName8;
+  errorpage: NoName9;
   logger: Logger;
 }
 export interface NoName1 {
@@ -86,27 +88,30 @@ export interface NoName3 {
 export interface SetHeaders {
   [k: string]: unknown;
 }
-export interface NoName4 {
+export interface CORS {
+  allow_origins: NoName4;
+}
+export interface NoName5 {
   mime: MIME;
-  header: NoName5;
-  compression: NoName6;
+  header: NoName6;
+  compression: NoName7;
 }
 export interface MIME {
   [k: string]: unknown;
 }
-export interface NoName5 {
+export interface NoName6 {
   hsts: StrictTransportSecurity;
   csp: ContentSecurityPolicyHTML;
   csp_html: ContentSecurityPolicyHTML1;
   cspro_html: ContentSecurityPolicyReportOnlyHTML;
 }
-export interface NoName6 {
+export interface NoName7 {
   threshold: Threshold;
 }
-export interface NoName8 {
+export interface NoName9 {
   path_403: FilepathFor403Forbidden;
   path_404: FilepathFor404NotFound;
 }
 export interface Logger {
-  path: NoName9;
+  path: NoName10;
 }
