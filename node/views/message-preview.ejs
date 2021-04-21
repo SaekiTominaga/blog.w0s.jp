@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>本文プレビュー</title>
+
+		<base target="_blank" />
+
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+		<link rel="stylesheet" href="/style/blog.css" />
+
+		<script src="/script/trusted-types.js"></script>
+		<script src="/script/blog.mjs" type="module"></script>
+		<% if (tweet) { %>
+		<script src="https://platform.twitter.com/widgets.js" async=""></script>
+		<% } %>
+	</head>
+	<body>
+		<article class="p-topic"><%- message %></article>
+	</body>
+</html>

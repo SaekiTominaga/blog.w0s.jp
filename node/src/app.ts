@@ -5,6 +5,7 @@ import fs from 'fs';
 import HttpResponse from './util/HttpResponse.js';
 import ListController from './controller/ListController.js';
 import Log4js from 'log4js';
+import MessagePreviewController from './controller/MessagePreviewController.js';
 import path from 'path';
 import TopicController from './controller/TopicController.js';
 import { NoName as Configure } from '../configure/type/Common.js';
@@ -81,6 +82,7 @@ app.use(
 		threshold: config.response.compression.threshold,
 	})
 );
+app.use(Express.urlencoded({ limit: 1000000 })); // 1MB
 app.use(
 	Express.static(config.static.root, {
 		extensions: config.static.options.extensions,
@@ -117,6 +119,17 @@ app.get('/:topic_id([1-9][0-9]{0,2})', async (req, res, next) => {
 app.get('/category/:category_name', async (req, res, next) => {
 	try {
 		await new CategoryController().execute(req, new HttpResponse(res, config));
+	} catch (e) {
+		next(e);
+	}
+});
+
+/**
+ * 本文プレビュー
+ */
+app.post('/message-preview', async (req, res, next) => {
+	try {
+		await new MessagePreviewController().execute(req, new HttpResponse(res, config));
 	} catch (e) {
 		next(e);
 	}
