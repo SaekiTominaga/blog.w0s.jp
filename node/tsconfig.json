@@ -1,0 +1,15 @@
+{
+	"extends": "../tsconfig.json",
+	"include": ["@types/*.d.ts", "src/**/*.ts"],
+	"compilerOptions": {
+		/* Project Options */
+		"outDir": "dist",
+		"target": "ESNext",
+
+		/* Module Resolution */
+		"esModuleInterop": true,
+
+		/* Linter Checks */
+		"noUnusedParameters": false
+	}
+}

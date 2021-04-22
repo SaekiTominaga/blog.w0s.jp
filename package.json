@@ -14,8 +14,8 @@
 		"url": "git+https://github.com/SaekiTominaga/blog.w0s.jp.git"
 	},
 	"scripts": {
-		"build": "tsc --project tsconfig.node.json",
-		"build:watch": "tsc --project tsconfig.node.json -w",
+		"build": "tsc --project node/tsconfig.json",
+		"build:watch": "tsc --project node/tsconfig.json -w",
 		"config:validate:Common": "ajv --spec=draft7 -s node/configure/schema/Common.json -d node/configure/Common.json",
 		"config:validate:List": "ajv --spec=draft7 -s node/configure/schema/List.json -d node/configure/List.json",
 		"config:validate:Topic": "ajv --spec=draft7 -s node/configure/schema/Topic.json -d node/configure/Topic.json",

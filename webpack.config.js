@@ -22,7 +22,7 @@ export default {
 				use: {
 					loader: 'ts-loader',
 					options: {
-						configFile: 'tsconfig.browser.json',
+						configFile: 'docs/script/tsconfig.json',
 					},
 				},
 			},
