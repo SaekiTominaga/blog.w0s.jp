@@ -2,7 +2,6 @@ import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
 import Twitter from 'twitter-v2';
-import { BlogApi } from '../../@types/blog.js';
 import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/Twitter.js';
 import { Request, Response } from 'express';
 

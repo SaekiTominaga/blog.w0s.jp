@@ -4,11 +4,11 @@ import ControllerInterface from '../ControllerInterface.js';
 import dayjs from 'dayjs';
 import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
+import MessageParser from '../util/MessageParser.js';
 import Sidebar from '../util/Sidebar.js';
-import { BlogView } from '../@types/blog.js';
+import { BlogView } from '../../@types/view.js';
 import { NoName as Configure } from '../../configure/type/Topic.js';
 import { Request } from 'express';
-import MessageParser from '../util/MessageParser.js';
 
 /**
  * 記事リスト
@@ -59,7 +59,7 @@ export default class TopicController extends Controller implements ControllerInt
 			const topicCountOfCategoryListDto = values[2];
 			const newlyTopicDataListDto = values[3];
 
-			const messageParser = new MessageParser(dao, paramTopicId);
+			const messageParser = new MessageParser(await dao.getDbh(), paramTopicId);
 
 			let ogImage: string | null = null;
 			if (topicDataDto.image_internal !== null) {

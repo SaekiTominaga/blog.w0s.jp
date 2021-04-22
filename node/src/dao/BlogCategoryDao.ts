@@ -1,5 +1,13 @@
 import BlogDao from './BlogDao.js';
-import { BlogDto } from '../@types/blog.js';
+
+interface TopicData {
+	id: number;
+	title: string;
+	image_internal: string | null;
+	image_external: string | null;
+	insert_date: Date;
+	last_update?: Date | null;
+}
 
 /**
  * 日記タイトル一覧
@@ -12,8 +20,8 @@ export default class BlogCategoryDao extends BlogDao {
 	 *
 	 * @returns {Array} 記事データ（該当する記事が存在しない場合は空配列）
 	 */
-	async getTopics(categoryName: string): Promise<Partial<BlogDto.TopicData>[]> {
-		const dbh = await this._getDbh();
+	async getTopics(categoryName: string): Promise<TopicData[]> {
+		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 				SELECT
@@ -42,7 +50,7 @@ export default class BlogCategoryDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const topicDataList: Partial<BlogDto.TopicData>[] = [];
+		const topicDataList: TopicData[] = [];
 		for (const row of rows) {
 			topicDataList.push({
 				id: Number(row.id),

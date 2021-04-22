@@ -1,9 +1,9 @@
+// @ts-expect-error: ts(7016)
 import amazonPaapi from 'amazon-paapi';
 import BlogAmazonDao from '../../dao/BlogAmazonDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
-import { BlogApi, BlogDto } from '../../@types/blog.js';
 import { PAAPI as ConfigurePaapi } from '../../../configure/type/PAAPI.js';
 import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { Request, Response } from 'express';
@@ -63,7 +63,7 @@ export default class AmazonImageController extends Controller implements Control
 
 		const imageUrls: Map<string, string> = new Map();
 		for (const asin of registeredAsins) {
-			imageUrls.set(asin, registeredImageUrls.get(asin));
+			imageUrls.set(asin, <string>registeredImageUrls.get(asin));
 		}
 
 		this.logger.debug('imageUrls', imageUrls);
@@ -94,46 +94,48 @@ export default class AmazonImageController extends Controller implements Control
 				}
 			}
 
-			const amazonDataList: BlogDto.AmazonData[] = [];
+			const amazonDataList: BlogDb.AmazonData[] = [];
 			for (const item of paapiResponse.ItemsResult.Items) {
 				this.logger.debug(item); // TODO:
 
 				const itemInfo = item.ItemInfo;
 
-				const publicationDateStr = itemInfo.ContentInfo.PublicationDate.DisplayValue;
+				const publicationDateStr = itemInfo?.ContentInfo?.PublicationDate.DisplayValue;
 				let publicationDate: Date | null = null;
-				if (
-					/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(publicationDateStr) /* 2000-01-01T00:00:00Z */ ||
-					/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(publicationDateStr) /* 2000-01-01T00:00:00.000Z */ ||
-					/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}-\d{2}:\d{2}$/.test(publicationDateStr) /* 2000-01-01T00:00:00.000-00:00 */
-				) {
-					publicationDate = new Date(publicationDateStr);
-				} else if (/^\d{4}-\d{2}-\d{2}T?$/.test(publicationDateStr) /* 2000-01-01 */) {
-					publicationDate = new Date(
-						Number(publicationDateStr.substring(0, 4)),
-						Number(publicationDateStr.substring(5, 7)),
-						Number(publicationDateStr.substring(8, 10))
-					);
-				} else if (/^\d{4}-\d{2}T?$/.test(publicationDateStr) /* 2000-01T */) {
-					publicationDate = new Date(Number(publicationDateStr.substring(0, 4)), Number(publicationDateStr.substring(5, 7)));
-				} else if (/^\d{4}T?$/.test(publicationDateStr) /* 2000T */) {
-					publicationDate = new Date(Number(publicationDateStr.substring(0, 4)));
-				} else {
-					this.logger.warn(`想定外の日付フォーマット: ${publicationDateStr}`);
+				if (publicationDateStr !== undefined) {
+					if (
+						/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(publicationDateStr) /* 2000-01-01T00:00:00Z */ ||
+						/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(publicationDateStr) /* 2000-01-01T00:00:00.000Z */ ||
+						/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}-\d{2}:\d{2}$/.test(publicationDateStr) /* 2000-01-01T00:00:00.000-00:00 */
+					) {
+						publicationDate = new Date(publicationDateStr);
+					} else if (/^\d{4}-\d{2}-\d{2}T?$/.test(publicationDateStr) /* 2000-01-01 */) {
+						publicationDate = new Date(
+							Number(publicationDateStr.substring(0, 4)),
+							Number(publicationDateStr.substring(5, 7)),
+							Number(publicationDateStr.substring(8, 10))
+						);
+					} else if (/^\d{4}-\d{2}T?$/.test(publicationDateStr) /* 2000-01T */) {
+						publicationDate = new Date(Number(publicationDateStr.substring(0, 4)), Number(publicationDateStr.substring(5, 7)));
+					} else if (/^\d{4}T?$/.test(publicationDateStr) /* 2000T */) {
+						publicationDate = new Date(Number(publicationDateStr.substring(0, 4)));
+					} else {
+						this.logger.warn(`想定外の日付フォーマット: ${publicationDateStr}`);
+					}
 				}
 
-				const imagesPrimaryLarge = item.Images.Primary.Large;
+				const imagesPrimaryLarge = item.Images?.Primary?.Large;
 
 				amazonDataList.push({
 					asin: item.ASIN,
 					url: item.DetailPageURL,
-					title: itemInfo.Title.DisplayValue,
-					binding: itemInfo.Classifications.Binding.DisplayValue,
-					product_group: itemInfo.Classifications.ProductGroup.DisplayValue,
+					title: <string>itemInfo?.Title?.DisplayValue,
+					binding: itemInfo?.Classifications?.Binding.DisplayValue ?? null,
+					product_group: itemInfo?.Classifications?.ProductGroup.DisplayValue ?? null,
 					date: publicationDate,
-					image_url: imagesPrimaryLarge.URL,
-					image_width: Number(imagesPrimaryLarge.Width),
-					image_height: Number(imagesPrimaryLarge.Height),
+					image_url: imagesPrimaryLarge?.URL ?? null,
+					image_width: imagesPrimaryLarge !== undefined ? Number(imagesPrimaryLarge.Width) : null,
+					image_height: imagesPrimaryLarge !== undefined ? Number(imagesPrimaryLarge.Height) : null,
 					last_update: new Date(),
 				});
 			}

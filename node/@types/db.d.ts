@@ -1,6 +1,4 @@
-import { Dayjs } from 'dayjs';
-
-declare namespace BlogDto {
+declare namespace BlogDb {
 	export interface TopicData {
 		id: number;
 		title: string;
@@ -42,26 +40,4 @@ declare namespace BlogDto {
 		text: string;
 		created_at: Date;
 	}
-}
-
-declare namespace BlogView {
-	export interface TopicData {
-		id: number;
-		title: string;
-		message?: string;
-		description?: string | null;
-		image_internal: string | null;
-		image_external: string | null;
-		insert_date: Dayjs;
-		last_update?: Dayjs | null;
-	}
-}
-
-declare namespace BlogApi {
-	export interface AmazonImage {
-		errors: string[];
-		images: Map<string, string>;
-	}
-
-	export type TweetImage = string[];
 }

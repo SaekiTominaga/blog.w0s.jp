@@ -1,5 +1,19 @@
 import BlogDao from './BlogDao.js';
-import { BlogDto } from '../@types/blog.js';
+
+export interface Category {
+	id: string;
+	name: string;
+	sidebar_amazon: string | null;
+	book: string | null;
+}
+
+export interface Relation {
+	id: number;
+	title: string;
+	image_internal: string | null;
+	image_external: string | null;
+	insert_date: Date;
+}
 
 /**
  * 日記記事
@@ -12,14 +26,14 @@ export default class BlogTopicDao extends BlogDao {
 	 *
 	 * @returns {object} 記事データ
 	 */
-	async getTopic(topicId: number): Promise<Partial<BlogDto.TopicData> | null> {
-		const dbh = await this._getDbh();
+	async getTopic(topicId: number): Promise<BlogDb.TopicData | null> {
+		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
 				t.title AS title,
-				t.message AS message,
 				t.description AS description,
+				t.message AS message,
 				t.image AS image_internal,
 				t.image_external AS image_external,
 				t.insert_date AS insert_date,
@@ -44,12 +58,13 @@ export default class BlogTopicDao extends BlogDao {
 		return {
 			id: topicId,
 			title: row.title,
-			message: row.message,
 			description: row.description,
+			message: row.message,
 			image_internal: row.image_internal,
 			image_external: row.image_external,
 			insert_date: new Date(Number(row.insert_date) * 1000),
 			last_update: row.last_update !== null ? new Date(Number(row.last_update) * 1000) : null,
+			public: true,
 		};
 	}
 
@@ -60,8 +75,8 @@ export default class BlogTopicDao extends BlogDao {
 	 *
 	 * @returns {Array} カテゴリー情報
 	 */
-	async getCategories(topicId: number): Promise<Partial<BlogDto.CategoryMaster>[]> {
-		const dbh = await this._getDbh();
+	async getCategories(topicId: number): Promise<Category[]> {
+		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
@@ -87,7 +102,7 @@ export default class BlogTopicDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const categoryDataList: Partial<BlogDto.CategoryMaster>[] = [];
+		const categoryDataList: Category[] = [];
 		for (const row of rows) {
 			categoryDataList.push({
 				id: row.id,
@@ -107,8 +122,8 @@ export default class BlogTopicDao extends BlogDao {
 	 *
 	 * @returns {Array} 関連記事データ
 	 */
-	async getRelations(topicId: number): Promise<Partial<BlogDto.TopicData>[]> {
-		const dbh = await this._getDbh();
+	async getRelations(topicId: number): Promise<Relation[]> {
+		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
@@ -134,7 +149,7 @@ export default class BlogTopicDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const relationDataList: Partial<BlogDto.TopicData>[] = [];
+		const relationDataList: Relation[] = [];
 		for (const row of rows) {
 			relationDataList.push({
 				id: row.id,

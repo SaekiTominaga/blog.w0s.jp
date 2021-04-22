@@ -1,4 +1,3 @@
-import BlogDao from '../dao/BlogDao.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import HttpResponse from '../util/HttpResponse.js';
@@ -23,7 +22,7 @@ export default class MessagePreviewController extends Controller implements Cont
 			return;
 		}
 
-		const messageParser = new MessageParser(new BlogDao());
+		const messageParser = new MessageParser();
 
 		response.render('message-preview', {
 			message: await messageParser.toHtml(message),

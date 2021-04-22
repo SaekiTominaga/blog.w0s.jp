@@ -6,7 +6,7 @@ import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import Sidebar from '../util/Sidebar.js';
-import { BlogView } from '../@types/blog.js';
+import { BlogView } from '../../@types/view.js';
 import { NoName as Configure } from '../../configure/type/Category.js';
 import { Request } from 'express';
 

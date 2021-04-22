@@ -1,4 +1,5 @@
-import BlogDao from '../dao/BlogDao.js';
+import * as sqlite from 'sqlite';
+import BlogMessageDao from '../dao/BlogMessage.js';
 import dayjs from 'dayjs';
 import hljs from 'highlight.js';
 import hljsCss from 'highlight.js/lib/languages/css.js';
@@ -21,9 +22,9 @@ export default class MessageParser {
 	private readonly logger: Log4js.Logger;
 
 	/* Dao */
-	private readonly dao: BlogDao;
+	private readonly dao: BlogMessageDao;
 	/* 記事 ID */
-	private readonly topicId: number;
+	private readonly topicId: number = 0;
 
 	/* ツイートが存在するか */
 	private tweetExist = false;
@@ -70,20 +71,23 @@ export default class MessageParser {
 	/**
 	 * コンストラクタ
 	 *
-	 * @param {BlogDao} dao - Dao
+	 * @param {sqlite.Database} dbh - DB 接続情報
 	 * @param {number} topicId - 記事 ID
 	 */
-	constructor(dao: BlogDao, topicId = 0) {
+	constructor(dbh?: sqlite.Database, topicId?: number) {
 		/* Logger */
 		this.logger = Log4js.getLogger(this.constructor.name);
 
-		this.topicId = topicId;
-		this.dao = dao;
+		if (topicId !== undefined) {
+			this.topicId = topicId;
+		}
+		this.dao = new BlogMessageDao(dbh);
 
 		const { document } = new JSDOM().window;
 		this.section1Element = document.createElement('section');
 		this.section2Element = document.createElement('section');
 	}
+
 	/**
 	 * HTML に変換する
 	 *

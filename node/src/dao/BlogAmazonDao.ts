@@ -1,5 +1,9 @@
 import BlogDao from './BlogDao.js';
-import { BlogDto } from '../@types/blog.js';
+
+interface AmazonData {
+	asin: string;
+	image_url: string;
+}
 
 /**
  * Amazon
@@ -10,8 +14,8 @@ export default class BlogAmazonDao extends BlogDao {
 	 *
 	 * @returns {Array} 画像が登録されている商品情報
 	 */
-	async getWithImage(): Promise<Partial<BlogDto.AmazonData>[]> {
-		const dbh = await this._getDbh();
+	async getWithImage(): Promise<AmazonData[]> {
+		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
@@ -25,7 +29,7 @@ export default class BlogAmazonDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const amazonDataList: Partial<BlogDto.AmazonData>[] = [];
+		const amazonDataList: AmazonData[] = [];
 		for (const row of rows) {
 			amazonDataList.push({
 				asin: row.asin,
@@ -41,8 +45,8 @@ export default class BlogAmazonDao extends BlogDao {
 	 *
 	 * @param {Array} amazonDataList - 画像が登録されている商品情報
 	 */
-	async insert(amazonDataList: BlogDto.AmazonData[]): Promise<void> {
-		const dbh = await this._getDbh();
+	async insert(amazonDataList: BlogDb.AmazonData[]): Promise<void> {
+		const dbh = await this.getDbh();
 
 		await dbh.exec('BEGIN');
 		try {

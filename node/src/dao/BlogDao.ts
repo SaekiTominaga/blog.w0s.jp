@@ -1,6 +1,5 @@
 import * as sqlite from 'sqlite';
 import sqlite3 from 'sqlite3';
-import { BlogDto } from '../@types/blog.js';
 
 interface NewlyTopicData {
 	id: string;
@@ -20,11 +19,20 @@ export default class BlogDao {
 	#dbh: sqlite.Database<sqlite3.Database, sqlite3.Statement> | null = null;
 
 	/**
+	 * @param {sqlite.Database} dbh - DB 接続情報
+	 */
+	constructor(dbh?: sqlite.Database<sqlite3.Database, sqlite3.Statement>) {
+		if (dbh !== undefined) {
+			this.#dbh = dbh;
+		}
+	}
+
+	/**
 	 * DB 接続情報を取得する
 	 *
 	 * @returns {sqlite.Database} DB 接続情報
 	 */
-	protected async _getDbh(): Promise<sqlite.Database<sqlite3.Database, sqlite3.Statement>> {
+	async getDbh(): Promise<sqlite.Database<sqlite3.Database, sqlite3.Statement>> {
 		if (this.#dbh !== null) {
 			return this.#dbh;
 		}
@@ -45,7 +53,7 @@ export default class BlogDao {
 	 * @returns {number} 記事件数
 	 */
 	async getTopicCount(): Promise<number> {
-		const dbh = await this._getDbh();
+		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
@@ -74,7 +82,7 @@ export default class BlogDao {
 	 * @returns {Array} 最終更新日時
 	 */
 	async getLastModified(): Promise<Date> {
-		const dbh = await this._getDbh();
+		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
@@ -100,7 +108,7 @@ export default class BlogDao {
 	 * @returns {Array} 新着記事
 	 */
 	async getNewlyTopicData(limit: number): Promise<NewlyTopicData[]> {
-		const dbh = await this._getDbh();
+		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
@@ -138,7 +146,7 @@ export default class BlogDao {
 	 * @returns {Array} カテゴリー毎の記事件数
 	 */
 	async getTopicCountOfCategory(): Promise<TopicCountOfCategory[]> {
-		const dbh = await this._getDbh();
+		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
@@ -177,93 +185,5 @@ export default class BlogDao {
 		}
 
 		return topicCountOfCategory;
-	}
-
-	/**
-	 * Amazon 商品情報を取得する
-	 *
-	 * @param {string} asin - ASIN
-	 *
-	 * @returns {object} Amazon 商品情報
-	 */
-	async getAmazon(asin: string): Promise<Partial<BlogDto.AmazonData> | null> {
-		const dbh = await this._getDbh();
-
-		const sth = await dbh.prepare(`
-			SELECT
-				url,
-				title,
-				binding,
-				product_group,
-				date,
-				image_url,
-				image_width,
-				image_height
-			FROM
-				d_amazon
-			WHERE
-				asin = :asin
-		`);
-		await sth.bind({
-			':asin': asin,
-		});
-		const row = await sth.get();
-		await sth.finalize();
-
-		if (row === undefined) {
-			return null;
-		}
-
-		return {
-			asin: asin,
-			url: row.url,
-			title: row.title,
-			binding: row.binding,
-			product_group: row.product_group,
-			date: row.date !== null ? new Date(Number(row.date) * 1000) : null,
-			image_url: row.image_url,
-			image_width: Number(row.image_width),
-			image_height: Number(row.image_height),
-		};
-	}
-
-	/**
-	 * ツイート情報を取得する
-	 *
-	 * @param {string} id - ツイート ID
-	 *
-	 * @returns {object} ツイート情報
-	 */
-	async getTweet(id: string): Promise<BlogDto.TweetData | null> {
-		const dbh = await this._getDbh();
-
-		const sth = await dbh.prepare(`
-			SELECT
-				name,
-				screen_name,
-				text,
-				created_at
-			FROM
-				d_tweet
-			WHERE
-				id = :id
-		`);
-		await sth.bind({
-			':id': id,
-		});
-		const row = await sth.get();
-		await sth.finalize();
-
-		if (row === undefined) {
-			return null;
-		}
-
-		return {
-			id: id,
-			name: row.name,
-			screen_name: row.screen_name,
-			text: row.text,
-			created_at: new Date(Number(row.created_at) * 1000),
-		};
 	}
 }
