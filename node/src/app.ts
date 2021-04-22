@@ -3,6 +3,7 @@ import CategoryController from './controller/CategoryController.js';
 import compression from 'compression';
 import cors from 'cors';
 import Express, { NextFunction, Request, Response } from 'express';
+import FeedCreateController from './controller/api/FeedCreateController.js';
 import fs from 'fs';
 import HttpResponse from './util/HttpResponse.js';
 import ListController from './controller/ListController.js';
@@ -148,6 +149,17 @@ const corsPreflightedRequestCallback = cors({
 });
 const corsCallback = cors({
 	origin: config.cors.allow_origins,
+});
+
+/**
+ * API・フィード作成
+ */
+app.put('/feed.atom', async (req, res, next) => {
+	try {
+		await new FeedCreateController().execute(req, res);
+	} catch (e) {
+		next(e);
+	}
 });
 
 /**

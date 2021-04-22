@@ -11,4 +11,12 @@ declare namespace BlogView {
 		insert_date: Dayjs;
 		last_update?: Dayjs | null;
 	}
+
+	export interface FeedEntry {
+		id: number;
+		title: string;
+		message: string;
+		last_updated: Dayjs;
+		update: boolean;
+	}
 }

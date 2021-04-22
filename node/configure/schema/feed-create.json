@@ -1,0 +1,19 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://blog.w0s.jp/feed-create.json",
+	"type": "object",
+	"title": "フィード作成",
+	"required": ["maximum_number", "view_path", "file_path"],
+	"properties": {
+		"maximum_number": {
+			"type": "integer",
+			"minimum": 1,
+			"title": "最大表示件数"
+		},
+		"view_path": {
+			"type": "string",
+			"title": "View ファイルのパス"
+		}
+	},
+	"additionalProperties": false
+}
