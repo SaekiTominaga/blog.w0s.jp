@@ -34,11 +34,11 @@ app.set('view engine', 'ejs');
 app.use((req, res, next) => {
 	const requestUrl = req.url;
 
-	const feed = ['/feed'].includes(requestUrl);
-	const api = /^\/api\//.test(requestUrl);
 	const css = /^\/style\/.+\.css$/.test(requestUrl);
 	const js = /^\/script\/.+\.m?js$/.test(requestUrl);
 	const svg = requestUrl.endsWith('.svg');
+	const feed = ['/feed'].includes(requestUrl);
+	const api = /^\/api\//.test(requestUrl);
 	const html = !feed && !api && /(^\/[^.]*$)|(\.x?html$)/.test(requestUrl);
 
 	/* HSTS */
@@ -74,6 +74,10 @@ app.use((req, res, next) => {
 				res.setHeader('Content-Type', 'image/svg+xml; charset=UTF-8');
 				res.setHeader('Content-Encoding', 'br');
 			}
+		} else if (feed) {
+			req.url = `${requestUrl}.atom.br`;
+			res.setHeader('Content-Type', 'application/atom+xml; charset=UTF-8');
+			res.setHeader('Content-Encoding', 'br');
 		}
 	}
 
