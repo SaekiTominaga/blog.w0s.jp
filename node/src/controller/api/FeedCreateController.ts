@@ -49,7 +49,7 @@ export default class FeedCreateController extends Controller implements Controll
 			entries.push({
 				id: id,
 				title: topicData.title,
-				message: await new MessageParser(await dao.getDbh(), id).toHtml(topicData.message),
+				message: await new MessageParser(await dao.getDbh(), id).toXml(topicData.message),
 				last_updated: dayjs(topicData.date),
 				update: Boolean(topicData.last_update),
 			});

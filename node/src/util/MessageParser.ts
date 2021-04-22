@@ -11,6 +11,7 @@ import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser'
 import path from 'path';
 import StringEscapeHtml from '@saekitominaga/string-escape-html';
 import { JSDOM } from 'jsdom';
+import serialize from 'w3c-xmlserializer';
 
 type ImageType = 'figure' | 'photo';
 
@@ -96,6 +97,29 @@ export default class MessageParser {
 	 * @returns {string} HTML
 	 */
 	async toHtml(message: string): Promise<string> {
+		return (await this.convert(message)).innerHTML;
+	}
+
+	/**
+	 * XML に変換する
+	 *
+	 * @param {string} message - 本文
+	 *
+	 * @returns {string} XML
+	 */
+	async toXml(message: string): Promise<string> {
+		const xml = serialize(await this.convert(message));
+		return xml.substring(42, xml.length - 6); // 外枠の <div xmlns="http://www.w3.org/1999/xhtml"></div> を削除
+	}
+
+	/**
+	 * 本文文字列をパースして DOM に変換する
+	 *
+	 * @param {string} message - 本文
+	 *
+	 * @returns {Object} DOM
+	 */
+	private async convert(message: string): Promise<Element> {
 		const { document } = new JSDOM().window;
 
 		let parentElement = document.createElement('x-x');
@@ -103,8 +127,6 @@ export default class MessageParser {
 		let tbodyElement = document.createElement('tbody');
 
 		const mainElement = document.createElement('div');
-		mainElement.className = 'p-topic-main';
-		mainElement.setAttribute('itemprop', 'articleBody');
 
 		const lines = message.split('\n');
 
@@ -927,7 +949,7 @@ export default class MessageParser {
 			}
 		}
 
-		return mainElement.outerHTML;
+		return mainElement;
 	}
 
 	/**
