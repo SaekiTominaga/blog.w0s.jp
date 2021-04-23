@@ -60,8 +60,7 @@
 		"sqlite": "^4.0.21",
 		"sqlite3": "^5.0.2",
 		"twitter-v2": "^1.1.0",
-		"w3c-xmlserializer": "^2.0.0",
-		"zlib": "^1.0.5"
+		"w3c-xmlserializer": "^2.0.0"
 	},
 	"devDependencies": {
 		"@types/compression": "^1.7.0",
