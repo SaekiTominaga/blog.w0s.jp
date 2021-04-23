@@ -2,7 +2,7 @@ import ButtonClipboard from '@saekitominaga/customelements-button-clipboard';
 import ButtonShare from '@saekitominaga/customelements-button-share';
 import GoogleAdsense from './unique/GoogleAdsense';
 import ReportJsError from '@saekitominaga/report-js-error';
-import SidebarAmazonPa from './unique/SidebarAmazonPa';
+import SidebarAmazonAd from './unique/SidebarAmazonAd';
 import StyleSheetPrint from './unique/StyleSheetPrint';
 import Tab from '@saekitominaga/customelements-tab';
 import Tooltip from '@saekitominaga/customelements-tooltip';
@@ -52,7 +52,7 @@ if (window.customElements !== undefined) {
 }
 
 /* Amazon 商品広告 */
-new SidebarAmazonPa(<HTMLTemplateElement>document.getElementById('sidebar-amazon-pa-template')).init();
+new SidebarAmazonAd(<HTMLTemplateElement>document.getElementById('sidebar-amazon-ad-template')).init();
 
 /* 印刷用スタイルシート */
 new StyleSheetPrint(<HTMLElement>document.getElementById('stylesheet-print')).init();

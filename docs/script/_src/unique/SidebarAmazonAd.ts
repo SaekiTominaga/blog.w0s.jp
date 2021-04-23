@@ -1,11 +1,11 @@
-import PaapiItemImageUrlParser from '../../../node_modules/@saekitominaga/paapi-item-image-url-parser/dist/PaapiItemImageUrlParser.min.js';
+import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 
-interface JsonAmazonDp {
-	a: string; // asin
-	t: string; // title
-	b?: string; // binding
-	d?: number; // date
-	i?: string; // image_url
+interface JsonColumn {
+	a: string; // ASIN
+	t: string; // Title
+	b?: string; // Binding
+	d?: number; // Date
+	i?: string; // Image URL
 }
 
 /**
@@ -28,10 +28,10 @@ export default class {
 		}
 
 		/* エンドポイントから JSON ファイルを取得する */
-		const jsonDataList = await this._fetch(jsonName);
+		const jsonDataList = await this.fetch(jsonName);
 
 		/* 取得したデータを HTML ページ内に挿入する */
-		this._insert(jsonDataList);
+		this.insert(jsonDataList);
 
 		/* 直近の祖先要素の hidden 状態を解除する */
 		const ancestorHiddenElement = <HTMLElement | null>this.#templateElement.closest('[hidden]');
@@ -47,8 +47,8 @@ export default class {
 	 *
 	 * @returns {object[]} Amazon 商品情報のデータ
 	 */
-	private async _fetch(jsonName: string): Promise<JsonAmazonDp[]> {
-		const response = await fetch(`https://data.w0s.jp/amazondp/${jsonName}.json`);
+	private async fetch(jsonName: string): Promise<JsonColumn[]> {
+		const response = await fetch(`https://data.w0s.jp/amazon-ads/${jsonName}.json`);
 		if (!response.ok) {
 			throw new Error(`"${response.url}" is ${response.status} ${response.statusText}`);
 		}
@@ -59,30 +59,30 @@ export default class {
 	/**
 	 * Amazon 商品情報のデータを HTML ページ内に挿入する
 	 *
-	 * @param {object[]} jsonDataList - JSON から取得した Amazon 商品情報のデータ
+	 * @param {object[]} jsonData - JSON から取得した Amazon 商品情報のデータ
 	 */
-	private _insert(jsonDataList: JsonAmazonDp[]): void {
+	private insert(jsonData: JsonColumn[]): void {
 		const nowTime = Date.now();
 		const nowYear = new Date().getFullYear();
 
 		const fragment = document.createDocumentFragment();
 
-		for (const jsonData of jsonDataList) {
-			const jsonDataAsin = jsonData.a; // ASIN
-			const jsonDataText = jsonData.t; // タイトル
-			const jsonDataBinding = jsonData.b; // カテゴリ
-			const jsonDataDate = jsonData.d; // 発売日
-			const jsonDataImage = jsonData.i; // 画像URL
+		for (const jsonColumn of jsonData) {
+			const asin = jsonColumn.a; // ASIN
+			const title = jsonColumn.t; // タイトル
+			const binding = jsonColumn.b; // カテゴリ
+			const date = jsonColumn.d !== undefined ? new Date(jsonColumn.d) : undefined; // 発売日
+			const imageUrl = jsonColumn.i; // 画像URL
 
 			const templateElementClone = <DocumentFragment>this.#templateElement.content.cloneNode(true);
 
 			const dpAnchorElement = <HTMLAnchorElement>templateElementClone.querySelector('a');
-			dpAnchorElement.href = `https://www.amazon.co.jp/dp/${jsonDataAsin}?tag=w0s.jp-22&linkCode=ogi&th=1&psc=1`;
+			dpAnchorElement.href = `https://www.amazon.co.jp/dp/${asin}?tag=w0s.jp-22&linkCode=ogi&th=1&psc=1`;
 
-			if (jsonDataImage !== undefined) {
+			if (imageUrl !== undefined) {
 				const dpImageElement = <HTMLImageElement>templateElementClone.querySelector('.js-image');
 
-				const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(jsonDataImage));
+				const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageUrl));
 				paapiItemImageUrlParser.setSize(160);
 				dpImageElement.src = paapiItemImageUrlParser.toString();
 
@@ -91,25 +91,24 @@ export default class {
 			}
 
 			const dpTitleElement = <HTMLElement>templateElementClone.querySelector('.js-title');
-			dpTitleElement.insertAdjacentText('afterbegin', jsonDataText);
+			dpTitleElement.insertAdjacentText('afterbegin', title);
 
-			if (jsonDataBinding !== undefined) {
+			if (binding !== undefined) {
 				const dpBindingElement = <HTMLElement>templateElementClone.querySelector('.js-binding');
-				dpBindingElement.textContent = jsonDataBinding;
+				dpBindingElement.textContent = binding;
 				dpBindingElement.hidden = false;
 			}
 
-			if (jsonDataDate !== undefined) {
-				const dpDate = new Date(jsonDataDate * 1000);
-				const year = dpDate.getFullYear();
-				const month = dpDate.getMonth() + 1;
-				const date = dpDate.getDate();
+			if (date !== undefined) {
+				const year = date.getFullYear();
+				const month = date.getMonth() + 1;
+				const day = date.getDate();
 
-				const dpDateElement = <HTMLElement>templateElementClone.querySelector(dpDate.getTime() <= nowTime ? '.js-date-past' : '.js-date-future');
+				const dpDateElement = <HTMLElement>templateElementClone.querySelector(date.getTime() <= nowTime ? '.js-date-past' : '.js-date-future');
 
 				const dpTimeElement = dpDateElement.getElementsByTagName('time')[0];
-				dpTimeElement.dateTime = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
-				dpTimeElement.textContent = year !== nowYear ? `${year}年${month}月${date}日` : `${month}月${date}日`;
+				dpTimeElement.dateTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+				dpTimeElement.textContent = year !== nowYear ? `${year}年${month}月${day}日` : `${month}月${day}日`;
 
 				dpDateElement.hidden = false;
 			}
