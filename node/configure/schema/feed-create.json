@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/feed-create.json",
 	"type": "object",
 	"title": "フィード作成",
-	"required": ["maximum_number", "view_path", "file_path"],
+	"required": ["maximum_number", "view_path"],
 	"properties": {
 		"maximum_number": {
 			"type": "integer",
