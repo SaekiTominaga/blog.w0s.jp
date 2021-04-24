@@ -7,10 +7,8 @@
 
 export type NoName1 = number;
 export type View = string;
-export type Feed = string;
 
 export interface NoName {
   maximum_number: NoName1;
   view_path: View;
-  file_path: Feed;
 }
