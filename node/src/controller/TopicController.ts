@@ -7,7 +7,7 @@ import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
 import Sidebar from '../util/Sidebar.js';
 import { BlogView } from '../../@types/view.js';
-import { NoName as Configure } from '../../configure/type/Topic.js';
+import { NoName as Configure } from '../../configure/type/topic.js';
 import { Request } from 'express';
 
 /**
@@ -19,7 +19,7 @@ export default class TopicController extends Controller implements ControllerInt
 	constructor() {
 		super();
 
-		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/Topic.json', 'utf8'));
+		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/topic.json', 'utf8'));
 	}
 
 	/**

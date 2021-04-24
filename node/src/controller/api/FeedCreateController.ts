@@ -6,10 +6,10 @@ import ejs from 'ejs';
 import fs from 'fs';
 import MessageParser from '../../util/MessageParser.js';
 import zlib from 'zlib';
-import { NoName as ConfigureCommon } from '../../../configure/type/Common.js';
+import { BlogView } from '../../../@types/view.js';
+import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import { NoName as Configure } from '../../../configure/type/feed-create.js';
 import { Request, Response } from 'express';
-import { BlogView } from '../../../@types/view.js';
 
 /**
  * フィード作成
@@ -18,10 +18,13 @@ export default class FeedCreateController extends Controller implements Controll
 	#configCommon: ConfigureCommon;
 	#config: Configure;
 
-	constructor() {
+	/**
+	 * @param {ConfigureCommon} configCommon - 共通設定
+	 */
+	constructor(configCommon: ConfigureCommon) {
 		super();
 
-		this.#configCommon = <ConfigureCommon>JSON.parse(fs.readFileSync('node/configure/Common.json', 'utf8'));
+		this.#configCommon = configCommon;
 		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/feed-create.json', 'utf8'));
 	}
 

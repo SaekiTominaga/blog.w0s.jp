@@ -1,0 +1,33 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://blog.w0s.jp/Twitter.json",
+	"type": "object",
+	"title": "Twitter API",
+	"required": ["production"],
+	"properties": {
+		"production": {
+			"type": "object",
+			"title": "Production",
+			"required": ["consumer_key", "consumer_secret"],
+			"properties": {
+				"consumer_key": {
+					"type": "string",
+					"title": "API key"
+				},
+				"consumer_secret": {
+					"type": "string",
+					"title": "API key secret"
+				},
+				"access_token": {
+					"type": "string",
+					"title": "Access token"
+				},
+				"access_token_secret": {
+					"type": "string",
+					"title": "Access token secret"
+				}
+			}
+		}
+	},
+	"additionalProperties": false
+}

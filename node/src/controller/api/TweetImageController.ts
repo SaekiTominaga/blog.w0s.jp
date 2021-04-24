@@ -2,7 +2,7 @@ import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
 import Twitter from 'twitter-v2';
-import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/Twitter.js';
+import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
 import { Request, Response } from 'express';
 
 /**
@@ -14,7 +14,7 @@ export default class TweetImageController extends Controller implements Controll
 	constructor() {
 		super();
 
-		this.#configTwitter = <ConfigureTwitter>JSON.parse(fs.readFileSync('node/configure/Twitter.json', 'utf8'));
+		this.#configTwitter = <ConfigureTwitter>JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
 	}
 
 	/**

@@ -7,7 +7,7 @@ import HttpResponse from '../util/HttpResponse.js';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import Sidebar from '../util/Sidebar.js';
 import { BlogView } from '../../@types/view.js';
-import { NoName as Configure } from '../../configure/type/Category.js';
+import { NoName as Configure } from '../../configure/type/category.js';
 import { Request } from 'express';
 
 /**
@@ -19,7 +19,7 @@ export default class CategoryController extends Controller implements Controller
 	constructor() {
 		super();
 
-		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/Category.json', 'utf8'));
+		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/category.json', 'utf8'));
 	}
 
 	/**

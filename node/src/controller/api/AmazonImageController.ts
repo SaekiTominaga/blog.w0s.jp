@@ -4,7 +4,7 @@ import BlogAmazonDao from '../../dao/BlogAmazonDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
-import { PAAPI as ConfigurePaapi } from '../../../configure/type/PAAPI.js';
+import { PAAPI as ConfigurePaapi } from '../../../configure/type/paapi.js';
 import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { Request, Response } from 'express';
 
@@ -17,7 +17,7 @@ export default class AmazonImageController extends Controller implements Control
 	constructor() {
 		super();
 
-		this.#configPaapi = <ConfigurePaapi>JSON.parse(fs.readFileSync('node/configure/PAAPI.json', 'utf8'));
+		this.#configPaapi = <ConfigurePaapi>JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
 	}
 
 	/**

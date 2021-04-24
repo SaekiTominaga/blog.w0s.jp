@@ -1,5 +1,5 @@
 import path from 'path';
-import { NoName as Configure } from '../../configure/type/Common.js';
+import { NoName as Configure } from '../../configure/type/common.js';
 import { Request, Response } from 'express';
 
 /**

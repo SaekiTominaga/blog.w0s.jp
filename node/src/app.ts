@@ -12,11 +12,11 @@ import MessagePreviewController from './controller/MessagePreviewController.js';
 import path from 'path';
 import TopicController from './controller/TopicController.js';
 import TweetImageController from './controller/api/TweetImageController.js';
-import { NoName as Configure } from '../configure/type/Common.js';
+import { NoName as Configure } from '../configure/type/common.js';
 import { TypeMap } from 'mime';
 
 /* 設定ファイル読み込み */
-const config = <Configure>JSON.parse(fs.readFileSync('node/configure/Common.json', 'utf8'));
+const config = <Configure>JSON.parse(fs.readFileSync('node/configure/common.json', 'utf8'));
 
 /* Logger 設定 */
 Log4js.configure(config.logger.path);
@@ -160,7 +160,7 @@ const corsCallback = cors({
  */
 app.put('/feed.atom', async (req, res, next) => {
 	try {
-		await new FeedCreateController().execute(req, res);
+		await new FeedCreateController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
