@@ -1,5 +1,5 @@
 import * as sqlite from 'sqlite';
-import BlogMessageDao from '../dao/BlogMessage.js';
+import BlogMessageDao from '../dao/BlogMessageDao.js';
 import dayjs from 'dayjs';
 import hljs from 'highlight.js';
 import hljsCss from 'highlight.js/lib/languages/css.js';
