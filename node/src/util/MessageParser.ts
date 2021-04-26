@@ -580,10 +580,10 @@ export default class MessageParser {
 						const tweetTextElement = document.createElement('p');
 						tweetTextElement.textContent = tweetData.text;
 						tweetElement.appendChild(tweetTextElement);
-						tweetElement.textContent = `— ${tweetData.name}(@${tweetData.screen_name})`;
+						tweetElement.textContent = `— ${tweetData.name}(@${tweetData.username})`;
 
 						const tweetLinkElement = document.createElement('a');
-						tweetLinkElement.href = `https://twitter.com/${tweetData.screen_name}/status/${tweetId}`;
+						tweetLinkElement.href = `https://twitter.com/${tweetData.username}/status/${tweetId}`;
 						tweetLinkElement.textContent = dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm');
 						tweetElement.appendChild(tweetLinkElement);
 

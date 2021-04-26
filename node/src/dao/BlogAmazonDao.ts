@@ -1,49 +1,72 @@
 import BlogDao from './BlogDao.js';
 
-interface AmazonData {
-	asin: string;
-	image_url: string;
-}
-
 /**
  * Amazon
  */
 export default class BlogAmazonDao extends BlogDao {
 	/**
-	 * 画像が登録されている商品情報を取得する
+	 * DB に登録されている全 ASIN を取得する
 	 *
-	 * @returns {Array} 画像が登録されている商品情報
+	 * @returns {Array} 全 ASIN
 	 */
-	async getWithImage(): Promise<AmazonData[]> {
+	async getAllAsins(): Promise<string[]> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
-				asin,
-				image_url
+				asin
 			FROM
 				d_amazon
-			WHERE
-				image_url IS NOT NULL
 		`);
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const amazonDataList: AmazonData[] = [];
+		const asins: string[] = [];
 		for (const row of rows) {
-			amazonDataList.push({
-				asin: row.asin,
-				image_url: row.image_url,
-			});
+			asins.push(row.asin);
 		}
 
-		return amazonDataList;
+		return asins;
 	}
 
 	/**
-	 * 画像が登録されている商品情報を取得する
+	 * 対象商品の画像 URL を取得する
 	 *
-	 * @param {Array} amazonDataList - 画像が登録されている商品情報
+	 * @param {string[]} asins - ASIN
+	 *
+	 * @returns {Array} 画像 URL
+	 */
+	async getImageUrls(asins: string[]): Promise<string[]> {
+		const dbh = await this.getDbh();
+
+		const bind = new Map<number, string>();
+		asins.forEach((asin, i) => {
+			bind.set(i + 1, asin);
+		});
+
+		const sth = await dbh.prepare(`
+			SELECT
+				image_url
+			FROM
+				d_amazon
+			WHERE
+				asin IN (${asins.fill('?')})
+		`);
+		await sth.bind(Object.fromEntries(bind));
+		const rows = await sth.all();
+
+		const imageUrls: string[] = [];
+		for (const row of rows) {
+			imageUrls.push(row.image_url);
+		}
+
+		return imageUrls;
+	}
+
+	/**
+	 * 商品情報を登録する
+	 *
+	 * @param {Array} amazonDataList - 登録する商品情報
 	 */
 	async insert(amazonDataList: BlogDb.AmazonData[]): Promise<void> {
 		const dbh = await this.getDbh();

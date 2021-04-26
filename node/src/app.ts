@@ -1,4 +1,4 @@
-import AmazonImageController from './controller/api/AmazonImageController.js';
+import AmazonController from './controller/api/AmazonController.js';
 import CategoryController from './controller/CategoryController.js';
 import compression from 'compression';
 import cors from 'cors';
@@ -11,7 +11,7 @@ import Log4js from 'log4js';
 import MessagePreviewController from './controller/MessagePreviewController.js';
 import path from 'path';
 import TopicController from './controller/TopicController.js';
-import TweetImageController from './controller/api/TweetImageController.js';
+import TweetController from './controller/api/TweetController.js';
 import { NoName as Configure } from '../configure/type/common.js';
 import { TypeMap } from 'mime';
 
@@ -167,24 +167,24 @@ app.put('/feed.atom', async (req, res, next) => {
 });
 
 /**
- * API・Amazon 商品画像取得
+ * API・Amazon 商品情報取得
  */
-app.options('/api/amazon-image', corsPreflightedRequestCallback);
-app.post('/api/amazon-image', corsCallback, async (req, res, next) => {
+app.options('/api/amazon', corsPreflightedRequestCallback);
+app.post('/api/amazon', corsCallback, async (req, res, next) => {
 	try {
-		await new AmazonImageController().execute(req, res);
+		await new AmazonController().execute(req, res);
 	} catch (e) {
 		next(e);
 	}
 });
 
 /**
- * API・ツイート画像取得
+ * API・ツイート情報取得
  */
-app.options('/api/tweet-image', corsPreflightedRequestCallback);
-app.post('/api/tweet-image', corsCallback, async (req, res, next) => {
+app.options('/api/tweet', corsPreflightedRequestCallback);
+app.post('/api/tweet', corsCallback, async (req, res, next) => {
 	try {
-		await new TweetImageController().execute(req, res);
+		await new TweetController().execute(req, res);
 	} catch (e) {
 		next(e);
 	}

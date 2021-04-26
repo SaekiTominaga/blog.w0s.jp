@@ -9,9 +9,9 @@ import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { Request, Response } from 'express';
 
 /**
- * Amazon 商品画像取得
+ * Amazon 商品情報取得
  */
-export default class AmazonImageController extends Controller implements ControllerInterface {
+export default class AmazonController extends Controller implements ControllerInterface {
 	#configPaapi: ConfigurePaapi;
 
 	constructor() {
@@ -52,22 +52,8 @@ export default class AmazonImageController extends Controller implements Control
 		}
 
 		const dao = new BlogAmazonDao();
-
-		const registeredImageUrls: Map<string, string> = new Map();
-		for (const amazonData of await dao.getWithImage()) {
-			registeredImageUrls.set(amazonData.asin, amazonData.image_url);
-		}
-
-		const registeredAsins = (<string[]>asins).filter((asin) => Array.from(registeredImageUrls.keys()).includes(asin)); // DB に登録済みの ASIN
-		const unregisteredAsins = (<string[]>asins).filter((asin) => !Array.from(registeredImageUrls.keys()).includes(asin)); // DB に登録されていない ASIN
-
-		const imageUrls: Map<string, string> = new Map();
-		for (const asin of registeredAsins) {
-			imageUrls.set(asin, <string>registeredImageUrls.get(asin));
-		}
-
-		this.logger.debug('imageUrls', imageUrls);
-		this.logger.debug('unregisteredAsins', unregisteredAsins);
+		const registeredAsins = await dao.getAllAsins(); // DB に登録済みの ASIN
+		const unregisteredAsins = (<string[]>asins).filter((asin) => !registeredAsins.includes(asin)); // DB に登録されていない ASIN
 
 		const paapiErros: string[] = []; // PA-API でのエラー情報を格納
 
@@ -94,6 +80,7 @@ export default class AmazonImageController extends Controller implements Control
 				}
 			}
 
+			const amazonAsinList: string[] = [];
 			const amazonDataList: BlogDb.AmazonData[] = [];
 			for (const item of paapiResponse.ItemsResult.Items) {
 				this.logger.debug(item); // TODO:
@@ -126,6 +113,7 @@ export default class AmazonImageController extends Controller implements Control
 
 				const imagesPrimaryLarge = item.Images?.Primary?.Large;
 
+				amazonAsinList.push(item.ASIN);
 				amazonDataList.push({
 					asin: item.ASIN,
 					url: item.DetailPageURL,
@@ -140,8 +128,15 @@ export default class AmazonImageController extends Controller implements Control
 				});
 			}
 
-			dao.insert(amazonDataList);
+			if (amazonDataList.length > 0) {
+				this.logger.info('商品情報を DB に登録', amazonAsinList);
+				dao.insert(amazonDataList);
+			}
 		}
+
+		this.logger.debug(asins);
+		const imageUrls = await dao.getImageUrls(<string[]>asins);
+		this.logger.debug(imageUrls);
 
 		const responseJson: BlogApi.AmazonImage = {
 			errors: paapiErros,

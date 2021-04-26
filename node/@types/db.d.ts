@@ -36,7 +36,7 @@ declare namespace BlogDb {
 	export interface TweetData {
 		id: string;
 		name: string;
-		screen_name: string;
+		username: string;
 		text: string;
 		created_at: Date;
 	}

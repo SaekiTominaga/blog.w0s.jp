@@ -77,7 +77,7 @@ export default class BlogMessageDao extends BlogDao {
 		const sth = await dbh.prepare(`
 			SELECT
 				name,
-				screen_name,
+				screen_name AS username,
 				text,
 				created_at
 			FROM
@@ -98,7 +98,7 @@ export default class BlogMessageDao extends BlogDao {
 		return {
 			id: id,
 			name: row.name,
-			screen_name: row.screen_name,
+			username: row.username,
 			text: row.text,
 			created_at: new Date(Number(row.created_at) * 1000),
 		};

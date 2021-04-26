@@ -1,3 +1,4 @@
+import BlogTweetDao from '../../dao/BlogTweetDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
@@ -5,10 +6,30 @@ import Twitter from 'twitter-v2';
 import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
 import { Request, Response } from 'express';
 
+interface Tweet {
+	text: string;
+	author_id: string;
+	created_at: string;
+	id: string;
+}
+
+interface Media {
+	media_key: string;
+	type: string;
+	url?: string;
+	preview_image_url?: string;
+}
+
+interface User {
+	id: string;
+	name: string;
+	username: string;
+}
+
 /**
- * ツイート画像取得
+ * ツイート情報取得
  */
-export default class TweetImageController extends Controller implements ControllerInterface {
+export default class TweetController extends Controller implements ControllerInterface {
 	#configTwitter: ConfigureTwitter;
 
 	constructor() {
@@ -55,18 +76,57 @@ export default class TweetImageController extends Controller implements Controll
 			access_token_secret: '',
 		});
 
-		const { includes } = await twitter.get('tweets', {
-			expansions: 'attachments.media_keys',
+		const { data, includes } = await twitter.get('tweets', {
+			expansions: 'attachments.media_keys,author_id',
 			ids: (<string[]>ids).join(','), // TODO: 最大100件の考慮は未実装 https://developer.twitter.com/en/docs/twitter-api/tweets/lookup/api-reference/get-tweets
 			media: {
 				fields: 'preview_image_url,type,url',
 			},
+			tweet: {
+				fields: 'created_at',
+			},
 		});
 
-		const imageUrls: BlogApi.TweetImage = [];
+		const dao = new BlogTweetDao();
+		const registeredTweetIds = await dao.getAllTweetIds();
 
-		if (includes !== undefined) {
-			for (const media of includes.media) {
+		if (data !== undefined) {
+			const tweetIdList: string[] = [];
+			const tweetDataList: BlogDb.TweetData[] = [];
+
+			for (const tweet of <Tweet[]>data) {
+				const tweetId = tweet.id;
+
+				if (registeredTweetIds.includes(tweetId)) {
+					this.logger.debug(`DB 登録済み: ${tweetId}`);
+					continue;
+				}
+
+				const user = (<User[]>includes.users).find((user: User) => user.id === tweet.author_id);
+				if (user === undefined) {
+					this.logger.error(`API から取得したユーザー情報が不整合: ${tweetId}`);
+					continue;
+				}
+
+				tweetIdList.push(tweetId);
+				tweetDataList.push({
+					id: tweetId,
+					name: user.name,
+					username: user.username,
+					text: tweet.text,
+					created_at: new Date(tweet.created_at),
+				});
+			}
+
+			if (tweetDataList.length > 0) {
+				this.logger.info('ツイート情報を DB に登録', tweetIdList);
+				dao.insert(tweetDataList);
+			}
+		}
+
+		const imageUrls: BlogApi.TweetImage = [];
+		if (includes?.media !== undefined) {
+			for (const media of <Media[]>includes.media) {
 				if (media.url !== undefined) {
 					imageUrls.push(media.url);
 				} else if (media.preview_image_url !== undefined) {
@@ -75,8 +135,6 @@ export default class TweetImageController extends Controller implements Controll
 			}
 		}
 
-		this.logger.debug(imageUrls);
-
-		res.status(200).json(imageUrls);
+		res.status(200).json({ image_urls: imageUrls });
 	}
 }
