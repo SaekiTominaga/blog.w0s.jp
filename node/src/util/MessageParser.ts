@@ -228,7 +228,7 @@ export default class MessageParser {
 						parentElement = ulElement;
 					}
 
-					this.inlineMarkup(document, liElement, lineText); // インライン要素を設定
+					this.inlineMarkup(liElement, lineText); // インライン要素を設定
 					this.flagReset();
 					this.ulFlag = true;
 					blockConvert = true;
@@ -249,7 +249,7 @@ export default class MessageParser {
 						parentElement = ulElement;
 					}
 
-					this.inlineMarkup(document, liElement, lineText); // インライン要素を設定
+					this.inlineMarkup(liElement, lineText); // インライン要素を設定
 					this.flagReset();
 					this.linksFlag = true;
 					blockConvert = true;
@@ -274,7 +274,7 @@ export default class MessageParser {
 						parentElement = olElement;
 					}
 
-					this.inlineMarkup(document, liElement, lineText); // インライン要素を設定
+					this.inlineMarkup(liElement, lineText); // インライン要素を設定
 					this.flagReset();
 					this.olFlag = true;
 					blockConvert = true;
@@ -298,7 +298,7 @@ export default class MessageParser {
 						for (const ddText of ddTextList) {
 							const ddElement = document.createElement('dd');
 							parentElement.appendChild(ddElement);
-							this.inlineMarkup(document, ddElement, ddText); // インライン要素を設定
+							this.inlineMarkup(ddElement, ddText); // インライン要素を設定
 						}
 					} else {
 						const dlElement = document.createElement('dl');
@@ -312,7 +312,7 @@ export default class MessageParser {
 						for (const ddText of ddTextList) {
 							const ddElement = document.createElement('dd');
 							dlElement.appendChild(ddElement);
-							this.inlineMarkup(document, ddElement, ddText); // インライン要素を設定
+							this.inlineMarkup(ddElement, ddText); // インライン要素を設定
 						}
 
 						parentElement = dlElement;
@@ -750,7 +750,7 @@ export default class MessageParser {
 					textElement.className = 'p-topic-note__text';
 					noteElement.appendChild(textElement);
 
-					this.inlineMarkup(document, textElement, lineText); // インライン要素を設定
+					this.inlineMarkup(textElement, lineText); // インライン要素を設定
 					this.flagReset();
 					blockConvert = true;
 				} else if (/^\*\d{4}-[0-1]\d-[0-3]\d: /.test(lineTrim)) {
@@ -783,7 +783,7 @@ export default class MessageParser {
 					textElement.className = 'p-topic-ins__text';
 					insElement.appendChild(textElement);
 
-					this.inlineMarkup(document, textElement, lineText); // インライン要素を設定
+					this.inlineMarkup(textElement, lineText); // インライン要素を設定
 
 					this.flagReset();
 					this.insFlag = true;
@@ -797,7 +797,7 @@ export default class MessageParser {
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
 
 					const pElement = document.createElement('p');
-					this.inlineMarkup(document, pElement, lineText); // インライン要素を設定
+					this.inlineMarkup(pElement, lineText); // インライン要素を設定
 
 					if (this.distFlag) {
 						parentElement.appendChild(pElement);
@@ -884,14 +884,14 @@ export default class MessageParser {
 							thElement.setAttribute('scope', 'row');
 							trElement.appendChild(thElement);
 
-							this.inlineMarkup(document, thElement, dataTrim); // アンカーを設定
+							this.inlineMarkup(thElement, dataTrim); // アンカーを設定
 						} else {
 							const dataTrim = data.trim();
 
 							const tdElement = document.createElement('td');
 							trElement.appendChild(tdElement);
 
-							this.inlineMarkup(document, tdElement, dataTrim); // アンカーを設定
+							this.inlineMarkup(tdElement, dataTrim); // アンカーを設定
 						}
 					}
 
@@ -910,7 +910,7 @@ export default class MessageParser {
 				pElement.className = 'p-topic-text';
 				this.appendChild(mainElement, pElement);
 
-				this.inlineMarkup(document, pElement, lineTrim); // インライン要素を設定
+				this.inlineMarkup(pElement, lineTrim); // インライン要素を設定
 				this.flagReset();
 			}
 		}
@@ -943,7 +943,7 @@ export default class MessageParser {
 				textElement.id = `fn${href}`;
 				liElement.appendChild(textElement);
 
-				this.inlineMarkup(document, textElement, footnote, false);
+				this.inlineMarkup(textElement, footnote, false);
 
 				num++;
 			}
@@ -1180,12 +1180,11 @@ export default class MessageParser {
 	/**
 	 * インライン要素を設定
 	 *
-	 * @param {object} document - Document
 	 * @param {object} parentElement - 親要素
 	 * @param {string} str - 変換前の文字列
 	 * @param {boolean} footnote - 注釈の変換を行うか
 	 */
-	private inlineMarkup(document: Document, parentElement: HTMLElement, str: string, footnote = true): void {
+	private inlineMarkup(parentElement: HTMLElement, str: string, footnote = true): void {
 		if (str === '') {
 			parentElement.textContent = '';
 			return;
