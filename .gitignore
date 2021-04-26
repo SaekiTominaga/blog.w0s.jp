@@ -1,6 +1,7 @@
 *.br
 *.map
 
+/docs/__test__/
 /docs/feed.atom
 /docs/image/
 /docs/video/
@@ -12,7 +13,6 @@
 /log/
 
 /node/configure/*.json
-/node/coverage/
 /node/dist/
 /node/log4js*.json
 
