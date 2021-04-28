@@ -8,33 +8,40 @@ import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser'
 import Sidebar from '../util/Sidebar.js';
 import { BlogView } from '../../@types/view.js';
 import { NoName as Configure } from '../../configure/type/category.js';
-import { Request } from 'express';
+import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { Request, Response } from 'express';
 
 /**
  * 記事リスト
  */
 export default class CategoryController extends Controller implements ControllerInterface {
+	#configCommon: ConfigureCommon;
 	#config: Configure;
 
-	constructor() {
+	/**
+	 * @param {ConfigureCommon} configCommon - 共通設定
+	 */
+	constructor(configCommon: ConfigureCommon) {
 		super();
 
+		this.#configCommon = configCommon;
 		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/category.json', 'utf8'));
 	}
 
 	/**
 	 * @param {Request} req - Request
-	 * @param {HttpResponse} response - Response
+	 * @param {Response} res - Response
 	 */
-	async execute(req: Request, response: HttpResponse): Promise<void> {
+	async execute(req: Request, res: Response): Promise<void> {
 		const paramCategoryName = req.params.category_name;
 
 		this.logger.debug('category_name', paramCategoryName);
 
+		const httpResponse = new HttpResponse(res, this.#configCommon);
 		const dao = new BlogCategoryDao();
 
 		/* 最終更新日時をセット */
-		if (response.checkLastModified(req, await dao.getLastModified())) {
+		if (httpResponse.checkLastModified(req, await dao.getLastModified())) {
 			return;
 		}
 
@@ -43,7 +50,7 @@ export default class CategoryController extends Controller implements Controller
 
 		if (topicDataListDto.length === 0) {
 			this.logger.info(`無効なカテゴリが指定: ${paramCategoryName}`);
-			response.send404();
+			httpResponse.send404();
 			return;
 		}
 
@@ -75,7 +82,7 @@ export default class CategoryController extends Controller implements Controller
 			}
 
 			/* レンダリング */
-			response.render(this.#config.view.success, {
+			res.render(this.#config.view.success, {
 				url: req.url,
 				categoryName: paramCategoryName,
 				count: topicDataList.length,

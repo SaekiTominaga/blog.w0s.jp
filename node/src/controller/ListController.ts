@@ -8,33 +8,40 @@ import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser'
 import Sidebar from '../util/Sidebar.js';
 import { BlogView } from '../../@types/view.js';
 import { NoName as Configure } from '../../configure/type/list.js';
-import { Request } from 'express';
+import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { Request, Response } from 'express';
 
 /**
  * 記事リスト
  */
 export default class ListController extends Controller implements ControllerInterface {
+	#configCommon: ConfigureCommon;
 	#config: Configure;
 
-	constructor() {
+	/**
+	 * @param {ConfigureCommon} configCommon - 共通設定
+	 */
+	constructor(configCommon: ConfigureCommon) {
 		super();
 
+		this.#configCommon = configCommon;
 		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/list.json', 'utf8'));
 	}
 
 	/**
 	 * @param {Request} req - Request
-	 * @param {HttpResponse} response - HttpResponse
+	 * @param {Response} res - Response
 	 */
-	async execute(req: Request, response: HttpResponse): Promise<void> {
+	async execute(req: Request, res: Response): Promise<void> {
 		const paramPage = req.params.page !== undefined ? Number(req.params.page) : 1;
 
 		this.logger.debug('page', paramPage);
 
+		const httpResponse = new HttpResponse(res, this.#configCommon);
 		const dao = new BlogListDao();
 
 		/* 最終更新日時をセット */
-		if (response.checkLastModified(req, await dao.getLastModified())) {
+		if (httpResponse.checkLastModified(req, await dao.getLastModified())) {
 			return;
 		}
 
@@ -42,7 +49,7 @@ export default class ListController extends Controller implements ControllerInte
 		const topicDataListDto = await dao.getTopics(paramPage, this.#config.maximum_number);
 		if (topicDataListDto.length === 0) {
 			this.logger.info(`無効なページが指定: ${paramPage}`);
-			response.send404();
+			httpResponse.send404();
 			return;
 		}
 
@@ -78,7 +85,7 @@ export default class ListController extends Controller implements ControllerInte
 				const totalPage = Math.ceil(topicCount / this.#config.maximum_number);
 
 				/* レンダリング */
-				response.render(this.#config.view.success, {
+				res.render(this.#config.view.success, {
 					url: req.url,
 					page: paramPage,
 					totalPage: totalPage,

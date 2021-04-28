@@ -5,7 +5,6 @@ import cors from 'cors';
 import Express, { NextFunction, Request, Response } from 'express';
 import FeedCreateController from './controller/api/FeedCreateController.js';
 import fs from 'fs';
-import HttpResponse from './util/HttpResponse.js';
 import ListController from './controller/ListController.js';
 import Log4js from 'log4js';
 import MessagePreviewController from './controller/MessagePreviewController.js';
@@ -105,7 +104,7 @@ app.use(
  */
 app.get(['/', '/list/:page([1-9][0-9]{0,1})'], async (req, res, next) => {
 	try {
-		await new ListController().execute(req, new HttpResponse(res, config));
+		await new ListController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -116,7 +115,7 @@ app.get(['/', '/list/:page([1-9][0-9]{0,1})'], async (req, res, next) => {
  */
 app.get('/:topic_id([1-9][0-9]{0,2})', async (req, res, next) => {
 	try {
-		await new TopicController().execute(req, new HttpResponse(res, config));
+		await new TopicController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -127,7 +126,7 @@ app.get('/:topic_id([1-9][0-9]{0,2})', async (req, res, next) => {
  */
 app.get('/category/:category_name', async (req, res, next) => {
 	try {
-		await new CategoryController().execute(req, new HttpResponse(res, config));
+		await new CategoryController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -138,7 +137,7 @@ app.get('/category/:category_name', async (req, res, next) => {
  */
 app.post('/message-preview', async (req, res, next) => {
 	try {
-		await new MessagePreviewController().execute(req, new HttpResponse(res, config));
+		await new MessagePreviewController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}

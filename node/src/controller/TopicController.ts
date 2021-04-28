@@ -8,33 +8,40 @@ import MessageParser from '../util/MessageParser.js';
 import Sidebar from '../util/Sidebar.js';
 import { BlogView } from '../../@types/view.js';
 import { NoName as Configure } from '../../configure/type/topic.js';
-import { Request } from 'express';
+import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { Request, Response } from 'express';
 
 /**
  * 記事リスト
  */
 export default class TopicController extends Controller implements ControllerInterface {
+	#configCommon: ConfigureCommon;
 	#config: Configure;
 
-	constructor() {
+	/**
+	 * @param {ConfigureCommon} configCommon - 共通設定
+	 */
+	constructor(configCommon: ConfigureCommon) {
 		super();
 
+		this.#configCommon = configCommon;
 		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/topic.json', 'utf8'));
 	}
 
 	/**
 	 * @param {Request} req - Request
-	 * @param {HttpResponse} response - HttpResponse
+	 * @param {Response} res - Response
 	 */
-	async execute(req: Request, response: HttpResponse): Promise<void> {
+	async execute(req: Request, res: Response): Promise<void> {
 		const paramTopicId = Number(req.params.topic_id);
 
 		this.logger.debug('topic_id', paramTopicId);
 
+		const httpResponse = new HttpResponse(res, this.#configCommon);
 		const dao = new BlogTopicDao();
 
 		/* 最終更新日時をセット */
-		if (response.checkLastModified(req, await dao.getLastModified())) {
+		if (httpResponse.checkLastModified(req, await dao.getLastModified())) {
 			return;
 		}
 
@@ -42,7 +49,7 @@ export default class TopicController extends Controller implements ControllerInt
 		const topicDataDto = await dao.getTopic(paramTopicId);
 
 		if (topicDataDto === null) {
-			response.send404();
+			httpResponse.send404();
 			return;
 		}
 
@@ -79,7 +86,7 @@ export default class TopicController extends Controller implements ControllerInt
 				});
 			}
 
-			response.render(this.#config.view.success, {
+			res.render(this.#config.view.success, {
 				url: req.url,
 				topicId: paramTopicId,
 				title: topicDataDto.title,

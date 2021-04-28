@@ -2,29 +2,43 @@ import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
-import { Request } from 'express';
+import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { Request, Response } from 'express';
 
 /**
  * 本文プレビュー
  */
 export default class MessagePreviewController extends Controller implements ControllerInterface {
+	#configCommon: ConfigureCommon;
+
+	/**
+	 * @param {ConfigureCommon} configCommon - 共通設定
+	 */
+	constructor(configCommon: ConfigureCommon) {
+		super();
+
+		this.#configCommon = configCommon;
+	}
+
 	/**
 	 * @param {Request} req - Request
-	 * @param {HttpResponse} response - HttpResponse
+	 * @param {Response} res - Response
 	 */
-	async execute(req: Request, response: HttpResponse): Promise<void> {
+	async execute(req: Request, res: Response): Promise<void> {
 		const requestBody = req.body;
 		const message: string | undefined = requestBody.message;
 
+		const httpResponse = new HttpResponse(res, this.#configCommon);
+
 		if (message === undefined) {
 			this.logger.error(`パラメーター message（${message}）が未設定: ${req.get('User-Agent')}`);
-			response.send403();
+			httpResponse.send403();
 			return;
 		}
 
 		const messageParser = new MessageParser();
 
-		response.render('message-preview', {
+		res.render('message-preview', {
 			message: await messageParser.toHtml(message),
 
 			tweet: messageParser.isTweetExit,
