@@ -1,8 +1,10 @@
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
+import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { NoName as Configure } from '../../configure/type/message-preview.js';
 import { Request, Response } from 'express';
 
 /**
@@ -10,6 +12,7 @@ import { Request, Response } from 'express';
  */
 export default class MessagePreviewController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
+	#config: Configure;
 
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
@@ -18,6 +21,7 @@ export default class MessagePreviewController extends Controller implements Cont
 		super();
 
 		this.#configCommon = configCommon;
+		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/message-preview.json', 'utf8'));
 	}
 
 	/**
@@ -38,8 +42,9 @@ export default class MessagePreviewController extends Controller implements Cont
 
 		const messageParser = new MessageParser();
 
+				/* レンダリング */
 		res.setHeader('Referrer-Policy', 'no-referrer');
-		res.render('message-preview', {
+		res.render(this.#config.view.success, {
 			message: await messageParser.toHtml(message),
 
 			tweet: messageParser.isTweetExit,

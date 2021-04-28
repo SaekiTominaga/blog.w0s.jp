@@ -20,6 +20,7 @@
 		"config:tsconvert": "json2ts -i node/configure/schema -o node/configure/type",
 		"config:validate:common": "ajv --spec=draft7 -s node/configure/schema/common.json -d node/configure/common.json",
 		"config:validate:list": "ajv --spec=draft7 -s node/configure/schema/list.json -d node/configure/list.json",
+		"config:validate:message-preview": "ajv --spec=draft7 -s node/configure/schema/message-preview.json -d node/configure/message-preview.json",
 		"config:validate:topic": "ajv --spec=draft7 -s node/configure/schema/topic.json -d node/configure/topic.json",
 		"config:validate:category": "ajv --spec=draft7 -s node/configure/schema/category.json -d node/configure/category.json",
 		"config:validate:twitter": "ajv --spec=draft7 -s node/configure/schema/twitter.json -d node/configure/twitter.json",
