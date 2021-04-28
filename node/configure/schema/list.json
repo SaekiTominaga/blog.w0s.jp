@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://blog.w0s.jp/List.json",
+	"$id": "https://blog.w0s.jp/list.json",
 	"type": "object",
 	"title": "記事リスト",
 	"required": ["maximum_number", "amazon_image_size", "view", "sidebar"],

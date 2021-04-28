@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://blog.w0s.jp/Category.json",
+	"$id": "https://blog.w0s.jp/category.json",
 	"type": "object",
 	"title": "カテゴリ",
 	"required": ["maximum_number", "amazon_image_size", "view","sidebar"],

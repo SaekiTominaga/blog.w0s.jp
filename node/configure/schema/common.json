@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://blog.w0s.jp/Common.json",
+	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
 	"required": ["port", "static", "cors", "response", "views", "errorpage", "logger"],
