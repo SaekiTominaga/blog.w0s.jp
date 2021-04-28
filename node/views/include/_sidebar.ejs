@@ -87,11 +87,11 @@
 	<aside class="p-sidebar-topics">
 		<h2 class="p-sidebar-topics__hdg">最近の記事</h2>
 
-		<% if (typeof(topic_id) !== 'undefined') { %>
+		<% if (typeof(topicId) !== 'undefined') { %>
 		<ul class="p-sidebar-topics__list">
 			<% for (const newlyTopicData of newlyTopicDataList) { %>
 			<li>
-				<% if (topic_id === newlyTopicData.id) { %>
+				<% if (topicId === newlyTopicData.id) { %>
 				<a aria-current="page"><%= newlyTopicData.title %></a>
 				<% } else { %>
 				<a href="/<%= newlyTopicData.id %>"><%= newlyTopicData.title %></a>
