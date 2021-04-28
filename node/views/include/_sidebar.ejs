@@ -47,8 +47,9 @@
 			<a href="#<%= group_name %>" slot="tab" class="p-sidebar-categories__tab-item"><%= group_name %></a>
 			<% } %><% for (const [group_name, countDataList] of topicCountOfCategoryList) { %>
 			<div slot="tabpanel" id="<%= group_name %>">
+				<% if (typeof(categoryName) !== 'undefined') { %>
 				<ul class="p-sidebar-categories__topics-list">
-					<% if (typeof(categoryName) !== 'undefined') { %> <% for (const countData of countDataList) { %>
+					<% for (const countData of countDataList) { %>
 					<li>
 						<% if (categoryName === countData.category_name) { %>
 						<a aria-current="page"
@@ -64,7 +65,11 @@
 						>
 						<% } %>
 					</li>
-					<% } %> <% } else { %> <% for (const countData of countDataList) { %>
+					<% } %>
+				</ul>
+				<% } else { %>
+				<ul class="p-sidebar-categories__topics-list">
+					<% for (const countData of countDataList) { %>
 					<li>
 						<a href="/category/<%= encodeURI(countData.category_name) %>"
 							><%= countData.category_name %><span class="p-sidebar-categories__topic-count"
@@ -82,8 +87,9 @@
 	<aside class="p-sidebar-topics">
 		<h2 class="p-sidebar-topics__hdg">最近の記事</h2>
 
+		<% if (typeof(topic_id) !== 'undefined') { %>
 		<ul class="p-sidebar-topics__list">
-			<% if (typeof(topic_id) !== 'undefined') { %> <% for (const newlyTopicData of newlyTopicDataList) { %>
+			<% for (const newlyTopicData of newlyTopicDataList) { %>
 			<li>
 				<% if (topic_id === newlyTopicData.id) { %>
 				<a aria-current="page"><%= newlyTopicData.title %></a>
@@ -91,12 +97,17 @@
 				<a href="/<%= newlyTopicData.id %>"><%= newlyTopicData.title %></a>
 				<% } %>
 			</li>
-			<% } %> <% } else { %> <% for (const newlyTopicData of newlyTopicDataList) { %>
+			<% } %>
+		</ul>
+		<% } else { %>
+		<ul class="p-sidebar-topics__list">
+			<% for (const newlyTopicData of newlyTopicDataList) { %>
 			<li>
 				<a href="/<%= newlyTopicData.id %>"><%= newlyTopicData.title %></a>
 			</li>
-			<% } %> <% } %>
+			<% } %>
 		</ul>
+		<% } %>
 	</aside>
 
 	<aside class="p-sidebar-amazon" hidden="">
@@ -112,9 +123,7 @@
 						<div class="p-sidebar-amazon__text-area">
 							<p class="p-sidebar-amazon__title js-title"><b class="p-sidebar-amazon__binding js-binding" hidden=""></b></p>
 							<p class="p-sidebar-amazon__time js-date-past" hidden=""><time datetime=""></time> 発売</p>
-							<p class="p-sidebar-amazon__time js-date-future" hidden="">
-								<time datetime=""></time> 発売<em class="p-sidebar-amazon__time-plan">予定</em>
-							</p>
+							<p class="p-sidebar-amazon__time js-date-future" hidden=""><time datetime=""></time> 発売<em class="p-sidebar-amazon__time-plan">予定</em></p>
 						</div>
 					</a>
 				</li>
