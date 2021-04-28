@@ -712,9 +712,9 @@ export default class MessageParser {
 					const lineText = lineTrim.substring(2); // 先頭記号を削除、改行を追加
 
 					if (this.codeFlag) {
-						this.code += `${lineText}\n`;
+						this.code += `\n${lineText}`;
 					} else {
-						this.code = `${lineText}\n`;
+						this.code = lineText;
 					}
 
 					this.flagReset();
@@ -1004,7 +1004,7 @@ export default class MessageParser {
 	 */
 	private appendCode(document: Document, topicMainElement: HTMLElement): void {
 		if (this.codeFlag) {
-			const code = this.code.trim();
+			const code = this.code;
 
 			/* コードハイライト */
 			const classPrefix = 'c-topic-code-highlight -';
