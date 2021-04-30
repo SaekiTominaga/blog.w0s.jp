@@ -337,9 +337,9 @@
 			--bullet-gap: 0.5em;
 
 			padding-left: calc(var(--bullet-width) + var(--bullet-gap));
-			text-indent: calc(0em - var(--bullet-width) - var(--bullet-gap));
 			display: inline-block;
 			font-size: calc(var(--topic-font-size) * var(--font-ratio-2));
+			text-indent: calc(0em - var(--bullet-width) - var(--bullet-gap));
 
 			&::before {
 				margin-right: var(--bullet-gap);
