@@ -10,8 +10,7 @@
 	grid-column: header;
 	padding: 20px 0 40px;
 	display: grid;
-	grid-template-areas: "margin-left padding-left content padding-right margin-right";
-	grid-template-columns: calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) var(--page-side-padding) 1fr var(--page-side-padding) calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding));
+	grid-template-columns: [full-start] calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) var(--page-side-padding) [content-start] 1fr [content-end] var(--page-side-padding) calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) [full-end];
 }
 
 /* ヘッダーメイン */
