@@ -2,7 +2,6 @@
 
 /* キャプション */
 .c-embedded-caption {
-	margin-top: 0.5em;
 	display: flex;
 	color: #666;
 	font-size: calc(1rem / var(--font-ratio-2));

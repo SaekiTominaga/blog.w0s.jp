@@ -391,7 +391,7 @@
 	& > a {
 		--image-border-width: 1px;
 
-		display: block;
+		display: inline-block;
 		outline-offset: 0;
 
 		&::before {
