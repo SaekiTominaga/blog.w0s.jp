@@ -43,8 +43,8 @@
 		<div class="l-page">
 			<%- include('./_include/_header', { heading: false }) %>
 
-			<main role="main" id="main" class="l-main">
-				<div class="l-main__main">
+			<div id="main" class="l-main">
+				<main role="main" class="l_main__main">
 					<article role="article" class="p-topic" itemscope="" itemtype="http://schema.org/BlogPosting">
 						<header class="p-topic-header">
 							<h1 class="p-topic-title" itemprop="name"><%= title %></h1>
@@ -99,7 +99,7 @@
 							</div>
 
 							<% if (relations.length > 0) { %>
-							<aside role="complementary" class="p-topic-relation">
+							<section class="p-topic-relation">
 								<h2 class="p-topic-relation__hdg">関連記事</h2>
 								<ul class="p-topic-relation__list">
 									<% for (const relation of relations) { %>
@@ -137,11 +137,11 @@
 									</li>
 									<% } %>
 								</ul>
-							</aside>
+							</section>
 							<% } %>
 						</footer>
 					</article>
-				</div>
+				</main>
 
 				<% if (book !== null) { %>
 				<div class="l-main__footer">
@@ -262,7 +262,7 @@
 					</aside>
 				</div>
 				<% } %>
-			</main>
+			</div>
 
 			<%- include('./_include/_sidebar') %><%- include('./_include/_footer') %>
 		</div>

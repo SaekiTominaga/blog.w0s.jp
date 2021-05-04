@@ -26,6 +26,7 @@
 		"config:validate:twitter": "ajv --spec=draft7 -s node/configure/schema/twitter.json -d node/configure/twitter.json",
 		"config:validate:paapi": "ajv --spec=draft7 -s node/configure/schema/paapi.json -d node/configure/paapi.json",
 		"config:validate:feed-create": "ajv --spec=draft7 -s node/configure/schema/feed-create.json -d node/configure/feed-create.json",
+		"ejs:markuplint": "markuplint node/views/*.ejs",
 		"_css:build-watch": "postcss docs/style/_src/*.css --base docs/style/_src -d docs/style -w",
 		"_css:compress": "onchange -f add -f change -v docs/style/*.css -- brotlin compress {{file}} -m 1",
 		"css": "run-p _css:*",
@@ -63,6 +64,7 @@
 		"w3c-xmlserializer": "^2.0.0"
 	},
 	"devDependencies": {
+		"@markuplint/ejs-parser": "*",
 		"@types/compression": "^1.7.0",
 		"@types/cors": "^2.8.10",
 		"@types/ejs": "^3.0.6",
@@ -81,6 +83,7 @@
 		"eslint-config-prettier": "^8.2.0",
 		"eslint-plugin-jsdoc": "^32.3.1",
 		"json-schema-to-typescript": "^10.1.4",
+		"markuplint": "^1.6.1",
 		"move-file-cli": "^2.0.0",
 		"nodemon": "^2.0.7",
 		"npm-run-all": "^4.1.5",

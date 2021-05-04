@@ -20,13 +20,13 @@
 		<div class="l-page">
 			<%- include('./_include/_header', { heading: false } ) %>
 
-			<main role="main" id="main" class="l-main">
+			<div id="main" class="l-main">
 				<div class="l-main__header">
 					<div class="p-category-title">
 						<h1 itemprop="name" class="p-category-title__hdg">「<%= categoryName %>」の記事（<%= count %>件）</h1>
 					</div>
 				</div>
-				<div class="l-main__main">
+				<main role="main" class="l_main__main">
 					<ul class="p-title-list -category">
 						<% for (const topicData of topicDataList) { %>
 						<li>
@@ -70,8 +70,8 @@
 						</li>
 						<% } %>
 					</ul>
-				</div>
-			</main>
+				</main>
+			</div>
 
 			<%- include('./_include/_sidebar') %><%- include('./_include/_footer') %>
 		</div>

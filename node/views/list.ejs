@@ -27,9 +27,9 @@
 		<div class="l-page">
 			<%- include('./_include/_header', { heading: true }) %>
 
-			<main role="main" id="main" class="l-main">
+			<div id="main" class="l-main">
 				<div class="l-main__header">
-					<nav class="p-page-nav">
+					<nav class="p-page-nav" aria-label="前後記事">
 						<ul class="p-page-nav__list">
 							<% if (page > 2) { %>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
@@ -42,7 +42,7 @@
 						</ul>
 					</nav>
 				</div>
-				<div class="l-main__main">
+				<main role="main" class="l_main__main">
 					<ul class="p-title-list -list">
 						<% for (const topicData of topicDataList) { %>
 						<li>
@@ -86,9 +86,9 @@
 						</li>
 						<% } %>
 					</ul>
-				</div>
+				</main>
 				<div class="l-main__footer">
-					<nav class="p-page-nav">
+					<nav class="p-page-nav" aria-label="前後記事">
 						<ul class="p-page-nav__list">
 							<% if (page > 2) { %>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
@@ -101,7 +101,7 @@
 						</ul>
 					</nav>
 				</div>
-			</main>
+			</div>
 
 			<%- include('./_include/_sidebar') %><%- include('./_include/_footer') %>
 		</div>
