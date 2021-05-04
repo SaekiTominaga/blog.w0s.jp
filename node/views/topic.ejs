@@ -48,19 +48,16 @@
 					<article role="article" class="p-topic" itemscope="" itemtype="http://schema.org/BlogPosting">
 						<header class="p-topic-header">
 							<h1 class="p-topic-title" itemprop="name"><%= title %></h1>
+
 							<dl class="p-topic-date">
 								<div class="p-topic-date__date -insert">
 									<dt>投稿</dt>
-									<dd>
-										<time datetime="<%= insert.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="datePublished"><%= insert.format('YYYY年M月D日') %></time>
-									</dd>
+									<dd><time datetime="<%= insert.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="datePublished"><%= insert.format('YYYY年M月D日') %></time></dd>
 								</div>
 								<% if (lastUpdated !== null) { %>
 								<div class="p-topic-date__date -update">
 									<dt>最終更新</dt>
-									<dd>
-										<time datetime="<%= lastUpdated.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="dateModified"><%= lastUpdated.format('YYYY年M月D日') %></time>
-									</dd>
+									<dd><time datetime="<%= lastUpdated.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="dateModified"><%= lastUpdated.format('YYYY年M月D日') %></time></dd>
 								</div>
 								<% } %>
 							</dl>
@@ -71,11 +68,10 @@
 						<footer class="p-topic-footer">
 							<section class="p-topic-category">
 								<h2 class="p-topic-category__hdg">カテゴリ</h2>
+
 								<ul class="p-topic-category__list">
 									<% for (const category of categories) { %>
-									<li>
-										<a href="/category/<%= encodeURI(category) %>" rel="tag"><%= category %></a>
-									</li>
+									<li><a href="/category/<%= encodeURI(category) %>" rel="tag"><%= category %></a></li>
 									<% } %>
 								</ul>
 							</section>
@@ -83,16 +79,10 @@
 							<div class="p-topic-social">
 								<ul class="p-topic-social__list">
 									<li>
-										<a href="/feed" type="application/atom+xml" class="p-topic-social__button -feed"
-											><img src="/image/icon/feed.svg" alt="" class="p-topic-social__button-icon" /> フィード</a
-										>
+										<a href="/feed" type="application/atom+xml" class="p-topic-social__button -feed"><img src="/image/icon/feed.svg" alt="" class="p-topic-social__button-icon" /> フィード</a>
 									</li>
 									<li>
-										<a
-											href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new?title=%5B<%= topicId %>%5D%20<%= encodeURI(title) %>"
-											class="p-topic-social__button -issue"
-											><img src="/image/icon/github.svg" alt="" class="p-topic-social__button-icon" /> Issue を立てる</a
-										>
+										<a href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new?title=%5B<%= topicId %>%5D%20<%= encodeURI(title) %>" class="p-topic-social__button -issue"><img src="/image/icon/github.svg" alt="" class="p-topic-social__button-icon" /> Issue を立てる</a>
 									</li>
 									<li><button type="button" is="w0s-share-button" class="p-topic-social__button -share">記事のシェア</button></li>
 								</ul>
@@ -101,6 +91,7 @@
 							<% if (relations.length > 0) { %>
 							<section class="p-topic-relation">
 								<h2 class="p-topic-relation__hdg">関連記事</h2>
+
 								<ul class="p-topic-relation__list">
 									<% for (const relation of relations) { %>
 									<li>
@@ -108,20 +99,9 @@
 											<span class="p-topic-relation__thumb">
 												<% if (relation.image_internal !== null) { %>
 												<picture>
-													<source
-														type="image/avif"
-														srcset="https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=avif;w=180;mh=180;quality=60, https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=avif;w=360;mh=360;quality=30 2x"
-													/>
-													<source
-														type="image/webp"
-														srcset="https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=webp;w=180;mh=180;quality=60, https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=webp;w=360;mh=360;quality=30 2x"
-													/>
-													<img
-														src="https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=jpeg;w=180;mh=180;quality=60"
-														srcset="https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=jpeg;w=360;mh=360;quality=30 2x"
-														alt=""
-														class="p-topic-relation__image"
-													/>
+													<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=avif;w=180;mh=180;quality=60, https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=avif;w=360;mh=360;quality=30 2x" />
+													<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=webp;w=180;mh=180;quality=60, https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=webp;w=360;mh=360;quality=30 2x" />
+													<img src="https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=jpeg;w=180;mh=180;quality=60" srcset="https://media.w0s.jp/thumbimage/diary/<%= relation.image_internal %>?type=jpeg;w=360;mh=360;quality=30 2x" alt="" class="p-topic-relation__image" />
 												</picture>
 												<% } else if (relation.image_external !== null) { %>
 												<img src="<%= relation.image_external %>" alt="" class="p-topic-relation__image" />
@@ -147,114 +127,56 @@
 				<div class="l-main__footer">
 					<aside class="p-bookcm">
 						<h2 class="p-bookcm__hdg">著書の紹介</h2>
+
 						<ul class="p-bookcm__list">
 							<% if (book === 'tokyu') { %>
 							<li>
-								<a href="https://w0s.jp/tokyu/book/7700"
-									><picture>
-										<source
-											type="image/avif"
-											srcset="
-												https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=avif;w=160;mh=160;quality=50,
-												https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=avif;w=320;mh=320;quality=30 2x
-											" />
-										<source
-											type="image/webp"
-											srcset="
-												https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=webp;w=160;mh=160;quality=50,
-												https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=webp;w=320;mh=320;quality=30 2x
-											" />
-										<img
-											src="https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=jpeg;w=160;mh=160;quality=50"
-											alt=""
-											loading="lazy"
-											class="p-bookcm__image"
-									/></picture>
-									<span class="p-bookcm__title"><b>【同人誌】</b>東急7700系形態分類</span></a
-								>
+								<a href="https://w0s.jp/tokyu/book/7700">
+									<picture>
+										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=avif;w=160;mh=160;quality=50, https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=avif;w=320;mh=320;quality=30 2x" />
+										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=webp;w=160;mh=160;quality=50, https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=webp;w=320;mh=320;quality=30 2x" />
+										<img src="https://media.w0s.jp/thumbimage/diary/book/7700_cover.jpg?type=jpeg;w=160;mh=160;quality=50" alt="" loading="lazy" class="p-bookcm__image" />
+									</picture>
+									<span class="p-bookcm__title"><b>【同人誌】</b>東急7700系形態分類</span>
+								</a>
 								<div class="p-bookcm__text">
-									<p>
-										池上線、東急多摩川線で活躍した東急7700系の形態バリエーションについて、2010年時点の在籍車36両を徹底解析しました。（<time datetime="2019-08"
-											>2019年8月</time
-										>発行）
-									</p>
+									<p>池上線、東急多摩川線で活躍した東急7700系の形態バリエーションについて、2010年時点の在籍車36両を徹底解析しました。（<time datetime="2019-08">2019年8月</time>発行）</p>
 								</div>
 							</li>
 							<li>
-								<a href="https://www.amazon.co.jp/dp/480220695X?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1"
-									><img
-										src="https://m.media-amazon.com/images/I/51uD92OAjNL._SL160_.jpg"
-										srcset="https://m.media-amazon.com/images/I/51uD92OAjNL._SL320_.jpg 2x"
-										alt=""
-										loading="lazy"
-										class="p-bookcm__image" /><span class="p-bookcm__title"
-										><b>【ムック本】</b>東急電鉄 1989-2019 <img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon" /></span
-								></a>
+								<a href="https://www.amazon.co.jp/dp/480220695X?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1">
+									<img src="https://m.media-amazon.com/images/I/51uD92OAjNL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51uD92OAjNL._SL320_.jpg 2x" alt="" loading="lazy" class="p-bookcm__image" />
+									<span class="p-bookcm__title"><b>【ムック本】</b>東急電鉄 1989-2019 <img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon" /></span>
+								</a>
 								<div class="p-bookcm__text">
-									<p>
-										平成時代の東急電車の動向をまとめた本です。「現役車両ガイド」の一部の本文解説を担当、写真提供もしています。（<time datetime="2019-08"
-											>2019年8月</time
-										>発売）
-									</p>
+									<p>平成時代の東急電車の動向をまとめた本です。「現役車両ガイド」の一部の本文解説を担当、写真提供もしています。（<time datetime="2019-08">2019年8月</time>発売）</p>
 								</div>
 							</li>
 							<% } else if (book === 'madoka') { %>
 							<li>
-								<a href="https://w0s.jp/madoka-magica/dojin/pictorial11"
-									><picture>
-										<source
-											type="image/avif"
-											srcset="
-												https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=avif;w=160;mh=160;quality=50,
-												https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=avif;w=320;mh=320;quality=30 2x
-											" />
-										<source
-											type="image/webp"
-											srcset="
-												https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=webp;w=160;mh=160;quality=50,
-												https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=webp;w=320;mh=320;quality=30 2x
-											" />
-										<img
-											src="https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=jpeg;w=160;mh=160;quality=50"
-											alt=""
-											loading="lazy"
-											class="p-bookcm__image" /></picture
-									><span class="p-bookcm__title"><b>【同人誌】</b>マギアレコード海外版動向</span></a
-								>
+								<a href="https://w0s.jp/madoka-magica/dojin/pictorial11">
+									<picture>
+										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=avif;w=160;mh=160;quality=50, https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=avif;w=320;mh=320;quality=30 2x" />
+										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=webp;w=160;mh=160;quality=50, https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=webp;w=320;mh=320;quality=30 2x" />
+										<img src="https://media.w0s.jp/thumbimage/diary/book/pictorial11_cover.jpg?type=jpeg;w=160;mh=160;quality=50" alt="" loading="lazy" class="p-bookcm__image" />
+									</picture>
+									<span class="p-bookcm__title"><b>【同人誌】</b>マギアレコード海外版動向</span>
+								</a>
 								<div class="p-bookcm__text">
-									<p>
-										マギレコ中国版、繁中版、北米版のゲーム概要、イベントレポート、街頭広告の掲出例などを紹介します。（<time datetime="2019-08-12"
-											>2019年8月</time
-										>発行）
-									</p>
+									<p>マギレコ中国版、繁中版、北米版のゲーム概要、イベントレポート、街頭広告の掲出例などを紹介します。（<time datetime="2019-08-12">2019年8月</time>発行）</p>
 								</div>
 							</li>
 							<li>
-								<a href="https://w0s.jp/madoka-magica/dojin/pictorial7"
-									><picture>
-										<source
-											type="image/avif"
-											srcset="
-												https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=avif;w=160;mh=160;quality=50,
-												https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=avif;w=320;mh=320;quality=30 2x
-											" />
-										<source
-											type="image/webp"
-											srcset="
-												https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=webp;w=160;mh=160;quality=50,
-												https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=webp;w=320;mh=320;quality=30 2x
-											" />
-										<img
-											src="https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=jpeg;w=160;mh=160;quality=50"
-											alt=""
-											loading="lazy"
-											class="p-bookcm__image" /></picture
-									><span class="p-bookcm__title"><b>【同人誌】</b>TVシリーズ 放送版とパッケージ版の比較</span></a
-								>
+								<a href="https://w0s.jp/madoka-magica/dojin/pictorial7">
+									<picture>
+										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=avif;w=160;mh=160;quality=50, https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=avif;w=320;mh=320;quality=30 2x" />
+										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=webp;w=160;mh=160;quality=50, https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=webp;w=320;mh=320;quality=30 2x" />
+										<img src="https://media.w0s.jp/thumbimage/diary/book/pictorial7_cover.jpg?type=jpeg;w=160;mh=160;quality=50" alt="" loading="lazy" class="p-bookcm__image" />
+									</picture>
+									<span class="p-bookcm__title"><b>【同人誌】</b>TVシリーズ 放送版とパッケージ版の比較</span>
+								</a>
 								<div class="p-bookcm__text">
-									<p>
-										『魔法少女まどか☆マギカ』TVシリーズの放送版と Blu-ray / DVD 版の違いをまとめました。（<time datetime="2017-08-12">2017年8月</time>発行）
-									</p>
+									<p>『魔法少女まどか☆マギカ』TVシリーズの放送版と Blu-ray / DVD 版の違いをまとめました。（<time datetime="2017-08-12">2017年8月</time>発行）</p>
 								</div>
 							</li>
 							<% } %>

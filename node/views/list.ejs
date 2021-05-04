@@ -50,19 +50,9 @@
 								<span class="p-title-list__thumb">
 									<% if (topicData.image_internal !== null) { %>
 									<picture>
-										<source
-											type="image/avif"
-											srcset="https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=avif;w=180;mh=180;quality=60, https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=avif;w=360;mh=360;quality=30 2x"
-										/>
-										<source
-											type="image/webp"
-											srcset="https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=webp;w=180;mh=180;quality=60, https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=webp;w=360;mh=360;quality=30 2x"
-										/>
-										<img
-											src="https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=jpeg;w=180;mh=180;quality=60"
-											alt=""
-											class="p-title-list__image"
-										/>
+										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=avif;w=180;mh=180;quality=60, https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=avif;w=360;mh=360;quality=30 2x" />
+										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=webp;w=180;mh=180;quality=60, https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=webp;w=360;mh=360;quality=30 2x" />
+										<img src="https://media.w0s.jp/thumbimage/diary/<%= topicData.image_internal %>?type=jpeg;w=180;mh=180;quality=60" alt="" class="p-title-list__image" />
 									</picture>
 									<% } else if (topicData.image_external !== null) { %>
 									<img src="<%= topicData.image_external %>" alt="" class="p-title-list__image" />
@@ -74,13 +64,9 @@
 							</a>
 
 							<div class="p-title-list__time">
-								<p>
-									投稿:<time datetime="<%= topicData.insert_date.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= topicData.insert_date.format('YYYY年M月D日') %></time>
-								</p>
+								<p>投稿:<time datetime="<%= topicData.insert_date.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= topicData.insert_date.format('YYYY年M月D日') %></time></p>
 								<% if (topicData.last_update !== null) { %>
-								<p>
-									更新:<time datetime="<%= topicData.last_update.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= topicData.last_update.format('YYYY年M月D日') %></time>
-								</p>
+								<p>更新:<time datetime="<%= topicData.last_update.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= topicData.last_update.format('YYYY年M月D日') %></time></p>
 								<% } %>
 							</div>
 						</li>

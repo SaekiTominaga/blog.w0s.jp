@@ -6,6 +6,12 @@
 
 	"overrides": [
 		{
+			"files": "*.ejs",
+			"options": {
+				"printWidth": 9999
+			}
+		},
+		{
 			"files": "*.css",
 			"options": {
 				"printWidth": 9999,

@@ -17,26 +17,16 @@
 
 		<ul class="p-sidebar-profile__banner">
 			<li>
-				<a href="https://twitter.com/SaekiTominaga" class="p-sidebar-profile__banner-link -twitter"
-					><img src="/image/icon/twitter_white.svg" alt="" class="p-sidebar-profile__banner-icon" /> Twitter</a
-				>
+				<a href="https://twitter.com/SaekiTominaga" class="p-sidebar-profile__banner-link -twitter"><img src="/image/icon/twitter_white.svg" alt="" class="p-sidebar-profile__banner-icon" /> Twitter</a>
 			</li>
 			<li>
-				<a href="https://github.com/SaekiTominaga" class="p-sidebar-profile__banner-link -github"
-					><img src="/image/icon/github.svg" alt="" class="p-sidebar-profile__banner-icon" /> GitHub</a
-				>
+				<a href="https://github.com/SaekiTominaga" class="p-sidebar-profile__banner-link -github"><img src="/image/icon/github.svg" alt="" class="p-sidebar-profile__banner-icon" /> GitHub</a>
 			</li>
 			<li>
-				<a
-					href="https://www.amazon.co.jp/-/e/B07FBRDDJN/?_encoding=UTF8&amp;camp=1207&amp;creative=8415&amp;linkCode=shr&amp;tag=w0s.jp-22"
-					class="p-sidebar-profile__banner-link -amazon"
-					><img src="/image/icon/amazon.png" alt="" class="p-sidebar-profile__banner-icon" /> Amazon</a
-				>
+				<a href="https://www.amazon.co.jp/-/e/B07FBRDDJN/?_encoding=UTF8&amp;camp=1207&amp;creative=8415&amp;linkCode=shr&amp;tag=w0s.jp-22" class="p-sidebar-profile__banner-link -amazon"><img src="/image/icon/amazon.png" alt="" class="p-sidebar-profile__banner-icon" /> Amazon</a>
 			</li>
 			<li>
-				<a href="https://www.youtube.com/user/SaekiTominaga" class="p-sidebar-profile__banner-link -youtube"
-					><img src="/image/icon/youtube.svg" alt="" class="p-sidebar-profile__banner-icon" /> YouTube</a
-				>
+				<a href="https://www.youtube.com/user/SaekiTominaga" class="p-sidebar-profile__banner-link -youtube"><img src="/image/icon/youtube.svg" alt="" class="p-sidebar-profile__banner-icon" /> YouTube</a>
 			</li>
 		</ul>
 	</section>
@@ -52,17 +42,13 @@
 					<% for (const countData of countDataList) { %>
 					<li>
 						<% if (categoryName === countData.category_name) { %>
-						<a aria-current="page"
-							><%= countData.category_name %><span class="p-sidebar-categories__topic-count"
-								><b class="p-sidebar-categories__topic-num"><%= countData.count %></b>件</span
-							></a
-						>
+						<a aria-current="page">
+							<%= countData.category_name %><span class="p-sidebar-categories__topic-count"><b class="p-sidebar-categories__topic-num"><%= countData.count %></b>件</span>
+						</a>
 						<% } else { %>
-						<a href="/category/<%= encodeURI(countData.category_name) %>"
-							><%= countData.category_name %><span class="p-sidebar-categories__topic-count"
-								><b class="p-sidebar-categories__topic-num"><%= countData.count %></b>件</span
-							></a
-						>
+						<a href="/category/<%= encodeURI(countData.category_name) %>">
+							<%= countData.category_name %><span class="p-sidebar-categories__topic-count"><b class="p-sidebar-categories__topic-num"><%= countData.count %></b>件</span>
+						</a>
 						<% } %>
 					</li>
 					<% } %>
@@ -71,11 +57,9 @@
 				<ul class="p-sidebar-categories__topics-list">
 					<% for (const countData of countDataList) { %>
 					<li>
-						<a href="/category/<%= encodeURI(countData.category_name) %>"
-							><%= countData.category_name %><span class="p-sidebar-categories__topic-count"
-								><b class="p-sidebar-categories__topic-num"><%= countData.count %></b>件</span
-							></a
-						>
+						<a href="/category/<%= encodeURI(countData.category_name) %>">
+							<%= countData.category_name %><span class="p-sidebar-categories__topic-count"><b class="p-sidebar-categories__topic-num"><%= countData.count %></b>件</span>
+						</a>
 					</li>
 					<% } %>
 				</ul>
