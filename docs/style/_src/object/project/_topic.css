@@ -360,14 +360,14 @@
 }
 
 /* ===== 画像 ===== */
-.p-topic-image {
+.p-topic-images {
 	margin: calc(var(--topic-font-size) * var(--topic-line-height)) 0;
 	display: flex;
 	flex-flow: wrap;
 	gap: 20px;
 }
 
-.p-topic-image__image-area {
+.p-topic-image {
 	--image-max-width: 360px;
 	--image-border-width: 0px;
 	--image-border-color: #000;
@@ -422,12 +422,16 @@
 	}
 }
 
+/* キャプション */
+.p-topic-image__caption {
+}
+
 /* ===== 動画 ===== */
-.p-topic-video {
+.p-topic-videos {
 	margin: calc(var(--topic-font-size) * var(--topic-line-height)) 0;
 }
 
-.p-topic-video__video-area {
+.p-topic-video {
 	max-width: 100%;
 
 	& video {
@@ -439,12 +443,15 @@
 }
 
 /* 外部サービス埋め込み */
-.p-topic-video__frame-area {
-	& iframe {
-		display: block;
-		max-height: 100vh;
-		max-width: 100%;
-	}
+.p-topic-video__frame {
+	display: block;
+	max-height: 100vh;
+	max-width: 100%;
+}
+
+/* キャプション */
+.p-topic-video__caption {
+	margin-top: 8px;
 }
 
 /* ===== 表 ===== */
@@ -648,7 +655,7 @@
 	}
 }
 
-.p-topic-tweets__tweet {
+.p-topic-tweet {
 	/* stylelint-disable declaration-no-important */
 	& .twitter-tweet-rendered {
 		margin: 0 !important;
@@ -657,11 +664,16 @@
 	/* stylelint-enable declaration-no-important */
 }
 
-.p-topic-tweets__tweet-quote {
+.p-topic-tweet__quote {
 	padding: 20px;
 	border: 1px solid #e1e8ed;
 	border-radius: 4px;
 	background: #fff;
+}
+
+/* キャプション */
+.p-topic-tweet__caption {
+	margin-top: 8px;
 }
 
 /* ===== ブロックコード ===== */

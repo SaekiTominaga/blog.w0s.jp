@@ -3,25 +3,15 @@
 /* キャプション */
 .c-embedded-caption {
 	display: flex;
+	gap: 0 0.4em;
 	color: #666;
 	font-size: calc(1rem / var(--font-ratio-2));
 	font-weight: bold;
 	line-height: var(--line-height--narrow);
-
-	/* メタデータ */
-	&.-data {
-		justify-content: flex-end;
-	}
-
-	/* センタリング */
-	&.-center {
-		justify-content: center;
-	}
 }
 
 /* 図表番号（"写真1"、"図2" など） */
 .c-embedded-caption__num {
-	margin-right: 0.4em;
 	white-space: nowrap;
 }
 

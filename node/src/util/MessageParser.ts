@@ -439,7 +439,7 @@ export default class MessageParser {
 							this.setImage(document, parentElement, file, caption, 'photo');
 						} else {
 							const figureBlockElement = document.createElement('div');
-							figureBlockElement.className = 'p-topic-image';
+							figureBlockElement.className = 'p-topic-images';
 
 							parentElement = figureBlockElement;
 
@@ -465,7 +465,7 @@ export default class MessageParser {
 							this.setImage(document, parentElement, file, caption, 'figure');
 						} else {
 							const figureBlockElement = document.createElement('div');
-							figureBlockElement.className = 'p-topic-image';
+							figureBlockElement.className = 'p-topic-images';
 
 							parentElement = figureBlockElement;
 
@@ -491,7 +491,7 @@ export default class MessageParser {
 							this.setVideo(document, parentElement, file, caption);
 						} else {
 							const figureBlockElement = document.createElement('div');
-							figureBlockElement.className = 'p-topic-video';
+							figureBlockElement.className = 'p-topic-videos';
 
 							parentElement = figureBlockElement;
 
@@ -515,28 +515,25 @@ export default class MessageParser {
 						const caption = videoInfos.slice(2).join(' '); // タイトル
 
 						const videoWrapElement = document.createElement('div');
-						videoWrapElement.className = 'p-topic-video';
+						videoWrapElement.className = 'p-topic-videos';
 						this.appendChild(mainElement, videoWrapElement);
 
 						const videoAreaElement = document.createElement('figure');
-						videoAreaElement.className = 'p-topic-video__video-area';
+						videoAreaElement.className = 'p-topic-video';
 						videoWrapElement.appendChild(videoAreaElement);
 
-						const frameAreaElement = document.createElement('div');
-						frameAreaElement.className = 'p-topic-video__frame-area';
-						videoAreaElement.appendChild(frameAreaElement);
-
 						const iframeElement = document.createElement('iframe');
+						iframeElement.className = 'p-topic-video__frame';
 						iframeElement.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0`; // rel=0 は関連動画を表示しない設定
 						iframeElement.allow = 'encrypted-media;fullscreen;gyroscope;picture-in-picture';
 						iframeElement.title = 'YouTube 動画';
 						iframeElement.width = size[0];
 						iframeElement.height = size[1];
 						iframeElement.textContent = '';
-						frameAreaElement.appendChild(iframeElement);
+						videoAreaElement.appendChild(iframeElement);
 
 						const figcaptionElement = document.createElement('figcaption');
-						figcaptionElement.className = 'c-embedded-caption';
+						figcaptionElement.className = 'p-topic-video__caption c-embedded-caption';
 						videoAreaElement.appendChild(figcaptionElement);
 
 						const aElement = document.createElement('a');
@@ -568,24 +565,32 @@ export default class MessageParser {
 							continue;
 						}
 
-						const tweetWrapperElement = document.createElement('div');
-						tweetWrapperElement.className = 'p-topic-tweets__tweet';
+						const tweetWrapperElement = document.createElement('figure');
+						tweetWrapperElement.className = 'p-topic-tweet';
 						tweetBlockElement.appendChild(tweetWrapperElement);
 
 						const tweetElement = document.createElement('blockquote');
-						tweetElement.className = 'p-topic-tweets__tweet-quote twitter-tweet';
+						tweetElement.className = 'p-topic-tweet__quote twitter-tweet';
 						tweetElement.setAttribute('data-dnt', 'true');
 						tweetWrapperElement.appendChild(tweetElement);
 
 						const tweetTextElement = document.createElement('p');
 						tweetTextElement.textContent = tweetData.text;
 						tweetElement.appendChild(tweetTextElement);
-						tweetElement.textContent = `— ${tweetData.name}(@${tweetData.username})`;
 
 						const tweetLinkElement = document.createElement('a');
 						tweetLinkElement.href = `https://twitter.com/${tweetData.username}/status/${tweetId}`;
-						tweetLinkElement.textContent = dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm');
+						tweetLinkElement.textContent = `— ${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
 						tweetElement.appendChild(tweetLinkElement);
+
+						const tweetCaptionElement = document.createElement('figcaption');
+						tweetCaptionElement.className = 'p-topic-tweet__caption c-embedded-caption';
+						tweetWrapperElement.appendChild(tweetCaptionElement);
+
+						const tweetCaptionLinkElement = document.createElement('a');
+						tweetCaptionLinkElement.href = `https://twitter.com/${tweetData.username}/status/${tweetId}`;
+						tweetCaptionLinkElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')} のツイート`;
+						tweetCaptionElement.appendChild(tweetCaptionLinkElement);
 
 						this.tweetExist = true;
 					}
@@ -1075,7 +1080,7 @@ export default class MessageParser {
 	 */
 	private setImage(document: Document, parentElement: HTMLElement, fileName: string, caption: string, type: ImageType): void {
 		const figureElement = document.createElement('figure');
-		figureElement.className = 'p-topic-image__image-area';
+		figureElement.className = 'p-topic-image';
 		parentElement.appendChild(figureElement);
 
 		const aElement = document.createElement('a');
@@ -1115,7 +1120,7 @@ export default class MessageParser {
 		}
 
 		const figcaptionElement = document.createElement('figcaption');
-		figcaptionElement.className = 'c-embedded-caption';
+		figcaptionElement.className = 'p-topic-image__caption c-embedded-caption';
 		figureElement.appendChild(figcaptionElement);
 
 		const numElement = document.createElement('span');
@@ -1151,7 +1156,7 @@ export default class MessageParser {
 	 */
 	private setVideo(document: Document, parentElement: HTMLElement, fileName: string, caption: string): void {
 		const figureElement = document.createElement('figure');
-		figureElement.className = 'p-topic-video__video-area';
+		figureElement.className = 'p-topic-video';
 		parentElement.appendChild(figureElement);
 
 		const videoElement = document.createElement('video');
@@ -1161,7 +1166,7 @@ export default class MessageParser {
 		figureElement.appendChild(videoElement);
 
 		const figcaptionElement = document.createElement('figcaption');
-		figcaptionElement.className = 'c-embedded-caption';
+		figcaptionElement.className = 'p-topic-video__caption c-embedded-caption';
 		figureElement.appendChild(figcaptionElement);
 
 		const numElement = document.createElement('span');
