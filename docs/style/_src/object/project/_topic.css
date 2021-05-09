@@ -869,7 +869,7 @@
 		display: none;
 	}
 
-	&:hover {
+	&:not(:disabled):hover {
 		color: var(--color);
 		box-shadow: 0 0 2px var(--border-color);
 	}
