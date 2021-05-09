@@ -5,7 +5,7 @@ export default interface ControllerInterface {
 	 * Execute the process
 	 *
 	 * @param {Request} req - Request
-	 * @param {Response} response - HttpResponse
+	 * @param {Response} res - HttpResponse
 	 */
-	execute(req: Request, response: Response): Promise<void>;
+	execute(req: Request, res: Response): Promise<void>;
 }
