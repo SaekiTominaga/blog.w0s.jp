@@ -38,7 +38,7 @@ export default class BlogDao {
 		}
 
 		const dbh = await sqlite.open({
-			filename: '../db/diary.db',
+			filename: '../db/blog.db',
 			driver: sqlite3.Database,
 		});
 
