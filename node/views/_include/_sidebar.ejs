@@ -1,6 +1,6 @@
 <div id="sidebar" class="l-sidebar">
-	<section class="p-sidebar-profile">
-		<h2 class="p-sidebar-profile__hdg">プロフィール</h2>
+	<section class="p-sidebar-profile" aria-labelledby="sidebar-profile-heading">
+		<h2 class="p-sidebar-profile__hdg" id="sidebar-profile-heading">プロフィール</h2>
 
 		<div class="p-sidebar-profile__info">
 			<address class="p-sidebar-profile__address">
@@ -31,8 +31,8 @@
 		</ul>
 	</section>
 
-	<aside class="p-sidebar-categories">
-		<w0s-tab class="p-sidebar-categories__tab" tablist-label="カテゴリー" storage-key="tab-diary-category">
+	<section class="p-sidebar-categories" aria-label="記事カテゴリ一覧">
+		<w0s-tab class="p-sidebar-categories__tab" tablist-label="カテゴリ" storage-key="tab-diary-category">
 			<% for (const [group_name, ] of topicCountOfCategoryList) { %>
 			<a href="#<%= group_name %>" slot="tab" class="p-sidebar-categories__tab-item"><%= group_name %></a>
 			<% } %><% for (const [group_name, countDataList] of topicCountOfCategoryList) { %>
@@ -67,10 +67,10 @@
 			</div>
 			<% } %>
 		</w0s-tab>
-	</aside>
+	</section>
 
-	<aside class="p-sidebar-topics">
-		<h2 class="p-sidebar-topics__hdg">最近の記事</h2>
+	<section class="p-sidebar-topics" aria-labelledby="sidebar-topics-heading">
+		<h2 class="p-sidebar-topics__hdg" id="sidebar-topics-heading">最近の記事</h2>
 
 		<% if (typeof(topicId) !== 'undefined') { %>
 		<ul class="p-sidebar-topics__list">
@@ -93,7 +93,7 @@
 			<% } %>
 		</ul>
 		<% } %>
-	</aside>
+	</section>
 
 	<aside class="p-sidebar-amazon" hidden="">
 		<h2 class="p-sidebar-amazon__hdg">おすすめ商品</h2>
