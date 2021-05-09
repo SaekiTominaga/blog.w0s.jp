@@ -70,7 +70,7 @@ export default class TopicController extends Controller implements ControllerInt
 
 			let ogImage: string | null = null;
 			if (topicDataDto.image_internal !== null) {
-				ogImage = `https://media.w0s.jp/image/diary/${topicDataDto.image_internal}`;
+				ogImage = `https://media.w0s.jp/image/blog/${topicDataDto.image_internal}`;
 			} else if (topicDataDto.image_external !== null) {
 				ogImage = topicDataDto.image_external;
 			}

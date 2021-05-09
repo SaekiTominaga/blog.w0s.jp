@@ -427,7 +427,7 @@ export default class MessageParser {
 				this.appendCode(document, mainElement);
 
 				if (lineTrim.startsWith('$photo: ')) {
-					/* 先頭が $photo: な場合は写真の画像（.diary_article_image figure.image > img） */
+					/* 先頭が $photo: な場合は写真の画像（.p-topic-image figure.image > img） */
 					const lineText = lineTrim.substring(8); // 先頭記号を削除
 
 					const strpos = lineText.indexOf(' ');
@@ -551,7 +551,7 @@ export default class MessageParser {
 						blockConvert = true;
 					}
 				} else if (lineTrim.startsWith('$tweet: ')) {
-					/* 先頭が $tweet: な場合は埋め込みツイート（.diary_article_tweets > .tweet） */
+					/* 先頭が $tweet: な場合は埋め込みツイート（.p-topic-tweets > .tweet） */
 					const lineText = lineTrim.substring(8); // 先頭記号を削除
 
 					const tweetBlockElement = document.createElement('div');
@@ -713,7 +713,7 @@ export default class MessageParser {
 				}
 			} else if (firstChara === '`') {
 				if (lineTrim.startsWith('` ')) {
-					/* 先頭が ` な場合はコード表示（.diary_article_sample code） */
+					/* 先頭が ` な場合はコード表示（.p-topic-sample code） */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除、改行を追加
 
 					if (this.codeFlag) {
@@ -735,7 +735,7 @@ export default class MessageParser {
 				this.appendCode(document, mainElement);
 
 				if (lineTrim.startsWith('* ')) {
-					/* 先頭が * な場合は注釈（.diary_article_note） */
+					/* 先頭が * な場合は注釈（.p-topic-note） */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
 
 					const wrapElement = document.createElement('div');
@@ -798,7 +798,7 @@ export default class MessageParser {
 				this.appendCode(document, mainElement);
 
 				if (lineTrim.startsWith('/ ')) {
-					/* 先頭が / な場合は本文と区別するブロック（.diary_article_box） */
+					/* 先頭が / な場合は本文と区別するブロック（.p-topic-box） */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
 
 					const pElement = document.createElement('p');
@@ -1084,7 +1084,7 @@ export default class MessageParser {
 		parentElement.appendChild(figureElement);
 
 		const aElement = document.createElement('a');
-		aElement.href = `https://media.w0s.jp/image/diary/${fileName}`;
+		aElement.href = `https://media.w0s.jp/image/blog/${fileName}`;
 		figureElement.appendChild(aElement);
 
 		switch (path.extname(fileName)) {
@@ -1093,7 +1093,7 @@ export default class MessageParser {
 				aElement.type = 'image/svg+xml';
 
 				const imgElement = document.createElement('img');
-				imgElement.src = `https://media.w0s.jp/image/diary/${fileName}`;
+				imgElement.src = `https://media.w0s.jp/image/blog/${fileName}`;
 				imgElement.alt = 'オリジナル画像';
 				aElement.appendChild(imgElement);
 				break;
@@ -1104,16 +1104,16 @@ export default class MessageParser {
 
 				const sourceElement1 = document.createElement('source');
 				sourceElement1.type = 'image/avif';
-				sourceElement1.srcset = `https://media.w0s.jp/thumbimage/diary/${fileName}?type=avif;w=360;mh=360;quality=60, https://media.w0s.jp/thumbimage/diary/${fileName}?type=avif;w=720;mh=720;quality=30 2x`;
+				sourceElement1.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=360;mh=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=720;mh=720;quality=30 2x`;
 				pictureElement.appendChild(sourceElement1);
 
 				const sourceElement2 = document.createElement('source');
 				sourceElement2.type = 'image/webp';
-				sourceElement2.srcset = `https://media.w0s.jp/thumbimage/diary/${fileName}?type=webp;w=360;mh=360;quality=60, https://media.w0s.jp/thumbimage/diary/${fileName}?type=webp;w=720;mh=720;quality=30 2x`;
+				sourceElement2.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=360;mh=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=720;mh=720;quality=30 2x`;
 				pictureElement.appendChild(sourceElement2);
 
 				const imgElement = document.createElement('img');
-				imgElement.src = `https://media.w0s.jp/thumbimage/diary/${fileName}?type=jpeg;w=360;mh=360;quality=60`;
+				imgElement.src = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=jpeg;w=360;mh=360;quality=60`;
 				imgElement.alt = 'オリジナル画像';
 				pictureElement.appendChild(imgElement);
 			}
@@ -1160,7 +1160,7 @@ export default class MessageParser {
 		parentElement.appendChild(figureElement);
 
 		const videoElement = document.createElement('video');
-		videoElement.src = `https://media.w0s.jp/video/diary/${fileName}`;
+		videoElement.src = `https://media.w0s.jp/video/blog/${fileName}`;
 		videoElement.controls = true;
 		videoElement.textContent = '';
 		figureElement.appendChild(videoElement);
