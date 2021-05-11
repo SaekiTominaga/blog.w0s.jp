@@ -1,15 +1,6 @@
 *.br
 *.map
 
-/docs/__test__/
-/docs/feed.atom
-/docs/image/
-/docs/video/
-/docs/script/*.js
-/docs/script/*.mjs
-/docs/style/*.css
-/docs/node_modules/
-
 /log/
 
 /node/configure/*.json
@@ -17,3 +8,12 @@
 /node/log4js*.json
 
 /node_modules/
+
+/public/__test__/
+/public/feed.atom
+/public/image/
+/public/video/
+/public/script/*.js
+/public/script/*.mjs
+/public/style/*.css
+/public/node_modules/

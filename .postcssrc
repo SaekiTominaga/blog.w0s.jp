@@ -7,7 +7,7 @@
 		"postcss-import": {
 		},
 		"postcss-custom-media": {
-				"importFrom": "docs/style/_src/foundation/_@custom-media.css"
+				"importFrom": "public/style/_src/foundation/_@custom-media.css"
 		},
 		"postcss-nesting": {
 		},

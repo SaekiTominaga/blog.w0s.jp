@@ -5,15 +5,15 @@ const dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 export default {
 	entry: {
-		'blog.mjs': './docs/script/_src/blog.ts',
-		'error.mjs': './docs/script/_src/error.ts',
-		'google-analytics.js': './docs/script/_src/google-analytics.ts',
-		'trusted-types.js': './docs/script/_src/trusted-types.ts',
+		'blog.mjs': './public/script/_src/blog.ts',
+		'error.mjs': './public/script/_src/error.ts',
+		'google-analytics.js': './public/script/_src/google-analytics.ts',
+		'trusted-types.js': './public/script/_src/trusted-types.ts',
 	},
 	mode: 'production',
 	output: {
 		filename: '[name]',
-		path: `${path.resolve(dirname, 'docs/script')}`,
+		path: `${path.resolve(dirname, 'public/script')}`,
 	},
 	module: {
 		rules: [
@@ -22,7 +22,7 @@ export default {
 				use: {
 					loader: 'ts-loader',
 					options: {
-						configFile: 'docs/script/tsconfig.json',
+						configFile: 'public/script/tsconfig.json',
 					},
 				},
 			},
