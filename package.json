@@ -14,7 +14,7 @@
 		"url": "git+https://github.com/SaekiTominaga/blog.w0s.jp.git"
 	},
 	"scripts": {
-		"app:dev": "nodemon node/dist/app.js",
+		"app:dev": "nodemon --inspect node/dist/app.js",
 		"build": "tsc --project node/tsconfig.json",
 		"build:watch": "tsc --project node/tsconfig.json -w",
 		"config:tsconvert": "json2ts -i node/configure/schema -o node/configure/type",
