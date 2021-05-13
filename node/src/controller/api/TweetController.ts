@@ -3,6 +3,7 @@ import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
 import Twitter from 'twitter-v2';
+import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
 import { Request, Response } from 'express';
 
@@ -30,11 +31,16 @@ interface User {
  * ツイート情報取得
  */
 export default class TweetController extends Controller implements ControllerInterface {
+	#configCommon: ConfigureCommon;
 	#configTwitter: ConfigureTwitter;
 
-	constructor() {
+	/**
+	 * @param {ConfigureCommon} configCommon - 共通設定
+	 */
+	constructor(configCommon: ConfigureCommon) {
 		super();
 
+		this.#configCommon = configCommon;
 		this.#configTwitter = <ConfigureTwitter>JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
 	}
 
@@ -87,7 +93,7 @@ export default class TweetController extends Controller implements ControllerInt
 			},
 		});
 
-		const dao = new BlogTweetDao();
+		const dao = new BlogTweetDao(this.#configCommon);
 		const registeredTweetIds = await dao.getAllTweetIds();
 
 		if (data !== undefined) {

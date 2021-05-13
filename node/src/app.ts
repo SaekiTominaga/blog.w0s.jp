@@ -171,7 +171,7 @@ app.put('/feed.atom', async (req, res, next) => {
 app.options('/api/amazon', corsPreflightedRequestCallback);
 app.post('/api/amazon', corsCallback, async (req, res, next) => {
 	try {
-		await new AmazonController().execute(req, res);
+		await new AmazonController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -183,7 +183,7 @@ app.post('/api/amazon', corsCallback, async (req, res, next) => {
 app.options('/api/tweet', corsPreflightedRequestCallback);
 app.post('/api/tweet', corsCallback, async (req, res, next) => {
 	try {
-		await new TweetController().execute(req, res);
+		await new TweetController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}

@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "static", "cors", "response", "views", "errorpage", "logger"],
+	"required": ["port", "static", "cors", "response", "views", "errorpage", "logger", "sqlite"],
 	"properties": {
 		"port": {
 			"type": "integer",
@@ -179,6 +179,26 @@
 				"path": {
 					"type": "string",
 					"title": "ファイルパス"
+				}
+			},
+			"additionalProperties": false
+		},
+		"sqlite": {
+			"type": "object",
+			"title": "SQLite",
+			"required": ["db"],
+			"properties": {
+				"db": {
+					"type": "object",
+					"title": "DB ファイルのパス（絶対パス、または `node` ディレクトリを基準にした相対パス）",
+					"required": ["blog"],
+					"properties": {
+						"blog": {
+							"type": "string",
+							"title": "blog テーブル"
+						}
+					},
+					"additionalProperties": false
 				}
 			},
 			"additionalProperties": false

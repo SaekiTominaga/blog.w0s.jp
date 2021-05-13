@@ -36,7 +36,7 @@ export default class FeedCreateController extends Controller implements Controll
 		const feedFilePath = `${this.#configCommon.static.root}${req.url}`;
 		const brotliFilePath = `${feedFilePath}.br`;
 
-		const dao = new BlogFeedDao();
+		const dao = new BlogFeedDao(this.#configCommon);
 
 		const dbLastModified = await dao.getLastModified();
 		const feedFileLastModified = fs.statSync(feedFilePath).mtime;
@@ -52,7 +52,7 @@ export default class FeedCreateController extends Controller implements Controll
 			entries.push({
 				id: id,
 				title: topicData.title,
-				message: await new MessageParser(await dao.getDbh(), id).toXml(topicData.message),
+				message: await new MessageParser(this.#configCommon, await dao.getDbh(), id).toXml(topicData.message),
 				last_updated: dayjs(topicData.date),
 				update: Boolean(topicData.last_update),
 			});

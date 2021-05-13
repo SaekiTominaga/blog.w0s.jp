@@ -38,7 +38,7 @@ export default class TopicController extends Controller implements ControllerInt
 		this.logger.debug('topic_id', paramTopicId);
 
 		const httpResponse = new HttpResponse(res, this.#configCommon);
-		const dao = new BlogTopicDao();
+		const dao = new BlogTopicDao(this.#configCommon);
 
 		/* 最終更新日時をセット */
 		if (httpResponse.checkLastModified(req, await dao.getLastModified())) {
@@ -66,7 +66,7 @@ export default class TopicController extends Controller implements ControllerInt
 			const topicCountOfCategoryListDto = values[2];
 			const newlyTopicDataListDto = values[3];
 
-			const messageParser = new MessageParser(await dao.getDbh(), paramTopicId);
+			const messageParser = new MessageParser(this.#configCommon, await dao.getDbh(), paramTopicId);
 
 			let ogImage: string | null = null;
 			if (topicDataDto.image_internal !== null) {

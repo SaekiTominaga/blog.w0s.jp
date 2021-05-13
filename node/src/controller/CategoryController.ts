@@ -38,7 +38,7 @@ export default class CategoryController extends Controller implements Controller
 		this.logger.debug('category_name', paramCategoryName);
 
 		const httpResponse = new HttpResponse(res, this.#configCommon);
-		const dao = new BlogCategoryDao();
+		const dao = new BlogCategoryDao(this.#configCommon);
 
 		/* 最終更新日時をセット */
 		if (httpResponse.checkLastModified(req, await dao.getLastModified())) {

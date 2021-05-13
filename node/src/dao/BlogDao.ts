@@ -1,5 +1,6 @@
 import * as sqlite from 'sqlite';
 import sqlite3 from 'sqlite3';
+import { NoName as Configure } from '../../configure/type/common.js';
 
 interface NewlyTopicData {
 	id: string;
@@ -17,11 +18,14 @@ interface TopicCountOfCategory {
  */
 export default class BlogDao {
 	#dbh: sqlite.Database<sqlite3.Database, sqlite3.Statement> | null = null;
+	#config: Configure;
 
 	/**
 	 * @param {sqlite.Database} dbh - DB 接続情報
 	 */
-	constructor(dbh?: sqlite.Database<sqlite3.Database, sqlite3.Statement>) {
+	constructor(config: Configure, dbh?: sqlite.Database<sqlite3.Database, sqlite3.Statement>) {
+		this.#config = config;
+
 		if (dbh !== undefined) {
 			this.#dbh = dbh;
 		}
@@ -38,7 +42,7 @@ export default class BlogDao {
 		}
 
 		const dbh = await sqlite.open({
-			filename: '../db/blog.db',
+			filename: this.#config.sqlite.db.blog,
 			driver: sqlite3.Database,
 		});
 

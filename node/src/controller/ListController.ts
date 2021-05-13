@@ -38,7 +38,7 @@ export default class ListController extends Controller implements ControllerInte
 		this.logger.debug('page', paramPage);
 
 		const httpResponse = new HttpResponse(res, this.#configCommon);
-		const dao = new BlogListDao();
+		const dao = new BlogListDao(this.#configCommon);
 
 		/* 最終更新日時をセット */
 		if (httpResponse.checkLastModified(req, await dao.getLastModified())) {

@@ -40,7 +40,7 @@ export default class MessagePreviewController extends Controller implements Cont
 			return;
 		}
 
-		const messageParser = new MessageParser();
+		const messageParser = new MessageParser(this.#configCommon);
 
 				/* レンダリング */
 		res.setHeader('Referrer-Policy', 'no-referrer');

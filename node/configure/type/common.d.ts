@@ -53,6 +53,7 @@ export type NoName8 = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
 export type NoName10 = string;
+export type Blog = string;
 
 export interface NoName {
   port: HTTP;
@@ -62,6 +63,7 @@ export interface NoName {
   views: NoName8;
   errorpage: NoName9;
   logger: Logger;
+  sqlite: SQLite;
 }
 export interface NoName1 {
   root: NoName2;
@@ -114,4 +116,10 @@ export interface NoName9 {
 }
 export interface Logger {
   path: NoName10;
+}
+export interface SQLite {
+  db: DBNode;
+}
+export interface DBNode {
+  blog: Blog;
 }

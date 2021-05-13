@@ -9,9 +9,10 @@ import Log4js from 'log4js';
 import md5 from 'md5';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import path from 'path';
-import StringEscapeHtml from '@saekitominaga/string-escape-html';
-import { JSDOM } from 'jsdom';
 import serialize from 'w3c-xmlserializer';
+import StringEscapeHtml from '@saekitominaga/string-escape-html';
+import { NoName as Configure } from '../../configure/type/common.js';
+import { JSDOM } from 'jsdom';
 
 type ImageType = 'figure' | 'photo';
 
@@ -75,14 +76,14 @@ export default class MessageParser {
 	 * @param {sqlite.Database} dbh - DB 接続情報
 	 * @param {number} topicId - 記事 ID
 	 */
-	constructor(dbh?: sqlite.Database, topicId?: number) {
+	constructor(config: Configure, dbh?: sqlite.Database, topicId?: number) {
 		/* Logger */
 		this.logger = Log4js.getLogger(this.constructor.name);
 
 		if (topicId !== undefined) {
 			this.topicId = topicId;
 		}
-		this.dao = new BlogMessageDao(dbh);
+		this.dao = new BlogMessageDao(config, dbh);
 
 		const { document } = new JSDOM().window;
 		this.section1Element = document.createElement('section');
@@ -589,7 +590,9 @@ export default class MessageParser {
 
 						const tweetCaptionLinkElement = document.createElement('a');
 						tweetCaptionLinkElement.href = `https://twitter.com/${tweetData.username}/status/${tweetId}`;
-						tweetCaptionLinkElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')} のツイート`;
+						tweetCaptionLinkElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format(
+							'YYYY年M月D日 HH:mm'
+						)} のツイート`;
 						tweetCaptionElement.appendChild(tweetCaptionLinkElement);
 
 						this.tweetExist = true;

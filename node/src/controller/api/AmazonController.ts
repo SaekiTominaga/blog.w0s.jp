@@ -4,6 +4,7 @@ import BlogAmazonDao from '../../dao/BlogAmazonDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
+import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import { PAAPI as ConfigurePaapi } from '../../../configure/type/paapi.js';
 import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { Request, Response } from 'express';
@@ -12,11 +13,16 @@ import { Request, Response } from 'express';
  * Amazon 商品情報取得
  */
 export default class AmazonController extends Controller implements ControllerInterface {
+	#configCommon: ConfigureCommon;
 	#configPaapi: ConfigurePaapi;
 
-	constructor() {
+	/**
+	 * @param {ConfigureCommon} configCommon - 共通設定
+	 */
+	constructor(configCommon: ConfigureCommon) {
 		super();
 
+		this.#configCommon = configCommon;
 		this.#configPaapi = <ConfigurePaapi>JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
 	}
 
@@ -51,7 +57,7 @@ export default class AmazonController extends Controller implements ControllerIn
 			return;
 		}
 
-		const dao = new BlogAmazonDao();
+		const dao = new BlogAmazonDao(this.#configCommon);
 		const registeredAsins = await dao.getAllAsins(); // DB に登録済みの ASIN
 		const unregisteredAsins = (<string[]>asins).filter((asin) => !registeredAsins.includes(asin)); // DB に登録されていない ASIN
 
