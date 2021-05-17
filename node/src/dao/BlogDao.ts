@@ -21,6 +21,7 @@ export default class BlogDao {
 	#config: Configure;
 
 	/**
+	 * @param {Configure} config - 共通設定
 	 * @param {sqlite.Database} dbh - DB 接続情報
 	 */
 	constructor(config: Configure, dbh?: sqlite.Database<sqlite3.Database, sqlite3.Statement>) {
