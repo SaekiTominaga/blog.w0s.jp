@@ -158,8 +158,12 @@
 		"errorpage": {
 			"type": "object",
 			"title": "エラーページ",
-			"required": ["path_403", "path_404"],
+			"required": ["path_401", "path_403", "path_404"],
 			"properties": {
+				"path_401": {
+					"type": "string",
+					"title": "Filepath for `401 Unauthorized`"
+				},
 				"path_403": {
 					"type": "string",
 					"title": "Filepath for `403 Forbidden`"

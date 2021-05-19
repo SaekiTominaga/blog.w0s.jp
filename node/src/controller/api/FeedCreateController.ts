@@ -1,9 +1,13 @@
+import auth from 'basic-auth';
 import BlogFeedDao from '../../dao/BlogFeedDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import fs from 'fs';
+// @ts-expect-error: ts(7016)
+import htpasswd from 'htpasswd-js';
+import HttpResponse from '../../util/HttpResponse.js';
 import MessageParser from '../../util/MessageParser.js';
 import zlib from 'zlib';
 import { BlogView } from '../../../@types/view.js';
@@ -33,17 +37,26 @@ export default class FeedCreateController extends Controller implements Controll
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
+		const httpResponse = new HttpResponse(res, this.#configCommon);
+
+		/* Basic 認証 */
+		const credentials = auth(req);
+		if (
+			credentials === undefined ||
+			!(await htpasswd.authenticate({
+				username: credentials.name,
+				password: credentials.pass,
+				file: this.#config.auth.htpasswd_file,
+			}))
+		) {
+			httpResponse.send401Basic(this.#config.auth.realm);
+			return;
+		}
+
 		const feedFilePath = `${this.#configCommon.static.root}${req.url}`;
 		const brotliFilePath = `${feedFilePath}.br`;
 
 		const dao = new BlogFeedDao(this.#configCommon);
-
-		const dbLastModified = await dao.getLastModified();
-		const feedFileLastModified = fs.statSync(feedFilePath).mtime;
-
-		if (dbLastModified <= feedFileLastModified) {
-			this.logger.warn(`DB mtime: ${dbLastModified} <= File mtime: ${feedFileLastModified}`);
-		}
 
 		const entries: BlogView.FeedEntry[] = [];
 		for (const topicData of await dao.getTopics(this.#config.maximum_number)) {

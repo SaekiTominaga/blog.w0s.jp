@@ -50,6 +50,7 @@ export type ContentSecurityPolicyHTML1 = string;
 export type ContentSecurityPolicyReportOnlyHTML = string;
 export type Threshold = string;
 export type NoName8 = string;
+export type FilepathFor401Unauthorized = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
 export type NoName10 = string;
@@ -111,6 +112,7 @@ export interface NoName7 {
   threshold: Threshold;
 }
 export interface NoName9 {
+  path_401: FilepathFor401Unauthorized;
   path_403: FilepathFor403Forbidden;
   path_404: FilepathFor404NotFound;
 }

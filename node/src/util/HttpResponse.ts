@@ -43,6 +43,28 @@ export default class HttpResponse {
 	}
 
 	/**
+	 * 401 Unauthorized
+	 *
+	 * @param {string} type - Authentication type <https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml>
+	 * @param {string} realm - A description of the protected area.
+	 */
+	send401(type: string, realm: string): void {
+		this.#res
+			.set('WWW-Authenticate', `${type} realm="${realm}"`)
+			.status(401)
+			.sendFile(path.resolve(this.#config.errorpage.path_401));
+	}
+
+	/**
+	 * 401 Unauthorized (Basic authentication scheme)
+	 *
+	 * @param {string} realm - A description of the protected area.
+	 */
+	send401Basic(realm: string): void {
+		this.send401('Basic', realm);
+	}
+
+	/**
 	 * 403 Forbidden
 	 */
 	send403(): void {

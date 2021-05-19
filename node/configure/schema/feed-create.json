@@ -3,8 +3,24 @@
 	"$id": "https://blog.w0s.jp/feed-create.json",
 	"type": "object",
 	"title": "フィード作成",
-	"required": ["maximum_number", "view_path"],
+	"required": ["auth", "maximum_number", "view_path"],
 	"properties": {
+		"auth": {
+			"type": "object",
+			"title": "認証",
+			"required": ["realm", "htpasswd_file"],
+			"properties": {
+				"realm": {
+					"type": "string",
+					"title": "保護領域の説明文"
+				},
+				"htpasswd_file": {
+					"type": "string",
+					"title": "htpasswd ファイルのパス"
+				}
+			},
+			"additionalProperties": false
+		},
 		"maximum_number": {
 			"type": "integer",
 			"minimum": 1,

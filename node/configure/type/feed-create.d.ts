@@ -5,10 +5,17 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type NoName1 = number;
+export type NoName2 = string;
+export type Htpasswd = string;
+export type NoName3 = number;
 export type View = string;
 
 export interface NoName {
-  maximum_number: NoName1;
+  auth: NoName1;
+  maximum_number: NoName3;
   view_path: View;
+}
+export interface NoName1 {
+  realm: NoName2;
+  htpasswd_file: Htpasswd;
 }
