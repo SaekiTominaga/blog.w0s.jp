@@ -8,7 +8,7 @@
 		"auth": {
 			"type": "object",
 			"title": "認証",
-			"required": ["realm", "htpasswd_file"],
+			"required": ["realm", "htpasswd_file", "json_401"],
 			"properties": {
 				"realm": {
 					"type": "string",
@@ -17,6 +17,10 @@
 				"htpasswd_file": {
 					"type": "string",
 					"title": "htpasswd ファイルのパス"
+				},
+				"json_401": {
+					"type": "object",
+					"title": "認証失敗時に返す JSON 内容"
 				}
 			},
 			"additionalProperties": false

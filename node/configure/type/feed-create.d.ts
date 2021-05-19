@@ -18,4 +18,8 @@ export interface NoName {
 export interface NoName1 {
   realm: NoName2;
   htpasswd_file: Htpasswd;
+  json_401: JSON;
+}
+export interface JSON {
+  [k: string]: unknown;
 }
