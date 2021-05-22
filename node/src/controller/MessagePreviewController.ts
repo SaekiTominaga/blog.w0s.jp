@@ -35,7 +35,7 @@ export default class MessagePreviewController extends Controller implements Cont
 		const httpResponse = new HttpResponse(res, this.#configCommon);
 
 		if (message === undefined) {
-			this.logger.error(`パラメーター message（${message}）が未設定: ${req.get('User-Agent')}`);
+			this.logger.error(`パラメーター message が未設定: ${req.get('User-Agent')}`);
 			httpResponse.send403();
 			return;
 		}
