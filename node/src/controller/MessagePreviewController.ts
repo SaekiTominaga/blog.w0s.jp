@@ -42,7 +42,7 @@ export default class MessagePreviewController extends Controller implements Cont
 
 		const messageParser = new MessageParser(this.#configCommon);
 
-				/* レンダリング */
+		/* レンダリング */
 		res.setHeader('Referrer-Policy', 'no-referrer');
 		res.render(this.#config.view.success, {
 			message: await messageParser.toHtml(message),
