@@ -9,6 +9,10 @@ export default class HttpResponse {
 	#res: Response;
 	#config: Configure;
 
+	/**
+	 * @param {Response} res - Request
+	 * @param {Configure} config - 共通設定ファイル
+	 */
 	constructor(res: Response, config: Configure) {
 		this.#res = res;
 		this.#config = config;
