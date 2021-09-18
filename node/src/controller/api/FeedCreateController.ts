@@ -71,7 +71,7 @@ export default class FeedCreateController extends Controller implements Controll
 			});
 		}
 
-		const feedXml = await ejs.renderFile(this.#config.view_path, {
+		const feedXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view_path}`, {
 			entries: entries,
 		});
 
