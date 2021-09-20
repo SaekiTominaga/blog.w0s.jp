@@ -1,18 +1,18 @@
 import * as sqlite from 'sqlite';
 import BlogMessageDao from '../dao/BlogMessageDao.js';
 import dayjs from 'dayjs';
-import hljs from 'highlight.js';
-import hljsCss from 'highlight.js/lib/languages/css.js';
-import hljsJavaScript from 'highlight.js/lib/languages/javascript.js';
-import hljsXml from 'highlight.js/lib/languages/xml.js';
+import hljs from 'highlight.js/lib/core';
+import hljsCss from 'highlight.js/lib/languages/css';
+import hljsJavaScript from 'highlight.js/lib/languages/javascript';
+import hljsXml from 'highlight.js/lib/languages/xml';
 import Log4js from 'log4js';
 import md5 from 'md5';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import path from 'path';
 import serialize from 'w3c-xmlserializer';
 import StringEscapeHtml from '@saekitominaga/string-escape-html';
-import { NoName as Configure } from '../../configure/type/common.js';
 import { JSDOM } from 'jsdom';
+import { NoName as Configure } from '../../configure/type/common.js';
 
 type ImageType = 'figure' | 'photo';
 
