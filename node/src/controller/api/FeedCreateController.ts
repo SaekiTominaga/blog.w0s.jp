@@ -84,15 +84,13 @@ export default class FeedCreateController extends Controller implements Controll
 					[zlib.constants.BROTLI_PARAM_SIZE_HINT]: feedXml.length,
 				},
 			},
-			(error, binary) => {
+			async (error, binary) => {
 				if (error !== null) {
 					throw error;
 				}
 
-				fs.writeFileSync(feedFilePath, feedXml);
+				await Promise.all([fs.promises.writeFile(feedFilePath, feedXml), fs.promises.writeFile(brotliFilePath, binary)]);
 				this.logger.info(`Feed file created: ${feedFilePath}`);
-
-				fs.writeFileSync(brotliFilePath, binary);
 				this.logger.info(`Feed Brotli file created: ${brotliFilePath}`);
 			}
 		);
