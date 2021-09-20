@@ -42,8 +42,7 @@
 		"_svg-all:build-topic": "svgo -f image/topic -o public/image/topic --config=svgo.config.cjs",
 		"_svg-all:favicon": "move-file public/image/favicon.svg public/favicon.svg",
 		"_svg-all:compress": "brotlin compress public/**/*.svg -m 1",
-		"svg-all": "run-s _svg-all:*",
-		"feed": "curl http://localhost:3001/feed.atom -XPUT"
+		"svg-all": "run-s _svg-all:*"
 	},
 	"dependencies": {
 		"@log4js-node/smtp": "^1.1.0",
