@@ -1105,18 +1105,18 @@ export default class MessageParser {
 				const pictureElement = document.createElement('picture');
 				aElement.appendChild(pictureElement);
 
-				const sourceElement1 = document.createElement('source');
-				sourceElement1.type = 'image/avif';
-				sourceElement1.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=360;mh=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=720;mh=720;quality=30 2x`;
-				pictureElement.appendChild(sourceElement1);
+				const sourceElementAvif = document.createElement('source');
+				sourceElementAvif.type = 'image/avif';
+				sourceElementAvif.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=720;h=720;quality=30 2x`;
+				pictureElement.appendChild(sourceElementAvif);
 
-				const sourceElement2 = document.createElement('source');
-				sourceElement2.type = 'image/webp';
-				sourceElement2.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=360;mh=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=720;mh=720;quality=30 2x`;
-				pictureElement.appendChild(sourceElement2);
+				const sourceElementWebp = document.createElement('source');
+				sourceElementWebp.type = 'image/webp';
+				sourceElementWebp.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=720;h=720;quality=30 2x`;
+				pictureElement.appendChild(sourceElementWebp);
 
 				const imgElement = document.createElement('img');
-				imgElement.src = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=jpeg;w=360;mh=360;quality=60`;
+				imgElement.src = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=jpeg;w=360;h=360;quality=60`;
 				imgElement.alt = 'オリジナル画像';
 				pictureElement.appendChild(imgElement);
 			}
