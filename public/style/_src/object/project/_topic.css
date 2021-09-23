@@ -326,20 +326,20 @@
 	margin: var(--topic-font-size) 0;
 
 	& > li {
+		--bullet-width: 0.45em;
+		--bullet-height: 0.75em;
+		--bullet-color: #0bb;
+		--bullet-gap: 0.5em;
+
+		margin-left: calc(var(--bullet-width) + var(--bullet-gap));
+
 		& + li {
 			margin-top: 0.5em;
 		}
 
 		& > :any-link {
-			--bullet-width: 0.45em;
-			--bullet-height: 0.75em;
-			--bullet-color: #0bb;
-			--bullet-gap: 0.5em;
-
-			padding-left: calc(var(--bullet-width) + var(--bullet-gap));
-			display: inline-block;
+			margin-left: calc(0px - var(--bullet-width) - var(--bullet-gap));
 			font-size: calc(var(--topic-font-size) * var(--font-ratio-2));
-			text-indent: calc(0em - var(--bullet-width) - var(--bullet-gap));
 
 			&::before {
 				margin-right: var(--bullet-gap);
