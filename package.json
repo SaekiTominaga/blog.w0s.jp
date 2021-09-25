@@ -26,7 +26,7 @@
 		"config:validate:twitter": "ajv --spec=draft7 -s node/configure/schema/twitter.json -d node/configure/twitter.json",
 		"config:validate:paapi": "ajv --spec=draft7 -s node/configure/schema/paapi.json -d node/configure/paapi.json",
 		"config:validate:feed-create": "ajv --spec=draft7 -s node/configure/schema/feed-create.json -d node/configure/feed-create.json",
-		"ejs:markuplint": "markuplint node/views/*.ejs",
+		"ejs:markuplint": "markuplint views/*.ejs",
 		"_css:build-watch": "postcss public/style/_src/*.css --base public/style/_src -d public/style -w",
 		"_css:compress": "onchange -f add -f change -v public/style/*.css -- brotlin compress {{file}} -m 1",
 		"css": "run-p _css:*",
