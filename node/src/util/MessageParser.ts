@@ -1341,7 +1341,7 @@ export default class MessageParser {
 		} else if (/^asin:[0-9A-Z]{10}$/.test(linkUrl)) {
 			return `<a href="https://www.amazon.co.jp/dp/${linkUrl.substring(
 				5
-			)}?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1">${linkText}<img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon"/></a>`;
+			)}/ref=nosim?tag=w0s.jp-22">${linkText}<img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon"/></a>`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
 		} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(linkUrl)) {
 			if (linkText.startsWith('https://') || linkText.startsWith('http://')) {
 				/* URL表記の場合はドメインを記載しない */
