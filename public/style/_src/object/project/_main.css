@@ -129,10 +129,12 @@
 }
 
 .p-title-list__image {
-	border: var(--image-border-width) solid #000;
+	border: var(--image-border-width) solid;
 	display: block;
 	max-width: var(--image-width);
 	max-height: calc(var(--image-width) / var(--image-aspect-ratio));
+	color: #000;
+	background: #fff;
 	pointer-events: auto;
 
 	@nest :any-link:hover & {
