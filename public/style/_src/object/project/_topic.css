@@ -531,7 +531,9 @@
 .p-topic-amazon__dp {
 	padding: 15px;
 	border-radius: 0.5em;
-	display: flex;
+	display: grid;
+	grid-template-areas: "image gap text";
+	grid-template-columns: min(40%, 160px) 15px 1fr;
 	font-size: calc(var(--topic-font-size) / var(--font-ratio-2));
 	line-height: var(--line-height--narrow);
 	text-decoration: none;
@@ -550,14 +552,17 @@
 }
 
 .p-topic-amazon__image-area {
-	margin-right: 1em;
-
-	/* min-height: 160px; */
-	width: 40%;
+	grid-column: image;
 }
 
 .p-topic-amazon__text-area {
-	width: 60%;
+	--bullet-width: 0.45em;
+	--bullet-height: 0.75em;
+	--bullet-color: #0bb;
+	--bullet-gap: 0.5em;
+
+	margin-left: calc(var(--bullet-width) + var(--bullet-gap));
+	grid-column: text;
 }
 
 /* 商品画像 */
@@ -575,11 +580,6 @@
 
 /* 商品タイトル */
 .p-topic-amazon__title {
-	--bullet-width: 0.45em;
-	--bullet-height: 0.75em;
-	--bullet-color: #0bb;
-	--bullet-gap: 0.5em;
-
 	margin-left: calc(0px - var(--bullet-width) - var(--bullet-gap));
 	display: inline;
 	font-weight: bold;
