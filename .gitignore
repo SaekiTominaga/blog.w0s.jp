@@ -12,7 +12,6 @@
 /public/__test__/
 /public/feed.atom
 /public/image/
-/public/video/
 /public/script/*.js
 /public/script/*.mjs
 /public/style/*.css
