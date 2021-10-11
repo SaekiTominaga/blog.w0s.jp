@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "static", "cors", "response", "views", "errorpage", "logger", "sqlite"],
+	"required": ["port", "response", "static", "cors", "views", "errorpage", "logger", "sqlite"],
 	"properties": {
 		"port": {
 			"type": "integer",
@@ -11,107 +11,11 @@
 			"maximum": 65535,
 			"title": "HTTP サーバーのポート番号"
 		},
-		"static": {
-			"type": "object",
-			"title": "静的ファイル",
-			"required": ["root", "options"],
-			"properties": {
-				"root": {
-					"type": "string",
-					"title": "ルートディレクトリ"
-				},
-				"options": {
-					"type": "object",
-					"title": "オプション",
-					"description": "https://expressjs.com/ja/4x/api.html#express.static",
-					"required": [],
-					"properties": {
-						"dotfiles": {
-							"type": "integer",
-							"title": "dotfiles",
-							"description": "Determines how dotfiles (files or directories that begin with a dot “.”) are treated."
-						},
-						"etag": {
-							"type": "boolean",
-							"title": "etag",
-							"description": "Enable or disable etag generation"
-						},
-						"extensions": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							},
-							"title": "extensions",
-							"description": "Sets file extension fallbacks: If a file is not found, search for files with the specified extensions and serve the first one found. Example: ['html', 'htm']."
-						},
-						"fallthrough": {
-							"type": "boolean",
-							"title": "fallthrough",
-							"description": "Let client errors fall-through as unhandled requests, otherwise forward a client error."
-						},
-						"immutable": {
-							"type": "boolean",
-							"title": "immutable",
-							"description": "Enable or disable the immutable directive in the Cache-Control response header. If enabled, the maxAge option should also be specified to enable caching. The immutable directive will prevent supported clients from making conditional requests during the life of the maxAge option to check if the file has changed."
-						},
-						"index": {
-							"type": "array",
-							"items": {
-								"type": "string"
-							},
-							"title": "index",
-							"description": "Sends the specified directory index file. Set to false to disable directory indexing."
-						},
-						"last_modified": {
-							"type": "boolean",
-							"title": "last_modified",
-							"description": "Set the Last-Modified header to the last modified date of the file on the OS."
-						},
-						"max_age": {
-							"type": "string",
-							"title": "max_age",
-							"description": "Set the max-age property of the Cache-Control header in milliseconds or a string in ms format."
-						},
-						"redirect": {
-							"type": "boolean",
-							"title": "redirect",
-							"description": "Redirect to trailing “/” when the pathname is a directory."
-						},
-						"set_headers": {
-							"type": "object",
-							"title": "set_headers",
-							"description": "Function for setting HTTP headers to serve with the file."
-						}
-					},
-					"additionalProperties": false
-				}
-			},
-			"additionalProperties": false
-		},
-		"cors": {
-			"type": "object",
-			"title": "CORS",
-			"required": ["allow_origins"],
-			"properties": {
-				"allow_origins": {
-					"type": "array",
-					"items": {
-						"type": "string"
-					},
-					"title": "許可するオリジン"
-				}
-			},
-			"additionalProperties": false
-		},
 		"response": {
 			"type": "object",
 			"title": "レスポンス",
-			"required": ["mime", "header", "compression"],
+			"required": ["header", "compression"],
 			"properties": {
-				"mime": {
-					"type": "object",
-					"title": "MIME と拡張子の紐付け"
-				},
 				"header": {
 					"type": "object",
 					"title": "レスポンスヘッダー",
@@ -147,6 +51,141 @@
 						}
 					},
 					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"static": {
+			"type": "object",
+			"title": "静的ファイル",
+			"required": ["root", "headers"],
+			"properties": {
+				"root": {
+					"type": "string",
+					"title": "ルートディレクトリ"
+				},
+				"extensions": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"title": "ファイル拡張子のフォールバック（拡張子に . は付けない）"
+				},
+				"indexes": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"title": "ディレクトリのインデックスファイル名"
+				},
+				"headers": {
+					"type": "object",
+					"title": "レスポンスヘッダー関連",
+					"required": ["mime"],
+					"properties": {
+						"mime": {
+							"type": "object",
+							"required": ["path", "extension"],
+							"title": "MIME 定義",
+							"properties": {
+								"path": {
+									"type": "object",
+									"title": "MIME とファイルパスの紐付け"
+								},
+								"extension": {
+									"type": "object",
+									"title": "MIME と拡張子の紐付け"
+								}
+							},
+							"additionalProperties": false
+						},
+						"cache_control": {
+							"type": "object",
+							"required": ["default", "path", "extension"],
+							"title": "キャッシュ定義",
+							"properties": {
+								"default": {
+									"type": "string",
+									"title": "デフォルト値"
+								},
+								"path": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"required": ["paths", "value"],
+										"properties": {
+											"paths": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												},
+												"title": "拡張子"
+											},
+											"value": {
+												"type": "string",
+												"title": "値"
+											}
+										},
+										"additionalProperties": false
+									},
+									"title": "ファイルパスによるキャッシュ定義"
+								},
+								"extension": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"required": ["extensions", "value"],
+										"properties": {
+											"extensions": {
+												"type": "array",
+												"items": {
+													"type": "string"
+												},
+												"title": "拡張子"
+											},
+											"value": {
+												"type": "string",
+												"title": "値"
+											}
+										},
+										"additionalProperties": false
+									},
+									"title": "拡張子によるキャッシュ定義"
+								}
+							},
+							"additionalProperties": false
+						},
+						"source_map": {
+							"type": "object",
+							"title": "SourceMap 定義",
+							"properties": {
+								"extensions": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									},
+									"title": "拡張子"
+								}
+							},
+							"additionalProperties": false
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"cors": {
+			"type": "object",
+			"title": "CORS",
+			"required": ["allow_origins"],
+			"properties": {
+				"allow_origins": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"title": "許可するオリジン"
 				}
 			},
 			"additionalProperties": false

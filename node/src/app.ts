@@ -22,7 +22,7 @@ Log4js.configure(config.logger.path);
 const logger = Log4js.getLogger();
 
 /* Express 設定 */
-Express.static.mime.define(<TypeMap>config.response.mime); // 静的ファイルの MIME
+Express.static.mime.define(<TypeMap>config.static.headers.mime.extension); // 静的ファイルの MIME
 
 const app = Express();
 
@@ -33,58 +33,95 @@ app.set('view engine', 'ejs');
 app.use((req, res, next) => {
 	const requestUrl = req.url;
 
-	const css = /^\/style\/.+\.css$/.test(requestUrl);
-	const js = /^\/script\/.+\.m?js$/.test(requestUrl);
-	const svg = requestUrl.endsWith('.svg');
-	const feed = ['/feed'].includes(requestUrl);
-	const api = /^\/api\//.test(requestUrl);
-	const html = !feed && !api && /(^\/[^.]*$)|(\.x?html$)/.test(requestUrl);
+	let requestFilePath: string | undefined; // 実ファイルパス
+	if (requestUrl.endsWith('/')) {
+		/* ディレクトリトップ（e.g. /foo/ ） */
+		const fileName = config.static.indexes?.find((name) => fs.existsSync(`${config.static.root}/${requestUrl}${name}`));
+		if (fileName !== undefined) {
+			requestFilePath = `${requestUrl}${fileName}`;
+		}
+	} else if (path.extname(requestUrl) === '') {
+		/* 拡張子のない URL（e.g. /foo ） */
+		const extension = config.static.extensions?.find((ext) => fs.existsSync(`${config.static.root}/${requestUrl}.${ext}`));
+		if (extension !== undefined) {
+			requestFilePath = `${requestUrl}.${extension}`;
+		}
+	} else {
+		/* 拡張子のある URL（e.g. /foo.txt ） */
+		requestFilePath = requestUrl;
+	}
+
+	const mimeOfPath = Object.entries(<{ [key: string]: string[] }>config.static.headers.mime.path).find(
+		([, paths]) => requestFilePath !== undefined && paths.includes(requestFilePath)
+	)?.[0]; // ファイルパスから決定される MIME
+	const mimeOfExtension = Object.entries(<TypeMap>config.static.headers.mime.extension).find(
+		([, extensions]) => requestFilePath !== undefined && extensions.includes(path.extname(requestFilePath).substring(1))
+	)?.[0]; // 拡張子から決定される MIME
+	const mime = mimeOfPath ?? mimeOfExtension;
+
+	/* 特殊なファイルパスの MIME */
+	if (mimeOfPath !== undefined) {
+		logger.debug('Content-Type', `${requestUrl} - ${mimeOfPath}`);
+
+		res.setHeader('Content-Type', mimeOfPath);
+	}
 
 	/* HSTS */
 	res.setHeader('Strict-Transport-Security', config.response.header.hsts);
 
 	/* CSP */
-	if (html) {
+	if (requestFilePath === undefined || (!/^\/api\//.test(requestUrl) && ['.html', '.xhtml'].some((ext) => requestFilePath?.endsWith(ext)))) {
 		res.setHeader('Content-Security-Policy', config.response.header.csp_html);
 		res.setHeader('Content-Security-Policy-Report-Only', config.response.header.cspro_html);
 	} else {
 		res.setHeader('Content-Security-Policy', config.response.header.csp);
 	}
 
-	/* ソースマップ */
-	if (css || js) {
-		res.setHeader('SourceMap', `${path.basename(requestUrl)}.map`);
-	}
-
-	/* Brotli */
-	if (req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
-		/* Brotli の拡張子 */
-		const BROTLI_EXTENTION = '.br';
-
-		if (css) {
-			req.url = `${requestUrl}${BROTLI_EXTENTION}`;
-			res.setHeader('Content-Type', 'text/css; charset=UTF-8');
-			res.setHeader('Content-Encoding', 'br');
-		} else if (js) {
-			req.url = `${requestUrl}${BROTLI_EXTENTION}`;
-			res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
-			res.setHeader('Content-Encoding', 'br');
-		} else if (svg) {
-			const brotliFilePath = `${requestUrl}${BROTLI_EXTENTION}`;
-			if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
-				req.url = brotliFilePath;
-				res.setHeader('Content-Type', 'image/svg+xml; charset=UTF-8');
-				res.setHeader('Content-Encoding', 'br');
-			}
-		} else if (feed) {
-			req.url = `${requestUrl}.atom${BROTLI_EXTENTION}`;
-			res.setHeader('Content-Type', 'application/atom+xml; charset=UTF-8');
-			res.setHeader('Content-Encoding', 'br');
-		}
-	}
-
 	/* MIME スニッフィング抑止 */
 	res.setHeader('X-Content-Type-Options', 'nosniff');
+
+	// if (req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
+	// 	/* Brotli の拡張子 */
+	// 	const BROTLI_EXTENTION = '.br';
+
+	// 	if (css) {
+	// 		req.url = `${requestUrl}${BROTLI_EXTENTION}`;
+	// 		res.setHeader('Content-Type', 'text/css; charset=UTF-8');
+	// 		res.setHeader('Content-Encoding', 'br');
+	// 	} else if (js) {
+	// 		req.url = `${requestUrl}${BROTLI_EXTENTION}`;
+	// 		res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+	// 		res.setHeader('Content-Encoding', 'br');
+	// 	} else if (svg) {
+	// 		const brotliFilePath = `${requestUrl}${BROTLI_EXTENTION}`;
+	// 		if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
+	// 			req.url = brotliFilePath;
+	// 			res.setHeader('Content-Type', 'image/svg+xml; charset=UTF-8');
+	// 			res.setHeader('Content-Encoding', 'br');
+	// 		}
+	// 	} else if (feed) {
+	// 		req.url = `${requestUrl}.atom${BROTLI_EXTENTION}`;
+	// 		res.setHeader('Content-Type', 'application/atom+xml; charset=UTF-8');
+	// 		res.setHeader('Content-Encoding', 'br');
+	// 	}
+	// }
+	/* Brotli */
+	if (requestFilePath !== undefined && req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
+		const BROTLI_EXTENTION = '.br'; // Brotli ファイルの拡張子
+
+		const brotliFilePath = `${requestFilePath}${BROTLI_EXTENTION}`;
+		if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
+			if (mime === undefined) {
+				logger.error('MIME が未定義のファイル', requestFilePath);
+			} else {
+				logger.debug('Brotli', requestFilePath);
+
+				req.url = `${requestFilePath}${BROTLI_EXTENTION}`;
+				res.setHeader('Content-Type', mime);
+				res.setHeader('Content-Encoding', 'br');
+			}
+		}
+	}
 
 	next();
 });
@@ -96,9 +133,46 @@ app.use(
 app.use(Express.urlencoded({ limit: 1000000 })); // 1MB
 app.use(
 	Express.static(config.static.root, {
-		extensions: config.static.options.extensions,
-		index: config.static.options.index,
-		maxAge: config.static.options.max_age,
+		extensions: config.static.extensions,
+		index: config.static.indexes,
+		setHeaders: (res, localPath) => {
+			const BROTLI_EXTENTION = '.br'; // Brotli ファイルの拡張子
+
+			const req = <Request>res.req; // TODO:
+			const requestUrl = req.url;
+			const requestUrlOrigin = requestUrl.endsWith(BROTLI_EXTENTION) ? requestUrl.substring(0, requestUrl.length - BROTLI_EXTENTION.length) : requestUrl;
+			const localPathOrigin = localPath.endsWith(BROTLI_EXTENTION) ? localPath.substring(0, localPath.length - BROTLI_EXTENTION.length) : localPath; // 元ファイル（圧縮ファイルではない）の絶対パス
+			const extensionOrigin = path.extname(localPathOrigin); // 元ファイルの拡張子
+
+			logger.debug('requestUrlOrigin', requestUrlOrigin);
+			logger.debug('localPathOrigin', localPathOrigin);
+
+			/* Cache */
+			if (config.static.headers.cache_control !== undefined) {
+				const cacheControlValue =
+					config.static.headers.cache_control.path.find((path) => path.paths.includes(requestUrlOrigin))?.value ??
+					config.static.headers.cache_control.extension.find((ext) => ext.extensions.includes(extensionOrigin))?.value ??
+					config.static.headers.cache_control.default;
+
+				logger.debug('Cache-Control', `${requestUrlOrigin} - ${cacheControlValue}`);
+
+				res.setHeader('Cache-Control', cacheControlValue);
+			}
+
+			/* SourceMap */
+			if (config.static.headers.source_map?.extensions?.includes(extensionOrigin)) {
+				const MAP_EXTENTION = '.map'; // ソースマップファイルの拡張子
+
+				const mapFilePath = `${localPathOrigin}${MAP_EXTENTION}`;
+				if (fs.existsSync(mapFilePath)) {
+					const mapFileUrl = path.basename(mapFilePath);
+
+					logger.debug('SourceMap', mapFileUrl);
+
+					res.setHeader('SourceMap', mapFileUrl);
+				}
+			}
+		},
 	})
 );
 

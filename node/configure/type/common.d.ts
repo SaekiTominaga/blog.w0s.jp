@@ -6,118 +6,98 @@
  */
 
 export type HTTP = number;
-export type NoName2 = string;
-/**
- * Determines how dotfiles (files or directories that begin with a dot “.”) are treated.
- */
-export type Dotfiles = number;
-/**
- * Enable or disable etag generation
- */
-export type Etag = boolean;
-/**
- * Sets file extension fallbacks: If a file is not found, search for files with the specified extensions and serve the first one found. Example: ['html', 'htm'].
- */
-export type Extensions = string[];
-/**
- * Let client errors fall-through as unhandled requests, otherwise forward a client error.
- */
-export type Fallthrough = boolean;
-/**
- * Enable or disable the immutable directive in the Cache-Control response header. If enabled, the maxAge option should also be specified to enable caching. The immutable directive will prevent supported clients from making conditional requests during the life of the maxAge option to check if the file has changed.
- */
-export type Immutable = boolean;
-/**
- * Sends the specified directory index file. Set to false to disable directory indexing.
- */
-export type Index = string[];
-/**
- * Set the Last-Modified header to the last modified date of the file on the OS.
- */
-export type LastModified = boolean;
-/**
- * Set the max-age property of the Cache-Control header in milliseconds or a string in ms format.
- */
-export type MaxAge = string;
-/**
- * Redirect to trailing “/” when the pathname is a directory.
- */
-export type Redirect = boolean;
-export type NoName4 = string[];
 export type StrictTransportSecurity = string;
 export type ContentSecurityPolicyHTML = string;
 export type ContentSecurityPolicyHTML1 = string;
 export type ContentSecurityPolicyReportOnlyHTML = string;
 export type Threshold = string;
-export type NoName8 = string;
+export type NoName5 = string;
+export type NoName6 = string[];
+export type NoName7 = string[];
+export type NoName10 = string;
+export type NoName12 = string[];
+export type NoName13 = string;
+export type NoName11 = {
+  paths: NoName12;
+  value: NoName13;
+}[];
+export type NoName15 = string[];
+export type NoName16 = string;
+export type NoName14 = {
+  extensions: NoName15;
+  value: NoName16;
+}[];
+export type NoName17 = string[];
+export type NoName18 = string[];
+export type NoName19 = string;
 export type FilepathFor401Unauthorized = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
-export type NoName10 = string;
+export type NoName21 = string;
 export type Blog = string;
 
 export interface NoName {
   port: HTTP;
-  static: NoName1;
+  response: NoName1;
+  static: NoName4;
   cors: CORS;
-  response: NoName5;
-  views: NoName8;
-  errorpage: NoName9;
+  views: NoName19;
+  errorpage: NoName20;
   logger: Logger;
   sqlite: SQLite;
 }
 export interface NoName1 {
-  root: NoName2;
-  options: NoName3;
+  header: NoName2;
+  compression: NoName3;
 }
-/**
- * https://expressjs.com/ja/4x/api.html#express.static
- */
-export interface NoName3 {
-  dotfiles?: Dotfiles;
-  etag?: Etag;
-  extensions?: Extensions;
-  fallthrough?: Fallthrough;
-  immutable?: Immutable;
-  index?: Index;
-  last_modified?: LastModified;
-  max_age?: MaxAge;
-  redirect?: Redirect;
-  set_headers?: SetHeaders;
-}
-/**
- * Function for setting HTTP headers to serve with the file.
- */
-export interface SetHeaders {
-  [k: string]: unknown;
-}
-export interface CORS {
-  allow_origins: NoName4;
-}
-export interface NoName5 {
-  mime: MIME;
-  header: NoName6;
-  compression: NoName7;
-}
-export interface MIME {
-  [k: string]: unknown;
-}
-export interface NoName6 {
+export interface NoName2 {
   hsts: StrictTransportSecurity;
   csp: ContentSecurityPolicyHTML;
   csp_html: ContentSecurityPolicyHTML1;
   cspro_html: ContentSecurityPolicyReportOnlyHTML;
 }
-export interface NoName7 {
+export interface NoName3 {
   threshold: Threshold;
 }
+export interface NoName4 {
+  root: NoName5;
+  extensions?: NoName6;
+  indexes?: NoName7;
+  headers: NoName8;
+}
+export interface NoName8 {
+  mime: MIME;
+  cache_control?: NoName9;
+  source_map?: SourceMap;
+}
+export interface MIME {
+  path: MIME1;
+  extension: MIME2;
+}
+export interface MIME1 {
+  [k: string]: unknown;
+}
+export interface MIME2 {
+  [k: string]: unknown;
+}
 export interface NoName9 {
+  default: NoName10;
+  path: NoName11;
+  extension: NoName14;
+}
+export interface SourceMap {
+  extensions?: NoName17;
+}
+export interface CORS {
+  allow_origins: NoName18;
+}
+export interface NoName20 {
   path_401: FilepathFor401Unauthorized;
   path_403: FilepathFor403Forbidden;
   path_404: FilepathFor404NotFound;
 }
 export interface Logger {
-  path: NoName10;
+  path: NoName21;
 }
 export interface SQLite {
   db: DBNode;
