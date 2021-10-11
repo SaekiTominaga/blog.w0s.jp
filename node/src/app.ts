@@ -80,31 +80,6 @@ app.use((req, res, next) => {
 	/* MIME スニッフィング抑止 */
 	res.setHeader('X-Content-Type-Options', 'nosniff');
 
-	// if (req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
-	// 	/* Brotli の拡張子 */
-	// 	const BROTLI_EXTENTION = '.br';
-
-	// 	if (css) {
-	// 		req.url = `${requestUrl}${BROTLI_EXTENTION}`;
-	// 		res.setHeader('Content-Type', 'text/css; charset=UTF-8');
-	// 		res.setHeader('Content-Encoding', 'br');
-	// 	} else if (js) {
-	// 		req.url = `${requestUrl}${BROTLI_EXTENTION}`;
-	// 		res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
-	// 		res.setHeader('Content-Encoding', 'br');
-	// 	} else if (svg) {
-	// 		const brotliFilePath = `${requestUrl}${BROTLI_EXTENTION}`;
-	// 		if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
-	// 			req.url = brotliFilePath;
-	// 			res.setHeader('Content-Type', 'image/svg+xml; charset=UTF-8');
-	// 			res.setHeader('Content-Encoding', 'br');
-	// 		}
-	// 	} else if (feed) {
-	// 		req.url = `${requestUrl}.atom${BROTLI_EXTENTION}`;
-	// 		res.setHeader('Content-Type', 'application/atom+xml; charset=UTF-8');
-	// 		res.setHeader('Content-Encoding', 'br');
-	// 	}
-	// }
 	/* Brotli */
 	if (requestFilePath !== undefined && req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
 		const BROTLI_EXTENTION = '.br'; // Brotli ファイルの拡張子
