@@ -113,7 +113,7 @@ app.use(
 		setHeaders: (res, localPath) => {
 			const BROTLI_EXTENTION = '.br'; // Brotli ファイルの拡張子
 
-			const req = <Request>res.req; // TODO:
+			const req = res.req;
 			const requestUrl = req.url;
 			const requestUrlOrigin = requestUrl.endsWith(BROTLI_EXTENTION) ? requestUrl.substring(0, requestUrl.length - BROTLI_EXTENTION.length) : requestUrl;
 			const localPathOrigin = localPath.endsWith(BROTLI_EXTENTION) ? localPath.substring(0, localPath.length - BROTLI_EXTENTION.length) : localPath; // 元ファイル（圧縮ファイルではない）の絶対パス
