@@ -96,7 +96,7 @@ export default class TopicController extends Controller implements ControllerInt
 				lastUpdated: topicDataDto.last_update !== null ? dayjs(topicDataDto.last_update) : null,
 
 				ogImage: ogImage,
-				tweet: messageParser.isTweetExit,
+				tweet: messageParser.isTweetExit(),
 
 				categories: categoryDataListDto.map((categoryData) => categoryData.name),
 				relations: relationDataList,
