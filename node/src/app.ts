@@ -21,9 +21,6 @@ const config = <Configure>JSON.parse(fs.readFileSync('node/configure/common.json
 Log4js.configure(config.logger.path);
 const logger = Log4js.getLogger();
 
-/* Express 設定 */
-Express.static.mime.define(<TypeMap>config.static.headers.mime.extension); // 静的ファイルの MIME
-
 const app = Express();
 
 app.set('x-powered-by', false);
@@ -51,6 +48,7 @@ app.use((req, res, next) => {
 		requestFilePath = requestUrl;
 	}
 
+	/* Content-Type */
 	const mimeOfPath = Object.entries(<{ [key: string]: string[] }>config.static.headers.mime.path).find(
 		([, paths]) => requestFilePath !== undefined && paths.includes(requestFilePath)
 	)?.[0]; // ファイルパスから決定される MIME
@@ -59,11 +57,25 @@ app.use((req, res, next) => {
 	)?.[0]; // 拡張子から決定される MIME
 	const mime = mimeOfPath ?? mimeOfExtension;
 
-	/* 特殊なファイルパスの MIME */
-	if (mimeOfPath !== undefined) {
-		logger.debug('Content-Type', `${requestUrl} - ${mimeOfPath}`);
+	if (mime === undefined) {
+		logger.info('MIME が未定義のファイル', requestUrl);
+	} else {
+		logger.debug('Content-Type', `${requestUrl} - ${mime}`);
 
-		res.setHeader('Content-Type', mimeOfPath);
+		res.setHeader('Content-Type', mime);
+	}
+
+	/* Brotli */
+	if (requestFilePath !== undefined && req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
+		const BROTLI_EXTENTION = '.br'; // Brotli ファイルの拡張子
+
+		const brotliFilePath = `${requestFilePath}${BROTLI_EXTENTION}`;
+		if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
+			logger.debug('Brotli', requestFilePath);
+
+			req.url = `${requestFilePath}${BROTLI_EXTENTION}`;
+			res.setHeader('Content-Encoding', 'br');
+		}
 	}
 
 	/* HSTS */
@@ -80,24 +92,6 @@ app.use((req, res, next) => {
 	/* MIME スニッフィング抑止 */
 	res.setHeader('X-Content-Type-Options', 'nosniff');
 
-	/* Brotli */
-	if (requestFilePath !== undefined && req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
-		const BROTLI_EXTENTION = '.br'; // Brotli ファイルの拡張子
-
-		const brotliFilePath = `${requestFilePath}${BROTLI_EXTENTION}`;
-		if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
-			if (mime === undefined) {
-				logger.error('MIME が未定義のファイル', requestFilePath);
-			} else {
-				logger.debug('Brotli', requestFilePath);
-
-				req.url = `${requestFilePath}${BROTLI_EXTENTION}`;
-				res.setHeader('Content-Type', mime);
-				res.setHeader('Content-Encoding', 'br');
-			}
-		}
-	}
-
 	next();
 });
 app.use(
@@ -113,8 +107,7 @@ app.use(
 		setHeaders: (res, localPath) => {
 			const BROTLI_EXTENTION = '.br'; // Brotli ファイルの拡張子
 
-			const req = res.req;
-			const requestUrl = req.url;
+			const requestUrl = res.req.url;
 			const requestUrlOrigin = requestUrl.endsWith(BROTLI_EXTENTION) ? requestUrl.substring(0, requestUrl.length - BROTLI_EXTENTION.length) : requestUrl;
 			const localPathOrigin = localPath.endsWith(BROTLI_EXTENTION) ? localPath.substring(0, localPath.length - BROTLI_EXTENTION.length) : localPath; // 元ファイル（圧縮ファイルではない）の絶対パス
 			const extensionOrigin = path.extname(localPathOrigin); // 元ファイルの拡張子
