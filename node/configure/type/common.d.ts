@@ -14,26 +14,28 @@ export type Threshold = string;
 export type NoName5 = string;
 export type NoName6 = string[];
 export type NoName7 = string[];
-export type NoName10 = string;
-export type NoName12 = string[];
-export type NoName13 = string;
-export type NoName11 = {
-  paths: NoName12;
-  value: NoName13;
-}[];
-export type NoName15 = string[];
-export type NoName16 = string;
-export type NoName14 = {
-  extensions: NoName15;
-  value: NoName16;
+export type NoName9 = string[];
+export type NoName10 = string[];
+export type NoName12 = string;
+export type NoName14 = string[];
+export type NoName15 = string;
+export type NoName13 = {
+  paths: NoName14;
+  value: NoName15;
 }[];
 export type NoName17 = string[];
-export type NoName18 = string[];
-export type NoName19 = string;
+export type NoName18 = string;
+export type NoName16 = {
+  extensions: NoName17;
+  value: NoName18;
+}[];
+export type NoName19 = string[];
+export type NoName20 = string[];
+export type NoName21 = string;
 export type FilepathFor401Unauthorized = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
-export type NoName21 = string;
+export type NoName23 = string;
 export type Blog = string;
 
 export interface NoName {
@@ -41,8 +43,8 @@ export interface NoName {
   response: NoName1;
   static: NoName4;
   cors: CORS;
-  views: NoName19;
-  errorpage: NoName20;
+  views: NoName21;
+  errorpage: NoName22;
   logger: Logger;
   sqlite: SQLite;
 }
@@ -67,7 +69,7 @@ export interface NoName4 {
 }
 export interface NoName8 {
   mime: MIME;
-  cache_control?: NoName9;
+  cache_control?: NoName11;
   source_map?: SourceMap;
 }
 export interface MIME {
@@ -75,29 +77,29 @@ export interface MIME {
   extension: MIME2;
 }
 export interface MIME1 {
-  [k: string]: unknown;
+  [k: string]: NoName9;
 }
 export interface MIME2 {
-  [k: string]: unknown;
+  [k: string]: NoName10;
 }
-export interface NoName9 {
-  default: NoName10;
-  path: NoName11;
-  extension: NoName14;
+export interface NoName11 {
+  default: NoName12;
+  path: NoName13;
+  extension: NoName16;
 }
 export interface SourceMap {
-  extensions?: NoName17;
+  extensions?: NoName19;
 }
 export interface CORS {
-  allow_origins: NoName18;
+  allow_origins: NoName20;
 }
-export interface NoName20 {
+export interface NoName22 {
   path_401: FilepathFor401Unauthorized;
   path_403: FilepathFor403Forbidden;
   path_404: FilepathFor404NotFound;
 }
 export interface Logger {
-  path: NoName21;
+  path: NoName23;
 }
 export interface SQLite {
   db: DBNode;

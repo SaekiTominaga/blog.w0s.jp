@@ -12,7 +12,6 @@ import path from 'path';
 import TopicController from './controller/TopicController.js';
 import TweetController from './controller/api/TweetController.js';
 import { NoName as Configure } from '../configure/type/common.js';
-import { TypeMap } from 'mime';
 
 /* 設定ファイル読み込み */
 const config = <Configure>JSON.parse(fs.readFileSync('node/configure/common.json', 'utf8'));
@@ -49,10 +48,8 @@ app.use((req, res, next) => {
 	}
 
 	/* Content-Type */
-	const mimeOfPath = Object.entries(<{ [key: string]: string[] }>config.static.headers.mime.path).find(
-		([, paths]) => requestFilePath !== undefined && paths.includes(requestFilePath)
-	)?.[0]; // ファイルパスから決定される MIME
-	const mimeOfExtension = Object.entries(<TypeMap>config.static.headers.mime.extension).find(
+	const mimeOfPath = Object.entries(config.static.headers.mime.path).find(([, paths]) => requestFilePath !== undefined && paths.includes(requestFilePath))?.[0]; // ファイルパスから決定される MIME
+	const mimeOfExtension = Object.entries(config.static.headers.mime.extension).find(
 		([, extensions]) => requestFilePath !== undefined && extensions.includes(path.extname(requestFilePath).substring(1))
 	)?.[0]; // 拡張子から決定される MIME
 	const mime = mimeOfPath ?? mimeOfExtension;

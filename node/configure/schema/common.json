@@ -90,11 +90,25 @@
 							"properties": {
 								"path": {
 									"type": "object",
-									"title": "MIME とファイルパスの紐付け"
+									"title": "MIME とファイルパスの紐付け",
+									"additionalProperties": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"title": "ファイルパス"
+									}
 								},
 								"extension": {
 									"type": "object",
-									"title": "MIME と拡張子の紐付け"
+									"title": "MIME と拡張子の紐付け",
+									"additionalProperties": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"title": "拡張子（ドットなし）"
+									}
 								}
 							},
 							"additionalProperties": false
