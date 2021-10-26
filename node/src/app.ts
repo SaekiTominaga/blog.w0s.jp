@@ -98,7 +98,11 @@ app.use(
 		threshold: config.response.compression.threshold,
 	})
 );
-app.use(Express.urlencoded({ limit: 1000000 })); // 1MB
+app.use(
+	Express.urlencoded({
+		extended: true,
+	})
+);
 app.use(
 	Express.static(config.static.root, {
 		extensions: config.static.extensions,
