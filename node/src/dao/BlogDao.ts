@@ -84,7 +84,7 @@ export default class BlogDao {
 	/**
 	 * 最終更新日時を取得する
 	 *
-	 * @returns {Array} 最終更新日時
+	 * @returns {Date} 最終更新日時
 	 */
 	async getLastModified(): Promise<Date> {
 		const dbh = await this.getDbh();
@@ -94,6 +94,9 @@ export default class BlogDao {
 				modified
 			FROM
 				d_info
+			ORDER BY
+				modified DESC
+			LIMIT 1
 		`);
 		const row = await sth.get();
 		await sth.finalize();
