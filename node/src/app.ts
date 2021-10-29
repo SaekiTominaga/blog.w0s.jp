@@ -22,6 +22,11 @@ const logger = Log4js.getLogger();
 
 const app = Express();
 
+const EXTENTIONS: { readonly [s: string]: string } = {
+	brotli: '.br',
+	map: '.map',
+}; // 静的ファイル拡張子の定義
+
 app.set('x-powered-by', false);
 app.set('trust proxy', true);
 app.set('views', config.views);
@@ -44,35 +49,16 @@ app.use((req, res, next) => {
 		}
 	} else {
 		/* 拡張子のある URL（e.g. /foo.txt ） */
-		requestFilePath = requestPath;
-	}
-
-	/* Content-Type */
-	const mimeOfPath = Object.entries(config.static.headers.mime.path).find(([, paths]) => requestFilePath !== undefined && paths.includes(requestFilePath))?.[0]; // ファイルパスから決定される MIME
-	const mimeOfExtension = Object.entries(config.static.headers.mime.extension).find(
-		([, extensions]) => requestFilePath !== undefined && extensions.includes(path.extname(requestFilePath).substring(1))
-	)?.[0]; // 拡張子から決定される MIME
-	const mime = mimeOfPath ?? mimeOfExtension;
-
-	if (mime === undefined) {
-		if (requestFilePath !== undefined) {
-			logger.info('MIME が未定義のファイル', requestPath);
+		if (fs.existsSync(`${config.static.root}/${requestPath}`)) {
+			requestFilePath = requestPath;
 		}
-	} else {
-		logger.debug('Content-Type', `${requestPath} - ${mime}`);
-
-		res.setHeader('Content-Type', mime);
 	}
 
 	/* Brotli */
 	if (requestFilePath !== undefined && req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
-		const BROTLI_EXTENTION = '.br'; // Brotli ファイルの拡張子
-
-		const brotliFilePath = `${requestFilePath}${BROTLI_EXTENTION}`;
+		const brotliFilePath = `${requestFilePath}${EXTENTIONS.brotli}`;
 		if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
-			logger.debug('Brotli', requestFilePath);
-
-			req.url = `${requestFilePath}${BROTLI_EXTENTION}`;
+			req.url = brotliFilePath;
 			res.setHeader('Content-Encoding', 'br');
 		}
 	}
@@ -108,39 +94,35 @@ app.use(
 		extensions: config.static.extensions,
 		index: config.static.indexes,
 		setHeaders: (res, localPath) => {
-			const BROTLI_EXTENTION = '.br'; // Brotli ファイルの拡張子
+			const requestUrl = res.req.url; // リクエストパス e.g. ('/foo.html.br')
+			const requestUrlOrigin = requestUrl.endsWith(EXTENTIONS.brotli) ? requestUrl.substring(0, requestUrl.length - EXTENTIONS.brotli.length) : requestUrl; // 元ファイル（圧縮ファイルではない）のリクエストパス (e.g. '/foo.html')
+			const localPathOrigin = localPath.endsWith(EXTENTIONS.brotli) ? localPath.substring(0, localPath.length - EXTENTIONS.brotli.length) : localPath; // 元ファイルの絶対パス (e.g. '/var/www/public/foo.html')
+			const extensionOrigin = path.extname(localPathOrigin); // 元ファイルの拡張子 (e.g. '.html')
 
-			const requestUrl = res.req.url;
-			const requestUrlOrigin = requestUrl.endsWith(BROTLI_EXTENTION) ? requestUrl.substring(0, requestUrl.length - BROTLI_EXTENTION.length) : requestUrl;
-			const localPathOrigin = localPath.endsWith(BROTLI_EXTENTION) ? localPath.substring(0, localPath.length - BROTLI_EXTENTION.length) : localPath; // 元ファイル（圧縮ファイルではない）の絶対パス
-			const extensionOrigin = path.extname(localPathOrigin); // 元ファイルの拡張子
+			/* Content-Type */
+			const mime =
+				Object.entries(config.static.headers.mime.path).find(([, paths]) => paths.includes(requestUrlOrigin))?.[0] ??
+				Object.entries(config.static.headers.mime.extension).find(([, extensions]) => extensions.includes(extensionOrigin.substring(1)))?.[0];
+			if (mime === undefined) {
+				logger.error('MIME が未定義のファイル', requestUrlOrigin);
+			}
+			res.setHeader('Content-Type', mime ?? 'application/octet-stream');
 
-			logger.debug('requestUrlOrigin', requestUrlOrigin);
-			logger.debug('localPathOrigin', localPathOrigin);
-
-			/* Cache */
+			/* Cache-Control */
 			if (config.static.headers.cache_control !== undefined) {
 				const cacheControlValue =
 					config.static.headers.cache_control.path.find((path) => path.paths.includes(requestUrlOrigin))?.value ??
 					config.static.headers.cache_control.extension.find((ext) => ext.extensions.includes(extensionOrigin))?.value ??
 					config.static.headers.cache_control.default;
 
-				logger.debug('Cache-Control', `${requestUrlOrigin} - ${cacheControlValue}`);
-
 				res.setHeader('Cache-Control', cacheControlValue);
 			}
 
 			/* SourceMap */
 			if (config.static.headers.source_map?.extensions?.includes(extensionOrigin)) {
-				const MAP_EXTENTION = '.map'; // ソースマップファイルの拡張子
-
-				const mapFilePath = `${localPathOrigin}${MAP_EXTENTION}`;
+				const mapFilePath = `${localPathOrigin}${EXTENTIONS.map}`;
 				if (fs.existsSync(mapFilePath)) {
-					const mapFileUrl = path.basename(mapFilePath);
-
-					logger.debug('SourceMap', mapFileUrl);
-
-					res.setHeader('SourceMap', mapFileUrl);
+					res.setHeader('SourceMap', path.basename(mapFilePath));
 				}
 			}
 		},
