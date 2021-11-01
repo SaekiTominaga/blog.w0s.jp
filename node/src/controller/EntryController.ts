@@ -35,8 +35,6 @@ export default class EntryController extends Controller implements ControllerInt
 	async execute(req: Request, res: Response): Promise<void> {
 		const paramEntryId = Number(req.params.entry_id);
 
-		this.logger.debug('entry_id', paramEntryId);
-
 		const httpResponse = new HttpResponse(res, this.#configCommon);
 		const dao = new BlogEntryDao(this.#configCommon);
 
