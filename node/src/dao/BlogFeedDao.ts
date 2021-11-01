@@ -1,17 +1,17 @@
 import BlogDao from './BlogDao.js';
 
-interface TopicData {
+interface EntryData {
 	id: number;
 	title: string;
 	message: string;
-	date: Date;
-	last_update?: Date | null;
+	last_modified: Date;
+	update: boolean;
 }
 
 /**
- * 日記タイトル一覧
+ * フィード生成
  */
-export default class BlogListDao extends BlogDao {
+export default class BlogFeedDao extends BlogDao {
 	/**
 	 * 記事データを取得する
 	 *
@@ -19,7 +19,7 @@ export default class BlogListDao extends BlogDao {
 	 *
 	 * @returns {Array} 記事データ（該当する記事が存在しない場合は空配列）
 	 */
-	async getTopics(limit: number): Promise<TopicData[]> {
+	async getEntries(limit: number): Promise<EntryData[]> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -30,8 +30,8 @@ export default class BlogListDao extends BlogDao {
 				CASE
 					WHEN last_update IS NULL THEN insert_date
 					ELSE last_update
-				END AS date,
-				last_update
+				END AS last_modified,
+				last_update AS updated
 			FROM
 				d_topic
 			WHERE
@@ -50,17 +50,17 @@ export default class BlogListDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const topicDataList: TopicData[] = [];
+		const entries: EntryData[] = [];
 		for (const row of rows) {
-			topicDataList.push({
+			entries.push({
 				id: Number(row.id),
 				title: row.title,
 				message: row.message,
-				date: new Date(Number(row.date) * 1000),
-				last_update: row.last_update !== null ? new Date(Number(row.last_update) * 1000) : null,
+				last_modified: new Date(Number(row.last_modified) * 1000),
+				update: Boolean(row.updated),
 			});
 		}
 
-		return topicDataList;
+		return entries;
 	}
 }

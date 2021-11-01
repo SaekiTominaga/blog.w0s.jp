@@ -10,7 +10,7 @@ import Log4js from 'log4js';
 import MessagePreviewController from './controller/MessagePreviewController.js';
 import path from 'path';
 import SitemapCreateController from './controller/api/SitemapCreateController.js';
-import TopicController from './controller/TopicController.js';
+import EntryController from './controller/EntryController.js';
 import TweetController from './controller/api/TweetController.js';
 import { NoName as Configure } from '../configure/type/common.js';
 
@@ -144,9 +144,9 @@ app.get(['/', '/list/:page([1-9][0-9]{0,1})'], async (req, res, next) => {
 /**
  * 記事
  */
-app.get('/:topic_id([1-9][0-9]{0,2})', async (req, res, next) => {
+app.get('/:entry_id([1-9][0-9]{0,2})', async (req, res, next) => {
 	try {
-		await new TopicController(config).execute(req, res);
+		await new EntryController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -186,7 +186,7 @@ const corsCallback = cors({
 });
 
 /**
- * API・フィード作成
+ * API・フィード生成
  */
 app.put('/feed.atom', async (req, res, next) => {
 	try {
@@ -197,7 +197,7 @@ app.put('/feed.atom', async (req, res, next) => {
 });
 
 /**
- * API・サイトマップ作成
+ * API・サイトマップ生成
  */
 app.put('/sitemap.xml', async (req, res, next) => {
 	try {

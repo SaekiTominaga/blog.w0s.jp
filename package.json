@@ -21,7 +21,7 @@
 		"config:validate:common": "ajv --spec=draft7 -s node/configure/schema/common.json -d node/configure/common.json",
 		"config:validate:list": "ajv --spec=draft7 -s node/configure/schema/list.json -d node/configure/list.json",
 		"config:validate:message-preview": "ajv --spec=draft7 -s node/configure/schema/message-preview.json -d node/configure/message-preview.json",
-		"config:validate:topic": "ajv --spec=draft7 -s node/configure/schema/topic.json -d node/configure/topic.json",
+		"config:validate:entry": "ajv --spec=draft7 -s node/configure/schema/entry.json -d node/configure/entry.json",
 		"config:validate:category": "ajv --spec=draft7 -s node/configure/schema/category.json -d node/configure/category.json",
 		"config:validate:twitter": "ajv --spec=draft7 -s node/configure/schema/twitter.json -d node/configure/twitter.json",
 		"config:validate:paapi": "ajv --spec=draft7 -s node/configure/schema/paapi.json -d node/configure/paapi.json",
@@ -40,7 +40,7 @@
 		"_svg-all:build": "svgo -f image -o public/image --config=svgo.config.cjs",
 		"_svg-all:build-icon": "svgo -f image/icon -o public/image/icon --config=svgo.config.cjs",
 		"_svg-all:build-sidebar": "svgo -f image/sidebar -o public/image/sidebar --config=svgo.config.cjs",
-		"_svg-all:build-topic": "svgo -f image/topic -o public/image/topic --config=svgo.config.cjs",
+		"_svg-all:build-entry": "svgo -f image/entry -o public/image/entry --config=svgo.config.cjs",
 		"_svg-all:favicon": "move-file public/image/favicon.svg public/favicon.svg",
 		"_svg-all:compress": "brotlin compress public/**/*.svg -m 1",
 		"svg-all": "run-s _svg-all:*"

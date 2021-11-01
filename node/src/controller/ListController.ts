@@ -46,8 +46,8 @@ export default class ListController extends Controller implements ControllerInte
 		}
 
 		/* DB からデータ取得 */
-		const topicDataListDto = await dao.getTopics(paramPage, this.#config.maximum_number);
-		if (topicDataListDto.length === 0) {
+		const entriesDto = await dao.getEntries(paramPage, this.#config.maximum_number);
+		if (entriesDto.length === 0) {
 			this.logger.info(`無効なページが指定: ${paramPage}`);
 			httpResponse.send404();
 			return;
@@ -55,45 +55,43 @@ export default class ListController extends Controller implements ControllerInte
 
 		const sidebar = new Sidebar(dao);
 
-		Promise.all([dao.getTopicCount(), sidebar.getTopicCountOfCategory(), sidebar.getNewlyTopicData(this.#config.sidebar.newly.maximum_number)]).then(
-			(values) => {
-				const topicCount = values[0];
-				const topicCountOfCategoryListDto = values[1];
-				const newlyTopicDataListDto = values[2];
+		const [entryCount, entryCountOfCategoryListDto, newlyEntriesDto] = await Promise.all([
+			dao.getEntryCount(),
+			sidebar.getEntryCountOfCategory(),
+			sidebar.getNewlyEntries(this.#config.sidebar.newly.maximum_number),
+		]);
 
-				const topicDataList: BlogView.TopicData[] = [];
-				for (const topicData of topicDataListDto) {
-					let imageExternal = topicData.image_external;
-					if (imageExternal !== null && imageExternal.startsWith('https://m.media-amazon.com/')) {
-						/* Amazon 商品画像の場合 */
-						const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageExternal));
-						paapi5ItemImageUrlParser.setSize(this.#config.amazon_image_size);
+		const entries: BlogView.EntryData[] = [];
+		for (const entryDto of entriesDto) {
+			let imageExternal = entryDto.image_external;
+			if (imageExternal !== null && imageExternal.startsWith('https://m.media-amazon.com/')) {
+				/* Amazon 商品画像の場合 */
+				const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageExternal));
+				paapi5ItemImageUrlParser.setSize(this.#config.amazon_image_size);
 
-						imageExternal = paapi5ItemImageUrlParser.toString();
-					}
-
-					topicDataList.push({
-						id: topicData.id,
-						title: topicData.title,
-						image_internal: topicData.image_internal,
-						image_external: imageExternal,
-						insert_date: dayjs(topicData.insert_date),
-						last_update: topicData.last_update !== null ? dayjs(topicData.last_update) : null,
-					});
-				}
-
-				const totalPage = Math.ceil(topicCount / this.#config.maximum_number);
-
-				/* レンダリング */
-				res.render(this.#config.view.success, {
-					url: req.url,
-					page: paramPage,
-					totalPage: totalPage,
-					topicDataList: topicDataList,
-					topicCountOfCategoryList: topicCountOfCategoryListDto,
-					newlyTopicDataList: newlyTopicDataListDto,
-				});
+				imageExternal = paapi5ItemImageUrlParser.toString();
 			}
-		);
+
+			entries.push({
+				id: entryDto.id,
+				title: entryDto.title,
+				image_internal: entryDto.image_internal,
+				image_external: imageExternal,
+				insert_date: dayjs(entryDto.insert_date),
+				last_update: entryDto.last_update !== null ? dayjs(entryDto.last_update) : null,
+			});
+		}
+
+		const totalPage = Math.ceil(entryCount / this.#config.maximum_number);
+
+		/* レンダリング */
+		res.render(this.#config.view.success, {
+			url: req.url,
+			page: paramPage,
+			totalPage: totalPage,
+			entries: entries,
+			entryCountOfCategoryList: entryCountOfCategoryListDto,
+			newlyEntries: newlyEntriesDto,
+		});
 	}
 }

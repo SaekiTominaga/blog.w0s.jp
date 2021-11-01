@@ -1,8 +1,8 @@
-.c-topic-emphasis {
+.c-entry-emphasis {
 	font-weight: bold;
 }
 
-.c-topic-code {
+.c-entry-code {
 	padding: 0.25em;
 	border-radius: 0.25em;
 	color: #080;
@@ -11,7 +11,7 @@
 	font-weight: bold;
 }
 
-.c-topic-quote {
+.c-entry-quote {
 	background: linear-gradient(transparent, transparent 75%, #ff9 75%);
 	font-weight: bold;
 	quotes: "\201C""\201D""\2018""\2019";

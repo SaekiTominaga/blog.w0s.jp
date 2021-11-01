@@ -6,7 +6,7 @@ interface EntryData {
 }
 
 /**
- * サイトマップ
+ * サイトマップ生成
  */
 export default class BlogSitemapDao extends BlogDao {
 	/**

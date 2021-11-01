@@ -15,7 +15,7 @@ import { NoName as Configure } from '../../../configure/type/feed-create.js';
 import { Request, Response } from 'express';
 
 /**
- * フィード作成
+ * フィード生成
  */
 export default class FeedCreateController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
@@ -53,25 +53,25 @@ export default class FeedCreateController extends Controller implements Controll
 			return;
 		}
 
-		const feedFilePath = `${this.#configCommon.static.root}${req.url}`;
-		const brotliFilePath = `${feedFilePath}.br`;
-
 		const dao = new BlogFeedDao(this.#configCommon);
 
+		const entriesDto = await dao.getEntries(this.#config.maximum_number);
+
 		const entries: BlogView.FeedEntry[] = [];
-		for (const topicData of await dao.getTopics(this.#config.maximum_number)) {
-			const id = topicData.id;
+		for (const entryDto of entriesDto) {
+			const id = entryDto.id;
 
 			entries.push({
 				id: id,
-				title: topicData.title,
-				message: await new MessageParser(this.#configCommon, await dao.getDbh(), id).toXml(topicData.message),
-				last_updated: dayjs(topicData.date),
-				update: Boolean(topicData.last_update),
+				title: entryDto.title,
+				message: await new MessageParser(this.#configCommon, await dao.getDbh(), id).toXml(entryDto.message),
+				last_modified: dayjs(entryDto.last_modified),
+				update: entryDto.update,
 			});
 		}
 
 		const feedXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view_path}`, {
+			last_modified: entries[0].last_modified,
 			entries: entries,
 		});
 
@@ -89,9 +89,13 @@ export default class FeedCreateController extends Controller implements Controll
 					throw error;
 				}
 
-				await Promise.all([fs.promises.writeFile(feedFilePath, feedXml), fs.promises.writeFile(brotliFilePath, binary)]);
+				/* ファイル出力 */
+				const feedFilePath = `${this.#configCommon.static.root}${req.url}`;
+				const feedBrotliFilePath = `${feedFilePath}.br`;
+
+				await Promise.all([fs.promises.writeFile(feedFilePath, feedXml), fs.promises.writeFile(feedBrotliFilePath, binary)]);
 				this.logger.info(`Feed file created: ${feedFilePath}`);
-				this.logger.info(`Feed Brotli file created: ${brotliFilePath}`);
+				this.logger.info(`Feed Brotli file created: ${feedBrotliFilePath}`);
 			}
 		);
 

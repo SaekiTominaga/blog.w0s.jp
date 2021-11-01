@@ -161,7 +161,7 @@
 }
 
 /* ===== 日記記事リスト ===== */
-.p-sidebar-categories__topics-list {
+.p-sidebar-categories__entries-list {
 	border: solid #999;
 	border-width: 0 1px 1px;
 	font-size: calc(1rem / var(--font-ratio-2));
@@ -230,7 +230,7 @@
 }
 
 /* 件数 */
-.p-sidebar-categories__topic-count {
+.p-sidebar-categories__entry-count {
 	margin-left: 1em;
 	padding: 0.2em 0.5em;
 	border-radius: 0.5em;
@@ -243,19 +243,19 @@
 }
 
 /* 件数の数字 */
-.p-sidebar-categories__topic-num {
+.p-sidebar-categories__entry-num {
 	font-size: calc(1rem / var(--font-ratio-4));
 	font-weight: bold;
 }
 
 /* ===== 日記記事リスト ===== */
-.p-sidebar-topics {
+.p-sidebar-entries {
 	margin-top: 1.8em;
 	border: 1px solid #999;
 	border-radius: 0.3em 0.3em 0 0;
 }
 
-.p-sidebar-topics__hdg {
+.p-sidebar-entries__hdg {
 	margin-left: 10px;
 	padding: 0 0.5em;
 	display: inline-block;
@@ -265,7 +265,7 @@
 	font-weight: bold;
 }
 
-.p-sidebar-topics__list {
+.p-sidebar-entries__list {
 	margin-top: -0.8em;
 	font-size: calc(1rem / var(--font-ratio-2));
 	line-height: var(--line-height--narrow);

@@ -8,11 +8,11 @@
 @import "object/component/_link.css";
 @import "object/component/_embedded.css";
 
-@import "object/component/_topic.css";
+@import "object/component/_entry.css";
 
 /* Object - Project */
 @import "object/project/_header.css";
 @import "object/project/_main.css";
-@import "object/project/_topic.css";
+@import "object/project/_entry.css";
 @import "object/project/_sidebar.css";
 @import "object/project/_footer.css";

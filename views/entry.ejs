@@ -16,7 +16,7 @@
 		<meta property="og:image:width" content="360" />
 		<meta property="og:image:height" content="360" />
 		<% } %>
-		<meta property="og:url" content="https://blog.w0s.jp/<%= topicId %>" />
+		<meta property="og:url" content="https://blog.w0s.jp/<%= entryId %>" />
 		<meta property="og:locale" content="ja_JP" />
 		<meta property="og:site_name" content="富永日記帳" />
 		<% if (description !== null) { %>
@@ -44,17 +44,17 @@
 
 			<div id="main" class="l-main">
 				<main role="main" class="l-main__main">
-					<article role="article" class="p-topic" itemscope="" itemtype="http://schema.org/BlogPosting">
-						<header class="p-topic-header">
-							<h1 class="p-topic-title" itemprop="name"><%= title %></h1>
+					<article role="article" class="p-entry" itemscope="" itemtype="http://schema.org/BlogPosting">
+						<header class="p-entry-header">
+							<h1 class="p-entry-title" itemprop="name"><%= title %></h1>
 
-							<dl class="p-topic-date">
-								<div class="p-topic-date__date -insert">
+							<dl class="p-entry-date">
+								<div class="p-entry-date__date -insert">
 									<dt>投稿</dt>
 									<dd><time datetime="<%= insert.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="datePublished"><%= insert.format('YYYY年M月D日') %></time></dd>
 								</div>
 								<% if (lastUpdated !== null) { %>
-								<div class="p-topic-date__date -update">
+								<div class="p-entry-date__date -update">
 									<dt>最終更新</dt>
 									<dd><time datetime="<%= lastUpdated.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="dateModified"><%= lastUpdated.format('YYYY年M月D日') %></time></dd>
 								</div>
@@ -62,55 +62,55 @@
 							</dl>
 						</header>
 
-						<div class="p-topic-main" itemprop="articleBody"><%- message %></div>
+						<div class="p-entry-main" itemprop="articleBody"><%- message %></div>
 
-						<footer class="p-topic-footer">
-							<section class="p-topic-category">
-								<h2 class="p-topic-category__hdg">カテゴリ</h2>
+						<footer class="p-entry-footer">
+							<section class="p-entry-category">
+								<h2 class="p-entry-category__hdg">カテゴリ</h2>
 
-								<ul class="p-topic-category__list">
+								<ul class="p-entry-category__list">
 									<% for (const category of categories) { %>
 									<li><a href="/category/<%= encodeURI(category) %>" rel="tag"><%= category %></a></li>
 									<% } %>
 								</ul>
 							</section>
 
-							<div class="p-topic-social">
-								<ul class="p-topic-social__list">
+							<div class="p-entry-social">
+								<ul class="p-entry-social__list">
 									<li>
-										<a href="/feed" type="application/atom+xml" class="p-topic-social__button -feed"><img src="/image/icon/feed.svg" alt="" class="p-topic-social__button-icon" /> フィード</a>
+										<a href="/feed" type="application/atom+xml" class="p-entry-social__button -feed"><img src="/image/icon/feed.svg" alt="" class="p-entry-social__button-icon" /> フィード</a>
 									</li>
 									<li>
-										<a href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new?title=%5B<%= topicId %>%5D%20<%= encodeURI(title) %>" class="p-topic-social__button -issue"><img src="/image/icon/github.svg" alt="" class="p-topic-social__button-icon" /> Issue を立てる</a>
+										<a href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new?title=%5B<%= entryId %>%5D%20<%= encodeURI(title) %>" class="p-entry-social__button -issue"><img src="/image/icon/github.svg" alt="" class="p-entry-social__button-icon" /> Issue を立てる</a>
 									</li>
-									<li><button type="button" is="w0s-share-button" class="p-topic-social__button -share">記事のシェア</button></li>
+									<li><button type="button" is="w0s-share-button" class="p-entry-social__button -share">記事のシェア</button></li>
 								</ul>
 							</div>
 
 							<% if (relations.length > 0) { %>
-							<section class="p-topic-relation">
-								<h2 class="p-topic-relation__hdg">関連記事</h2>
+							<section class="p-entry-relation">
+								<h2 class="p-entry-relation__hdg">関連記事</h2>
 
-								<ul class="p-topic-relation__list">
+								<ul class="p-entry-relation__list">
 									<% for (const relation of relations) { %>
 									<li>
 										<a href="<%= relation.id %>">
-											<span class="p-topic-relation__thumb">
+											<span class="p-entry-relation__thumb">
 												<% if (relation.image_internal !== null) { %>
 												<picture>
 													<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=180;h=180;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=360;h=360;quality=30 2x" />
 													<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=180;h=180;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=360;h=360;quality=30 2x" />
-													<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=jpeg;w=180;h=180;quality=60" alt="" class="p-topic-relation__image" />
+													<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=jpeg;w=180;h=180;quality=60" alt="" class="p-entry-relation__image" />
 												</picture>
 												<% } else if (relation.image_external !== null) { %>
-												<img src="<%= relation.image_external %>" alt="" class="p-topic-relation__image" />
+												<img src="<%= relation.image_external %>" alt="" class="p-entry-relation__image" />
 												<% } else { %>
-												<img src="/image/noimage.svg" alt="" class="p-topic-relation__image" />
+												<img src="/image/noimage.svg" alt="" class="p-entry-relation__image" />
 												<% } %>
 											</span>
-											<span class="p-topic-relation__title"><%= relation.title %></span>
+											<span class="p-entry-relation__title"><%= relation.title %></span>
 										</a>
-										<p class="p-topic-relation__date">
+										<p class="p-entry-relation__date">
 											<time datetime="<%= relation.insert_date.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= relation.insert_date.format('YYYY年M月D日') %></time>
 										</p>
 									</li>

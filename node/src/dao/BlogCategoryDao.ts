@@ -1,6 +1,6 @@
 import BlogDao from './BlogDao.js';
 
-interface TopicData {
+interface Entry {
 	id: number;
 	title: string;
 	image_internal: string | null;
@@ -20,7 +20,7 @@ export default class BlogCategoryDao extends BlogDao {
 	 *
 	 * @returns {Array} 記事データ（該当する記事が存在しない場合は空配列）
 	 */
-	async getTopics(categoryName: string): Promise<TopicData[]> {
+	async getEntries(categoryName: string): Promise<Entry[]> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -50,9 +50,9 @@ export default class BlogCategoryDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const topicDataList: TopicData[] = [];
+		const entries: Entry[] = [];
 		for (const row of rows) {
-			topicDataList.push({
+			entries.push({
 				id: Number(row.id),
 				title: row.title,
 				image_internal: row.image_internal,
@@ -62,6 +62,6 @@ export default class BlogCategoryDao extends BlogDao {
 			});
 		}
 
-		return topicDataList;
+		return entries;
 	}
 }

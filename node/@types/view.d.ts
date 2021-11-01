@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 
 declare namespace BlogView {
-	export interface TopicData {
+	export interface EntryData {
 		id: number;
 		title: string;
 		message?: string;
@@ -16,7 +16,7 @@ declare namespace BlogView {
 		id: number;
 		title: string;
 		message: string;
-		last_updated: Dayjs;
+		last_modified: Dayjs;
 		update: boolean;
 	}
 

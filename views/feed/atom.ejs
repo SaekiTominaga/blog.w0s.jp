@@ -9,13 +9,13 @@
 		<name>富永冴樹</name>
 	</author>
 	<icon>/image/site-icon.png</icon>
-	<updated><%= entries[0].last_updated.format('YYYY-MM-DDTHH:mm:ssZ') %></updated>
+	<updated><%= last_modified.format('YYYY-MM-DDTHH:mm:ssZ') %></updated>
 	<% for (const entry of entries) { %>
 	<entry>
 		<title><% if (entry.update) { %>【更新】<% } %><%= entry.title %></title>
-		<id>tag:blog.w0s.jp,<%= entry.last_updated.format('YYYY-MM-DD') %>:/<%= entry.id %></id>
+		<id>tag:blog.w0s.jp,<%= entry.last_modified.format('YYYY-MM-DD') %>:/<%= entry.id %></id>
 		<link href="/<%= entry.id %>" type="text/html" />
-		<updated><%= entry.last_updated.format('YYYY-MM-DDTHH:mm:ssZ') %></updated>
+		<updated><%= entry.last_modified.format('YYYY-MM-DDTHH:mm:ssZ') %></updated>
 		<content type="xhtml" xml:base="/<%= entry.id %>">
 			<div xmlns="http://www.w3.org/1999/xhtml"><%- entry.message %></div>
 		</content>

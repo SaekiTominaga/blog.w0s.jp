@@ -27,29 +27,29 @@
 				</div>
 				<main role="main" class="l-main__main">
 					<ul class="p-title-list -category">
-						<% for (const topicData of topicDataList) { %>
+						<% for (const entry of entries) { %>
 						<li>
-							<a href="/<%= topicData.id %>">
+							<a href="/<%= entry.id %>">
 								<span class="p-title-list__thumb">
-									<% if (topicData.image_internal !== null) { %>
+									<% if (entry.image_internal !== null) { %>
 									<picture>
-										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= topicData.image_internal %>?type=avif;w=180;h=180;quality=60, https://media.w0s.jp/thumbimage/blog/<%= topicData.image_internal %>?type=avif;w=360;h=360;quality=30 2x" />
-										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= topicData.image_internal %>?type=webp;w=180;h=180;quality=60, https://media.w0s.jp/thumbimage/blog/<%= topicData.image_internal %>?type=webp;w=360;h=360;quality=30 2x" />
-										<img src="https://media.w0s.jp/thumbimage/blog/<%= topicData.image_internal %>?type=jpeg;w=180;h=180;quality=60" alt="" class="p-title-list__image" />
+										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=180;h=180;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=360;h=360;quality=30 2x" />
+										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=180;h=180;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=360;h=360;quality=30 2x" />
+										<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=jpeg;w=180;h=180;quality=60" alt="" class="p-title-list__image" />
 									</picture>
-									<% } else if (topicData.image_external !== null) { %>
-									<img src="<%= topicData.image_external %>" alt="" class="p-title-list__image" />
+									<% } else if (entry.image_external !== null) { %>
+									<img src="<%= entry.image_external %>" alt="" class="p-title-list__image" />
 									<% } else { %>
 									<img src="/image/noimage.svg" alt="" class="p-title-list__image" />
 									<% } %>
 								</span>
-								<span class="p-title-list__text"><%= topicData.title %></span>
+								<span class="p-title-list__text"><%= entry.title %></span>
 							</a>
 
 							<div class="p-title-list__time">
-								<p>投稿:<time datetime="<%= topicData.insert_date.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= topicData.insert_date.format('YYYY年M月D日') %></time></p>
-								<% if (topicData.last_update !== null) { %>
-								<p>更新:<time datetime="<%= topicData.last_update.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= topicData.last_update.format('YYYY年M月D日') %></time></p>
+								<p>投稿:<time datetime="<%= entry.insert_date.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.insert_date.format('YYYY年M月D日') %></time></p>
+								<% if (entry.last_update !== null) { %>
+								<p>更新:<time datetime="<%= entry.last_update.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.last_update.format('YYYY年M月D日') %></time></p>
 								<% } %>
 							</div>
 						</li>

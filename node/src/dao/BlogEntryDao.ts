@@ -18,15 +18,15 @@ export interface Relation {
 /**
  * 日記記事
  */
-export default class BlogTopicDao extends BlogDao {
+export default class BlogEntryDao extends BlogDao {
 	/**
 	 * 記事データを取得する
 	 *
-	 * @param {number} topicId - 記事 ID
+	 * @param {number} entryId - 記事 ID
 	 *
 	 * @returns {object} 記事データ
 	 */
-	async getTopic(topicId: number): Promise<BlogDb.TopicData | null> {
+	async getEntry(entryId: number): Promise<BlogDb.Entry | null> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -45,7 +45,7 @@ export default class BlogTopicDao extends BlogDao {
 				t.public = :public
 		`);
 		await sth.bind({
-			':id': topicId,
+			':id': entryId,
 			':public': true,
 		});
 		const row = await sth.get();
@@ -56,7 +56,7 @@ export default class BlogTopicDao extends BlogDao {
 		}
 
 		return {
-			id: topicId,
+			id: entryId,
 			title: row.title,
 			description: row.description,
 			message: row.message,
@@ -71,11 +71,11 @@ export default class BlogTopicDao extends BlogDao {
 	/**
 	 * 記事のカテゴリー情報を取得
 	 *
-	 * @param {number} topicId - 記事 ID
+	 * @param {number} entryId - 記事 ID
 	 *
 	 * @returns {Array} カテゴリー情報
 	 */
-	async getCategories(topicId: number): Promise<Category[]> {
+	async getCategories(entryId: number): Promise<Category[]> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -97,14 +97,14 @@ export default class BlogTopicDao extends BlogDao {
 				c.sort
 		`);
 		await sth.bind({
-			':id': topicId,
+			':id': entryId,
 		});
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const categoryDataList: Category[] = [];
+		const categories: Category[] = [];
 		for (const row of rows) {
-			categoryDataList.push({
+			categories.push({
 				id: row.id,
 				name: row.name,
 				sidebar_amazon: row.sidebar_amazon,
@@ -112,17 +112,17 @@ export default class BlogTopicDao extends BlogDao {
 			});
 		}
 
-		return categoryDataList;
+		return categories;
 	}
 
 	/**
 	 * 関連記事を取得
 	 *
-	 * @param {number} topicId - 記事 ID
+	 * @param {number} entryId - 記事 ID
 	 *
 	 * @returns {Array} 関連記事データ
 	 */
-	async getRelations(topicId: number): Promise<Relation[]> {
+	async getRelations(entryId: number): Promise<Relation[]> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -143,15 +143,15 @@ export default class BlogTopicDao extends BlogDao {
 				t.insert_date DESC
 		`);
 		await sth.bind({
-			':id': topicId,
+			':id': entryId,
 			':public': true,
 		});
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const relationDataList: Relation[] = [];
+		const relations: Relation[] = [];
 		for (const row of rows) {
-			relationDataList.push({
+			relations.push({
 				id: row.id,
 				title: row.title,
 				image_internal: row.image_internal,
@@ -160,6 +160,6 @@ export default class BlogTopicDao extends BlogDao {
 			});
 		}
 
-		return relationDataList;
+		return relations;
 	}
 }

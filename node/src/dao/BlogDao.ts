@@ -2,12 +2,12 @@ import * as sqlite from 'sqlite';
 import sqlite3 from 'sqlite3';
 import { NoName as Configure } from '../../configure/type/common.js';
 
-interface NewlyTopicData {
+interface NewlyEntry {
 	id: string;
 	title: string;
 }
 
-interface TopicCountOfCategory {
+interface EntryCountOfCategory {
 	group_name: string;
 	name: string;
 	count: number;
@@ -57,7 +57,7 @@ export default class BlogDao {
 	 *
 	 * @returns {number} 記事件数
 	 */
-	async getTopicCount(): Promise<number> {
+	async getEntryCount(): Promise<number> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -115,7 +115,7 @@ export default class BlogDao {
 	 *
 	 * @returns {Array} 新着記事
 	 */
-	async getNewlyTopicData(limit: number): Promise<NewlyTopicData[]> {
+	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -137,15 +137,15 @@ export default class BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const newlyTopicList: NewlyTopicData[] = [];
+		const newlyEntries: NewlyEntry[] = [];
 		for (const row of rows) {
-			newlyTopicList.push({
+			newlyEntries.push({
 				id: row.id,
 				title: row.title,
 			});
 		}
 
-		return newlyTopicList;
+		return newlyEntries;
 	}
 
 	/**
@@ -153,7 +153,7 @@ export default class BlogDao {
 	 *
 	 * @returns {Array} カテゴリー毎の記事件数
 	 */
-	async getTopicCountOfCategory(): Promise<TopicCountOfCategory[]> {
+	async getEntryCountOfCategory(): Promise<EntryCountOfCategory[]> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -183,15 +183,15 @@ export default class BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const topicCountOfCategory: TopicCountOfCategory[] = [];
+		const entryCountOfCategory: EntryCountOfCategory[] = [];
 		for (const row of rows) {
-			topicCountOfCategory.push({
+			entryCountOfCategory.push({
 				group_name: row.group_name,
 				name: row.name,
 				count: row.count,
 			});
 		}
 
-		return topicCountOfCategory;
+		return entryCountOfCategory;
 	}
 }

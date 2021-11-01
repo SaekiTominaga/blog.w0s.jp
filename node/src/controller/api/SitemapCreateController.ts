@@ -14,7 +14,7 @@ import { NoName as Configure } from '../../../configure/type/sitemap-create.js';
 import { Request, Response } from 'express';
 
 /**
- * サイトマップ作成
+ * サイトマップ生成
  */
 export default class SitemapCreateController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;

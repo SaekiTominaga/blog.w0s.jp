@@ -1,5 +1,5 @@
 declare namespace BlogDb {
-	export interface TopicData {
+	export interface Entry {
 		id: number;
 		title: string;
 		description: string | null;

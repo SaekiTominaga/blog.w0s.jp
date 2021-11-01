@@ -33,32 +33,32 @@
 
 	<section class="p-sidebar-categories" aria-label="記事カテゴリ一覧">
 		<w0s-tab class="p-sidebar-categories__tab" tablist-label="カテゴリ" storage-key="tab-diary-category">
-			<% for (const [group_name, ] of topicCountOfCategoryList) { %>
+			<% for (const [group_name, ] of entryCountOfCategoryList) { %>
 			<a href="#<%= group_name %>" slot="tab" class="p-sidebar-categories__tab-item"><%= group_name %></a>
-			<% } %><% for (const [group_name, countDataList] of topicCountOfCategoryList) { %>
+			<% } %><% for (const [group_name, countDataList] of entryCountOfCategoryList) { %>
 			<div slot="tabpanel" id="<%= group_name %>">
 				<% if (typeof(categoryName) !== 'undefined') { %>
-				<ul class="p-sidebar-categories__topics-list">
+				<ul class="p-sidebar-categories__entries-list">
 					<% for (const countData of countDataList) { %>
 					<li>
 						<% if (categoryName === countData.category_name) { %>
 						<a aria-current="page">
-							<%= countData.category_name %><span class="p-sidebar-categories__topic-count"><b class="p-sidebar-categories__topic-num"><%= countData.count %></b>件</span>
+							<%= countData.category_name %><span class="p-sidebar-categories__entry-count"><b class="p-sidebar-categories__entry-num"><%= countData.count %></b>件</span>
 						</a>
 						<% } else { %>
 						<a href="/category/<%= encodeURI(countData.category_name) %>">
-							<%= countData.category_name %><span class="p-sidebar-categories__topic-count"><b class="p-sidebar-categories__topic-num"><%= countData.count %></b>件</span>
+							<%= countData.category_name %><span class="p-sidebar-categories__entry-count"><b class="p-sidebar-categories__entry-num"><%= countData.count %></b>件</span>
 						</a>
 						<% } %>
 					</li>
 					<% } %>
 				</ul>
 				<% } else { %>
-				<ul class="p-sidebar-categories__topics-list">
+				<ul class="p-sidebar-categories__entries-list">
 					<% for (const countData of countDataList) { %>
 					<li>
 						<a href="/category/<%= encodeURI(countData.category_name) %>">
-							<%= countData.category_name %><span class="p-sidebar-categories__topic-count"><b class="p-sidebar-categories__topic-num"><%= countData.count %></b>件</span>
+							<%= countData.category_name %><span class="p-sidebar-categories__entry-count"><b class="p-sidebar-categories__entry-num"><%= countData.count %></b>件</span>
 						</a>
 					</li>
 					<% } %>
@@ -69,26 +69,26 @@
 		</w0s-tab>
 	</section>
 
-	<section class="p-sidebar-topics" aria-labelledby="sidebar-topics-heading">
-		<h2 class="p-sidebar-topics__hdg" id="sidebar-topics-heading">最近の記事</h2>
+	<section class="p-sidebar-entries" aria-labelledby="sidebar-entries-heading">
+		<h2 class="p-sidebar-entries__hdg" id="sidebar-entries-heading">最近の記事</h2>
 
-		<% if (typeof(topicId) !== 'undefined') { %>
-		<ul class="p-sidebar-topics__list">
-			<% for (const newlyTopicData of newlyTopicDataList) { %>
+		<% if (typeof(entryId) !== 'undefined') { %>
+		<ul class="p-sidebar-entries__list">
+			<% for (const newlyEntry of newlyEntries) { %>
 			<li>
-				<% if (topicId === newlyTopicData.id) { %>
-				<a aria-current="page"><%= newlyTopicData.title %></a>
+				<% if (entryId === newlyEntry.id) { %>
+				<a aria-current="page"><%= newlyEntry.title %></a>
 				<% } else { %>
-				<a href="/<%= newlyTopicData.id %>"><%= newlyTopicData.title %></a>
+				<a href="/<%= newlyEntry.id %>"><%= newlyEntry.title %></a>
 				<% } %>
 			</li>
 			<% } %>
 		</ul>
 		<% } else { %>
-		<ul class="p-sidebar-topics__list">
-			<% for (const newlyTopicData of newlyTopicDataList) { %>
+		<ul class="p-sidebar-entries__list">
+			<% for (const newlyEntry of newlyEntries) { %>
 			<li>
-				<a href="/<%= newlyTopicData.id %>"><%= newlyTopicData.title %></a>
+				<a href="/<%= newlyEntry.id %>"><%= newlyEntry.title %></a>
 			</li>
 			<% } %>
 		</ul>

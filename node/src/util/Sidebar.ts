@@ -1,11 +1,11 @@
 import BlogDao from '../dao/BlogDao.js';
 
-interface NewlyTopicData {
+interface NewlyEntry {
 	id: string;
 	title: string;
 }
 
-interface TopicCountOfCategory {
+interface EntryCountOfCategory {
 	category_name: string;
 	count: number;
 }
@@ -25,20 +25,20 @@ export default class Sidebar {
 	 *
 	 * @returns {Map} カテゴリ毎の記事件数
 	 */
-	async getTopicCountOfCategory(): Promise<Map<string, TopicCountOfCategory[]>> {
-		const dto = await this.#dao.getTopicCountOfCategory();
+	async getEntryCountOfCategory(): Promise<Map<string, EntryCountOfCategory[]>> {
+		const dto = await this.#dao.getEntryCountOfCategory();
 
-		const topicCountOfCategoryList = new Map<string, TopicCountOfCategory[]>();
-		for (const topicCountOfCategory of dto) {
-			const countDataList = topicCountOfCategoryList.get(topicCountOfCategory.group_name) ?? [];
+		const entryCountOfCategoryList = new Map<string, EntryCountOfCategory[]>();
+		for (const entryCountOfCategory of dto) {
+			const countDataList = entryCountOfCategoryList.get(entryCountOfCategory.group_name) ?? [];
 			countDataList.push({
-				category_name: topicCountOfCategory.name,
-				count: topicCountOfCategory.count,
+				category_name: entryCountOfCategory.name,
+				count: entryCountOfCategory.count,
 			});
-			topicCountOfCategoryList.set(topicCountOfCategory.group_name, countDataList);
+			entryCountOfCategoryList.set(entryCountOfCategory.group_name, countDataList);
 		}
 
-		return topicCountOfCategoryList;
+		return entryCountOfCategoryList;
 	}
 
 	/**
@@ -48,7 +48,7 @@ export default class Sidebar {
 	 *
 	 * @returns {Array} 新着記事
 	 */
-	async getNewlyTopicData(limit: number): Promise<NewlyTopicData[]> {
-		return await this.#dao.getNewlyTopicData(limit);
+	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
+		return await this.#dao.getNewlyEntries(limit);
 	}
 }
