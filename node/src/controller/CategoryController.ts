@@ -77,8 +77,8 @@ export default class CategoryController extends Controller implements Controller
 				title: entryDto.title,
 				image_internal: entryDto.image_internal,
 				image_external: imageExternal,
-				insert_date: dayjs(entryDto.insert_date),
-				last_update: entryDto.last_update !== null ? dayjs(entryDto.last_update) : null,
+				created: dayjs(entryDto.created),
+				last_updated: entryDto.last_updated !== null ? dayjs(entryDto.last_updated) : null,
 			});
 		}
 

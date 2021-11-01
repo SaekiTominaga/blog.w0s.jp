@@ -78,7 +78,7 @@ export default class EntryController extends Controller implements ControllerInt
 				title: relationData.title,
 				image_internal: relationData.image_internal,
 				image_external: relationData.image_external,
-				insert_date: dayjs(relationData.insert_date),
+				created: dayjs(relationData.created),
 			});
 		}
 
@@ -88,8 +88,8 @@ export default class EntryController extends Controller implements ControllerInt
 			title: entryDto.title,
 			message: await messageParser.toHtml(<string>entryDto.message),
 			description: entryDto.description,
-			insert: dayjs(entryDto.insert_date),
-			lastUpdated: entryDto.last_update !== null ? dayjs(entryDto.last_update) : null,
+			created: dayjs(entryDto.created),
+			lastUpdated: entryDto.last_updated !== null ? dayjs(entryDto.last_updated) : null,
 
 			ogImage: ogImage,
 			tweet: messageParser.isTweetExit(),

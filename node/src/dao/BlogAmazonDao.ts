@@ -91,7 +91,7 @@ export default class BlogAmazonDao extends BlogDao {
 					':image_url': amazonData.image_url,
 					':image_width': amazonData.image_width,
 					':image_height': amazonData.image_height,
-					':last_updated': Math.round(amazonData.last_update.getTime() / 1000),
+					':last_updated': Math.round(amazonData.last_updated.getTime() / 1000),
 				});
 			}
 			await sth.finalize();

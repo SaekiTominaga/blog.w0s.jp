@@ -31,7 +31,7 @@ export default class BlogFeedDao extends BlogDao {
 					WHEN last_update IS NULL THEN insert_date
 					ELSE last_update
 				END AS last_modified,
-				last_update AS updated
+				last_update AS last_updated
 			FROM
 				d_topic
 			WHERE
@@ -57,7 +57,7 @@ export default class BlogFeedDao extends BlogDao {
 				title: row.title,
 				message: row.message,
 				last_modified: new Date(Number(row.last_modified) * 1000),
-				update: Boolean(row.updated),
+				update: Boolean(row.last_updated),
 			});
 		}
 

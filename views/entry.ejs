@@ -49,12 +49,12 @@
 							<h1 class="p-entry-title" itemprop="name"><%= title %></h1>
 
 							<dl class="p-entry-date">
-								<div class="p-entry-date__date -insert">
+								<div class="p-entry-date__date">
 									<dt>投稿</dt>
-									<dd><time datetime="<%= insert.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="datePublished"><%= insert.format('YYYY年M月D日') %></time></dd>
+									<dd><time datetime="<%= created.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="datePublished"><%= created.format('YYYY年M月D日') %></time></dd>
 								</div>
 								<% if (lastUpdated !== null) { %>
-								<div class="p-entry-date__date -update">
+								<div class="p-entry-date__date">
 									<dt>最終更新</dt>
 									<dd><time datetime="<%= lastUpdated.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="dateModified"><%= lastUpdated.format('YYYY年M月D日') %></time></dd>
 								</div>
@@ -111,7 +111,7 @@
 											<span class="p-entry-relation__title"><%= relation.title %></span>
 										</a>
 										<p class="p-entry-relation__date">
-											<time datetime="<%= relation.insert_date.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= relation.insert_date.format('YYYY年M月D日') %></time>
+											<time datetime="<%= relation.created.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= relation.created.format('YYYY年M月D日') %></time>
 										</p>
 									</li>
 									<% } %>

@@ -130,7 +130,7 @@ export default class AmazonController extends Controller implements ControllerIn
 					image_url: imagesPrimaryLarge?.URL ?? null,
 					image_width: imagesPrimaryLarge !== undefined ? Number(imagesPrimaryLarge.Width) : null,
 					image_height: imagesPrimaryLarge !== undefined ? Number(imagesPrimaryLarge.Height) : null,
-					last_update: new Date(),
+					last_updated: new Date(),
 				});
 			}
 

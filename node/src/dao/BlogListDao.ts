@@ -5,8 +5,8 @@ interface Entry {
 	title: string;
 	image_internal: string | null;
 	image_external: string | null;
-	insert_date: Date;
-	last_update?: Date | null;
+	created: Date;
+	last_updated?: Date | null;
 }
 
 /**
@@ -30,8 +30,8 @@ export default class BlogListDao extends BlogDao {
 				title,
 				image AS image_internal,
 				image_external,
-				insert_date,
-				last_update
+				insert_date AS created,
+				last_update AS last_updated
 			FROM
 				d_topic
 			WHERE
@@ -56,8 +56,8 @@ export default class BlogListDao extends BlogDao {
 				title: row.title,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				insert_date: new Date(Number(row.insert_date) * 1000),
-				last_update: row.last_update !== null ? new Date(Number(row.last_update) * 1000) : null,
+				created: new Date(Number(row.created) * 1000),
+				last_updated: row.last_updated !== null ? new Date(Number(row.last_updated) * 1000) : null,
 			});
 		}
 

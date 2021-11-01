@@ -12,7 +12,7 @@ export interface Relation {
 	title: string;
 	image_internal: string | null;
 	image_external: string | null;
-	insert_date: Date;
+	created: Date;
 }
 
 /**
@@ -36,8 +36,8 @@ export default class BlogEntryDao extends BlogDao {
 				t.message AS message,
 				t.image AS image_internal,
 				t.image_external AS image_external,
-				t.insert_date AS insert_date,
-				t.last_update AS last_update
+				t.insert_date AS created,
+				t.last_update AS last_updated
 			FROM
 				d_topic t
 			WHERE
@@ -62,8 +62,8 @@ export default class BlogEntryDao extends BlogDao {
 			message: row.message,
 			image_internal: row.image_internal,
 			image_external: row.image_external,
-			insert_date: new Date(Number(row.insert_date) * 1000),
-			last_update: row.last_update !== null ? new Date(Number(row.last_update) * 1000) : null,
+			created: new Date(Number(row.created) * 1000),
+			last_updated: row.last_updated !== null ? new Date(Number(row.last_updated) * 1000) : null,
 			public: true,
 		};
 	}
@@ -131,7 +131,7 @@ export default class BlogEntryDao extends BlogDao {
 				t.title AS title,
 				t.image AS image_internal,
 				t.image_external AS image_external,
-				t.insert_date AS insert_date
+				t.insert_date AS created
 			FROM
 				d_topic t,
 				d_topic_relation tr
@@ -156,7 +156,7 @@ export default class BlogEntryDao extends BlogDao {
 				title: row.title,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				insert_date: new Date(Number(row.insert_date) * 1000),
+				created: new Date(Number(row.created) * 1000),
 			});
 		}
 

@@ -8,8 +8,8 @@ declare namespace BlogView {
 		description?: string | null;
 		image_internal: string | null;
 		image_external: string | null;
-		insert_date: Dayjs;
-		last_update?: Dayjs | null;
+		created: Dayjs;
+		last_updated?: Dayjs | null;
 	}
 
 	export interface FeedEntry {

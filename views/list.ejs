@@ -63,9 +63,9 @@
 							</a>
 
 							<div class="p-title-list__time">
-								<p>投稿:<time datetime="<%= entry.insert_date.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.insert_date.format('YYYY年M月D日') %></time></p>
-								<% if (entry.last_update !== null) { %>
-								<p>更新:<time datetime="<%= entry.last_update.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.last_update.format('YYYY年M月D日') %></time></p>
+								<p>投稿:<time datetime="<%= entry.created.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.created.format('YYYY年M月D日') %></time></p>
+								<% if (entry.last_updated !== null) { %>
+								<p>更新:<time datetime="<%= entry.last_updated.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.last_updated.format('YYYY年M月D日') %></time></p>
 								<% } %>
 							</div>
 						</li>

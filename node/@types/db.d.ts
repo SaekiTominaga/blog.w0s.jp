@@ -6,8 +6,8 @@ declare namespace BlogDb {
 		message: string;
 		image_internal: string | null;
 		image_external: string | null;
-		insert_date: Date;
-		last_update: Date | null;
+		created: Date;
+		last_updated: Date | null;
 		public: boolean;
 	}
 
@@ -30,7 +30,7 @@ declare namespace BlogDb {
 		image_url: string | null;
 		image_width: number | null;
 		image_height: number | null;
-		last_update: Date;
+		last_updated: Date;
 	}
 
 	export interface TweetData {
