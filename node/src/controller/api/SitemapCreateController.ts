@@ -75,7 +75,7 @@ export default class SitemapCreateController extends Controller implements Contr
 			entries: entries,
 		});
 
-		const sitemapXMLFormated = xmlFormatter(sitemapXml, {
+		const sitemapXmlFormated = xmlFormatter(sitemapXml, {
 			/* https://github.com/chrisbottin/xml-formatter#options */
 			indentation: '\t',
 			collapseContent: true,
@@ -84,7 +84,7 @@ export default class SitemapCreateController extends Controller implements Contr
 
 		/* ファイル出力 */
 		const sitemapFilePath = `${this.#configCommon.static.root}${req.url}`;
-		await fs.promises.writeFile(sitemapFilePath, sitemapXMLFormated);
+		await fs.promises.writeFile(sitemapFilePath, sitemapXmlFormated);
 		this.logger.info(`Sitemap file created: ${sitemapFilePath}`);
 
 		res.status(204).end();
