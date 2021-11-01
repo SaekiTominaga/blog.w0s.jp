@@ -19,4 +19,9 @@ declare namespace BlogView {
 		last_updated: Dayjs;
 		update: boolean;
 	}
+
+	export interface SitemapEntry {
+		id: number;
+		last_modified: Dayjs;
+	}
 }

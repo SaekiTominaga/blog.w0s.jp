@@ -9,6 +9,7 @@ import ListController from './controller/ListController.js';
 import Log4js from 'log4js';
 import MessagePreviewController from './controller/MessagePreviewController.js';
 import path from 'path';
+import SitemapCreateController from './controller/api/SitemapCreateController.js';
 import TopicController from './controller/TopicController.js';
 import TweetController from './controller/api/TweetController.js';
 import { NoName as Configure } from '../configure/type/common.js';
@@ -190,6 +191,17 @@ const corsCallback = cors({
 app.put('/feed.atom', async (req, res, next) => {
 	try {
 		await new FeedCreateController(config).execute(req, res);
+	} catch (e) {
+		next(e);
+	}
+});
+
+/**
+ * API・サイトマップ作成
+ */
+app.put('/sitemap.xml', async (req, res, next) => {
+	try {
+		await new SitemapCreateController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}

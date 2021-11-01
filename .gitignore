@@ -11,6 +11,7 @@
 
 /public/__test__/
 /public/feed.atom
+/public/sitemap.xml
 /public/image/
 /public/script/*.js
 /public/script/*.mjs
