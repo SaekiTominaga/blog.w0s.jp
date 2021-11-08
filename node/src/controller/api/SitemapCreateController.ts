@@ -83,29 +83,21 @@ export default class SitemapCreateController extends Controller implements Contr
 			lineSeparator: '\n',
 		});
 
-		zlib.brotliCompress(
-			sitemapXmlFormated,
-			{
-				params: {
-					[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
-					[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
-					[zlib.constants.BROTLI_PARAM_SIZE_HINT]: sitemapXmlFormated.length,
-				},
+		const sitemapXmlBrotli = zlib.brotliCompressSync(sitemapXmlFormated, {
+			params: {
+				[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
+				[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
+				[zlib.constants.BROTLI_PARAM_SIZE_HINT]: sitemapXmlFormated.length,
 			},
-			async (error, sitemapBrotliBinary) => {
-				if (error !== null) {
-					throw error;
-				}
+		});
 
-				/* ファイル出力 */
-				const sitemapFilePath = `${this.#configCommon.static.root}${req.url}`;
-				const sitemapBrotliFilePath = `${sitemapFilePath}.br`;
+		/* ファイル出力 */
+		const sitemapFilePath = `${this.#configCommon.static.root}${req.url}`;
+		const sitemapBrotliFilePath = `${sitemapFilePath}.br`;
 
-				await Promise.all([fs.promises.writeFile(sitemapFilePath, sitemapXmlFormated), fs.promises.writeFile(sitemapBrotliFilePath, sitemapBrotliBinary)]);
-				this.logger.info(`Sitemap file created: ${sitemapFilePath}`);
-				this.logger.info(`Sitemap Brotli file created: ${sitemapBrotliFilePath}`);
-			}
-		);
+		await Promise.all([fs.promises.writeFile(sitemapFilePath, sitemapXmlFormated), fs.promises.writeFile(sitemapBrotliFilePath, sitemapXmlBrotli)]);
+		this.logger.info(`Sitemap file created: ${sitemapFilePath}`);
+		this.logger.info(`Sitemap Brotli file created: ${sitemapBrotliFilePath}`);
 
 		res.status(204).end();
 	}
