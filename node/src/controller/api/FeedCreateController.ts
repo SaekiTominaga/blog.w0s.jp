@@ -75,29 +75,21 @@ export default class FeedCreateController extends Controller implements Controll
 			entries: entries,
 		});
 
-		zlib.brotliCompress(
-			feedXml,
-			{
-				params: {
-					[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
-					[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
-					[zlib.constants.BROTLI_PARAM_SIZE_HINT]: feedXml.length,
-				},
+		const feedXmlBrotli = zlib.brotliCompressSync(feedXml, {
+			params: {
+				[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
+				[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
+				[zlib.constants.BROTLI_PARAM_SIZE_HINT]: feedXml.length,
 			},
-			async (error, binary) => {
-				if (error !== null) {
-					throw error;
-				}
+		});
 
-				/* ファイル出力 */
-				const feedFilePath = `${this.#configCommon.static.root}${req.url}`;
-				const feedBrotliFilePath = `${feedFilePath}.br`;
+		/* ファイル出力 */
+		const feedFilePath = `${this.#configCommon.static.root}${req.url}`;
+		const feedBrotliFilePath = `${feedFilePath}.br`;
 
-				await Promise.all([fs.promises.writeFile(feedFilePath, feedXml), fs.promises.writeFile(feedBrotliFilePath, binary)]);
-				this.logger.info(`Feed file created: ${feedFilePath}`);
-				this.logger.info(`Feed Brotli file created: ${feedBrotliFilePath}`);
-			}
-		);
+		await Promise.all([fs.promises.writeFile(feedFilePath, feedXml), fs.promises.writeFile(feedBrotliFilePath, feedXmlBrotli)]);
+		this.logger.info(`Feed file created: ${feedFilePath}`);
+		this.logger.info(`Feed Brotli file created: ${feedBrotliFilePath}`);
 
 		res.status(204).end();
 	}
