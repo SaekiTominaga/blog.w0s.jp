@@ -73,6 +73,7 @@ export default class MessageParser {
 	/**
 	 * コンストラクタ
 	 *
+	 * @param {Configure} config - 共通設定ファイル
 	 * @param {sqlite.Database} dbh - DB 接続情報
 	 * @param {number} entryId - 記事 ID
 	 */
