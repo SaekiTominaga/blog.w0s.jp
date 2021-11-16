@@ -19,7 +19,7 @@
 	}
 
 	font-weight: bold;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	text-shadow: 1px 1px 1px #999;
 }
 
@@ -40,7 +40,7 @@
 	border-radius: 0.25em;
 	display: inline-block;
 	background: #fff;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	text-decoration: none;
 	white-space: nowrap;
 	outline-offset: 2px;
@@ -86,7 +86,7 @@
 		padding: 24px 0;
 		border-bottom: 1px solid #ccc;
 		display: flow-root;
-		line-height: var(--line-height--narrow);
+		line-height: var(--line-height-narrow);
 
 		@media (--viewport-main-full) {
 			padding-left: var(--page-side-padding);
@@ -204,7 +204,7 @@
 	margin-top: 15px;
 	display: grid;
 	gap: 30px;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 
 	@media screen and (min-width: 40em) {
 		grid-template-columns: repeat(2, 1fr);
@@ -245,5 +245,5 @@
 .p-bookcm__text {
 	margin-top: 0.5em;
 	overflow: hidden;
-	line-height: var(--line-height--normal);
+	line-height: var(--line-height-normal);
 }

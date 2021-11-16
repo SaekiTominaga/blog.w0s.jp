@@ -13,7 +13,7 @@
 .p-header-site__name {
 	margin-right: 0.5em;
 	color: #f00;
-	font: 700 2rem/var(--line-height--narrow) var(--font-mincho);
+	font: 700 2rem/var(--line-height-narrow) var(--font-mincho);
 	font-feature-settings: "palt";
 	text-shadow: 0.05em 0.05em 0.1em #ccc;
 
@@ -56,7 +56,7 @@
 	background: var(--bg-color);
 	font-size: calc(1rem * var(--font-ratio-1));
 	font-weight: bold;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	text-decoration: none;
 	text-shadow: 1px 1px #fff;
 	outline-offset: 2px;

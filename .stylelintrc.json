@@ -11,12 +11,16 @@
 		"indentation": "tab",
 		"length-zero-no-unit": null,
 		"linebreaks": "unix",
+		"max-line-length": 300,
 		"max-nesting-depth": 5,
 		"no-descending-specificity": null,
 		"no-duplicate-selectors": true,
+		"property-no-vendor-prefix": [true, { "ignoreProperties": ["text-decoration-skip"] }],
+		"selector-class-pattern": "([lpc]-[a-z][a-z0-9\\-_]*[a-z0-9]?)|(-[a-z][a-z0-9\\-_]*)|(hljs-[a-z]+)|adsbygoogle",
 		"selector-max-id": 0,
 		"selector-max-universal": 0,
 		"string-quotes": "double",
-		"value-keyword-case": null
+		"value-keyword-case": null,
+		"value-no-vendor-prefix": [true, { "ignoreValues": ["fit-content"] }]
 	}
 }

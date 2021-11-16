@@ -21,7 +21,7 @@
 
 .p-sidebar-profile__info {
 	display: flow-root;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 }
 
 .p-sidebar-profile__address {
@@ -69,7 +69,7 @@
 	background: var(--background);
 	font-size: calc(1rem / var(--font-ratio-2));
 	font-weight: bold;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	text-align: center;
 	text-decoration: none;
 
@@ -125,7 +125,7 @@
 	color: #000;
 	background: #f8f8f8;
 	font-size: calc(1rem / var(--font-ratio-4));
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	text-align: center;
 	display: inline-block; /* Shadow DOM v1 未対応環境 */
 	text-decoration: none; /* Shadow DOM v1 未対応環境 */
@@ -165,7 +165,7 @@
 	border: solid #999;
 	border-width: 0 1px 1px;
 	font-size: calc(1rem / var(--font-ratio-2));
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 
 	@media (--viewport-main-full) {
 		font-size: 1rem;
@@ -268,7 +268,7 @@
 .p-sidebar-entries__list {
 	margin-top: -0.8em;
 	font-size: calc(1rem / var(--font-ratio-2));
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 
 	@media (--viewport-main-full) {
 		font-size: 1rem;
@@ -405,7 +405,7 @@
 	box-sizing: border-box;
 	color: #444;
 	background: #fdb;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	overflow-wrap: anywhere;
 	transition: color var(--anchor-hover-transition-delay), background-color var(--anchor-hover-transition-delay);
 

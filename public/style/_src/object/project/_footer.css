@@ -5,9 +5,8 @@
 /* ===== ナビゲーション ===== */
 .p-footer-nav {
 	display: flex;
-	flex-direction: column;
+	flex-flow: column wrap;
 	justify-content: flex-start;
-	flex-wrap: wrap;
 	gap: 0.5em 0;
 	font-size: calc(var(--page-font-size) * var(--font-ratio-2));
 

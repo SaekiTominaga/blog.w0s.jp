@@ -6,7 +6,7 @@
 :root {
 	color: var(--page-color);
 	background: var(--page-bgcolor);
-	font: 500 var(--page-font-size)/var(--line-height--normal) sans-serif; /* weight=500 指定は Windows + 游ゴシック 対策 */
+	font: 500 var(--page-font-size)/var(--line-height-normal) sans-serif; /* weight=500 指定は Windows + 游ゴシック 対策 */
 
 	@media print {
 		--page-color: #000;

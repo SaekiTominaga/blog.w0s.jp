@@ -9,7 +9,7 @@
 	--entry-color: #333;
 	--entry-bg-color: #fcfcfc;
 	--entry-font-size: 1rem;
-	--entry-line-height: var(--line-height--normal);
+	--entry-line-height: var(--line-height-normal);
 
 	box-shadow: var(--entry-box-shadow);
 	color: var(--entry-color);
@@ -57,7 +57,7 @@
 	}
 
 	font-weight: bold;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	text-shadow: 0 0 0.05em #ccc;
 
 	@media print {
@@ -112,7 +112,7 @@
 	display: block;
 	max-width: 75%;
 	height: 3px;
-	background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMyIgdmlld0JveD0iMCAwIDEyOCAzIj48bGluZSB4Mj0iMTI4IiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMyIvPjwvc3ZnPg==) center no-repeat;
+	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMyIgdmlld0JveD0iMCAwIDEyOCAzIj48bGluZSB4Mj0iMTI4IiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMyIvPjwvc3ZnPg==") center no-repeat;
 
 	@nest .p-section1 > & {
 		--margin-ratio: 3;
@@ -126,7 +126,7 @@
 	border-bottom: 1px solid #999;
 	font-size: calc(var(--entry-font-size) * var(--font-ratio-10));
 	font-weight: bold;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 }
 
 .p-hdg2 {
@@ -134,7 +134,7 @@
 	position: relative;
 	font-size: calc(var(--entry-font-size) * var(--font-ratio-5));
 	font-weight: bold;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 
 	&::before {
 		border-radius: 1em;
@@ -152,7 +152,7 @@
 /* ===== テキスト ===== */
 .p-entry-text {
 	margin: var(--entry-font-size) 0;
-	line-height: var(--line-height--wide);
+	line-height: var(--line-height-wide);
 }
 
 /* ===== 注釈 ===== */
@@ -404,7 +404,7 @@
 			height: 24px;
 			width: 24px;
 			display: block;
-			background: rgba(0, 0, 0, 0.7) url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHN0eWxlPnBhdGh7ZmlsbDojZmZmfTwvc3R5bGU+PHBhdGggZD0iTTQ5OS41MjMgNDM5LjMxM2wtNzkuNTQ3LTc5LjU2My02MC4yMTkgNjAuMjE5IDc5LjU0NyA3OS41NjNDNDQ3LjM1MiA1MDcuNTYzIDQ1OC4wMzkgNTEyIDQ2OS40MyA1MTJjMTEuMzU5IDAgMjIuMDQ3LTQuNDM4IDMwLjA5NC0xMi40NjkgOC4wNDctOC4wNDcgMTIuNDY5LTE4Ljc1IDEyLjQ2OS0zMC4xMjVzLTQuNDIzLTIyLjA2Mi0xMi40Ny0zMC4wOTN6TTM5OS4zOTggMzYyLjMxM2wtNDEuMzkxLTQxLjQwNmMuMDYzLS4wOTQuMDYzLS4xODguMTI1LS4yNSAyNi41NjMtMzQuNzE5IDQxLjE1Ni03Ny42ODggNDEuMTI1LTEyMS4wMzEuMDQ3LTUzLjI4MS0yMC43MTktMTAzLjQzOC01OC40NjktMTQxLjE1NkMzMDMuMTE3IDIwLjc2NiAyNTMuMDcgMCAxOTkuMzgzIDAgMTQ2LjE4IDAgOTYuMTQ4IDIwLjc2NiA1OC40NzcgNTguNDY5IDIwLjcxMSA5Ni4xODgtLjA1NSAxNDYuMzQ0LjAwOCAxOTkuNjQxYy0uMDQ3IDUzLjI5NyAyMC43MTkgMTAzLjQyMiA1OC40NTMgMTQxLjE0MSAzNy42ODggMzcuNzE5IDg3Ljc2NiA1OC40NjkgMTQxLjE4OCA1OC40NjloLjE4OGM0My4yMzQgMCA4Ni4xNDEtMTQuNTk0IDEyMC44MjgtNDEuMTI1YS44MzUuODM1IDAgMCAxIC4yMzQtLjEyNWw0MS40MDYgNDEuNDA2IDM3LjA5My0zNy4wOTR6bS0xMDQuNzAzLTY3LjYyNWMtMjUuMzkxIDI1LjM0NC01OS4xMjUgMzkuMzQ0LTk1LjA3OCAzOS40MDYtMzUuOTIyLS4wNjMtNjkuNjcyLTE0LjA2My05NS4wNDctMzkuNDA2LTI1LjM1OS0yNS4zNTktMzkuMzQ0LTU5LjEyNS0zOS4zOTEtOTUuMDYzLjA0Ny0zNS45MzggMTQuMDMxLTY5LjY4OCAzOS4zNzUtOTUuMDYzIDI1LjM3NS0yNS4zNDQgNTkuMTI1LTM5LjMxMyA5NS4wNjMtMzkuMzkxLjAxNi0uMDE2LjAzMSAwIC4wMzEgMCAzNS45MjIuMDc4IDY5LjY3MiAxNC4wNDcgOTUuMDQ3IDM5LjM5MSAyNS4zNDQgMjUuMzU5IDM5LjMyOCA1OS4xMjUgMzkuMzkxIDk1LjA5NC0uMDYzIDM1LjkyMi0xNC4wNDcgNjkuNjg4LTM5LjM5MSA5NS4wMzJ6Ii8+PHBhdGggZD0iTTI2Ni43ODkgMTgwLjAzMWgtNDcuNTYzdi00Ny41NjNjMC0xMC44MTMtOC43ODEtMTkuNTk0LTE5LjU5NC0xOS41OTRzLTE5LjU5NCA4Ljc4MS0xOS41OTQgMTkuNTk0djQ3LjU2M2gtNDcuNTQ3Yy0xMC44MjggMC0xOS41OTQgOC43ODEtMTkuNTk0IDE5LjU5NHM4Ljc2NiAxOS41OTQgMTkuNTk0IDE5LjU5NGg0Ny41NDd2NDcuNTYzYzAgMTAuODEzIDguNzgxIDE5LjU5NCAxOS41OTQgMTkuNTk0czE5LjU5NC04Ljc4MSAxOS41OTQtMTkuNTk0di00Ny41NjNoNDcuNTYzYzEwLjgxMyAwIDE5LjU5NC04Ljc4MSAxOS41OTQtMTkuNTk0cy04Ljc4MS0xOS41OTQtMTkuNTk0LTE5LjU5NHoiLz48L3N2Zz4=) center/contain no-repeat content-box border-box; /* https://icooon-mono.com/10824-%e6%8b%a1%e5%a4%a7%e3%82%a2%e3%82%a4%e3%82%b3%e3%83%b31/ */
+			background: rgb(0 0 0 / 70%) url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHN0eWxlPnBhdGh7ZmlsbDojZmZmfTwvc3R5bGU+PHBhdGggZD0iTTQ5OS41MjMgNDM5LjMxM2wtNzkuNTQ3LTc5LjU2My02MC4yMTkgNjAuMjE5IDc5LjU0NyA3OS41NjNDNDQ3LjM1MiA1MDcuNTYzIDQ1OC4wMzkgNTEyIDQ2OS40MyA1MTJjMTEuMzU5IDAgMjIuMDQ3LTQuNDM4IDMwLjA5NC0xMi40NjkgOC4wNDctOC4wNDcgMTIuNDY5LTE4Ljc1IDEyLjQ2OS0zMC4xMjVzLTQuNDIzLTIyLjA2Mi0xMi40Ny0zMC4wOTN6TTM5OS4zOTggMzYyLjMxM2wtNDEuMzkxLTQxLjQwNmMuMDYzLS4wOTQuMDYzLS4xODguMTI1LS4yNSAyNi41NjMtMzQuNzE5IDQxLjE1Ni03Ny42ODggNDEuMTI1LTEyMS4wMzEuMDQ3LTUzLjI4MS0yMC43MTktMTAzLjQzOC01OC40NjktMTQxLjE1NkMzMDMuMTE3IDIwLjc2NiAyNTMuMDcgMCAxOTkuMzgzIDAgMTQ2LjE4IDAgOTYuMTQ4IDIwLjc2NiA1OC40NzcgNTguNDY5IDIwLjcxMSA5Ni4xODgtLjA1NSAxNDYuMzQ0LjAwOCAxOTkuNjQxYy0uMDQ3IDUzLjI5NyAyMC43MTkgMTAzLjQyMiA1OC40NTMgMTQxLjE0MSAzNy42ODggMzcuNzE5IDg3Ljc2NiA1OC40NjkgMTQxLjE4OCA1OC40NjloLjE4OGM0My4yMzQgMCA4Ni4xNDEtMTQuNTk0IDEyMC44MjgtNDEuMTI1YS44MzUuODM1IDAgMCAxIC4yMzQtLjEyNWw0MS40MDYgNDEuNDA2IDM3LjA5My0zNy4wOTR6bS0xMDQuNzAzLTY3LjYyNWMtMjUuMzkxIDI1LjM0NC01OS4xMjUgMzkuMzQ0LTk1LjA3OCAzOS40MDYtMzUuOTIyLS4wNjMtNjkuNjcyLTE0LjA2My05NS4wNDctMzkuNDA2LTI1LjM1OS0yNS4zNTktMzkuMzQ0LTU5LjEyNS0zOS4zOTEtOTUuMDYzLjA0Ny0zNS45MzggMTQuMDMxLTY5LjY4OCAzOS4zNzUtOTUuMDYzIDI1LjM3NS0yNS4zNDQgNTkuMTI1LTM5LjMxMyA5NS4wNjMtMzkuMzkxLjAxNi0uMDE2LjAzMSAwIC4wMzEgMCAzNS45MjIuMDc4IDY5LjY3MiAxNC4wNDcgOTUuMDQ3IDM5LjM5MSAyNS4zNDQgMjUuMzU5IDM5LjMyOCA1OS4xMjUgMzkuMzkxIDk1LjA5NC0uMDYzIDM1LjkyMi0xNC4wNDcgNjkuNjg4LTM5LjM5MSA5NS4wMzJ6Ii8+PHBhdGggZD0iTTI2Ni43ODkgMTgwLjAzMWgtNDcuNTYzdi00Ny41NjNjMC0xMC44MTMtOC43ODEtMTkuNTk0LTE5LjU5NC0xOS41OTRzLTE5LjU5NCA4Ljc4MS0xOS41OTQgMTkuNTk0djQ3LjU2M2gtNDcuNTQ3Yy0xMC44MjggMC0xOS41OTQgOC43ODEtMTkuNTk0IDE5LjU5NHM4Ljc2NiAxOS41OTQgMTkuNTk0IDE5LjU5NGg0Ny41NDd2NDcuNTYzYzAgMTAuODEzIDguNzgxIDE5LjU5NCAxOS41OTQgMTkuNTk0czE5LjU5NC04Ljc4MSAxOS41OTQtMTkuNTk0di00Ny41NjNoNDcuNTYzYzEwLjgxMyAwIDE5LjU5NC04Ljc4MSAxOS41OTQtMTkuNTk0cy04Ljc4MS0xOS41OTQtMTkuNTk0LTE5LjU5NHoiLz48L3N2Zz4=") center/contain no-repeat content-box border-box; /* https://icooon-mono.com/10824-%e6%8b%a1%e5%a4%a7%e3%82%a2%e3%82%a4%e3%82%b3%e3%83%b31/ */
 		}
 
 		& img {
@@ -463,7 +463,7 @@
 		padding: 0.55em min(1vw, 10px) 0.45em;
 		border: 1px solid #000;
 		font-size: clamp(calc(var(--entry-font-size) / var(--font-ratio-3)), 2vw, var(--entry-font-size));
-		line-height: var(--line-height--narrow);
+		line-height: var(--line-height-narrow);
 	}
 
 	& th {
@@ -535,7 +535,7 @@
 	grid-template-areas: "image gap text";
 	grid-template-columns: min(40%, 160px) 15px 1fr;
 	font-size: calc(var(--entry-font-size) / var(--font-ratio-2));
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	text-decoration: none;
 	transition: color var(--anchor-hover-transition-delay), background-color var(--anchor-hover-transition-delay);
 
@@ -753,7 +753,7 @@
 
 .p-entry-code__code {
 	padding: 1em;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	white-space: pre-wrap;
 
 	& code {
@@ -860,7 +860,7 @@
 	background: var(--bg-color);
 	font-size: calc(1rem * var(--font-ratio-2));
 	font-weight: bold;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 	text-decoration: none;
 	text-shadow: 1px 1px #fff;
 	outline-offset: 2px;
@@ -900,7 +900,7 @@
 
 .p-entry-relation__hdg {
 	font-weight: bold;
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 }
 
 .p-entry-relation__list {
@@ -913,7 +913,7 @@
 	display: grid;
 	gap: 30px;
 	font-size: calc(var(--entry-font-size) / var(--font-ratio-2));
-	line-height: var(--line-height--narrow);
+	line-height: var(--line-height-narrow);
 
 	@media screen and (min-width: 50em) {
 		grid-template-columns: repeat(2, 1fr);
