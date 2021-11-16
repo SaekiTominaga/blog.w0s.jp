@@ -1,6 +1,8 @@
 *.br
 *.map
 
+/coverage/
+
 /log/
 
 /node/configure/*.json

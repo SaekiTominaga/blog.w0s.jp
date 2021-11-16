@@ -43,7 +43,8 @@
 		"_svg-all:build-entry": "svgo -f image/entry -o public/image/entry --config=svgo.config.cjs",
 		"_svg-all:favicon": "move-file public/image/favicon.svg public/favicon.svg",
 		"_svg-all:compress": "brotlin compress public/**/*.svg -m 1",
-		"svg-all": "run-s _svg-all:*"
+		"svg-all": "run-s _svg-all:*",
+		"test": "jest --coverage"
 	},
 	"dependencies": {
 		"@log4js-node/smtp": "^1.1.0",
@@ -74,6 +75,7 @@
 		"@types/cors": "^2.8.12",
 		"@types/ejs": "^3.1.0",
 		"@types/express": "^4.17.13",
+		"@types/jest": "^27.0.2",
 		"@types/jsdom": "^16.2.13",
 		"@types/md5": "^2.3.1",
 		"@types/trusted-types": "^2.0.2",
@@ -86,7 +88,9 @@
 		"cssnano": "^5.0.10",
 		"eslint": "^8.2.0",
 		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-jest": "^25.2.4",
 		"eslint-plugin-jsdoc": "^37.0.3",
+		"jest": "^27.3.1",
 		"json-schema-to-typescript": "^10.1.5",
 		"markuplint": "^1.11.4",
 		"move-file-cli": "^3.0.0",
@@ -105,6 +109,7 @@
 		"stylelint-config-standard": "^24.0.0",
 		"stylelint-prettier": "^2.0.0",
 		"svgo": "^2.8.0",
+		"ts-jest": "^27.0.7",
 		"ts-loader": "^9.2.6",
 		"typescript": "^4.4.4",
 		"webpack": "^5.64.0",
