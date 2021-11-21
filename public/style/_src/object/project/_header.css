@@ -17,21 +17,21 @@
 	font-feature-settings: "palt";
 
 	& a {
-		--padding: 0.25em;
-		--text-shadow: 0.05em 0.05em 0.1em #ccc;
+		--_padding: 0.25em;
+		--_text-shadow: 0.05em 0.05em 0.1em #ccc;
 
-		margin: calc(0px - var(--padding));
-		padding: var(--padding);
+		margin: calc(0px - var(--_padding));
+		padding: var(--_padding);
 		display: inline-block;
 		border-radius: 0.1em; /* outline を柔らかくする */
-		text-shadow: var(--text-shadow);
+		text-shadow: var(--_text-shadow);
 
 		&:any-link {
 			color: inherit;
 			text-decoration: none;
 
 			&:hover {
-				--text-shadow: 0 0 1em #aaa;
+				--_text-shadow: 0 0 1em #aaa;
 			}
 		}
 	}
@@ -52,13 +52,13 @@
 
 /* ===== サイト内検索 ===== */
 .p-header-search {
-	--height: 2.25em;
+	--_height: 2.25em;
 }
 
 .p-header-search__ctrls {
-	--border-color: var(--color-gray);
+	--_border-color: var(--color-gray);
 
-	border: 1px solid var(--border-color);
+	border: 1px solid var(--_border-color);
 	border-radius: 0.25em;
 	display: flex;
 	align-items: center;
@@ -66,11 +66,11 @@
 	background: #faffff;
 
 	&:focus-within {
-		--border-color: var(--focus-ring-color);
+		--_border-color: var(--outline-color);
 	}
 
 	&:hover {
-		box-shadow: 0 0 2px var(--border-color);
+		box-shadow: 0 0 2px var(--_border-color);
 	}
 }
 
@@ -81,17 +81,17 @@
 /* キーワード入力欄 */
 .p-header-search__ctrl-query {
 	& input {
-		--width: 16em;
+		--_width: 16em;
 
 		all: initial;
 		padding: 0.25em;
 		box-sizing: border-box;
-		width: var(--width);
-		height: var(--height);
+		width: var(--_width);
+		height: var(--_height);
 		font: inherit;
 
 		@media screen and (max-width: 28em) {
-			--width: 100%;
+			--_width: 100%;
 		}
 
 		&:invalid {
@@ -103,20 +103,20 @@
 /* 送信ボタン */
 .p-header-search__ctrl-submit {
 	& button {
-		--color: hsl(220 70% 45%);
+		--_color: hsl(220 70% 45%);
 
 		all: initial;
 		padding: 0.375em;
 		box-sizing: border-box;
 		display: flex;
 		aspect-ratio: 1/1;
-		height: var(--height);
-		color: var(--color);
+		height: var(--_height);
+		color: var(--_color);
 		font: inherit;
 		fill: currentColor; /* SVG */
 
 		&:focus:not(:focus-visible) {
-			--color: hsl(220 70% 35%);
+			--_color: hsl(220 70% 35%);
 		}
 
 		&:focus-visible {
@@ -124,7 +124,7 @@
 		}
 
 		&:hover {
-			--color: hsl(220 70% 55%);
+			--_color: hsl(220 70% 55%);
 		}
 
 		& > svg {

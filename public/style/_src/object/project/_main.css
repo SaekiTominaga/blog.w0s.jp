@@ -77,10 +77,10 @@
 
 /* ===== 記事タイトルリスト ===== */
 .p-title-list {
-	--bullet-width: 0.45em;
-	--bullet-height: 0.75em;
-	--bullet-color: #0bb;
-	--bullet-gap: 0.5em;
+	--_bullet-width: 0.45em;
+	--_bullet-height: 0.75em;
+	--_bullet-color: #0bb;
+	--_bullet-gap: 0.5em;
 
 	& > li {
 		padding: 24px 0;
@@ -88,13 +88,13 @@
 		display: flow-root;
 		line-height: var(--line-height-narrow);
 
-		@media (--viewport-main-full) {
+		@media (--_viewport-main-full) {
 			padding-left: var(--page-side-padding);
 			padding-right: var(--page-side-padding);
 		}
 
 		@media screen and (max-width: 37.5em) {
-			padding-left: calc(var(--page-side-padding) + var(--bullet-width) + var(--bullet-gap));
+			padding-left: calc(var(--page-side-padding) + var(--_bullet-width) + var(--_bullet-gap));
 		}
 	}
 
@@ -108,19 +108,19 @@
 }
 
 .p-title-list__thumb {
-	--image-border-width: 1px;
-	--image-aspect-ratio: 1.5;
-	--image-width: 180px;
+	--_image-border-width: 1px;
+	--_image-aspect-ratio: 1.5;
+	--_image-width: 180px;
 
-	margin-right: calc(30px + var(--bullet-width) + var(--bullet-gap));
+	margin-right: calc(30px + var(--_bullet-width) + var(--_bullet-gap));
 	float: left;
 	display: flex;
 	justify-content: center;
-	width: calc(var(--image-width) + var(--image-border-width) * 2);
+	width: calc(var(--_image-width) + var(--_image-border-width) * 2);
 	pointer-events: none;
 
 	@media screen and (max-width: 37.5em) {
-		--image-width: min(120px, 30vw);
+		--_image-width: min(120px, 30vw);
 
 		margin-left: 15px;
 		margin-right: 0;
@@ -129,10 +129,10 @@
 }
 
 .p-title-list__image {
-	border: var(--image-border-width) solid;
+	border: var(--_image-border-width) solid;
 	display: block;
-	max-width: var(--image-width);
-	max-height: calc(var(--image-width) / var(--image-aspect-ratio));
+	max-width: var(--_image-width);
+	max-height: calc(var(--_image-width) / var(--_image-aspect-ratio));
 	color: #000;
 	background: #fff;
 	pointer-events: auto;
@@ -143,7 +143,7 @@
 }
 
 .p-title-list__text {
-	margin-left: calc(0px - var(--bullet-width) - var(--bullet-gap));
+	margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
 	font-size: clamp(1rem, 3vw, calc(1rem * var(--font-ratio-5)));
 
 	@supports not (font-size: clamp(0px, 0px, 0px)) {
@@ -152,17 +152,17 @@
 	}
 
 	&::before {
-		margin-right: var(--bullet-gap);
+		margin-right: var(--_bullet-gap);
 		content: "";
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
-		width: var(--bullet-width);
-		height: var(--bullet-height);
-		background: var(--bullet-color);
+		width: var(--_bullet-width);
+		height: var(--_bullet-height);
+		background: var(--_bullet-color);
 	}
 
 	@nest :any-link:focus &, :any-link:hover & {
-		--bullet-color: var(--color-link-hover);
+		--_bullet-color: var(--link-color-hover);
 	}
 }
 
@@ -184,7 +184,7 @@
 	border-radius: 0.5em;
 	background: #fefefe;
 
-	@media (--viewport-main-full) {
+	@media (--_viewport-main-full) {
 		margin-left: var(--page-side-padding);
 		margin-right: var(--page-side-padding);
 	}
@@ -196,10 +196,10 @@
 }
 
 .p-bookcm__list {
-	--bullet-width: 0.45em;
-	--bullet-height: 0.75em;
-	--bullet-color: #0bb;
-	--bullet-gap: 0.5em;
+	--_bullet-width: 0.45em;
+	--_bullet-height: 0.75em;
+	--_bullet-color: #0bb;
+	--_bullet-gap: 0.5em;
 
 	margin-top: 15px;
 	display: grid;
@@ -212,7 +212,7 @@
 }
 
 .p-bookcm__image {
-	margin-right: calc(15px + var(--bullet-width) + var(--bullet-gap));
+	margin-right: calc(15px + var(--_bullet-width) + var(--_bullet-gap));
 	border: 1px solid #000;
 	float: left;
 	height: auto;
@@ -224,21 +224,21 @@
 }
 
 .p-bookcm__title {
-	margin-left: calc(0px - var(--bullet-width) - var(--bullet-gap));
+	margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
 	font-weight: bold;
 
 	&::before {
-		margin-right: var(--bullet-gap);
+		margin-right: var(--_bullet-gap);
 		content: "";
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
-		width: var(--bullet-width);
-		height: var(--bullet-height);
-		background: var(--bullet-color);
+		width: var(--_bullet-width);
+		height: var(--_bullet-height);
+		background: var(--_bullet-color);
 	}
 
 	@nest :any-link:focus &, :any-link:hover & {
-		--bullet-color: var(--color-link-hover);
+		--_bullet-color: var(--link-color-hover);
 	}
 }
 

@@ -50,7 +50,7 @@
 .l-main {
 	grid-column: main;
 
-	@media (--viewport-main-full) {
+	@media (--_viewport-main-full) {
 		grid-column: main-padding-left / main-padding-right;
 	}
 }
@@ -72,7 +72,7 @@
 .l-sidebar {
 	grid-column: sidebar;
 
-	@media (--viewport-main-full) {
+	@media (--_viewport-main-full) {
 		margin-top: 80px;
 	}
 }

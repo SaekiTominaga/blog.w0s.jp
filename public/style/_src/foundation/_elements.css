@@ -10,22 +10,22 @@
 }
 
 :focus {
-	outline: var(--focus-ring-width) solid var(--focus-ring-color);
-	outline-offset: var(--focus-ring-offset);
+	outline: var(--outline-width) solid var(--outline-color);
+	outline-offset: var(--outline-offset);
 }
 
 :link {
-	color: var(--color-link);
+	color: var(--link-color);
 }
 
 :visited {
-	color: var(--color-visited);
+	color: var(--link-color-visited);
 }
 
 :any-link {
 	&:focus,
 	&:hover {
-		--color-link: var(--color-link-hover);
-		--color-visited: var(--color-link-hover);
+		--link-color: var(--link-color-hover);
+		--link-color-visited: var(--link-color-hover);
 	}
 }

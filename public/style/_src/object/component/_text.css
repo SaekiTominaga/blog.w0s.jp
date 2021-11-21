@@ -69,28 +69,28 @@
 /* ===== Amazon 商品が発売予定の場合の「予定」文字部分 ===== */
 .c-amazon-time-plan {
 	@nest .p-sidebar-amazon-link & {
-		--color: hsl(0 100% 40%);
+		--_color: hsl(0 100% 40%);
 
-		color: var(--color);
+		color: var(--_color);
 
 		@nest :any-link:focus &, :any-link:hover & {
-			--color: hsl(0 100% 36%);
+			--_color: hsl(0 100% 36%);
 		}
 	}
 }
 
 /* ===== 記事件数 ===== */
 .c-entry-count {
-	--color: #026;
-	--bg-color: #cde;
+	--_color: #026;
+	--_bg-color: #cde;
 
 	margin: 0 1em;
 	padding: 0.15em 0.45em;
-	border: 1px solid var(--bg-color);
+	border: 1px solid var(--_bg-color);
 	border-radius: 0.5em;
 	display: inline-block;
-	color: var(--color);
-	background: var(--bg-color);
+	color: var(--_color);
+	background: var(--_bg-color);
 	font-size: calc(1rem / var(--font-ratio-10));
 	line-height: var(--line-height-nowrap);
 	white-space: nowrap;

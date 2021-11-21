@@ -4,7 +4,7 @@
 
 /* ===== プロフィール ===== */
 .p-sidebar-profile {
-	--heading-offset: -0.75em;
+	--_heading-offset: -0.75em;
 
 	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);
@@ -15,7 +15,7 @@
 	padding: 0 0.5em;
 	display: inline-block;
 	position: relative;
-	top: var(--heading-offset);
+	top: var(--_heading-offset);
 	background: var(--page-bgcolor);
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
@@ -62,21 +62,21 @@
 }
 
 .p-sidebar-category-tab__item {
-	--padding-row: 0.6em;
-	--border-color: var(--color-border-dark);
-	--border-radius-top: 0px;
-	--color: var(--color-black);
-	--bg-color: var(--color-bg-verylight);
-	--font-weight: inherit;
+	--_padding-row: 0.6em;
+	--_border-color: var(--color-border-dark);
+	--_border-radius-top: 0px;
+	--_color: var(--color-black);
+	--_bg-color: var(--color-bg-verylight);
+	--_font-weight: inherit;
 
-	padding: var(--padding-row) 0.2em;
-	border: 1px solid var(--border-color);
-	border-radius: var(--border-radius-top) var(--border-radius-top) 0 0;
+	padding: var(--_padding-row) 0.2em;
+	border: 1px solid var(--_border-color);
+	border-radius: var(--_border-radius-top) var(--_border-radius-top) 0 0;
 	flex: auto;
-	color: var(--color);
-	background: var(--bg-color);
+	color: var(--_color);
+	background: var(--_bg-color);
 	font-size: calc(1rem / var(--font-ratio-4));
-	font-weight: var(--font-weight);
+	font-weight: var(--_font-weight);
 	line-height: var(--line-height-narrow);
 	text-align: center;
 
@@ -90,7 +90,7 @@
 	}
 
 	&:focus-visible {
-		--border-color: var(--focus-ring-color);
+		--_border-color: var(--outline-color);
 
 		z-index: 0;
 	}
@@ -100,14 +100,14 @@
 	}
 
 	&:hover {
-		--bg-color: var(--color-bg-light);
+		--_bg-color: var(--color-bg-light);
 	}
 
 	&[aria-selected="true"] {
-		--padding-row: 0.8em;
-		--border-radius-top: 0.25em;
-		--bg-color: var(--color-white);
-		--font-weight: bold;
+		--_padding-row: 0.8em;
+		--_border-radius-top: 0.25em;
+		--_bg-color: var(--color-white);
+		--_font-weight: bold;
 	}
 }
 
@@ -118,7 +118,7 @@
 
 /* ===== 最近の記事 ===== */
 .p-sidebar-newly-entry {
-	--heading-offset: -0.75em;
+	--_heading-offset: -0.75em;
 
 	border: 1px solid var(--color-border-dark);
 	border-radius: 0.25em 0.25em 0 0;
@@ -129,62 +129,62 @@
 	padding: 0 0.5em;
 	display: inline-block;
 	position: relative;
-	top: var(--heading-offset);
+	top: var(--_heading-offset);
 	background: var(--page-bgcolor);
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 }
 
 .p-sidebar-newly-entry__link {
-	margin-top: var(--heading-offset);
+	margin-top: var(--_heading-offset);
 }
 
 /* ===== リンクリスト ===== */
 .p-sidebar-links {
 	& a {
-		--padding-row: 0.5em;
-		--padding-col: 0.5em;
-		--bg-color: var(--color-bg-skyblue);
-		--font-size: calc(1rem / var(--font-ratio-2));
+		--_padding-row: 0.5em;
+		--_padding-col: 0.5em;
+		--_bg-color: var(--color-bg-skyblue);
+		--_font-size: calc(1rem / var(--font-ratio-2));
 
-		padding: var(--padding-row) var(--padding-col);
+		padding: var(--_padding-row) var(--_padding-col);
 		display: flex;
 		align-items: center;
 		position: relative;
-		font-size: var(--font-size);
-		background: var(--bg-color);
+		font-size: var(--_font-size);
+		background: var(--_bg-color);
 		line-height: var(--line-height-narrow);
 		outline-offset: 0;
 
-		@media (--viewport-main-full) {
-			--font-size: 1rem;
+		@media (--_viewport-main-full) {
+			--_font-size: 1rem;
 		}
 
 		&:any-link {
-			--bg-color: var(--color-white);
-			--icon-color: var(--color-gray); /* アイコンの色 */
-			--icon-width: 0.67em; /* アイコンの幅 */
-			--icon-height: 1em; /* アイコンの高さ */
-			--icon-gap: 0.75em; /* テキストとアイコンの間隔 */
+			--_bg-color: var(--color-white);
+			--_icon-color: var(--color-gray); /* アイコンの色 */
+			--_icon-width: 0.67em; /* アイコンの幅 */
+			--_icon-height: 1em; /* アイコンの高さ */
+			--_icon-gap: 0.75em; /* テキストとアイコンの間隔 */
 
-			padding-right: calc(var(--icon-gap) + var(--icon-width) + var(--padding-col));
+			padding-right: calc(var(--_icon-gap) + var(--_icon-width) + var(--_padding-col));
 			text-decoration: none;
 
 			&::after {
 				content: "";
 				clip-path: var(--shape-link-arrow);
-				width: var(--icon-width);
-				height: var(--icon-height);
-				background: var(--icon-color);
+				width: var(--_icon-width);
+				height: var(--_icon-height);
+				background: var(--_icon-color);
 				position: absolute;
-				top: calc(50% - var(--icon-height) / 2);
-				right: var(--padding-col);
+				top: calc(50% - var(--_icon-height) / 2);
+				right: var(--_padding-col);
 			}
 
 			&:focus,
 			&:hover {
-				--bg-color: var(--color-bg-lightyellow);
-				--icon-color: var(--color-lightgray);
+				--_bg-color: var(--color-bg-lightyellow);
+				--_icon-color: var(--color-lightgray);
 			}
 		}
 	}
@@ -198,11 +198,11 @@
 		&:nth-child(2n + 1) {
 			& a {
 				&:any-link {
-					--bg-color: var(--color-bg-verylight);
+					--_bg-color: var(--color-bg-verylight);
 
 					&:focus,
 					&:hover {
-						--bg-color: var(--color-bg-lightyellow);
+						--_bg-color: var(--color-bg-lightyellow);
 					}
 				}
 			}
@@ -212,7 +212,7 @@
 	/* カテゴリー */
 	&.-category {
 		& a {
-			--padding-row: 0.25em;
+			--_padding-row: 0.25em;
 		}
 	}
 
@@ -226,7 +226,7 @@
 
 /* ===== Amazon 商品広告 ===== */
 .p-sidebar-amazon {
-	--heading-offset: -0.75em;
+	--_heading-offset: -0.75em;
 
 	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);
@@ -238,22 +238,22 @@
 	padding: 0 0.5em;
 	display: inline-block;
 	position: relative;
-	top: var(--heading-offset);
+	top: var(--_heading-offset);
 	background: var(--page-bgcolor);
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 }
 
 .p-sidebar-amazon__link {
-	--gap-row: 10px;
-	--gap-column: 10px;
+	--_gap-row: 10px;
+	--_gap-column: 10px;
 
-	margin-top: calc(0.5em + var(--heading-offset));
+	margin-top: calc(0.5em + var(--_heading-offset));
 	display: grid;
-	gap: var(--gap-row) var(--gap-column);
+	gap: var(--_gap-row) var(--_gap-column);
 	grid-template-columns: repeat(2, 1fr);
 
-	@media (--viewport-main-full) {
+	@media (--_viewport-main-full) {
 		display: flex;
 		flex-flow: wrap;
 
@@ -284,21 +284,21 @@
 
 /* テキストエリア */
 .p-sidebar-amazon-link__text {
-	--color: hsl(0 0% 25%);
-	--bg-color: hsl(30 100% 88%);
+	--_color: hsl(0 0% 25%);
+	--_bg-color: hsl(30 100% 88%);
 
 	margin-top: 1px;
 	padding: 5px;
 	border-radius: 0.5em;
-	color: var(--color);
-	background: var(--bg-color);
+	color: var(--_color);
+	background: var(--_bg-color);
 	line-height: var(--line-height-narrow);
 	overflow-wrap: anywhere;
 	transition: color var(--link-hover-transition-delay), background-color var(--link-hover-transition-delay);
 
 	@nest :any-link:focus &, :any-link:hover & {
-		--color: hsl(0 0% 20%);
-		--bg-color: hsl(30 100% 80%);
+		--_color: hsl(0 0% 20%);
+		--_bg-color: hsl(30 100% 80%);
 	}
 }
 

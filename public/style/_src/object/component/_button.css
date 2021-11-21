@@ -4,36 +4,36 @@
 
 /* ===== ボタン ===== */
 .c-button {
-	--padding-row: 0.5em;
-	--padding-col: 0.5em;
-	--border-color: var(--color-lightgray);
-	--width: auto;
-	--color: var(--color-black);
-	--background: var(--color-white);
-	--font-size: 1rem;
-	--text-shadow-color: var(--color-white);
-	--icon-size: 1.25em;
+	--_padding-row: 0.5em;
+	--_padding-col: 0.5em;
+	--_border-color: var(--color-lightgray);
+	--_width: auto;
+	--_color: var(--color-black);
+	--_background: var(--color-white);
+	--_font-size: 1rem;
+	--_text-shadow-color: var(--color-white);
+	--_icon-size: 1.25em;
 
-	padding: var(--padding-row) var(--padding-col);
-	border: 1px solid var(--border-color);
+	padding: var(--_padding-row) var(--_padding-col);
+	border: 1px solid var(--_border-color);
 	border-radius: 0.25em;
 	box-sizing: border-box;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
 	gap: 0.5em;
-	width: var(--width);
-	color: var(--color);
-	background: var(--background);
-	font-size: var(--font-size);
+	width: var(--_width);
+	color: var(--_color);
+	background: var(--_background);
+	font-size: var(--_font-size);
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 	text-decoration: none;
-	text-shadow: 1px 1px var(--text-shadow-color);
+	text-shadow: 1px 1px var(--_text-shadow-color);
 	outline-offset: 0.125em;
 
 	&:hover {
-		box-shadow: 0 0 2px var(--border-color);
+		box-shadow: 0 0 2px var(--_border-color);
 	}
 
 	&.-nowrap {
@@ -42,16 +42,16 @@
 
 	/* Feed */
 	&.-feed {
-		--border-color: hsl(41 100% 53%);
-		--color: #454545;
-		--background: hsl(41 100% 93%);
+		--_border-color: hsl(41 100% 53%);
+		--_color: #454545;
+		--_background: hsl(41 100% 93%);
 	}
 
 	/* Twitter */
 	&.-twitter {
-		--border-color: #2293dd;
-		--color: #fff;
-		--background: #1da1f2;
+		--_border-color: #2293dd;
+		--_color: #fff;
+		--_background: #1da1f2;
 	}
 
 	/* GitHub */
@@ -60,28 +60,28 @@
 
 	/* Amazon */
 	&.-amazon {
-		--border-color: #c2a24e;
-		--background: linear-gradient(#ffe8ab, #f5c747);
+		--_border-color: #c2a24e;
+		--_background: linear-gradient(#ffe8ab, #f5c747);
 	}
 
 	/* YouTube */
 	&.-youtube {
-		--border-color: #f33;
-		--color: #c22;
-		--background: linear-gradient(#fff, #fee);
+		--_border-color: #f33;
+		--_color: #c22;
+		--_background: linear-gradient(#fff, #fee);
 	}
 
 	@nest .p-sidebar-profile__banners & {
-		--padding-col: 1px;
-		--width: 100%;
-		--font-size: calc(1rem / var(--font-ratio-2));
-		--text-shadow-color: transparent;
+		--_padding-col: 1px;
+		--_width: 100%;
+		--_font-size: calc(1rem / var(--font-ratio-2));
+		--_text-shadow-color: transparent;
 	}
 }
 
 .c-button__icon {
 	aspect-ratio: 1/1;
-	height: var(--icon-size);
+	height: var(--_icon-size);
 }
 
 .c-button__text {

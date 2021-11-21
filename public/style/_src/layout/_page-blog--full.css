@@ -8,7 +8,7 @@
 		"footer           footer            footer footer           footer  footer             footer           ";
 	grid-template-columns: var(--page-side-margin) var(--page-side-padding) 1fr 26px 230px var(--page-side-padding) var(--page-side-margin);
 
-	@media (--viewport-main-full) {
+	@media (--_viewport-main-full) {
 		grid-template-areas:
 			"header               header  header               "
 			"main-padding-left    main    main-padding-right   "

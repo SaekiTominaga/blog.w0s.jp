@@ -19,10 +19,6 @@
 	--color-bg-superlight: #fcfcfc;
 	--color-bg-skyblue: #dff;
 	--color-bg-lightyellow: #ffc;
-	--color-link: #00f; /* 未訪問リンクの文字色 */
-	--color-visited: #800080; /* 既訪問リンクの文字色 */
-	--color-link-hover: #d00; /* リンクのマウスオーバー時の文字色 */
-	--color-link-bullet: #0bb; /* リンクのビュレット色 */
 
 	/* ===== テキスト ===== */
 	--line-height-wide: 1.8; /* 広い行高さ（長い本文など） */
@@ -47,12 +43,16 @@
 	--font-mincho: YuMincho, "Yu Mincho", serif; /* 明朝体 */
 
 	/* ===== リンク ===== */
+	--link-color: #00f; /* 未訪問リンクの文字色 */
+	--link-color-visited: #800080; /* 既訪問リンクの文字色 */
+	--link-color-bullet: #0bb; /* ビュレット色 */
+	--link-color-hover: #d00; /* マウスオーバー時の文字色 */
 	--link-hover-transition-delay: 0.2s; /* マウスオーバー時の変化時間 */
 
 	/* ===== フォーカスリング（Outline） ===== */
-	--focus-ring-width: 1px;
-	--focus-ring-color: #4d90fe;
-	--focus-ring-offset: 1px;
+	--outline-width: 1px;
+	--outline-color: #4d90fe;
+	--outline-offset: 1px;
 
 	/* ===== 図形 ===== */
 	--shape-link-triangle: polygon(0 0, 100% 50%, 0 100%); /* リンクアイコン ( ▶ ) */

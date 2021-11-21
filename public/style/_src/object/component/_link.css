@@ -4,8 +4,8 @@
 
 /* ===== リンク ===== */
 .c-link {
-	--bullet-size: 0.75em;
-	--bullet-color: var(--color-lightgray);
+	--_bullet-size: 0.75em;
+	--_bullet-color: var(--color-lightgray);
 
 	outline-offset: 0.125em;
 
@@ -14,17 +14,17 @@
 		content: "";
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
-		width: calc(var(--bullet-size) * 0.6);
-		height: var(--bullet-size);
-		background: var(--bullet-color);
+		width: calc(var(--_bullet-size) * 0.6);
+		height: var(--_bullet-size);
+		background: var(--_bullet-color);
 	}
 
 	&:any-link {
-		--bullet-color: var(--color-link-bullet);
+		--_bullet-color: var(--link-color-bullet);
 
 		&:focus,
 		&:hover {
-			--bullet-color: var(--color-link-hover);
+			--_bullet-color: var(--link-color-hover);
 		}
 	}
 }
