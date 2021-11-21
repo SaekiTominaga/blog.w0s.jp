@@ -10,7 +10,7 @@
 	grid-column: header;
 	padding: 20px 0 40px;
 	display: grid;
-	grid-template-columns: [full-start] calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) var(--page-side-padding) [content-start] 1fr [content-end] var(--page-side-padding) calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) [full-end];
+	grid-template-columns: [full-start] var(--page-side-margin) var(--page-side-padding) [content-start] 1fr [content-end] var(--page-side-padding) var(--page-side-margin) [full-end];
 }
 
 /* ヘッダーメイン */
@@ -38,15 +38,8 @@
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 10px 0;
-
-	& .p-header-nav {
-		margin-right: 20px; /* TODO: Safari が gap for Flexbox に対応するまでの暫定対応 */
-	}
-
-	@media screen and (max-width: 60em) {
-		flex-wrap: wrap;
-	}
+	flex-wrap: wrap;
+	gap: 10px 20px;
 
 	@media screen and (max-width: 36em) {
 		justify-content: flex-start;
@@ -84,28 +77,43 @@
 	}
 }
 
+/* プロフィール */
+.l-sidebar__profile {
+}
+
+/* カテゴリー別記事 */
+.l-sidebar__category {
+	margin-top: 20px;
+}
+
+/* 最近の記事 */
+.l-sidebar__newly-entry {
+	margin-top: 25px;
+}
+
+/* Amazon 商品広告 */
+.l-sidebar__amazon {
+	margin-top: 25px;
+}
+
 /* ===== ページフッター ===== */
 .l-footer {
 	grid-column: footer;
 	margin-top: 80px;
 	padding: 40px 0;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
+	border: solid var(--color-border-light);
+	border-width: 1px 0;
 	display: grid;
-	grid-template-columns: [full-start] calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) var(--page-side-padding) [content-start] 1fr [content-end] var(--page-side-padding) calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) [full-end];
-	background: #fcfcfc;
+	grid-template-columns: [full-start] var(--page-side-margin) var(--page-side-padding) [content-start] 1fr [content-end] var(--page-side-padding) var(--page-side-margin) [full-end];
+	background: var(--color-bg-superlight);
 }
 
-/* ===== サイト横断ナビゲーション ===== */
+/* サイト横断ナビゲーション */
 .l-footer__nav {
 	grid-column: content;
-
-	&:not(:first-child) {
-		margin-top: 20px;
-	}
 }
 
-/* ===== アドセンス ===== */
+/* アドセンス */
 .l-footer__ads {
 	margin-top: 100px;
 	grid-column: content;

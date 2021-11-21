@@ -1,0 +1,88 @@
+/* ==============================
+ *   ボタン
+ * ============================== */
+
+/* ===== ボタン ===== */
+.c-button {
+	--padding-row: 0.5em;
+	--padding-col: 0.5em;
+	--border-color: var(--color-lightgray);
+	--width: auto;
+	--color: var(--color-black);
+	--background: var(--color-white);
+	--font-size: 1rem;
+	--text-shadow-color: var(--color-white);
+	--icon-size: 1.25em;
+
+	padding: var(--padding-row) var(--padding-col);
+	border: 1px solid var(--border-color);
+	border-radius: 0.25em;
+	box-sizing: border-box;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5em;
+	width: var(--width);
+	color: var(--color);
+	background: var(--background);
+	font-size: var(--font-size);
+	font-weight: bold;
+	line-height: var(--line-height-narrow);
+	text-decoration: none;
+	text-shadow: 1px 1px var(--text-shadow-color);
+	outline-offset: 0.125em;
+
+	&:hover {
+		box-shadow: 0 0 2px var(--border-color);
+	}
+
+	&.-nowrap {
+		white-space: nowrap;
+	}
+
+	/* Feed */
+	&.-feed {
+		--border-color: hsl(41 100% 53%);
+		--color: #454545;
+		--background: hsl(41 100% 93%);
+	}
+
+	/* Twitter */
+	&.-twitter {
+		--border-color: #2293dd;
+		--color: #fff;
+		--background: #1da1f2;
+	}
+
+	/* GitHub */
+	&.-github {
+	}
+
+	/* Amazon */
+	&.-amazon {
+		--border-color: #c2a24e;
+		--background: linear-gradient(#ffe8ab, #f5c747);
+	}
+
+	/* YouTube */
+	&.-youtube {
+		--border-color: #f33;
+		--color: #c22;
+		--background: linear-gradient(#fff, #fee);
+	}
+
+	@nest .p-sidebar-profile__banners & {
+		--padding-col: 1px;
+		--width: 100%;
+		--font-size: calc(1rem / var(--font-ratio-2));
+		--text-shadow-color: transparent;
+	}
+}
+
+.c-button__icon {
+	aspect-ratio: 1/1;
+	height: var(--icon-size);
+}
+
+.c-button__text {
+}

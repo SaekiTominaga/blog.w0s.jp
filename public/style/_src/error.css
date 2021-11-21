@@ -5,7 +5,7 @@
 
 /* Layout */
 @import "layout/_common.css";
-@import "layout/_error.css";
+@import "layout/_page-error.css";
 
 /* Object - Project */
 @import "object/project/_error.css";

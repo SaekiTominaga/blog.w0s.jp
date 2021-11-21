@@ -1,4 +1,35 @@
-/* リンク */
+/* ==============================
+ *   リンク
+ * ============================== */
+
+/* ===== リンク ===== */
+.c-link {
+	--bullet-size: 0.75em;
+	--bullet-color: var(--color-lightgray);
+
+	outline-offset: 0.125em;
+
+	&::before {
+		margin-right: 0.5em;
+		content: "";
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		width: calc(var(--bullet-size) * 0.6);
+		height: var(--bullet-size);
+		background: var(--bullet-color);
+	}
+
+	&:any-link {
+		--bullet-color: var(--color-link-bullet);
+
+		&:focus,
+		&:hover {
+			--bullet-color: var(--color-link-hover);
+		}
+	}
+}
+
+/* リンクアイコン */
 .c-link-icon {
 	margin: 0 0.25em;
 	box-sizing: border-box;

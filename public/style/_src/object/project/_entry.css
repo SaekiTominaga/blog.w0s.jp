@@ -353,7 +353,7 @@
 
 			&:focus,
 			&:hover {
-				--bullet-color: var(--anchor-hover-color);
+				--bullet-color: var(--color-link-hover);
 			}
 		}
 	}
@@ -537,7 +537,7 @@
 	font-size: calc(var(--entry-font-size) / var(--font-ratio-2));
 	line-height: var(--line-height-narrow);
 	text-decoration: none;
-	transition: color var(--anchor-hover-transition-delay), background-color var(--anchor-hover-transition-delay);
+	transition: color var(--link-hover-transition-delay), background-color var(--link-hover-transition-delay);
 
 	&:any-link {
 		color: #444;
@@ -571,7 +571,7 @@
 	display: block;
 	height: auto;
 	max-width: 100%;
-	transition: box-shadow var(--anchor-hover-transition-delay);
+	transition: box-shadow var(--link-hover-transition-delay);
 
 	@nest :any-link:focus &, :any-link:hover & {
 		box-shadow: 0 0 4px 3px #f92;
@@ -596,9 +596,9 @@
 	}
 
 	@nest :any-link:focus &, :any-link:hover & {
-		--bullet-color: var(--anchor-hover-color);
+		--bullet-color: var(--color-link-hover);
 
-		color: var(--anchor-hover-color);
+		color: var(--color-link-hover);
 	}
 }
 
@@ -973,7 +973,7 @@
 	}
 
 	@nest :any-link:focus &, :any-link:hover & {
-		--bullet-color: var(--anchor-hover-color);
+		--bullet-color: var(--color-link-hover);
 	}
 }
 

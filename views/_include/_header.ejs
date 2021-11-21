@@ -9,26 +9,27 @@
 				<% } %>
 				<p class="p-header-site__summary" itemprop="description">ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ</p>
 				<% } else { %>
-				<p class="p-header-site__name"><a href="/">富永日記帳</a></p>
+				<div class="p-header-site__name"><a href="/">富永日記帳</a></div>
 				<p class="p-header-site__summary">ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ</p>
 				<% } %>
 			</div>
 		</div>
 		<div class="l-header__nav">
 			<div class="p-header-nav">
-				<a href="/feed" type="application/atom+xml" class="p-header-nav__link -feed"><img src="/image/icon/feed.svg" alt="" class="p-header-nav__link-icon" /> フィード</a>
+				<a href="/feed" type="application/atom+xml" class="c-button -nowrap -feed">
+					<img src="/image/icon/feed.svg" alt="" class="c-button__icon" />
+					<span class="c-button__text">フィード</span>
+				</a>
 			</div>
 
 			<form action="https://www.google.com/search" role="search" class="p-header-search" aria-label="サイト内検索">
-				<div class="p-header-search__ctrl">
+				<div class="p-header-search__ctrls">
 					<span class="p-header-search__ctrl-site">
 						<input type="hidden" name="as_sitesearch" value="blog.w0s.jp" />
 					</span>
-
 					<span class="p-header-search__ctrl-query">
 						<input type="search" name="q" required="" title="検索キーワード" />
 					</span>
-
 					<span class="p-header-search__ctrl-submit">
 						<button>
 							<svg role="img" aria-labelledby="header-search-button">

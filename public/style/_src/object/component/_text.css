@@ -1,4 +1,8 @@
-/* テキスト */
+/* ==============================
+ *   テキスト
+ * ============================== */
+
+/* =====  ===== */
 .c-annotate {
 	margin: 0 0.5em 0 0.25em;
 	font-size: 75%;
@@ -40,10 +44,60 @@
 	}
 }
 
-/* ドメイン表記 */
+/* ===== ドメイン表記 ===== */
 .c-domain {
 	margin: 0 0.25em;
 	color: #666;
 	font-size: 85%;
 	font-weight: normal;
+}
+
+/* ===== Amazon 商品カテゴリ ===== */
+.c-amazon-binding {
+	padding: 0.25em;
+	border: 1px solid;
+	border-radius: 0.5em;
+	display: inline-block;
+	color: var(--color-lightgray);
+	background: var(--color-white);
+	font-size: calc(100% / var(--font-ratio-4));
+	font-weight: bold;
+	line-height: var(--line-height-narrow);
+	vertical-align: middle;
+}
+
+/* ===== Amazon 商品が発売予定の場合の「予定」文字部分 ===== */
+.c-amazon-time-plan {
+	@nest .p-sidebar-amazon-link & {
+		--color: hsl(0 100% 40%);
+
+		color: var(--color);
+
+		@nest :any-link:focus &, :any-link:hover & {
+			--color: hsl(0 100% 36%);
+		}
+	}
+}
+
+/* ===== 記事件数 ===== */
+.c-entry-count {
+	--color: #026;
+	--bg-color: #cde;
+
+	margin: 0 1em;
+	padding: 0.15em 0.45em;
+	border: 1px solid var(--bg-color);
+	border-radius: 0.5em;
+	display: inline-block;
+	color: var(--color);
+	background: var(--bg-color);
+	font-size: calc(1rem / var(--font-ratio-10));
+	line-height: var(--line-height-nowrap);
+	white-space: nowrap;
+}
+
+/* 件数の数字部分 */
+.c-entry-count__num {
+	font-size: calc(1rem / var(--font-ratio-4));
+	font-weight: bold;
 }

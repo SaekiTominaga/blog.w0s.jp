@@ -8,6 +8,7 @@
 		"declaration-block-no-duplicate-properties": [true, { "ignore": ["consecutive-duplicates-with-different-values"] }],
 		"declaration-colon-newline-after": "always-multi-line",
 		"declaration-no-important": true,
+		"hue-degree-notation": "number",
 		"indentation": "tab",
 		"length-zero-no-unit": null,
 		"linebreaks": "unix",

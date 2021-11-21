@@ -2,14 +2,33 @@
 	/* ===== ページ全体 ===== */
 	--page-max-width: 1280px; /* ページの最大幅 */
 	--page-side-padding: 10px; /* ページの左右の余白 */
+	--page-side-margin: calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)); /* ページの左右の余白 */
 	--page-color: #000; /* ページ文字色 */
 	--page-bgcolor: #fffff9; /* ページ背景色 */
 	--page-font-size: 100%; /* デフォルトのフォントサイズ 12px=75%, 13px=81.3%, 14px=87.5%, 15px=93.8%, 16px=100%, 17px=106.3%, 18px=112.5% */
+
+	/* ===== 色 ===== */
+	--color-white: #fff;
+	--color-black: #000;
+	--color-gray: #999;
+	--color-lightgray: #666;
+	--color-border-dark: #999;
+	--color-border-light: #ccc;
+	--color-bg-light: #eee;
+	--color-bg-verylight: #f9f9f9;
+	--color-bg-superlight: #fcfcfc;
+	--color-bg-skyblue: #dff;
+	--color-bg-lightyellow: #ffc;
+	--color-link: #00f; /* 未訪問リンクの文字色 */
+	--color-visited: #800080; /* 既訪問リンクの文字色 */
+	--color-link-hover: #d00; /* リンクのマウスオーバー時の文字色 */
+	--color-link-bullet: #0bb; /* リンクのビュレット色 */
 
 	/* ===== テキスト ===== */
 	--line-height-wide: 1.8; /* 広い行高さ（長い本文など） */
 	--line-height-normal: 1.5; /* 通常の行高さ */
 	--line-height-narrow: 1.25; /* 狭い行高さ（見出しやボタンなど） */
+	--line-height-nowrap: 1; /* 改行しない文の行高さ */
 
 	/* ===== フォント ===== */
 	--font-ratio: 1.06;
@@ -28,10 +47,7 @@
 	--font-mincho: YuMincho, "Yu Mincho", serif; /* 明朝体 */
 
 	/* ===== リンク ===== */
-	--anchor-color: #00f; /* 未訪問の文字色 */
-	--anchor-visited-color: #800080; /* 既訪問の文字色 */
-	--anchor-hover-color: #d00; /* マウスオーバー時の文字色 */
-	--anchor-hover-transition-delay: 0.2s; /* マウスオーバー時の変化時間 */
+	--link-hover-transition-delay: 0.2s; /* マウスオーバー時の変化時間 */
 
 	/* ===== フォーカスリング（Outline） ===== */
 	--focus-ring-width: 1px;

@@ -1,12 +1,7 @@
-:focus {
-	outline: var(--focus-ring-width) solid var(--focus-ring-color);
-	outline-offset: var(--focus-ring-offset);
-}
-
 :root {
 	color: var(--page-color);
 	background: var(--page-bgcolor);
-	font: 500 var(--page-font-size)/var(--line-height-normal) sans-serif; /* weight=500 指定は Windows + 游ゴシック 対策 */
+	font: 500 var(--page-font-size) / var(--line-height-normal) sans-serif; /* weight=500 指定は Windows + 游ゴシック 対策 */
 
 	@media print {
 		--page-color: #000;
@@ -14,18 +9,23 @@
 	}
 }
 
+:focus {
+	outline: var(--focus-ring-width) solid var(--focus-ring-color);
+	outline-offset: var(--focus-ring-offset);
+}
+
 :link {
-	color: var(--anchor-color);
+	color: var(--color-link);
 }
 
 :visited {
-	color: var(--anchor-visited-color);
+	color: var(--color-visited);
 }
 
 :any-link {
 	&:focus,
 	&:hover {
-		--anchor-color: var(--anchor-hover-color);
-		--anchor-visited-color: var(--anchor-hover-color);
+		--color-link: var(--color-link-hover);
+		--color-visited: var(--color-link-hover);
 	}
 }

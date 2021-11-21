@@ -51,12 +51,12 @@
 									<picture>
 										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=180;h=180;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=360;h=360;quality=30 2x" />
 										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=180;h=180;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=360;h=360;quality=30 2x" />
-										<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=jpeg;w=180;h=180;quality=60" alt="" class="p-title-list__image" />
+										<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=jpeg;w=180;h=180;quality=60" alt="" height="120" class="p-title-list__image" />
 									</picture>
 									<% } else if (entry.image_external !== null) { %>
-									<img src="<%= entry.image_external %>" alt="" class="p-title-list__image" />
+									<img src="<%= entry.image_external %>" alt="" height="120" class="p-title-list__image" />
 									<% } else { %>
-									<img src="/image/noimage.svg" alt="" class="p-title-list__image" />
+									<img src="/image/noimage.svg" alt="" width="180" height="120" class="p-title-list__image" />
 									<% } %>
 								</span>
 								<span class="p-title-list__text"><%= entry.title %></span>
