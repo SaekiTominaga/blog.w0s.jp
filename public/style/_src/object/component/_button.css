@@ -6,7 +6,7 @@
 .c-button {
 	--_padding-row: 0.5em;
 	--_padding-col: 0.5em;
-	--_border-color: var(--color-lightgray);
+	--_border-color: var(--color-gray);
 	--_width: auto;
 	--_color: var(--color-black);
 	--_background: var(--color-white);
@@ -31,6 +31,10 @@
 	text-decoration: none;
 	text-shadow: 1px 1px var(--_text-shadow-color);
 	outline-offset: 0.125em;
+
+	&:disabled {
+		display: none;
+	}
 
 	&:hover {
 		box-shadow: 0 0 2px var(--_border-color);
@@ -69,6 +73,11 @@
 		--_border-color: #f33;
 		--_color: #c22;
 		--_background: linear-gradient(#fff, #fee);
+	}
+
+	@nest .p-entry-footer-social & {
+		--_padding-col: 0.75em;
+		--_font-size: calc(1rem * var(--font-ratio-2));
 	}
 
 	@nest .p-sidebar-profile__banners & {

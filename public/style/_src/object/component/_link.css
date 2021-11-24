@@ -5,12 +5,13 @@
 /* ===== リンク ===== */
 .c-link {
 	--_bullet-size: 0.75em;
-	--_bullet-color: var(--color-lightgray);
+	--_bullet-color: var(--color-gray);
+	--_bullet-gap: 0.5em;
 
 	outline-offset: 0.125em;
 
 	&::before {
-		margin-right: 0.5em;
+		margin-right: var(--_bullet-gap);
 		content: "";
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
@@ -36,4 +37,173 @@
 	height: 1.15em;
 	width: auto;
 	vertical-align: -0.2em;
+}
+
+/* ===== 記事リンク ===== */
+.c-entry-link {
+	--_gap: 15px;
+	--_font-size: inhelit;
+	--_bullet-width: 0.45em;
+	--_bullet-height: 0.75em;
+	--_bullet-color: #0bb;
+	--_bullet-gap: 0.5em;
+
+	display: flow-root;
+	font-size: var(--_font-size);
+	line-height: var(--line-height-narrow);
+
+	@media (--breakpoint-entry-link) {
+		margin-left: calc(var(--_bullet-width) + var(--_bullet-gap));
+	}
+
+	@nest .p-title-list & {
+		--_gap: 30px;
+		--_font-size: clamp(calc(1rem / var(--font-ratio-2)), 2.5vw, 1rem);
+	}
+
+	@nest .p-entry-footer-relation & {
+		--_font-size: calc(1rem / var(--font-ratio-2));
+	}
+
+	& a {
+		outline-offset: 0.125em;
+	}
+}
+
+.c-entry-link__thumb {
+	--_margin-right: calc(var(--_gap) + var(--_bullet-width) + var(--_bullet-gap));
+	--_margin-left: 0px;
+	--_float: left;
+	--_image-border-width: 1px;
+	--_image-aspect-ratio: 1.5;
+	--_image-max-width: 180px;
+
+	margin-right: var(--_margin-right);
+	margin-left: var(--_margin-left);
+	float: var(--_float);
+	display: flex;
+	justify-content: center;
+	width: calc(var(--_image-max-width) + var(--_image-border-width) * 2);
+	height: calc(var(--_image-max-width) / var(--_image-aspect-ratio) + var(--_image-border-width) * 2);
+	pointer-events: none;
+
+	@media (--breakpoint-entry-link) {
+		--_margin-right: 0px;
+		--_margin-left: var(--_gap);
+		--_float: right;
+		--_image-max-width: min(120px, 30vw);
+	}
+}
+
+.c-entry-link__image {
+	border: var(--_image-border-width) solid;
+	display: block;
+	max-width: var(--_image-max-width);
+	max-height: calc(var(--_image-max-width) / var(--_image-aspect-ratio));
+	color: var(--color-black);
+	background: var(--color-white);
+	pointer-events: auto;
+
+	@nest :any-link:hover & {
+		box-shadow: 0 0 5px var(--color-border-dark);
+	}
+}
+
+.c-entry-link__title {
+	margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+	font-size: var(--_font-size);
+
+	&::before {
+		margin-right: var(--_bullet-gap);
+		content: "";
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		width: var(--_bullet-width);
+		height: var(--_bullet-height);
+		background: var(--_bullet-color);
+	}
+
+	@nest :any-link:focus &, :any-link:hover & {
+		--_bullet-color: var(--link-color-hover);
+	}
+
+	@nest .p-title-list & {
+		--_font-size: clamp(1rem, 3vw, calc(1rem * var(--font-ratio-5)));
+	}
+}
+
+.c-entry-link__date {
+	margin-top: 0.5em;
+	overflow: hidden;
+}
+
+/* ===== 著書リンク ===== */
+.c-book-link {
+	--_gap: 15px;
+	--_bullet-width: 0.45em;
+	--_bullet-height: 0.75em;
+	--_bullet-color: #0bb;
+	--_bullet-gap: 0.5em;
+
+	display: flow-root;
+	line-height: var(--line-height-narrow);
+
+	@media (--breakpoint-entry-link) {
+		margin-left: calc(var(--_bullet-width) + var(--_bullet-gap));
+	}
+
+	& a {
+		outline-offset: 0.125em;
+	}
+}
+
+.c-book-link__thumb {
+	--_margin-right: calc(var(--_gap) + var(--_bullet-width) + var(--_bullet-gap));
+	--_margin-left: 0px;
+	--_float: left;
+	--_image-border-width: 1px;
+	--_image-height: 160px;
+
+	margin-right: var(--_margin-right);
+	margin-left: var(--_margin-left);
+	float: var(--_float);
+	display: flex;
+	justify-content: center;
+	height: calc(var(--_image-height) + var(--_image-border-width) * 2);
+}
+
+.c-book-link__image {
+	border: var(--_image-border-width) solid;
+	display: block;
+	color: var(--color-black);
+	background: var(--color-white);
+
+	@nest :any-link:hover & {
+		box-shadow: 0 0 5px var(--color-border-dark);
+	}
+}
+
+.c-book-link__title {
+	margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+	font-weight: bold;
+
+	&::before {
+		margin-right: var(--_bullet-gap);
+		content: "";
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		width: var(--_bullet-width);
+		height: var(--_bullet-height);
+		background: var(--_bullet-color);
+	}
+
+	@nest :any-link:focus &, :any-link:hover & {
+		--_bullet-color: var(--link-color-hover);
+	}
+}
+
+.c-book-link__description {
+	margin-top: 0.5em;
+	line-height: var(--line-height-normal);
+	overflow: hidden;
 }

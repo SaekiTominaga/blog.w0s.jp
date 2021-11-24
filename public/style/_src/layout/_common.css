@@ -10,7 +10,7 @@
 	grid-column: header;
 	padding: 20px 0 40px;
 	display: grid;
-	grid-template-columns: [full-start] var(--page-side-margin) var(--page-side-padding) [content-start] 1fr [content-end] var(--page-side-padding) var(--page-side-margin) [full-end];
+	grid-template-columns: [full-start] var(--page-col-margin) var(--page-col-padding) [content-start] 1fr [content-end] var(--page-col-padding) var(--page-col-margin) [full-end];
 }
 
 /* ヘッダーメイン */
@@ -50,7 +50,7 @@
 .l-main {
 	grid-column: main;
 
-	@media (--_viewport-main-full) {
+	@media (--breakpoint) {
 		grid-column: main-padding-left / main-padding-right;
 	}
 }
@@ -72,7 +72,7 @@
 .l-sidebar {
 	grid-column: sidebar;
 
-	@media (--_viewport-main-full) {
+	@media (--breakpoint) {
 		margin-top: 80px;
 	}
 }
@@ -104,7 +104,7 @@
 	border: solid var(--color-border-light);
 	border-width: 1px 0;
 	display: grid;
-	grid-template-columns: [full-start] var(--page-side-margin) var(--page-side-padding) [content-start] 1fr [content-end] var(--page-side-padding) var(--page-side-margin) [full-end];
+	grid-template-columns: [full-start] var(--page-col-margin) var(--page-col-padding) [content-start] 1fr [content-end] var(--page-col-padding) var(--page-col-margin) [full-end];
 	background: var(--color-bg-superlight);
 }
 

@@ -1,17 +1,18 @@
 :root {
 	/* ===== ページ全体 ===== */
 	--page-max-width: 1280px; /* ページの最大幅 */
-	--page-side-padding: 10px; /* ページの左右の余白 */
-	--page-side-margin: calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)); /* ページの左右の余白 */
+	--page-col-padding: 10px; /* ページの左右の余白 */
+	--page-col-margin: calc((100% - var(--page-max-width)) / 2 - var(--page-col-padding)); /* ページの左右の余白 */
 	--page-color: #000; /* ページ文字色 */
 	--page-bgcolor: #fffff9; /* ページ背景色 */
 	--page-font-size: 100%; /* デフォルトのフォントサイズ 12px=75%, 13px=81.3%, 14px=87.5%, 15px=93.8%, 16px=100%, 17px=106.3%, 18px=112.5% */
 
 	/* ===== 色 ===== */
 	--color-white: #fff;
+	--color-lightgray: #999;
+	--color-gray: #666;
+	--color-darkgray: #333;
 	--color-black: #000;
-	--color-gray: #999;
-	--color-lightgray: #666;
 	--color-border-dark: #999;
 	--color-border-light: #ccc;
 	--color-bg-light: #eee;

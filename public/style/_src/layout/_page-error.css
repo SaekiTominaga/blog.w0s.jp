@@ -3,9 +3,9 @@
  * ============================== */
 .l-page {
 	grid-template-areas: "main-margin-left main main-margin-right";
-	grid-template-columns: calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding)) 1fr calc((100% - var(--page-max-width)) / 2 - var(--page-side-padding));
+	grid-template-columns: calc((100% - var(--page-max-width)) / 2 - var(--page-col-padding)) 1fr calc((100% - var(--page-max-width)) / 2 - var(--page-col-padding));
 }
 
 .l-main {
-	padding: min(10vh, 100px) var(--page-side-padding);
+	padding: min(10vh, 100px) var(--page-col-padding);
 }

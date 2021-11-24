@@ -58,7 +58,7 @@
 	border: 1px solid;
 	border-radius: 0.5em;
 	display: inline-block;
-	color: var(--color-lightgray);
+	color: var(--color-gray);
 	background: var(--color-white);
 	font-size: calc(100% / var(--font-ratio-4));
 	font-weight: bold;
@@ -75,6 +75,35 @@
 
 		@nest :any-link:focus &, :any-link:hover & {
 			--_color: hsl(0 100% 36%);
+		}
+	}
+}
+
+/* ===== 記事メタデータ ===== */
+.c-entry-meta {
+	display: table;
+	line-height: var(--line-height-narrow);
+}
+
+.c-entry-meta__group {
+	display: table-row;
+
+	& > dt,
+	& > dd {
+		display: table-cell;
+	}
+
+	& > dd {
+		&::before {
+			margin: 0 0.25em;
+			content: ":";
+		}
+	}
+
+	& + .c-entry-meta__group {
+		& > dt,
+		& > dd {
+			border-top: 0.125em solid transparent;
 		}
 	}
 }

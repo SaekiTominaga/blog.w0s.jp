@@ -39,7 +39,7 @@
 
 /* サイト概要 */
 .p-header-site__summary {
-	color: var(--color-lightgray);
+	color: var(--color-gray);
 	font-size: calc(1rem / var(--font-ratio-4));
 	line-height: var(--line-height-narrow);
 }
@@ -56,7 +56,7 @@
 }
 
 .p-header-search__ctrls {
-	--_border-color: var(--color-gray);
+	--_border-color: var(--color-lightgray);
 
 	border: 1px solid var(--_border-color);
 	border-radius: 0.25em;

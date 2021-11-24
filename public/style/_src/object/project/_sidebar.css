@@ -37,7 +37,7 @@
 	float: left;
 
 	@nest :any-link:hover & {
-		box-shadow: 0 0 5px var(--color-gray);
+		box-shadow: 0 0 5px var(--color-lightgray);
 	}
 }
 
@@ -156,13 +156,13 @@
 		line-height: var(--line-height-narrow);
 		outline-offset: 0;
 
-		@media (--_viewport-main-full) {
+		@media (--breakpoint) {
 			--_font-size: 1rem;
 		}
 
 		&:any-link {
 			--_bg-color: var(--color-white);
-			--_icon-color: var(--color-gray); /* アイコンの色 */
+			--_icon-color: var(--color-lightgray); /* アイコンの色 */
 			--_icon-width: 0.67em; /* アイコンの幅 */
 			--_icon-height: 1em; /* アイコンの高さ */
 			--_icon-gap: 0.75em; /* テキストとアイコンの間隔 */
@@ -184,7 +184,7 @@
 			&:focus,
 			&:hover {
 				--_bg-color: var(--color-bg-lightyellow);
-				--_icon-color: var(--color-lightgray);
+				--_icon-color: var(--color-gray);
 			}
 		}
 	}
@@ -253,7 +253,7 @@
 	gap: var(--_gap-row) var(--_gap-column);
 	grid-template-columns: repeat(2, 1fr);
 
-	@media (--_viewport-main-full) {
+	@media (--breakpoint) {
 		display: flex;
 		flex-flow: wrap;
 
