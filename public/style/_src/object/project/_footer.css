@@ -8,7 +8,7 @@
 	flex-flow: column wrap;
 	justify-content: flex-start;
 	gap: 0.5em 0;
-	font-size: calc(var(--page-font-size) * var(--font-ratio-2));
+	font-size: calc(1rem * var(--font-ratio-2));
 
 	@media screen and (min-width: 30em) {
 		flex-direction: row;
