@@ -27,7 +27,7 @@
 		"config:validate:paapi": "ajv --spec=draft7 -s node/configure/schema/paapi.json -d node/configure/paapi.json",
 		"config:validate:feed-create": "ajv --spec=draft7 -s node/configure/schema/feed-create.json -d node/configure/feed-create.json",
 		"config:validate:sitemap-create": "ajv --spec=draft7 -s node/configure/schema/sitemap-create.json -d node/configure/sitemap-create.json",
-		"ejs:markuplint": "markuplint views/*.ejs",
+		"html:markuplint": "markuplint errorpage/*.html views/*.ejs views/_include/*.ejs",
 		"_css:build-watch": "postcss public/style/_src/*.css --base public/style/_src -d public/style -w",
 		"_css:compress": "onchange -f add -f change -v public/style/*.css -- brotlin compress {{file}} -m 1",
 		"css": "run-p _css:*",
