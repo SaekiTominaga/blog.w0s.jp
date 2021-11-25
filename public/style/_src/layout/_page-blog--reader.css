@@ -1,6 +1,7 @@
 /* ==============================
  *   リーダー表示
  * ============================== */
+
 .l-page {
 	grid-template-areas: "main";
 	grid-template-columns: 1fr;

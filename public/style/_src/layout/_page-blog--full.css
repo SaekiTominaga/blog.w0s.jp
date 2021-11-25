@@ -1,6 +1,7 @@
 /* ==============================
  *   通常表示
  * ============================== */
+
 .l-page {
 	grid-template-areas:
 		"header           header            header header           header  header             header           "
