@@ -4,7 +4,7 @@
 	},
 	"rules": {
 		"attr-duplication": true,
-		"character-reference": false,
+		"character-reference": true,
 		"deprecated-attr": true,
 		"deprecated-element": true,
 		"doctype": true,
@@ -14,28 +14,30 @@
 		"invalid-attr": true,
 		"landmark-roles": true,
 		"required-h1": false,
-		"wai-aria": {
-			"option": {
-				"disallowSetImplicitRole": false
-			}
-		},
-		"class-naming": false,
-		"attr-equal-space-after": false,
-		"attr-equal-space-before": false,
-		"attr-spacing": false,
-		"attr-value-quotes": false,
-		"case-sensitive-attr-name": false,
-		"case-sensitive-tag-name": false,
-		"indentation": false
+		"wai-aria": true,
+		"class-naming": [
+			"/^[lcpu]-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$/",
+			"/^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
+			"/^js-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
+			"/^adsbygoogle$/"
+		],
+		"attr-equal-space-after": "never",
+		"attr-equal-space-before": "never",
+		"attr-spacing": true,
+		"attr-value-quotes": "double",
+		"case-sensitive-attr-name": "no-upper",
+		"case-sensitive-tag-name": "lower",
+		"indentation": "tab"
 	},
 	"nodeRules": [
 		{
 			"tagName": "html",
 			"rules": {
-				"permitted-contents": false,
 				"invalid-attr": {
 					"option": {
-						"ignoreAttrNamePrefix": ["prefix"]
+						"ignoreAttrNamePrefix": [
+							"prefix"
+						]
 					}
 				}
 			}
@@ -45,7 +47,9 @@
 			"rules": {
 				"invalid-attr": {
 					"option": {
-						"ignoreAttrNamePrefix": ["target"]
+						"ignoreAttrNamePrefix": [
+							"target"
+						]
 					}
 				}
 			}
@@ -55,7 +59,50 @@
 			"rules": {
 				"invalid-attr": {
 					"option": {
-						"ignoreAttrNamePrefix": ["content", "property"]
+						"ignoreAttrNamePrefix": [
+							"content",
+							"property"
+						]
+					}
+				}
+			}
+		},
+		{
+			"tagName": "article",
+			"rules": {
+				"wai-aria": {
+					"option": {
+						"disallowSetImplicitRole": false
+					}
+				}
+			}
+		},
+		{
+			"tagName": "header",
+			"rules": {
+				"wai-aria": {
+					"option": {
+						"disallowSetImplicitRole": false
+					}
+				}
+			}
+		},
+		{
+			"tagName": "footer",
+			"rules": {
+				"wai-aria": {
+					"option": {
+						"permittedAriaRoles": false
+					}
+				}
+			}
+		},
+		{
+			"tagName": "main",
+			"rules": {
+				"wai-aria": {
+					"option": {
+						"disallowSetImplicitRole": false
 					}
 				}
 			}
