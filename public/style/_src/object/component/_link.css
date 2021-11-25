@@ -142,7 +142,7 @@
 	--_gap: 15px;
 	--_bullet-width: 0.45em;
 	--_bullet-height: 0.75em;
-	--_bullet-color: #0bb;
+	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
 	display: flow-root;

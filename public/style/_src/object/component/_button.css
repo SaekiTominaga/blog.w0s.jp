@@ -54,7 +54,7 @@
 	/* Twitter */
 	&.-twitter {
 		--_border-color: #2293dd;
-		--_color: #fff;
+		--_color: var(--color-white);
 		--_background: #1da1f2;
 	}
 

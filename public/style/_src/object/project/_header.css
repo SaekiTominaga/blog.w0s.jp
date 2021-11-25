@@ -18,20 +18,21 @@
 
 	& a {
 		--_padding: 0.25em;
-		--_text-shadow: 0.05em 0.05em 0.1em #ccc;
+		--_text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
 
 		margin: calc(0px - var(--_padding));
 		padding: var(--_padding);
 		display: inline-block;
 		border-radius: 0.1em; /* outline を柔らかくする */
 		text-shadow: var(--_text-shadow);
+		outline-width: 2px;
 
 		&:any-link {
 			color: inherit;
 			text-decoration: none;
 
 			&:hover {
-				--_text-shadow: 0 0 1em #aaa;
+				--_text-shadow: 0 0 1em var(--color-border-dark);
 			}
 		}
 	}
