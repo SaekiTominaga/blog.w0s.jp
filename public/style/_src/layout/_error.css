@@ -1,0 +1,24 @@
+/* ==============================
+ *   エラーページ
+ * ============================== */
+
+.l-page {
+	display: grid;
+	grid-template-areas:
+		"header-margin-left header-padding-left header header-padding-right header-margin-right"
+		"main-margin-left   main-padding-left   main   main-padding-right   main-margin-right";
+	grid-template-columns: var(--page-col-margin) var(--page-col-padding) 1fr var(--page-col-padding) var(--page-col-margin);
+}
+
+/* ===== ページヘッダー ===== */
+.l-header {
+	grid-column: header;
+	padding: 12vh 0 8vh;
+	border-bottom: 1px dashed var(--color-border-dark);
+}
+
+/* ===== メインエリア ===== */
+.l-main {
+	grid-column: main;
+	padding: 10vh 0;
+}

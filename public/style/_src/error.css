@@ -4,8 +4,10 @@
 @import "foundation/_elements.css";
 
 /* Layout */
-@import "layout/_common.css";
-@import "layout/_page-error.css";
+@import "layout/_error.css";
+
+/* Object - Component */
+@import "object/component/_form.css";
 
 /* Object - Project */
 @import "object/project/_error.css";

@@ -1,0 +1,88 @@
+/* ==============================
+ *   フォーム
+ * ============================== */
+
+/* ===== サイト内検索 ===== */
+.c-search {
+	--_border-color: var(--color-lightgray);
+	--_height: 2em;
+
+	border: 1px solid var(--_border-color);
+	border-radius: 0.125em;
+	display: flex;
+	align-items: center;
+	color: var(--color-darkgray);
+	background: #faffff;
+
+	&:focus-within {
+		--_border-color: var(--outline-color);
+	}
+
+	&:hover {
+		box-shadow: 0 0 2px var(--_border-color);
+	}
+
+	@nest .p-header-search & {
+		--_height: 2.25em;
+	}
+
+	@nest .p-err-search & {
+		--_height: 2.5em;
+	}
+}
+
+/* <input type="hidden"> */
+.c-search__hidden {
+}
+
+/* キーワード入力欄 */
+.c-search__query {
+	flex: 1;
+
+	& input {
+		all: initial;
+		padding: 0.25em;
+		box-sizing: border-box;
+		width: 100%;
+		height: var(--_height);
+		font: inherit;
+
+		&:invalid {
+			box-shadow: none; /* for Firefox */
+		}
+	}
+}
+
+/* 送信ボタン */
+.c-search__submit {
+	& button {
+		--_color: hsl(220 70% 45%);
+
+		all: initial;
+		padding: 0.375em;
+		box-sizing: border-box;
+		display: flex;
+		aspect-ratio: 1/1;
+		height: var(--_height);
+		color: var(--_color);
+		font: inherit;
+		fill: currentColor; /* SVG */
+
+		&:focus:not(:focus-visible) {
+			--_color: hsl(220 70% 35%);
+		}
+
+		&:focus-visible {
+			outline: 2px dotted var(--color-black);
+		}
+
+		&:hover {
+			--_color: hsl(220 70% 55%);
+		}
+
+		& > svg {
+			width: 100%;
+			height: 100%;
+		} /* for Chrome */
+	}
+}
