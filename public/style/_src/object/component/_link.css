@@ -4,28 +4,33 @@
 
 /* ===== リンク ===== */
 .c-link {
-	--_bullet-size: 0.75em;
+	--_bullet-height: 0.75em;
+	--_bullet-width: calc(var(--_bullet-height) * 0.6);
 	--_bullet-color: var(--color-gray);
 	--_bullet-gap: 0.5em;
 
-	outline-offset: 0.125em;
+	margin-left: calc(var(--_bullet-width) + var(--_bullet-gap));
 
-	&::before {
-		margin-right: var(--_bullet-gap);
-		content: "";
-		display: inline-block;
-		clip-path: var(--shape-link-triangle);
-		width: calc(var(--_bullet-size) * 0.6);
-		height: var(--_bullet-size);
-		background: var(--_bullet-color);
-	}
+	& > a {
+		margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+		outline-offset: 0.125em;
 
-	&:any-link {
-		--_bullet-color: var(--link-color-bullet);
+		&::before {
+			margin-right: var(--_bullet-gap);
+			content: "";
+			display: inline-block;
+			clip-path: var(--shape-link-triangle);
+			width: var(--_bullet-width);
+			height: var(--_bullet-height);
+			background: var(--_bullet-color);
+		}
 
-		&:focus,
-		&:hover {
-			--_bullet-color: var(--link-color-hover);
+		&:any-link {
+			--_bullet-color: var(--link-color-bullet);
+
+			&:is(:focus, :hover) {
+				--_bullet-color: var(--link-color-hover);
+			}
 		}
 	}
 }
@@ -43,9 +48,9 @@
 .c-entry-link {
 	--_gap: 15px;
 	--_font-size: inhelit;
-	--_bullet-width: 0.45em;
 	--_bullet-height: 0.75em;
-	--_bullet-color: #0bb;
+	--_bullet-width: calc(var(--_bullet-height) * 0.6);
+	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
 	display: flow-root;
@@ -58,11 +63,11 @@
 
 	@nest .p-title-list & {
 		--_gap: 30px;
-		--_font-size: clamp(calc(1rem / var(--font-ratio-2)), 2.5vw, 1rem);
+		--_font-size: clamp(calc(1rem / var(--font-ratio-1)), 2.5vw, 1rem);
 	}
 
 	@nest .p-entry-footer-relation & {
-		--_font-size: calc(1rem / var(--font-ratio-2));
+		--_font-size: calc(1rem / var(--font-ratio-1));
 	}
 
 	& a {
@@ -123,12 +128,12 @@
 		background: var(--_bullet-color);
 	}
 
-	@nest :any-link:focus &, :any-link:hover & {
+	@nest :is(:any-link:focus, :any-link:hover) & {
 		--_bullet-color: var(--link-color-hover);
 	}
 
 	@nest .p-title-list & {
-		--_font-size: clamp(1rem, 3vw, calc(1rem * var(--font-ratio-5)));
+		--_font-size: clamp(1rem, 3vw, calc(1rem * var(--font-ratio-3)));
 	}
 }
 
@@ -140,17 +145,13 @@
 /* ===== 著書リンク ===== */
 .c-book-link {
 	--_gap: 15px;
-	--_bullet-width: 0.45em;
 	--_bullet-height: 0.75em;
+	--_bullet-width: calc(var(--_bullet-height) * 0.6);
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
 	display: flow-root;
 	line-height: var(--line-height-narrow);
-
-	@media (--breakpoint-entry-link) {
-		margin-left: calc(var(--_bullet-width) + var(--_bullet-gap));
-	}
 
 	& a {
 		outline-offset: 0.125em;
@@ -197,7 +198,7 @@
 		background: var(--_bullet-color);
 	}
 
-	@nest :any-link:focus &, :any-link:hover & {
+	@nest :is(:any-link:focus, :any-link:hover) & {
 		--_bullet-color: var(--link-color-hover);
 	}
 }
@@ -206,4 +207,41 @@
 	margin-top: 0.5em;
 	line-height: var(--line-height-normal);
 	overflow: hidden;
+}
+
+/* ===== 注釈リンク ===== */
+.c-annotate {
+	font-size: calc(100% / var(--font-ratio-2));
+	vertical-align: super;
+
+	& > a {
+		--_border-color: transparent;
+		--_bg-color: transparent;
+
+		padding: 0.25em;
+		border: 1px solid var(--_border-color);
+		background: var(--_bg-color);
+
+		&:target {
+			--_border-color: #f00;
+			--_bg-color: #fee;
+		}
+
+		&[role="button"] {
+			/* JS 有効時のみ */
+			--_color: var(--link-color);
+
+			color: var(--_color);
+			text-decoration: none;
+			cursor: default;
+
+			&:is(:focus, :hover) {
+				--_color: var(--link-color);
+			}
+
+			&:focus:not(:focus-visible) {
+				outline: none;
+			}
+		}
+	}
 }

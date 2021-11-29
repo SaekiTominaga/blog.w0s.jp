@@ -57,10 +57,8 @@ export default class MessageParser {
 	private dlFlag = false;
 	private blockquoteFlag = false;
 	private blockquoteCiteFlag = false;
-	private imageFlag = false;
-	private videoFlag = false;
+	private embeddedFlag = false;
 	private codeFlag = false;
-	private insFlag = false;
 	private distFlag = false;
 	private tableFlag = false;
 	private tbodyFlag = false;
@@ -152,7 +150,7 @@ export default class MessageParser {
 					this.section2Flag = false;
 
 					const sectionBreakElement = document.createElement('hr');
-					sectionBreakElement.className = 'p-entry-section-break';
+					sectionBreakElement.className = 'entry-section-break';
 					this.appendChild(mainElement, sectionBreakElement);
 
 					this.flagReset();
@@ -161,7 +159,7 @@ export default class MessageParser {
 					this.section2Flag = false;
 
 					const sectionBreakElement = document.createElement('hr');
-					sectionBreakElement.className = 'p-entry-section-break';
+					sectionBreakElement.className = 'entry-section-break';
 					this.appendChild(mainElement, sectionBreakElement);
 
 					this.flagReset();
@@ -173,12 +171,12 @@ export default class MessageParser {
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
 
 					this.section1Element = document.createElement('section');
-					this.section1Element.className = 'p-section1';
+					this.section1Element.className = 'entry-section1';
 					this.section1Element.id = `section-${this.section1Count}`;
 					mainElement.appendChild(this.section1Element);
 
 					const h2Element = document.createElement('h2');
-					h2Element.className = 'p-hdg1';
+					h2Element.className = 'entry-hdg1';
 					h2Element.textContent = lineText;
 					this.section1Element.appendChild(h2Element);
 
@@ -196,14 +194,14 @@ export default class MessageParser {
 					this.section2Flag = false;
 
 					this.section2Element = document.createElement('section');
-					this.section2Element.className = 'p-section2';
+					this.section2Element.className = 'entry-section2';
 					this.section2Element.id = `section-${this.section1Count}-${this.section2Count}`;
 					this.appendChild(mainElement, this.section2Element);
 
 					this.section2Flag = true;
 
 					const h3Element = document.createElement('h3');
-					h3Element.className = 'p-hdg2';
+					h3Element.className = 'entry-hdg2';
 					h3Element.textContent = lineText;
 					this.appendChild(mainElement, h3Element);
 
@@ -222,7 +220,7 @@ export default class MessageParser {
 						parentElement.appendChild(liElement);
 					} else {
 						const ulElement = document.createElement('ul');
-						ulElement.className = 'p-entry-list';
+						ulElement.className = 'entry-list';
 						this.appendChild(mainElement, ulElement);
 
 						ulElement.appendChild(liElement);
@@ -239,11 +237,12 @@ export default class MessageParser {
 					const lineText = lineTrim.substring(3); // 先頭記号を削除
 
 					const liElement = document.createElement('li');
+					liElement.className = 'c-link';
 					if (this.linksFlag) {
 						parentElement.appendChild(liElement);
 					} else {
 						const ulElement = document.createElement('ul');
-						ulElement.className = 'p-entry-links';
+						ulElement.className = 'entry-list-link';
 						this.appendChild(mainElement, ulElement);
 
 						ulElement.appendChild(liElement);
@@ -251,7 +250,13 @@ export default class MessageParser {
 						parentElement = ulElement;
 					}
 
-					this.inlineMarkup(liElement, lineText); // インライン要素を設定
+					if (lineText === '') {
+						liElement.textContent = '';
+					} else {
+						/* リンクを設定 */
+						liElement.insertAdjacentHTML('beforeend', this.parsingInlineLink(StringEscapeHtml.escape(lineText)));
+					}
+
 					this.flagReset();
 					this.linksFlag = true;
 					blockConvert = true;
@@ -260,7 +265,7 @@ export default class MessageParser {
 				this.appendCode(document, mainElement);
 
 				if (lineTrim.startsWith('1. ')) {
-					/* 先頭が 1. な場合は順序つきリスト */
+					/* 先頭が 1. な場合は順序リスト */
 					const lineText = lineTrim.substring(3); // 先頭記号を削除
 
 					const liElement = document.createElement('li');
@@ -268,7 +273,7 @@ export default class MessageParser {
 						parentElement.appendChild(liElement);
 					} else {
 						const olElement = document.createElement('ol');
-						olElement.className = 'p-entry-list-num';
+						olElement.className = 'entry-list-order';
 						this.appendChild(mainElement, olElement);
 
 						olElement.appendChild(liElement);
@@ -304,7 +309,7 @@ export default class MessageParser {
 						}
 					} else {
 						const dlElement = document.createElement('dl');
-						dlElement.className = 'p-entry-list-description';
+						dlElement.className = 'entry-list-description';
 						this.appendChild(mainElement, dlElement);
 
 						const dtElement = document.createElement('dt');
@@ -337,11 +342,11 @@ export default class MessageParser {
 						parentElement.appendChild(pElement);
 					} else {
 						quoteElement = document.createElement('figure');
-						quoteElement.className = 'p-entry-quote';
+						quoteElement.className = 'entry-quote';
 						this.appendChild(mainElement, quoteElement);
 
 						const blockquoteElement = document.createElement('blockquote');
-						blockquoteElement.className = 'p-entry-quote__quote';
+						blockquoteElement.className = 'entry-quote__quote';
 						quoteElement.appendChild(blockquoteElement);
 
 						blockquoteElement.appendChild(pElement);
@@ -360,7 +365,7 @@ export default class MessageParser {
 					parentElement.appendChild(pElement);
 
 					const omitElement = document.createElement('em');
-					omitElement.className = 'p-entry-quote__omit';
+					omitElement.className = 'entry-quote__omit';
 					omitElement.textContent = '(中略)';
 					pElement.appendChild(omitElement);
 
@@ -387,15 +392,11 @@ export default class MessageParser {
 					this.blockquoteLang = lineText;
 				} else {
 					const quoteCaptionElement = document.createElement('figcaption');
-					quoteCaptionElement.className = 'p-entry-quote__caption';
+					quoteCaptionElement.className = 'entry-quote__caption';
 					quoteElement.appendChild(quoteCaptionElement);
 
-					const sourceElement = document.createElement('span');
-					sourceElement.className = 'p-entry-quote__source';
-					quoteCaptionElement.appendChild(sourceElement);
-
 					if (this.blockquoteCite === '') {
-						sourceElement.textContent = lineText;
+						quoteCaptionElement.textContent = lineText;
 					} else {
 						const aElement = document.createElement('a');
 						aElement.href = this.blockquoteCite;
@@ -403,7 +404,7 @@ export default class MessageParser {
 							aElement.setAttribute('hreflang', this.blockquoteLang);
 						}
 						aElement.textContent = lineText;
-						sourceElement.appendChild(aElement);
+						quoteCaptionElement.appendChild(aElement);
 
 						if (this.blockquoteCite.endsWith('.pdf')) {
 							aElement.type = 'application/pdf';
@@ -418,7 +419,7 @@ export default class MessageParser {
 						const domainElement = document.createElement('b');
 						domainElement.className = 'c-domain';
 						domainElement.textContent = `(${new URL(this.blockquoteCite).hostname})`;
-						sourceElement.appendChild(domainElement);
+						quoteCaptionElement.appendChild(domainElement);
 					}
 				}
 
@@ -429,7 +430,7 @@ export default class MessageParser {
 				this.appendCode(document, mainElement);
 
 				if (lineTrim.startsWith('$photo: ')) {
-					/* 先頭が $photo: な場合は写真の画像（.p-entry-image figure.image > img） */
+					/* 先頭が $photo: な場合は写真の画像 */
 					const lineText = lineTrim.substring(8); // 先頭記号を削除
 
 					const strpos = lineText.indexOf(' ');
@@ -437,21 +438,20 @@ export default class MessageParser {
 						const file = lineText.substring(0, strpos);
 						const caption = lineText.substring(strpos + 1);
 
-						if (this.imageFlag) {
+						if (this.embeddedFlag) {
 							this.setImage(document, parentElement, file, caption, 'photo');
 						} else {
-							const figureBlockElement = document.createElement('div');
-							figureBlockElement.className = 'p-entry-images';
+							const gridElement = document.createElement('div');
+							gridElement.className = 'entry-embedded-grid';
+							this.appendChild(mainElement, gridElement);
 
-							parentElement = figureBlockElement;
+							parentElement = gridElement;
 
-							this.setImage(document, figureBlockElement, file, caption, 'photo');
-
-							this.appendChild(mainElement, figureBlockElement);
+							this.setImage(document, gridElement, file, caption, 'photo');
 						}
 
 						this.flagReset();
-						this.imageFlag = true;
+						this.embeddedFlag = true;
 						blockConvert = true;
 					}
 				} else if (lineTrim.startsWith('$image: ')) {
@@ -463,21 +463,20 @@ export default class MessageParser {
 						const file = lineText.substring(0, strpos);
 						const caption = lineText.substring(strpos + 1);
 
-						if (this.imageFlag) {
+						if (this.embeddedFlag) {
 							this.setImage(document, parentElement, file, caption, 'figure');
 						} else {
-							const figureBlockElement = document.createElement('div');
-							figureBlockElement.className = 'p-entry-images';
+							const gridElement = document.createElement('div');
+							gridElement.className = 'entry-embedded-grid';
+							this.appendChild(mainElement, gridElement);
 
-							parentElement = figureBlockElement;
+							parentElement = gridElement;
 
-							this.setImage(document, figureBlockElement, file, caption, 'figure');
-
-							this.appendChild(mainElement, figureBlockElement);
+							this.setImage(document, gridElement, file, caption, 'figure');
 						}
 
 						this.flagReset();
-						this.imageFlag = true;
+						this.embeddedFlag = true;
 						blockConvert = true;
 					}
 				} else if (lineTrim.startsWith('$video: ')) {
@@ -489,90 +488,69 @@ export default class MessageParser {
 						const file = lineText.substring(0, strpos);
 						const caption = lineText.substring(strpos + 1);
 
-						if (this.videoFlag) {
+						if (this.embeddedFlag) {
 							this.setVideo(document, parentElement, file, caption);
 						} else {
-							const figureBlockElement = document.createElement('div');
-							figureBlockElement.className = 'p-entry-videos';
+							const gridElement = document.createElement('div');
+							gridElement.className = 'entry-embedded-grid';
+							this.appendChild(mainElement, gridElement);
 
-							parentElement = figureBlockElement;
+							parentElement = gridElement;
 
-							this.setVideo(document, figureBlockElement, file, caption);
-
-							this.appendChild(mainElement, figureBlockElement);
+							this.setVideo(document, gridElement, file, caption);
 						}
 
 						this.flagReset();
-						this.videoFlag = true;
+						this.embeddedFlag = true;
 						blockConvert = true;
 					}
 				} else if (lineTrim.startsWith('$youtube: ')) {
-					/* 先頭が $youtube: な場合はYouTube動画 */
+					/* 先頭が $youtube: な場合は YouTube 動画 */
 					const lineText = lineTrim.substring(10); // 先頭記号を削除
 
-					const videoInfos = lineText.split(' '); // 半角空白で分割
-					if (videoInfos.length >= 3) {
-						const youtubeId = videoInfos[0]; // 動画ID
-						const size = videoInfos[1].split('x', 2); // 幅x高さ
-						const caption = videoInfos.slice(2).join(' '); // タイトル
+					const [id, size, caption] = lineText.split(' ');
+					const [width, height] = size.split('x', 2).map((value) => Number(value));
 
-						const videoWrapElement = document.createElement('div');
-						videoWrapElement.className = 'p-entry-videos';
-						this.appendChild(mainElement, videoWrapElement);
+					if (caption !== undefined) {
+						if (this.embeddedFlag) {
+							this.setYouTube(document, parentElement, id, width, height, caption);
+						} else {
+							const gridElement = document.createElement('div');
+							gridElement.className = 'entry-embedded-grid';
+							this.appendChild(mainElement, gridElement);
 
-						const videoAreaElement = document.createElement('figure');
-						videoAreaElement.className = 'p-entry-video';
-						videoWrapElement.appendChild(videoAreaElement);
+							parentElement = gridElement;
 
-						const iframeElement = document.createElement('iframe');
-						iframeElement.className = 'p-entry-video__frame';
-						iframeElement.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0`; // rel=0 は関連動画を表示しない設定
-						iframeElement.allow = 'encrypted-media;fullscreen;gyroscope;picture-in-picture';
-						iframeElement.title = 'YouTube 動画';
-						iframeElement.width = size[0];
-						iframeElement.height = size[1];
-						iframeElement.textContent = '';
-						videoAreaElement.appendChild(iframeElement);
-
-						const figcaptionElement = document.createElement('figcaption');
-						figcaptionElement.className = 'p-entry-video__caption c-embedded-caption';
-						videoAreaElement.appendChild(figcaptionElement);
-
-						const aElement = document.createElement('a');
-						aElement.href = `https://www.youtube.com/watch?v=${youtubeId}`;
-						aElement.textContent = caption;
-						figcaptionElement.appendChild(aElement);
-
-						const iconElement = document.createElement('img');
-						iconElement.src = '/image/icon/youtube.svg';
-						iconElement.alt = '(YouTube)';
-						iconElement.className = 'c-link-icon';
-						aElement.appendChild(iconElement);
-
-						this.flagReset();
-						blockConvert = true;
+							this.setYouTube(document, gridElement, id, width, height, caption);
+						}
+					} else {
+						this.logger.error(`YouTube 動画埋め込みの構文が不正: ${lineTrim}（記事ID: ${this.entryId}）`);
 					}
+
+					this.flagReset();
+					this.embeddedFlag = true;
+					blockConvert = true;
 				} else if (lineTrim.startsWith('$tweet: ')) {
-					/* 先頭が $tweet: な場合は埋め込みツイート（.p-entry-tweets > .tweet） */
+					/* 先頭が $tweet: な場合は埋め込みツイート */
 					const lineText = lineTrim.substring(8); // 先頭記号を削除
 
-					const tweetBlockElement = document.createElement('div');
-					tweetBlockElement.className = 'p-entry-tweets';
+					const gridElement = document.createElement('div');
+					gridElement.className = 'entry-embedded-grid';
 
-					for (const tweetId of lineText.split(' ')) {
-						const tweetData = await this.dao.getTweet(tweetId);
+					for (const id of lineText.split(' ')) {
+						const tweetData = await this.dao.getTweet(id);
 
 						if (tweetData === null) {
-							this.logger.error(`d_tweet テーブルに存在しないツイート ID が指定: ${tweetId}（記事ID: ${this.entryId}）`);
+							this.logger.error(`テーブルに存在しないツイート ID が指定: ${id}（記事ID: ${this.entryId}）`);
 							continue;
 						}
 
 						const tweetWrapperElement = document.createElement('figure');
-						tweetWrapperElement.className = 'p-entry-tweet';
-						tweetBlockElement.appendChild(tweetWrapperElement);
+						tweetWrapperElement.className = 'entry-embedded';
+						gridElement.appendChild(tweetWrapperElement);
 
 						const tweetElement = document.createElement('blockquote');
-						tweetElement.className = 'p-entry-tweet__quote twitter-tweet';
+						tweetElement.className = 'entry-embedded__tweet twitter-tweet';
 						tweetElement.setAttribute('data-dnt', 'true');
 						tweetWrapperElement.appendChild(tweetElement);
 
@@ -581,26 +559,34 @@ export default class MessageParser {
 						tweetElement.appendChild(tweetTextElement);
 
 						const tweetLinkElement = document.createElement('a');
-						tweetLinkElement.href = `https://twitter.com/${tweetData.username}/status/${tweetId}`;
+						tweetLinkElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
 						tweetLinkElement.textContent = `— ${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
 						tweetElement.appendChild(tweetLinkElement);
 
-						const tweetCaptionElement = document.createElement('figcaption');
-						tweetCaptionElement.className = 'p-entry-tweet__caption c-embedded-caption';
-						tweetWrapperElement.appendChild(tweetCaptionElement);
+						const figcaptionElement = document.createElement('figcaption');
+						figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
+						tweetWrapperElement.appendChild(figcaptionElement);
 
-						const tweetCaptionLinkElement = document.createElement('a');
-						tweetCaptionLinkElement.href = `https://twitter.com/${tweetData.username}/status/${tweetId}`;
-						tweetCaptionLinkElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format(
-							'YYYY年M月D日 HH:mm'
-						)} のツイート`;
-						tweetCaptionElement.appendChild(tweetCaptionLinkElement);
+						const captionTitleElement = document.createElement('span');
+						captionTitleElement.className = 'c-embedded-caption__title';
+						figcaptionElement.appendChild(captionTitleElement);
+
+						const aElement = document.createElement('a');
+						aElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
+						aElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
+						captionTitleElement.appendChild(aElement);
+
+						const iconElement = document.createElement('img');
+						iconElement.src = '/image/icon/twitter.svg';
+						iconElement.alt = '(Twitter)';
+						iconElement.className = 'c-link-icon';
+						aElement.appendChild(iconElement);
 
 						this.tweetExist = true;
 					}
 
 					if (this.tweetExist) {
-						this.appendChild(mainElement, tweetBlockElement);
+						this.appendChild(mainElement, gridElement);
 					}
 
 					this.flagReset();
@@ -610,7 +596,7 @@ export default class MessageParser {
 					const lineText = lineTrim.substring(9); // 先頭記号を削除
 
 					const amazonElement = document.createElement('aside');
-					amazonElement.className = 'p-entry-amazon';
+					amazonElement.className = 'entry-amazon';
 					this.appendChild(mainElement, amazonElement);
 
 					let headingElement: HTMLHeadingElement;
@@ -621,17 +607,17 @@ export default class MessageParser {
 					} else {
 						headingElement = document.createElement('h2');
 					}
-					headingElement.className = 'p-entry-amazon__hdg';
+					headingElement.className = 'entry-amazon__hdg';
 					amazonElement.appendChild(headingElement);
 
 					const headingImageElement = document.createElement('img');
 					headingImageElement.src = '/image/entry/amazon_buy.png';
 					headingImageElement.srcset = '/image/entry/amazon_buy@2x.png 2x';
-					headingImageElement.alt = 'Amazonで買う';
+					headingImageElement.alt = 'Amazon で買う';
 					headingElement.appendChild(headingImageElement);
 
 					const ulElement = document.createElement('ul');
-					ulElement.className = 'p-entry-amazon__list';
+					ulElement.className = 'entry-amazon__link';
 					amazonElement.appendChild(ulElement);
 
 					for (const asin of lineText.split(' ')) {
@@ -646,12 +632,12 @@ export default class MessageParser {
 						ulElement.appendChild(liElement);
 
 						const dpAreaElement = document.createElement('a');
-						dpAreaElement.className = 'p-entry-amazon__dp';
+						dpAreaElement.className = 'entry-amazon-link';
 						dpAreaElement.setAttribute('href', amazonData.url);
 						liElement.appendChild(dpAreaElement);
 
 						const dpImageAreaElement = document.createElement('div');
-						dpImageAreaElement.className = 'p-entry-amazon__image-area';
+						dpImageAreaElement.className = 'entry-amazon-link__thumb';
 						dpAreaElement.appendChild(dpImageAreaElement);
 
 						const dpImageElement = document.createElement('img');
@@ -667,15 +653,15 @@ export default class MessageParser {
 							dpImageElement.setAttribute('height', '160');
 						}
 						dpImageElement.setAttribute('alt', '');
-						dpImageElement.className = 'p-entry-amazon__image';
+						dpImageElement.className = 'entry-amazon-link__image';
 						dpImageAreaElement.appendChild(dpImageElement);
 
 						const dpTextAreaElement = document.createElement('div');
-						dpTextAreaElement.className = 'p-entry-amazon__text-area';
+						dpTextAreaElement.className = 'entry-amazon-link__text';
 						dpAreaElement.appendChild(dpTextAreaElement);
 
 						const dpTitleElement = document.createElement('p');
-						dpTitleElement.className = 'p-entry-amazon__title';
+						dpTitleElement.className = 'entry-amazon-link__title';
 						dpTitleElement.textContent = amazonData.title;
 						dpTextAreaElement.appendChild(dpTitleElement);
 
@@ -683,13 +669,13 @@ export default class MessageParser {
 							const bindingElement = document.createElement('b');
 							switch (amazonData.binding) {
 								case 'Blu-ray':
-									bindingElement.className = 'p-entry-amazon__binding -bd';
+									bindingElement.className = 'c-amazon-binding -bd';
 									break;
 								case 'Kindle版':
-									bindingElement.className = 'p-entry-amazon__binding -kindle';
+									bindingElement.className = 'c-amazon-binding -kindle';
 									break;
 								default:
-									bindingElement.className = 'p-entry-amazon__binding';
+									bindingElement.className = 'c-amazon-binding';
 							}
 							bindingElement.textContent = amazonData.binding;
 							dpTitleElement.appendChild(bindingElement);
@@ -699,13 +685,13 @@ export default class MessageParser {
 							const date = amazonData.date;
 
 							const dpTimeElement = document.createElement('p');
-							dpTimeElement.className = 'p-entry-amazon__time';
+							dpTimeElement.className = 'entry-amazon-link__date';
 							dpTimeElement.textContent = `${dayjs(date).format('YYYY年M月D日')} 発売`;
 							dpTextAreaElement.appendChild(dpTimeElement);
 
 							if (date.getTime() > new Date().getTime()) {
 								const planElement = document.createElement('em');
-								planElement.className = 'p-entry-amazon__time-plan';
+								planElement.className = 'c-amazon-date-plan';
 								planElement.textContent = '予定';
 								dpTimeElement.appendChild(planElement);
 							}
@@ -717,7 +703,7 @@ export default class MessageParser {
 				}
 			} else if (firstChara === '`') {
 				if (lineTrim.startsWith('` ')) {
-					/* 先頭が ` な場合はコード表示（.p-entry-sample code） */
+					/* 先頭が ` な場合はコード表示（.entry-sample code） */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除、改行を追加
 
 					if (this.codeFlag) {
@@ -739,27 +725,23 @@ export default class MessageParser {
 				this.appendCode(document, mainElement);
 
 				if (lineTrim.startsWith('* ')) {
-					/* 先頭が * な場合は注釈（.p-entry-note） */
+					/* 先頭が * な場合は注釈（.entry-note） */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
 
-					const wrapElement = document.createElement('div');
-					wrapElement.className = 'p-entry-note';
+					const wrapElement = document.createElement('p');
+					wrapElement.className = 'entry-note';
 					this.appendChild(mainElement, wrapElement);
 
-					const noteElement = document.createElement('p');
-					noteElement.className = 'p-entry-note__note';
+					const markElement = document.createElement('span');
+					markElement.className = 'entry-note__mark';
+					markElement.textContent = '※';
+					wrapElement.appendChild(markElement);
+
+					const noteElement = document.createElement('span');
+					noteElement.className = 'entry-note__text';
 					wrapElement.appendChild(noteElement);
 
-					const markElement = document.createElement('span');
-					markElement.className = 'p-entry-note__mark';
-					markElement.textContent = '※';
-					noteElement.appendChild(markElement);
-
-					const textElement = document.createElement('span');
-					textElement.className = 'p-entry-note__text';
-					noteElement.appendChild(textElement);
-
-					this.inlineMarkup(textElement, lineText); // インライン要素を設定
+					this.inlineMarkup(noteElement, lineText); // インライン要素を設定
 					this.flagReset();
 					blockConvert = true;
 				} else if (/^\*\d{4}-[0-1]\d-[0-3]\d: /.test(lineTrim)) {
@@ -767,42 +749,30 @@ export default class MessageParser {
 					const date = dayjs(new Date(Number(lineTrim.substring(1, 5)), Number(lineTrim.substring(6, 8)) - 1, Number(lineTrim.substring(9, 11))));
 					const lineText = lineTrim.substring(13); // 先頭の「*YYYY-MM-DD: 」を削除
 
-					const insElement = document.createElement('ins');
-					insElement.className = 'p-entry-ins__ins';
-					insElement.setAttribute('datetime', date.format('YYYY-MM-DD'));
-
-					if (this.insFlag) {
-						parentElement.appendChild(insElement);
-					} else {
-						const wrapElement = document.createElement('div');
-						wrapElement.className = 'p-entry-ins';
-						this.appendChild(mainElement, wrapElement);
-
-						parentElement = wrapElement;
-
-						wrapElement.appendChild(insElement);
-					}
+					const wrapElement = document.createElement('p');
+					wrapElement.className = 'entry-ins';
+					this.appendChild(mainElement, wrapElement);
 
 					const dateElement = document.createElement('span');
-					dateElement.className = 'p-entry-ins__date';
+					dateElement.className = 'entry-ins__date';
 					dateElement.textContent = `${date.format('YYYY年M月D日')}追記`;
-					insElement.appendChild(dateElement);
+					wrapElement.appendChild(dateElement);
 
-					const textElement = document.createElement('span');
-					textElement.className = 'p-entry-ins__text';
-					insElement.appendChild(textElement);
+					const insElement = document.createElement('ins');
+					insElement.setAttribute('datetime', date.format('YYYY-MM-DD'));
+					insElement.className = 'entry-ins__text';
+					wrapElement.appendChild(insElement);
 
-					this.inlineMarkup(textElement, lineText); // インライン要素を設定
+					this.inlineMarkup(insElement, lineText); // インライン要素を設定
 
 					this.flagReset();
-					this.insFlag = true;
 					blockConvert = true;
 				}
 			} else if (firstChara === '/') {
 				this.appendCode(document, mainElement);
 
 				if (lineTrim.startsWith('/ ')) {
-					/* 先頭が / な場合は本文と区別するブロック（.p-entry-box） */
+					/* 先頭が / な場合は本文と区別するブロック（.entry-box） */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
 
 					const pElement = document.createElement('p');
@@ -812,7 +782,7 @@ export default class MessageParser {
 						parentElement.appendChild(pElement);
 					} else {
 						const distElement = document.createElement('div');
-						distElement.className = 'p-entry-box';
+						distElement.className = 'entry-box';
 						this.appendChild(mainElement, distElement);
 
 						distElement.appendChild(pElement);
@@ -836,7 +806,7 @@ export default class MessageParser {
 						parentElement.appendChild(theadElement);
 					} else {
 						const tableElement = document.createElement('table');
-						tableElement.className = 'p-entry-table';
+						tableElement.className = 'entry-table';
 						this.appendChild(mainElement, tableElement);
 
 						tableElement.appendChild(theadElement);
@@ -870,7 +840,7 @@ export default class MessageParser {
 							parentElement.appendChild(tbodyElement);
 						} else {
 							const tableElement = document.createElement('table');
-							tableElement.className = 'p-entry-table';
+							tableElement.className = 'entry-table';
 							this.appendChild(mainElement, tableElement);
 
 							tableElement.appendChild(tbodyElement);
@@ -916,7 +886,7 @@ export default class MessageParser {
 				this.appendCode(document, mainElement);
 
 				const pElement = document.createElement('p');
-				pElement.className = 'p-entry-text';
+				pElement.className = 'entry-text';
 				this.appendChild(mainElement, pElement);
 
 				this.inlineMarkup(pElement, lineTrim); // インライン要素を設定
@@ -928,7 +898,7 @@ export default class MessageParser {
 
 		if (this.footnotes.length > 0) {
 			const footnotesElement = document.createElement('ul');
-			footnotesElement.setAttribute('class', 'p-entry-footnote');
+			footnotesElement.setAttribute('class', 'entry-footnote');
 			mainElement.appendChild(footnotesElement);
 
 			let num = 1;
@@ -939,7 +909,7 @@ export default class MessageParser {
 				footnotesElement.appendChild(liElement);
 
 				const noElement = document.createElement('span');
-				noElement.className = 'p-entry-footnote__no';
+				noElement.className = 'entry-footnote__no';
 				liElement.appendChild(noElement);
 
 				const aElement = document.createElement('a');
@@ -948,7 +918,7 @@ export default class MessageParser {
 				noElement.appendChild(aElement);
 
 				const textElement = document.createElement('span');
-				textElement.className = 'p-entry-footnote__text';
+				textElement.className = 'entry-footnote__text';
 				textElement.id = `fn${href}`;
 				liElement.appendChild(textElement);
 
@@ -971,10 +941,8 @@ export default class MessageParser {
 		this.dlFlag = false;
 		this.blockquoteFlag = false;
 		this.blockquoteCiteFlag = false;
-		this.imageFlag = false;
-		this.videoFlag = false;
+		this.embeddedFlag = false;
 		this.codeFlag = false;
-		this.insFlag = false;
 		this.distFlag = false;
 		this.tableFlag = false;
 		this.tbodyFlag = false;
@@ -1032,24 +1000,20 @@ export default class MessageParser {
 
 			/* コードの挿入 */
 			const codeWrapperElement = document.createElement('div');
-			codeWrapperElement.setAttribute('class', 'p-entry-code');
+			codeWrapperElement.setAttribute('class', 'entry-code');
 			this.appendChild(entryMainElement, codeWrapperElement);
-
-			const codeboxElement = document.createElement('div');
-			codeboxElement.setAttribute('class', 'p-entry-code__box');
-			codeWrapperElement.appendChild(codeboxElement);
 
 			if (code.includes('\n')) {
 				/* 複数行の場合はクリップボードボタンを表示する */
 				const clipboardElement = document.createElement('div');
-				clipboardElement.setAttribute('class', 'p-entry-code__clipboard');
-				codeboxElement.appendChild(clipboardElement);
+				clipboardElement.setAttribute('class', 'entry-code__clipboard');
+				codeWrapperElement.appendChild(clipboardElement);
 
 				const clipboardButtonElement = document.createElement('button');
 				clipboardButtonElement.type = 'button';
 				clipboardButtonElement.setAttribute('is', 'w0s-clipboard');
 				clipboardButtonElement.setAttribute('data-target-for', codeId);
-				clipboardButtonElement.className = 'p-entry-code__clipboard-button';
+				clipboardButtonElement.className = 'c-clipboard-button';
 				clipboardElement.appendChild(clipboardButtonElement);
 
 				const clipboardIconElement = document.createElement('img');
@@ -1059,8 +1023,8 @@ export default class MessageParser {
 			}
 
 			const preElement = document.createElement('pre');
-			preElement.className = 'p-entry-code__code';
-			codeboxElement.appendChild(preElement);
+			preElement.className = 'entry-code__code';
+			codeWrapperElement.appendChild(preElement);
 
 			const codeElement = document.createElement('code');
 			codeElement.id = codeId;
@@ -1084,7 +1048,7 @@ export default class MessageParser {
 	 */
 	private setImage(document: Document, parentElement: HTMLElement, fileName: string, caption: string, type: ImageType): void {
 		const figureElement = document.createElement('figure');
-		figureElement.className = 'p-entry-image';
+		figureElement.className = 'entry-embedded';
 		parentElement.appendChild(figureElement);
 
 		const aElement = document.createElement('a');
@@ -1119,16 +1083,17 @@ export default class MessageParser {
 				const imgElement = document.createElement('img');
 				imgElement.src = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=jpeg;w=360;h=360;quality=60`;
 				imgElement.alt = 'オリジナル画像';
+				imgElement.className = 'entry-embedded__image';
 				pictureElement.appendChild(imgElement);
 			}
 		}
 
 		const figcaptionElement = document.createElement('figcaption');
-		figcaptionElement.className = 'p-entry-image__caption c-embedded-caption';
+		figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
 		figureElement.appendChild(figcaptionElement);
 
 		const numElement = document.createElement('span');
-		numElement.className = 'c-embedded-caption__num';
+		numElement.className = 'c-embedded-caption__no';
 		figcaptionElement.appendChild(numElement);
 
 		const captionTitleElement = document.createElement('span');
@@ -1138,11 +1103,11 @@ export default class MessageParser {
 
 		switch (type) {
 			case 'photo':
-				numElement.textContent = `写真${this.photoNum}:`;
+				numElement.textContent = `写真${this.photoNum}`;
 				this.photoNum++;
 				break;
 			case 'figure':
-				numElement.textContent = `図${this.figureNum}:`;
+				numElement.textContent = `図${this.figureNum}`;
 				this.figureNum++;
 				break;
 			default:
@@ -1160,22 +1125,23 @@ export default class MessageParser {
 	 */
 	private setVideo(document: Document, parentElement: HTMLElement, fileName: string, caption: string): void {
 		const figureElement = document.createElement('figure');
-		figureElement.className = 'p-entry-video';
+		figureElement.className = 'entry-embedded';
 		parentElement.appendChild(figureElement);
 
 		const videoElement = document.createElement('video');
 		videoElement.src = `https://media.w0s.jp/video/blog/${fileName}`;
 		videoElement.controls = true;
+		videoElement.className = 'entry-embedded__video';
 		videoElement.textContent = '';
 		figureElement.appendChild(videoElement);
 
 		const figcaptionElement = document.createElement('figcaption');
-		figcaptionElement.className = 'p-entry-video__caption c-embedded-caption';
+		figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
 		figureElement.appendChild(figcaptionElement);
 
 		const numElement = document.createElement('span');
-		numElement.className = 'c-embedded-caption__num';
-		numElement.textContent = `動画${this.videoNum}:`;
+		numElement.className = 'c-embedded-caption__no';
+		numElement.textContent = `動画${this.videoNum}`;
 		figcaptionElement.appendChild(numElement);
 
 		const captionTitleElement = document.createElement('span');
@@ -1184,6 +1150,52 @@ export default class MessageParser {
 		figcaptionElement.appendChild(captionTitleElement);
 
 		this.videoNum++;
+	}
+
+	/**
+	 * YouTube 動画を設定
+	 *
+	 * @param {object} document - Document
+	 * @param {object} parentElement - 親要素
+	 * @param {string} id - 動画 ID
+	 * @param {number} width - 幅
+	 * @param {number} height - 高さ
+	 * @param {string} caption - タイトル
+	 */
+	private setYouTube(document: Document, parentElement: HTMLElement, id: string, width: number, height: number, caption: string): void {
+		const figureElement = document.createElement('figure');
+		figureElement.className = 'entry-embedded';
+		this.appendChild(parentElement, figureElement);
+
+		const iframeElement = document.createElement('iframe');
+		iframeElement.src = `https://www.youtube-nocookie.com/embed/${id}?rel=0`; // rel=0 は関連動画を表示しない設定
+		iframeElement.allow = 'encrypted-media;fullscreen;gyroscope;picture-in-picture';
+		iframeElement.title = 'YouTube 動画';
+		iframeElement.width = String(width);
+		iframeElement.height = String(height);
+		iframeElement.className = 'entry-embedded__frame';
+		iframeElement.setAttribute('style', `--aspect-ratio:${width}/${height}`);
+		iframeElement.textContent = '';
+		figureElement.appendChild(iframeElement);
+
+		const figcaptionElement = document.createElement('figcaption');
+		figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
+		figureElement.appendChild(figcaptionElement);
+
+		const captionTitleElement = document.createElement('span');
+		captionTitleElement.className = 'c-embedded-caption__title';
+		figcaptionElement.appendChild(captionTitleElement);
+
+		const aElement = document.createElement('a');
+		aElement.href = `https://www.youtube.com/watch?v=${id}`;
+		aElement.textContent = caption;
+		captionTitleElement.appendChild(aElement);
+
+		const iconElement = document.createElement('img');
+		iconElement.src = '/image/icon/youtube.svg';
+		iconElement.alt = '(YouTube)';
+		iconElement.className = 'c-link-icon';
+		aElement.appendChild(iconElement);
 	}
 
 	/**
@@ -1209,23 +1221,23 @@ export default class MessageParser {
 			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
 				return `**${p2.substring(0, p2.length - 1)}**`;
 			}
-			return `${p1}<em class="c-entry-emphasis">${p2}</em>`;
+			return `${p1}<em class="c-emphasis">${p2}</em>`;
 		});
 		htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, p1: string, p2: string) => {
 			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
 				return `\`${p2.substring(0, p2.length - 1)}\``;
 			}
-			return `${p1}<code class="c-entry-code">${p2}</code>`;
+			return `${p1}<code class="c-code">${p2}</code>`;
 		});
 		htmlFragment = htmlFragment.replace(
 			/{{(\d{1,5}-\d{1,7}-\d{1,7}-[\dX]|97[8-9]-\d{1,5}-\d{1,7}-\d{1,7}-\d) ([^{}]+)}}/g,
-			(_match, p1: string, p2: string) => `<q class="c-entry-quote" cite="urn:ISBN:${p1}">${p2}</q>`
+			(_match, p1: string, p2: string) => `<q class="c-quote" cite="urn:ISBN:${p1}">${p2}</q>`
 		);
 		htmlFragment = htmlFragment.replace(
 			/{{(https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+) ([^{}]+)}}/g,
-			(_match, p1: string, p2: string) => `<a href="${p1}"><q class="c-entry-quote" cite="${p1}">${p2}</q></a>`
+			(_match, p1: string, p2: string) => `<a href="${p1}"><q class="c-quote" cite="${p1}">${p2}</q></a>`
 		);
-		htmlFragment = htmlFragment.replace(/{{([^{}]+)}}/g, (_match, p1: string) => `<q class="c-entry-quote">${p1}</q>`);
+		htmlFragment = htmlFragment.replace(/{{([^{}]+)}}/g, (_match, p1: string) => `<q class="c-quote">${p1}</q>`);
 		htmlFragment = this.parsingInlineLink(htmlFragment);
 
 		if (footnote) {
@@ -1277,8 +1289,8 @@ export default class MessageParser {
 				}
 			}
 
-			const linkUrl = regResult[1]; // リンクURL
-			let linkText = afterOpeningTextDelimiterText.substring(0, afterOpeningTextDelimiterText.indexOf(`](${linkUrl}`)); // リンク文字列
+			const url = regResult[1]; // リンクURL
+			let linkText = afterOpeningTextDelimiterText.substring(0, afterOpeningTextDelimiterText.indexOf(`](${url}`)); // リンク文字列
 			afterLinkText = regResult[2]; // リンク後の文字列
 
 			/* リンク文字列の中に [ や ] 記号が含まれていたときの処理 */
@@ -1301,7 +1313,7 @@ export default class MessageParser {
 			linkText = scanText + tempLinkText;
 
 			/* HTML文字列に変換 */
-			const linkHtml = this.markupLink(linkText, linkUrl);
+			const linkHtml = this.markupLink(linkText, url);
 
 			/* 後処理 */
 			parsedTextList.push(`${beforeOpeningTextDelimiterText}${linkHtml}`);
@@ -1323,66 +1335,67 @@ export default class MessageParser {
 	 * [リンク名](絶対URL) → <a href="URL">リンク名</a><b class="c-domain">ドメイン名</b>
 	 *
 	 * @param {string} linkText - リンク文字列
-	 * @param {string} linkUrl - リンクURL
+	 * @param {string} url - リンク URL
 	 *
 	 * @returns {string} 変換後の文字列
 	 */
-	private markupLink(linkText: string, linkUrl: string): string {
-		if (/^([1-9]{1}[0-9]{0,2})$/.test(linkUrl)) {
-			// TODO: 記事が1000を超えたら正規表現要修正
-			return `<a href="${linkUrl}">${linkText}</a>`;
-		} else if (/^#section-([1-9]{1}[-0-9]*)$/.test(linkUrl)) {
-			return `<a href="${linkUrl}">${linkText}</a>`;
-		} else if (/^\/[a-zA-Z0-9-_#/.]+$/.test(linkUrl)) {
-			if (linkUrl.endsWith('.pdf')) {
-				return `<a href="https://w0s.jp${linkUrl}" type="application/pdf">${linkText}<img src="/image/icon/pdf.png" alt="(PDF)" class="c-link-icon"></a>`;
+	private markupLink(linkText: string, url: string): string {
+		if (/^([1-9]{1}[0-9]{0,2})$/.test(url)) {
+			// TODO: 記事数が 1000 を超えたら正規表現要修正
+			return `<a href="${url}">${linkText}</a>`;
+		} else if (/^#section-([1-9]{1}[-0-9]*)$/.test(url)) {
+			return `<a href="${url}">${linkText}</a>`;
+		} else if (/^\/[a-zA-Z0-9-_#/.]+$/.test(url)) {
+			// TODO: これは将来的に廃止したい
+			if (url.endsWith('.pdf')) {
+				return `<a href="https://w0s.jp${url}" type="application/pdf">${linkText}<img src="/image/icon/pdf.png" alt="(PDF)" class="c-link-icon"></a>`;
 			}
 
-			return `<a href="https://w0s.jp${linkUrl}">${linkText}</a>`;
-		} else if (/^asin:[0-9A-Z]{10}$/.test(linkUrl)) {
-			return `<a href="https://www.amazon.co.jp/dp/${linkUrl.substring(
+			return `<a href="https://w0s.jp${url}">${linkText}</a>`;
+		} else if (/^asin:[0-9A-Z]{10}$/.test(url)) {
+			return `<a href="https://www.amazon.co.jp/dp/${url.substring(
 				5
 			)}/ref=nosim?tag=w0s.jp-22">${linkText}<img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon"/></a>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
-		} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(linkUrl)) {
+		} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(url)) {
 			if (linkText.startsWith('https://') || linkText.startsWith('http://')) {
 				/* URL表記の場合はドメインを記載しない */
-				return `<a href="${linkUrl}">${linkText}</a>`;
+				return `<a href="${url}">${linkText}</a>`;
 			}
 
-			const linkHost = new URL(linkUrl).hostname;
+			const host = new URL(url).hostname;
 
-			let aAttributeHtml = '';
-			let typeIconHtml = '';
-			let externalIconHtml = '';
-			let domainHtml = '';
+			let typeAttr = '';
+			let typeIcon = '';
+			let externalIcon = '';
+			let domain = '';
 
 			/* PDFアイコン */
-			if (linkUrl.endsWith('.pdf')) {
-				aAttributeHtml = ' type="application/pdf"';
-				typeIconHtml = '<img src="/image/icon/pdf.png" alt="(PDF)" class="c-link-icon"/>';
+			if (url.endsWith('.pdf')) {
+				typeAttr = ' type="application/pdf"';
+				typeIcon = '<img src="/image/icon/pdf.png" alt="(PDF)" class="c-link-icon"/>';
 			}
 
 			/* サイトアイコン */
-			switch (linkHost) {
+			switch (host) {
 				case 'twitter.com':
-					externalIconHtml = '<img src="/image/icon/twitter.svg" alt="(Twitter)" class="c-link-icon"/>';
+					externalIcon = '<img src="/image/icon/twitter.svg" alt="(Twitter)" class="c-link-icon"/>';
 					break;
 				case 'ja.wikipedia.org':
-					externalIconHtml = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" class="c-link-icon"/>';
+					externalIcon = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" class="c-link-icon"/>';
 					break;
 				case 'www.youtube.com':
-					externalIconHtml = '<img src="/image/icon/youtube.svg" alt="(YouTube)" class="c-link-icon"/>';
+					externalIcon = '<img src="/image/icon/youtube.svg" alt="(YouTube)" class="c-link-icon"/>';
 					break;
 			}
 
 			/* サイトアイコンがない場合はドメイン表記 */
-			if (externalIconHtml === '') {
-				domainHtml = `<b class="c-domain">(${linkHost})</b>`;
+			if (externalIcon === '') {
+				domain = `<b class="c-domain">(${host})</b>`;
 			}
 
-			return `<a href="${linkUrl}"${aAttributeHtml}>${linkText}${typeIconHtml}${externalIconHtml}</a>${domainHtml}`;
+			return `<a href="${url}"${typeAttr}>${linkText}${typeIcon}${externalIcon}</a>${domain}`;
 		}
 
-		throw new Error(`不正なリンクURL: ${linkUrl}`);
+		throw new Error(`不正なリンクURL: ${url}`);
 	}
 }

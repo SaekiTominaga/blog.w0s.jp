@@ -2,80 +2,88 @@
  *   テキスト
  * ============================== */
 
-/* =====  ===== */
-.c-annotate {
-	margin: 0 0.5em 0 0.25em;
-	font-size: 75%;
-	-webkit-text-decoration-skip: none; /* for Safari */
-	text-decoration-skip-ink: none;
-	vertical-align: text-top;
+/* ===== 強調 ===== */
+.c-emphasis {
+	font-weight: bold;
+}
 
-	@supports (font-variant-position: super) and (text-underline-offset: 0) {
-		font-size: inherit;
-		font-variant-position: super;
-		text-underline-offset: 0;
-		vertical-align: baseline;
+/* ===== コード ===== */
+.c-code {
+	padding: 0.25em;
+	border-radius: var(--border-radius-normal);
+	color: var(--color-green);
+	background: var(--color-bg-superlightgreen);
+	font-family: monospace;
+	font-weight: bold;
+}
+
+/* ===== 引用 ===== */
+.c-quote {
+	background: linear-gradient(transparent, transparent 75%, var(--color-bg-yellow) 75%);
+	quotes: "\201C""\201D""\2018""\2019";
+
+	&::before {
+		padding-left: 0.25em;
+		content: open-quote;
 	}
 
-	& :target {
-		padding: 0.2em;
-		border: 1px solid #f00;
-		border-radius: 0.5em;
-		background: #fee;
-		font-weight: bold;
-	}
-
-	& :focus:not(:focus-visible) {
-		outline: none;
-	}
-
-	& :focus:not(:-moz-focusring) {
-		outline: none;
-	}
-
-	& a[role="button"] {
-		/* JS 有効時のみ */
-		cursor: default;
-
-		&:focus,
-		&:hover {
-			color: revert;
-		}
+	&::after {
+		padding-right: 0.25em;
+		content: close-quote;
 	}
 }
 
-/* ===== ドメイン表記 ===== */
+/* ===== リンク直後のドメイン表記 ===== */
 .c-domain {
 	margin: 0 0.25em;
 	color: var(--color-gray);
-	font-size: 85%;
+	font-size: calc(100% / var(--font-ratio-1));
 	font-weight: normal;
 }
 
 /* ===== Amazon 商品カテゴリ ===== */
 .c-amazon-binding {
-	padding: 0.25em;
-	border: 1px solid;
-	border-radius: 0.5em;
+	--_padding: 0.125em 0.5em;
+	--_border-color: var(--_color);
+	--_color: var(--color-gray);
+	--_bg-color: var(--color-white);
+
+	padding: 0.125em 0.5em;
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-large);
 	display: inline-block;
-	color: var(--color-gray);
-	background: var(--color-white);
-	font-size: calc(100% / var(--font-ratio-4));
+	color: var(--_color);
+	background: var(--_bg-color);
+	font-size: calc(100% / var(--font-ratio-1));
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 	vertical-align: middle;
+
+	/* BD */
+	&.-bd {
+		--_border-color: #27b;
+		--_color: #27b;
+		--_bg-color: #f9f9ff;
+	}
+
+	/* Kindle */
+	&.-kindle {
+		--_border-color: var(--color-black);
+		--_color: #f90;
+		--_bg-color: var(--color-black);
+	}
+
+	@nest .entry-amazon & {
+		margin-left: 0.5em;
+	}
 }
 
 /* ===== Amazon 商品が発売予定の場合の「予定」文字部分 ===== */
-.c-amazon-time-plan {
+.c-amazon-date-plan {
 	@nest .p-sidebar-amazon-link & {
 		--_color: hsl(0 100% 40%);
 
 		color: var(--_color);
-
-		@nest :any-link:focus &, :any-link:hover & {
-			--_color: hsl(0 100% 36%);
-		}
 	}
 }
 
@@ -100,9 +108,8 @@
 		}
 	}
 
-	& + .c-entry-meta__group {
-		& > dt,
-		& > dd {
+	&:not(:first-child) {
+		& > :is(dt, dd) {
 			border-top: 0.125em solid transparent;
 		}
 	}
@@ -116,17 +123,17 @@
 	margin: 0 1em;
 	padding: 0.15em 0.45em;
 	border: 1px solid var(--_bg-color);
-	border-radius: 0.5em;
+	border-radius: var(--border-radius-large);
 	display: inline-block;
 	color: var(--_color);
 	background: var(--_bg-color);
-	font-size: calc(1rem / var(--font-ratio-10));
+	font-size: calc(1rem / var(--font-ratio-5));
 	line-height: var(--line-height-nowrap);
 	white-space: nowrap;
 }
 
 /* 件数の数字部分 */
 .c-entry-count__num {
-	font-size: calc(1rem / var(--font-ratio-4));
+	font-size: calc(1rem / var(--font-ratio-2));
 	font-weight: bold;
 }

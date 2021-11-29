@@ -6,12 +6,12 @@
 .p-category-title {
 	padding: 1.25em 1.5%;
 	border: 1px solid;
-	border-radius: 0.25em;
+	border-radius: var(--border-radius-normal);
 	background: linear-gradient(var(--color-white), var(--color-bg-light));
 }
 
 .p-category-title__hdg {
-	font-size: clamp(calc(1rem * var(--font-ratio-2)), 7vw, calc(1rem * var(--font-ratio-10) * var(--font-ratio-1)));
+	font-size: clamp(calc(1rem * var(--font-ratio-1)), 7vw, calc(1rem * var(--font-ratio-5)));
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 	text-shadow: 1px 1px 1px var(--color-lightgray);
@@ -33,7 +33,7 @@
 
 	padding: 0.6em 1em;
 	border: 1px solid var(--color-border-light);
-	border-radius: 0.25em;
+	border-radius: var(--border-radius-normal);
 	display: inline-block;
 	background: var(--_bg-color);
 	line-height: var(--line-height-narrow);
@@ -119,13 +119,11 @@
 
 /* ヘッダー */
 .p-entry__header {
+	padding: 0 0 30px;
 }
 
 /* 本体 */
 .p-entry__body {
-	--_entry-body-font-size: 1em;
-	--_entry-body-line-height: var(--line-height-normal);
-
 	padding: 30px var(--_entry-col-padding);
 }
 
@@ -137,23 +135,16 @@
 /* 【記事ヘッダー】記事タイトル */
 .p-entry-header-title {
 	--_border-width: 1px;
-	--_color: #000;
 	--_bg-color: #9fc;
 
 	padding: calc(15px - var(--_border-width)) calc(var(--_entry-col-padding) - var(--_border-width));
 	border: var(--_border-width) solid var(--_bg-color);
-	color: var(--_color);
+	color: var(--color-black);
 	background: var(--_bg-color);
-	font-size: clamp(calc(1rem * var(--font-ratio-5)), 5vw, calc(1rem * var(--font-ratio-10)));
-
-	@supports not (font-size: clamp(0px, 0px, 0px)) {
-		/* for Safari 13.0- */
-		font-size: max(calc(1rem * var(--font-ratio-5)), min(5vw, calc(1rem * var(--font-ratio-10))));
-	}
-
+	font-size: clamp(calc(1rem * var(--font-ratio-3)), 5vw, calc(1rem * var(--font-ratio-5)));
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
-	text-shadow: 0 0 0.05em #ccc;
+	text-shadow: 0 0 0.05em var(--color-border-light);
 
 	@media print {
 		padding: 10px;
@@ -167,9 +158,9 @@
 
 /* 【記事フッター】カテゴリー */
 .p-entry-footer-category {
-	--tag-pading-row: 0.75em;
-	--tag-pading-col: 0.5em;
-	--tag-border-width: 1px;
+	--_tag-pading-row: 0.75em;
+	--_tag-pading-col: 0.5em;
+	--_tag-border-width: 1px;
 
 	display: flex;
 	justify-content: flex-end;
@@ -177,8 +168,8 @@
 }
 
 .p-entry-footer-category__hdg {
-	padding: var(--tag-pading-row) 0;
-	border: var(--tag-border-width) solid transparent;
+	padding: var(--_tag-pading-row) 0;
+	border: var(--_tag-border-width) solid transparent;
 	line-height: var(--line-height-nowrap);
 	white-space: nowrap;
 }
@@ -189,9 +180,9 @@
 	gap: 8px;
 
 	& a {
-		padding: var(--tag-pading-row) var(--tag-pading-col);
-		border: var(--tag-border-width) solid var(--color-border-light);
-		border-radius: 0.5em;
+		padding: var(--_tag-pading-row) var(--_tag-pading-col);
+		border: var(--_tag-border-width) solid var(--color-border-light);
+		border-radius: var(--border-radius-large);
 		display: inline-block;
 		background: var(--color-white);
 		line-height: var(--line-height-nowrap);
@@ -222,7 +213,7 @@
 	margin-top: 60px;
 	padding: 15px;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 0.25em;
+	border-radius: var(--border-radius-normal);
 	background: var(--color-white);
 }
 
@@ -245,7 +236,7 @@
 .p-book-cm {
 	padding: 15px;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 0.25em;
+	border-radius: var(--border-radius-normal);
 	background: var(--color-white);
 
 	@media (--breakpoint) {
@@ -255,7 +246,7 @@
 }
 
 .p-book-cm__hdg {
-	font-size: calc(1rem * var(--font-ratio-2));
+	font-size: calc(1rem * var(--font-ratio-1));
 	font-weight: bold;
 }
 

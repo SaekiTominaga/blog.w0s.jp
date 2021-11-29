@@ -8,7 +8,7 @@
 
 	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 0.25em;
+	border-radius: var(--border-radius-normal);
 }
 
 .p-sidebar-profile__hdg {
@@ -16,7 +16,7 @@
 	display: inline-block;
 	position: relative;
 	top: var(--_heading-offset);
-	background: var(--page-bgcolor);
+	background: var(--page-bg-color);
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 }
@@ -44,7 +44,7 @@
 /* BIO */
 .p-sidebar-profile__bio {
 	margin-top: 0.5em;
-	font-size: calc(1rem / var(--font-ratio-3));
+	font-size: calc(1rem / var(--font-ratio-1));
 	text-align: justify;
 	overflow: hidden;
 }
@@ -75,7 +75,7 @@
 	flex: auto;
 	color: var(--_color);
 	background: var(--_bg-color);
-	font-size: calc(1rem / var(--font-ratio-4));
+	font-size: calc(1rem / var(--font-ratio-2));
 	font-weight: var(--_font-weight);
 	line-height: var(--line-height-narrow);
 	text-align: center;
@@ -121,7 +121,7 @@
 	--_heading-offset: -0.75em;
 
 	border: 1px solid var(--color-border-dark);
-	border-radius: 0.25em 0.25em 0 0;
+	border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
 }
 
 .p-sidebar-newly-entry__hdg {
@@ -130,7 +130,7 @@
 	display: inline-block;
 	position: relative;
 	top: var(--_heading-offset);
-	background: var(--page-bgcolor);
+	background: var(--page-bg-color);
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 }
@@ -145,7 +145,7 @@
 		--_padding-row: 0.5em;
 		--_padding-col: 0.5em;
 		--_bg-color: var(--color-bg-skyblue);
-		--_font-size: calc(1rem / var(--font-ratio-2));
+		--_font-size: calc(1rem / var(--font-ratio-1));
 
 		padding: var(--_padding-row) var(--_padding-col);
 		display: flex;
@@ -181,8 +181,7 @@
 				right: var(--_padding-col);
 			}
 
-			&:focus,
-			&:hover {
+			&:is(:focus, :hover) {
 				--_bg-color: var(--color-bg-lightyellow);
 				--_icon-color: var(--color-gray);
 			}
@@ -200,8 +199,7 @@
 				&:any-link {
 					--_bg-color: var(--color-bg-verylight);
 
-					&:focus,
-					&:hover {
+					&:is(:focus, :hover) {
 						--_bg-color: var(--color-bg-lightyellow);
 					}
 				}
@@ -230,7 +228,7 @@
 
 	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 0.25em;
+	border-radius: var(--border-radius-normal);
 }
 
 .p-sidebar-amazon__hdg {
@@ -239,7 +237,7 @@
 	display: inline-block;
 	position: relative;
 	top: var(--_heading-offset);
-	background: var(--page-bgcolor);
+	background: var(--page-bg-color);
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 }
@@ -270,6 +268,10 @@
 	outline-offset: 0.125em;
 }
 
+/* 画像エリア */
+.p-sidebar-amazon-link__thumb {
+}
+
 /* 商品画像 */
 .p-sidebar-amazon-link__image {
 	display: block;
@@ -278,33 +280,32 @@
 	transition: box-shadow var(--link-hover-transition-delay);
 
 	@nest :any-link:hover & {
-		box-shadow: 0 0 3px 3px #f92;
+		box-shadow: 0 0 3px 3px var(--color-amazon-box-shadow-hover);
 	}
 }
 
 /* テキストエリア */
 .p-sidebar-amazon-link__text {
-	--_color: hsl(0 0% 25%);
-	--_bg-color: hsl(30 100% 88%);
+	--_color: var(--color-darkgray);
+	--_bg-color: var(--color-amazon-bg);
 
 	margin-top: 1px;
 	padding: 5px;
-	border-radius: 0.5em;
+	border-radius: var(--border-radius-large);
 	color: var(--_color);
 	background: var(--_bg-color);
 	line-height: var(--line-height-narrow);
 	overflow-wrap: anywhere;
 	transition: color var(--link-hover-transition-delay), background-color var(--link-hover-transition-delay);
 
-	@nest :any-link:focus &, :any-link:hover & {
-		--_color: hsl(0 0% 20%);
-		--_bg-color: hsl(30 100% 80%);
+	@nest :is(:any-link:focus, :any-link:hover) & {
+		--_bg-color: var(--color-amazon-bg-hover);
 	}
 }
 
 /* 商品タイトル */
 .p-sidebar-amazon-link__title {
-	font-size: calc(1rem / var(--font-ratio-3));
+	font-size: calc(1rem / var(--font-ratio-1));
 
 	&:not([hidden]) {
 		display: block;
@@ -312,9 +313,9 @@
 }
 
 /* 発売日 */
-.p-sidebar-amazon-link__time {
+.p-sidebar-amazon-link__date {
 	margin-top: 0.5em;
-	font-size: calc(1rem / var(--font-ratio-5));
+	font-size: calc(1rem / var(--font-ratio-2));
 	font-weight: bold;
 
 	&:not([hidden]) {

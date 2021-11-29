@@ -8,7 +8,7 @@
 	--_height: 2em;
 
 	border: 1px solid var(--_border-color);
-	border-radius: 0.125em;
+	border-radius: var(--border-radius-small);
 	display: flex;
 	align-items: center;
 	color: var(--color-darkgray);
@@ -39,7 +39,7 @@
 .c-search__query {
 	flex: 1;
 
-	& input {
+	& > input {
 		all: initial;
 		padding: 0.25em;
 		box-sizing: border-box;
@@ -55,7 +55,7 @@
 
 /* 送信ボタン */
 .c-search__submit {
-	& button {
+	& > button {
 		--_color: hsl(220 70% 45%);
 
 		all: initial;

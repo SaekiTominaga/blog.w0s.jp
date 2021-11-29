@@ -72,10 +72,6 @@
 /* ===== サイドバー ===== */
 .l-sidebar {
 	grid-column: sidebar;
-
-	@media (--breakpoint) {
-		margin-top: 80px;
-	}
 }
 
 /* プロフィール */
