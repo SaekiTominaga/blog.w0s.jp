@@ -8,7 +8,6 @@ import fs from 'fs';
 // @ts-expect-error: ts(7016)
 import htpasswd from 'htpasswd-js';
 import xmlFormatter from 'xml-formatter';
-import zlib from 'zlib';
 import { BlogView } from '../../../@types/view.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import { NoName as Configure } from '../../../configure/type/sitemap-create.js';
@@ -83,21 +82,11 @@ export default class SitemapCreateController extends Controller implements Contr
 			lineSeparator: '\n',
 		});
 
-		const sitemapXmlBrotli = zlib.brotliCompressSync(sitemapXmlFormated, {
-			params: {
-				[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
-				[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
-				[zlib.constants.BROTLI_PARAM_SIZE_HINT]: sitemapXmlFormated.length,
-			},
-		});
-
 		/* ファイル出力 */
 		const sitemapFilePath = `${this.#configCommon.static.root}${req.url}`;
-		const sitemapBrotliFilePath = `${sitemapFilePath}.br`;
 
-		await Promise.all([fs.promises.writeFile(sitemapFilePath, sitemapXmlFormated), fs.promises.writeFile(sitemapBrotliFilePath, sitemapXmlBrotli)]);
+		await Promise.all([fs.promises.writeFile(sitemapFilePath, sitemapXmlFormated)]);
 		this.logger.info(`Sitemap file created: ${sitemapFilePath}`);
-		this.logger.info(`Sitemap Brotli file created: ${sitemapBrotliFilePath}`);
 
 		res.status(204).end();
 	}
