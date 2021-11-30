@@ -5,12 +5,11 @@
 /* ===== ボタン ===== */
 .c-button {
 	--_padding-row: 0.5em;
-	--_padding-col: 0.5em;
+	--_padding-col: 0.75em;
 	--_border-color: var(--color-gray);
 	--_width: auto;
 	--_color: var(--color-black);
 	--_background: var(--color-white);
-	--_font-size: 1rem;
 	--_text-shadow-color: var(--color-white);
 	--_icon-size: 1.25em;
 
@@ -25,7 +24,6 @@
 	width: var(--_width);
 	color: var(--_color);
 	background: var(--_background);
-	font-size: var(--_font-size);
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 	text-decoration: none;
@@ -37,6 +35,7 @@
 	}
 
 	&:hover {
+		color: var(--_color);
 		box-shadow: 0 0 2px var(--_border-color);
 	}
 
@@ -56,6 +55,7 @@
 		--_border-color: #2293dd;
 		--_color: var(--color-white);
 		--_background: #1da1f2;
+		--_text-shadow-color: var(--color-black);
 	}
 
 	/* GitHub */
@@ -75,16 +75,9 @@
 		--_background: linear-gradient(var(--color-white), #fee);
 	}
 
-	@nest .p-entry-footer-social & {
-		--_padding-col: 0.75em;
-		--_font-size: calc(1rem * var(--font-ratio-1));
-	}
-
 	@nest .p-sidebar-profile__banners & {
 		--_padding-col: 1px;
 		--_width: 100%;
-		--_font-size: calc(1rem / var(--font-ratio-1));
-		--_text-shadow-color: transparent;
 	}
 }
 
@@ -113,12 +106,12 @@
 	background-color: var(--_bg-color);
 	outline-offset: 0;
 
-	&:is(:focus, :hover) {
-		--_bg-color: var(--color-bg-verylight);
-	}
-
 	&:focus {
 		--_border-color: var(--outline-color);
+	}
+
+	&:hover {
+		--_bg-color: var(--color-bg-verylight);
 	}
 
 	& > img {

@@ -59,12 +59,12 @@
 							<% if (categoryName === countData.category_name) { %>
 							<a aria-current="page">
 								<%= countData.category_name %>
-								<span class="c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+								<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
 							</a>
 							<% } else { %>
 							<a href="/category/<%= encodeURI(countData.category_name) %>">
 								<%= countData.category_name %>
-								<span class="c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+								<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
 							</a>
 							<% } %>
 						</li>
@@ -76,7 +76,7 @@
 						<li>
 							<a href="/category/<%= encodeURI(countData.category_name) %>">
 								<%= countData.category_name %>
-								<span class="c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+								<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
 							</a>
 						</li>
 						<% } %>

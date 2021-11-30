@@ -28,7 +28,7 @@
 		&:any-link {
 			--_bullet-color: var(--link-color-bullet);
 
-			&:is(:focus, :hover) {
+			&:hover {
 				--_bullet-color: var(--link-color-hover);
 			}
 		}
@@ -47,14 +47,12 @@
 /* ===== 記事リンク ===== */
 .c-entry-link {
 	--_gap: 15px;
-	--_font-size: inhelit;
 	--_bullet-height: 0.75em;
 	--_bullet-width: calc(var(--_bullet-height) * 0.6);
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
 	display: flow-root;
-	font-size: var(--_font-size);
 	line-height: var(--line-height-narrow);
 
 	@media (--breakpoint-entry-link) {
@@ -63,11 +61,6 @@
 
 	@nest .p-title-list & {
 		--_gap: 30px;
-		--_font-size: clamp(calc(1rem / var(--font-ratio-1)), 2.5vw, 1rem);
-	}
-
-	@nest .p-entry-footer-relation & {
-		--_font-size: calc(1rem / var(--font-ratio-1));
 	}
 
 	& a {
@@ -116,7 +109,6 @@
 
 .c-entry-link__title {
 	margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
-	font-size: var(--_font-size);
 
 	&::before {
 		margin-right: var(--_bullet-gap);
@@ -128,12 +120,12 @@
 		background: var(--_bullet-color);
 	}
 
-	@nest :is(:any-link:focus, :any-link:hover) & {
+	@nest :any-link:hover & {
 		--_bullet-color: var(--link-color-hover);
 	}
 
 	@nest .p-title-list & {
-		--_font-size: clamp(1rem, 3vw, calc(1rem * var(--font-ratio-3)));
+		font-size: calc(100% * var(--font-ratio-3));
 	}
 }
 
@@ -198,7 +190,7 @@
 		background: var(--_bullet-color);
 	}
 
-	@nest :is(:any-link:focus, :any-link:hover) & {
+	@nest :any-link:hover & {
 		--_bullet-color: var(--link-color-hover);
 	}
 }
@@ -221,6 +213,7 @@
 		padding: 0.25em;
 		border: 1px solid var(--_border-color);
 		background: var(--_bg-color);
+		text-decoration-skip-ink: none; /* JS 無効環境向け */
 
 		&:target {
 			--_border-color: #f00;
@@ -234,10 +227,6 @@
 			color: var(--_color);
 			text-decoration: none;
 			cursor: default;
-
-			&:is(:focus, :hover) {
-				--_color: var(--link-color);
-			}
 
 			&:focus:not(:focus-visible) {
 				outline: none;

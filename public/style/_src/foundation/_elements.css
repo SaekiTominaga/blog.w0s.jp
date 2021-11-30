@@ -22,21 +22,17 @@ w0s-tooltip:focus {
 }
 
 :link {
-	--_color: var(--link-color);
+	color: var(--link-color);
 
-	color: var(--_color);
-
-	&:is(:focus, :hover) {
-		--_color: var(--link-color-hover);
+	&:hover {
+		color: var(--link-color-hover);
 	}
 }
 
 :visited {
-	--_color: var(--link-color-visited);
+	color: var(--link-color-visited);
 
-	color: var(--_color);
-
-	&:is(:focus, :hover) {
-		--_color: var(--link-color-hover);
+	&:hover {
+		color: var(--link-color-hover);
 	}
 }

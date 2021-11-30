@@ -11,7 +11,7 @@
 }
 
 .p-category-title__hdg {
-	font-size: clamp(calc(1rem * var(--font-ratio-1)), 7vw, calc(1rem * var(--font-ratio-5)));
+	font-size: clamp(calc(100% * var(--font-ratio-1)), 7vw, calc(100% * var(--font-ratio-5)));
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 	text-shadow: 1px 1px 1px var(--color-lightgray);
@@ -75,6 +75,8 @@
 	--_padding-row: 1.5em;
 	--_padding-col: 0em;
 	--_border-color: var(--color-border-light);
+
+	font-size: clamp(calc(100% / var(--font-ratio-1)), 2.5vw, 100%);
 
 	& > li {
 		--_border-top-width: 0px;
@@ -141,7 +143,7 @@
 	border: var(--_border-width) solid var(--_bg-color);
 	color: var(--color-black);
 	background: var(--_bg-color);
-	font-size: clamp(calc(1rem * var(--font-ratio-3)), 5vw, calc(1rem * var(--font-ratio-5)));
+	font-size: clamp(calc(100% * var(--font-ratio-3)), 5vw, calc(100% * var(--font-ratio-5)));
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 	text-shadow: 0 0 0.05em var(--color-border-light);
@@ -206,6 +208,7 @@
 	flex-flow: wrap;
 	align-items: center;
 	gap: 12px;
+	font-size: calc(100% * var(--font-ratio-1));
 }
 
 /* 【記事フッター】関連記事 */
@@ -226,6 +229,7 @@
 	margin-top: 15px;
 	display: grid;
 	gap: 30px;
+	font-size: calc(100% / var(--font-ratio-1));
 
 	@media screen and (min-width: 64em) {
 		grid-template-columns: repeat(2, 1fr);
@@ -246,7 +250,7 @@
 }
 
 .p-book-cm__hdg {
-	font-size: calc(1rem * var(--font-ratio-1));
+	font-size: calc(100% * var(--font-ratio-1));
 	font-weight: bold;
 }
 

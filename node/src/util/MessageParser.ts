@@ -171,7 +171,7 @@ export default class MessageParser {
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
 
 					this.section1Element = document.createElement('section');
-					this.section1Element.className = 'entry-section1';
+					this.section1Element.className = 'entry-section1 entry';
 					this.section1Element.id = `section-${this.section1Count}`;
 					mainElement.appendChild(this.section1Element);
 
@@ -194,7 +194,7 @@ export default class MessageParser {
 					this.section2Flag = false;
 
 					this.section2Element = document.createElement('section');
-					this.section2Element.className = 'entry-section2';
+					this.section2Element.className = 'entry-section2 entry';
 					this.section2Element.id = `section-${this.section1Count}-${this.section2Count}`;
 					this.appendChild(mainElement, this.section2Element);
 

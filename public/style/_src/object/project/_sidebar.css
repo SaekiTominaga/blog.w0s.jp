@@ -44,7 +44,7 @@
 /* BIO */
 .p-sidebar-profile__bio {
 	margin-top: 0.5em;
-	font-size: calc(1rem / var(--font-ratio-1));
+	font-size: calc(100% / var(--font-ratio-1));
 	text-align: justify;
 	overflow: hidden;
 }
@@ -55,6 +55,7 @@
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: 5px;
+	font-size: calc(100% / var(--font-ratio-1));
 }
 
 /* ===== カテゴリータブ ===== */
@@ -75,10 +76,12 @@
 	flex: auto;
 	color: var(--_color);
 	background: var(--_bg-color);
-	font-size: calc(1rem / var(--font-ratio-2));
+	font-size: calc(100% / var(--font-ratio-2));
 	font-weight: var(--_font-weight);
 	line-height: var(--line-height-narrow);
 	text-align: center;
+	display: inline-block; /* JS 無効環境向け */
+	white-space: nowrap; /* JS 無効環境向け */
 
 	&[role="tab"] {
 		cursor: default;
@@ -145,7 +148,7 @@
 		--_padding-row: 0.5em;
 		--_padding-col: 0.5em;
 		--_bg-color: var(--color-bg-skyblue);
-		--_font-size: calc(1rem / var(--font-ratio-1));
+		--_font-size: calc(100% / var(--font-ratio-1));
 
 		padding: var(--_padding-row) var(--_padding-col);
 		display: flex;
@@ -157,7 +160,7 @@
 		outline-offset: 0;
 
 		@media (--breakpoint) {
-			--_font-size: 1rem;
+			--_font-size: 100%;
 		}
 
 		&:any-link {
@@ -220,6 +223,10 @@
 			min-height: 2em;
 		}
 	}
+}
+
+.p-sidebar-links__icon {
+	margin-left: 1em;
 }
 
 /* ===== Amazon 商品広告 ===== */
@@ -298,14 +305,14 @@
 	overflow-wrap: anywhere;
 	transition: color var(--link-hover-transition-delay), background-color var(--link-hover-transition-delay);
 
-	@nest :is(:any-link:focus, :any-link:hover) & {
+	@nest :any-link:hover & {
 		--_bg-color: var(--color-amazon-bg-hover);
 	}
 }
 
 /* 商品タイトル */
 .p-sidebar-amazon-link__title {
-	font-size: calc(1rem / var(--font-ratio-1));
+	font-size: calc(100% / var(--font-ratio-1));
 
 	&:not([hidden]) {
 		display: block;
@@ -315,7 +322,7 @@
 /* 発売日 */
 .p-sidebar-amazon-link__date {
 	margin-top: 0.5em;
-	font-size: calc(1rem / var(--font-ratio-2));
+	font-size: calc(100% / var(--font-ratio-2));
 	font-weight: bold;
 
 	&:not([hidden]) {

@@ -20,12 +20,12 @@
 	border-radius: var(--border-radius-normal);
 	display: inline-block;
 	background: var(--color-bg-superlight);
-	font-size: calc(1rem * var(--font-ratio-2));
+	font-size: calc(100% * var(--font-ratio-2));
 }
 
 /* エラーメッセージ */
 .p-err-title__msg {
-	font-size: calc(1rem * var(--font-ratio-5));
+	font-size: calc(100% * var(--font-ratio-5));
 }
 
 /* ===== トップページの埋め込み ===== */
@@ -69,5 +69,5 @@
 
 .p-err-search__ctrl {
 	grid-area: ctrl;
-	font-size: calc(1rem * var(--font-ratio-3));
+	font-size: calc(100% * var(--font-ratio-3));
 }
