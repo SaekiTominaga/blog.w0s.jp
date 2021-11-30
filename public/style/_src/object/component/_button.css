@@ -10,7 +10,6 @@
 	--_width: auto;
 	--_color: var(--color-black);
 	--_background: var(--color-white);
-	--_text-shadow-color: var(--color-white);
 	--_icon-size: 1.25em;
 
 	padding: var(--_padding-row) var(--_padding-col);
@@ -27,7 +26,6 @@
 	font-weight: bold;
 	line-height: var(--line-height-narrow);
 	text-decoration: none;
-	text-shadow: 1px 1px var(--_text-shadow-color);
 	outline-offset: 0.125em;
 
 	&:disabled {
@@ -55,7 +53,6 @@
 		--_border-color: #2293dd;
 		--_color: var(--color-white);
 		--_background: #1da1f2;
-		--_text-shadow-color: var(--color-black);
 	}
 
 	/* GitHub */
