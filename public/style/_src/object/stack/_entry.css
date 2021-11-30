@@ -2,39 +2,39 @@
  *   記事
  * ============================== */
 .entry {
-	--_entry-font-size: 1rem;
-	--_entry-line-height: var(--line-height-wide);
-	--_entry-stack-margin-adjust: 0px; /* 上下マージン調整値 */
-	--_entry-stack-margin-adjust-line: calc(var(--_entry-font-size) * (var(--_entry-line-height) - 1) / 2); /* 枠線があるか、埋め込みのコンポーネントの場合の上下マージン調整値 */
+	--_font-size: 1rem;
+	--_line-height: var(--line-height-wide);
+	--_stack-margin-adjust: 0px; /* 上下マージン調整値 */
+	--_stack-margin-adjust-line: calc(var(--_font-size) * (var(--_line-height) - 1) / 2); /* 枠線があるか、埋め込みのコンポーネントの場合の上下マージン調整値 */
 
-	font-size: var(--_entry-font-size);
-	line-height: var(--_entry-line-height);
+	font-size: var(--_font-size);
+	line-height: var(--_line-height);
 
 	& > * {
-		--_margin-row: calc(var(--_entry-font-size) * var(--_entry-line-height) + var(--_entry-stack-margin-adjust));
+		--_stack-margin-row: calc(var(--_font-size) * var(--_line-height) + var(--_stack-margin-adjust));
 
 		&:not(:first-child) {
-			margin-top: var(--_margin-row);
+			margin-top: var(--_stack-margin-row);
 		}
 
 		&:not(:last-child) {
-			margin-bottom: var(--_margin-row);
+			margin-bottom: var(--_stack-margin-row);
 		}
 	}
 }
 
 /* ===== セクション ===== */
 .entry-section1 {
-	--_margin-row: calc(1em * var(--_entry-line-height) * 3);
+	--_stack-margin-row: calc(1em * var(--_line-height) * 3);
 }
 
 .entry-section2 {
-	--_margin-row: calc(1em * var(--_entry-line-height) * 2);
+	--_stack-margin-row: calc(1em * var(--_line-height) * 2);
 }
 
 /* ===== セクション終了 ===== */
 .entry-section-break {
-	--_margin-row: calc(1em * var(--_entry-line-height) * 3);
+	--_stack-margin-row: calc(1em * var(--_line-height) * 3);
 
 	display: flex;
 	justify-content: center;
@@ -51,7 +51,7 @@
 /* ===== 見出し ===== */
 .entry-hdg1 {
 	--_line-height: var(--line-height-narrow);
-	--_entry-stack-margin-adjust: var(--_entry-stack-margin-adjust-line);
+	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
 
 	padding-bottom: 0.25em;
 	border-bottom: 1px solid var(--color-border-dark);
@@ -184,7 +184,7 @@
 
 /* ===== 埋め込みコンテンツのラッパー要素 ===== */
 .entry-embedded-grid {
-	--_entry-stack-margin-adjust: var(--_entry-stack-margin-adjust-line);
+	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
 	--_embedded-grid-gap: 30px;
 
 	display: flex;
@@ -279,7 +279,7 @@
 
 /* ===== Amazon 商品 ===== */
 .entry-amazon {
-	--_entry-stack-margin-adjust: var(--_entry-stack-margin-adjust-line);
+	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
 
 	padding: 15px;
 	border: 1px solid #cb4;
@@ -397,7 +397,7 @@
 
 /* ===== ブロックコード ===== */
 .entry-code {
-	--_entry-stack-margin-adjust: var(--_entry-stack-margin-adjust-line);
+	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
 
 	border: 1px solid var(--color-border-light);
 	display: flow-root;
@@ -571,7 +571,7 @@
 
 /* ===== 表 ===== */
 .entry-table {
-	--_entry-stack-margin-adjust: var(--_entry-stack-margin-adjust-line);
+	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
 	--_color: var(--color-black);
 	--_bg-color: var(--color-white);
 	--_font-weight: normal;
@@ -613,7 +613,7 @@
 
 /* ===== 脚注 ===== */
 .entry-footnote {
-	--_entry-stack-margin-adjust: var(--_entry-stack-margin-adjust-line);
+	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
 
 	padding: 1em;
 	border-radius: var(--border-radius-large);
