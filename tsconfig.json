@@ -1,26 +1,29 @@
 {
 	"compilerOptions": {
-		/* Project Options */
-		"incremental": true,
-		"module": "ES2020",
-		"target": "ESNext",
-
-		/* Strict Checks */
-		"strict": true,
+		/* Type Checking */
+		"allowUnreachableCode": false,
 		"alwaysStrict": false,
-
-		/* Module Resolution */
-		"moduleResolution": "node",
-
-		/* Linter Checks */
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
+		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
+		"strict": true,
 
-		/* Advanced */
-		"allowUnreachableCode": false,
+		/* Modules */
+		"module": "ES2020",
+		"moduleResolution": "node",
+
+		/* Emit */
+		"newLine": "LF",
+
+		/* Interop Constraints */
 		"forceConsistentCasingInFileNames": true,
-		"newLine": "LF"
+
+		/* Language and Environment */
+		"target": "ESNext",
+
+		/* Projects */
+		"incremental": true
 	}
 }

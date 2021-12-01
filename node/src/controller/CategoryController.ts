@@ -33,7 +33,7 @@ export default class CategoryController extends Controller implements Controller
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const paramCategoryName = req.params.category_name;
+		const paramCategoryName = <string>req.params.category_name;
 
 		const httpResponse = new HttpResponse(res, this.#configCommon);
 		const dao = new BlogCategoryDao(this.#configCommon);

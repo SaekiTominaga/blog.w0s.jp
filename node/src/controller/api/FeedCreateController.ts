@@ -70,6 +70,13 @@ export default class FeedCreateController extends Controller implements Controll
 			});
 		}
 
+		if (entries[0] === undefined) {
+			this.logger.info('Feed file was not created because there were zero data.');
+
+			res.status(204).end();
+			return;
+		}
+
 		const feedXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view_path}`, {
 			last_modified: entries[0].last_modified,
 			entries: entries,

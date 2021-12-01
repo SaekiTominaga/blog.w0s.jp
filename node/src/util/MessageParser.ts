@@ -509,22 +509,26 @@ export default class MessageParser {
 					const lineText = lineTrim.substring(10); // 先頭記号を削除
 
 					const [id, size, caption] = lineText.split(' ');
-					const [width, height] = size.split('x', 2).map((value) => Number(value));
 
-					if (caption !== undefined) {
-						if (this.embeddedFlag) {
-							this.setYouTube(document, parentElement, id, width, height, caption);
-						} else {
-							const gridElement = document.createElement('div');
-							gridElement.className = 'entry-embedded-grid';
-							this.appendChild(mainElement, gridElement);
-
-							parentElement = gridElement;
-
-							this.setYouTube(document, gridElement, id, width, height, caption);
-						}
-					} else {
+					if (id === undefined || size === undefined || caption === undefined) {
 						this.logger.error(`YouTube 動画埋め込みの構文が不正: ${lineTrim}（記事ID: ${this.entryId}）`);
+					} else {
+						const [width, height] = size.split('x').map((value) => Number(value));
+						if (width === undefined || height === undefined) {
+							this.logger.error(`YouTube 動画埋め込みの構文が不正: ${lineTrim}（記事ID: ${this.entryId}）`);
+						} else {
+							if (this.embeddedFlag) {
+								this.setYouTube(document, parentElement, id, width, height, caption);
+							} else {
+								const gridElement = document.createElement('div');
+								gridElement.className = 'entry-embedded-grid';
+								this.appendChild(mainElement, gridElement);
+
+								parentElement = gridElement;
+
+								this.setYouTube(document, gridElement, id, width, height, caption);
+							}
+						}
 					}
 
 					this.flagReset();
@@ -1289,9 +1293,9 @@ export default class MessageParser {
 				}
 			}
 
-			const url = regResult[1]; // リンクURL
+			const url = <string>regResult[1]; // リンクURL
 			let linkText = afterOpeningTextDelimiterText.substring(0, afterOpeningTextDelimiterText.indexOf(`](${url}`)); // リンク文字列
-			afterLinkText = regResult[2]; // リンク後の文字列
+			afterLinkText = <string>regResult[2]; // リンク後の文字列
 
 			/* リンク文字列の中に [ や ] 記号が含まれていたときの処理 */
 			let scanText = linkText;

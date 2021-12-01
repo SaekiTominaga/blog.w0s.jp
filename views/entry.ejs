@@ -65,6 +65,7 @@
 						<div class="p-entry__body entry" itemprop="articleBody"><%- message %></div>
 
 						<footer class="p-entry__footer">
+							<% if (categories.length >= 1) { %>
 							<section class="p-entry-footer-category">
 								<h2 class="p-entry-footer-category__hdg">カテゴリ</h2>
 
@@ -74,6 +75,7 @@
 									<% } %>
 								</ul>
 							</section>
+							<% } %>
 
 							<div class="p-entry-footer-social">
 								<ul class="p-entry-footer-social__list">

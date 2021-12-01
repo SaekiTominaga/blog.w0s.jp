@@ -94,8 +94,8 @@ export default class EntryController extends Controller implements ControllerInt
 
 			categories: categoryDataListDto.map((categoryData) => categoryData.name),
 			relations: relationDataList,
-			book: categoryDataListDto[0].book,
-			sidebarAmazon: categoryDataListDto[0].sidebar_amazon,
+			book: categoryDataListDto[0]?.book ?? null,
+			sidebarAmazon: categoryDataListDto[0]?.sidebar_amazon ?? null,
 
 			entryCountOfCategoryList: entryCountOfCategoryListDto,
 			newlyEntries: newlyEntriesDto,
