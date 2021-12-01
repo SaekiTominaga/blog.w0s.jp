@@ -2,7 +2,7 @@
 	"extends": "../../tsconfig.json",
 	"include": ["_src/**/*.ts"],
 	"compilerOptions": {
-		/* Project Options */
+		/* Language and Environment */
 		"target": "ES2020",
 	}
 }

@@ -2,14 +2,16 @@
 	"extends": "../tsconfig.json",
 	"include": ["@types/*.d.ts", "src/**/*.ts"],
 	"compilerOptions": {
-		/* Project Options */
-		"outDir": "dist",
-		"target": "ESNext",
+		/* Type Checking */
+		"noUnusedParameters": false,
 
-		/* Module Resolution */
+		/* Emit */
+		"outDir": "dist",
+
+		/* Interop Constraints */
 		"esModuleInterop": true,
 
-		/* Linter Checks */
-		"noUnusedParameters": false
+		/* Language and Environment */
+		"target": "ESNext"
 	}
 }
