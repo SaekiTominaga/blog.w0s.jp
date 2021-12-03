@@ -21,7 +21,7 @@
 	gap: 20px;
 	grid-template-areas: "site nav";
 
-	@media screen and (max-width: 60em) {
+	@media (max-width: 60em) {
 		grid-template-areas:
 			"site"
 			"nav";
@@ -42,7 +42,7 @@
 	flex-wrap: wrap;
 	gap: 10px 20px;
 
-	@media screen and (max-width: 36em) {
+	@media (max-width: 36em) {
 		justify-content: flex-start;
 	}
 }
