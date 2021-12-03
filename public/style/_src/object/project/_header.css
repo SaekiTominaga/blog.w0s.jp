@@ -53,11 +53,5 @@
 
 /* ===== サイト内検索 ===== */
 .p-header-search {
-	--_width: 18em;
-
-	width: var(--_width);
-
-	@media screen and (max-width: 27em) {
-		--_width: 100%;
-	}
+	max-width: min(32ch, 100%);
 }

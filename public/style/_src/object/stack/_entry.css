@@ -295,13 +295,9 @@
 .entry-amazon__link {
 	margin: 10px 0 0;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: repeat(auto-fit, minmax(24em, 1fr));
 	gap: 12px;
 	font-size: calc(100% / var(--font-ratio-1));
-
-	@media screen and (max-width: 46em) {
-		grid-template-columns: 1fr;
-	}
 }
 
 /* ===== Amazon 商品リンク ===== */
@@ -538,13 +534,10 @@
 	margin-left: var(--_margin-col);
 	margin-right: var(--_margin-col);
 	display: flex;
+	flex-wrap: wrap;
 	color: var(--color-note);
 	font-size: calc(100% / var(--font-ratio-1));
 	line-height: var(--line-height-normal);
-
-	@media screen and (max-width: 37.5em) {
-		flex-direction: column;
-	}
 }
 
 .entry-ins__date {
@@ -557,7 +550,6 @@
 }
 
 .entry-ins__text {
-	flex: min-content;
 	text-decoration: none;
 }
 
