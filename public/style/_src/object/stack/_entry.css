@@ -605,7 +605,7 @@
 
 /* ===== 脚注 ===== */
 .entry-footnote {
-	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
+	--_stack-margin-adjust: calc(var(--_font-size) * var(--_line-height) + var(--_stack-margin-adjust-line));
 
 	padding: 1em;
 	border-radius: var(--border-radius-large);
