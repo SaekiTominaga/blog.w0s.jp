@@ -41,8 +41,9 @@
 		"_svg-all:build-icon": "svgo -f image/icon -o public/image/icon --config=svgo.config.cjs",
 		"_svg-all:build-sidebar": "svgo -f image/sidebar -o public/image/sidebar --config=svgo.config.cjs",
 		"_svg-all:build-entry": "svgo -f image/entry -o public/image/entry --config=svgo.config.cjs",
-		"_svg-all:favicon": "move-file public/image/favicon.svg public/favicon.svg",
+		"_svg-all:favicon": "move-file public/image/favicon.svg public/favicon.ico",
 		"_svg-all:compress": "brotlin compress public/**/*.svg -m 1",
+		"_svg-all:compress-favicon": "brotlin compress public/favicon.ico -m 1",
 		"svg-all": "run-s _svg-all:*",
 		"test": "jest --coverage"
 	},
