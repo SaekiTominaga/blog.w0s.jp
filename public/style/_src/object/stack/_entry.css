@@ -10,7 +10,7 @@
 	font-size: var(--_font-size);
 	line-height: var(--_line-height);
 
-	& > * {
+	& > [class^="entry-"] {
 		--_stack-margin-row: calc(var(--_font-size) * var(--_line-height) + var(--_stack-margin-adjust));
 
 		&:not(:first-child) {
