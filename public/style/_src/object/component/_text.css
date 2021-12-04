@@ -39,6 +39,10 @@
 	color: var(--color-gray);
 	font-size: calc(100% / var(--font-ratio-1));
 	font-weight: normal;
+
+	@nest .entry-footnote & {
+		color: #616161;
+	}
 }
 
 /* ===== Amazon 商品カテゴリ ===== */
