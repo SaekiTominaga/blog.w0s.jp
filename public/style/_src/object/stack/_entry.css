@@ -5,13 +5,13 @@
 	--_font-size: 1rem;
 	--_line-height: var(--line-height-wide);
 	--_stack-margin-adjust: 0px; /* 上下マージン調整値 */
-	--_stack-margin-adjust-line: calc(var(--_font-size) * (var(--_line-height) - 1) / 2); /* 枠線があるか、埋め込みのコンポーネントの場合の上下マージン調整値 */
+	--_stack-margin-adjust-line: calc(1em * (var(--_line-height) - 1) / 2); /* 枠線があるか、埋め込みのコンポーネントの場合の上下マージン調整値 */
 
 	font-size: var(--_font-size);
 	line-height: var(--_line-height);
 
 	& > [class^="entry-"] {
-		--_stack-margin-row: calc(var(--_font-size) * var(--_line-height) + var(--_stack-margin-adjust));
+		--_stack-margin-row: calc(1em * var(--_line-height) + var(--_stack-margin-adjust));
 
 		&:not(:first-child) {
 			margin-top: var(--_stack-margin-row);
@@ -21,21 +21,30 @@
 			margin-bottom: var(--_stack-margin-row);
 		}
 	}
-}
 
-/* ===== セクション ===== */
-.entry-section1 {
-	--_stack-margin-row: calc(1em * var(--_line-height) * 3);
-}
+	/* ===== セクション（<h2>） ===== */
+	& > .entry-section1 {
+		--_stack-margin-row: calc(1em * var(--_line-height) * 3);
+	}
 
-.entry-section2 {
-	--_stack-margin-row: calc(1em * var(--_line-height) * 2);
+	/* ===== セクション（<h3>） ===== */
+	& > .entry-section2 {
+		--_stack-margin-row: calc(1em * var(--_line-height) * 2);
+	}
+
+	/* ===== セクション終了 ===== */
+	& > .entry-section-break {
+		--_stack-margin-row: calc(1em * var(--_line-height) * 3);
+	}
+
+	/* ===== 脚注 ===== */
+	& > .entry-footnote {
+		--_stack-margin-row: calc(1em * var(--_line-height) * 5);
+	}
 }
 
 /* ===== セクション終了 ===== */
 .entry-section-break {
-	--_stack-margin-row: calc(1em * var(--_line-height) * 3);
-
 	display: flex;
 	justify-content: center;
 
@@ -605,8 +614,6 @@
 
 /* ===== 脚注 ===== */
 .entry-footnote {
-	--_stack-margin-adjust: calc(var(--_font-size) * var(--_line-height) + var(--_stack-margin-adjust-line));
-
 	padding: 1em;
 	border-radius: var(--border-radius-large);
 	box-sizing: border-box;
