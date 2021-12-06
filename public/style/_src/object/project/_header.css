@@ -17,7 +17,7 @@
 	font-feature-settings: "palt";
 
 	& a {
-		--_padding: 0.25em;
+		--_padding: 0.05em;
 		--_text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
 
 		margin: calc(0px - var(--_padding));
@@ -26,6 +26,7 @@
 		border-radius: var(--border-radius-small); /* outline を柔らかくする */
 		text-shadow: var(--_text-shadow);
 		outline-width: 2px;
+		outline-offset: 0;
 
 		&:any-link {
 			color: inherit;
