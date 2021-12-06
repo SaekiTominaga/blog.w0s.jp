@@ -63,6 +63,7 @@
 		box-sizing: border-box;
 		display: flex;
 		aspect-ratio: 1/1;
+		width: var(--_height); /* for iPad Safari */
 		height: var(--_height);
 		color: var(--_color);
 		font: inherit;
