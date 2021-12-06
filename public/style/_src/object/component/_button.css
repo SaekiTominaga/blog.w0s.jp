@@ -84,6 +84,9 @@
 }
 
 .c-button__text {
+	@nest .p-entry-footer-social & {
+		white-space: nowrap; /* for iPad Safari */
+	}
 }
 
 /* ===== クリップボードボタン ===== */
