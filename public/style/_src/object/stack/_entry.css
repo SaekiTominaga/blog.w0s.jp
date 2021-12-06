@@ -302,11 +302,17 @@
 }
 
 .entry-amazon__link {
+	--_repeat: 2;
+
 	margin: 10px 0 0;
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(24em, 1fr));
+	grid-template-columns: repeat(var(--_repeat), 1fr);
 	gap: 12px;
 	font-size: calc(100% / var(--font-ratio-1));
+
+	@media (max-width: 46em) {
+		--_repeat: 1;
+	}
 }
 
 /* ===== Amazon 商品リンク ===== */
