@@ -159,10 +159,6 @@
 		line-height: var(--line-height-narrow);
 		outline-offset: 0;
 
-		@media (--breakpoint) {
-			--_font-size: 100%;
-		}
-
 		&:any-link {
 			--_bg-color: var(--color-white);
 			--_icon-color: var(--color-lightgray); /* アイコンの色 */
