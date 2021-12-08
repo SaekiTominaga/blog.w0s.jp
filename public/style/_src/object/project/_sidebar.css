@@ -250,22 +250,10 @@
 }
 
 .p-sidebar-amazon__link {
-	--_gap-row: 10px;
-	--_gap-column: 10px;
-
 	margin-top: calc(0.5em + var(--_heading-offset));
 	display: grid;
-	gap: var(--_gap-row) var(--_gap-column);
-	grid-template-columns: repeat(2, 1fr);
-
-	@media (--breakpoint) {
-		display: flex;
-		flex-flow: wrap;
-
-		& > li {
-			max-width: 120px;
-		}
-	}
+	grid-template-columns: repeat(auto-fill, minmax(min(90px, 100%), 1fr));
+	gap: 10px;
 }
 
 /* ===== Amazon 商品リンク ===== */

@@ -226,17 +226,11 @@
 }
 
 .p-entry-footer-relation__list {
-	--_repeat: 2;
-
 	margin-top: 15px;
 	display: grid;
-	grid-template-columns: repeat(var(--_repeat), 1fr);
+	grid-template-columns: repeat(auto-fill, minmax(min(25em, 100%), 1fr));
 	gap: 30px;
 	font-size: calc(100% / var(--font-ratio-1));
-
-	@media (max-width: 64em) {
-		--_repeat: 1;
-	}
 }
 
 /* ===== 著書紹介 ===== */
@@ -258,14 +252,8 @@
 }
 
 .p-book-cm__list {
-	--_repeat: 2;
-
 	margin-top: 15px;
 	display: grid;
-	grid-template-columns: repeat(var(--_repeat), 1fr);
+	grid-template-columns: repeat(auto-fill, minmax(min(20em, 100%), 1fr));
 	gap: 30px;
-
-	@media (max-width: 40em) {
-		--_repeat: 1;
-	}
 }
