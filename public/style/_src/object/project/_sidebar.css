@@ -148,13 +148,12 @@
 		--_padding-row: 0.5em;
 		--_padding-col: 0.5em;
 		--_bg-color: var(--color-bg-skyblue);
-		--_font-size: calc(100% / var(--font-ratio-1));
 
 		padding: var(--_padding-row) var(--_padding-col);
 		display: flex;
 		align-items: center;
 		position: relative;
-		font-size: var(--_font-size);
+		font-size: calc(100% / var(--font-ratio-1));
 		background: var(--_bg-color);
 		line-height: var(--line-height-narrow);
 		outline-offset: 0;
