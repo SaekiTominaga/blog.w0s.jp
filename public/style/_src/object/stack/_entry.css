@@ -304,7 +304,7 @@
 .entry-amazon__link {
 	margin: 10px 0 0;
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(20em, 100%), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(22em, 100%), 1fr));
 	gap: 12px;
 	font-size: calc(100% / var(--font-ratio-1));
 
