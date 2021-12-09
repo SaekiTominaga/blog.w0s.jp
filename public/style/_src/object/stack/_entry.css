@@ -172,22 +172,20 @@
 
 .entry-quote__caption {
 	margin: 0.125em 0 0 auto;
-	padding-left: 10%;
 	color: #575757; /* コントラスト比 7:1 */
 	font-size: calc(100% / var(--font-ratio-1));
 	font-weight: bold;
 	text-align: justify;
 
-	@supports (width: -moz-fit-content) {
-		width: -moz-fit-content; /* for Firefox */
-	}
-
 	@supports (width: fit-content) {
-		width: fit-content; /* for Chrome, Safari */
+		/* for Firefox, Chrome, Safari */
+		padding-left: 10%;
+		width: fit-content;
 	}
 
 	@supports (width: fit-content(0)) {
-		width: fit-content(0); /* No support browser yet */
+		/* No support browser yet */
+		width: fit-content(0);
 	}
 }
 
@@ -307,7 +305,6 @@
 	grid-template-columns: repeat(auto-fill, minmax(min(20em, 100%), 1fr));
 	gap: 12px;
 	font-size: calc(100% / var(--font-ratio-1));
-
 }
 
 /* ===== Amazon 商品リンク ===== */
