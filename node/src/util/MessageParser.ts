@@ -516,26 +516,26 @@ export default class MessageParser {
 					/* 先頭が $youtube: な場合は YouTube 動画 */
 					const lineText = lineTrim.substring(10); // 先頭記号を削除
 
-					const [id, size, caption] = lineText.split(' ');
+					const meta = lineText.match(/^(?<id>[^ ]+) (?<width>[1-9]\d{2,3})x(?<height>[1-9]\d{2,3}) (?<caption>.+)$/)?.groups;
 
-					if (id === undefined || size === undefined || caption === undefined) {
+					if (meta === undefined || meta.id === undefined || meta.width === undefined || meta.height === undefined || meta.caption === undefined) {
 						this.logger.error(`YouTube 動画埋め込みの構文が不正: ${lineTrim}（記事ID: ${this.entryId}）`);
 					} else {
-						const [width, height] = size.split('x').map((value) => Number(value));
-						if (width === undefined || height === undefined) {
-							this.logger.error(`YouTube 動画埋め込みの構文が不正: ${lineTrim}（記事ID: ${this.entryId}）`);
+						const id = meta.id;
+						const width = Number(meta.width);
+						const height = Number(meta.height);
+						const caption = meta.caption;
+
+						if (this.embeddedFlag) {
+							this.setYouTube(document, parentElement, id, width, height, caption);
 						} else {
-							if (this.embeddedFlag) {
-								this.setYouTube(document, parentElement, id, width, height, caption);
-							} else {
-								const gridElement = document.createElement('div');
-								gridElement.className = 'entry-embedded-grid';
-								this.appendChild(mainElement, gridElement);
+							const gridElement = document.createElement('div');
+							gridElement.className = 'entry-embedded-grid';
+							this.appendChild(mainElement, gridElement);
 
-								parentElement = gridElement;
+							parentElement = gridElement;
 
-								this.setYouTube(document, gridElement, id, width, height, caption);
-							}
+							this.setYouTube(document, gridElement, id, width, height, caption);
 						}
 					}
 
