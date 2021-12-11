@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import hljs from 'highlight.js/lib/core';
 import hljsCss from 'highlight.js/lib/languages/css';
 import hljsJavaScript from 'highlight.js/lib/languages/javascript';
+import hljsTypeScript from 'highlight.js/lib/languages/typescript';
 import hljsXml from 'highlight.js/lib/languages/xml';
 import Log4js from 'log4js';
 import md5 from 'md5';
@@ -12,6 +13,7 @@ import path from 'path';
 import serialize from 'w3c-xmlserializer';
 import StringEscapeHtml from '@saekitominaga/string-escape-html';
 import { JSDOM } from 'jsdom';
+import { LanguageFn } from 'highlight.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 
 type ImageType = 'figure' | 'photo';
@@ -43,10 +45,14 @@ export default class MessageParser {
 	private videoNum = 1;
 
 	/* コード文字列 */
-	private code = '';
+	#code: string | undefined;
+	#codeLanguage: string | undefined;
+	#highLightJsLanguageRegisted: Set<string> = new Set();
+
 	/* 注釈 */
 	private readonly footnotes: string[] = [];
 
+	/* 各種フラグ */
 	private section1Flag = false;
 	private section1Count = 0;
 	private section2Flag = false;
@@ -79,11 +85,15 @@ export default class MessageParser {
 		/* Logger */
 		this.logger = Log4js.getLogger(this.constructor.name);
 
+		/* 記事 ID */
 		if (entryId !== undefined) {
 			this.entryId = entryId;
 		}
+
+		/* Dao */
 		this.dao = new BlogMessageDao(config, dbh);
 
+		/* section */
 		const { document } = new JSDOM().window;
 		this.section1Element = document.createElement('section');
 		this.section2Element = document.createElement('section');
@@ -128,12 +138,22 @@ export default class MessageParser {
 
 		const mainElement = document.createElement('div');
 
-		const lines = message.split('\n');
+		const lines = message.replaceAll('\r\n', '\n').split('\n');
 
 		for (const line of lines) {
+			if (this.codeFlag) {
+				if (line === '```') {
+					this.#appendCode(document, mainElement);
+					this.codeFlag = false;
+				} else {
+					this.#code = this.#code === undefined ? line : `${this.#code}\n${line}`;
+				}
+
+				continue;
+			}
+
 			const lineTrim = line.trim();
 			if (lineTrim === '') {
-				this.appendCode(document, mainElement);
 				this.flagReset();
 				continue;
 			}
@@ -143,8 +163,6 @@ export default class MessageParser {
 			const firstChara = lineTrim.substring(0, 1); // 先頭文字
 
 			if (firstChara === '#') {
-				this.appendCode(document, mainElement);
-
 				if (lineTrim === '#') {
 					this.section1Flag = false;
 					this.section2Flag = false;
@@ -209,8 +227,6 @@ export default class MessageParser {
 					blockConvert = true;
 				}
 			} else if (firstChara === '-') {
-				this.appendCode(document, mainElement);
-
 				if (lineTrim.startsWith('- ')) {
 					/* 先頭が - な場合は順不同リスト */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
@@ -262,8 +278,6 @@ export default class MessageParser {
 					blockConvert = true;
 				}
 			} else if (firstChara === '1') {
-				this.appendCode(document, mainElement);
-
 				if (lineTrim.startsWith('1. ')) {
 					/* 先頭が 1. な場合は順序リスト */
 					const lineText = lineTrim.substring(3); // 先頭記号を削除
@@ -287,8 +301,6 @@ export default class MessageParser {
 					blockConvert = true;
 				}
 			} else if (firstChara === ':') {
-				this.appendCode(document, mainElement);
-
 				const DD_SEPARATOR = ' | ';
 				if (lineTrim.startsWith(': ') && lineTrim.includes(DD_SEPARATOR)) {
 					/* 先頭が : かつ | が存在する場合は記述リスト */
@@ -330,8 +342,6 @@ export default class MessageParser {
 					blockConvert = true;
 				}
 			} else if (firstChara === '>') {
-				this.appendCode(document, mainElement);
-
 				if (lineTrim.startsWith('> ')) {
 					/* 先頭が > な場合はブロックレベルの引用 */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
@@ -427,8 +437,6 @@ export default class MessageParser {
 				this.blockquoteCiteFlag = true;
 				blockConvert = true;
 			} else if (firstChara === '$') {
-				this.appendCode(document, mainElement);
-
 				if (lineTrim.startsWith('$photo: ')) {
 					/* 先頭が $photo: な場合は写真の画像 */
 					const lineText = lineTrim.substring(8); // 先頭記号を削除
@@ -706,28 +714,16 @@ export default class MessageParser {
 					blockConvert = true;
 				}
 			} else if (firstChara === '`') {
-				if (lineTrim.startsWith('` ')) {
-					/* 先頭が ` な場合はコード表示（.entry-sample code） */
-					const lineText = lineTrim.substring(2); // 先頭記号を削除、改行を追加
-
-					if (this.codeFlag) {
-						this.code += `\n${lineText}`;
-					} else {
-						this.code = lineText;
-					}
+				if (lineTrim.startsWith('```')) {
+					/* 先頭が ``` な場合はコードブロック（.entry-code） */
+					const language = lineTrim.substring(3); // 先頭記号を削除
+					this.#codeLanguage = language !== '' ? language : undefined;
 
 					this.flagReset();
 					this.codeFlag = true;
 					blockConvert = true;
-				} else if (this.codeFlag && lineTrim === '`') {
-					/* ` のみな場合は空行を挿入 */
-					this.code += '\n';
-
-					blockConvert = true;
 				}
 			} else if (firstChara === '*') {
-				this.appendCode(document, mainElement);
-
 				if (lineTrim.startsWith('* ')) {
 					/* 先頭が * な場合は注釈（.entry-note） */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
@@ -773,8 +769,6 @@ export default class MessageParser {
 					blockConvert = true;
 				}
 			} else if (firstChara === '/') {
-				this.appendCode(document, mainElement);
-
 				if (lineTrim.startsWith('/ ')) {
 					/* 先頭が / な場合は本文と区別するブロック（.entry-box） */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
@@ -799,8 +793,6 @@ export default class MessageParser {
 					blockConvert = true;
 				}
 			} else if (firstChara === '|') {
-				this.appendCode(document, mainElement);
-
 				if (lineTrim.startsWith('|$')) {
 					/* 先頭が |$ な場合は表ヘッダ（thead） */
 					const lineText = lineTrim.substring(2); // 先頭記号を削除
@@ -887,8 +879,6 @@ export default class MessageParser {
 
 			if (!blockConvert) {
 				/* その他の場合は段落（p） */
-				this.appendCode(document, mainElement);
-
 				const pElement = document.createElement('p');
 				pElement.className = 'entry-text';
 				this.appendChild(mainElement, pElement);
@@ -898,7 +888,10 @@ export default class MessageParser {
 			}
 		}
 
-		this.appendCode(document, mainElement);
+		if (this.#code !== undefined) {
+			this.logger.warn(`コードブロックが閉じていない（記事ID: ${this.entryId}）`, this.#code);
+			this.#appendCode(document, mainElement);
+		}
 
 		if (this.footnotes.length > 0) {
 			const footnotesElement = document.createElement('ul');
@@ -978,66 +971,117 @@ export default class MessageParser {
 	}
 
 	/**
+	 * highlight.js に言語を登録する
+	 *
+	 * @param {string} languageName - 言語名
+	 *
+	 * @returns {string | undefined} 登録された言語名
+	 */
+	#registHighlightJsLanguage(languageName: string): string | undefined {
+		let registLanguageName: string | undefined;
+		let registLanguage: LanguageFn | undefined;
+
+		/* https://github.com/highlightjs/highlight.js/blob/main/SUPPORTED_LANGUAGES.md */
+		switch (languageName) {
+			case 'xml':
+			case 'html':
+			case 'svg': {
+				registLanguageName = 'xml';
+				registLanguage = hljsXml;
+				break;
+			}
+			case 'css': {
+				registLanguageName = 'css';
+				registLanguage = hljsCss;
+				break;
+			}
+			case 'javascript':
+			case 'jsx': {
+				registLanguageName = 'javascript';
+				registLanguage = hljsJavaScript;
+				break;
+			}
+			case 'typescript': {
+				registLanguageName = 'typescript';
+				registLanguage = hljsTypeScript;
+				break;
+			}
+			default: {
+				this.logger.warn(`無効な言語名が指定: \`${languageName}\` （記事ID: ${this.entryId}）`);
+			}
+		}
+
+		if (registLanguageName !== undefined && registLanguage !== undefined && !this.#highLightJsLanguageRegisted.has(registLanguageName)) {
+			hljs.registerLanguage(registLanguageName, registLanguage);
+			this.#highLightJsLanguageRegisted.add(registLanguageName);
+		}
+
+		return registLanguageName;
+	}
+
+	/**
 	 * code を挿入する
 	 *
 	 * @param {object} document - Document
 	 * @param {object} entryMainElement - 記事のメイン要素
 	 */
-	private appendCode(document: Document, entryMainElement: HTMLElement): void {
-		if (this.codeFlag) {
-			const code = this.code;
+	#appendCode(document: Document, entryMainElement: HTMLElement): void {
+		const code = this.#code;
+		const language = this.#codeLanguage;
+		this.#code = undefined;
+		this.#codeLanguage = undefined;
 
-			/* コードハイライト */
-			const classPrefix = 'c-entry-code-highlight -';
+		if (code === undefined) {
+			return;
+		}
 
-			hljs.registerLanguage('xml', hljsXml);
-			hljs.registerLanguage('css', hljsCss);
-			hljs.registerLanguage('javascript', hljsJavaScript);
+		const codeId = `code-${md5(code)}`; // コード ID
 
-			const highlighted = hljs.highlightAuto(code);
-			let highlightedValue = highlighted.value;
-			const highlightedLanguage = highlighted.language;
+		/* コードの挿入 */
+		const codeWrapperElement = document.createElement('div');
+		codeWrapperElement.setAttribute('class', 'entry-code');
+		this.appendChild(entryMainElement, codeWrapperElement);
 
-			highlightedValue = highlightedValue.replace(new RegExp(`<span class="${classPrefix}([-_a-zA-Z0-9]+)"></span>`, 'g'), ''); // 中身が空の要素を削除
+		if (code.includes('\n')) {
+			/* 複数行の場合はクリップボードボタンを表示 */
+			const clipboardElement = document.createElement('div');
+			clipboardElement.setAttribute('class', 'entry-code__clipboard');
+			codeWrapperElement.appendChild(clipboardElement);
 
-			const codeId = `code-${md5(highlightedValue)}`; // コード ID
+			const clipboardButtonElement = document.createElement('button');
+			clipboardButtonElement.type = 'button';
+			clipboardButtonElement.setAttribute('is', 'w0s-clipboard');
+			clipboardButtonElement.setAttribute('data-target-for', codeId);
+			clipboardButtonElement.className = 'c-clipboard-button';
+			clipboardElement.appendChild(clipboardButtonElement);
 
-			/* コードの挿入 */
-			const codeWrapperElement = document.createElement('div');
-			codeWrapperElement.setAttribute('class', 'entry-code');
-			this.appendChild(entryMainElement, codeWrapperElement);
+			const clipboardIconElement = document.createElement('img');
+			clipboardIconElement.src = '/image/entry/copy.svg';
+			clipboardIconElement.alt = 'コピー';
+			clipboardButtonElement.appendChild(clipboardIconElement);
+		}
 
-			if (code.includes('\n')) {
-				/* 複数行の場合はクリップボードボタンを表示する */
-				const clipboardElement = document.createElement('div');
-				clipboardElement.setAttribute('class', 'entry-code__clipboard');
-				codeWrapperElement.appendChild(clipboardElement);
+		const preElement = document.createElement('pre');
+		preElement.className = 'entry-code__code';
+		codeWrapperElement.appendChild(preElement);
 
-				const clipboardButtonElement = document.createElement('button');
-				clipboardButtonElement.type = 'button';
-				clipboardButtonElement.setAttribute('is', 'w0s-clipboard');
-				clipboardButtonElement.setAttribute('data-target-for', codeId);
-				clipboardButtonElement.className = 'c-clipboard-button';
-				clipboardElement.appendChild(clipboardButtonElement);
+		const codeElement = document.createElement('code');
+		codeElement.id = codeId;
+		if (language !== undefined) {
+			codeElement.setAttribute('data-language', language);
+		}
+		preElement.appendChild(codeElement);
 
-				const clipboardIconElement = document.createElement('img');
-				clipboardIconElement.src = '/image/entry/copy.svg';
-				clipboardIconElement.alt = 'コピー';
-				clipboardButtonElement.appendChild(clipboardIconElement);
-			}
+		let registedLanguage: string | undefined;
+		if (language !== undefined) {
+			registedLanguage = this.#registHighlightJsLanguage(language);
+		}
 
-			const preElement = document.createElement('pre');
-			preElement.className = 'entry-code__code';
-			codeWrapperElement.appendChild(preElement);
-
-			const codeElement = document.createElement('code');
-			codeElement.id = codeId;
-			if (highlightedLanguage !== undefined) {
-				codeElement.setAttribute('data-language', highlightedLanguage);
-			}
-			preElement.appendChild(codeElement);
-
-			codeElement.insertAdjacentHTML('beforeend', highlightedValue);
+		if (registedLanguage === undefined) {
+			codeElement.textContent = code;
+		} else {
+			/* 有効な言語が指定された場合は hightlight する */
+			codeElement.insertAdjacentHTML('beforeend', hljs.highlight(code, { language: registedLanguage }).value);
 		}
 	}
 
