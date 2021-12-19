@@ -75,10 +75,11 @@ export default class MessageParser {
 	readonly #highLightJsLanguageRegisted: Set<string> = new Set();
 
 	/* 表 */
-	#table = false;
 	#tableElement: HTMLTableElement | undefined;
+	#thead = false;
+	#theadData: string[][] = [];
 	#tbody = false;
-	#tbodyElement: HTMLTableSectionElement | undefined;
+	#tbodyData: string[][] = [];
 
 	/* 汎用ボックス */
 	#box = false;
@@ -188,6 +189,10 @@ export default class MessageParser {
 				this.#quoteLanguage = undefined;
 				this.#quoteTitle = undefined;
 				this.#quoteUrl = undefined;
+			}
+
+			if (!this.#thead && !this.#tbody) {
+				this.#appendTableSection();
 			}
 
 			if (line === '') {
@@ -367,26 +372,30 @@ export default class MessageParser {
 					break;
 				}
 				case '|': {
-					if (line.startsWith('|$')) {
-						/* 先頭が |$ な場合は表ヘッダ（thead） */
-						const tableRowText = line.substring(2); // 先頭記号を削除
+					if (line.endsWith('|')) {
+						const tableRowText = line.substring(1, line.length - 1); // 両端記号を削除
 
-						this.#appendThead(tableRowText);
+						const tableRowDatas = tableRowText.split('|').map((data) => data.trim());
+
+						this.#appendTable();
+
+						const alignRow = tableRowDatas.every((data) => /-+/.test(data));
+						if (!alignRow) {
+							if (!this.#thead) {
+								this.#tbodyData.push(tableRowDatas);
+							} else {
+								this.#theadData = this.#tbodyData;
+								this.#tbodyData = [tableRowDatas];
+							}
+						}
 
 						this.#resetStackFlag();
-					} else {
-						/* 先頭が | な場合は表本体（tbody） */
-						const tableRowText = line.substring(1); // 先頭記号を削除
+						this.#thead = alignRow;
+						this.#tbody = !alignRow;
 
-						this.#appendTbody(tableRowText);
-
-						this.#resetStackFlag();
-						this.#tbody = true;
+						continue;
 					}
-
-					this.#table = true;
-
-					continue;
+					break;
 				}
 				case '*': {
 					if (line.startsWith('* ')) {
@@ -531,11 +540,15 @@ export default class MessageParser {
 			this.#resetStackFlag();
 		}
 
-		/* コードブロックが閉じていない場合は強制的に閉じる */
+		/* 蓄積分の解消 */
+		this.#appendQuoteCite();
 		if (this.#codeBody !== undefined) {
+			/* コードブロックが閉じていない場合は強制的に閉じる */
 			this.#logger.warn('コードブロックが閉じていない', this.#codeBody);
 			this.#appendCode();
 		}
+		this.#appendTableSection();
+
 
 		/* 脚注 */
 		this.#appendFootnote();
@@ -555,7 +568,7 @@ export default class MessageParser {
 
 		this.#code = false;
 
-		this.#table = false;
+		this.#thead = false;
 		this.#tbody = false;
 
 		this.#box = false;
@@ -873,83 +886,71 @@ export default class MessageParser {
 	}
 
 	/**
-	 * <thead> を挿入する
-	 *
-	 * @param {string} tableRowText - 行テキスト
+	 * <table> を挿入する
 	 */
-	#appendThead(tableRowText: string): void {
-		const theadElement = this.#document.createElement('thead');
-		if (!this.#table || this.#tableElement === undefined) {
+	#appendTable(): void {
+		if (this.#tableElement === undefined) {
 			const tableElement = this.#document.createElement('table');
 			tableElement.className = 'entry-table';
 			this.#appendChild(tableElement);
 
 			this.#tableElement = tableElement;
 		}
-
-		this.#tableElement.appendChild(theadElement);
-
-		/* 行要素を設定 */
-		const dates = tableRowText.split('|');
-
-		const trElement = this.#document.createElement('tr');
-		theadElement.appendChild(trElement);
-
-		for (const data of dates) {
-			const dataTrim = data.trim();
-
-			const thElement = this.#document.createElement('th');
-			thElement.setAttribute('scope', 'col');
-			thElement.textContent = dataTrim;
-			trElement.appendChild(thElement);
-		}
 	}
 
 	/**
-	 * <tbody> を挿入する
-	 *
-	 * @param {string} tableRowText - 行テキスト
+	 * <thead>, <tbody> を挿入する
 	 */
-	#appendTbody(tableRowText: string): void {
-		if (!this.#tbody || this.#tbodyElement === undefined) {
-			const tbodyElement = this.#document.createElement('tbody');
-			this.#tbodyElement = tbodyElement;
-
-			if (!this.#table || this.#tableElement === undefined) {
-				const tableElement = this.#document.createElement('table');
-				tableElement.className = 'entry-table';
-				this.#appendChild(tableElement);
-
-				this.#tableElement = tableElement;
-			}
-
-			this.#tableElement.appendChild(tbodyElement);
+	#appendTableSection(): void {
+		if (this.#tableElement === undefined) {
+			return;
 		}
 
-		/* tbodyの行要素を設定 */
-		const dates = tableRowText.split('|');
+		if (this.#theadData.length >= 1) {
+			const sectionElement = this.#document.createElement('thead');
+			this.#tableElement.appendChild(sectionElement);
 
-		const trElement = this.#document.createElement('tr');
-		this.#tbodyElement.appendChild(trElement);
+			for (const dataCols of this.#theadData) {
+				const rowElement = this.#document.createElement('tr');
+				sectionElement.appendChild(rowElement);
 
-		for (const data of dates) {
-			if (data.substring(0, 1) === '~') {
-				const dataTrim = data.substring(1).trim();
-
-				const thElement = this.#document.createElement('th');
-				thElement.setAttribute('scope', 'row');
-				trElement.appendChild(thElement);
-
-				this.#inlineMarkup(thElement, dataTrim); // アンカーを設定
-			} else {
-				const dataTrim = data.trim();
-
-				const tdElement = this.#document.createElement('td');
-				trElement.appendChild(tdElement);
-
-				this.#inlineMarkup(tdElement, dataTrim); // アンカーを設定
+				dataCols.forEach((data) => {
+					const cellElement = this.#document.createElement('th');
+					cellElement.setAttribute('scope', 'col');
+					cellElement.textContent = data.trim();
+					rowElement.appendChild(cellElement);
+				});
 			}
+
+			this.#theadData = [];
 		}
+
+		if (this.#tbodyData.length >= 1) {
+			const sectionElement = this.#document.createElement('tbody');
+			this.#tableElement.appendChild(sectionElement);
+
+			for (const dataCols of this.#tbodyData) {
+				const rowElement = this.#document.createElement('tr');
+				sectionElement.appendChild(rowElement);
+
+				dataCols.forEach((data, index) => {
+					if (index === 0 && data.substring(0, 1) === '~') {
+						const cellElement = this.#document.createElement('th');
+						cellElement.setAttribute('scope', 'row');
+						this.#inlineMarkup(cellElement, data.substring(1).trim()); // インライン要素を設定
+						rowElement.appendChild(cellElement);
+					} else {
+						const cellElement = this.#document.createElement('td');
+						this.#inlineMarkup(cellElement, data.trim()); // インライン要素を設定
+						rowElement.appendChild(cellElement);
+					}
+				});
+			}
+
+			this.#tbodyData = [];
+		}
+
+		this.#tableElement = undefined;
 	}
 
 	/**
