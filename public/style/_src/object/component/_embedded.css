@@ -12,6 +12,8 @@
 
 /* 図番号（"写真1"、"図2" など） */
 .c-embedded-caption__no {
+	white-space: nowrap; /* for Safari */
+
 	&::after {
 		margin: 0 0.25em;
 		content: ":";
