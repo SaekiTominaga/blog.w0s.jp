@@ -5,6 +5,9 @@
 		/* Type Checking */
 		"noUnusedParameters": false,
 
+		/* Modules */
+		"module": "es2022",
+
 		/* Emit */
 		"outDir": "dist",
 
