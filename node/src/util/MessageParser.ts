@@ -45,10 +45,11 @@ export default class MessageParser {
 	/* section */
 	#section1 = false;
 	#section1Count = 0;
-	#section1Element: HTMLElement | undefined;
+	#section1Elements: HTMLElement[] = [];
+	#section1Headings: string[] = [];
 	#section2 = false;
 	#section2Count = 0;
-	#section2Element: HTMLElement | undefined;
+	#section2Elements: HTMLElement[] = [];
 
 	/* リスト */
 	#ul = false;
@@ -235,6 +236,7 @@ export default class MessageParser {
 						this.#resetStackFlag();
 						this.#section1 = true;
 						this.#section1Count++;
+						this.#section1Headings.push(headingText);
 						this.#section2 = false;
 						this.#section2Count = 0;
 
@@ -524,6 +526,9 @@ export default class MessageParser {
 		}
 		this.#appendTableSection();
 
+		/* 目次 */
+		this.#appendToc();
+
 		/* 脚注 */
 		this.#appendFootnote();
 	}
@@ -557,15 +562,9 @@ export default class MessageParser {
 	 */
 	#appendChild(childElement: HTMLElement): void {
 		if (this.#section2) {
-			if (this.#section2Element === undefined) {
-				throw new Error('root > section > section 要素が生成されていない');
-			}
-			this.#section2Element.appendChild(childElement);
+			this.#section2Elements.slice(-1)[0]?.appendChild(childElement);
 		} else if (this.#section1) {
-			if (this.#section1Element === undefined) {
-				throw new Error('root > section 要素が生成されていない');
-			}
-			this.#section1Element.appendChild(childElement);
+			this.#section1Elements.slice(-1)[0]?.appendChild(childElement);
 		} else {
 			this.#rootElement.appendChild(childElement);
 		}
@@ -587,7 +586,7 @@ export default class MessageParser {
 		headingElement.textContent = headingText;
 		sectionElement.appendChild(headingElement);
 
-		this.#section1Element = sectionElement;
+		this.#section1Elements.push(sectionElement);
 	}
 
 	/**
@@ -596,21 +595,17 @@ export default class MessageParser {
 	 * @param {string} headingText - 見出しテキスト
 	 */
 	#appendSection2(headingText: string): void {
-		if (this.#section1Element === undefined) {
-			throw new Error('root > section 要素が生成されていない');
-		}
-
 		const sectionElement = this.#document.createElement('section');
 		sectionElement.className = 'entry-section2 entry';
 		sectionElement.id = `section-${this.#section1Count}-${this.#section2Count}`;
-		this.#section1Element.appendChild(sectionElement);
+		this.#section1Elements.slice(-1)[0]?.appendChild(sectionElement);
 
 		const headingElement = this.#document.createElement('h3');
 		headingElement.className = 'entry-hdg2';
 		headingElement.textContent = headingText;
 		sectionElement.appendChild(headingElement);
 
-		this.#section2Element = sectionElement;
+		this.#section2Elements.push(sectionElement);
 	}
 
 	/**
@@ -620,6 +615,28 @@ export default class MessageParser {
 		const sectionBreakElement = this.#document.createElement('hr');
 		sectionBreakElement.className = 'entry-section-break';
 		this.#appendChild(sectionBreakElement);
+	}
+
+	/**
+	 * 目次を挿入する
+	 */
+	#appendToc(): void {
+		if (this.#section1Headings.length >= 2) {
+			const tocElement = this.#document.createElement('ol');
+			tocElement.setAttribute('aria-label', '目次');
+			tocElement.className = 'entry-toc';
+			this.#section1Elements[0]?.before(tocElement);
+
+			this.#section1Headings.forEach((heading, index) => {
+				const liElement = this.#document.createElement('li');
+				tocElement.appendChild(liElement);
+
+				const aElement = this.#document.createElement('a');
+				aElement.href = `#section-${index}`;
+				aElement.textContent = heading;
+				liElement.appendChild(aElement);
+			});
+		}
 	}
 
 	/**
