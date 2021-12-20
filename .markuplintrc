@@ -67,46 +67,6 @@
 					}
 				}
 			}
-		},
-		{
-			"tagName": "article",
-			"rules": {
-				"wai-aria": {
-					"option": {
-						"disallowSetImplicitRole": false
-					}
-				}
-			}
-		},
-		{
-			"tagName": "header",
-			"rules": {
-				"wai-aria": {
-					"option": {
-						"disallowSetImplicitRole": false
-					}
-				}
-			}
-		},
-		{
-			"tagName": "footer",
-			"rules": {
-				"wai-aria": {
-					"option": {
-						"permittedAriaRoles": false
-					}
-				}
-			}
-		},
-		{
-			"tagName": "main",
-			"rules": {
-				"wai-aria": {
-					"option": {
-						"disallowSetImplicitRole": false
-					}
-				}
-			}
 		}
 	]
 }
