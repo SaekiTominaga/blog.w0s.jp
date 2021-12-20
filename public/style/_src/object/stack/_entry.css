@@ -615,6 +615,7 @@
 /* ===== 脚注 ===== */
 .entry-footnote {
 	padding: 1em;
+	border: 1px solid var(--color-bg-dark);
 	border-radius: var(--border-radius-large);
 	box-sizing: border-box;
 	display: table;
