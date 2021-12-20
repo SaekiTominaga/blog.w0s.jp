@@ -25,6 +25,9 @@ export default class MessageParser {
 	/* Logger */
 	readonly #logger: Log4js.Logger;
 
+	/* 設定ファイル */
+	#config: Configure;
+
 	/* jsdom */
 	readonly #document: Document;
 
@@ -105,6 +108,9 @@ export default class MessageParser {
 	constructor(config: Configure, dbh?: sqlite.Database, entryId?: number) {
 		/* Logger */
 		this.#logger = Log4js.getLogger(entryId !== undefined ? `${this.constructor.name} (ID: ${entryId})` : this.constructor.name);
+
+		/* 設定ファイル */
+		this.#config = config;
 
 		/* 記事 ID */
 		if (entryId !== undefined) {
@@ -548,7 +554,6 @@ export default class MessageParser {
 			this.#appendCode();
 		}
 		this.#appendTableSection();
-
 
 		/* 脚注 */
 		this.#appendFootnote();
@@ -1065,11 +1070,16 @@ export default class MessageParser {
 		aElement.href = `https://media.w0s.jp/image/blog/${fileName}`;
 		figureElement.appendChild(aElement);
 
-		switch (path.extname(fileName)) {
+		const fileExtension = path.extname(fileName);
+		const mime = Object.entries(this.#config.static.headers.mime.extension).find(([, extensions]) => extensions.includes(fileExtension.substring(1)))?.[0];
+
+		if (mime !== undefined) {
+			aElement.type = mime;
+		}
+
+		switch (fileExtension) {
 			case 'svg': {
 				/* SVG */
-				aElement.type = 'image/svg+xml';
-
 				const imgElement = this.#document.createElement('img');
 				imgElement.src = `https://media.w0s.jp/image/blog/${fileName}`;
 				imgElement.alt = 'オリジナル画像';
