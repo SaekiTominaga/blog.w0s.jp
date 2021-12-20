@@ -16,8 +16,6 @@ import { JSDOM } from 'jsdom';
 import { LanguageFn } from 'highlight.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 
-type MediaType = 'image' | 'photo' | 'video';
-
 /**
  * 記事メッセージのパーサー
  */
@@ -91,8 +89,7 @@ export default class MessageParser {
 	/* メディア */
 	#media = false;
 	#mediaWrapElement: HTMLElement | undefined;
-	#imageNum = 1; /* 図の番号 */
-	#photoNum = 1; /* 写真の番号 */
+	#imageNum = 1; /* 画像の番号 */
 	#videoNum = 1; /* 動画の番号 */
 
 	/* 注釈 */
@@ -440,58 +437,10 @@ export default class MessageParser {
 					}
 					break;
 				}
-				case '$': {
-					if (line.startsWith('$image: ')) {
-						/* 先頭が $image: な場合は図の画像 */
-						const mediaMeta = line.substring(8); // 先頭記号を削除
-
-						const strpos = mediaMeta.indexOf(' ');
-						if (strpos !== -1) {
-							const fileName = mediaMeta.substring(0, strpos);
-							const caption = mediaMeta.substring(strpos + 1);
-
-							this.#appendMedia(fileName, caption, 'image');
-
-							this.#resetStackFlag();
-							this.#media = true;
-
-							continue;
-						}
-					} else if (line.startsWith('$photo: ')) {
-						/* 先頭が $photo: な場合は写真の画像 */
-						const mediaMeta = line.substring(8); // 先頭記号を削除
-
-						const strpos = mediaMeta.indexOf(' ');
-						if (strpos !== -1) {
-							const fileName = mediaMeta.substring(0, strpos);
-							const caption = mediaMeta.substring(strpos + 1);
-
-							this.#appendMedia(fileName, caption, 'photo');
-
-							this.#resetStackFlag();
-							this.#media = true;
-
-							continue;
-						}
-					} else if (line.startsWith('$video: ')) {
-						/* 先頭が $video: な場合は動画 */
-						const mediaMeta = line.substring(8); // 先頭記号を削除
-
-						const strpos = mediaMeta.indexOf(' ');
-						if (strpos !== -1) {
-							const fileName = mediaMeta.substring(0, strpos);
-							const caption = mediaMeta.substring(strpos + 1);
-
-							this.#appendMedia(fileName, caption, 'video');
-
-							this.#resetStackFlag();
-							this.#media = true;
-
-							continue;
-						}
-					} else if (line.startsWith('$youtube: ')) {
-						/* 先頭が $youtube: な場合は YouTube 動画 */
-						const mediaMeta = line.substring(10); // 先頭記号を削除
+				case '!': {
+					if (line.startsWith('!youtube:')) {
+						/* 先頭が !youtube: な場合は YouTube 動画 */
+						const mediaMeta = line.substring(9); // 先頭記号を削除
 
 						const metaMatchGroups = mediaMeta.match(/^(?<id>[^ ]+) (?<width>[1-9]\d{2,3})x(?<height>[1-9]\d{2,3}) (?<caption>.+)$/)?.groups;
 						if (
@@ -513,7 +462,27 @@ export default class MessageParser {
 
 							continue;
 						}
-					} else if (line.startsWith('$tweet: ')) {
+					} else {
+						/* 先頭が ! な場合は画像ないし動画 */
+						const mediaMeta = line.substring(1); // 先頭記号を削除
+
+						const strpos = mediaMeta.indexOf(' ');
+						if (strpos !== -1) {
+							const fileName = mediaMeta.substring(0, strpos);
+							const caption = mediaMeta.substring(strpos + 1);
+
+							this.#appendMedia(fileName, caption);
+
+							this.#resetStackFlag();
+							this.#media = true;
+
+							continue;
+						}
+					}
+					break;
+				}
+				case '$': {
+					if (line.startsWith('$tweet: ')) {
 						/* 先頭が $tweet: な場合は埋め込みツイート */
 						const tweetMeta = line.substring(8); // 先頭記号を削除
 
@@ -1026,9 +995,10 @@ export default class MessageParser {
 	 *
 	 * @param {string} fileName - ファイル名
 	 * @param {string} caption - キャプション
-	 * @param {MediaType} mediaType - メディアタイプ
 	 */
-	#appendMedia(fileName: string, caption: string, mediaType: MediaType): void {
+	#appendMedia(fileName: string, caption: string): void {
+		const fileExtension = path.extname(fileName);
+
 		if (!this.#media || this.#mediaWrapElement === undefined) {
 			const gridElement = this.#document.createElement('div');
 			gridElement.className = 'entry-embedded-grid';
@@ -1037,141 +1007,96 @@ export default class MessageParser {
 			this.#mediaWrapElement = gridElement;
 		}
 
-		switch (mediaType) {
-			case 'image':
-			case 'photo': {
-				this.#appendImage(fileName, caption, mediaType);
-				break;
-			}
-			case 'video': {
-				this.#appendVideo(fileName, caption);
-				break;
-			}
-		}
-	}
-
-	/**
-	 * 画像を設定
-	 *
-	 * @param {string} fileName - ファイル名
-	 * @param {string} caption - キャプション
-	 * @param {string} mediaType - メディアタイプ
-	 */
-	#appendImage(fileName: string, caption: string, mediaType: MediaType): void {
-		if (this.#mediaWrapElement === undefined) {
-			return;
-		}
-
 		const figureElement = this.#document.createElement('figure');
 		figureElement.className = 'entry-embedded';
 		this.#mediaWrapElement.appendChild(figureElement);
-
-		const aElement = this.#document.createElement('a');
-		aElement.href = `https://media.w0s.jp/image/blog/${fileName}`;
-		figureElement.appendChild(aElement);
-
-		const fileExtension = path.extname(fileName);
-		const mime = Object.entries(this.#config.static.headers.mime.extension).find(([, extensions]) => extensions.includes(fileExtension.substring(1)))?.[0];
-
-		if (mime !== undefined) {
-			aElement.type = mime;
-		}
 
 		switch (fileExtension) {
-			case 'svg': {
-				/* SVG */
-				const imgElement = this.#document.createElement('img');
-				imgElement.src = `https://media.w0s.jp/image/blog/${fileName}`;
-				imgElement.alt = 'オリジナル画像';
-				aElement.appendChild(imgElement);
-				break;
-			}
-			default: {
-				const pictureElement = this.#document.createElement('picture');
-				aElement.appendChild(pictureElement);
+			case '.jpg':
+			case '.jpeg':
+			case '.png':
+			case '.svg': {
+				const mime = Object.entries(this.#config.static.headers.mime.extension).find(([, extensions]) => extensions.includes(fileExtension.substring(1)))?.[0];
 
-				const sourceElementAvif = this.#document.createElement('source');
-				sourceElementAvif.type = 'image/avif';
-				sourceElementAvif.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=720;h=720;quality=30 2x`;
-				pictureElement.appendChild(sourceElementAvif);
-
-				const sourceElementWebp = this.#document.createElement('source');
-				sourceElementWebp.type = 'image/webp';
-				sourceElementWebp.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=720;h=720;quality=30 2x`;
-				pictureElement.appendChild(sourceElementWebp);
+				const aElement = this.#document.createElement('a');
+				aElement.href = `https://media.w0s.jp/image/blog/${fileName}`;
+				if (mime !== undefined) {
+					aElement.type = mime;
+				}
+				figureElement.appendChild(aElement);
 
 				const imgElement = this.#document.createElement('img');
-				imgElement.src = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=jpeg;w=360;h=360;quality=60`;
 				imgElement.alt = 'オリジナル画像';
 				imgElement.className = 'entry-embedded__image';
-				pictureElement.appendChild(imgElement);
-			}
-		}
 
-		const figcaptionElement = this.#document.createElement('figcaption');
-		figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
-		figureElement.appendChild(figcaptionElement);
+				switch (fileExtension) {
+					case '.svg': {
+						imgElement.src = `https://media.w0s.jp/image/blog/${fileName}`;
+						aElement.appendChild(imgElement);
+						break;
+					}
+					default: {
+						const pictureElement = this.#document.createElement('picture');
+						aElement.appendChild(pictureElement);
 
-		const numElement = this.#document.createElement('span');
-		numElement.className = 'c-embedded-caption__no';
-		figcaptionElement.appendChild(numElement);
+						const sourceElementAvif = this.#document.createElement('source');
+						sourceElementAvif.type = 'image/avif';
+						sourceElementAvif.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=720;h=720;quality=30 2x`;
+						pictureElement.appendChild(sourceElementAvif);
 
-		const captionTitleElement = this.#document.createElement('span');
-		captionTitleElement.className = 'c-embedded-caption__title';
-		captionTitleElement.textContent = caption;
-		figcaptionElement.appendChild(captionTitleElement);
+						const sourceElementWebp = this.#document.createElement('source');
+						sourceElementWebp.type = 'image/webp';
+						sourceElementWebp.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=720;h=720;quality=30 2x`;
+						pictureElement.appendChild(sourceElementWebp);
 
-		switch (mediaType) {
-			case 'image':
-				numElement.textContent = `図${this.#imageNum}`;
+						imgElement.src = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=jpeg;w=360;h=360;quality=60`;
+						pictureElement.appendChild(imgElement);
+					}
+				}
+
+				const figcaptionElement = this.#document.createElement('figcaption');
+				figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
+				figureElement.appendChild(figcaptionElement);
+
+				const numElement = this.#document.createElement('span');
+				numElement.className = 'c-embedded-caption__no';
+				numElement.textContent = `画像${this.#imageNum}`;
+				figcaptionElement.appendChild(numElement);
+
+				const captionTitleElement = this.#document.createElement('span');
+				captionTitleElement.className = 'c-embedded-caption__title';
+				captionTitleElement.textContent = caption;
+				figcaptionElement.appendChild(captionTitleElement);
+
 				this.#imageNum++;
 				break;
-			case 'photo':
-				numElement.textContent = `写真${this.#photoNum}`;
-				this.#photoNum++;
+			}
+			case '.mp4': {
+				const videoElement = this.#document.createElement('video');
+				videoElement.src = `https://media.w0s.jp/video/blog/${fileName}`;
+				videoElement.controls = true;
+				videoElement.className = 'entry-embedded__video';
+				videoElement.textContent = '';
+				figureElement.appendChild(videoElement);
+
+				const figcaptionElement = this.#document.createElement('figcaption');
+				figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
+				figureElement.appendChild(figcaptionElement);
+
+				const numElement = this.#document.createElement('span');
+				numElement.className = 'c-embedded-caption__no';
+				numElement.textContent = `動画${this.#videoNum}`;
+				figcaptionElement.appendChild(numElement);
+
+				const captionTitleElement = this.#document.createElement('span');
+				captionTitleElement.className = 'c-embedded-caption__title';
+				captionTitleElement.textContent = caption;
+				figcaptionElement.appendChild(captionTitleElement);
+
+				this.#videoNum++;
 				break;
-			default:
-				break;
+			}
 		}
-	}
-
-	/**
-	 * 動画を設定
-	 *
-	 * @param {string} fileName - ファイル名
-	 * @param {string} caption - キャプション
-	 */
-	#appendVideo(fileName: string, caption: string): void {
-		if (this.#mediaWrapElement === undefined) {
-			return;
-		}
-
-		const figureElement = this.#document.createElement('figure');
-		figureElement.className = 'entry-embedded';
-		this.#mediaWrapElement.appendChild(figureElement);
-
-		const videoElement = this.#document.createElement('video');
-		videoElement.src = `https://media.w0s.jp/video/blog/${fileName}`;
-		videoElement.controls = true;
-		videoElement.className = 'entry-embedded__video';
-		videoElement.textContent = '';
-		figureElement.appendChild(videoElement);
-
-		const figcaptionElement = this.#document.createElement('figcaption');
-		figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
-		figureElement.appendChild(figcaptionElement);
-
-		const numElement = this.#document.createElement('span');
-		numElement.className = 'c-embedded-caption__no';
-		numElement.textContent = `動画${this.#videoNum}`;
-		figcaptionElement.appendChild(numElement);
-
-		const captionTitleElement = this.#document.createElement('span');
-		captionTitleElement.className = 'c-embedded-caption__title';
-		captionTitleElement.textContent = caption;
-		figcaptionElement.appendChild(captionTitleElement);
-
-		this.#videoNum++;
 	}
 
 	/**
@@ -1210,6 +1135,11 @@ export default class MessageParser {
 		figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
 		figureElement.appendChild(figcaptionElement);
 
+		const numElement = this.#document.createElement('span');
+		numElement.className = 'c-embedded-caption__no';
+		numElement.textContent = `動画${this.#videoNum}`;
+		figcaptionElement.appendChild(numElement);
+
 		const captionTitleElement = this.#document.createElement('span');
 		captionTitleElement.className = 'c-embedded-caption__title';
 		figcaptionElement.appendChild(captionTitleElement);
@@ -1224,6 +1154,8 @@ export default class MessageParser {
 		iconElement.alt = '(YouTube)';
 		iconElement.className = 'c-link-icon';
 		aElement.appendChild(iconElement);
+
+		this.#videoNum++;
 	}
 
 	/**
