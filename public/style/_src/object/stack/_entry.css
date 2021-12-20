@@ -257,7 +257,7 @@
 }
 
 .entry-embedded__image {
-	min-width: calc(360px + var(--_border-width) * 2);
+	min-width: calc(360px / 1.5 + var(--_border-width) * 2);
 }
 
 .entry-embedded__video {
