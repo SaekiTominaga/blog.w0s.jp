@@ -226,11 +226,6 @@
 			background: rgb(0 0 0 / 70%) url("/image/entry/media-expansion.svg") center/contain no-repeat content-box border-box;
 		}
 
-		& img {
-			min-width: 25px;
-			min-height: 25px;
-		}
-
 		&:focus {
 			--_border-color: var(--outline-color);
 		}
@@ -258,7 +253,11 @@
 	display: inline-block;
 	max-width: 100%;
 	height: auto;
-	vertical-align: middle;
+	vertical-align: top;
+}
+
+.entry-embedded__image {
+	min-width: calc(360px + var(--_border-width) * 2);
 }
 
 .entry-embedded__video {
