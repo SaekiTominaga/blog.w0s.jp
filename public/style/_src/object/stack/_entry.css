@@ -113,7 +113,9 @@
 	--_line-height: var(--line-height-narrow);
 	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
 
+	padding-top: 0.25em;
 	padding-bottom: 0.25em;
+	border-top: 1px solid transparent;
 	border-bottom: 1px solid var(--color-border-dark);
 	font-size: calc(100% * var(--font-ratio-5));
 	font-weight: bold;
