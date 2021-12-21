@@ -27,6 +27,10 @@
 		--_stack-margin-row: calc(1em * var(--_line-height) * 3);
 	}
 
+	& > .entry-toc + .entry-section1 {
+		--_stack-margin-row: calc(1em * var(--_line-height) * 2);
+	}
+
 	/* ===== セクション（<h3>） ===== */
 	& > .entry-section2 {
 		--_stack-margin-row: calc(1em * var(--_line-height) * 2);
@@ -35,6 +39,11 @@
 	/* ===== セクション終了 ===== */
 	& > .entry-section-break {
 		--_stack-margin-row: calc(1em * var(--_line-height) * 3);
+	}
+
+	/* ===== 目次 ===== */
+	& > .entry-toc {
+		--_stack-margin-row: calc(1em * var(--_line-height) * 2);
 	}
 
 	/* ===== 脚注 ===== */
@@ -54,6 +63,48 @@
 		width: 15%;
 		height: 0;
 		border: 1px solid var(--color-lightgray);
+	}
+}
+
+/* ===== 目次 ===== */
+.entry-toc {
+	padding: 1em;
+	border: 1px solid var(--color-border-dark);
+	border-radius: 0.5em;
+	background: var(--color-bg-verylight);
+	line-height: var(--line-height-narrow);
+
+	& > li {
+		--_bullet-width: 0.75em;
+		--_bullet-height: calc(var(--_bullet-width) * 0.75);
+		--_bullet-color: var(--color-gray);
+		--_bullet-gap: 0.5em;
+
+		margin-left: calc(var(--_bullet-width) + var(--_bullet-gap));
+
+		&:not(:first-child) {
+			margin-top: 0.5em;
+		}
+
+		& > :any-link {
+			margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+			outline-offset: 0.125em;
+
+			&::before {
+				margin-right: var(--_bullet-gap);
+				content: "";
+				display: inline-block;
+				clip-path: var(--shape-pagelink-triangle);
+				width: var(--_bullet-width);
+				height: var(--_bullet-height);
+				background: var(--_bullet-color);
+				vertical-align: middle;
+			}
+
+			&:hover {
+				--_bullet-color: var(--link-color-hover);
+			}
+		}
 	}
 }
 
