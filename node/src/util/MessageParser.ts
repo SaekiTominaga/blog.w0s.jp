@@ -25,7 +25,7 @@ export default class MessageParser {
 	readonly #logger: Log4js.Logger;
 
 	/* 設定ファイル */
-	#config: Configure;
+	readonly #config: Configure;
 
 	/* Slugger */
 	readonly #slugger: GithubSlugger;
@@ -44,15 +44,15 @@ export default class MessageParser {
 
 	/* （記事メッセージ内の）ルート要素 */
 	readonly #rootElement: HTMLElement;
-	readonly #rootElementName = 'x-x'; // ルート要素名（仮で設定するものなのでなんでも良い）
+	readonly #ROOT_ELEMENT_NAME = 'x-x'; // ルート要素名（仮で設定するものなのでなんでも良い）
 
 	/* section */
 	readonly #SECTION_ID_PREFIX = 'section-';
 	#section1 = false;
-	#section1Elements: HTMLElement[] = [];
+	readonly #section1Elements: HTMLElement[] = [];
 	readonly #section1Headings: Map<string, string> = new Map();
 	#section2 = false;
-	#section2Elements: HTMLElement[] = [];
+	readonly #section2Elements: HTMLElement[] = [];
 
 	/* リスト */
 	#ul = false;
@@ -128,7 +128,7 @@ export default class MessageParser {
 		this.#dao = new BlogMessageDao(config, dbh);
 
 		/* ルート要素 */
-		this.#rootElement = this.#document.createElement(this.#rootElementName);
+		this.#rootElement = this.#document.createElement(this.#ROOT_ELEMENT_NAME);
 	}
 
 	/**
@@ -155,7 +155,7 @@ export default class MessageParser {
 		await this.#convert(message);
 
 		const xml = serialize(this.#rootElement, { requireWellFormed: true });
-		return xml.substring(39 + this.#rootElementName.length, xml.length - 3 - this.#rootElementName.length); // 外枠の <x xmlns="http://www.w3.org/1999/xhtml"></x> を削除
+		return xml.substring(39 + this.#ROOT_ELEMENT_NAME.length, xml.length - 3 - this.#ROOT_ELEMENT_NAME.length); // 外枠の <x xmlns="http://www.w3.org/1999/xhtml"></x> を削除
 	}
 
 	/**
