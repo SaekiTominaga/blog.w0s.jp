@@ -15,14 +15,15 @@
 		justify-content: center;
 
 		& > li {
+			display: flex;
+			align-items: center;
+
 			&:not(:last-child)::after {
 				margin: 0 2em;
 				content: "";
-				display: inline-block;
 				width: 1px;
 				height: 0.8em;
 				background-color: var(--page-color);
-				vertical-align: middle;
 				transform: rotate(22.5deg);
 			}
 		}
