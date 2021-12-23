@@ -32,7 +32,7 @@
 /* ===== アドセンス ===== */
 .p-footer-ads {
 	display: flex;
-	width: min(100%, 960px);
+	justify-content: center;
 
 	& .adsbygoogle {
 		display: block;
