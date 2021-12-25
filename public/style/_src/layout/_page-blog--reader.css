@@ -3,7 +3,7 @@
  * ============================== */
 
 .l-page {
-	grid-template-areas: "main";
+	grid-template-areas: "content";
 	grid-template-columns: 1fr;
 }
 

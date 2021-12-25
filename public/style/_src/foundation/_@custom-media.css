@@ -1,2 +1,2 @@
-@custom-media --breakpoint (max-width: 60em); /* これ以下の画面サイズの場合、メインエリアを全幅表示にする 60em≒960px */
+@custom-media --breakpoint (max-width: 60em); /* これ以下の画面サイズの場合、コンテンツエリアを全幅表示にする 60em≒960px */
 @custom-media --breakpoint-entry-link (max-width: 30em); /* これ以下の画面サイズの場合、画像とテキストの左右位置を反転する 30em≒480px */

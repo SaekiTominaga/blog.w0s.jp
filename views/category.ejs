@@ -19,13 +19,13 @@
 		<div class="l-page">
 			<%- include('./_include/_header', { heading: false } ) %>
 
-			<div id="main" class="l-main">
-				<div class="l-main__header">
+			<div id="content" class="l-content">
+				<div class="l-content__header">
 					<div class="p-category-title">
 						<h1 itemprop="name" class="p-category-title__hdg">「<%= categoryName %>」の記事（<%= count %>件）</h1>
 					</div>
 				</div>
-				<main class="l-main__main">
+				<main class="l-content__main">
 					<ul class="p-title-list -category">
 						<% for (const entry of entries) { %>
 						<li class="c-entry-link">

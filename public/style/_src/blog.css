@@ -12,7 +12,7 @@
 
 /* Object - Project */
 @import "object/project/_header.css";
-@import "object/project/_main.css";
+@import "object/project/_content.css";
 @import "object/project/_sidebar.css";
 @import "object/project/_footer.css";
 

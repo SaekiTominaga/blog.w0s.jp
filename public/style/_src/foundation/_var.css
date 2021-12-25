@@ -2,7 +2,7 @@
 	/* ===== ページ全体 ===== */
 	--page-max-width: 1280px; /* ページの最大幅 */
 	--page-sidebar-width: 230px; /* サイドバーの幅 */
-	--page-main-sidebar-gap: 26px; /* メインエリアとサイドバーの横間隔 */
+	--page-content-sidebar-gap: 26px; /* コンテンツエリアとサイドバーの横間隔 */
 	--page-col-padding: 10px; /* ページの左右の余白 */
 	--page-col-margin: calc((100% - var(--page-max-width)) / 2 - var(--page-col-padding)); /* ページの左右の余白 */
 	--page-color: #000; /* ページ文字色 */

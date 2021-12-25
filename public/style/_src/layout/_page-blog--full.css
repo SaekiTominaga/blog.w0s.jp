@@ -4,17 +4,17 @@
 
 .l-page {
 	grid-template-areas:
-		"header           header            header header           header  header             header           "
-		"main-margin-left main-padding-left main   gap-main-sidebar sidebar main-padding-right main-margin-right"
-		"footer           footer            footer footer           footer  footer             footer           ";
-	grid-template-columns: var(--page-col-margin) var(--page-col-padding) 1fr var(--page-main-sidebar-gap) var(--page-sidebar-width) var(--page-col-padding) var(--page-col-margin);
+		"header              header               header  header              header  header                header              "
+		"content-margin-left content-padding-left content gap-content-sidebar sidebar content-padding-right content-margin-right"
+		"footer              footer               footer  footer              footer  footer                footer              ";
+	grid-template-columns: var(--page-col-margin) var(--page-col-padding) 1fr var(--page-content-sidebar-gap) var(--page-sidebar-width) var(--page-col-padding) var(--page-col-margin);
 }
 
 @media (--breakpoint) {
 	.l-page {
 		grid-template-areas:
 			"header               header  header               "
-			"main-padding-left    main    main-padding-right   "
+			"content-padding-left content content-padding-right"
 			"sidebar-padding-left sidebar sidebar-padding-right"
 			"footer               footer  footer               ";
 		grid-template-columns: var(--page-col-padding) 1fr var(--page-col-padding);

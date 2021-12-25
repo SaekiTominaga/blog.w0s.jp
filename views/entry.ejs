@@ -42,8 +42,8 @@
 		<div class="l-page">
 			<%- include('./_include/_header', { heading: false }) %>
 
-			<div id="main" class="l-main">
-				<main class="l-main__main">
+			<div id="content" class="l-content">
+				<main class="l-content__main">
 					<article class="p-entry" itemscope="" itemtype="http://schema.org/BlogPosting">
 						<header class="p-entry__header">
 							<h1 class="p-entry-header-title" itemprop="name"><%= title %></h1>
@@ -135,7 +135,7 @@
 				</main>
 
 				<% if (book !== null) { %>
-				<div class="l-main__footer">
+				<div class="l-content__footer">
 					<aside class="p-book-cm" aria-labelledby="bookcm-heading">
 						<h2 class="p-book-cm__hdg" id="bookcm-heading">著書の紹介</h2>
 

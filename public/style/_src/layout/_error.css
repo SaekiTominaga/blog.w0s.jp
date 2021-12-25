@@ -6,7 +6,7 @@
 	display: grid;
 	grid-template-areas:
 		"header-margin-left header-padding-left header header-padding-right header-margin-right"
-		"main-margin-left   main-padding-left   main   main-padding-right   main-margin-right";
+		"content-margin-left   content-padding-left   content   content-padding-right   content-margin-right";
 	grid-template-columns: var(--page-col-margin) var(--page-col-padding) 1fr var(--page-col-padding) var(--page-col-margin);
 }
 
@@ -17,8 +17,8 @@
 	border-bottom: 1px dashed var(--color-border-dark);
 }
 
-/* ===== メインエリア ===== */
-.l-main {
-	grid-column: main;
+/* ===== コンテンツエリア ===== */
+.l-content {
+	grid-column: content;
 	padding: 10vh 0;
 }

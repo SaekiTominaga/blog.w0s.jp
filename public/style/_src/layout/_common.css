@@ -49,25 +49,25 @@
 	}
 }
 
-/* ===== メインエリア ===== */
-.l-main {
-	grid-column: main;
+/* ===== コンテンツエリア ===== */
+.l-content {
+	grid-column: content;
 
 	@media (--breakpoint) {
-		grid-column: main-padding-left / main-padding-right;
+		grid-column: content-padding-left / content-padding-right;
 	}
 }
 
-.l-main__header {
+.l-content__header {
 }
 
-.l-main__main {
-	@nest .l-main__header + & {
+.l-content__main {
+	@nest .l-content__header + & {
 		margin-top: 30px;
 	}
 }
 
-.l-main__footer {
+.l-content__footer {
 	margin-top: 60px;
 }
 
