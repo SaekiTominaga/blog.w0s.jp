@@ -371,7 +371,7 @@
 	display: grid;
 	background: var(--_bg-color);
 	line-height: var(--line-height-narrow);
-	text-decoration: none;
+	text-decoration-line: none;
 	outline-offset: 0;
 	transition: color var(--link-hover-transition-delay), background-color var(--link-hover-transition-delay);
 
@@ -427,7 +427,7 @@
 	margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
 	display: inline;
 	font-weight: bold;
-	text-decoration: underline;
+	text-decoration-line: underline;
 
 	&::before {
 		margin-right: var(--_bullet-gap);
