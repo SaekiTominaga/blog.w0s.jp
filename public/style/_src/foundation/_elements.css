@@ -25,6 +25,10 @@ w0s-tooltip:focus {
 	outline: none; /* for Firefox */
 }
 
+:any-link {
+	text-decoration-thickness: from-font;
+}
+
 :link {
 	color: var(--link-color);
 
