@@ -70,15 +70,15 @@
 .entry-toc {
 	padding: 1em;
 	border: 1px solid var(--color-border-dark);
-	border-radius: 0.5em;
+	border-radius: var(--border-radius-normal);
 	background: var(--color-bg-verylight);
 	line-height: var(--line-height-narrow);
 
 	& > li {
-		--_bullet-width: 0.75em;
-		--_bullet-height: calc(var(--_bullet-width) * 0.75);
-		--_bullet-color: var(--color-gray);
-		--_bullet-gap: 0.5em;
+		--_bullet-width: 0.75em; /* アイコンの幅 */
+		--_bullet-height: calc(var(--_bullet-width) * 0.75); /* アイコンの高さ */
+		--_bullet-color: var(--color-gray); /* アイコンの色 */
+		--_bullet-gap: 0.5em; /* アイコンと後続テキストの間隔 */
 
 		margin-left: calc(var(--_bullet-width) + var(--_bullet-gap));
 
