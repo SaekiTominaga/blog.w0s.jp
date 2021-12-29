@@ -4,7 +4,7 @@
 
 /* ===== プロフィール ===== */
 .p-sidebar-profile {
-	--_heading-offset: -0.75em;
+	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
 
 	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);
@@ -18,12 +18,11 @@
 	top: var(--_heading-offset);
 	background: var(--page-bg-color);
 	font-weight: bold;
-	line-height: var(--line-height-narrow);
 }
 
 .p-sidebar-profile__info {
+	margin-top: calc(10px + var(--_heading-offset));
 	display: flow-root;
-	line-height: var(--line-height-narrow);
 }
 
 .p-sidebar-profile__address {
@@ -78,7 +77,6 @@
 	background: var(--_bg-color);
 	font-size: calc(100% / var(--font-ratio-2));
 	font-weight: var(--_font-weight);
-	line-height: var(--line-height-narrow);
 	text-align: center;
 	display: inline-block; /* JS 無効環境向け */
 	white-space: nowrap; /* JS 無効環境向け */
@@ -134,7 +132,6 @@
 	top: var(--_heading-offset);
 	background: var(--page-bg-color);
 	font-weight: bold;
-	line-height: var(--line-height-narrow);
 }
 
 .p-sidebar-newly-entry__link {
@@ -154,7 +151,6 @@
 		position: relative;
 		font-size: calc(100% / var(--font-ratio-1));
 		background: var(--_bg-color);
-		line-height: var(--line-height-narrow);
 		outline-width: 2px;
 		outline-offset: -1px;
 
@@ -226,7 +222,7 @@
 
 /* ===== Amazon 商品広告 ===== */
 .p-sidebar-amazon {
-	--_heading-offset: -0.75em;
+	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
 
 	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);
@@ -241,11 +237,10 @@
 	top: var(--_heading-offset);
 	background: var(--page-bg-color);
 	font-weight: bold;
-	line-height: var(--line-height-narrow);
 }
 
 .p-sidebar-amazon__link {
-	margin-top: calc(0.5em + var(--_heading-offset));
+	margin-top: calc(10px + var(--_heading-offset));
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(90px, 100%), 1fr));
 	gap: 10px;
@@ -285,7 +280,6 @@
 	border-radius: var(--border-radius-large);
 	color: var(--_color);
 	background: var(--_bg-color);
-	line-height: var(--line-height-narrow);
 	overflow-wrap: anywhere;
 	transition: color var(--link-hover-transition-delay), background-color var(--link-hover-transition-delay);
 

@@ -13,7 +13,6 @@
 .p-category-title__hdg {
 	font-size: clamp(calc(100% * var(--font-ratio-1)), 7vw, calc(100% * var(--font-ratio-5)));
 	font-weight: bold;
-	line-height: var(--line-height-narrow);
 	text-shadow: 1px 1px 1px var(--color-lightgray);
 }
 
@@ -36,7 +35,6 @@
 	border-radius: var(--border-radius-normal);
 	display: inline-block;
 	background: var(--_bg-color);
-	line-height: var(--line-height-narrow);
 	text-decoration: none;
 	outline-offset: 0.125em;
 

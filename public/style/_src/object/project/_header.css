@@ -43,7 +43,6 @@
 .p-header-site__summary {
 	color: var(--color-gray);
 	font-size: calc(100% / var(--font-ratio-2));
-	line-height: var(--line-height-narrow);
 }
 
 /* ===== ナビゲーション ===== */
