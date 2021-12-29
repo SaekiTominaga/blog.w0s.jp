@@ -85,7 +85,8 @@
 
 	&[role="tab"] {
 		cursor: default;
-		outline-offset: 0;
+		outline-width: 2px;
+		outline-offset: -2px;
 	}
 
 	&:not(:first-child) {
@@ -93,8 +94,6 @@
 	}
 
 	&:focus-visible {
-		--_border-color: var(--outline-color);
-
 		z-index: 0;
 	}
 
@@ -108,7 +107,7 @@
 
 	&[aria-selected="true"] {
 		--_padding-row: 0.8em;
-		--_border-radius-top: 0.25em;
+		--_border-radius-top: var(--border-radius-normal);
 		--_bg-color: var(--color-white);
 		--_font-weight: bold;
 	}
@@ -156,7 +155,8 @@
 		font-size: calc(100% / var(--font-ratio-1));
 		background: var(--_bg-color);
 		line-height: var(--line-height-narrow);
-		outline-offset: 0;
+		outline-width: 2px;
+		outline-offset: -1px;
 
 		&:any-link {
 			--_bg-color: var(--color-white);
@@ -179,7 +179,7 @@
 				right: var(--_padding-col);
 			}
 
-			&:is(:focus, :hover) {
+			&:hover {
 				--_bg-color: var(--color-bg-lightyellow);
 				--_icon-color: var(--color-gray);
 			}
@@ -197,7 +197,7 @@
 				&:any-link {
 					--_bg-color: var(--color-bg-verylight);
 
-					&:is(:focus, :hover) {
+					&:hover {
 						--_bg-color: var(--color-bg-lightyellow);
 					}
 				}
@@ -255,6 +255,7 @@
 .p-sidebar-amazon-link {
 	display: block;
 	text-decoration: none;
+	outline-width: 2px;
 	outline-offset: 0.125em;
 }
 
