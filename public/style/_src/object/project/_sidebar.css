@@ -5,6 +5,7 @@
 /* ===== プロフィール ===== */
 .p-sidebar-profile {
 	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
+	--_stack-margin-top: calc(20px - var(--_heading-offset));
 
 	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);
@@ -118,7 +119,8 @@
 
 /* ===== 最近の記事 ===== */
 .p-sidebar-newly-entry {
-	--_heading-offset: -0.75em;
+	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
+	--_stack-margin-top: calc(20px - var(--_heading-offset));
 
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
@@ -223,6 +225,7 @@
 /* ===== Amazon 商品広告 ===== */
 .p-sidebar-amazon {
 	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
+	--_stack-margin-top: calc(20px - var(--_heading-offset));
 
 	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);

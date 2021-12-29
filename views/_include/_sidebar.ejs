@@ -43,8 +43,8 @@
 		</ul>
 	</section>
 
-	<section aria-label="記事カテゴリ一覧">
-		<w0s-tab class="p-sidebar-category-tab" tablist-label="カテゴリ" storage-key="sidebar-category-tab">
+	<section class="p-sidebar-category-tab" aria-label="記事カテゴリ一覧">
+		<w0s-tab tablist-label="カテゴリ" storage-key="sidebar-category-tab">
 			<% for (const [group_name, ] of entryCountOfCategoryList) { %>
 			<a href="#<%= group_name %>" slot="tab" class="p-sidebar-category-tab__item"><%= group_name %></a>
 			<% } %><% for (const [group_name, countDataList] of entryCountOfCategoryList) { %>
