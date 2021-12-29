@@ -104,27 +104,21 @@
 
 /* ===== サイドバー ===== */
 .l-sidebar {
+	--_stack-margin-row: 20px;
+	--_line-height: var(--line-height-narrow);
+
 	grid-column: sidebar;
-	line-height: var(--line-height-narrow);
-}
+	line-height: var(--_line-height);
 
-/* プロフィール */
-.l-sidebar__profile {
-}
+	& > [class^="p-"] {
+		&:not(:first-child) {
+			margin-top: calc(var(--_stack-margin-row) * var(--_line-height));
+		}
 
-/* カテゴリー別記事 */
-.l-sidebar__category {
-	margin-top: 20px;
-}
-
-/* 最近の記事 */
-.l-sidebar__newly-entry {
-	margin-top: 25px;
-}
-
-/* Amazon 商品広告 */
-.l-sidebar__amazon {
-	margin-top: 25px;
+		&:not(:last-child) {
+			margin-bottom: calc(var(--_stack-margin-row) * var(--_line-height));
+		}
+	}
 }
 
 /* ===== ページフッター ===== */

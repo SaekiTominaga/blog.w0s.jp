@@ -1,143 +1,135 @@
 <div id="sidebar" class="l-sidebar">
-	<div class="l-sidebar__profile">
-		<section class="p-sidebar-profile" aria-labelledby="sidebar-profile-heading">
-			<h2 class="p-sidebar-profile__hdg" id="sidebar-profile-heading">プロフィール</h2>
+	<section class="p-sidebar-profile" aria-labelledby="sidebar-profile-heading">
+		<h2 class="p-sidebar-profile__hdg" id="sidebar-profile-heading">プロフィール</h2>
 
-			<div class="p-sidebar-profile__info">
-				<address class="p-sidebar-profile__address">
-					<a href="https://w0s.jp/info">
-						<picture>
-							<source type="image/webp" srcset="/image/sidebar/profile.webp, /image/sidebar/profile@2x.webp 2x" />
-							<img src="/image/sidebar/profile.jpg" alt="" width="72" height="72" class="p-sidebar-profile__avatar" />
-						</picture>
-						富永冴樹
-					</a>
-				</address>
-				<p class="p-sidebar-profile__bio">都内でウェブ制作の仕事をしていたりいなかったり。フロントエンド技術者のつもりです。</p>
-			</div>
+		<div class="p-sidebar-profile__info">
+			<address class="p-sidebar-profile__address">
+				<a href="https://w0s.jp/info">
+					<picture>
+						<source type="image/webp" srcset="/image/sidebar/profile.webp, /image/sidebar/profile@2x.webp 2x" />
+						<img src="/image/sidebar/profile.jpg" alt="" width="72" height="72" class="p-sidebar-profile__avatar" />
+					</picture>
+					富永冴樹
+				</a>
+			</address>
+			<p class="p-sidebar-profile__bio">都内でウェブ制作の仕事をしていたりいなかったり。フロントエンド技術者のつもりです。</p>
+		</div>
 
-			<ul class="p-sidebar-profile__banners">
-				<li>
-					<a href="https://twitter.com/SaekiTominaga" class="c-button -twitter">
-						<img src="/image/icon/twitter_white.svg" alt="" class="c-button__icon" />
-						<span class="c-button__text">Twitter</span>
-					</a>
-				</li>
-				<li>
-					<a href="https://github.com/SaekiTominaga" class="c-button -github">
-						<img src="/image/icon/github.svg" alt="" class="c-button__icon" />
-						<span class="c-button__text">GitHub</span>
-					</a>
-				</li>
-				<li>
-					<a href="https://www.amazon.co.jp/-/e/B07FBRDDJN/?_encoding=UTF8&amp;camp=1207&amp;creative=8415&amp;linkCode=shr&amp;tag=w0s.jp-22" class="c-button -amazon">
-						<img src="/image/icon/amazon.png" alt="" class="c-button__icon" />
-						<span class="c-button__text">Amazon</span>
-					</a>
-				</li>
-				<li>
-					<a href="https://www.youtube.com/user/SaekiTominaga" class="c-button -youtube">
-						<img src="/image/icon/youtube.svg" alt="" class="c-button__icon" />
-						<span class="c-button__text">YouTube</span>
-					</a>
-				</li>
-			</ul>
-		</section>
-	</div>
+		<ul class="p-sidebar-profile__banners">
+			<li>
+				<a href="https://twitter.com/SaekiTominaga" class="c-button -twitter">
+					<img src="/image/icon/twitter_white.svg" alt="" class="c-button__icon" />
+					<span class="c-button__text">Twitter</span>
+				</a>
+			</li>
+			<li>
+				<a href="https://github.com/SaekiTominaga" class="c-button -github">
+					<img src="/image/icon/github.svg" alt="" class="c-button__icon" />
+					<span class="c-button__text">GitHub</span>
+				</a>
+			</li>
+			<li>
+				<a href="https://www.amazon.co.jp/-/e/B07FBRDDJN/?_encoding=UTF8&amp;camp=1207&amp;creative=8415&amp;linkCode=shr&amp;tag=w0s.jp-22" class="c-button -amazon">
+					<img src="/image/icon/amazon.png" alt="" class="c-button__icon" />
+					<span class="c-button__text">Amazon</span>
+				</a>
+			</li>
+			<li>
+				<a href="https://www.youtube.com/user/SaekiTominaga" class="c-button -youtube">
+					<img src="/image/icon/youtube.svg" alt="" class="c-button__icon" />
+					<span class="c-button__text">YouTube</span>
+				</a>
+			</li>
+		</ul>
+	</section>
 
-	<div class="l-sidebar__category">
-		<section aria-label="記事カテゴリ一覧">
-			<w0s-tab class="p-sidebar-category-tab" tablist-label="カテゴリ" storage-key="sidebar-category-tab">
-				<% for (const [group_name, ] of entryCountOfCategoryList) { %>
-				<a href="#<%= group_name %>" slot="tab" class="p-sidebar-category-tab__item"><%= group_name %></a>
-				<% } %><% for (const [group_name, countDataList] of entryCountOfCategoryList) { %>
-				<div slot="tabpanel" class="p-sidebar-category-tab__panel" id="<%= group_name %>">
-					<% if (typeof(categoryName) !== 'undefined') { %>
-					<ul class="p-sidebar-links -category">
-						<% for (const countData of countDataList) { %>
-						<li>
-							<% if (categoryName === countData.category_name) { %>
-							<a aria-current="page">
-								<%= countData.category_name %>
-								<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
-							</a>
-							<% } else { %>
-							<a href="/category/<%= encodeURI(countData.category_name) %>">
-								<%= countData.category_name %>
-								<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
-							</a>
-							<% } %>
-						</li>
-						<% } %>
-					</ul>
-					<% } else { %>
-					<ul class="p-sidebar-links -category">
-						<% for (const countData of countDataList) { %>
-						<li>
-							<a href="/category/<%= encodeURI(countData.category_name) %>">
-								<%= countData.category_name %>
-								<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
-							</a>
-						</li>
-						<% } %>
-					</ul>
-					<% } %>
-				</div>
-				<% } %>
-			</w0s-tab>
-		</section>
-	</div>
-
-	<div class="l-sidebar__newly-entry">
-		<section class="p-sidebar-newly-entry" aria-labelledby="sidebar-newly-entries-heading">
-			<h2 class="p-sidebar-newly-entry__hdg" id="sidebar-newly-entries-heading">最近の記事</h2>
-
-			<div class="p-sidebar-newly-entry__link">
-				<% if (typeof(entryId) !== 'undefined') { %>
-				<ul class="p-sidebar-links -entry">
-					<% for (const newlyEntry of newlyEntries) { %>
+	<section aria-label="記事カテゴリ一覧">
+		<w0s-tab class="p-sidebar-category-tab" tablist-label="カテゴリ" storage-key="sidebar-category-tab">
+			<% for (const [group_name, ] of entryCountOfCategoryList) { %>
+			<a href="#<%= group_name %>" slot="tab" class="p-sidebar-category-tab__item"><%= group_name %></a>
+			<% } %><% for (const [group_name, countDataList] of entryCountOfCategoryList) { %>
+			<div slot="tabpanel" class="p-sidebar-category-tab__panel" id="<%= group_name %>">
+				<% if (typeof(categoryName) !== 'undefined') { %>
+				<ul class="p-sidebar-links -category">
+					<% for (const countData of countDataList) { %>
 					<li>
-						<% if (entryId === newlyEntry.id) { %>
-						<a aria-current="page"><%= newlyEntry.title %></a>
+						<% if (categoryName === countData.category_name) { %>
+						<a aria-current="page">
+							<%= countData.category_name %>
+							<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+						</a>
 						<% } else { %>
-						<a href="/<%= newlyEntry.id %>"><%= newlyEntry.title %></a>
+						<a href="/category/<%= encodeURI(countData.category_name) %>">
+							<%= countData.category_name %>
+							<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+						</a>
 						<% } %>
 					</li>
 					<% } %>
 				</ul>
 				<% } else { %>
-				<ul class="p-sidebar-links -entry">
-					<% for (const newlyEntry of newlyEntries) { %>
+				<ul class="p-sidebar-links -category">
+					<% for (const countData of countDataList) { %>
 					<li>
-						<a href="/<%= newlyEntry.id %>"><%= newlyEntry.title %></a>
+						<a href="/category/<%= encodeURI(countData.category_name) %>">
+							<%= countData.category_name %>
+							<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+						</a>
 					</li>
 					<% } %>
 				</ul>
 				<% } %>
 			</div>
-		</section>
-	</div>
+			<% } %>
+		</w0s-tab>
+	</section>
 
-	<div class="l-sidebar__amazon">
-		<aside class="p-sidebar-amazon" hidden="">
-			<h2 class="p-sidebar-amazon__hdg">おすすめ商品</h2>
+	<section class="p-sidebar-newly-entry" aria-labelledby="sidebar-newly-entries-heading">
+		<h2 class="p-sidebar-newly-entry__hdg" id="sidebar-newly-entries-heading">最近の記事</h2>
 
-			<ul class="p-sidebar-amazon__link">
-				<template id="sidebar-amazon-ad-template">
-					<li>
-						<a href="" class="p-sidebar-amazon-link">
-							<div class="p-sidebar-amazon-link__thumb">
-								<img src="/image/sidebar/amazon_noimage.svg" alt="" loading="lazy" class="p-sidebar-amazon-link__image js-image" />
-							</div>
-							<div class="p-sidebar-amazon-link__text">
-								<span class="p-sidebar-amazon-link__title"><span class="js-title"></span> <b class="c-amazon-binding js-binding" hidden=""></b></span>
-								<span class="p-sidebar-amazon-link__date js-date-past" hidden=""><time datetime=""></time> 発売</span>
-								<span class="p-sidebar-amazon-link__date js-date-future" hidden=""><time datetime=""></time> 発売<em class="c-amazon-date-plan">予定</em></span>
-							</div>
-						</a>
-					</li>
-				</template>
+		<div class="p-sidebar-newly-entry__link">
+			<% if (typeof(entryId) !== 'undefined') { %>
+			<ul class="p-sidebar-links -entry">
+				<% for (const newlyEntry of newlyEntries) { %>
+				<li>
+					<% if (entryId === newlyEntry.id) { %>
+					<a aria-current="page"><%= newlyEntry.title %></a>
+					<% } else { %>
+					<a href="/<%= newlyEntry.id %>"><%= newlyEntry.title %></a>
+					<% } %>
+				</li>
+				<% } %>
 			</ul>
-		</aside>
-	</div>
+			<% } else { %>
+			<ul class="p-sidebar-links -entry">
+				<% for (const newlyEntry of newlyEntries) { %>
+				<li>
+					<a href="/<%= newlyEntry.id %>"><%= newlyEntry.title %></a>
+				</li>
+				<% } %>
+			</ul>
+			<% } %>
+		</div>
+	</section>
+
+	<aside class="p-sidebar-amazon" hidden="">
+		<h2 class="p-sidebar-amazon__hdg">おすすめ商品</h2>
+
+		<ul class="p-sidebar-amazon__link">
+			<template id="sidebar-amazon-ad-template">
+				<li>
+					<a href="" class="p-sidebar-amazon-link">
+						<div class="p-sidebar-amazon-link__thumb">
+							<img src="/image/sidebar/amazon_noimage.svg" alt="" loading="lazy" class="p-sidebar-amazon-link__image js-image" />
+						</div>
+						<div class="p-sidebar-amazon-link__text">
+							<span class="p-sidebar-amazon-link__title"><span class="js-title"></span> <b class="c-amazon-binding js-binding" hidden=""></b></span>
+							<span class="p-sidebar-amazon-link__date js-date-past" hidden=""><time datetime=""></time> 発売</span>
+							<span class="p-sidebar-amazon-link__date js-date-future" hidden=""><time datetime=""></time> 発売<em class="c-amazon-date-plan">予定</em></span>
+						</div>
+					</a>
+				</li>
+			</template>
+		</ul>
+	</aside>
 </div>
