@@ -59,6 +59,11 @@ table {
 	font-size: inherit;
 }
 
+td,
+th {
+	padding: 0;
+}
+
 input,
 select,
 button,
