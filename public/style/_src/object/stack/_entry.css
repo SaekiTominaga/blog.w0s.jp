@@ -630,17 +630,16 @@
 	--_font-weight: normal;
 	--_text-align: left;
 
-	font-size: clamp(calc(100% / var(--font-ratio-1)), 2vw, 100%);
 	font-weight: var(--_font-weight);
 	line-height: var(--line-height-narrow);
+	text-align: var(--_text-align);
 
-	& th,
-	& td {
-		padding: 0.55em min(1vw, 10px) 0.45em;
+	& :is(th, td) {
+		padding: 0.75em min(1vw, 10px);
 		border: 1px solid;
 		color: var(--_color);
 		background: var(--_bg-color);
-		text-align: var(--_text-align);
+		font-size: clamp(calc(100% / var(--font-ratio-1)), 2vw, 100%);
 	}
 
 	& th {
@@ -653,12 +652,12 @@
 			--_bg-color: var(--color-bg-light);
 			--_text-align: center;
 		}
+	}
 
-		& + tbody {
-			& > tr:first-child {
-				& > :is(th, td) {
-					border-top-width: 2px;
-				}
+	& > thead + tbody {
+		& > tr:first-child {
+			& > :is(th, td) {
+				border-top-width: 2px;
 			}
 		}
 	}
