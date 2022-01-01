@@ -632,7 +632,6 @@
 
 	font-weight: var(--_font-weight);
 	line-height: var(--line-height-narrow);
-	text-align: var(--_text-align);
 
 	& :is(td, th) {
 		padding: 0.75em min(1vw, 10px);
@@ -640,6 +639,7 @@
 		color: var(--_color);
 		background: var(--_bg-color);
 		font-size: clamp(calc(100% / var(--font-ratio-1)), 2vw, 100%);
+		text-align: var(--_text-align);
 	}
 
 	& th {
@@ -655,11 +655,7 @@
 	}
 
 	& > thead + tbody {
-		& > tr:first-child {
-			& > :is(td, th) {
-				border-top-width: 2px;
-			}
-		}
+		border-top: 2px solid;
 	}
 }
 
