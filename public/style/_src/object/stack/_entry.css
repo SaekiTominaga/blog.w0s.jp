@@ -349,35 +349,36 @@
 }
 
 .entry-amazon__hdg {
-	margin: -16px 0 0 -16px;
+	margin-block-start: -16px;
+	margin-inline-start: -16px;
+
+	& > img {
+		display: block;
+	}
 }
 
-.entry-amazon__link {
-	margin: 10px 0 0;
+.entry-amazon__list {
+	margin-block-start: 15px;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(22em, 100%), 1fr));
 	gap: 12px;
-	font-size: calc(100% / var(--font-ratio-1));
 }
 
-/* ===== Amazon 商品リンク ===== */
-.entry-amazon-link {
+.entry-amazon__link {
 	--_bg-color: var(--color-amazon-bg);
-	--_border-color: var(--_bg-color);
 
 	padding: 14px;
-	border: 1px solid var(--_border-color);
+	border: 1px solid var(--_bg-color);
 	border-radius: var(--border-radius-large);
 	display: grid;
+	grid-template-areas: "image gap text";
+	grid-template-columns: min(40%, 160px) 15px 1fr;
 	background: var(--_bg-color);
 	line-height: var(--line-height-narrow);
 	text-decoration-line: none;
-	outline-offset: 0;
-	transition: color var(--link-hover-transition-duration), background-color var(--link-hover-transition-duration);
-
-	&:focus {
-		--_border-color: var(--outline-color);
-	}
+	outline-width: 2px;
+	outline-offset: -1px;
+	transition: border-color var(--link-hover-transition-duration), background-color var(--link-hover-transition-duration);
 
 	&:hover {
 		--_bg-color: var(--color-amazon-bg-hover);
@@ -386,24 +387,19 @@
 	&:any-link {
 		color: var(--color-darkgray);
 	}
-
-	@nest .entry-amazon & {
-		grid-template-areas: "image gap text";
-		grid-template-columns: min(40%, 160px) 15px 1fr;
-	}
 }
 
 /* 画像エリア */
-.entry-amazon-link__thumb {
+.entry-amazon__thumb {
 	grid-column: image;
 }
 
 /* 商品画像 */
-.entry-amazon-link__image {
+.entry-amazon__image {
 	margin: auto;
 	display: block;
-	height: auto;
 	max-width: 100%;
+	height: auto;
 	transition: box-shadow var(--link-hover-transition-duration);
 
 	@nest :any-link:hover & {
@@ -412,31 +408,33 @@
 }
 
 /* テキストエリア */
-.entry-amazon-link__text {
+.entry-amazon__text {
 	--_bullet-height: 0.75em;
 	--_bullet-width: calc(var(--_bullet-height) * 0.6);
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
-	margin-left: calc(var(--_bullet-width) + var(--_bullet-gap));
+	margin-inline-start: calc(var(--_bullet-width) + var(--_bullet-gap));
 	grid-column: text;
 }
 
 /* 商品タイトル */
-.entry-amazon-link__title {
-	margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+.entry-amazon__title {
+	margin-inline-start: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
 	display: inline;
 	font-weight: bold;
 	text-decoration-line: underline;
+	transition: color var(--link-hover-transition-duration);
 
 	&::before {
-		margin-right: var(--_bullet-gap);
+		margin-inline-end: var(--_bullet-gap);
 		content: "";
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
 		width: var(--_bullet-width);
 		height: var(--_bullet-height);
 		background: var(--_bullet-color);
+		transition: background-color var(--link-hover-transition-duration);
 	}
 
 	@nest :any-link:hover & {
@@ -447,8 +445,8 @@
 }
 
 /* 発売日 */
-.entry-amazon-link__date {
-	margin-top: 0.5em;
+.entry-amazon__date {
+	margin-block-start: 0.5em;
 }
 
 /* ===== ブロックコード ===== */

@@ -1281,7 +1281,7 @@ export default class MessageParser {
 		headingElement.appendChild(headingImageElement);
 
 		const ulElement = this.#document.createElement('ul');
-		ulElement.className = 'entry-amazon__link';
+		ulElement.className = 'entry-amazon__list';
 		amazonElement.appendChild(ulElement);
 
 		for (const asin of asins) {
@@ -1296,12 +1296,12 @@ export default class MessageParser {
 			ulElement.appendChild(liElement);
 
 			const dpAreaElement = this.#document.createElement('a');
-			dpAreaElement.className = 'entry-amazon-link';
+			dpAreaElement.className = 'entry-amazon__link';
 			dpAreaElement.setAttribute('href', amazonData.url);
 			liElement.appendChild(dpAreaElement);
 
 			const dpImageAreaElement = this.#document.createElement('div');
-			dpImageAreaElement.className = 'entry-amazon-link__thumb';
+			dpImageAreaElement.className = 'entry-amazon__thumb';
 			dpAreaElement.appendChild(dpImageAreaElement);
 
 			const dpImageElement = this.#document.createElement('img');
@@ -1318,15 +1318,15 @@ export default class MessageParser {
 				dpImageElement.setAttribute('height', '160');
 			}
 			dpImageElement.setAttribute('alt', '');
-			dpImageElement.className = 'entry-amazon-link__image';
+			dpImageElement.className = 'entry-amazon__image';
 			dpImageAreaElement.appendChild(dpImageElement);
 
 			const dpTextAreaElement = this.#document.createElement('div');
-			dpTextAreaElement.className = 'entry-amazon-link__text';
+			dpTextAreaElement.className = 'entry-amazon__text';
 			dpAreaElement.appendChild(dpTextAreaElement);
 
 			const dpTitleElement = this.#document.createElement('p');
-			dpTitleElement.className = 'entry-amazon-link__title';
+			dpTitleElement.className = 'entry-amazon__title';
 			dpTitleElement.textContent = amazonData.title;
 			dpTextAreaElement.appendChild(dpTitleElement);
 
@@ -1350,7 +1350,7 @@ export default class MessageParser {
 				const date = amazonData.date;
 
 				const dpTimeElement = this.#document.createElement('p');
-				dpTimeElement.className = 'entry-amazon-link__date';
+				dpTimeElement.className = 'entry-amazon__date';
 				dpTimeElement.textContent = `${dayjs(date).format('YYYY年M月D日')} 発売`;
 				dpTextAreaElement.appendChild(dpTimeElement);
 
