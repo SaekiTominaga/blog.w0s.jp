@@ -266,7 +266,7 @@
 	display: block;
 	width: 100%;
 	height: auto;
-	transition: box-shadow var(--link-hover-transition-delay);
+	transition: box-shadow var(--link-hover-transition-duration);
 
 	@nest :any-link:hover & {
 		box-shadow: 0 0 3px 3px var(--color-amazon-box-shadow-hover);
@@ -284,7 +284,7 @@
 	color: var(--_color);
 	background: var(--_bg-color);
 	overflow-wrap: anywhere;
-	transition: color var(--link-hover-transition-delay), background-color var(--link-hover-transition-delay);
+	transition: color var(--link-hover-transition-duration), background-color var(--link-hover-transition-duration);
 
 	@nest :any-link:hover & {
 		--_bg-color: var(--color-amazon-bg-hover);

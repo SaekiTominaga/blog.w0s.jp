@@ -58,7 +58,7 @@
 	--link-color-visited: #800080; /* 既訪問リンクの文字色 */
 	--link-color-bullet: #0bb; /* ビュレット色 */
 	--link-color-hover: #d00; /* マウスオーバー時の文字色 */
-	--link-hover-transition-delay: 0.2s; /* マウスオーバー時の変化時間 */
+	--link-hover-transition-duration: 0.2s; /* マウスオーバー時の変化時間 */
 
 	/* ===== フォーカスリング ===== */
 	--outline-width: 1px;

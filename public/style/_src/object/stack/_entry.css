@@ -373,7 +373,7 @@
 	line-height: var(--line-height-narrow);
 	text-decoration-line: none;
 	outline-offset: 0;
-	transition: color var(--link-hover-transition-delay), background-color var(--link-hover-transition-delay);
+	transition: color var(--link-hover-transition-duration), background-color var(--link-hover-transition-duration);
 
 	&:focus {
 		--_border-color: var(--outline-color);
@@ -404,7 +404,7 @@
 	display: block;
 	height: auto;
 	max-width: 100%;
-	transition: box-shadow var(--link-hover-transition-delay);
+	transition: box-shadow var(--link-hover-transition-duration);
 
 	@nest :any-link:hover & {
 		box-shadow: 0 0 4px 3px var(--color-amazon-box-shadow-hover);
