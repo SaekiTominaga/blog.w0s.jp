@@ -28,8 +28,8 @@
 	--color-bg-lightyellow: #ffc;
 	--color-bg-superlightgreen: #f9fff9;
 	--color-note: #960;
-	--color-amazon-bg: hsl(30 100% 87%); /* #FFDEBD 88 */
-	--color-amazon-bg-hover: hsl(30 100% 84%); /* #FFD6AD 80 */
+	--color-amazon-bg: hsl(30 100% 87%);
+	--color-amazon-bg-hover: hsl(30 100% 85%);
 	--color-amazon-box-shadow-hover: #f92;
 
 	/* ===== テキスト ===== */
