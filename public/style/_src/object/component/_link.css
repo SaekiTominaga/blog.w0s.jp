@@ -148,7 +148,7 @@
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
-	contain: content;
+	contain: layout;
 	display: flow-root; /* for Safari */
 	line-height: var(--line-height-narrow);
 

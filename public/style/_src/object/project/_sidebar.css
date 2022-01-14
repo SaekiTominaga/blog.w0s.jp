@@ -23,7 +23,7 @@
 
 .p-sidebar-profile__info {
 	margin-top: calc(10px + var(--_heading-offset));
-	contain: content;
+	contain: layout;
 	display: flow-root; /* for Safari */
 }
 
