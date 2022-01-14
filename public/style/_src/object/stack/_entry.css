@@ -453,7 +453,8 @@
 	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
 
 	border: 1px solid var(--color-border-light);
-	display: flow-root;
+	contain: content;
+	display: flow-root; /* for Safari */
 	position: relative;
 	color: var(--color-black);
 	background: var(--color-white);

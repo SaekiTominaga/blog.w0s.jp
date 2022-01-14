@@ -52,7 +52,8 @@
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
-	display: flow-root;
+	contain: content;
+	display: flow-root; /* for Safari */
 	line-height: var(--line-height-narrow);
 
 	@media (--breakpoint-entry-link) {
@@ -147,7 +148,8 @@
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
-	display: flow-root;
+	contain: content;
+	display: flow-root; /* for Safari */
 	line-height: var(--line-height-narrow);
 
 	& a {
