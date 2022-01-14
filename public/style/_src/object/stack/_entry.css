@@ -651,7 +651,7 @@
 		}
 	}
 
-	& > tbody:not(:first-child) {
+	& > :is(thead + tbody, tbody + tbody) {
 		border-top: 2px solid;
 	}
 }
