@@ -68,6 +68,11 @@
 
 /* ===== 目次 ===== */
 .entry-toc {
+	--_icon-width: 0.75em; /* アイコンの幅 */
+	--_icon-height: calc(var(--_icon-width) * 0.75); /* アイコンの高さ */
+	--_icon-color: var(--color-gray); /* アイコンの色 */
+	--_icon-gap: 0.5em; /* アイコンと後続テキストの間隔 */
+
 	padding: 1em;
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal);
@@ -75,34 +80,28 @@
 	line-height: var(--line-height-narrow);
 
 	& > li {
-		--_bullet-width: 0.75em; /* アイコンの幅 */
-		--_bullet-height: calc(var(--_bullet-width) * 0.75); /* アイコンの高さ */
-		--_bullet-color: var(--color-gray); /* アイコンの色 */
-		--_bullet-gap: 0.5em; /* アイコンと後続テキストの間隔 */
+		margin-left: calc(var(--_icon-width) + var(--_icon-gap));
+		font-size: calc(100% * var(--font-ratio-1));
 
-		margin-left: calc(var(--_bullet-width) + var(--_bullet-gap));
-
-		&:not(:first-child) {
+		& + li {
 			margin-top: 0.5em;
 		}
 
 		& > :any-link {
-			margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
-			outline-offset: 0.125em;
+			margin-left: calc(0px - var(--_icon-width) - var(--_icon-gap));
 
 			&::before {
-				margin-right: var(--_bullet-gap);
+				margin-right: var(--_icon-gap);
 				content: "";
 				display: inline-block;
 				clip-path: var(--shape-pagelink-triangle);
-				width: var(--_bullet-width);
-				height: var(--_bullet-height);
-				background: var(--_bullet-color);
-				vertical-align: middle;
+				width: var(--_icon-width);
+				height: var(--_icon-height);
+				background: var(--_icon-color);
 			}
 
 			&:hover {
-				--_bullet-color: var(--link-color-hover);
+				--_icon-color: var(--link-color-hover);
 			}
 		}
 	}
