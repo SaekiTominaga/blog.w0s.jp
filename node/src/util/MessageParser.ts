@@ -1278,6 +1278,8 @@ export default class MessageParser {
 		headingImageElement.src = '/image/entry/amazon_buy.png';
 		headingImageElement.srcset = '/image/entry/amazon_buy@2x.png 2x';
 		headingImageElement.alt = 'Amazon で買う';
+		headingImageElement.width = 127;
+		headingImageElement.height = 26;
 		headingElement.appendChild(headingImageElement);
 
 		const ulElement = this.#document.createElement('ul');
