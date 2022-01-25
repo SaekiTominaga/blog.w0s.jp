@@ -6,6 +6,8 @@ interface JsonColumn {
 	b?: string; // Binding
 	d?: number; // Date
 	i?: string; // Image URL
+	w?: number; // Image Width
+	h?: number; // Image Height
 }
 
 /**
@@ -15,7 +17,7 @@ export default class {
 	#templateElement: HTMLTemplateElement;
 
 	/**
-	 * @param {object} templateElement - 挿入するページに存在する <tempalte> 要素
+	 * @param {HTMLTemplateElement} templateElement - 挿入するページに存在する <tempalte> 要素
 	 */
 	constructor(templateElement: HTMLTemplateElement) {
 		this.#templateElement = templateElement;
@@ -72,7 +74,9 @@ export default class {
 			const title = jsonColumn.t; // タイトル
 			const binding = jsonColumn.b; // カテゴリ
 			const date = jsonColumn.d !== undefined ? new Date(jsonColumn.d) : undefined; // 発売日
-			const imageUrl = jsonColumn.i; // 画像URL
+			const imageUrl = jsonColumn.i; // 画像 URL
+			const imageWidth = jsonColumn.w; // 画像幅
+			const imageHeight = jsonColumn.h; // 画像高さ
 
 			const templateElementClone = <DocumentFragment>this.#templateElement.content.cloneNode(true);
 
@@ -80,14 +84,29 @@ export default class {
 			dpAnchorElement.href = `https://www.amazon.co.jp/dp/${asin}?tag=w0s.jp-22&linkCode=ogi&th=1&psc=1`;
 
 			if (imageUrl !== undefined) {
+				const BASE_SIZE = 160;
+
 				const dpImageElement = <HTMLImageElement>templateElementClone.querySelector('.js-image');
 
 				const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageUrl));
-				paapiItemImageUrlParser.setSize(160);
+				paapiItemImageUrlParser.setSize(BASE_SIZE);
 				dpImageElement.src = paapiItemImageUrlParser.toString();
 
 				paapiItemImageUrlParser.setSizeMultiply(2);
 				dpImageElement.srcset = `${paapiItemImageUrlParser} 2x`;
+
+				if (imageWidth !== undefined && imageHeight !== undefined) {
+					if (imageWidth > imageHeight) {
+						dpImageElement.width = BASE_SIZE;
+						dpImageElement.height = Math.ceil((imageHeight / imageWidth) * BASE_SIZE);
+					} else {
+						dpImageElement.width = Math.ceil((imageWidth / imageHeight) * BASE_SIZE);
+						dpImageElement.height = BASE_SIZE;
+					}
+				} else {
+					dpImageElement.removeAttribute('width');
+					dpImageElement.removeAttribute('height');
+				}
 			}
 
 			const dpTitleElement = <HTMLElement>templateElementClone.querySelector('.js-title');
@@ -107,8 +126,10 @@ export default class {
 				const dpDateElement = <HTMLElement>templateElementClone.querySelector(date.getTime() <= nowTime ? '.js-date-past' : '.js-date-future');
 
 				const dpTimeElement = dpDateElement.getElementsByTagName('time')[0];
-				dpTimeElement.dateTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-				dpTimeElement.textContent = year !== nowYear ? `${year}年${month}月${day}日` : `${month}月${day}日`;
+				if (dpTimeElement !== undefined) {
+					dpTimeElement.dateTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+					dpTimeElement.textContent = year !== nowYear ? `${year}年${month}月${day}日` : `${month}月${day}日`;
+				}
 
 				dpDateElement.hidden = false;
 			}
