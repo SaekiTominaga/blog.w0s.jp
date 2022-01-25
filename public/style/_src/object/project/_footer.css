@@ -32,8 +32,8 @@
 
 /* ===== アドセンス ===== */
 .p-footer-ads {
-	display: flex;
-	justify-content: center;
+	margin-inline: auto;
+	width: min(100%, 960px);
 
 	& .adsbygoogle {
 		display: block;
