@@ -55,7 +55,7 @@ if (window.customElements !== undefined) {
 new SidebarAmazonAd(<HTMLTemplateElement>document.getElementById('sidebar-amazon-ad-template')).init();
 
 /* 印刷用スタイルシート */
-new StyleSheetPrint(<HTMLElement>document.getElementById('stylesheet-print')).init();
+new StyleSheetPrint(<HTMLLinkElement>document.getElementById('stylesheet-print')).init();
 
 /* Google AdSense */
 for (const adsGoogleElement of document.querySelectorAll('.js-ads-google')) {

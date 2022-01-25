@@ -17,12 +17,15 @@ export default class {
 	#templateElement: HTMLTemplateElement;
 
 	/**
-	 * @param {HTMLTemplateElement} templateElement - 挿入するページに存在する <tempalte> 要素
+	 * @param {object} templateElement - 挿入するページに存在する <tempalte> 要素
 	 */
 	constructor(templateElement: HTMLTemplateElement) {
 		this.#templateElement = templateElement;
 	}
 
+	/**
+	 * 初期処理
+	 */
 	async init(): Promise<void> {
 		const jsonName = (<HTMLMetaElement | null>document.querySelector('meta[name="w0s:sidebar:amazon"]'))?.content;
 		if (jsonName === undefined) {

@@ -2,7 +2,7 @@
  * 代替スタイルシートの切替機構を持たないブラウザ向けに印刷用スタイルを強制適用する
  */
 export default class {
-	#printStyleSheetElement: HTMLElement;
+	#printStyleSheetElement: HTMLLinkElement;
 	#preferredStyleSheetList: StyleSheet[] = []; // 優先スタイルシート
 
 	#windowBeforePrintEventListener: () => void;
@@ -11,13 +11,16 @@ export default class {
 	/**
 	 * @param {object} printStyleSheetElement - 印刷用スタイルシートを指定した要素
 	 */
-	constructor(printStyleSheetElement: HTMLElement) {
+	constructor(printStyleSheetElement: HTMLLinkElement) {
 		this.#printStyleSheetElement = printStyleSheetElement;
 
 		this.#windowBeforePrintEventListener = this._windowBeforePrintEvent.bind(this);
 		this.#windowAfterPrintEventListener = this._windowAfterPrintEvent.bind(this);
 	}
 
+	/**
+	 * 初期処理
+	 */
 	init(): void {
 		if (this._canSelectAlternateStyleSheets()) {
 			return;
