@@ -4,7 +4,7 @@
 
 /* ===== 強調 ===== */
 .c-emphasis {
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 }
 
 /* ===== コード ===== */
@@ -14,7 +14,7 @@
 	color: var(--color-green);
 	background: var(--color-bg-superlightgreen);
 	font-family: monospace;
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 }
 
 /* ===== 引用 ===== */
@@ -38,7 +38,7 @@
 	margin: 0 0.25em;
 	color: var(--color-gray);
 	font-size: calc(100% / var(--font-ratio-1));
-	font-weight: normal;
+	font-weight: var(--font-weight-normal);
 
 	@nest .entry-footnote & {
 		color: #616161;
@@ -59,7 +59,7 @@
 	color: var(--_color);
 	background: var(--_bg-color);
 	font-size: calc(100% / var(--font-ratio-1));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-narrow);
 	vertical-align: middle;
 
@@ -138,5 +138,5 @@
 /* 件数の数字部分 */
 .c-entry-count__num {
 	font-size: calc(100% * var(--font-ratio-3));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 }

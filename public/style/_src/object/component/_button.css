@@ -23,7 +23,7 @@
 	width: var(--_width);
 	color: var(--_color);
 	background: var(--_background);
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-narrow);
 	text-decoration: none;
 	outline-offset: 0.125em;

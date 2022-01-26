@@ -117,7 +117,7 @@
 	border-top: 1px solid transparent;
 	border-bottom: 1px solid var(--color-border-dark);
 	font-size: calc(100% * var(--font-ratio-5));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	line-height: var(--_line-height);
 }
 
@@ -125,7 +125,7 @@
 	--_line-height: var(--line-height-narrow);
 
 	font-size: calc(100% * var(--font-ratio-3));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	line-height: var(--_line-height);
 
 	&::before {
@@ -188,7 +188,7 @@
 /* ===== 記述リスト ===== */
 .entry-list-description {
 	& > dt {
-		font-weight: bold;
+		font-weight: var(--font-weight-bold);
 	}
 
 	& > dd {
@@ -219,14 +219,14 @@
 
 .entry-quote__omit {
 	color: var(--color-gray);
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 }
 
 .entry-quote__caption {
 	margin: 0.125em 0 0 auto;
 	color: #575757; /* コントラスト比 7:1 */
 	font-size: calc(100% / var(--font-ratio-1));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	text-align: justify;
 
 	@supports (width: fit-content) {
@@ -421,7 +421,7 @@
 .entry-amazon__title {
 	margin-inline-start: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
 	display: inline;
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	text-decoration-line: underline;
 	transition: color var(--link-hover-transition-duration);
 
@@ -470,7 +470,7 @@
 	& .hljs-selector-tag,
 	& .hljs-subst {
 		color: #333;
-		font-weight: bold;
+		font-weight: var(--font-weight-bold);
 	}
 
 	& .hljs-number,
@@ -490,24 +490,24 @@
 	& .hljs-section,
 	& .hljs-selector-id {
 		color: #900;
-		font-weight: bold;
+		font-weight: var(--font-weight-bold);
 	}
 
 	& .hljs-subst {
-		font-weight: normal;
+		font-weight: var(--font-weight-normal);
 	}
 
 	& .hljs-type,
 	& .hljs-class .hljs-title {
 		color: #458;
-		font-weight: bold;
+		font-weight: var(--font-weight-bold);
 	}
 
 	& .hljs-tag,
 	& .hljs-name,
 	& .hljs-attribute {
 		color: #000080;
-		font-weight: normal;
+		font-weight: var(--font-weight-normal);
 	}
 
 	& .hljs-regexp,
@@ -527,7 +527,7 @@
 
 	& .hljs-meta {
 		color: #767676; /* original: #999 */
-		font-weight: bold;
+		font-weight: var(--font-weight-bold);
 	}
 
 	& .hljs-deletion {
@@ -543,7 +543,7 @@
 	}
 
 	& .hljs-strong {
-		font-weight: bold;
+		font-weight: var(--font-weight-bold);
 	}
 }
 
@@ -600,7 +600,7 @@
 }
 
 .entry-ins__date {
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 
 	&::after {
 		margin: 0 0.25em;
@@ -625,7 +625,7 @@
 	--_stack-margin-adjust: var(--_stack-margin-adjust-line);
 	--_color: var(--color-black);
 	--_bg-color: var(--color-white);
-	--_font-weight: normal;
+	--_font-weight: var(--font-weight-normal);
 	--_text-align: left;
 
 	font-weight: var(--_font-weight);
@@ -642,7 +642,7 @@
 
 	& th {
 		--_bg-color: var(--color-bg-verylight);
-		--_font-weight: bold;
+		--_font-weight: var(--font-weight-bold);
 	}
 
 	& > thead {
@@ -688,7 +688,7 @@
 
 .entry-footnote__no {
 	padding-right: 0.25em;
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	text-align: right;
 	white-space: nowrap;
 

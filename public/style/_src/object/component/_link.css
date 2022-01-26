@@ -185,7 +185,7 @@
 
 .c-book-link__title {
 	margin-left: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 
 	&::before {
 		margin-right: var(--_bullet-gap);

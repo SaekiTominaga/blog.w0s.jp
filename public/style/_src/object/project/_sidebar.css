@@ -18,7 +18,7 @@
 	position: relative;
 	top: var(--_heading-offset);
 	background: var(--page-bg-color);
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 }
 
 .p-sidebar-profile__info {
@@ -28,7 +28,7 @@
 }
 
 .p-sidebar-profile__address {
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-nowrap);
 }
 
@@ -109,7 +109,7 @@
 		--_padding-row: 0.8em;
 		--_border-radius-top: var(--border-radius-normal);
 		--_bg-color: var(--color-white);
-		--_font-weight: bold;
+		--_font-weight: var(--font-weight-bold);
 	}
 }
 
@@ -134,7 +134,7 @@
 	position: relative;
 	top: var(--_heading-offset);
 	background: var(--page-bg-color);
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 }
 
 .p-sidebar-newly-entry__link {
@@ -240,7 +240,7 @@
 	position: relative;
 	top: var(--_heading-offset);
 	background: var(--page-bg-color);
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 }
 
 .p-sidebar-amazon__link {
@@ -305,7 +305,7 @@
 .p-sidebar-amazon-link__date {
 	margin-top: 0.5em;
 	font-size: calc(100% / var(--font-ratio-2));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 
 	&:not([hidden]) {
 		display: block;

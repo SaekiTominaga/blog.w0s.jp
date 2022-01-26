@@ -9,7 +9,7 @@
 	justify-content: center;
 	align-items: center;
 	gap: 1em;
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-narrow);
 }
 
@@ -64,7 +64,7 @@
 
 .p-err-search__legend {
 	grid-area: legend;
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 }
 
 .p-err-search__ctrl {

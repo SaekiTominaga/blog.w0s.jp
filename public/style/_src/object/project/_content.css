@@ -12,7 +12,7 @@
 
 .p-category-title__hdg {
 	font-size: clamp(calc(100% * var(--font-ratio-1)), 7vw, calc(100% * var(--font-ratio-5)));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	text-shadow: 1px 1px 1px var(--color-lightgray);
 }
 
@@ -46,7 +46,7 @@
 	&.-prev::before,
 	&.-next::after {
 		display: inline-block;
-		font: bold 50% YuGothic, sans-serif;
+		font: var(--font-weight-bold) 50% YuGothic, sans-serif;
 		letter-spacing: -0.1em;
 		vertical-align: 0.3em;
 		transform: scaleY(2.2);
@@ -142,7 +142,7 @@
 	color: var(--color-black);
 	background: var(--_bg-color);
 	font-size: clamp(calc(100% * var(--font-ratio-3)), 5vw, calc(100% * var(--font-ratio-5)));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-narrow);
 	text-shadow: 0 0 0.05em var(--color-border-light);
 
@@ -219,7 +219,7 @@
 }
 
 .p-entry-footer-relation__hdg {
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-narrow);
 }
 
@@ -246,7 +246,7 @@
 
 .p-book-cm__hdg {
 	font-size: calc(100% * var(--font-ratio-1));
-	font-weight: bold;
+	font-weight: var(--font-weight-bold);
 }
 
 .p-book-cm__list {
