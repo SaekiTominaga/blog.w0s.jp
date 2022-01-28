@@ -1,0 +1,150 @@
+/* ==============================
+ *   グルーピングコンテンツ
+ * ============================== */
+
+/* ===== 記事リンク ===== */
+.c-entry-link {
+	--_gap: 15px;
+	--_bullet-width: 0.45em;
+	--_bullet-height: 0.75em;
+	--_bullet-color: var(--link-color-bullet);
+	--_bullet-gap: 0.5em;
+
+	contain: layout;
+	display: flow-root; /* for Safari */
+	line-height: var(--line-height-narrow);
+
+	@media (--breakpoint-entry-link) {
+		margin-inline-start: calc(var(--_bullet-width) + var(--_bullet-gap));
+	}
+
+	@nest .p-title-list & {
+		--_gap: 30px;
+	}
+
+	& > :any-link {
+		outline: none;
+	}
+}
+
+.c-entry-link__thumb {
+	--_margin-inline-end: calc(var(--_gap) + var(--_bullet-width) + var(--_bullet-gap));
+	--_margin-inline-start: 0px;
+	--_margin-block-end: 0px;
+	--_float: left;
+	--_image-border-width: 1px;
+	--_image-aspect-ratio: 1.5;
+	--_image-width: 180px;
+	--_image-min-width-px: 120px;
+	--_image-min-width-vw: 30vw;
+
+	margin-block-end: var(--_margin-block-end);
+	margin-inline: var(--_margin-inline-start) var(--_margin-inline-end);
+	float: var(--_float);
+	display: flex;
+	justify-content: center;
+	width: calc(var(--_image-width) + var(--_image-border-width) * 2);
+	height: calc(var(--_image-width) / var(--_image-aspect-ratio) + var(--_image-border-width) * 2);
+	pointer-events: none;
+
+	@media (--breakpoint-entry-link) {
+		--_margin-block-end: clamp(0px, var(--_image-min-width-px) - var(--_image-min-width-vw), var(--_gap));
+		--_margin-inline-end: 0px;
+		--_margin-inline-start: var(--_gap);
+		--_float: right;
+		--_image-width: min(var(--_image-min-width-px), var(--_image-min-width-vw));
+	}
+}
+
+.c-entry-link__image {
+	border: var(--_image-border-width) solid;
+	display: block;
+	max-width: var(--_image-width);
+	max-height: calc(var(--_image-width) / var(--_image-aspect-ratio));
+	color: var(--color-black);
+	background: var(--color-white);
+	pointer-events: auto;
+
+	@nest :any-link:hover & {
+		box-shadow: 0 0 5px var(--color-border-dark);
+	}
+
+	@nest :focus & {
+		outline: var(--outline-width-bold) solid var(--outline-color);
+		outline-offset: -1px;
+	}
+}
+
+.c-entry-link__title {
+	margin-inline-start: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+
+	&::before {
+		margin-inline-end: var(--_bullet-gap);
+		content: "";
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		width: var(--_bullet-width);
+		height: var(--_bullet-height);
+		background: var(--_bullet-color);
+	}
+
+	@nest :any-link:hover & {
+		--_bullet-color: var(--link-color-hover);
+	}
+
+	@nest :focus & {
+		outline: var(--outline-width) solid var(--outline-color);
+		outline-offset: var(--outline-offset-linkonly);
+	}
+
+	@nest .p-title-list & {
+		font-size: calc(100% * var(--font-ratio-3));
+	}
+}
+
+.c-entry-link__date {
+	margin-block-start: 0.5em;
+	overflow: hidden;
+}
+
+/* ===== キャプション ===== */
+.c-caption {
+	width: fit-content;
+	display: flex;
+	font-size: calc(100% / var(--font-ratio-1));
+	font-weight: var(--font-weight-bold);
+	line-height: var(--line-height-narrow);
+
+	@nest figure > &:first-child {
+		margin-block-end: 0.5em;
+	}
+
+	@nest figure > &:last-child {
+		margin-block-start: 0.5em;
+	}
+
+	@nest .p-entry & {
+		color: var(--color-gray);
+	}
+
+	/* メタデータ */
+	&.-meta {
+		margin-inline-start: auto;
+		padding-inline-start: 10%;
+	}
+}
+
+/* 図番号（"写真1"、"図2" など） */
+.c-caption__no {
+	white-space: nowrap; /* for Safari */
+
+	&::after {
+		margin-inline: 0.25em;
+		content: ":";
+	}
+}
+
+/* タイトル */
+.c-caption__title {
+	flex: min-content;
+}

@@ -1,13 +1,12 @@
 /* ==============================
  *   通常表示
  * ============================== */
-
 .l-page {
 	grid-template-areas:
 		"header              header               header  header              header  header                header              "
 		"content-margin-left content-padding-left content gap-content-sidebar sidebar content-padding-right content-margin-right"
 		"footer              footer               footer  footer              footer  footer                footer              ";
-	grid-template-columns: var(--page-col-margin) var(--page-col-padding) 1fr var(--page-content-sidebar-gap) var(--page-sidebar-width) var(--page-col-padding) var(--page-col-margin);
+	grid-template-columns: var(--page-margin-inline) var(--page-padding-inline) 1fr var(--page-content-sidebar-gap) var(--page-sidebar-width) var(--page-padding-inline) var(--page-margin-inline);
 }
 
 @media (--breakpoint) {
@@ -17,10 +16,10 @@
 			"content-padding-left content content-padding-right"
 			"sidebar-padding-left sidebar sidebar-padding-right"
 			"footer               footer  footer               ";
-		grid-template-columns: var(--page-col-padding) 1fr var(--page-col-padding);
+		grid-template-columns: var(--page-padding-inline) 1fr var(--page-padding-inline);
 	}
 
 	.l-sidebar {
-		margin-top: 80px;
+		margin-block-start: 80px;
 	}
 }

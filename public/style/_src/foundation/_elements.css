@@ -4,7 +4,7 @@
 
 	color: var(--_color);
 	background: var(--_bg-color);
-	font: var(--font-weight-normal) var(--page-font-size) / var(--line-height-normal) sans-serif;
+	font: var(--font-weight-normal) var(--page-font-size) / var(--line-height-normal) arial, sans-serif;
 
 	@media (prefers-reduced-motion: no-preference) {
 		scroll-behavior: smooth;
@@ -18,7 +18,6 @@
 
 :focus {
 	outline: var(--outline-width) solid var(--outline-color);
-	outline-offset: var(--outline-offset);
 }
 
 w0s-tooltip:focus {
@@ -27,6 +26,7 @@ w0s-tooltip:focus {
 
 :any-link {
 	text-decoration-thickness: from-font;
+	outline-offset: var(--outline-offset);
 }
 
 :link {
@@ -43,4 +43,27 @@ w0s-tooltip:focus {
 	&:hover {
 		color: var(--link-color-hover);
 	}
+}
+
+h1,
+h2,
+h3,
+h4,
+em,
+strong,
+cite,
+dfn,
+b,
+th {
+	font-weight: var(--font-weight-bold);
+}
+
+pre {
+	tab-size: 2;
+	font: inherit;
+	white-space: pre-wrap;
+}
+
+code {
+	font-family: monospace;
 }

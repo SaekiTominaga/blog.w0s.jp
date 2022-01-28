@@ -6,6 +6,14 @@ body {
 	margin: 0;
 }
 
+h1,
+h2,
+h3,
+h4 {
+	margin: 0;
+	font-size: 100%;
+}
+
 hr {
 	margin: 0;
 	border: none;
@@ -21,6 +29,10 @@ pre {
 	margin: 0;
 }
 
+address {
+	font-style: normal;
+}
+
 ol,
 ul {
 	margin: 0;
@@ -31,37 +43,25 @@ li {
 	list-style: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0;
-	font-size: 100%;
-	font-weight: var(--font-weight-normal);
-}
-
-address,
-em,
-dfn,
-cite {
-	font-style: normal;
-}
-
-img,
-iframe {
-	border: none;
-}
-
 table {
 	border-collapse: collapse;
-	font-size: inherit;
 }
 
 td,
 th {
 	padding: 0;
+	text-align: start;
+}
+
+em,
+cite,
+dfn {
+	font-style: normal;
+}
+
+mark {
+	color: inherit;
+	background: transparent;
 }
 
 input,
@@ -69,6 +69,10 @@ select,
 button,
 textarea {
 	font: inherit;
+}
+
+input {
+	margin: 0;
 }
 
 optgroup {

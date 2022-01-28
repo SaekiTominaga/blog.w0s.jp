@@ -25,7 +25,7 @@
 		display: inline-block;
 		border-radius: var(--border-radius-small); /* outline を柔らかくする */
 		text-shadow: var(--_text-shadow);
-		outline-width: 2px;
+		outline-width: var(--outline-width-bold);
 		outline-offset: 0;
 
 		&:any-link {

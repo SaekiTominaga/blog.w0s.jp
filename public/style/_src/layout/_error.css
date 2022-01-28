@@ -1,20 +1,19 @@
 /* ==============================
  *   エラーページ
  * ============================== */
-
 .l-page {
 	display: grid;
 	grid-template-areas:
-		"header-margin-left header-padding-left header header-padding-right header-margin-right"
-		"content-margin-left   content-padding-left   content   content-padding-right   content-margin-right";
-	grid-template-columns: var(--page-col-margin) var(--page-col-padding) 1fr var(--page-col-padding) var(--page-col-margin);
+		"header-margin-left  header-padding-left  header  header-padding-right  header-margin-right "
+		"content-margin-left content-padding-left content content-padding-right content-margin-right";
+	grid-template-columns: var(--page-margin-inline) var(--page-padding-inline) 1fr var(--page-padding-inline) var(--page-margin-inline);
 }
 
 /* ===== ページヘッダー ===== */
 .l-header {
 	grid-column: header;
 	padding: 12vh 0 8vh;
-	border-bottom: 1px dashed var(--color-border-dark);
+	border-block-end: 1px dashed var(--color-border-dark);
 }
 
 /* ===== コンテンツエリア ===== */

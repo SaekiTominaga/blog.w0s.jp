@@ -2,92 +2,318 @@
  *   テキスト
  * ============================== */
 
-/* ===== 強調 ===== */
-.c-emphasis {
-	font-weight: var(--font-weight-bold);
+/* ===== リンク ===== */
+.c-link {
+	--_icon-width: 0.45em;
+	--_icon-height: 0.75em;
+	--_icon-color: var(--color-gray);
+
+	&::before {
+		margin-inline-end: 0.5em;
+		content: "";
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		width: var(--_icon-width);
+		height: var(--_icon-height);
+		background: var(--_icon-color);
+	}
+
+	&:any-link {
+		--_icon-color: var(--link-color-bullet);
+
+		&:hover {
+			--_icon-color: var(--link-color-hover);
+		}
+	}
 }
 
-/* ===== コード ===== */
+/* ===== ボタン ===== */
+.c-button {
+	--_padding-block: 0.5em;
+	--_padding-inline: 0.75em;
+	--_border-color: var(--color-border-dark);
+	--_width: auto;
+	--_color: var(--color-black);
+	--_background: var(--color-white);
+	--_icon-size: 1.25em;
+
+	padding: var(--_padding-block) var(--_padding-inline);
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	box-sizing: border-box;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5em;
+	width: var(--_width);
+	color: var(--_color);
+	background: var(--_background);
+	font-weight: var(--font-weight-bold);
+	line-height: var(--line-height-narrow);
+	text-decoration: none;
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
+
+	&:disabled {
+		display: none;
+	}
+
+	@nest button[type="button"]&:focus:not(:focus-visible) {
+		outline: none;
+	}
+
+	&:hover {
+		color: var(--_color);
+		box-shadow: 0 0 2px var(--_border-color);
+	}
+
+	/* Feed */
+	&.-feed {
+		--_border-color: hsl(41 100% 53%);
+		--_color: var(--color-darkgray);
+		--_background: hsl(41 100% 93%);
+	}
+
+	/* Twitter */
+	&.-twitter {
+		--_border-color: hsl(204 88% 43%);
+		--_color: var(--color-white);
+		--_background: hsl(204 88% 53%);
+
+		outline-color: hsl(204 88% 73%);
+	}
+
+	/* GitHub */
+	&.-github {
+		--_border-color: var(--color-black);
+		--_background: var(--color-white);
+	}
+
+	/* Amazon */
+	&.-amazon {
+		--_border-color: #c2a24e;
+		--_background: linear-gradient(var(--color-amazon), hsl(44 90% 62%));
+	}
+
+	/* YouTube */
+	&.-youtube {
+		--_border-color: var(--color-red);
+		--_color: var(--color-darkred);
+		--_background: linear-gradient(var(--color-white), var(--color-verylightred));
+	}
+
+	@nest .p-sidebar-profile__banners & {
+		--_padding-inline: 1px;
+		--_width: 100%;
+	}
+
+	@nest .p-entry-footer-social & {
+		font-size: calc(100% * var(--font-ratio-1));
+	}
+}
+
+.c-button__icon {
+	width: var(--_icon-size);
+	height: var(--_icon-size);
+}
+
+.c-button__text {
+	@nest .p-entry-footer-social & {
+		white-space: nowrap; /* for iPad Safari */
+	}
+}
+
+/* ===== コード断片 ===== */
 .c-code {
 	padding: 0.25em;
 	border-radius: var(--border-radius-normal);
 	color: var(--color-green);
-	background: var(--color-bg-superlightgreen);
-	font-family: monospace;
+	background: var(--color-ultralightgreen);
 	font-weight: var(--font-weight-bold);
 }
 
+/* ===== コードハイライト https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css ===== */
+/* stylelint-disable selector-class-pattern */
+.hljs-doctag,
+.hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+	/* prettylights-syntax-keyword */
+	color: #d73a49;
+}
+
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+	/* prettylights-syntax-entity */
+	color: #6f42c1;
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+	/* prettylights-syntax-constant */
+	color: #005cc5;
+}
+
+.hljs-regexp,
+.hljs-string {
+	/* prettylights-syntax-string */
+	color: #032f62;
+}
+
+.hljs-built_in,
+.hljs-symbol {
+	/* prettylights-syntax-variable */
+	color: #e36209;
+}
+
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+	/* prettylights-syntax-comment */
+	color: #6a737d;
+}
+
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+	/* prettylights-syntax-entity-tag */
+	color: #22863a;
+}
+
+.hljs-subst {
+	/* prettylights-syntax-storage-modifier-import */
+	color: #24292e;
+}
+
+.hljs-section {
+	/* prettylights-syntax-markup-heading */
+	color: #005cc5;
+	font-weight: var(--font-weight-bold);
+}
+
+.hljs-bullet {
+	/* prettylights-syntax-markup-list */
+	color: #735c0f;
+}
+
+.hljs-emphasis {
+	/* prettylights-syntax-markup-italic */
+	color: #24292e;
+	font-style: italic;
+}
+
+.hljs-strong {
+	/* prettylights-syntax-markup-bold */
+	color: #24292e;
+	font-weight: var(--font-weight-bold);
+}
+
+.hljs-addition {
+	/* prettylights-syntax-markup-inserted */
+	color: #22863a;
+	background-color: #f0fff4;
+}
+
+.hljs-deletion {
+	/* prettylights-syntax-markup-deleted */
+	color: #b31d28;
+	background-color: #ffeef0;
+}
+
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+	/* purposely ignored */
+}
+/* stylelint-enable selector-class-pattern */
+
 /* ===== 引用 ===== */
 .c-quote {
-	background: linear-gradient(transparent, transparent 75%, var(--color-bg-yellow) 75%);
+	background: linear-gradient(transparent, transparent 75%, var(--color-yellow) 75%);
 	quotes: "\201C""\201D""\2018""\2019";
 
 	&::before {
-		padding-left: 0.25em;
+		padding-inline-start: 0.25em;
 		content: open-quote;
 	}
 
 	&::after {
-		padding-right: 0.25em;
+		padding-inline-end: 0.25em;
 		content: close-quote;
 	}
 }
 
-/* ===== リンク直後のドメイン表記 ===== */
+/* ===== 注釈リンク ===== */
+.c-annotate {
+	font-size: calc(100% / var(--font-ratio-2));
+	vertical-align: super;
+
+	& > a {
+		--_border-color: transparent;
+		--_bg-color: transparent;
+
+		padding: 0.25em;
+		border: 1px solid var(--_border-color);
+		background: var(--_bg-color);
+		text-decoration-skip-ink: none; /* JS 無効環境向け */
+
+		&:target {
+			--_border-color: var(--color-red);
+			--_bg-color: var(--color-verylightred);
+		}
+
+		&[role="button"] {
+			/* JS 有効時のみ */
+			color: var(--link-color);
+			text-decoration: none;
+			cursor: default;
+
+			&:focus:not(:focus-visible) {
+				outline: none;
+			}
+		}
+	}
+}
+
+/* ===== ドメイン表記 ===== */
 .c-domain {
-	margin: 0 0.25em;
+	margin-inline: 0.25em;
 	color: var(--color-gray);
 	font-size: calc(100% / var(--font-ratio-1));
 	font-weight: var(--font-weight-normal);
-
-	@nest .entry-footnote & {
-		color: #616161;
-	}
 }
 
 /* ===== Amazon 商品カテゴリ ===== */
 .c-amazon-binding {
-	--_padding: 0.125em 0.5em;
-	--_border-color: var(--_color);
-	--_color: var(--color-gray);
-	--_bg-color: var(--color-white);
-
 	padding: 0.125em 0.5em;
-	border: 1px solid var(--_border-color);
+	border: 1px solid var(--color-gray);
 	border-radius: var(--border-radius-large);
 	display: inline-block;
-	color: var(--_color);
-	background: var(--_bg-color);
+	color: var(--color-gray);
+	background: var(--color-white);
 	font-size: calc(100% / var(--font-ratio-1));
 	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-narrow);
 	vertical-align: middle;
 
-	/* BD */
-	&.-bd {
-		--_border-color: #27b;
-		--_color: #27b;
-		--_bg-color: #f9f9ff;
-	}
-
-	/* Kindle */
-	&.-kindle {
-		--_border-color: var(--color-black);
-		--_color: #f90;
-		--_bg-color: var(--color-black);
-	}
-
 	@nest .entry-amazon & {
-		margin-left: 0.5em;
-	}
-}
-
-/* ===== Amazon 商品が発売予定の場合の「予定」文字部分 ===== */
-.c-amazon-date-plan {
-	@nest .p-sidebar-amazon-link & {
-		--_color: hsl(0 100% 40%);
-
-		color: var(--_color);
+		margin-inline-start: 0.5em;
 	}
 }
 
@@ -107,29 +333,26 @@
 
 	& > dd {
 		&::before {
-			margin: 0 0.25em;
+			margin-inline: 0.25em;
 			content: ":";
 		}
 	}
 
 	&:not(:first-child) {
 		& > :is(dt, dd) {
-			border-top: 0.125em solid transparent;
+			border-block-start: 0.125em solid transparent;
 		}
 	}
 }
 
 /* ===== 記事件数 ===== */
 .c-entry-count {
-	--_color: #026;
-	--_bg-color: #cde;
-
 	padding: 0.15em 0.45em;
-	border: 1px solid var(--_bg-color);
+	border: 1px solid var(--color-powderblue);
 	border-radius: var(--border-radius-large);
 	display: inline-block;
-	color: var(--_color);
-	background: var(--_bg-color);
+	color: var(--color-darkblue);
+	background: var(--color-powderblue);
 	font-size: calc(100% / var(--font-ratio-4));
 	line-height: var(--line-height-nowrap);
 	white-space: nowrap;

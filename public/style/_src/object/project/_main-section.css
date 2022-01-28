@@ -1,0 +1,79 @@
+/* ==============================
+ *   セクション
+ * ============================== */
+
+.p-section1 {
+	@nest .p-entry & {
+		&:not(:first-child) {
+			margin-block-start: calc(var(--stack-margin-base) * 4);
+		}
+
+		&:not(:last-child) {
+			margin-block-end: calc(var(--stack-margin-base) * 4);
+		}
+	}
+
+	@nest .p-entry .p-toc + & {
+		margin-block-start: calc(var(--stack-margin-base) * 3);
+	}
+}
+
+.p-section1__hdg {
+	& > h2 {
+		padding-block: 0.25em;
+		border-block-start: 1px solid transparent;
+		border-block-end: 1px solid var(--color-border-dark);
+		font-size: calc(100% * var(--font-ratio-5));
+		line-height: var(--line-height-narrow);
+	}
+}
+
+.p-section2 {
+	@nest .p-entry & {
+		&:not(:first-child) {
+			margin-block-start: calc(var(--stack-margin-base) * 2);
+		}
+
+		&:not(:last-child) {
+			margin-block-end: calc(var(--stack-margin-base) * 2);
+		}
+	}
+}
+
+.p-section2__hdg {
+	& > h3 {
+		font-size: calc(100% * var(--font-ratio-3));
+		line-height: var(--line-height-narrow);
+
+		&::before {
+			--_width: 0.25em;
+
+			margin-inline-end: 0.5em;
+			border-radius: var(--_width);
+			content: "";
+			display: inline-block;
+			width: var(--_width);
+			height: calc(1em * var(--line-height-narrow));
+			background: var(--color-border-dark);
+			vertical-align: text-top;
+		}
+	}
+}
+
+/* ===== セクション終了 ===== */
+.p-section-break {
+	margin-inline: auto;
+	border: 1px solid var(--color-lightgray);
+	width: 15%;
+	height: 0;
+
+	@nest .p-entry & {
+		&:not(:first-child) {
+			margin-block-start: calc(var(--stack-margin-base) * 4);
+		}
+
+		&:not(:last-child) {
+			margin-block-end: calc(var(--stack-margin-base) * 4);
+		}
+	}
+}

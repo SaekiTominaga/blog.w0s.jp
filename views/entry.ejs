@@ -43,10 +43,12 @@
 			<%- include('./_include/_header', { heading: false }) %>
 
 			<div id="content" class="l-content">
-				<main class="l-content__main">
+				<div class="l-content__main">
 					<article class="p-entry" itemscope="" itemtype="http://schema.org/BlogPosting">
 						<header class="p-entry__header">
-							<h1 class="p-entry-header-title" itemprop="name"><%= title %></h1>
+							<div class="p-entry-header-title">
+								<h1 itemprop="name"><%= title %></h1>
+							</div>
 
 							<dl class="p-entry-header-date c-entry-meta">
 								<div class="c-entry-meta__group">
@@ -62,7 +64,7 @@
 							</dl>
 						</header>
 
-						<div class="p-entry__body entry" itemprop="articleBody"><%- message %></div>
+						<main class="p-entry__body" itemprop="articleBody"><%- message %></main>
 
 						<footer class="p-entry__footer">
 							<% if (categories.length >= 1) { %>
@@ -77,53 +79,53 @@
 							</section>
 							<% } %>
 
-							<div class="p-entry-footer-social">
-								<ul class="p-entry-footer-social__list">
-									<li>
-										<a href="/feed" type="application/atom+xml" class="c-button -feed">
-											<img src="/image/icon/feed.svg" alt="" class="c-button__icon" />
-											<span class="c-button__text">フィード</span>
-										</a>
-									</li>
-									<li>
-										<a href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new?title=%5B<%= entryId %>%5D%20<%= encodeURI(title) %>;labels=comment" class="c-button -github">
-											<img src="/image/icon/github.svg" alt="(GitHub)" class="c-button__icon" />
-											<span class="c-button__text">コメントを書く</span>
-										</a>
-									</li>
-									<li>
-										<button type="button" is="w0s-share-button" class="c-button -share">
-											<span class="c-button__text">記事のシェア</span>
-										</button>
-									</li>
-								</ul>
-							</div>
+							<ul class="p-entry-footer-social c-flex -buttons">
+								<li class="c-flex__item">
+									<a href="/feed" type="application/atom+xml" class="c-button -feed">
+										<img src="/image/icon/feed.svg" alt="" width="16" height="16" class="c-button__icon" />
+										<span class="c-button__text">フィード</span>
+									</a>
+								</li>
+								<li class="c-flex__item">
+									<a href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new?title=%5B<%= entryId %>%5D%20<%= encodeURI(title) %>;labels=comment" class="c-button -github">
+										<img src="/image/icon/github.svg" alt="(GitHub)" width="16" height="16" class="c-button__icon" />
+										<span class="c-button__text">コメントを書く</span>
+									</a>
+								</li>
+								<li class="c-flex__item">
+									<button type="button" is="w0s-share-button" class="c-button -share">
+										<span class="c-button__text">記事のシェア</span>
+									</button>
+								</li>
+							</ul>
 
 							<% if (relations.length > 0) { %>
-							<section class="p-entry-footer-relation">
-								<h2 class="p-entry-footer-relation__hdg">関連記事</h2>
+							<section class="p-entry-footer-relation p-box">
+								<h2 class="p-box__hdg">関連記事</h2>
 
-								<ul class="p-entry-footer-relation__list">
+								<ul class="c-grid -wide">
 									<% for (const relation of relations) { %>
-									<li class="c-entry-link">
-										<a href="<%= relation.id %>">
-											<span class="c-entry-link__thumb">
-												<% if (relation.image_internal !== null) { %>
-												<picture>
-													<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=360;h=240;quality=30 2x" />
-													<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=360;h=240;quality=30 2x" />
-													<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" class="c-entry-link__image" />
-												</picture>
-												<% } else if (relation.image_external !== null) { %>
-												<img src="<%= relation.image_external %>" alt="" class="c-entry-link__image" />
-												<% } else { %>
-												<img src="/image/noimage.svg" alt="" width="180" height="120" class="c-entry-link__image" />
-												<% } %>
-											</span>
-											<span class="c-entry-link__title"><%= relation.title %></span>
-										</a>
-										<div class="c-entry-link__date">
-											<time datetime="<%= relation.created.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= relation.created.format('YYYY年M月D日') %></time>
+									<li class="c-grid__item">
+										<div class="c-entry-link">
+											<a href="<%= relation.id %>">
+												<span class="c-entry-link__thumb">
+													<% if (relation.image_internal !== null) { %>
+													<picture>
+														<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=360;h=240;quality=30 2x" />
+														<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=360;h=240;quality=30 2x" />
+														<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" class="c-entry-link__image" />
+													</picture>
+													<% } else if (relation.image_external !== null) { %>
+													<img src="<%= relation.image_external %>" alt="" class="c-entry-link__image" />
+													<% } else { %>
+													<img src="/image/noimage.svg" alt="" width="180" height="120" class="c-entry-link__image" />
+													<% } %>
+												</span>
+												<span class="c-entry-link__title"><%= relation.title %></span>
+											</a>
+											<div class="c-entry-link__date">
+												<time datetime="<%= relation.created.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= relation.created.format('YYYY年M月D日') %></time>
+											</div>
 										</div>
 									</li>
 									<% } %>
@@ -132,70 +134,74 @@
 							<% } %>
 						</footer>
 					</article>
-				</main>
+				</div>
 
 				<% if (book !== null) { %>
 				<div class="l-content__footer">
-					<aside class="p-book-cm" aria-labelledby="bookcm-heading">
-						<h2 class="p-book-cm__hdg" id="bookcm-heading">著書の紹介</h2>
+					<aside class="p-box" aria-labelledby="bookcm-heading">
+						<h2 class="p-box__hdg" id="bookcm-heading">著書の紹介</h2>
 
-						<ul class="p-book-cm__list">
+						<ul class="c-grid -wide">
 							<% if (book === 'tokyu') { %>
-							<li class="c-book-link">
+							<li class="c-grid__item p-item">
 								<a href="https://w0s.jp/tokyu/book/7700">
-									<span class="c-book-link__thumb">
-										<picture>
-											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
-											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
-											<img src="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" loading="lazy" class="c-book-link__image" />
-										</picture>
-									</span>
-									<span class="c-book-link__title"><b>【同人誌】</b>東急7700系形態分類</span>
+									<picture>
+										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
+										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
+										<img src="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" loading="lazy" class="p-item__image" />
+									</picture>
+									<span class="p-item__title">東急7700系形態分類</span>
 								</a>
-								<div class="c-book-link__description">
-									<p>池上線、東急多摩川線で活躍した東急7700系の形態バリエーションについて、2010年時点の在籍車36両を徹底解析しました。（<time datetime="2019-08">2019年8月</time>発行）</p>
+								<div class="p-item__text">
+									<p>
+										<b>自費出版、<time datetime="2019-08">2019年8月</time>発売</b>
+									</p>
+									<p>池上線、東急多摩川線で活躍した東急7700系の形態バリエーションについて、2010年時点の在籍車36両を徹底解析しました。</p>
 								</div>
 							</li>
-							<li class="c-book-link">
+							<li class="c-grid__item p-item">
 								<a href="https://www.amazon.co.jp/dp/480220695X?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1">
-									<span class="c-book-link__thumb">
-										<img src="https://m.media-amazon.com/images/I/51uD92OAjNL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51uD92OAjNL._SL320_.jpg 2x" width="111" height="160" alt="" loading="lazy" class="c-book-link__image" />
-									</span>
-									<span class="c-book-link__title"><b>【ムック本】</b>東急電鉄 1989-2019 <img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon" /></span>
+									<img src="https://m.media-amazon.com/images/I/51uD92OAjNL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51uD92OAjNL._SL320_.jpg 2x" width="111" height="160" alt="" loading="lazy" class="p-item__image" />
+									<span class="p-item__title">東急電鉄 1989-2019 <img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon" /></span>
 								</a>
-								<div class="c-book-link__description">
-									<p>平成時代の東急電車の動向をまとめた本です。「現役車両ガイド」の一部の本文解説を担当、写真提供もしています。（<time datetime="2019-08">2019年8月</time>発売）</p>
+								<div class="p-item__text">
+									<p>
+										<b>イカロス・ムック、<time datetime="2019-08">2019年8月</time>発売</b>
+									</p>
+									<p>平成時代の東急電車の動向をまとめた本です。「現役車両ガイド」の一部の本文解説を担当しました。</p>
 								</div>
 							</li>
 							<% } else if (book === 'madoka') { %>
-							<li class="c-book-link">
+							<li class="c-grid__item p-item">
 								<a href="https://w0s.jp/madoka-magica/dojin/pictorial11">
-									<span class="c-book-link__thumb">
-										<picture>
-											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
-											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
-											<img src="https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" loading="lazy" class="c-book-link__image" />
-										</picture>
-									</span>
-									<span class="c-book-link__title"><b>【同人誌】</b>マギアレコード海外版動向</span>
+									<picture>
+										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
+										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
+										<img src="https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" loading="lazy" class="p-item__image" />
+									</picture>
+									<span class="p-item__title">マギアレコード海外版動向</span>
 								</a>
-								<div class="c-book-link__description">
-									<p>マギレコ中国版、繁中版、北米版のゲーム概要、イベントレポート、街頭広告の掲出例などを紹介します。（<time datetime="2019-08-12">2019年8月</time>発行）</p>
+								<div class="p-item__text">
+									<p>
+										<b>自費出版、<time datetime="2019-08">2019年8月</time>発売</b>
+									</p>
+									<p>マギレコ中国版、繁中版、北米版のゲーム概要、イベントレポート、街頭広告の掲出例などを紹介します。</p>
 								</div>
 							</li>
-							<li class="c-book-link">
+							<li class="c-grid__item p-item">
 								<a href="https://w0s.jp/madoka-magica/dojin/pictorial7">
-									<span class="c-book-link__thumb">
-										<picture>
-											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
-											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
-											<img src="https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" loading="lazy" class="c-book-link__image" />
-										</picture>
-									</span>
-									<span class="c-book-link__title"><b>【同人誌】</b>TVシリーズ 放送版とパッケージ版の比較</span>
+									<picture>
+										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
+										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
+										<img src="https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" loading="lazy" class="p-item__image" />
+									</picture>
+									<span class="p-item__title">TVシリーズ　放送版とパッケージ版の比較</span>
 								</a>
-								<div class="c-book-link__description">
-									<p>『魔法少女まどか☆マギカ』TVシリーズの放送版と Blu-ray / DVD 版の違いをまとめました。（<time datetime="2017-08-12">2017年8月</time>発行）</p>
+								<div class="p-item__text">
+									<p>
+										<b>自費出版、<time datetime="2017-08-12">2017年8月</time>発売</b>
+									</p>
+									<p>『魔法少女まどか☆マギカ』 TV シリーズの放送版と Blu-ray / DVD 版の違いをまとめました。</p>
 								</div>
 							</li>
 							<% } %>

@@ -1,0 +1,79 @@
+/* ==============================
+ *   埋め込みコンテンツ
+ * ============================== */
+
+/* ===== 埋め込みコンテンツ（画像、動画、 <iframe> など） ===== */
+.p-embed {
+	--_border-width: 0px;
+
+	contain: layout;
+	position: relative; /* for Safari */
+
+	@nest .p-entry & {
+		--_border-width: 1px;
+	}
+
+	& > :any-link {
+		--_expand-icon-padding: 4px;
+
+		display: inline-block;
+		outline-width: var(--outline-width-bold);
+		outline-offset: -1px;
+
+		&::before {
+			padding: var(--_expand-icon-padding);
+			box-sizing: border-box;
+			position: absolute;
+			inset: 1px;
+			content: "";
+			display: block;
+			width: 24px;
+			height: 24px;
+			background: rgb(0 0 0 / 70%) url("/image/entry/media-expansion.svg") center/contain no-repeat content-box border-box;
+		}
+
+		&:hover {
+			--_expand-icon-padding: 3px;
+		}
+	}
+
+	/* ツイート */
+	& .twitter-tweet-rendered {
+		/* stylelint-disable declaration-no-important */
+		margin: 0 !important;
+		/* stylelint-enable declaration-no-important */
+	}
+}
+
+.p-embed__image,
+.p-embed__video {
+	border: var(--_border-width) solid var(--color-black);
+	display: inline-block;
+	max-width: calc(100% - var(--_border-width) * 2);
+	height: auto;
+	vertical-align: top;
+}
+
+.p-embed__image {
+	min-width: calc(360px / 1.5 + var(--_border-width) * 2);
+}
+
+.p-embed__video {
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
+}
+
+.p-embed__frame {
+	border: var(--_border-width) solid var(--color-black);
+	box-sizing: border-box;
+	display: block;
+	width: 100%;
+	aspect-ratio: var(--aspect-ratio, auto);
+}
+
+.p-embed__tweet {
+	padding: 20px;
+	border: 1px solid var(--color-border-light);
+	border-radius: var(--border-radius-normal);
+	background: var(--color-white);
+}

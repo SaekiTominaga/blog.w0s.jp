@@ -1,0 +1,332 @@
+/* ==============================
+ *   メインエリア（.l-content__main）
+ * ============================== */
+
+/* ===== ボックス ===== */
+.p-box {
+	padding: 1em;
+	border: 1px solid var(--color-border-dark);
+	border-radius: var(--border-radius-normal);
+	background: var(--color-white);
+}
+
+.p-box__hdg {
+	line-height: var(--line-height-narrow);
+}
+
+/* ===== Amazon 商品 ===== */
+.p-amazon {
+	padding: 15px;
+	border: 1px solid var(--color-amazon-dark);
+	border-radius: var(--border-radius-large);
+	color: var(--color-black);
+	background: linear-gradient(var(--color-amazon-light), var(--color-white));
+}
+
+.p-amazon__hdg {
+	margin-block-start: -16px;
+	margin-inline-start: -16px;
+
+	& > img {
+		display: block;
+	}
+}
+
+.p-amazon__list {
+	margin-block-start: 15px;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(22em, 100%), 1fr));
+	gap: 12px;
+}
+
+.p-amazon__link {
+	--_bg-color: var(--color-amazon);
+
+	padding: 14px;
+	border: 1px solid var(--_bg-color);
+	border-radius: var(--border-radius-large);
+	display: grid;
+	grid-template-areas: "image gap text";
+	grid-template-columns: min(40%, 160px) 15px 1fr;
+	background: var(--_bg-color);
+	line-height: var(--line-height-narrow);
+	text-decoration-line: none;
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
+	transition: border-color var(--link-hover-transition-duration), background-color var(--link-hover-transition-duration);
+
+	&:hover {
+		--_bg-color: var(--color-amazon-dark);
+	}
+
+	&:any-link {
+		color: var(--color-darkgray);
+	}
+}
+
+/* 画像エリア */
+.p-amazon__thumb {
+	grid-column: image;
+}
+
+/* 商品画像 */
+.p-amazon__image {
+	margin: auto;
+	display: block;
+	max-width: 100%;
+	height: auto;
+	transition: box-shadow var(--link-hover-transition-duration);
+
+	@nest :any-link:hover & {
+		box-shadow: 0 0 4px 3px var(--color-amazon-verydark);
+	}
+}
+
+/* テキストエリア */
+.p-amazon__text {
+	--_bullet-height: 0.75em;
+	--_bullet-width: calc(var(--_bullet-height) * 0.6);
+	--_bullet-color: var(--link-color-bullet);
+	--_bullet-gap: 0.5em;
+
+	margin-inline-start: calc(var(--_bullet-width) + var(--_bullet-gap));
+	grid-column: text;
+}
+
+/* 商品タイトル */
+.p-amazon__title {
+	margin-inline-start: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+	display: inline;
+	font-weight: var(--font-weight-bold);
+	text-decoration-line: underline;
+
+	&::before {
+		margin-inline-end: var(--_bullet-gap);
+		content: "";
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		width: var(--_bullet-width);
+		height: var(--_bullet-height);
+		background: var(--_bullet-color);
+	}
+}
+
+/* 発売日 */
+.p-amazon__date {
+	margin-block-start: 0.5em;
+}
+
+/* ===== ブロックコード ===== */
+.p-code {
+	border: 1px solid var(--color-border-light);
+	contain: content;
+	display: flow-root; /* for Safari */
+	color: var(--color-black);
+	background: var(--color-white);
+}
+
+.p-code__clipboard {
+	margin: 0.5em 0.5em 1em 1em;
+	float: right;
+}
+
+.p-code__clipboard-button {
+	--_bg-color: var(--color-bg-superlight);
+	--_ripple-color: var(--color-black);
+	--_ripple-opacity: 0.25;
+	--_ripple-transition-duration: 0.5s;
+
+	padding: 0.5em;
+	border: 1px solid var(--color-border-light);
+	border-radius: var(--border-radius-normal);
+	color: var(--color-black);
+	background: var(--_bg-color);
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
+
+	/* ripple effect */
+	contain: layout;
+	position: relative; /* for Safari */
+	overflow: hidden;
+
+	&:hover {
+		--_bg-color: var(--color-white);
+	}
+
+	/* ripple effect */
+	&::before {
+		content: "";
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(circle, var(--_ripple-color) 25%, transparent 0);
+		opacity: 0;
+		transform: scale(4);
+		transition: var(--_ripple-transition-duration);
+	}
+
+	/* ripple effect */
+	&:active::before {
+		opacity: var(--_ripple-opacity);
+		transform: scale(0);
+		transition: initial;
+	}
+
+	& > img {
+		display: block;
+		width: 1.5em;
+		height: 1.5em;
+	}
+}
+
+.p-code__code {
+	padding: 1em;
+	font-family: monospace;
+	line-height: var(--line-height-narrow);
+
+	& > code {
+		color: #24292e; /* https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css */
+	}
+
+	@nest .p-entry & {
+		font-size: calc(100% / var(--font-ratio-1));
+	}
+}
+
+/* ===== 記事タイトルリスト ===== */
+.p-title-list {
+	--_padding-block: 1.5em;
+	--_padding-inline: 0px;
+	--_border-color: var(--color-border-light);
+
+	& > li {
+		padding: var(--_padding-block) var(--_padding-inline);
+		font-size: clamp(calc(100% / var(--font-ratio-1)), 2.5vw, 100%);
+
+		&:not(:first-child) {
+			border-block-start: 1px solid var(--_border-color);
+		}
+
+		@media (--breakpoint) {
+			--_padding-inline: var(--page-padding-inline);
+		}
+	}
+
+	&.-list {
+		border-block: 1px solid var(--_border-color);
+	}
+}
+
+/* ===== 記事 ===== */
+.p-entry {
+	--_entry-padding-block: 3%; /* 左右の余白 */
+	--_entry-box-shadow: 0 0 3px var(--color-border-light);
+	--_entry-color: var(--color-darkgray);
+	--_entry-bg-color: var(--color-bg-ultralight);
+
+	box-shadow: var(--_entry-box-shadow);
+	color: var(--_entry-color);
+	background: var(--_entry-bg-color);
+
+	@media print {
+		--_entry-padding-block: 0;
+		--_entry-box-shadow: none;
+		--_entry-color: inherit;
+		--_entry-bg-color: transparent;
+	}
+}
+
+/* ヘッダー */
+.p-entry__header {
+	padding-block: 0 30px;
+}
+
+/* 本体 */
+.p-entry__body {
+	padding: 30px var(--_entry-padding-block);
+	line-height: var(--line-height-wide);
+}
+
+/* フッター */
+.p-entry__footer {
+	padding: 30px var(--_entry-padding-block);
+}
+
+/* 【記事ヘッダー】記事タイトル */
+.p-entry-header-title {
+	--_border-width: 1px;
+	--_bg-color: #9fc;
+
+	padding: calc(15px - var(--_border-width)) calc(var(--_entry-padding-block) - var(--_border-width));
+	border: var(--_border-width) solid var(--_bg-color);
+	color: var(--color-black);
+	background: var(--_bg-color);
+
+	@media print {
+		padding: 10px;
+	}
+
+	& > h1 {
+		font-size: clamp(calc(100% * var(--font-ratio-3)), 5vw, calc(100% * var(--font-ratio-5)));
+		line-height: var(--line-height-narrow);
+		text-shadow: 0 0 0.05em var(--color-border-light);
+	}
+}
+
+/* 【記事ヘッダー】公開日、更新日 */
+.p-entry-header-date {
+	margin-inline: auto var(--_entry-padding-block);
+}
+
+/* 【記事フッター】カテゴリー */
+.p-entry-footer-category {
+	--_tag-pading-row: 0.75em;
+	--_tag-pading-col: 0.5em;
+	--_tag-border-width: 1px;
+
+	display: flex;
+	justify-content: flex-end;
+	gap: 0 0.5em;
+}
+
+.p-entry-footer-category__hdg {
+	padding: var(--_tag-pading-row) 0;
+	border: var(--_tag-border-width) solid transparent;
+	line-height: var(--line-height-nowrap);
+	white-space: nowrap;
+}
+
+.p-entry-footer-category__list {
+	display: flex;
+	flex-flow: wrap;
+	gap: 8px;
+
+	& a {
+		padding: var(--_tag-pading-row) var(--_tag-pading-col);
+		border: var(--_tag-border-width) solid var(--color-border-light);
+		border-radius: var(--border-radius-normal);
+		display: inline-block;
+		background: var(--color-white);
+		line-height: var(--line-height-nowrap);
+		white-space: nowrap;
+		text-decoration: none;
+		outline-width: var(--outline-width-bold);
+		outline-offset: -1px;
+
+		&:hover {
+			box-shadow: 0 0 3px var(--color-border-light);
+		}
+	}
+}
+
+/* 【記事フッター】ソーシャルボタン */
+.p-entry-footer-social {
+}
+
+/* 【記事フッター】関連記事 */
+.p-entry-footer-relation {
+	@nest .p-entry__footer > & {
+		margin-block-start: calc(var(--stack-margin-base) * 3);
+	}
+}

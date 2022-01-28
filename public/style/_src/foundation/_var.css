@@ -1,13 +1,9 @@
 :root {
-	/* ===== ページ全体 ===== */
-	--page-max-width: 1280px; /* ページの最大幅 */
-	--page-sidebar-width: 230px; /* サイドバーの幅 */
-	--page-content-sidebar-gap: 26px; /* コンテンツエリアとサイドバーの横間隔 */
-	--page-col-padding: 10px; /* ページの左右の余白 */
-	--page-col-margin: calc((100% - var(--page-max-width)) / 2 - var(--page-col-padding)); /* ページの左右の余白 */
-	--page-color: #000; /* ページ文字色 */
-	--page-bg-color: #fffff9; /* ページ背景色 */
-	--page-font-size: 100%; /* デフォルトのフォントサイズ 12px=75%, 13px=81.3%, 14px=87.5%, 15px=93.8%, 16px=100%, 17px=106.3%, 18px=112.5% */
+	/* ===== border ===== */
+	--border-radius-small: 0.125em;
+	--border-radius-normal: 0.25em;
+	--border-radius-large: 0.5em;
+	--border-radius-full: 1em;
 
 	/* ===== 色 ===== */
 	--color-white: #fff;
@@ -15,28 +11,27 @@
 	--color-gray: #666;
 	--color-darkgray: #333;
 	--color-black: #000;
-	--color-green: #080;
-	--color-border-dark: #999;
+	--color-verylightred: #fee;
+	--color-red: #e00; /* --page-bg-color に対してコントラスト比 4.5:1 を満たす限界値 */
+	--color-darkred: #df0000; /* --color-verylightred に対してコントラスト比 4.5:1 を満たす限界値 */
+	--color-ultralightgreen: #f9fff9;
+	--color-green: #008900; /* --page-bg-color, --color-ultralightgreen に対してコントラスト比 4.5:1 を満たす限界値 */
+	--color-lightyellow: #ffc;
+	--color-yellow: #ff6;
+	--color-verylightblue: #dff;
+	--color-powderblue: #cde;
+	--color-darkblue: #00008b;
 	--color-border-light: #ccc;
-	--color-border-green: #090;
-	--color-bg-dark: #ddd;
+	--color-border-dark: #999;
+	--color-bg-ultralight: #fcfcfc;
+	--color-bg-superlight: #f9f9f9;
 	--color-bg-light: #eee;
-	--color-bg-verylight: #f9f9f9;
-	--color-bg-superlight: #fcfcfc;
-	--color-bg-skyblue: #dff;
-	--color-bg-yellow: #ff9;
-	--color-bg-lightyellow: #ffc;
-	--color-bg-superlightgreen: #f9fff9;
+	--color-bg-dark: #ddd;
 	--color-note: #960;
-	--color-amazon-bg: hsl(30 100% 87%);
-	--color-amazon-bg-hover: hsl(30 100% 85%);
-	--color-amazon-box-shadow-hover: #f92;
-
-	/* ===== テキスト ===== */
-	--line-height-wide: 1.8; /* 広い行高さ（長い本文など） */
-	--line-height-normal: 1.5; /* 通常の行高さ */
-	--line-height-narrow: 1.25; /* 狭い行高さ（見出しやボタンなど） */
-	--line-height-nowrap: 1; /* 改行しない文の行高さ */
+	--color-amazon: hsl(30 100% 87%);
+	--color-amazon-light: hsl(30 100% 92%);
+	--color-amazon-dark: hsl(30 100% 84%);
+	--color-amazon-verydark: hsl(30 100% 60%);
 
 	/* ===== フォント ===== */
 	--font-ratio-1: 1.12; /* 1.12 / 0.89 */
@@ -50,10 +45,11 @@
 	--font-weight-normal: 500; /* Windows + 游ゴシック 対策で 400 より大きな値とする */
 	--font-weight-bold: 700;
 
-	/* ===== border ===== */
-	--border-radius-small: 0.125em;
-	--border-radius-normal: 0.25em;
-	--border-radius-large: 0.5em;
+	/* ===== テキスト ===== */
+	--line-height-wide: 1.8; /* 広い行高さ（長い本文など） */
+	--line-height-normal: 1.5; /* 通常の行高さ */
+	--line-height-narrow: 1.25; /* 狭い行高さ（見出しやボタンなど） */
+	--line-height-nowrap: 1; /* 改行しない文の行高さ */
 
 	/* ===== リンク ===== */
 	--link-color: #00f; /* 未訪問リンクの文字色 */
@@ -64,11 +60,26 @@
 
 	/* ===== フォーカスリング ===== */
 	--outline-width: 1px;
+	--outline-width-bold: 2px;
 	--outline-color: #4d90fe;
 	--outline-offset: 1px;
+	--outline-offset-linkonly: 0.125em;
+
+	/* ===== Stack ===== */
+	--stack-margin-base: 1.5em;
 
 	/* ===== 図形 ===== */
 	--shape-link-triangle: polygon(0 0, 100% 50%, 0 100%); /* リンクアイコン ( ▶ ) */
+	--shape-pagelink-triangle: polygon(0 0, 100% 0, 50% 100%); /* リンクアイコン ( ▼ ) */
 	--shape-link-arrow: polygon(17.68% 0, 100% 50%, 17.68% 100%, 0 88.21%, 64.64% 50%, 0 11.79%); /* リンクアイコン ( > ) */
-	--shape-pagelink-triangle: polygon(0 0, 100% 0%, 50% 100%); /* ページ内リンクアイコン ( ▼ ) */
+
+	/* ===== ページ全体設定 ===== */
+	--page-max-width: 1280px; /* ページの最大幅 */
+	--page-sidebar-width: 230px; /* サイドバーの幅 */
+	--page-content-sidebar-gap: 26px; /* コンテンツエリアとサイドバーの横間隔 */
+	--page-padding-inline: 10px; /* ページの左右の余白 */
+	--page-margin-inline: calc((100% - var(--page-max-width)) / 2 - var(--page-padding-inline)); /* ページの左右の余白 */
+	--page-color: #000; /* ページ文字色 */
+	--page-bg-color: #fffff9; /* ページ背景色 */
+	--page-font-size: 100%; /* デフォルトのフォントサイズ 12px=75%, 13px=81.3%, 14px=87.5%, 15px=93.8%, 16px=100%, 17px=106.3%, 18px=112.5% */
 }

@@ -18,9 +18,9 @@
 		"no-descending-specificity": null,
 		"no-duplicate-selectors": true,
 		"property-no-vendor-prefix": [true, { "ignoreProperties": ["text-decoration-skip"] }],
-		"selector-class-pattern": "^([lcpus]|entry)-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$|^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$|^hljs-[a-z][-_a-z]*$|^entry$|^twitter-tweet-rendered$|^adsbygoogle$",
+		"selector-class-pattern": "^([lcpu])-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$|^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$|^twitter-tweet-rendered$|^adsbygoogle$",
 		"selector-max-id": 0,
-		"selector-max-universal": 0,
+		"selector-max-universal": 1,
 		"string-quotes": "double",
 		"value-keyword-case": null,
 		"value-no-vendor-prefix": [true, { "ignoreValues": ["fit-content"] }]

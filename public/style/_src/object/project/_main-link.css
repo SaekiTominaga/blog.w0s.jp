@@ -1,0 +1,68 @@
+/* ==============================
+ *   リンク
+ * ============================== */
+
+/* ===== 商品リンク ===== */
+.p-item {
+	--_gap: 15px;
+	--_bullet-width: 0.45em;
+	--_bullet-height: 0.75em;
+	--_bullet-color: var(--link-color-bullet);
+	--_bullet-gap: 0.5em;
+
+	contain: layout;
+	display: flow-root; /* for Safari */
+	font-size: calc(100% * var(--font-ratio-2));
+	line-height: var(--line-height-narrow);
+
+	& > :any-link {
+		outline: none;
+	}
+}
+
+.p-item__image {
+	margin-inline-end: calc(var(--_gap) + var(--_bullet-width) + var(--_bullet-gap));
+	border: 1px solid var(--color-black);
+	float: left;
+	max-width: 50%;
+	height: auto;
+
+	@nest :any-link:hover & {
+		box-shadow: 0 0 5px var(--color-border-dark);
+	}
+
+	@nest :focus & {
+		outline: var(--outline-width-bold) solid var(--outline-color);
+		outline-offset: -1px;
+	}
+}
+
+.p-item__title {
+	margin-inline-start: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+
+	&::before {
+		margin-inline-end: var(--_bullet-gap);
+		content: "";
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		width: var(--_bullet-width);
+		height: var(--_bullet-height);
+		background: var(--_bullet-color);
+	}
+
+	@nest :any-link:hover & {
+		--_bullet-color: var(--link-color-hover);
+	}
+
+	@nest :focus & {
+		outline: var(--outline-width) solid var(--outline-color);
+		outline-offset: var(--outline-offset-linkonly);
+	}
+}
+
+.p-item__text {
+	margin-block-start: 0.5em;
+	font-size: calc(100% / var(--font-ratio-2));
+	line-height: var(--line-height-normal);
+	overflow: hidden;
+}

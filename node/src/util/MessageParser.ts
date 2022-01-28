@@ -63,10 +63,12 @@ export default class MessageParser {
 	#olElement: HTMLOListElement | undefined;
 	#dl = false;
 	#dlElement: HTMLDListElement | undefined;
+	#notes = false;
+	#notesElement: HTMLUListElement | undefined;
 
 	/* 引用 */
 	#quote = false;
-	#quoteWrapElement: HTMLElement | undefined;
+	#quoteFigureElement: HTMLElement | undefined;
 	#quoteElement: HTMLQuoteElement | undefined;
 	#quoteMeta = false;
 	#quoteLanguage: string | undefined; // 引用文の言語
@@ -313,6 +315,30 @@ export default class MessageParser {
 					}
 					break;
 				}
+				case '*': {
+					if (line.startsWith('* ')) {
+						/* 先頭が * な場合は注釈 */
+						const noteText = line.substring(2); // 先頭記号を削除
+
+						this.#appendNote(noteText);
+
+						this.#resetStackFlag();
+						this.#notes = true;
+
+						continue;
+					} else if (/^\*\d{4}-[0-1]\d-[0-3]\d: /.test(line)) {
+						/* 先頭が *YYYY-MM-DD: な場合は追記 */
+						const insertDate = dayjs(new Date(Number(line.substring(1, 5)), Number(line.substring(6, 8)) - 1, Number(line.substring(9, 11))));
+						const insertText = line.substring(13); // 先頭の「*YYYY-MM-DD: 」を削除
+
+						this.#appendInsert(insertDate, insertText);
+
+						this.#resetStackFlag();
+
+						continue;
+					}
+					break;
+				}
 				case '>': {
 					if (line.startsWith('> ')) {
 						/* 先頭が > な場合はブロックレベル引用 */
@@ -399,29 +425,6 @@ export default class MessageParser {
 						this.#resetStackFlag();
 						this.#thead = alignRow;
 						this.#tbody = !alignRow;
-
-						continue;
-					}
-					break;
-				}
-				case '*': {
-					if (line.startsWith('* ')) {
-						/* 先頭が * な場合は注釈 */
-						const noteText = line.substring(2); // 先頭記号を削除
-
-						this.#appendNote(noteText);
-
-						this.#resetStackFlag();
-
-						continue;
-					} else if (/^\*\d{4}-[0-1]\d-[0-3]\d: /.test(line)) {
-						/* 先頭が *YYYY-MM-DD: な場合は追記 */
-						const insertDate = dayjs(new Date(Number(line.substring(1, 5)), Number(line.substring(6, 8)) - 1, Number(line.substring(9, 11))));
-						const insertText = line.substring(13); // 先頭の「*YYYY-MM-DD: 」を削除
-
-						this.#appendInsert(insertDate, insertText);
-
-						this.#resetStackFlag();
 
 						continue;
 					}
@@ -543,6 +546,7 @@ export default class MessageParser {
 		this.#links = false;
 		this.#ol = false;
 		this.#dl = false;
+		this.#notes = false;
 
 		this.#quote = false;
 		this.#quoteMeta = false;
@@ -581,14 +585,17 @@ export default class MessageParser {
 		const id = this.#generateSectionId(headingText);
 
 		const sectionElement = this.#document.createElement('section');
-		sectionElement.className = 'entry-section1 entry';
+		sectionElement.className = 'p-section1';
 		sectionElement.id = id;
 		this.#rootElement.appendChild(sectionElement);
 
+		const headingWrapElement = this.#document.createElement('div');
+		headingWrapElement.className = 'p-section1__hdg';
+		sectionElement.appendChild(headingWrapElement);
+
 		const headingElement = this.#document.createElement('h2');
-		headingElement.className = 'entry-hdg1';
 		headingElement.textContent = headingText;
-		sectionElement.appendChild(headingElement);
+		headingWrapElement.appendChild(headingElement);
 
 		this.#section1Elements.push(sectionElement);
 		this.#section1Headings.set(id, headingText);
@@ -603,14 +610,17 @@ export default class MessageParser {
 		const id = this.#generateSectionId(headingText);
 
 		const sectionElement = this.#document.createElement('section');
-		sectionElement.className = 'entry-section2 entry';
+		sectionElement.className = 'p-section2';
 		sectionElement.id = id;
 		this.#section1Elements.slice(-1)[0]?.appendChild(sectionElement);
 
+		const headingWrapElement = this.#document.createElement('div');
+		headingWrapElement.className = 'p-section2__hdg';
+		sectionElement.appendChild(headingWrapElement);
+
 		const headingElement = this.#document.createElement('h3');
-		headingElement.className = 'entry-hdg2';
 		headingElement.textContent = headingText;
-		sectionElement.appendChild(headingElement);
+		headingWrapElement.appendChild(headingElement);
 
 		this.#section2Elements.push(sectionElement);
 	}
@@ -620,7 +630,7 @@ export default class MessageParser {
 	 */
 	#appendSectionBreak(): void {
 		const sectionBreakElement = this.#document.createElement('hr');
-		sectionBreakElement.className = 'entry-section-break';
+		sectionBreakElement.className = 'p-section-break';
 		this.#appendChild(sectionBreakElement);
 	}
 
@@ -631,7 +641,7 @@ export default class MessageParser {
 		if (this.#section1Elements.length >= 2) {
 			const tocElement = this.#document.createElement('ol');
 			tocElement.setAttribute('aria-label', '目次');
-			tocElement.className = 'entry-toc';
+			tocElement.className = 'p-toc';
 			this.#section1Elements[0]?.before(tocElement);
 
 			for (const [id, headingText] of this.#section1Headings) {
@@ -653,7 +663,6 @@ export default class MessageParser {
 	 */
 	#appendParagraph(paragraphText: string): void {
 		const pElement = this.#document.createElement('p');
-		pElement.className = 'entry-text';
 		this.#inlineMarkup(pElement, paragraphText); // インライン要素を設定
 		this.#appendChild(pElement);
 	}
@@ -666,7 +675,7 @@ export default class MessageParser {
 	#appendUl(listText: string): void {
 		if (!this.#ul || this.#ulElement === undefined) {
 			const ulElement = this.#document.createElement('ul');
-			ulElement.className = 'entry-list';
+			ulElement.className = 'p-list';
 			this.#appendChild(ulElement);
 
 			this.#ulElement = ulElement;
@@ -685,14 +694,13 @@ export default class MessageParser {
 	#appendLinks(listText: string): void {
 		if (!this.#links || this.#linksElement === undefined) {
 			const linksElement = this.#document.createElement('ul');
-			linksElement.className = 'entry-list-link';
+			linksElement.className = 'p-links';
 			this.#appendChild(linksElement);
 
 			this.#linksElement = linksElement;
 		}
 
 		const liElement = this.#document.createElement('li');
-		liElement.className = 'c-link';
 		liElement.insertAdjacentHTML('beforeend', this.#parsingInlineLink(StringEscapeHtml.escape(listText))); // リンクを設定
 		this.#linksElement.appendChild(liElement);
 	}
@@ -705,7 +713,7 @@ export default class MessageParser {
 	#appendOl(listText: string): void {
 		if (!this.#ol || this.#olElement === undefined) {
 			const olElement = this.#document.createElement('ol');
-			olElement.className = 'entry-list-order';
+			olElement.className = 'p-list-num';
 			this.#appendChild(olElement);
 
 			this.#olElement = olElement;
@@ -725,7 +733,7 @@ export default class MessageParser {
 	#appendDl(dtText: string, ddTextList: string[]): void {
 		if (!this.#dl || this.#dlElement === undefined) {
 			const dlElement = this.#document.createElement('dl');
-			dlElement.className = 'entry-list-description';
+			dlElement.className = 'p-list-description';
 			this.#appendChild(dlElement);
 
 			this.#dlElement = dlElement;
@@ -743,21 +751,62 @@ export default class MessageParser {
 	}
 
 	/**
+	 * 注釈を挿入する
+	 *
+	 * @param {string} noteText - 注釈テキスト
+	 */
+	#appendNote(noteText: string): void {
+		if (!this.#notes || this.#notesElement === undefined) {
+			const notesElement = this.#document.createElement('ul');
+			notesElement.className = 'p-notes';
+			this.#appendChild(notesElement);
+
+			this.#notesElement = notesElement;
+		}
+
+		const liElement = this.#document.createElement('li');
+		this.#inlineMarkup(liElement, noteText); // インライン要素を設定
+		this.#notesElement.appendChild(liElement);
+	}
+
+	/**
+	 * 追記を挿入する
+	 *
+	 * @param {dayjs.Dayjs} insertDate - 追記日時
+	 * @param {string} insertText - 追記テキスト
+	 */
+	#appendInsert(insertDate: dayjs.Dayjs, insertText: string): void {
+		const wrapElement = this.#document.createElement('p');
+		wrapElement.className = 'p-insert';
+		this.#appendChild(wrapElement);
+
+		const dateElement = this.#document.createElement('span');
+		dateElement.className = 'p-insert__date';
+		dateElement.textContent = `${insertDate.format('YYYY年M月D日')}追記`;
+		wrapElement.appendChild(dateElement);
+
+		const insElement = this.#document.createElement('ins');
+		insElement.setAttribute('datetime', insertDate.format('YYYY-MM-DD'));
+		insElement.className = 'p-insert__text';
+		this.#inlineMarkup(insElement, insertText); // インライン要素を設定
+		wrapElement.appendChild(insElement);
+	}
+
+	/**
 	 * <blockquote> を挿入する
 	 *
 	 * @param {string} quoteText - 引用テキスト
 	 */
 	#appendQuote(quoteText: string): void {
 		if (!this.#quote || this.#quoteElement === undefined) {
-			const quoteWrapElement = this.#document.createElement('figure');
-			quoteWrapElement.className = 'entry-quote';
-			this.#appendChild(quoteWrapElement);
+			const figureElement = this.#document.createElement('figure');
+			this.#appendChild(figureElement);
 
 			const quoteElement = this.#document.createElement('blockquote');
-			quoteElement.className = 'entry-quote__quote';
-			quoteWrapElement.appendChild(quoteElement);
+			quoteElement.className = 'p-quote';
+			figureElement.appendChild(quoteElement);
 
-			this.#quoteWrapElement = quoteWrapElement;
+			this.#quoteFigureElement = figureElement;
 			this.#quoteElement = quoteElement;
 		}
 
@@ -777,8 +826,8 @@ export default class MessageParser {
 		const pElement = this.#document.createElement('p');
 		this.#quoteElement.appendChild(pElement);
 
-		const omitElement = this.#document.createElement('em');
-		omitElement.className = 'entry-quote__omit';
+		const omitElement = this.#document.createElement('b');
+		omitElement.className = 'p-quote__omit';
 		omitElement.textContent = '(中略)';
 		pElement.appendChild(omitElement);
 	}
@@ -787,13 +836,13 @@ export default class MessageParser {
 	 * <blockquote> の出典を挿入する
 	 */
 	#appendQuoteCite(): void {
-		if (this.#quoteTitle === undefined || this.#quoteWrapElement === undefined) {
+		if (this.#quoteTitle === undefined || this.#quoteFigureElement === undefined) {
 			return;
 		}
 
 		const captionElement = this.#document.createElement('figcaption');
-		captionElement.className = 'entry-quote__caption';
-		this.#quoteWrapElement.appendChild(captionElement);
+		captionElement.className = 'c-caption -meta';
+		this.#quoteFigureElement.appendChild(captionElement);
 
 		if (this.#quoteUrl === undefined) {
 			captionElement.textContent = this.#quoteTitle;
@@ -837,20 +886,20 @@ export default class MessageParser {
 
 		/* コードの挿入 */
 		const codeWrapperElement = this.#document.createElement('div');
-		codeWrapperElement.setAttribute('class', 'entry-code');
+		codeWrapperElement.setAttribute('class', 'p-code');
 		this.#appendChild(codeWrapperElement);
 
 		if (code.includes('\n')) {
 			/* 複数行の場合はクリップボードボタンを表示 */
 			const clipboardElement = this.#document.createElement('div');
-			clipboardElement.setAttribute('class', 'entry-code__clipboard');
+			clipboardElement.setAttribute('class', 'p-code__clipboard');
 			codeWrapperElement.appendChild(clipboardElement);
 
 			const clipboardButtonElement = this.#document.createElement('button');
 			clipboardButtonElement.type = 'button';
 			clipboardButtonElement.setAttribute('is', 'w0s-clipboard');
 			clipboardButtonElement.setAttribute('data-target-for', codeId);
-			clipboardButtonElement.className = 'c-clipboard-button';
+			clipboardButtonElement.className = 'p-code__clipboard-button';
 			clipboardElement.appendChild(clipboardButtonElement);
 
 			const clipboardIconElement = this.#document.createElement('img');
@@ -860,7 +909,7 @@ export default class MessageParser {
 		}
 
 		const preElement = this.#document.createElement('pre');
-		preElement.className = 'entry-code__code';
+		preElement.className = 'p-code__code';
 		codeWrapperElement.appendChild(preElement);
 
 		const codeElement = this.#document.createElement('code');
@@ -889,7 +938,7 @@ export default class MessageParser {
 	#appendTable(): void {
 		if (this.#tableElement === undefined) {
 			const tableElement = this.#document.createElement('table');
-			tableElement.className = 'entry-table';
+			tableElement.className = 'p-table';
 			this.#appendChild(tableElement);
 
 			this.#tableElement = tableElement;
@@ -952,50 +1001,6 @@ export default class MessageParser {
 	}
 
 	/**
-	 * 注釈を挿入する
-	 *
-	 * @param {string} noteText - 注釈テキスト
-	 */
-	#appendNote(noteText: string): void {
-		const wrapElement = this.#document.createElement('p');
-		wrapElement.className = 'entry-note';
-		this.#appendChild(wrapElement);
-
-		const markElement = this.#document.createElement('span');
-		markElement.className = 'entry-note__mark';
-		markElement.textContent = '※';
-		wrapElement.appendChild(markElement);
-
-		const noteElement = this.#document.createElement('span');
-		noteElement.className = 'entry-note__text';
-		this.#inlineMarkup(noteElement, noteText); // インライン要素を設定
-		wrapElement.appendChild(noteElement);
-	}
-
-	/**
-	 * 追記を挿入する
-	 *
-	 * @param {dayjs.Dayjs} insertDate - 追記日時
-	 * @param {string} insertText - 追記テキスト
-	 */
-	#appendInsert(insertDate: dayjs.Dayjs, insertText: string): void {
-		const wrapElement = this.#document.createElement('p');
-		wrapElement.className = 'entry-ins';
-		this.#appendChild(wrapElement);
-
-		const dateElement = this.#document.createElement('span');
-		dateElement.className = 'entry-ins__date';
-		dateElement.textContent = `${insertDate.format('YYYY年M月D日')}追記`;
-		wrapElement.appendChild(dateElement);
-
-		const insElement = this.#document.createElement('ins');
-		insElement.setAttribute('datetime', insertDate.format('YYYY-MM-DD'));
-		insElement.className = 'entry-ins__text';
-		this.#inlineMarkup(insElement, insertText); // インライン要素を設定
-		wrapElement.appendChild(insElement);
-	}
-
-	/**
 	 * 汎用ボックスを挿入する
 	 *
 	 * @param {string} boxText - ボックステキスト
@@ -1003,7 +1008,7 @@ export default class MessageParser {
 	#appendBox(boxText: string): void {
 		if (!this.#box || this.#boxElement === undefined) {
 			const boxElement = this.#document.createElement('div');
-			boxElement.className = 'entry-box';
+			boxElement.className = 'p-box';
 			this.#appendChild(boxElement);
 
 			this.#boxElement = boxElement;
@@ -1025,15 +1030,19 @@ export default class MessageParser {
 
 		if (!this.#media || this.#mediaWrapElement === undefined) {
 			const gridElement = this.#document.createElement('div');
-			gridElement.className = 'entry-embedded-grid';
+			gridElement.className = 'c-flex';
 			this.#appendChild(gridElement);
 
 			this.#mediaWrapElement = gridElement;
 		}
 
 		const figureElement = this.#document.createElement('figure');
-		figureElement.className = 'entry-embedded';
+		figureElement.className = 'c-flex__item';
 		this.#mediaWrapElement.appendChild(figureElement);
+
+		const embeddElement = this.#document.createElement('div');
+		embeddElement.className = 'p-embed';
+		figureElement.appendChild(embeddElement);
 
 		switch (fileExtension) {
 			case '.jpg':
@@ -1047,11 +1056,11 @@ export default class MessageParser {
 				if (mime !== undefined) {
 					aElement.type = mime;
 				}
-				figureElement.appendChild(aElement);
+				embeddElement.appendChild(aElement);
 
 				const imgElement = this.#document.createElement('img');
 				imgElement.alt = 'オリジナル画像';
-				imgElement.className = 'entry-embedded__image';
+				imgElement.className = 'p-embed__image';
 
 				switch (fileExtension) {
 					case '.svg': {
@@ -1079,16 +1088,16 @@ export default class MessageParser {
 				}
 
 				const figcaptionElement = this.#document.createElement('figcaption');
-				figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
+				figcaptionElement.className = 'c-caption';
 				figureElement.appendChild(figcaptionElement);
 
 				const numElement = this.#document.createElement('span');
-				numElement.className = 'c-embedded-caption__no';
+				numElement.className = 'c-caption__no';
 				numElement.textContent = `画像${this.#imageNum}`;
 				figcaptionElement.appendChild(numElement);
 
 				const captionTitleElement = this.#document.createElement('span');
-				captionTitleElement.className = 'c-embedded-caption__title';
+				captionTitleElement.className = 'c-caption__title';
 				captionTitleElement.textContent = caption;
 				figcaptionElement.appendChild(captionTitleElement);
 
@@ -1099,21 +1108,21 @@ export default class MessageParser {
 				const videoElement = this.#document.createElement('video');
 				videoElement.src = `https://media.w0s.jp/video/blog/${fileName}`;
 				videoElement.controls = true;
-				videoElement.className = 'entry-embedded__video';
+				videoElement.className = 'p-embed__video';
 				videoElement.textContent = '';
-				figureElement.appendChild(videoElement);
+				embeddElement.appendChild(videoElement);
 
 				const figcaptionElement = this.#document.createElement('figcaption');
-				figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
+				figcaptionElement.className = 'c-caption';
 				figureElement.appendChild(figcaptionElement);
 
 				const numElement = this.#document.createElement('span');
-				numElement.className = 'c-embedded-caption__no';
+				numElement.className = 'c-caption__no';
 				numElement.textContent = `動画${this.#videoNum}`;
 				figcaptionElement.appendChild(numElement);
 
 				const captionTitleElement = this.#document.createElement('span');
-				captionTitleElement.className = 'c-embedded-caption__title';
+				captionTitleElement.className = 'c-caption__title';
 				captionTitleElement.textContent = caption;
 				figcaptionElement.appendChild(captionTitleElement);
 
@@ -1134,15 +1143,19 @@ export default class MessageParser {
 	#appendYouTube(id: string, width: number, height: number, caption: string): void {
 		if (!this.#media || this.#mediaWrapElement === undefined) {
 			const gridElement = this.#document.createElement('div');
-			gridElement.className = 'entry-embedded-grid';
+			gridElement.className = 'c-flex';
 			this.#appendChild(gridElement);
 
 			this.#mediaWrapElement = gridElement;
 		}
 
 		const figureElement = this.#document.createElement('figure');
-		figureElement.className = 'entry-embedded';
+		figureElement.className = 'c-flex__item';
 		this.#mediaWrapElement.appendChild(figureElement);
+
+		const embeddElement = this.#document.createElement('div');
+		embeddElement.className = 'p-embed';
+		figureElement.appendChild(embeddElement);
 
 		const iframeElement = this.#document.createElement('iframe');
 		iframeElement.src = `https://www.youtube-nocookie.com/embed/${id}?rel=0`; // rel=0 は関連動画を表示しない設定
@@ -1150,22 +1163,22 @@ export default class MessageParser {
 		iframeElement.title = 'YouTube 動画';
 		iframeElement.width = String(width);
 		iframeElement.height = String(height);
-		iframeElement.className = 'entry-embedded__frame';
+		iframeElement.className = 'p-embed__frame';
 		iframeElement.setAttribute('style', `--aspect-ratio:${width}/${height}`);
 		iframeElement.textContent = '';
-		figureElement.appendChild(iframeElement);
+		embeddElement.appendChild(iframeElement);
 
 		const figcaptionElement = this.#document.createElement('figcaption');
-		figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
+		figcaptionElement.className = 'c-caption';
 		figureElement.appendChild(figcaptionElement);
 
 		const numElement = this.#document.createElement('span');
-		numElement.className = 'c-embedded-caption__no';
+		numElement.className = 'c-caption__no';
 		numElement.textContent = `動画${this.#videoNum}`;
 		figcaptionElement.appendChild(numElement);
 
 		const captionTitleElement = this.#document.createElement('span');
-		captionTitleElement.className = 'c-embedded-caption__title';
+		captionTitleElement.className = 'c-caption__title';
 		figcaptionElement.appendChild(captionTitleElement);
 
 		const aElement = this.#document.createElement('a');
@@ -1176,6 +1189,8 @@ export default class MessageParser {
 		const iconElement = this.#document.createElement('img');
 		iconElement.src = '/image/icon/youtube.svg';
 		iconElement.alt = '(YouTube)';
+		iconElement.width = 16;
+		iconElement.height = 16;
 		iconElement.className = 'c-link-icon';
 		aElement.appendChild(iconElement);
 
@@ -1193,7 +1208,7 @@ export default class MessageParser {
 		}
 
 		const gridElement = this.#document.createElement('div');
-		gridElement.className = 'entry-embedded-grid';
+		gridElement.className = 'c-flex';
 
 		for (const id of ids) {
 			const tweetData = await this.#dao.getTweet(id);
@@ -1203,14 +1218,18 @@ export default class MessageParser {
 				continue;
 			}
 
-			const tweetWrapperElement = this.#document.createElement('figure');
-			tweetWrapperElement.className = 'entry-embedded';
-			gridElement.appendChild(tweetWrapperElement);
+			const figureElement = this.#document.createElement('figure');
+			figureElement.className = 'c-flex__item';
+			gridElement.appendChild(figureElement);
+
+			const embeddElement = this.#document.createElement('div');
+			embeddElement.className = 'p-embed';
+			figureElement.appendChild(embeddElement);
 
 			const tweetElement = this.#document.createElement('blockquote');
-			tweetElement.className = 'entry-embedded__tweet twitter-tweet';
+			tweetElement.className = 'p-embed__tweet twitter-tweet';
 			tweetElement.dataset.dnt = 'true';
-			tweetWrapperElement.appendChild(tweetElement);
+			embeddElement.appendChild(tweetElement);
 
 			const tweetTextElement = this.#document.createElement('p');
 			tweetTextElement.textContent = tweetData.text;
@@ -1222,11 +1241,11 @@ export default class MessageParser {
 			tweetElement.appendChild(tweetLinkElement);
 
 			const figcaptionElement = this.#document.createElement('figcaption');
-			figcaptionElement.className = 'entry-embedded__caption c-embedded-caption';
-			tweetWrapperElement.appendChild(figcaptionElement);
+			figcaptionElement.className = 'c-caption';
+			figureElement.appendChild(figcaptionElement);
 
 			const captionTitleElement = this.#document.createElement('span');
-			captionTitleElement.className = 'c-embedded-caption__title';
+			captionTitleElement.className = 'c-caption__title';
 			figcaptionElement.appendChild(captionTitleElement);
 
 			const aElement = this.#document.createElement('a');
@@ -1237,6 +1256,8 @@ export default class MessageParser {
 			const iconElement = this.#document.createElement('img');
 			iconElement.src = '/image/icon/twitter.svg';
 			iconElement.alt = '(Twitter)';
+			iconElement.width = 16;
+			iconElement.height = 16;
 			iconElement.className = 'c-link-icon';
 			aElement.appendChild(iconElement);
 
@@ -1259,7 +1280,7 @@ export default class MessageParser {
 		}
 
 		const amazonElement = this.#document.createElement('aside');
-		amazonElement.className = 'entry-amazon';
+		amazonElement.className = 'p-amazon';
 		this.#appendChild(amazonElement);
 
 		let headingElementName: string;
@@ -1271,7 +1292,7 @@ export default class MessageParser {
 			headingElementName = 'h2';
 		}
 		const headingElement = this.#document.createElement(headingElementName);
-		headingElement.className = 'entry-amazon__hdg';
+		headingElement.className = 'p-amazon__hdg';
 		amazonElement.appendChild(headingElement);
 
 		const headingImageElement = this.#document.createElement('img');
@@ -1283,7 +1304,7 @@ export default class MessageParser {
 		headingElement.appendChild(headingImageElement);
 
 		const ulElement = this.#document.createElement('ul');
-		ulElement.className = 'entry-amazon__list';
+		ulElement.className = 'p-amazon__list';
 		amazonElement.appendChild(ulElement);
 
 		for (const asin of asins) {
@@ -1298,12 +1319,12 @@ export default class MessageParser {
 			ulElement.appendChild(liElement);
 
 			const dpAreaElement = this.#document.createElement('a');
-			dpAreaElement.className = 'entry-amazon__link';
+			dpAreaElement.className = 'p-amazon__link';
 			dpAreaElement.setAttribute('href', amazonData.url);
 			liElement.appendChild(dpAreaElement);
 
 			const dpImageAreaElement = this.#document.createElement('div');
-			dpImageAreaElement.className = 'entry-amazon__thumb';
+			dpImageAreaElement.className = 'p-amazon__thumb';
 			dpAreaElement.appendChild(dpImageAreaElement);
 
 			const dpImageElement = this.#document.createElement('img');
@@ -1320,30 +1341,21 @@ export default class MessageParser {
 				dpImageElement.setAttribute('height', '160');
 			}
 			dpImageElement.setAttribute('alt', '');
-			dpImageElement.className = 'entry-amazon__image';
+			dpImageElement.className = 'p-amazon__image';
 			dpImageAreaElement.appendChild(dpImageElement);
 
 			const dpTextAreaElement = this.#document.createElement('div');
-			dpTextAreaElement.className = 'entry-amazon__text';
+			dpTextAreaElement.className = 'p-amazon__text';
 			dpAreaElement.appendChild(dpTextAreaElement);
 
 			const dpTitleElement = this.#document.createElement('p');
-			dpTitleElement.className = 'entry-amazon__title';
+			dpTitleElement.className = 'p-amazon__title';
 			dpTitleElement.textContent = amazonData.title;
 			dpTextAreaElement.appendChild(dpTitleElement);
 
 			if (amazonData.binding !== null) {
 				const bindingElement = this.#document.createElement('b');
-				switch (amazonData.binding) {
-					case 'Blu-ray':
-						bindingElement.className = 'c-amazon-binding -bd';
-						break;
-					case 'Kindle版':
-						bindingElement.className = 'c-amazon-binding -kindle';
-						break;
-					default:
-						bindingElement.className = 'c-amazon-binding';
-				}
+				bindingElement.className = 'c-amazon-binding';
 				bindingElement.textContent = amazonData.binding;
 				dpTitleElement.appendChild(bindingElement);
 			}
@@ -1352,16 +1364,9 @@ export default class MessageParser {
 				const date = amazonData.date;
 
 				const dpTimeElement = this.#document.createElement('p');
-				dpTimeElement.className = 'entry-amazon__date';
+				dpTimeElement.className = 'p-amazon__date';
 				dpTimeElement.textContent = `${dayjs(date).format('YYYY年M月D日')} 発売`;
 				dpTextAreaElement.appendChild(dpTimeElement);
-
-				if (date.getTime() > new Date().getTime()) {
-					const planElement = this.#document.createElement('em');
-					planElement.className = 'c-amazon-date-plan';
-					planElement.textContent = '予定';
-					dpTimeElement.appendChild(planElement);
-				}
 			}
 		}
 	}
@@ -1376,7 +1381,7 @@ export default class MessageParser {
 		}
 
 		const footnoteElement = this.#document.createElement('ul');
-		footnoteElement.setAttribute('class', 'entry-footnote');
+		footnoteElement.setAttribute('class', 'p-footnotes');
 		this.#rootElement.appendChild(footnoteElement);
 
 		footnotes.forEach((footnote, index) => {
@@ -1388,7 +1393,7 @@ export default class MessageParser {
 			footnoteElement.appendChild(liElement);
 
 			const noElement = this.#document.createElement('span');
-			noElement.className = 'entry-footnote__no';
+			noElement.className = 'p-footnotes__no';
 			liElement.appendChild(noElement);
 
 			const aElement = this.#document.createElement('a');
@@ -1397,7 +1402,7 @@ export default class MessageParser {
 			noElement.appendChild(aElement);
 
 			const textElement = this.#document.createElement('span');
-			textElement.className = 'entry-footnote__text';
+			textElement.className = 'p-footnotes__text';
 			textElement.id = `fn${href}`;
 			this.#inlineMarkup(textElement, footnote, false);
 			liElement.appendChild(textElement);
@@ -1487,7 +1492,7 @@ export default class MessageParser {
 			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
 				return `**${p2.substring(0, p2.length - 1)}**`;
 			}
-			return `${p1}<em class="c-emphasis">${p2}</em>`;
+			return `${p1}<em>${p2}</em>`;
 		});
 		htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, p1: string, p2: string) => {
 			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
@@ -1614,14 +1619,14 @@ export default class MessageParser {
 		} else if (/^\/[a-zA-Z0-9-_#/.]+$/.test(urlText)) {
 			// TODO: これは将来的に廃止したい
 			if (urlText.endsWith('.pdf')) {
-				return `<a href="https://w0s.jp${urlText}" type="application/pdf">${linkText}<img src="/image/icon/pdf.png" alt="(PDF)" class="c-link-icon"></a>`;
+				return `<a href="https://w0s.jp${urlText}" type="application/pdf">${linkText}<img src="/image/icon/pdf.png" alt="(PDF)"  width="16" height="16" class="c-link-icon"></a>`;
 			}
 
 			return `<a href="https://w0s.jp${urlText}">${linkText}</a>`;
 		} else if (/^asin:[0-9A-Z]{10}$/.test(urlText)) {
 			return `<a href="https://www.amazon.co.jp/dp/${urlText.substring(
 				5
-			)}/ref=nosim?tag=w0s.jp-22">${linkText}<img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon"/></a>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
+			)}/ref=nosim?tag=w0s.jp-22">${linkText}<img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/></a>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
 		} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(urlText)) {
 			if (linkText.startsWith('https://') || linkText.startsWith('http://')) {
 				/* URL表記の場合はドメインを記載しない */
@@ -1645,15 +1650,15 @@ export default class MessageParser {
 			/* サイトアイコン */
 			switch (host) {
 				case 'twitter.com': {
-					externalIcon = '<img src="/image/icon/twitter.svg" alt="(Twitter)" class="c-link-icon"/>';
+					externalIcon = '<img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				case 'ja.wikipedia.org': {
-					externalIcon = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" class="c-link-icon"/>';
+					externalIcon = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				case 'www.youtube.com': {
-					externalIcon = '<img src="/image/icon/youtube.svg" alt="(YouTube)" class="c-link-icon"/>';
+					externalIcon = '<img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 			}

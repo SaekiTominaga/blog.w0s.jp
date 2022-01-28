@@ -9,7 +9,6 @@
 	justify-content: center;
 	align-items: center;
 	gap: 1em;
-	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-narrow);
 }
 
@@ -19,7 +18,7 @@
 	border: 1px solid;
 	border-radius: var(--border-radius-normal);
 	display: inline-block;
-	background: var(--color-bg-superlight);
+	background: var(--color-white);
 	font-size: calc(100% * var(--font-ratio-2));
 }
 
@@ -30,7 +29,7 @@
 
 /* ===== トップページの埋め込み ===== */
 .p-err-topthumb {
-	margin-top: 4vh;
+	margin-block-start: 4vh;
 }
 
 .p-err-topthumb__portal {
@@ -49,7 +48,7 @@
 
 /* ===== サイト内検索 ===== */
 .p-err-search {
-	margin-top: 10vh;
+	margin-block-start: 10vh;
 	display: grid;
 	grid-template-areas:
 		"legend"

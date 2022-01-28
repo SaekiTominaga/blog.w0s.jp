@@ -1,0 +1,35 @@
+/* ==============================
+ *   表
+ * ============================== */
+
+/* ===== データ表 ===== */
+.p-table {
+	--_color: var(--color-black);
+	--_bg-color: var(--color-white);
+	--_text-align: start;
+
+	line-height: var(--line-height-narrow);
+
+	& :is(td, th) {
+		padding: 0.75em min(1vw, 10px);
+		border: 1px solid;
+		color: var(--_color);
+		background: var(--_bg-color);
+		font-size: clamp(calc(100% / var(--font-ratio-1)), 2vw, 100%);
+		text-align: var(--_text-align);
+	}
+
+	& > thead {
+		--_bg-color: var(--color-bg-light);
+		--_text-align: center;
+	}
+
+	& > tbody th {
+		--_bg-color: var(--color-bg-superlight);
+	}
+
+	& > :is(thead + tbody, tbody + tbody) {
+		border-block-start: 2px solid;
+	}
+
+}

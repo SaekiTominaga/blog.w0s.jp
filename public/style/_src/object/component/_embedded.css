@@ -2,25 +2,10 @@
  *   埋め込みコンテンツ
  * ============================== */
 
-/* ===== キャプション ===== */
-.c-embedded-caption {
-	display: flex;
-	font-size: calc(100% / var(--font-ratio-1));
-	font-weight: var(--font-weight-bold);
-	line-height: var(--line-height-narrow);
-}
-
-/* 図番号（"写真1"、"図2" など） */
-.c-embedded-caption__no {
-	white-space: nowrap; /* for Safari */
-
-	&::after {
-		margin: 0 0.25em;
-		content: ":";
-	}
-}
-
-/* タイトル */
-.c-embedded-caption__title {
-	flex: min-content;
+/* リンクアイコン */
+.c-link-icon {
+	margin-inline: 0.25em;
+	width: auto;
+	height: 1.15em;
+	vertical-align: -0.25em;
 }

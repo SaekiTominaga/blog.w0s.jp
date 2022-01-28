@@ -1,0 +1,52 @@
+/* ==============================
+ *   汎用テキスト
+ * ============================== */
+
+/* ===== 追記 ===== */
+.p-insert {
+	display: flex;
+	flex-wrap: wrap;
+	line-height: var(--line-height-normal);
+
+	@nest .p-entry & {
+		margin-inline: 1em;
+		color: var(--color-note);
+	}
+}
+
+.p-insert__date {
+	font-size: calc(100% / var(--font-ratio-1));
+	font-weight: var(--font-weight-bold);
+
+	&::after {
+		margin-inline: 0.25em;
+		content: ":";
+	}
+}
+
+.p-insert__text {
+	font-size: calc(100% / var(--font-ratio-1));
+	text-decoration: none;
+}
+
+/* ===== ブロック引用 ===== */
+.p-quote {
+	padding: 1em min(1vw, 1em);
+	border-color: var(--color-green);
+	border-style: solid;
+	border-width: 1px 5px;
+	border-radius: var(--border-radius-large);
+	background: var(--color-white);
+
+	@nest .p-entry & {
+		padding-block: 0.5em;
+
+		& > p {
+			margin-block: 0.5em;
+		}
+	}
+}
+
+.p-quote__omit {
+	color: var(--color-gray);
+}
