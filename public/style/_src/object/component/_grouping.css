@@ -5,6 +5,7 @@
 /* ===== 記事リンク ===== */
 .c-entry-link {
 	--_gap: 15px;
+	--_title-font-expand-ratio: 1;
 	--_bullet-width: 0.45em;
 	--_bullet-height: 0.75em;
 	--_bullet-color: var(--link-color-bullet);
@@ -12,6 +13,7 @@
 
 	contain: layout;
 	display: flow-root; /* for Safari */
+	font-size: calc(100% * var(--_title-font-expand-ratio));
 	line-height: var(--line-height-narrow);
 
 	@media (--breakpoint-entry-link) {
@@ -19,7 +21,8 @@
 	}
 
 	@nest .p-title-list & {
-		--_gap: 30px;
+		--_gap: 25px;
+		--_title-font-expand-ratio: var(--font-ratio-3);
 	}
 
 	& > :any-link {
@@ -96,14 +99,11 @@
 		outline: var(--outline-width) solid var(--outline-color);
 		outline-offset: var(--outline-offset-linkonly);
 	}
-
-	@nest .p-title-list & {
-		font-size: calc(100% * var(--font-ratio-3));
-	}
 }
 
 .c-entry-link__date {
 	margin-block-start: 0.5em;
+	font-size: calc(100% / var(--_title-font-expand-ratio));
 	overflow: hidden;
 }
 

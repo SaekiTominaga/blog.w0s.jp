@@ -196,25 +196,20 @@
 
 /* ===== 記事タイトルリスト ===== */
 .p-title-list {
-	--_padding-block: 1.5em;
-	--_padding-inline: 0px;
-	--_border-color: var(--color-border-light);
-
 	& > li {
-		padding: var(--_padding-block) var(--_padding-inline);
-		font-size: clamp(calc(100% / var(--font-ratio-1)), 2.5vw, 100%);
+		padding-block: 1em;
 
 		&:not(:first-child) {
-			border-block-start: 1px solid var(--_border-color);
+			border-block-start: 1px solid var(--color-border-light);
 		}
 
 		@media (--breakpoint) {
-			--_padding-inline: var(--page-padding-inline);
+			padding-inline: var(--page-padding-inline);
 		}
 	}
 
 	&.-list {
-		border-block: 1px solid var(--_border-color);
+		border-block: 1px solid var(--color-border-light);
 	}
 }
 
