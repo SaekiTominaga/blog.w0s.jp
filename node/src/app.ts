@@ -126,13 +126,6 @@ app.use(
 					res.setHeader('SourceMap', path.basename(mapFilePath));
 				}
 			}
-
-			/* TODO: サイトマップにアクセスしてきた UA の圧縮アルゴリズム対応状況を調べる */
-			if (requestUrlOrigin === '/sitemap.xml') {
-				logger.info(`Access to \`sitemap.xml\`; Accept-Encoding: ${res.req.get('Accept-Encoding')}; User-Agent: ${res.req.get('User-Agent')}`);
-			} else if (requestUrlOrigin === '/sitemap-test') {
-				logger.info(`Access to \`sitemap-test\`; Accept-Encoding: ${res.req.get('Accept-Encoding')}; User-Agent: ${res.req.get('User-Agent')}`);
-			}
 		},
 	})
 );
