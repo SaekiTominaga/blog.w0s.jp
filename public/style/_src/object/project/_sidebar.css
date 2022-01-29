@@ -43,6 +43,10 @@
 	margin-inline-end: 10px;
 	float: left;
 
+	@nest :focus & {
+		outline: var(--outline-width-bold) solid var(--outline-color);
+	}
+
 	@nest :any-link:hover & {
 		box-shadow: 0 0 5px var(--color-lightgray);
 	}
