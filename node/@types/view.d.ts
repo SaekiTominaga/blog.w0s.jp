@@ -24,4 +24,16 @@ declare namespace BlogView {
 		id: number;
 		last_modified: Dayjs;
 	}
+
+	export interface AmazonDp {
+		asin: string;
+		title: string;
+		binding: string | null;
+		product_group: string | null;
+		publication_date: Dayjs | null;
+		image_url: string | null;
+		image_width: number | null;
+		image_height: number | null;
+		entry_ids: number[];
+	}
 }

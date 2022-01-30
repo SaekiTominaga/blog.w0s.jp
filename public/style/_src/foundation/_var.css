@@ -20,6 +20,7 @@
 	--color-yellow: #ff6;
 	--color-verylightblue: #dff;
 	--color-powderblue: #cde;
+	--color-skyblue: #006aff; /* --page-bg-color, --color-superlightblue に対してコントラスト比 4.5:1 を満たす限界値 */
 	--color-darkblue: #00008b;
 	--color-border-light: #ccc;
 	--color-border-dark: #999;

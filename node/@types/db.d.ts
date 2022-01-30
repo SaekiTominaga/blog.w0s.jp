@@ -26,11 +26,11 @@ declare namespace BlogDb {
 		title: string;
 		binding: string | null;
 		product_group: string | null;
-		date: Date | null;
+		publication_date: Date | null;
 		image_url: string | null;
 		image_width: number | null;
 		image_height: number | null;
-		last_updated: Date;
+		updated_at: Date;
 	}
 
 	export interface TweetData {

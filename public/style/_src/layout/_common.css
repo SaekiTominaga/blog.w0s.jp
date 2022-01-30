@@ -53,6 +53,11 @@
 /* ===== コンテンツエリア ===== */
 .l-content {
 	grid-column: content;
+
+	/* サイドバーがない場合は全幅で表示 */
+	&.-nosidebar {
+		grid-column: content / sidebar;
+	}
 }
 
 .l-content__header {

@@ -2,6 +2,87 @@
  *   フォーム
  * ============================== */
 
+/* ===== 送信ボタン ===== */
+.c-submit {
+	--_padding-block: var(--form-control-padding-block);
+	--_padding-inline: 1em;
+	--_border-color: var(--_bg-color);
+	--_color: var(--color-white);
+	--_bg-color: hsl(204 100% 42%);
+	--_bg-color-hover: hsl(204 100% 48%); /* 太字の 15pt なのでコントラスト比の基準は 3:1 以上 */
+	--_font-size: calc(100% * var(--font-ratio-2));
+	--_ripple-color: var(--color-white);
+	--_ripple-opacity: 0.25;
+	--_ripple-transition-duration: 0.5s;
+
+	padding: var(--_padding-block) var(--_padding-inline);
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	display: inline-block;
+	color: var(--_color);
+	background: var(--_bg-color);
+	font-size: var(--_font-size);
+	font-weight: var(--font-weight-bold);
+	line-height: var(--line-height-nowrap);
+	vertical-align: middle;
+	white-space: nowrap;
+	outline-width: var(--outline-width-bold);
+	outline-offset: 1px;
+
+	/* ripple effect */
+	contain: layout;
+	position: relative; /* for Safari */
+	overflow: hidden;
+
+	&:enabled {
+		&:hover {
+			--_bg-color: var(--_bg-color-hover);
+		}
+
+		/* ripple effect */
+		&::before {
+			content: "";
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			inset: 0;
+			background-image: radial-gradient(circle, var(--_ripple-color) 25%, transparent 0);
+			opacity: 0;
+			transform: scale(4);
+			transition: var(--_ripple-transition-duration);
+		}
+
+		/* ripple effect */
+		&:active::before {
+			opacity: var(--_ripple-opacity);
+			transform: scale(0);
+			transition: initial;
+		}
+	}
+
+	&:disabled {
+		--_color: var(--color-gray);
+		--_bg-color: var(--color-bg-verydark);
+	}
+
+	/* コンパクトなボタン */
+	&.-compact {
+		--_padding-block: 0.375em;
+		--_padding-inline: 0.375em;
+		--_font-size: 100%;
+	}
+
+	/* キャンセルボタン */
+	&.-cancel {
+		--_color: var(--color-darkgray);
+		--_bg-color: var(--color-white);
+		--_bg-color-hover: var(--color-bg-superlight);
+		--_border-color: var(--_color);
+		--_font-size: 100%;
+		--_ripple-color: var(--color-black);
+	}
+}
+
 /* ===== サイト内検索 ===== */
 .c-search {
 	--_border-color: var(--color-lightgray);
@@ -12,22 +93,15 @@
 	display: flex;
 	align-items: center;
 	color: var(--color-darkgray);
-	background: #faffff;
+	background: var(--color-white);
+	outline-offset: -1px;
 
 	&:focus-within {
-		--_border-color: var(--outline-color);
+		outline: var(--outline-width-bold) solid var(--outline-color);
 	}
 
 	&:hover {
-		box-shadow: 0 0 2px var(--_border-color);
-	}
-
-	@nest .p-header-search & {
-		--_height: 2.25em;
-	}
-
-	@nest .p-err-search & {
-		--_height: 2.5em;
+		--_border-color: var(--outline-color);
 	}
 }
 
@@ -46,10 +120,6 @@
 		width: 100%;
 		height: var(--_height);
 		font: inherit;
-
-		&:invalid {
-			box-shadow: none; /* for Firefox */
-		}
 	}
 }
 
@@ -59,11 +129,11 @@
 		--_color: hsl(220 70% 45%);
 
 		all: initial;
-		padding: 0.375em;
+		margin: var(--outline-width-bold);
+		padding: 0.25em;
 		box-sizing: border-box;
 		display: flex;
-		aspect-ratio: 1/1;
-		width: var(--_height); /* for iPad Safari */
+		width: var(--_height);
 		height: var(--_height);
 		color: var(--_color);
 		font: inherit;
@@ -74,7 +144,7 @@
 		}
 
 		&:focus-visible {
-			outline: 2px dotted var(--color-black);
+			outline: var(--outline-width-bold) dotted var(--color-black);
 		}
 
 		&:hover {

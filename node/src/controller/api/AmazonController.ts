@@ -4,7 +4,7 @@ import BlogAmazonDao from '../../dao/BlogAmazonDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
-import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
+import { NoName as ConfigureCommon } from '../../../configure/type/common';
 import { PAAPI as ConfigurePaapi } from '../../../configure/type/paapi.js';
 import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { Request, Response } from 'express';
@@ -58,7 +58,7 @@ export default class AmazonController extends Controller implements ControllerIn
 		}
 
 		const dao = new BlogAmazonDao(this.#configCommon);
-		const registeredAsins = await dao.getAllAsins(); // DB に登録済みの ASIN
+		const registeredAsins = await dao.getAsins(); // DB に登録済みの ASIN
 		const unregisteredAsins = (<string[]>asins).filter((asin) => !registeredAsins.includes(asin)); // DB に登録されていない ASIN
 
 		const paapiErros: string[] = []; // PA-API でのエラー情報を格納
@@ -126,11 +126,11 @@ export default class AmazonController extends Controller implements ControllerIn
 					title: <string>itemInfo?.Title?.DisplayValue,
 					binding: itemInfo?.Classifications?.Binding.DisplayValue ?? null,
 					product_group: itemInfo?.Classifications?.ProductGroup.DisplayValue ?? null,
-					date: publicationDate,
+					publication_date: publicationDate,
 					image_url: imagesPrimaryLarge?.URL ?? null,
 					image_width: imagesPrimaryLarge !== undefined ? Number(imagesPrimaryLarge.Width) : null,
 					image_height: imagesPrimaryLarge !== undefined ? Number(imagesPrimaryLarge.Height) : null,
-					last_updated: new Date(),
+					updated_at: new Date(),
 				});
 			}
 

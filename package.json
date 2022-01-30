@@ -23,6 +23,7 @@
 		"config:validate:message-preview": "ajv --spec=draft7 -s node/configure/schema/message-preview.json -d node/configure/message-preview.json",
 		"config:validate:entry": "ajv --spec=draft7 -s node/configure/schema/entry.json -d node/configure/entry.json",
 		"config:validate:category": "ajv --spec=draft7 -s node/configure/schema/category.json -d node/configure/category.json",
+		"config:validate:amazon": "ajv --spec=draft7 -s node/configure/schema/amazon.json -d node/configure/amazon.json",
 		"config:validate:twitter": "ajv --spec=draft7 -s node/configure/schema/twitter.json -d node/configure/twitter.json",
 		"config:validate:paapi": "ajv --spec=draft7 -s node/configure/schema/paapi.json -d node/configure/paapi.json",
 		"config:validate:feed-create": "ajv --spec=draft7 -s node/configure/schema/feed-create.json -d node/configure/feed-create.json",
@@ -49,6 +50,7 @@
 	},
 	"dependencies": {
 		"@log4js-node/smtp": "^2.0.0",
+		"@saekitominaga/customelements-button-confirm": "^1.1.1",
 		"@saekitominaga/paapi-item-image-url-parser": "^2.1.2",
 		"@saekitominaga/string-escape-html": "^1.0.2",
 		"amazon-paapi": "^1.0.6",

@@ -1,4 +1,5 @@
-import AmazonController from './controller/api/AmazonController.js';
+import AmazonController from './controller/AmazonController.js';
+import ApiAmazonController from './controller/api/AmazonController.js';
 import CategoryController from './controller/CategoryController.js';
 import compression from 'compression';
 import cors from 'cors';
@@ -14,8 +15,8 @@ import MessagePreviewController from './controller/MessagePreviewController.js';
 import multer from 'multer';
 import path from 'path';
 import SitemapCreateController from './controller/api/SitemapCreateController.js';
-import TweetController from './controller/api/TweetController.js';
-import { NoName as Configure } from '../configure/type/common.js';
+import TweetInfoController from './controller/api/TweetController.js';
+import { NoName as Configure } from '../configure/type/common';
 
 /* 設定ファイル読み込み */
 const config = <Configure>JSON.parse(fs.readFileSync('node/configure/common.json', 'utf8'));
@@ -182,6 +183,26 @@ app.get('/category/:category_name', async (req, res, next) => {
 });
 
 /**
+ * Amazon 商品管理
+ */
+app
+	.route('/admin/amazon')
+	.get(async (req, res, next) => {
+		try {
+			await new AmazonController(config).execute(req, res);
+		} catch (e) {
+			next(e);
+		}
+	})
+	.post(async (req, res, next) => {
+		try {
+			await new AmazonController(config).execute(req, res);
+		} catch (e) {
+			next(e);
+		}
+	});
+
+/**
  * 本文プレビュー
  */
 app.post('/message-preview', async (req, res, next) => {
@@ -231,7 +252,7 @@ app.put('/sitemap.xml', async (req, res, next) => {
 app.options('/api/amazon', corsPreflightedRequestCallback);
 app.post('/api/amazon', corsCallback, async (req, res, next) => {
 	try {
-		await new AmazonController(config).execute(req, res);
+		await new ApiAmazonController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -243,7 +264,7 @@ app.post('/api/amazon', corsCallback, async (req, res, next) => {
 app.options('/api/tweet', corsPreflightedRequestCallback);
 app.post('/api/tweet', corsCallback, async (req, res, next) => {
 	try {
-		await new TweetController(config).execute(req, res);
+		await new TweetInfoController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
