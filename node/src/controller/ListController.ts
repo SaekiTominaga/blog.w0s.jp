@@ -35,7 +35,7 @@ export default class ListController extends Controller implements ControllerInte
 	async execute(req: Request, res: Response): Promise<void> {
 		const paramPage = req.params.page !== undefined ? Number(req.params.page) : 1;
 
-		const httpResponse = new HttpResponse(res, this.#configCommon);
+		const httpResponse = new HttpResponse(req, res, this.#configCommon);
 		const dao = new BlogListDao(this.#configCommon);
 
 		/* 最終更新日時をセット */

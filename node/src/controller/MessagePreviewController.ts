@@ -32,7 +32,7 @@ export default class MessagePreviewController extends Controller implements Cont
 		const requestBody = req.body;
 		const message: string | undefined = requestBody.message;
 
-		const httpResponse = new HttpResponse(res, this.#configCommon);
+		const httpResponse = new HttpResponse(req, res, this.#configCommon);
 
 		if (message === undefined) {
 			this.logger.error(`パラメーター message が未設定: ${req.get('User-Agent')}`);

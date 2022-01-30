@@ -35,7 +35,7 @@ export default class EntryController extends Controller implements ControllerInt
 	async execute(req: Request, res: Response): Promise<void> {
 		const paramEntryId = Number(req.params.entry_id);
 
-		const httpResponse = new HttpResponse(res, this.#configCommon);
+		const httpResponse = new HttpResponse(req, res, this.#configCommon);
 		const dao = new BlogEntryDao(this.#configCommon);
 
 		/* 最終更新日時をセット */
