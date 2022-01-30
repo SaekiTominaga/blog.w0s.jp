@@ -8,7 +8,7 @@ import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser'
 import Sidebar from '../util/Sidebar.js';
 import { BlogView } from '../../@types/view.js';
 import { NoName as Configure } from '../../configure/type/category.js';
-import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
 
 /**
@@ -82,7 +82,9 @@ export default class CategoryController extends Controller implements Controller
 
 		/* レンダリング */
 		res.render(this.#config.view.success, {
-			url: req.url,
+			page: {
+				path: req.path,
+			},
 			categoryName: paramCategoryName,
 			count: entries.length,
 			entries: entries,

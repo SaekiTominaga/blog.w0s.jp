@@ -1,6 +1,6 @@
 import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.js';
 import fs from 'fs';
-import { NoName as Configure } from '../../configure/type/common.js';
+import { NoName as Configure } from '../../configure/type/common';
 
 /**
  * 記事本文の構文書き換え

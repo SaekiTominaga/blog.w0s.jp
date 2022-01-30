@@ -8,7 +8,7 @@ import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser'
 import Sidebar from '../util/Sidebar.js';
 import { BlogView } from '../../@types/view.js';
 import { NoName as Configure } from '../../configure/type/list.js';
-import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
 
 /**
@@ -33,7 +33,9 @@ export default class ListController extends Controller implements ControllerInte
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const paramPage = req.params.page !== undefined ? Number(req.params.page) : 1;
+		const requestQuery: BlogRequest.List = {
+			page: req.params.page !== undefined ? Number(req.params.page) : 1,
+		};
 
 		const httpResponse = new HttpResponse(req, res, this.#configCommon);
 		const dao = new BlogListDao(this.#configCommon);
@@ -44,9 +46,9 @@ export default class ListController extends Controller implements ControllerInte
 		}
 
 		/* DB からデータ取得 */
-		const entriesDto = await dao.getEntries(paramPage, this.#config.maximum_number);
+		const entriesDto = await dao.getEntries(requestQuery.page, this.#config.maximum_number);
 		if (entriesDto.length === 0) {
-			this.logger.info(`無効なページが指定: ${paramPage}`);
+			this.logger.info(`無効なページが指定: ${requestQuery.page}`);
 			httpResponse.send404();
 			return;
 		}
@@ -84,8 +86,10 @@ export default class ListController extends Controller implements ControllerInte
 
 		/* レンダリング */
 		res.render(this.#config.view.success, {
-			url: req.url,
-			page: paramPage,
+			page: {
+				path: req.path,
+				query: requestQuery,
+			},
 			totalPage: totalPage,
 			entries: entries,
 			entryCountOfCategoryList: entryCountOfCategoryListDto,

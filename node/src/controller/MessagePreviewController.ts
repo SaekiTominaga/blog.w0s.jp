@@ -3,7 +3,7 @@ import ControllerInterface from '../ControllerInterface.js';
 import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
-import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { NoName as Configure } from '../../configure/type/message-preview.js';
 import { Request, Response } from 'express';
 

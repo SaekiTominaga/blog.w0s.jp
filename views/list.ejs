@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
-		<title><% if (page === 1) { %>富永日記帳<% } else { %>タイトル一覧（<%= page %>ページ目）<% } %></title>
+		<title><% if (page.query.page === 1) { %>富永日記帳<% } else { %>タイトル一覧（<%= page.query.page %>ページ目）<% } %></title>
 
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 
 		<link rel="alternate" href="/feed" type="application/atom+xml" title="「富永日記帳」の新着フィード" />
-		<% if (page > 2) { %>
-		<link rel="prev" href="/list/<%= page - 1 %>" title="新しい記事" />
-		<% } else if (page === 2) { %>
+		<% if (page.query.page > 2) { %>
+		<link rel="prev" href="/list/<%= page.query.page - 1 %>" title="新しい記事" />
+		<% } else if (page.query.page === 2) { %>
 		<link rel="prev" href="/" title="新しい記事" />
-		<% } %> <% if (page < totalPage) { %>
-		<link rel="next" href="/list/<%= page + 1 %>" title="古い記事" />
+		<% } %> <% if (page.query.page < totalPage) { %>
+		<link rel="next" href="/list/<%= page.query.page + 1 %>" title="古い記事" />
 		<% } %>
 		<link rel="stylesheet" href="/style/blog.css" />
 		<link rel="stylesheet" href="/style/layout_full.css" title="通常表示" />
@@ -30,13 +30,13 @@
 				<div class="l-content__header">
 					<nav aria-label="前後記事">
 						<ul class="p-page-nav">
-							<% if (page > 2) { %>
+							<% if (page.query.page > 2) { %>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
-							<li><a href="/list/<%= page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<% } else if (page === 2) { %>
+							<li><a href="/list/<%= page.query.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
+							<% } else if (page.query.page === 2) { %>
 							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<% } %><% if (page < totalPage) { %>
-							<li><a href="/list/<%= page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
+							<% } %><% if (page.query.page < totalPage) { %>
+							<li><a href="/list/<%= page.query.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
 							<% } %>
 						</ul>
 					</nav>
@@ -82,13 +82,13 @@
 				<div class="l-content__footer">
 					<nav class="p-page-nav" aria-label="前後記事">
 						<ul class="p-page-nav__list">
-							<% if (page > 2) { %>
+							<% if (page.query.page > 2) { %>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
-							<li><a href="/list/<%= page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<% } else if (page === 2) { %>
+							<li><a href="/list/<%= page.query.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
+							<% } else if (page.query.page === 2) { %>
 							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<% } %><% if (page < totalPage) { %>
-							<li><a href="/list/<%= page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
+							<% } %><% if (page.query.page < totalPage) { %>
+							<li><a href="/list/<%= page.query.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
 							<% } %>
 						</ul>
 					</nav>

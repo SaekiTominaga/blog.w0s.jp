@@ -8,7 +8,7 @@ import MessageParser from '../util/MessageParser.js';
 import Sidebar from '../util/Sidebar.js';
 import { BlogView } from '../../@types/view.js';
 import { NoName as Configure } from '../../configure/type/entry.js';
-import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
 
 /**
@@ -81,7 +81,9 @@ export default class EntryController extends Controller implements ControllerInt
 		}
 
 		res.render(this.#config.view.success, {
-			url: req.url,
+			page: {
+				path: req.path,
+			},
 			entryId: paramEntryId,
 			title: entryDto.title,
 			message: await messageParser.toHtml(<string>entryDto.message),

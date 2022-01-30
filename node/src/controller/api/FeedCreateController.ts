@@ -10,7 +10,7 @@ import htpasswd from 'htpasswd-js';
 import MessageParser from '../../util/MessageParser.js';
 import zlib from 'zlib';
 import { BlogView } from '../../../@types/view.js';
-import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
+import { NoName as ConfigureCommon } from '../../../configure/type/common';
 import { NoName as Configure } from '../../../configure/type/feed-create.js';
 import { Request, Response } from 'express';
 

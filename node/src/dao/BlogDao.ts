@@ -1,6 +1,6 @@
 import * as sqlite from 'sqlite';
 import sqlite3 from 'sqlite3';
-import { NoName as Configure } from '../../configure/type/common.js';
+import { NoName as Configure } from '../../configure/type/common';
 
 interface NewlyEntry {
 	id: string;

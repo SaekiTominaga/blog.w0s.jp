@@ -1,5 +1,5 @@
 import path from 'path';
-import { NoName as Configure } from '../../configure/type/common.js';
+import { NoName as Configure } from '../../configure/type/common';
 import { Request, Response } from 'express';
 import StringEscapeHtml from '@saekitominaga/string-escape-html';
 

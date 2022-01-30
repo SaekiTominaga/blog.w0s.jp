@@ -9,7 +9,7 @@ import fs from 'fs';
 import htpasswd from 'htpasswd-js';
 import xmlFormatter from 'xml-formatter';
 import { BlogView } from '../../../@types/view.js';
-import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
+import { NoName as ConfigureCommon } from '../../../configure/type/common';
 import { NoName as Configure } from '../../../configure/type/sitemap-create.js';
 import { Request, Response } from 'express';
 

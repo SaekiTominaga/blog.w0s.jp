@@ -3,7 +3,7 @@ import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
 import Twitter from 'twitter-v2';
-import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
+import { NoName as ConfigureCommon } from '../../../configure/type/common';
 import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
 import { Request, Response } from 'express';
 
