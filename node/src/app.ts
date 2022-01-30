@@ -2,15 +2,18 @@ import AmazonController from './controller/api/AmazonController.js';
 import CategoryController from './controller/CategoryController.js';
 import compression from 'compression';
 import cors from 'cors';
+import EntryController from './controller/EntryController.js';
 import Express, { NextFunction, Request, Response } from 'express';
 import FeedCreateController from './controller/api/FeedCreateController.js';
 import fs from 'fs';
+import HttpBasicAuth from './util/HttpBasicAuth.js';
+import HttpResponse from './util/HttpResponse.js';
 import ListController from './controller/ListController.js';
 import Log4js from 'log4js';
 import MessagePreviewController from './controller/MessagePreviewController.js';
+import multer from 'multer';
 import path from 'path';
 import SitemapCreateController from './controller/api/SitemapCreateController.js';
-import EntryController from './controller/EntryController.js';
 import TweetController from './controller/api/TweetController.js';
 import { NoName as Configure } from '../configure/type/common.js';
 
@@ -28,10 +31,10 @@ const EXTENTIONS = {
 	map: '.map',
 }; // 静的ファイル拡張子の定義
 
-app.set('x-powered-by', false);
 app.set('trust proxy', true);
 app.set('views', config.views);
 app.set('view engine', 'ejs');
+app.set('x-powered-by', false);
 app.use((req, res, next) => {
 	const requestPath = req.path;
 
@@ -90,6 +93,19 @@ app.use(
 		extended: true,
 	})
 );
+app.use(async (req, res, next) => {
+	/* Basic Authentication */
+	const basic = config.static.auth_basic?.find((basic) => basic.directory.find((urlPath) => req.url.startsWith(urlPath)));
+	if (basic !== undefined) {
+		const httpBasicAuth = new HttpBasicAuth(req);
+		if (!(await httpBasicAuth.htpasswd(basic.htpasswd))) {
+			new HttpResponse(req, res, config).send401('Basic', basic.realm);
+			return;
+		}
+	}
+
+	next();
+});
 app.use(
 	Express.static(config.static.root, {
 		extensions: config.static.extensions,
@@ -129,6 +145,8 @@ app.use(
 		},
 	})
 );
+
+const upload = multer({ dest: config.temp });
 
 /**
  * 記事リスト

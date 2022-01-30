@@ -30,12 +30,22 @@ export type NoName16 = {
   value: NoName18;
 }[];
 export type NoName19 = string[];
-export type NoName20 = string[];
-export type NoName21 = string;
+export type Directory = string[];
+export type NoName20 = string;
+export type Htpasswd = string;
+export type BasicAuthentication = {
+  directory: Directory;
+  realm: NoName20;
+  htpasswd: Htpasswd;
+}[];
+export type NoName21 = string[];
+export type NoName22 = string;
+export type NoName23 = string;
 export type FilepathFor401Unauthorized = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
-export type NoName23 = string;
+export type FilepathFor500InternalServerError = string;
+export type NoName25 = string;
 export type Blog = string;
 
 export interface NoName {
@@ -43,8 +53,9 @@ export interface NoName {
   response: NoName1;
   static: NoName4;
   cors: CORS;
-  views: NoName21;
-  errorpage: NoName22;
+  views: NoName22;
+  temp: NoName23;
+  errorpage: NoName24;
   logger: Logger;
   sqlite: SQLite;
 }
@@ -66,6 +77,7 @@ export interface NoName4 {
   extensions?: NoName6;
   indexes?: NoName7;
   headers: NoName8;
+  auth_basic?: BasicAuthentication;
 }
 export interface NoName8 {
   mime: MIME;
@@ -91,15 +103,16 @@ export interface SourceMap {
   extensions?: NoName19;
 }
 export interface CORS {
-  allow_origins: NoName20;
+  allow_origins: NoName21;
 }
-export interface NoName22 {
+export interface NoName24 {
   path_401: FilepathFor401Unauthorized;
   path_403: FilepathFor403Forbidden;
   path_404: FilepathFor404NotFound;
+  path_500: FilepathFor500InternalServerError;
 }
 export interface Logger {
-  path: NoName23;
+  path: NoName25;
 }
 export interface SQLite {
   db: DBNode;

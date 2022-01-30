@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "response", "static", "cors", "views", "errorpage", "logger", "sqlite"],
+	"required": ["port", "response", "static", "cors", "views", "temp", "errorpage", "logger", "sqlite"],
 	"properties": {
 		"port": {
 			"type": "integer",
@@ -185,6 +185,33 @@
 						}
 					},
 					"additionalProperties": false
+				},
+				"auth_basic": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"required": ["directory", "realm", "htpasswd"],
+						"properties": {
+							"directory": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"title": "directory"
+							},
+							"realm": {
+								"type": "string",
+								"title": "保護領域の説明文"
+							},
+							"htpasswd": {
+								"type": "string",
+								"title": "htpasswd ファイルのパス"
+							}
+						},
+						"additionalProperties": false
+					},
+					"uniqueItems": true,
+					"title": "Basic Authentication"
 				}
 			},
 			"additionalProperties": false
@@ -208,10 +235,14 @@
 			"type": "string",
 			"title": "テンプレートディレクトリ"
 		},
+		"temp": {
+			"type": "string",
+			"title": "一時ディレクトリ"
+		},
 		"errorpage": {
 			"type": "object",
 			"title": "エラーページ",
-			"required": ["path_401", "path_403", "path_404"],
+			"required": ["path_401", "path_403", "path_404", "path_500"],
 			"properties": {
 				"path_401": {
 					"type": "string",
@@ -224,6 +255,10 @@
 				"path_404": {
 					"type": "string",
 					"title": "Filepath for `404 Not Found`"
+				},
+				"path_500": {
+					"type": "string",
+					"title": "Filepath for `500 Internal Server Error`"
 				}
 			},
 			"additionalProperties": false
