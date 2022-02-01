@@ -30,7 +30,7 @@ interface User {
 /**
  * ツイート情報取得
  */
-export default class TweetController extends Controller implements ControllerInterface {
+export default class TweetMediaController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
 	#configTwitter: ConfigureTwitter;
 

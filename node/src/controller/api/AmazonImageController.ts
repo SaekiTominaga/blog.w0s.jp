@@ -12,7 +12,7 @@ import { Request, Response } from 'express';
 /**
  * Amazon 商品画像取得
  */
-export default class AmazonController extends Controller implements ControllerInterface {
+export default class AmazonImageController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
 	#configPaapi: ConfigurePaapi;
 
