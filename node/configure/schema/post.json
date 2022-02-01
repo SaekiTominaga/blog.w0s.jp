@@ -1,0 +1,352 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://blog.w0s.jp/post.json",
+	"type": "object",
+	"title": "記事投稿",
+	"required": ["view", "validator", "insert", "update", "update_modified", "feed_create", "sitemap_create", "newly_json_create", "twitter", "media_upload"],
+	"properties": {
+		"view": {
+			"type": "object",
+			"title": "view ファイル名",
+			"required": ["init"],
+			"properties": {
+				"init": {
+					"type": "string",
+					"title": "初期画面"
+				}
+			},
+			"additionalProperties": false
+		},
+		"validator": {
+			"type": "object",
+			"title": "バリデーター",
+			"required": ["title"],
+			"properties": {
+				"title": {
+					"type": "object",
+					"title": "記事タイトル",
+					"required": ["message"],
+					"properties": {
+						"message": {
+							"type": "object",
+							"title": "カテゴリー"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"insert": {
+			"type": "object",
+			"title": "記事投稿",
+			"required": ["message_success"],
+			"properties": {
+				"message_success": {
+					"type": "string",
+					"title": "成功時のメッセージ"
+				}
+			},
+			"additionalProperties": false
+		},
+		"update": {
+			"type": "object",
+			"title": "記事更新",
+			"required": ["message_success"],
+			"properties": {
+				"message_success": {
+					"type": "string",
+					"title": "成功時のメッセージ"
+				}
+			},
+			"additionalProperties": false
+		},
+		"update_modified": {
+			"type": "object",
+			"title": "最終更新日時記録",
+			"required": ["message_success"],
+			"properties": {
+				"message_success": {
+					"type": "string",
+					"title": "成功時のメッセージ"
+				}
+			},
+			"additionalProperties": false
+		},
+		"feed_create": {
+			"type": "object",
+			"title": "Feed ファイル生成",
+			"required": ["path", "view_path", "maximum_number", "response"],
+			"properties": {
+				"path": {
+					"type": "string",
+					"title": "ファイルパス"
+				},
+				"view_path": {
+					"type": "string",
+					"title": "View ファイルのパス"
+				},
+				"maximum_number": {
+					"type": "integer",
+					"minimum": 1,
+					"title": "最大表示件数"
+				},
+				"response": {
+					"type": "object",
+					"title": "レスポンス",
+					"required": ["message_none", "message_success", "message_failure"],
+					"properties": {
+						"message_none": {
+							"type": "string",
+							"title": "生成不要時のメッセージ"
+						},
+						"message_success": {
+							"type": "string",
+							"title": "成功時のメッセージ"
+						},
+						"message_failure": {
+							"type": "string",
+							"title": "失敗時のメッセージ"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"sitemap_create": {
+			"type": "object",
+			"title": "サイトマップファイル生成",
+			"required": ["path", "view_path", "url_limit", "response"],
+			"properties": {
+				"path": {
+					"type": "string",
+					"title": "ファイルパス"
+				},
+				"view_path": {
+					"type": "string",
+					"title": "View ファイルのパス"
+				},
+				"url_limit": {
+					"type": "integer",
+					"minimum": 1,
+					"maximum": 50000,
+					"title": "URL の最大表示件数",
+					"description": "https://www.sitemaps.org/protocol.html"
+				},
+				"response": {
+					"type": "object",
+					"title": "レスポンス",
+					"required": ["message_success", "message_failure"],
+					"properties": {
+						"message_success": {
+							"type": "string",
+							"title": "成功時のメッセージ"
+						},
+						"message_failure": {
+							"type": "string",
+							"title": "失敗時のメッセージ"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"newly_json_create": {
+			"type": "object",
+			"title": "新着 JSON ファイル生成",
+			"required": ["url", "url_dev", "api_response"],
+			"properties": {
+				"url": {
+					"type": "string",
+					"title": "URL (本番)"
+				},
+				"url_dev": {
+					"type": "string",
+					"title": "URL (local)"
+				},
+				"api_response": {
+					"type": "object",
+					"title": "API のレスポンス",
+					"required": ["message_success", "message_failure"],
+					"properties": {
+						"message_success": {
+							"type": "string",
+							"title": "成功時のメッセージ"
+						},
+						"message_failure": {
+							"type": "string",
+							"title": "失敗時のメッセージ"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"twitter": {
+			"type": "object",
+			"title": "Twitter API",
+			"required": ["message_prefix", "url_prefix", "media_url_prefix", "production", "api_response"],
+			"properties": {
+				"message_prefix": {
+					"type": "string",
+					"title": "ツイート本文の冒頭"
+				},
+				"url_prefix": {
+					"type": "string",
+					"title": "記事 URL の冒頭"
+				},
+				"media_url_prefix": {
+					"type": "string",
+					"title": "画像 URL の冒頭"
+				},
+				"production": {
+					"type": "object",
+					"title": "開発時に使用するアプリ情報",
+					"$ref": "#/properties/twitter/definitions/app_keys"
+				},
+				"api_response": {
+					"type": "object",
+					"title": "API のレスポンス",
+					"required": ["message_success", "message_failure"],
+					"properties": {
+						"message_success": {
+							"type": "string",
+							"title": "成功時のメッセージ"
+						},
+						"message_failure": {
+							"type": "string",
+							"title": "失敗時のメッセージ"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false,
+			"definitions": {
+				"app_keys": {
+					"type": "object",
+					"required": ["consumer_key", "consumer_secret", "access_token", "access_token_secret"],
+					"properties": {
+						"consumer_key": {
+							"type": "string",
+							"title": "API key"
+						},
+						"consumer_secret": {
+							"type": "string",
+							"title": "API key secret"
+						},
+						"access_token": {
+							"type": "string",
+							"title": "Access token"
+						},
+						"access_token_secret": {
+							"type": "string",
+							"title": "Access token secret"
+						}
+					},
+					"additionalProperties": false
+				}
+			}
+		},
+		"media_upload": {
+			"type": "object",
+			"title": "メディアファイルアップロード",
+			"required": ["url", "url_dev", "api_response"],
+			"properties": {
+				"url": {
+					"type": "string",
+					"title": "URL (本番)"
+				},
+				"url_dev": {
+					"type": "string",
+					"title": "URL (local)"
+				},
+				"api_response": {
+					"type": "object",
+					"title": "API のレスポンス",
+					"required": ["success", "type", "overwrite", "size", "other_message_failure"],
+					"properties": {
+						"success": {
+							"type": "object",
+							"title": "成功",
+							"required": ["code", "message"],
+							"properties": {
+								"code": {
+									"type": "integer",
+									"minimum": 1,
+									"title": "コード"
+								},
+								"message": {
+									"type": "string",
+									"title": "メッセージ"
+								}
+							},
+							"additionalProperties": false
+						},
+						"type": {
+							"type": "object",
+							"title": "MIME エラー",
+							"required": ["code", "message"],
+							"properties": {
+								"code": {
+									"type": "integer",
+									"minimum": 11,
+									"title": "コード"
+								},
+								"message": {
+									"type": "string",
+									"title": "メッセージ"
+								}
+							},
+							"additionalProperties": false
+						},
+						"overwrite": {
+							"type": "object",
+							"title": "上書きエラー",
+							"required": ["code", "message"],
+							"properties": {
+								"code": {
+									"type": "integer",
+									"minimum": 11,
+									"title": "コード"
+								},
+								"message": {
+									"type": "string",
+									"title": "メッセージ"
+								}
+							},
+							"additionalProperties": false
+						},
+						"size": {
+							"type": "object",
+							"title": "サイズ超過エラー",
+							"required": ["code", "message"],
+							"properties": {
+								"code": {
+									"type": "integer",
+									"minimum": 11,
+									"title": "コード"
+								},
+								"message": {
+									"type": "string",
+									"title": "メッセージ"
+								}
+							},
+							"additionalProperties": false
+						},
+						"other_message_failure": {
+							"type": "string",
+							"title": "その他の失敗時のメッセージ"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false
+}

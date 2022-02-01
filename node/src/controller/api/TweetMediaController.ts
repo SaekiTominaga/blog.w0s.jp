@@ -49,12 +49,6 @@ export default class TweetController extends Controller implements ControllerInt
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		if (res.get('Access-Control-Allow-Origin') === undefined) {
-			this.logger.error(`Access-Control-Allow-Origin ヘッダが存在しない: ${req.get('User-Agent')}`);
-			res.status(403).end();
-			return;
-		}
-
 		const requestBody = req.body;
 		const ids: string | string[] | undefined = requestBody.id;
 
@@ -126,21 +120,25 @@ export default class TweetController extends Controller implements ControllerInt
 
 			if (tweetDataList.length > 0) {
 				this.logger.info('ツイート情報を DB に登録', tweetIdList);
-				dao.insert(tweetDataList);
+				await dao.insert(tweetDataList);
 			}
 		}
 
-		const imageUrls: BlogApi.TweetImage = [];
+		const mediaUrls: Set<string> = new Set();
 		if (includes?.media !== undefined) {
 			for (const media of <Media[]>includes.media) {
 				if (media.url !== undefined) {
-					imageUrls.push(media.url);
+					mediaUrls.add(media.url);
 				} else if (media.preview_image_url !== undefined) {
-					imageUrls.push(media.preview_image_url);
+					mediaUrls.add(media.preview_image_url);
 				}
 			}
 		}
 
-		res.status(200).json({ image_urls: imageUrls });
+		const responseJson: BlogApi.TweetMedia = {
+			media_urls: Array.from(mediaUrls),
+		};
+
+		res.status(200).json(responseJson);
 	}
 }

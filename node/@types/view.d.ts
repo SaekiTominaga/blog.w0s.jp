@@ -12,17 +12,22 @@ declare namespace BlogView {
 		last_updated?: Dayjs | null;
 	}
 
+	export interface Category {
+		id: string;
+		name: string;
+	}
+
 	export interface FeedEntry {
 		id: number;
 		title: string;
 		message: string;
-		last_modified: Dayjs;
+		updated_at: Dayjs;
 		update: boolean;
 	}
 
 	export interface SitemapEntry {
 		id: number;
-		last_modified: Dayjs;
+		updated_at: Dayjs;
 	}
 
 	export interface AmazonDp {

@@ -2,6 +2,139 @@
  *   フォーム
  * ============================== */
 
+/* ===== 一行入力欄（type="text", type="search", type="date", ...） ===== */
+.c-input {
+	--_border-color: var(--color-border-dark);
+	--_color: var(--color-black);
+	--_bg-color: var(--color-white);
+
+	padding: var(--form-control-padding-block);
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	box-sizing: border-box;
+	width: var(--width, auto);
+	max-width: 100%;
+	color: var(--_color);
+	background: var(--_bg-color);
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
+
+	/* 全幅 */
+	&.-full {
+		width: 100%;
+	}
+
+	&:enabled:read-write {
+		&:hover {
+			--_border-color: var(--outline-color);
+		}
+
+		&.-invalid {
+			--_border-color: var(--invalid-border-color);
+		}
+	}
+
+	&:disabled {
+		--_color: var(--color-gray);
+		--_bg-color: var(--color-bg-verydark);
+	}
+
+	&:read-only {
+		--_color: var(--color-gray);
+		--_bg-color: var(--color-bg-verydark);
+	}
+}
+
+/* ===== ファイル選択（type） ===== */
+.c-input-file {
+	--_border-color: transparent;
+	--_color: var(--color-black);
+	--_bg-color: transparent;
+
+	padding: var(--form-control-padding-block) 0;
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	color: var(--_color);
+	background: var(--_bg-color);
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
+
+	&:enabled {
+		&:hover {
+			--_border-color: var(--outline-color);
+		}
+	}
+
+	&:disabled {
+		--_color: var(--color-gray);
+		--_bg-color: var(--color-bg-verydark);
+	}
+}
+
+/* ===== プルダウン（select） ===== */
+.c-select {
+	--_border-color: var(--color-border-dark);
+	--_color: var(--color-black);
+	--_bg-color: var(--color-white);
+
+	padding: calc(var(--form-control-padding-block) * var(--line-height-normal) / 1.25) var(--form-control-padding-block);
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	color: var(--_color);
+	background: var(--_bg-color);
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
+
+	&:enabled {
+		&:hover {
+			--_border-color: var(--outline-color);
+		}
+	}
+
+	&:disabled {
+		--_color: var(--color-gray);
+		--_bg-color: var(--color-bg-verydark);
+	}
+}
+
+/* ===== 複数行入力（textarea） ===== */
+.c-textarea {
+	--_border-color: var(--color-border-dark);
+	--_color: var(--color-black);
+	--_bg-color: var(--color-white);
+
+	padding: var(--form-control-padding-block);
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	box-sizing: border-box;
+	width: 100%;
+	min-height: var(--height, auto);
+	color: var(--_color);
+	background: var(--_bg-color);
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
+
+	&:enabled:read-write {
+		&:hover {
+			--_border-color: var(--outline-color);
+		}
+
+		&.-invalid {
+			--_border-color: var(--invalid-border-color);
+		}
+	}
+
+	&:disabled {
+		--_color: var(--color-gray);
+		--_bg-color: var(--color-bg-verydark);
+	}
+
+	&:read-only {
+		--_color: var(--color-gray);
+		--_bg-color: var(--color-bg-verydark);
+	}
+}
+
 /* ===== 送信ボタン ===== */
 .c-submit {
 	--_padding-block: var(--form-control-padding-block);
@@ -83,77 +216,127 @@
 	}
 }
 
-/* ===== サイト内検索 ===== */
-.c-search {
-	--_border-color: var(--color-lightgray);
-	--_height: 2em;
-
-	border: 1px solid var(--_border-color);
-	border-radius: var(--border-radius-small);
-	display: flex;
+/* ===== ラベル ===== */
+.c-label {
+	display: inline-flex;
+	flex-wrap: wrap;
 	align-items: center;
-	color: var(--color-darkgray);
-	background: var(--color-white);
-	outline-offset: -1px;
+	gap: 0.5em;
 
-	&:focus-within {
-		outline: var(--outline-width-bold) solid var(--outline-color);
+	/* 一行入力欄 */
+	&.-input {
 	}
 
-	&:hover {
-		--_border-color: var(--outline-color);
-	}
-}
+	/* チェックボックス、ラジオボタン */
+	&.-check {
+		--_border-color: transparent;
+		--_bg-color: transparent;
 
-/* <input type="hidden"> */
-.c-search__hidden {
-}
-
-/* キーワード入力欄 */
-.c-search__query {
-	flex: 1;
-
-	& > input {
-		all: initial;
-		padding: 0.25em;
-		box-sizing: border-box;
-		width: 100%;
-		height: var(--_height);
-		font: inherit;
-	}
-}
-
-/* 送信ボタン */
-.c-search__submit {
-	& > button {
-		--_color: hsl(220 70% 45%);
-
-		all: initial;
-		margin: var(--outline-width-bold);
-		padding: 0.25em;
-		box-sizing: border-box;
-		display: flex;
-		width: var(--_height);
-		height: var(--_height);
-		color: var(--_color);
-		font: inherit;
-		fill: currentColor; /* SVG */
-
-		&:focus:not(:focus-visible) {
-			--_color: hsl(220 70% 35%);
-		}
-
-		&:focus-visible {
-			outline: var(--outline-width-bold) dotted var(--color-black);
-		}
+		margin-block: calc(var(--form-control-padding-block) / 2);
+		padding: calc(var(--form-control-padding-block) / 2) 0.25em;
+		border: 1px solid var(--_border-color);
+		border-radius: var(--border-radius-normal);
+		background: var(--_bg-color);
 
 		&:hover {
-			--_color: hsl(220 70% 55%);
+			--_border-color: var(--color-superlightblue);
+			--_bg-color: var(--color-superlightblue);
 		}
 
-		& > svg {
-			width: 100%;
-			height: 100%;
-		} /* for Chrome */
+		&:focus-within {
+			--_border-color: var(--color-superlightblue);
+			--_bg-color: var(--color-superlightblue);
+
+			outline: var(--outline-width-bold) solid var(--outline-color);
+		}
+
+		& input {
+			width: 1em;
+			height: 1em;
+			outline: none;
+		}
+
+		&:has(input.-invalid) {
+			--_border-color: var(--invalid-border-color);
+			--_bg-color: var(--color-verylightred);
+
+			&:hover {
+				--_border-color: var(--invalid-border-color);
+				--_bg-color: var(--color-verylightred);
+			}
+		}
+	}
+}
+
+.c-label__text {
+}
+
+/* ===== ラベルアイコン ===== */
+.c-label-icon {
+	--color: var(--color-white);
+	--bg-color: var(--color-gray);
+
+	padding: 0.375em 0.5em;
+	border: 1px solid var(--bg-color);
+	border-radius: var(--border-radius-large);
+	display: inline-block;
+	color: var(--color);
+	background: var(--bg-color);
+	font-size: calc(100% / var(--font-ratio-3));
+	line-height: var(--line-height-nowrap);
+	white-space: nowrap;
+
+	&.-optional {
+		--color: var(--color-white);
+		--bg-color: var(--color-green);
+	}
+
+	&.-required {
+		--color: var(--color-white);
+		--bg-color: var(--color-red);
+	}
+}
+
+/* ===== 入力欄ごとの注釈 ===== */
+.c-fc-note {
+	color: var(--color-gray);
+	font-size: calc(100% / var(--font-ratio-1));
+}
+
+/* ===== 入力欄ごとのバリデートエラー文言 ===== */
+.c-fc-invalid {
+	color: var(--color-red);
+	font-size: calc(100% / var(--font-ratio-1));
+
+	&::before {
+		margin-inline-end: 0.25em;
+		content: "⚠";
+	}
+}
+
+/* ===== フォームコントロールを並べる ===== */
+.c-form-controls {
+	--_gap-row: 1em;
+	--_gap-col: 1em;
+
+	display: flex;
+	flex-flow: wrap;
+	align-items: center;
+	gap: var(--_gap-row) var(--_gap-col);
+
+	/* センタリング */
+	&.-center {
+		justify-content: center;
+	}
+
+	/* チェックボックス、ラジオボタン */
+	&.-checkbox,
+	&.-radio {
+		--_gap-row: 0em;
+	}
+
+	/* 送信ボタン */
+	&.-submit {
+		--_gap-col: 3em;
 	}
 }

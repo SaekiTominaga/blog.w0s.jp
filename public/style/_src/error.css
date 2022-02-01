@@ -7,7 +7,7 @@
 @import "layout/_error.css";
 
 /* Object - Component */
-@import "object/component/_form.css";
+@import "object/component/_form-search.css";
 
 /* Object - Project */
 @import "object/project/_error.css";

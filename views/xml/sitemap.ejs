@@ -2,12 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://blog.w0s.jp/</loc>
-		<lastmod><%= last_modified.format('YYYY-MM-DDTHH:mm:ssZ') %></lastmod>
+		<lastmod><%= updated_at.format('YYYY-MM-DDTHH:mm:ssZ') %></lastmod>
 	</url>
 	<% for (const entry of entries) { %>
 	<url>
 		<loc>https://blog.w0s.jp/<%= entry.id %></loc>
-		<lastmod><%= entry.last_modified.format('YYYY-MM-DDTHH:mm:ssZ') %></lastmod>
+		<lastmod><%= entry.updated_at.format('YYYY-MM-DDTHH:mm:ssZ') %></lastmod>
 	</url>
 	<% } %>
 </urlset>

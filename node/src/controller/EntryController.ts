@@ -88,8 +88,8 @@ export default class EntryController extends Controller implements ControllerInt
 			title: entryDto.title,
 			message: await messageParser.toHtml(<string>entryDto.message),
 			description: entryDto.description,
-			created: dayjs(entryDto.created),
-			lastUpdated: entryDto.last_updated !== null ? dayjs(entryDto.last_updated) : null,
+			created: dayjs(entryDto.created_at),
+			lastUpdated: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : null,
 
 			ogImage: ogImage,
 			tweet: messageParser.isTweetExit(),

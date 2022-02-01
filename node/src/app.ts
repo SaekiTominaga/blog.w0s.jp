@@ -1,21 +1,19 @@
 import AmazonController from './controller/AmazonController.js';
-import ApiAmazonController from './controller/api/AmazonController.js';
+import AmazonImageController from './controller/api/AmazonImageController.js';
 import CategoryController from './controller/CategoryController.js';
 import compression from 'compression';
-import cors from 'cors';
 import EntryController from './controller/EntryController.js';
 import Express, { NextFunction, Request, Response } from 'express';
-import FeedCreateController from './controller/api/FeedCreateController.js';
 import fs from 'fs';
 import HttpBasicAuth from './util/HttpBasicAuth.js';
 import HttpResponse from './util/HttpResponse.js';
 import ListController from './controller/ListController.js';
 import Log4js from 'log4js';
-import MessagePreviewController from './controller/MessagePreviewController.js';
 import multer from 'multer';
 import path from 'path';
-import SitemapCreateController from './controller/api/SitemapCreateController.js';
-import TweetInfoController from './controller/api/TweetController.js';
+import PostController from './controller/PostController.js';
+import PreviewController from './controller/api/PreviewController.js';
+import TweetMediaController from './controller/api/TweetMediaController.js';
 import { NoName as Configure } from '../configure/type/common';
 
 /* 設定ファイル読み込み */
@@ -183,6 +181,26 @@ app.get('/category/:category_name', async (req, res, next) => {
 });
 
 /**
+ * 記事投稿
+ */
+app
+	.route('/admin/post')
+	.get(async (req, res, next) => {
+		try {
+			await new PostController(config).execute(req, res);
+		} catch (e) {
+			next(e);
+		}
+	})
+	.post(upload.array('media'), async (req, res, next) => {
+		try {
+			await new PostController(config).execute(req, res);
+		} catch (e) {
+			next(e);
+		}
+	});
+
+/**
  * Amazon 商品管理
  */
 app
@@ -205,66 +223,31 @@ app
 /**
  * 本文プレビュー
  */
-app.post('/message-preview', async (req, res, next) => {
+app.post('/api/preview', async (req, res, next) => {
 	try {
-		await new MessagePreviewController(config).execute(req, res);
+		await new PreviewController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
 });
 
 /**
- * API
+ * ツイートメディア取得
  */
-const corsPreflightedRequestCallback = cors({
-	origin: config.cors.allow_origins,
-	methods: ['POST'],
-});
-const corsCallback = cors({
-	origin: config.cors.allow_origins,
-});
-
-/**
- * API・フィード生成
- */
-app.put('/feed.atom', async (req, res, next) => {
+app.post('/api/tweet-media', async (req, res, next) => {
 	try {
-		await new FeedCreateController(config).execute(req, res);
+		await new TweetMediaController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
 });
 
 /**
- * API・サイトマップ生成
+ * Amazon 商品画像取得
  */
-app.put('/sitemap.xml', async (req, res, next) => {
+app.post('/api/amazon-image', async (req, res, next) => {
 	try {
-		await new SitemapCreateController(config).execute(req, res);
-	} catch (e) {
-		next(e);
-	}
-});
-
-/**
- * API・Amazon 商品情報取得
- */
-app.options('/api/amazon', corsPreflightedRequestCallback);
-app.post('/api/amazon', corsCallback, async (req, res, next) => {
-	try {
-		await new ApiAmazonController(config).execute(req, res);
-	} catch (e) {
-		next(e);
-	}
-});
-
-/**
- * API・ツイート情報取得
- */
-app.options('/api/tweet', corsPreflightedRequestCallback);
-app.post('/api/tweet', corsCallback, async (req, res, next) => {
-	try {
-		await new TweetInfoController(config).execute(req, res);
+		await new AmazonImageController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}

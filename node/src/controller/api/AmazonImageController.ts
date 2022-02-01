@@ -4,13 +4,13 @@ import BlogAmazonDao from '../../dao/BlogAmazonDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
+import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { NoName as ConfigureCommon } from '../../../configure/type/common';
 import { PAAPI as ConfigurePaapi } from '../../../configure/type/paapi.js';
-import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { Request, Response } from 'express';
 
 /**
- * Amazon 商品情報取得
+ * Amazon 商品画像取得
  */
 export default class AmazonController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
@@ -31,12 +31,6 @@ export default class AmazonController extends Controller implements ControllerIn
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		if (res.get('Access-Control-Allow-Origin') === undefined) {
-			this.logger.error(`Access-Control-Allow-Origin ヘッダが存在しない: ${req.get('User-Agent')}`);
-			res.status(403).end();
-			return;
-		}
-
 		const requestBody = req.body;
 		const asins: string | string[] | undefined = requestBody.asin;
 
@@ -61,7 +55,7 @@ export default class AmazonController extends Controller implements ControllerIn
 		const registeredAsins = await dao.getAsins(); // DB に登録済みの ASIN
 		const unregisteredAsins = (<string[]>asins).filter((asin) => !registeredAsins.includes(asin)); // DB に登録されていない ASIN
 
-		const paapiErros: string[] = []; // PA-API でのエラー情報を格納
+		const paapiErros: Set<string> = new Set(); // PA-API でのエラー情報を格納
 
 		if (unregisteredAsins.length >= 1) {
 			const paapiResponse = <GetItemsResponse>await amazonPaapi.GetItems(
@@ -82,7 +76,7 @@ export default class AmazonController extends Controller implements ControllerIn
 			const paapiResponseErrors = paapiResponse.Errors;
 			if (paapiResponseErrors !== undefined) {
 				for (const error of paapiResponseErrors) {
-					paapiErros.push(`${error.Code} : ${error.Message}`);
+					paapiErros.add(`${error.Code} : ${error.Message}`);
 				}
 			}
 
@@ -145,8 +139,8 @@ export default class AmazonController extends Controller implements ControllerIn
 		this.logger.debug(imageUrls);
 
 		const responseJson: BlogApi.AmazonImage = {
-			errors: paapiErros,
-			images: imageUrls,
+			image_urls: imageUrls,
+			errors: Array.from(paapiErros),
 		};
 
 		res.status(200).json(responseJson);

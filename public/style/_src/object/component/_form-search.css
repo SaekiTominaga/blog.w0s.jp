@@ -1,0 +1,78 @@
+/* ==============================
+ *   サイト内検索
+ * ============================== */
+
+/* ===== サイト内検索 ===== */
+.c-search {
+	--_border-color: var(--color-lightgray);
+	--_height: 2em;
+
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-small);
+	display: flex;
+	align-items: center;
+	color: var(--color-darkgray);
+	background: var(--color-white);
+	outline-offset: -1px;
+
+	&:focus-within {
+		outline: var(--outline-width-bold) solid var(--outline-color);
+	}
+
+	&:hover {
+		--_border-color: var(--outline-color);
+	}
+}
+
+/* <input type="hidden"> */
+.c-search__hidden {
+}
+
+/* キーワード入力欄 */
+.c-search__query {
+	flex: 1;
+
+	& > input {
+		all: initial;
+		padding: 0.25em;
+		box-sizing: border-box;
+		width: 100%;
+		height: var(--_height);
+		font: inherit;
+	}
+}
+
+/* 送信ボタン */
+.c-search__submit {
+	& > button {
+		--_color: hsl(220 70% 45%);
+
+		all: initial;
+		margin: var(--outline-width-bold);
+		padding: 0.25em;
+		box-sizing: border-box;
+		display: flex;
+		width: var(--_height);
+		height: var(--_height);
+		color: var(--_color);
+		font: inherit;
+		fill: currentColor; /* SVG */
+
+		&:focus:not(:focus-visible) {
+			--_color: hsl(220 70% 35%);
+		}
+
+		&:focus-visible {
+			outline: var(--outline-width-bold) dotted var(--color-black);
+		}
+
+		&:hover {
+			--_color: hsl(220 70% 55%);
+		}
+
+		& > svg {
+			width: 100%;
+			height: 100%;
+		} /* for Chrome */
+	}
+}

@@ -501,7 +501,7 @@ export default class MessageParser {
 
 						continue;
 					} else if (line.startsWith('$amazon: ')) {
-						/* 先頭が $amazon: な場合はAmazonリンク */
+						/* 先頭が $amazon: な場合は Amazon リンク */
 						const asinMeta = line.substring(9); // 先頭記号を削除
 
 						const asins = asinMeta.split(' ');
@@ -585,12 +585,12 @@ export default class MessageParser {
 		const id = this.#generateSectionId(headingText);
 
 		const sectionElement = this.#document.createElement('section');
-		sectionElement.className = 'p-section1';
+		sectionElement.className = 'p-entry-section1';
 		sectionElement.id = id;
 		this.#rootElement.appendChild(sectionElement);
 
 		const headingWrapElement = this.#document.createElement('div');
-		headingWrapElement.className = 'p-section1__hdg';
+		headingWrapElement.className = 'p-entry-section1__hdg';
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h2');
@@ -610,12 +610,12 @@ export default class MessageParser {
 		const id = this.#generateSectionId(headingText);
 
 		const sectionElement = this.#document.createElement('section');
-		sectionElement.className = 'p-section2';
+		sectionElement.className = 'p-entry-section2';
 		sectionElement.id = id;
 		this.#section1Elements.slice(-1)[0]?.appendChild(sectionElement);
 
 		const headingWrapElement = this.#document.createElement('div');
-		headingWrapElement.className = 'p-section2__hdg';
+		headingWrapElement.className = 'p-entry-section2__hdg';
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h3');

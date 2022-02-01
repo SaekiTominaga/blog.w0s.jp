@@ -5,13 +5,17 @@
 	"repository": {},
 	"dependencies": {
 		"@saekitominaga/customelements-button-clipboard": "^1.1.0",
+		"@saekitominaga/customelements-button-confirm": "^1.1.1",
 		"@saekitominaga/customelements-button-share": "^1.1.0",
+		"@saekitominaga/customelements-input-file-preview": "^1.1.1",
 		"@saekitominaga/customelements-portal": "^2.3.0",
 		"@saekitominaga/customelements-tab": "^1.6.1",
 		"@saekitominaga/customelements-tooltip": "^1.2.0",
 		"@saekitominaga/customelements-tooltip-trigger": "^1.2.1",
+		"@saekitominaga/htmlformelement-before-unload-confirm": "^1.2.1",
 		"@saekitominaga/paapi-item-image-url-parser": "^2.1.1",
 		"@saekitominaga/report-js-error": "^1.2.0",
-		"@saekitominaga/report-same-referrer": "^1.1.0"
+		"@saekitominaga/report-same-referrer": "^1.1.0",
+		"@saekitominaga/string-convert": "^1.0.2"
 	}
 }

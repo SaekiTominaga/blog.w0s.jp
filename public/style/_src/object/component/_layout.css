@@ -5,7 +5,7 @@ Styleguide 1.5.
 */
 
 /* ===== Stack ===== */
-:is(.l-content__header, .l-content__main, .l-content__footer, .p-quote, .p-box, .p-entry__footer) {
+:is(.l-content__header, .l-content__main, .l-content__footer, .c-stack, .p-section, .p-quote, .p-box, .p-entry__footer) {
 	& > *:not(:first-child) {
 		margin-block-start: var(--stack-margin-base);
 	}
@@ -25,7 +25,7 @@ Styleguide 1.5.
 	}
 }
 
-:is(.p-entry__body, .p-entry__body .p-section1, .p-entry__body .p-section2) {
+:is(.p-entry__body, .p-entry__body .p-entry-section1, .p-entry__body .p-entry-section2) {
 	& > *:not(:first-child) {
 		margin-block-start: calc(var(--stack-margin-base) * 1.5);
 	}

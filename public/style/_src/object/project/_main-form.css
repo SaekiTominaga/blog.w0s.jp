@@ -1,0 +1,135 @@
+/* ==============================
+ *   フォーム
+ * ============================== */
+
+/* ===== コントロールエリア（グリッド形式の整形） ===== */
+.p-form-grid {
+	--_gap-block: 1em;
+	--_gap-inline: 1em;
+
+	display: grid;
+	grid-template-areas: "legend contents";
+	grid-template-columns: auto 1fr;
+	gap: var(--_gap-block) var(--_gap-inline);
+}
+
+.p-form-grid__group {
+	display: grid;
+	grid-column: legend / contents;
+	grid-template-columns: subgrid;
+
+	@supports not (grid-template-columns: subgrid) {
+		display: contents; /* for Chrome, Safari, Edge */
+	}
+
+	/* 複雑なフォームは区切り線を付ける */
+	@nest .p-form-grid.-complex & {
+		padding-block-end: var(--_gap-block);
+		border-block-end: 1px solid var(--color-border-light);
+	}
+
+	& > fieldset {
+		display: contents;
+	}
+}
+
+.p-form-grid__legend {
+	margin-block-start: calc(0.5em + 1px);
+	grid-column: legend;
+	font-weight: var(--font-weight-bold);
+}
+
+.p-form-grid__contents {
+	grid-column: contents;
+}
+
+@media (max-width: 36em) {
+	.p-form-grid {
+		grid-template-areas:
+			"legend"
+			"contents";
+		grid-template-columns: auto;
+	}
+
+	.p-form-grid__legend {
+		margin: 0;
+	}
+
+	.p-form-grid__contents {
+		margin-block-start: 0.25em;
+	}
+}
+
+/* ===== エラー文言 ===== */
+.p-form-errors {
+	padding: 1em;
+	border: 1px solid var(--color-red);
+	border-radius: var(--border-radius-large);
+	background: var(--color-verylightred);
+	outline: none;
+}
+
+/* ===== 送信結果 ===== */
+.p-form-results {
+	padding: 1em;
+	border: 1px solid;
+	border-radius: var(--border-radius-large);
+	color: var(--color-black);
+	background: var(--color-white);
+}
+
+.p-form-results__item {
+	display: flex;
+	gap: 0.5em;
+	color: var(--color);
+
+	&.-success {
+		--color: var(--color-green);
+	}
+
+	&.-error {
+		--color: var(--color-red);
+	}
+}
+
+.p-form-results__mark {
+	min-width: 1em;
+	font-weight: var(--font-weight-bold);
+	text-align: center;
+}
+
+.p-form-results__message {
+}
+
+/* ===== 投稿画像プレビュー ===== */
+.p-image-preview {
+	display: flex;
+	flex-flow: wrap;
+	gap: 10px;
+	font-size: calc(100% / var(--font-ratio-1));
+
+	& > li {
+		width: 120px;
+	}
+
+	& img {
+		object-fit: contain;
+		object-position: 0 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	/* stylelint-disable selector-class-pattern */
+	& .error {
+		padding: 10px;
+		border: 1px solid var(--color-border-dark);
+		display: block;
+		font-weight: var(--font-weight-normal);
+	}
+
+	& .filename {
+		font-weight: var(--font-weight-bold);
+		overflow-wrap: break-word;
+	}
+	/* stylelint-enable selector-class-pattern */
+}

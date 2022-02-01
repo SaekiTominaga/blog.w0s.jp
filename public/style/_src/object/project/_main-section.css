@@ -2,78 +2,110 @@
  *   セクション
  * ============================== */
 
-.p-section1 {
-	@nest .p-entry & {
-		&:not(:first-child) {
-			margin-block-start: calc(var(--stack-margin-base) * 4);
-		}
-
-		&:not(:last-child) {
-			margin-block-end: calc(var(--stack-margin-base) * 4);
-		}
+@keyframes section-target {
+	0% {
+		background-color: var(--color-verylightred);
 	}
 
-	@nest .p-entry .p-toc + & {
-		margin-block-start: calc(var(--stack-margin-base) * 3);
+	50% {
+		background-color: var(--color-verylightred);
+	}
+
+	100% {
+		background-color: transparent;
 	}
 }
 
-.p-section1__hdg {
-	& > h2 {
-		padding-block: 0.25em;
+.p-section {
+	--_margin-block: 1em;
+
+	&:not(:first-child) {
+		@nest :not(.p-section__hdg) + & {
+			margin-block-start: var(--_margin-block);
+		}
+	}
+
+	&:not(:last-child) {
+		margin-block-end: var(--_margin-block);
+	}
+
+	&.-hdg-a {
+		--_margin-block: 4.5em;
+	}
+
+	&.-hdg-b {
+		--_margin-block: 3.75em;
+	}
+
+	&.-hdg-c {
+		--_margin-block: 3em;
+	}
+
+	&:target {
+		animation: section-target 1s;
+	}
+}
+
+.p-section__hdg {
+	line-height: var(--line-height-narrow);
+
+	@nest .p-section.-hdg-a > & {
+		--stack-margin-base: 2em;
+
+		padding: 0.25em 0;
 		border-block-start: 1px solid transparent;
 		border-block-end: 1px solid var(--color-border-dark);
-		font-size: calc(100% * var(--font-ratio-5));
-		line-height: var(--line-height-narrow);
-	}
-}
 
-.p-section2 {
-	@nest .p-entry & {
-		&:not(:first-child) {
-			margin-block-start: calc(var(--stack-margin-base) * 2);
-		}
+		& > h2 {
+			--_stick-width: 0.25em;
+			--_stick-height: 80%;
 
-		&:not(:last-child) {
-			margin-block-end: calc(var(--stack-margin-base) * 2);
-		}
-	}
-}
+			padding-inline-start: calc(var(--_stick-width) + 0.5em);
+			contain: content;
+			position: relative; /* for Safari */
+			font-size: calc(100% * var(--font-ratio-6));
 
-.p-section2__hdg {
-	& > h3 {
-		font-size: calc(100% * var(--font-ratio-3));
-		line-height: var(--line-height-narrow);
-
-		&::before {
-			--_width: 0.25em;
-
-			margin-inline-end: 0.5em;
-			border-radius: var(--_width);
-			content: "";
-			display: inline-block;
-			width: var(--_width);
-			height: calc(1em * var(--line-height-narrow));
-			background: var(--color-border-dark);
-			vertical-align: text-top;
+			&::before {
+				border-radius: var(--border-radius-full);
+				content: "";
+				display: block;
+				width: var(--_stick-width);
+				height: var(--_stick-height);
+				position: absolute;
+				inset-block-start: calc((100% - var(--_stick-height)) / 2);
+				inset-inline-start: 0;
+				background: var(--color-gray);
+			}
 		}
 	}
-}
 
-/* ===== セクション終了 ===== */
-.p-section-break {
-	margin-inline: auto;
-	border: 1px solid var(--color-lightgray);
-	width: 15%;
-	height: 0;
+	@nest .p-section.-hdg-b > & {
+		& > h3 {
+			--_stick-width: 0.25em;
+			--_stick-height: 80%;
 
-	@nest .p-entry & {
-		&:not(:first-child) {
-			margin-block-start: calc(var(--stack-margin-base) * 4);
+			padding-inline-start: calc(var(--_stick-width) + 0.5em);
+			contain: content;
+			position: relative; /* for Safari */
+			font-size: calc(100% * var(--font-ratio-4));
+
+			&::before {
+				border-radius: var(--border-radius-full);
+				content: "";
+				display: inline-block;
+				width: var(--_stick-width);
+				height: var(--_stick-height);
+				position: absolute;
+				inset-block-start: calc((100% - var(--_stick-height)) / 2);
+				inset-inline-start: 0;
+				background: var(--color-lightgray);
+			}
 		}
+	}
 
-		&:not(:last-child) {
-			margin-block-end: calc(var(--stack-margin-base) * 4);
+	@nest .p-section.-hdg-c > & {
+		& > :is(h3, h4) {
+			font-size: calc(100% * var(--font-ratio-2));
 		}
 	}
 }

@@ -38,26 +38,29 @@ export type BasicAuthentication = {
   realm: NoName20;
   htpasswd: Htpasswd;
 }[];
-export type NoName21 = string[];
+export type NoName21 = string;
 export type NoName22 = string;
-export type NoName23 = string;
 export type FilepathFor401Unauthorized = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
 export type FilepathFor500InternalServerError = string;
-export type NoName25 = string;
+export type NoName24 = string;
 export type Blog = string;
+export type APIKey = string;
+export type APIKeySecret = string;
+export type AccessToken = string;
+export type AccessTokenSecret = string;
 
 export interface NoName {
   port: HTTP;
   response: NoName1;
   static: NoName4;
-  cors: CORS;
-  views: NoName22;
-  temp: NoName23;
-  errorpage: NoName24;
+  views: NoName21;
+  temp: NoName22;
+  errorpage: NoName23;
   logger: Logger;
   sqlite: SQLite;
+  twitter: TwitterAPI;
 }
 export interface NoName1 {
   header: NoName2;
@@ -102,21 +105,27 @@ export interface NoName11 {
 export interface SourceMap {
   extensions?: NoName19;
 }
-export interface CORS {
-  allow_origins: NoName21;
-}
-export interface NoName24 {
+export interface NoName23 {
   path_401: FilepathFor401Unauthorized;
   path_403: FilepathFor403Forbidden;
   path_404: FilepathFor404NotFound;
   path_500: FilepathFor500InternalServerError;
 }
 export interface Logger {
-  path: NoName25;
+  path: NoName24;
 }
 export interface SQLite {
   db: DBNode;
 }
 export interface DBNode {
   blog: Blog;
+}
+export interface TwitterAPI {
+  dev: NoName25;
+}
+export interface NoName25 {
+  consumer_key: APIKey;
+  consumer_secret: APIKeySecret;
+  access_token: AccessToken;
+  access_token_secret: AccessTokenSecret;
 }

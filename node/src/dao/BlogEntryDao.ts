@@ -1,3 +1,4 @@
+import DbUtil from '../util/DbUtil.js';
 import BlogDao from './BlogDao.js';
 
 export interface Category {
@@ -31,18 +32,18 @@ export default class BlogEntryDao extends BlogDao {
 
 		const sth = await dbh.prepare(`
 			SELECT
-				t.title AS title,
-				t.description AS description,
-				t.message AS message,
-				t.image AS image_internal,
-				t.image_external AS image_external,
-				t.insert_date AS created,
-				t.last_update AS last_updated
+				title,
+				description,
+				message,
+				image AS image_internal,
+				image_external,
+				insert_date AS created_at,
+				last_update AS updated_at
 			FROM
-				d_topic t
+				d_topic
 			WHERE
-				t.id = :id AND
-				t.public = :public
+				id = :id AND
+				public = :public
 		`);
 		await sth.bind({
 			':id': entryId,
@@ -62,8 +63,8 @@ export default class BlogEntryDao extends BlogDao {
 			message: row.message,
 			image_internal: row.image_internal,
 			image_external: row.image_external,
-			created: new Date(Number(row.created) * 1000),
-			last_updated: row.last_updated !== null ? new Date(Number(row.last_updated) * 1000) : null,
+			created_at: <Date>DbUtil.unixToDate(row.created_at),
+			updated_at: DbUtil.unixToDate(row.updated_at),
 			public: true,
 		};
 	}
@@ -156,7 +157,7 @@ export default class BlogEntryDao extends BlogDao {
 				title: row.title,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				created: new Date(Number(row.created) * 1000),
+				created: <Date>DbUtil.unixToDate(row.created),
 			});
 		}
 

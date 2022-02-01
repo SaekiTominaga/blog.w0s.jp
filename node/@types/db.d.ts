@@ -6,8 +6,8 @@ declare namespace BlogDb {
 		message: string;
 		image_internal: string | null;
 		image_external: string | null;
-		created: Date;
-		last_updated: Date | null;
+		created_at: Date;
+		updated_at: Date | null;
 		public: boolean;
 	}
 
