@@ -416,7 +416,7 @@ export default class PostController extends Controller implements ControllerInte
 				if (!response.ok) {
 					this.logger.error('Fetch error', mediaUrl);
 				}
-				medias.push(await response.buffer());
+				medias.push(Buffer.from(await response.arrayBuffer()));
 			}
 
 			let message = `${this.#config.twitter.message_prefix}\n\n${requestQuery.title}\n${topicUrl}`;
