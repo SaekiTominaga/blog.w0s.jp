@@ -24,11 +24,11 @@ export default class Tweet {
 	 * @param {string} text - 本文
 	 * @param {string} url - URL
 	 * @param {string} hashtag - ハッシュタグ
-	 * @param {object[]} medias - 添付するメディア
+	 * @param {Set} medias - 添付するメディア
 	 *
 	 * @returns {Twitter.ResponseData} ResponseData
 	 */
-	async postMessage(text: string, url?: string, hashtag?: string, medias?: Buffer[]): Promise<Twitter.ResponseData> {
+	async postMessage(text: string, url?: string, hashtag?: string, medias?: Set<Buffer>): Promise<Twitter.ResponseData> {
 		const requestParams: Twitter.RequestParams = {};
 
 		/* 本文を組み立てる */
@@ -48,7 +48,7 @@ export default class Tweet {
 
 		/* メディアをアップロードする */
 		if (medias !== undefined) {
-			if (medias.length > this.#IMAGE_LIMIT) {
+			if (medias.size > this.#IMAGE_LIMIT) {
 				throw new RangeError(`There should be no more than ${this.#IMAGE_LIMIT} media attachments.`);
 			}
 

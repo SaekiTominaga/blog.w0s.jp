@@ -409,14 +409,14 @@ export default class PostController extends Controller implements ControllerInte
 
 			const hashtag = requestQuery.social_tag !== null && requestQuery.social_tag !== '' ? `#${requestQuery.social_tag}` : ''; // ハッシュタグ
 
-			const medias: Buffer[] = [];
+			const medias: Set<Buffer> = new Set();
 			if (requestQuery.image !== null && !path.isAbsolute(requestQuery.image)) {
 				/* 画像が投稿されていた場合（外部サービスの画像を除く） */
 				const response = await fetch(mediaUrl);
 				if (!response.ok) {
 					this.logger.error('Fetch error', mediaUrl);
 				}
-				medias.push(Buffer.from(await response.arrayBuffer()));
+				medias.add(Buffer.from(await response.arrayBuffer()));
 			}
 
 			let message = `${this.#config.twitter.message_prefix}\n\n${requestQuery.title}\n${topicUrl}`;
