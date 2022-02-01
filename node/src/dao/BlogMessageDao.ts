@@ -13,7 +13,7 @@ interface AmazonData {
 }
 
 /**
- * 日記タイトル一覧
+ * 本文
  */
 export default class BlogMessageDao extends BlogDao {
 	/**
