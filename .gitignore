@@ -15,6 +15,7 @@
 /public/feed.atom
 /public/sitemap.xml
 /public/image/
+/public/json/
 /public/script/*.js
 /public/script/*.mjs
 /public/style/*.css

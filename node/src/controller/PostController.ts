@@ -117,21 +117,11 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('最終更新日時記録', requestQuery.id);
 				topicPostResults.add({ success: true, message: this.#config.update_modified.message_success });
 
+				topicPostResults.add(await this.#createFeed(dao));
+				topicPostResults.add(await this.#createSitemap(dao));
+				topicPostResults.add(await this.#createNewlyJson(dao));
 				if (requestQuery.social) {
-					const [resultFeed, resultSitemap, resultNewlyJson, resultSocial] = await Promise.all([
-						this.#createFeed(dao),
-						this.#createSitemap(dao),
-						this.#createNewlyJson(req, httpBasicCredentials),
-						this.#postSocial(req, requestQuery, topicId),
-					]);
-					topicPostResults.add(resultFeed).add(resultSitemap).add(resultNewlyJson).add(resultSocial);
-				} else {
-					const [resultFeed, resultSitemap, resultNewlyJson] = await Promise.all([
-						this.#createFeed(dao),
-						this.#createSitemap(dao),
-						this.#createNewlyJson(req, httpBasicCredentials),
-					]);
-					topicPostResults.add(resultFeed).add(resultSitemap).add(resultNewlyJson);
+					topicPostResults.add(await this.#postSocial(req, requestQuery, topicId));
 				}
 			}
 		} else if (requestQuery.action_revise) {
@@ -162,12 +152,9 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('最終更新日時記録', requestQuery.id);
 				topicPostResults.add({ success: true, message: this.#config.update_modified.message_success });
 
-				const [resultFeed, resultSitemap, resultNewlyJson] = await Promise.all([
-					this.#createFeed(dao),
-					this.#createSitemap(dao),
-					this.#createNewlyJson(req, httpBasicCredentials),
-				]);
-				topicPostResults.add(resultFeed).add(resultSitemap).add(resultNewlyJson);
+				topicPostResults.add(await this.#createFeed(dao));
+				topicPostResults.add(await this.#createSitemap(dao));
+				topicPostResults.add(await this.#createNewlyJson(dao));
 			}
 		} else if (requestQuery.action_revise_preview) {
 			/* 修正データ選択 */
@@ -248,12 +235,14 @@ export default class PostController extends Controller implements ControllerInte
 				return { success: true, message: this.#config.feed_create.response.message_none };
 			}
 
+			const dbh = await dao.getDbh();
+
 			const entriesView: Set<BlogView.FeedEntry> = new Set();
 			for (const entry of entriesDto) {
 				entriesView.add({
 					id: entry.id,
 					title: entry.title,
-					message: await new MessageParser(this.#configCommon, await dao.getDbh(), entry.id).toXml(entry.message),
+					message: await new MessageParser(this.#configCommon, dbh, entry.id).toHtml(entry.message),
 					updated_at: dayjs(entry.updated_at ?? entry.created_at),
 					update: Boolean(entry.updated_at),
 				});
@@ -299,7 +288,7 @@ export default class PostController extends Controller implements ControllerInte
 		try {
 			const [lastModifiedDto, entriesDto] = await Promise.all([
 				dao.getLastModified(),
-				dao.getEntriesSitemap(
+				dao.getEntriesNewly(
 					this.#config.sitemap_create
 						.url_limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要があるが、超充分に猶予があるのでとりあえずこれで */
 				),
@@ -343,33 +332,46 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * 新着 JSON ファイルを生成する
 	 *
-	 * @param {Request} req - Request
-	 * @param {HttpBasicAuthCredentials | null} httpBasicCredentials - Basic 認証の資格情報
+	 * @param {BlogPostDao} dao - Dao
 	 *
 	 * @returns {PostResults} 処理結果のメッセージ
 	 */
-	async #createNewlyJson(req: Request, httpBasicCredentials: HttpBasicAuthCredentials | null): Promise<PostResults> {
+	async #createNewlyJson(dao: BlogPostDao): Promise<PostResults> {
 		try {
-			const url = req.hostname === 'localhost' ? this.#config.newly_json_create.url_dev : this.#config.newly_json_create.url;
+			const entriesDto = await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number);
 
-			this.logger.info('Fetch', url);
+			const entriesView: Set<BlogView.NewlyJsonEntry> = new Set();
+			for (const entry of entriesDto) {
+				entriesView.add({
+					id: entry.id,
+					title: entry.title,
+				});
+			}
 
-			const response = await fetch(url, {
-				method: 'PUT',
-				headers: {
-					Authorization: `Basic ${Buffer.from(`${httpBasicCredentials?.username}:${httpBasicCredentials?.password}`).toString('base64')}`,
+			const newlyJson = JSON.stringify(Array.from(entriesView));
+
+			const newlyJsonBrotli = zlib.brotliCompressSync(newlyJson, {
+				params: {
+					[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
+					[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
+					[zlib.constants.BROTLI_PARAM_SIZE_HINT]: newlyJson.length,
 				},
 			});
-			if (!response.ok) {
-				this.logger.error('Fetch error', url);
-			}
+
+			/* ファイル出力 */
+			const filePath = `${this.#configCommon.static.root}${this.#config.newly_json_create.path}`;
+			const brotliFilePath = `${filePath}.br`;
+
+			await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
+			this.logger.info('JSON file created', filePath);
+			this.logger.info('JSON Brotli file created', brotliFilePath);
 		} catch (e) {
 			this.logger.error('新着 JSON 生成失敗', e);
 
-			return { success: false, message: this.#config.newly_json_create.api_response.message_failure };
+			return { success: false, message: this.#config.newly_json_create.response.message_failure };
 		}
 
-		return { success: true, message: this.#config.newly_json_create.api_response.message_success };
+		return { success: true, message: this.#config.newly_json_create.response.message_success };
 	}
 
 	/**
