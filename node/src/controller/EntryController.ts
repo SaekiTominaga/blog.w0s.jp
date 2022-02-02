@@ -86,7 +86,7 @@ export default class EntryController extends Controller implements ControllerInt
 			},
 			entryId: paramEntryId,
 			title: entryDto.title,
-			message: await messageParser.toHtml(<string>entryDto.message),
+			message: await messageParser.toHtml(entryDto.message),
 			description: entryDto.description,
 			created: dayjs(entryDto.created_at),
 			lastUpdated: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : null,
