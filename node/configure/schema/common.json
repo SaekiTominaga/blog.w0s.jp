@@ -169,6 +169,28 @@
 							},
 							"additionalProperties": false
 						},
+						"cors": {
+							"type": "object",
+							"title": "CORS",
+							"required": ["directory", "origin"],
+							"properties": {
+								"directory": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									},
+									"title": "CORS を設定する対象ディレクトリ"
+								},
+								"origin": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									},
+									"title": "許可するオリジン"
+								}
+							},
+							"additionalProperties": false
+						},
 						"source_map": {
 							"type": "object",
 							"title": "SourceMap 定義",

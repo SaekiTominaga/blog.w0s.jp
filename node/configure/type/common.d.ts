@@ -29,22 +29,24 @@ export type NoName16 = {
   extensions: NoName17;
   value: NoName18;
 }[];
+export type CORS1 = string[];
 export type NoName19 = string[];
+export type NoName20 = string[];
 export type Directory = string[];
-export type NoName20 = string;
+export type NoName21 = string;
 export type Htpasswd = string;
 export type BasicAuthentication = {
   directory: Directory;
-  realm: NoName20;
+  realm: NoName21;
   htpasswd: Htpasswd;
 }[];
-export type NoName21 = string;
 export type NoName22 = string;
+export type NoName23 = string;
 export type FilepathFor401Unauthorized = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
 export type FilepathFor500InternalServerError = string;
-export type NoName24 = string;
+export type NoName25 = string;
 export type Blog = string;
 export type APIKey = string;
 export type APIKeySecret = string;
@@ -55,9 +57,9 @@ export interface NoName {
   port: HTTP;
   response: NoName1;
   static: NoName4;
-  views: NoName21;
-  temp: NoName22;
-  errorpage: NoName23;
+  views: NoName22;
+  temp: NoName23;
+  errorpage: NoName24;
   logger: Logger;
   sqlite: SQLite;
   twitter: TwitterAPI;
@@ -85,6 +87,7 @@ export interface NoName4 {
 export interface NoName8 {
   mime: MIME;
   cache_control?: NoName11;
+  cors?: CORS;
   source_map?: SourceMap;
 }
 export interface MIME {
@@ -102,17 +105,21 @@ export interface NoName11 {
   path: NoName13;
   extension: NoName16;
 }
-export interface SourceMap {
-  extensions?: NoName19;
+export interface CORS {
+  directory: CORS1;
+  origin: NoName19;
 }
-export interface NoName23 {
+export interface SourceMap {
+  extensions?: NoName20;
+}
+export interface NoName24 {
   path_401: FilepathFor401Unauthorized;
   path_403: FilepathFor403Forbidden;
   path_404: FilepathFor404NotFound;
   path_500: FilepathFor500InternalServerError;
 }
 export interface Logger {
-  path: NoName24;
+  path: NoName25;
 }
 export interface SQLite {
   db: DBNode;
@@ -121,9 +128,9 @@ export interface DBNode {
   blog: Blog;
 }
 export interface TwitterAPI {
-  dev: NoName25;
+  dev: NoName26;
 }
-export interface NoName25 {
+export interface NoName26 {
   consumer_key: APIKey;
   consumer_secret: APIKeySecret;
   access_token: AccessToken;
