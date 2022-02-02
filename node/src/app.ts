@@ -134,6 +134,15 @@ app.use(
 				res.setHeader('Cache-Control', cacheControlValue);
 			}
 
+			/* CORS */
+			if (config.static.headers.cors?.directory.find((urlPath) => requestUrl.startsWith(urlPath))) {
+				const origin = res.req.get('Origin');
+				if (origin !== undefined && config.static.headers.cors?.origin.includes(origin)) {
+					res.setHeader('Access-Control-Allow-Origin', origin);
+					res.vary('Origin');
+				}
+			}
+
 			/* SourceMap */
 			if (config.static.headers.source_map?.extensions?.includes(extensionOrigin)) {
 				const mapFilePath = `${localPathOrigin}${EXTENTIONS.map}`;
