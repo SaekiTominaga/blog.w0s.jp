@@ -30,6 +30,11 @@ declare namespace BlogView {
 		updated_at: Dayjs;
 	}
 
+	export interface NewlyJsonEntry {
+		id: number;
+		title: string;
+	}
+
 	export interface AmazonDp {
 		asin: string;
 		title: string;

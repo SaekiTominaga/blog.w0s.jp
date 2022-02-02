@@ -532,13 +532,13 @@ export default class BlogPostDao extends BlogDao {
 	}
 
 	/**
-	 * サイトマップ用の記事データを取得する
+	 * 新着記事データを取得する
 	 *
 	 * @param {number} limit - 最大取得件数
 	 *
 	 * @returns {Array} 記事データ（該当する記事が存在しない場合は空配列）
 	 */
-	async getEntriesSitemap(limit: number): Promise<BlogDb.Entry[]> {
+	async getEntriesNewly(limit: number): Promise<BlogDb.Entry[]> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`

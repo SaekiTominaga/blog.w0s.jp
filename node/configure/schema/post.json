@@ -156,15 +156,16 @@
 		"newly_json_create": {
 			"type": "object",
 			"title": "新着 JSON ファイル生成",
-			"required": ["url", "url_dev", "api_response"],
+			"required": ["path", "maximum_number", "api_response"],
 			"properties": {
-				"url": {
+				"path": {
 					"type": "string",
-					"title": "URL (本番)"
+					"title": "ファイルパス"
 				},
-				"url_dev": {
-					"type": "string",
-					"title": "URL (local)"
+				"maximum_number": {
+					"type": "integer",
+					"minimum": 1,
+					"title": "最大表示件数"
 				},
 				"api_response": {
 					"type": "object",

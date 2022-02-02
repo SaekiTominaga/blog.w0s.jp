@@ -23,30 +23,30 @@ export type View2 = string;
 export type URL = number;
 export type NoName20 = string;
 export type NoName21 = string;
-export type URL1 = string;
-export type URLLocal = string;
 export type NoName22 = string;
-export type NoName23 = string;
+export type NoName23 = number;
 export type NoName24 = string;
+export type NoName25 = string;
+export type NoName26 = string;
+export type URL1 = string;
 export type URL2 = string;
-export type URL3 = string;
 export type APIKey = string;
 export type APIKeySecret = string;
 export type AccessToken = string;
 export type AccessTokenSecret = string;
-export type NoName26 = string;
-export type NoName27 = string;
-export type URL4 = string;
-export type URLLocal1 = string;
-export type NoName30 = number;
-export type NoName31 = string;
+export type NoName28 = string;
+export type NoName29 = string;
+export type URL3 = string;
+export type URLLocal = string;
 export type NoName32 = number;
 export type NoName33 = string;
-export type NoName35 = number;
-export type NoName36 = string;
-export type NoName38 = number;
-export type NoName39 = string;
-export type NoName40 = string;
+export type NoName34 = number;
+export type NoName35 = string;
+export type NoName37 = number;
+export type NoName38 = string;
+export type NoName40 = number;
+export type NoName41 = string;
+export type NoName42 = string;
 
 export interface NoName {
   view: View;
@@ -58,7 +58,7 @@ export interface NoName {
   sitemap_create: NoName17;
   newly_json_create: JSON;
   twitter: TwitterAPI;
-  media_upload: NoName28;
+  media_upload: NoName30;
 }
 export interface View {
   init: NoName1;
@@ -103,56 +103,56 @@ export interface NoName19 {
   message_failure: NoName21;
 }
 export interface JSON {
-  url: URL1;
-  url_dev: URLLocal;
+  path: NoName22;
+  maximum_number: NoName23;
   api_response: API;
 }
 export interface API {
-  message_success: NoName22;
-  message_failure: NoName23;
+  message_success: NoName24;
+  message_failure: NoName25;
 }
 export interface TwitterAPI {
-  message_prefix: NoName24;
-  url_prefix: URL2;
-  media_url_prefix: URL3;
-  production: NoName25;
+  message_prefix: NoName26;
+  url_prefix: URL1;
+  media_url_prefix: URL2;
+  production: NoName27;
   api_response: API1;
 }
-export interface NoName25 {
+export interface NoName27 {
   consumer_key: APIKey;
   consumer_secret: APIKeySecret;
   access_token: AccessToken;
   access_token_secret: AccessTokenSecret;
 }
 export interface API1 {
-  message_success: NoName26;
-  message_failure: NoName27;
+  message_success: NoName28;
+  message_failure: NoName29;
 }
-export interface NoName28 {
-  url: URL4;
-  url_dev: URLLocal1;
+export interface NoName30 {
+  url: URL3;
+  url_dev: URLLocal;
   api_response: API2;
 }
 export interface API2 {
-  success: NoName29;
+  success: NoName31;
   type: MIME;
-  overwrite: NoName34;
-  size: NoName37;
-  other_message_failure: NoName40;
+  overwrite: NoName36;
+  size: NoName39;
+  other_message_failure: NoName42;
 }
-export interface NoName29 {
-  code: NoName30;
-  message: NoName31;
-}
-export interface MIME {
+export interface NoName31 {
   code: NoName32;
   message: NoName33;
 }
-export interface NoName34 {
-  code: NoName35;
-  message: NoName36;
+export interface MIME {
+  code: NoName34;
+  message: NoName35;
 }
-export interface NoName37 {
-  code: NoName38;
-  message: NoName39;
+export interface NoName36 {
+  code: NoName37;
+  message: NoName38;
+}
+export interface NoName39 {
+  code: NoName40;
+  message: NoName41;
 }
