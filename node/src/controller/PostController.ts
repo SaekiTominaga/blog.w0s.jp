@@ -373,10 +373,10 @@ export default class PostController extends Controller implements ControllerInte
 		} catch (e) {
 			this.logger.error('新着 JSON 生成失敗', e);
 
-			return { success: false, message: this.#config.newly_json_create.api_response.message_failure };
+			return { success: false, message: this.#config.newly_json_create.response.message_failure };
 		}
 
-		return { success: true, message: this.#config.newly_json_create.api_response.message_success };
+		return { success: true, message: this.#config.newly_json_create.response.message_success };
 	}
 
 	/**

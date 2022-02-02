@@ -105,7 +105,7 @@ export interface NoName19 {
 export interface JSON {
   path: NoName22;
   maximum_number: NoName23;
-  api_response: API;
+  response: API;
 }
 export interface API {
   message_success: NoName24;

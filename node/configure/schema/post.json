@@ -156,7 +156,7 @@
 		"newly_json_create": {
 			"type": "object",
 			"title": "新着 JSON ファイル生成",
-			"required": ["path", "maximum_number", "api_response"],
+			"required": ["path", "maximum_number", "response"],
 			"properties": {
 				"path": {
 					"type": "string",
@@ -167,7 +167,7 @@
 					"minimum": 1,
 					"title": "最大表示件数"
 				},
-				"api_response": {
+				"response": {
 					"type": "object",
 					"title": "API のレスポンス",
 					"required": ["message_success", "message_failure"],
