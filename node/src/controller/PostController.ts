@@ -117,17 +117,11 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('最終更新日時記録', requestQuery.id);
 				topicPostResults.add({ success: true, message: this.#config.update_modified.message_success });
 
+				topicPostResults.add(await this.#createFeed(dao));
+				topicPostResults.add(await this.#createSitemap(dao));
+				topicPostResults.add(await this.#createNewlyJson(dao));
 				if (requestQuery.social) {
-					const [resultFeed, resultSitemap, resultNewlyJson, resultSocial] = await Promise.all([
-						this.#createFeed(dao),
-						this.#createSitemap(dao),
-						this.#createNewlyJson(dao),
-						this.#postSocial(req, requestQuery, topicId),
-					]);
-					topicPostResults.add(resultFeed).add(resultSitemap).add(resultNewlyJson).add(resultSocial);
-				} else {
-					const [resultFeed, resultSitemap, resultNewlyJson] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao), this.#createNewlyJson(dao)]);
-					topicPostResults.add(resultFeed).add(resultSitemap).add(resultNewlyJson);
+					topicPostResults.add(await this.#postSocial(req, requestQuery, topicId));
 				}
 			}
 		} else if (requestQuery.action_revise) {
@@ -158,8 +152,9 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('最終更新日時記録', requestQuery.id);
 				topicPostResults.add({ success: true, message: this.#config.update_modified.message_success });
 
-				const [resultFeed, resultSitemap, resultNewlyJson] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao), this.#createNewlyJson(dao)]);
-				topicPostResults.add(resultFeed).add(resultSitemap).add(resultNewlyJson);
+				topicPostResults.add(await this.#createFeed(dao));
+				topicPostResults.add(await this.#createSitemap(dao));
+				topicPostResults.add(await this.#createNewlyJson(dao));
 			}
 		} else if (requestQuery.action_revise_preview) {
 			/* 修正データ選択 */
