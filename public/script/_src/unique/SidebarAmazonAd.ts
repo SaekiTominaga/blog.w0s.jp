@@ -53,7 +53,7 @@ export default class {
 	 * @returns {object[]} Amazon 商品情報のデータ
 	 */
 	private async fetch(jsonName: string): Promise<JsonColumn[]> {
-		const response = await fetch(`https://data.w0s.jp/amazon-ads/${jsonName}.json`);
+		const response = await fetch(`https://w0s.jp/assets/json/amazon-ads/${jsonName}.json`);
 		if (!response.ok) {
 			throw new Error(`"${response.url}" is ${response.status} ${response.statusText}`);
 		}
