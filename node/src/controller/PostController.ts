@@ -14,7 +14,6 @@ import Tweet from '../util/Tweet.js';
 import Twitter from 'twitter';
 import xmlFormatter from 'xml-formatter';
 import zlib from 'zlib';
-import { BlogView } from '../../@types/view';
 import { NoName as Configure } from '../../configure/type/post';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';

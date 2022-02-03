@@ -6,7 +6,6 @@ import HttpResponse from '../util/HttpResponse.js';
 import { Amazon as Configure } from '../../configure/type/amazon';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
-import { BlogView } from '../../@types/view.js';
 import dayjs from 'dayjs';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 

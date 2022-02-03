@@ -6,7 +6,6 @@ import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
 import Sidebar from '../util/Sidebar.js';
-import { BlogView } from '../../@types/view.js';
 import { NoName as Configure } from '../../configure/type/entry.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
