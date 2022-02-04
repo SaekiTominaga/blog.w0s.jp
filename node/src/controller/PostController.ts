@@ -89,8 +89,6 @@ export default class PostController extends Controller implements ControllerInte
 
 		const dao = new BlogPostDao(this.#configCommon);
 
-		const latestId = await dao.getLatestId(); // 最新記事 ID
-
 		if (requestQuery.action_add) {
 			/* 登録 */
 			topicValidationResult = await validator.topic(dao);
@@ -186,7 +184,10 @@ export default class PostController extends Controller implements ControllerInte
 		}
 
 		/* 初期表示 */
-		const categoryMaster = await dao.getCategoryMaster(); // カテゴリー情報
+		const [latestId, categoryMaster] = await Promise.all([
+			dao.getLatestId(), // 最新記事 ID
+			dao.getCategoryMaster(), // カテゴリー情報
+		]);
 
 		const categoryMasterView: Map<string, BlogView.Category[]> = new Map();
 		for (const category of categoryMaster) {
@@ -338,33 +339,39 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createNewlyJson(dao: BlogPostDao): Promise<PostResults> {
 		try {
-			const entriesDto = await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number);
+			const datas: Map<string, BlogView.NewlyJsonEntry[]> = new Map();
+			datas.set('', await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number));
 
-			const entriesView: Set<BlogView.NewlyJsonEntry> = new Set();
-			for (const entry of entriesDto) {
-				entriesView.add({
-					id: entry.id,
-					title: entry.title,
-				});
+			const fileNames = await dao.getCategoryGroupMasterFileName();
+			for (const fileNameType of fileNames) {
+				datas.set(fileNameType, await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number, fileNameType));
 			}
 
-			const newlyJson = JSON.stringify(Array.from(entriesView));
+			for (const [fileNameType, data] of datas) {
+				const newlyJson = JSON.stringify(data);
 
-			const newlyJsonBrotli = zlib.brotliCompressSync(newlyJson, {
-				params: {
-					[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
-					[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
-					[zlib.constants.BROTLI_PARAM_SIZE_HINT]: newlyJson.length,
-				},
-			});
+				const newlyJsonBrotli = zlib.brotliCompressSync(newlyJson, {
+					params: {
+						[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
+						[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
+						[zlib.constants.BROTLI_PARAM_SIZE_HINT]: newlyJson.length,
+					},
+				});
 
-			/* ファイル出力 */
-			const filePath = `${this.#configCommon.static.root}${this.#config.newly_json_create.path}`;
-			const brotliFilePath = `${filePath}.br`;
+				/* ファイル出力 */
+				const fileName =
+					fileNameType === ''
+						? `${this.#config.newly_json_create.filename_prefix}`
+						: `${this.#config.newly_json_create.filename_prefix}${this.#config.newly_json_create.filename_separator}${fileNameType}`;
+				const filePath = `${this.#configCommon.static.root}/${this.#config.newly_json_create.directory}/${fileName}.${
+					this.#config.newly_json_create.extension
+				}`;
+				const brotliFilePath = `${filePath}.br`;
 
-			await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
-			this.logger.info('JSON file created', filePath);
-			this.logger.info('JSON Brotli file created', brotliFilePath);
+				await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
+				this.logger.info('JSON file created', filePath);
+				this.logger.info('JSON Brotli file created', brotliFilePath);
+			}
 		} catch (e) {
 			this.logger.error('新着 JSON 生成失敗', e);
 

@@ -156,11 +156,23 @@
 		"newly_json_create": {
 			"type": "object",
 			"title": "新着 JSON ファイル生成",
-			"required": ["path", "maximum_number", "response"],
+			"required": ["directory", "filename_prefix", "filename_separator", "extension", "maximum_number", "response"],
 			"properties": {
-				"path": {
+				"directory": {
 					"type": "string",
-					"title": "ファイルパス"
+					"title": "ディレクトリ"
+				},
+				"filename_prefix": {
+					"type": "string",
+					"title": "ファイル名接頭辞"
+				},
+				"filename_separator": {
+					"type": "string",
+					"title": "ファイル名の接頭辞との区切り文字"
+				},
+				"extension": {
+					"type": "string",
+					"title": "拡張子"
 				},
 				"maximum_number": {
 					"type": "integer",
