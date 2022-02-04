@@ -1,6 +1,7 @@
 import * as sqlite from 'sqlite';
 import BlogDao from './BlogDao.js';
 import DbUtil from '../util/DbUtil.js';
+import { Dayjs } from 'dayjs';
 
 interface CategoryMaster {
 	group_name: string;
@@ -564,11 +565,53 @@ export default class BlogPostDao extends BlogDao {
 	 * 新着記事データを取得する
 	 *
 	 * @param {number} limit - 最大取得件数
+	 *
+	 * @returns {object[]} 記事データ（該当する記事が存在しない場合は空配列）
+	 */
+	async getEntriesSitemap(limit: number): Promise<BlogView.SitemapEntry[]> {
+		const dbh = await this.getDbh();
+
+		const sth = await dbh.prepare(`
+			SELECT
+				id,
+				insert_date AS created_at,
+				last_update AS updated_at,
+			FROM
+				d_topic
+			WHERE
+				public = :public
+			ORDER BY
+				id DESC
+			LIMIT :limit
+		`);
+		await sth.bind({
+			':public': true,
+			':limit': limit,
+		});
+
+		const rows = await sth.all();
+		await sth.finalize();
+
+		const entries: BlogView.SitemapEntry[] = [];
+		for (const row of rows) {
+			entries.push({
+				id: row.id,
+				updated_at: <Dayjs>DbUtil.unixToDayjs(row.updated_at ?? row.created_at),
+			});
+		}
+
+		return entries;
+	}
+
+	/**
+	 * 新着記事データを取得する
+	 *
+	 * @param {number} limit - 最大取得件数
 	 * @param {string} catgroupId - カテゴリグループの ID
 	 *
 	 * @returns {object[]} 記事データ（該当する記事が存在しない場合は空配列）
 	 */
-	async getEntriesNewly(limit: number, catgroupId?: string): Promise<BlogView.NewlyJsonEntry[]> {
+	async getEntriesNewly(limit: number, catgroupId?: string): Promise<BlogView.NewlyEntry[]> {
 		const dbh = await this.getDbh();
 
 		let sth: sqlite.Statement;
@@ -597,12 +640,14 @@ export default class BlogPostDao extends BlogDao {
 				FROM
 					d_topic t,
 					d_topic_category tc,
-					m_category c
+					m_category c,
+					m_catgroup cg
 				WHERE
 					t.public = :public AND
 					t.id = tc.topic_id AND
 					tc.category_id = c.id AND
-					c.catgroup = :catgroup_id
+					c.catgroup = cg.id AND
+					cg.file_name = :catgroup_id
 				GROUP BY
 					t.id
 				ORDER BY
@@ -618,7 +663,7 @@ export default class BlogPostDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const entries: BlogView.NewlyJsonEntry[] = [];
+		const entries: BlogView.NewlyEntry[] = [];
 		for (const row of rows) {
 			entries.push({
 				id: row.id,

@@ -28,7 +28,7 @@ declare namespace BlogView {
 		updated_at: import('dayjs').Dayjs;
 	}
 
-	interface NewlyJsonEntry {
+	interface NewlyEntry {
 		id: number;
 		title: string;
 	}

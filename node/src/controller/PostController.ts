@@ -287,26 +287,17 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createSitemap(dao: BlogPostDao): Promise<PostResults> {
 		try {
-			const [lastModifiedDto, entriesDto] = await Promise.all([
+			const [lastModifiedDto, entries] = await Promise.all([
 				dao.getLastModified(),
-				dao.getEntriesNewly(
+				dao.getEntriesSitemap(
 					this.#config.sitemap_create
 						.url_limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要があるが、超充分に猶予があるのでとりあえずこれで */
 				),
 			]);
 
-			const lastModified = dayjs(lastModifiedDto);
-			const entriesView: Set<BlogView.SitemapEntry> = new Set();
-			for (const entry of entriesDto) {
-				entriesView.add({
-					id: entry.id,
-					updated_at: dayjs(entry.updated_at ?? entry.created_at),
-				});
-			}
-
 			const sitemapXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.sitemap_create.view_path}`, {
-				updated_at: lastModified,
-				entries: entriesView,
+				updated_at: dayjs(lastModifiedDto),
+				entries: entries,
 			});
 
 			const sitemapXmlFormated = xmlFormatter(sitemapXml, {
@@ -339,7 +330,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createNewlyJson(dao: BlogPostDao): Promise<PostResults> {
 		try {
-			const datas: Map<string, BlogView.NewlyJsonEntry[]> = new Map();
+			const datas: Map<string, BlogView.NewlyEntry[]> = new Map();
 			datas.set('', await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number));
 
 			const fileNames = await dao.getCategoryGroupMasterFileName();
