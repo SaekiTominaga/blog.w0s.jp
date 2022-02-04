@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
-		<title>「<%= categoryName %>」の記事（<%= count %>件）</title>
+		<title>「<%= page.query.category_name %>」の記事（<%= count %>件）</title>
 
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 
@@ -22,7 +22,7 @@
 			<div id="content" class="l-content">
 				<div class="l-content__header">
 					<div class="p-title">
-						<h1 itemprop="name">「<%= categoryName %>」の記事（<%= count %>件）</h1>
+						<h1 itemprop="name">「<%= page.query.category_name %>」の記事（<%= count %>件）</h1>
 					</div>
 				</div>
 				<main class="l-content__main">

@@ -2,10 +2,11 @@ import BlogTweetDao from '../../dao/BlogTweetDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
+import RequestUtil from '../../util/RequestUtil.js';
 import Twitter from 'twitter-v2';
 import { NoName as ConfigureCommon } from '../../../configure/type/common';
-import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
 import { Request, Response } from 'express';
+import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
 
 interface Tweet {
 	text: string;
@@ -49,22 +50,23 @@ export default class TweetMediaController extends Controller implements Controll
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const requestBody = req.body;
-		const ids: string | string[] | undefined = requestBody.id;
+		const requestQuery: BlogRequest.ApiTweetMedia = {
+			id: RequestUtil.strings(req.body.id),
+		};
 
-		if (ids === undefined) {
+		if (requestQuery.id.size === 0) {
 			this.logger.error(`パラメーター id が未設定: ${req.get('User-Agent')}`);
 			res.status(403).end();
 			return;
 		}
 		try {
-			if (!(<string[]>ids).every((id) => /^[0-9]+$/.test(id))) {
-				this.logger.error(`パラメーター id（${ids}）の値が不正: ${req.get('User-Agent')}`);
+			if (!Array.from(requestQuery.id).every((id) => /^[0-9]+$/.test(id))) {
+				this.logger.error(`パラメーター id（${requestQuery.id}）の値が不正: ${req.get('User-Agent')}`);
 				res.status(403).end();
 				return;
 			}
 		} catch (e) {
-			this.logger.error(`パラメーター ID（${ids}）の型が不正: ${req.get('User-Agent')}`);
+			this.logger.error(`パラメーター ID（${requestQuery.id}）の型が不正: ${req.get('User-Agent')}`);
 			res.status(403).end();
 			return;
 		}
@@ -78,7 +80,7 @@ export default class TweetMediaController extends Controller implements Controll
 
 		const { data, includes } = await twitter.get('tweets', {
 			expansions: 'attachments.media_keys,author_id',
-			ids: (<string[]>ids).join(','), // TODO: 最大100件の考慮は未実装 https://developer.twitter.com/en/docs/twitter-api/tweets/lookup/api-reference/get-tweets
+			ids: Array.from(requestQuery.id).join(','), // TODO: 最大100件の考慮は未実装 https://developer.twitter.com/en/docs/twitter-api/tweets/lookup/api-reference/get-tweets
 			media: {
 				fields: 'preview_image_url,type,url',
 			},

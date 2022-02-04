@@ -1,14 +1,22 @@
 declare namespace BlogRequest {
-	export interface List {
+	interface List {
 		page: number;
 	}
 
-	export interface Post {
+	interface Entry {
+		entry_id: number;
+	}
+
+	interface Category {
+		category_name: string;
+	}
+
+	interface Post {
 		id: number | null;
 		title: string | null;
 		description: string | null;
 		message: string | null;
-		category: string[] | null;
+		category: Set<string>;
 		image: string | null;
 		relation: string | null;
 		public: boolean;
@@ -22,8 +30,20 @@ declare namespace BlogRequest {
 		action_media: boolean;
 	}
 
-	export interface Amazon {
+	interface Amazon {
 		asin: string | null;
 		action_delete: boolean;
+	}
+
+	interface ApiAmazonImage {
+		asin: Set<string>;
+	}
+
+	interface ApiPreview {
+		markdown: string | null;
+	}
+
+	interface ApiTweetMedia {
+		id: Set<string>;
 	}
 }

@@ -1,5 +1,5 @@
 declare namespace BlogDb {
-	export interface Entry {
+	interface Entry {
 		id: number;
 		title: string;
 		description: string | null;
@@ -11,7 +11,7 @@ declare namespace BlogDb {
 		public: boolean;
 	}
 
-	export interface CategoryMaster {
+	interface CategoryMaster {
 		id: string;
 		name: string;
 		catgroup: string;
@@ -20,7 +20,7 @@ declare namespace BlogDb {
 		book: string | null;
 	}
 
-	export interface AmazonData {
+	interface AmazonData {
 		asin: string;
 		url: string;
 		title: string;
@@ -33,7 +33,7 @@ declare namespace BlogDb {
 		updated_at: Date;
 	}
 
-	export interface TweetData {
+	interface TweetData {
 		id: string;
 		name: string;
 		username: string;

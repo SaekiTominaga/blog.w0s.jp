@@ -114,7 +114,7 @@
 											<div class="c-form-controls -checkbox">
 												<% for (const category of categories) { %>
 												<label class="c-label -check">
-													<% if (page.query.category !== null && page.query.category.includes(category.id)) { %>
+													<% if (page.query.category.has(category.id)) { %>
 													<input type="checkbox" name="category[]" value="<%= category.id %>" checked="" />
 													<% } else { %>
 													<input type="checkbox" name="category[]" value="<%= category.id %>" />

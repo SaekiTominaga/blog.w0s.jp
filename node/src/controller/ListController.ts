@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
+import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import { NoName as Configure } from '../../configure/type/list.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
@@ -32,11 +33,11 @@ export default class ListController extends Controller implements ControllerInte
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const requestQuery: BlogRequest.List = {
-			page: req.params.page !== undefined ? Number(req.params.page) : 1,
-		};
-
 		const httpResponse = new HttpResponse(req, res, this.#configCommon);
+
+		const requestQuery: BlogRequest.List = {
+			page: RequestUtil.number(req.params.page) ?? 1,
+		};
 		const dao = new BlogListDao(this.#configCommon);
 
 		/* 最終更新日時をセット */

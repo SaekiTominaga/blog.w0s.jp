@@ -8,6 +8,7 @@ import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { NoName as ConfigureCommon } from '../../../configure/type/common';
 import { PAAPI as ConfigurePaapi } from '../../../configure/type/paapi.js';
 import { Request, Response } from 'express';
+import RequestUtil from '../../util/RequestUtil.js';
 
 /**
  * Amazon 商品画像取得
@@ -31,29 +32,30 @@ export default class AmazonImageController extends Controller implements Control
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const requestBody = req.body;
-		const asins: string | string[] | undefined = requestBody.asin;
+		const requestQuery: BlogRequest.ApiAmazonImage = {
+			asin: RequestUtil.strings(req.body.asin),
+		};
 
-		if (asins === undefined) {
+		if (requestQuery.asin.size === 0) {
 			this.logger.error(`パラメーター asin が未設定: ${req.get('User-Agent')}`);
 			res.status(403).end();
 			return;
 		}
 		try {
-			if (!(<string[]>asins).every((asin) => /^[\dA-Z]{10}$/.test(asin))) {
-				this.logger.error(`パラメーター asin（${asins}）の値が不正: ${req.get('User-Agent')}`);
+			if (!Array.from(requestQuery.asin).every((asin) => /^[\dA-Z]{10}$/.test(asin))) {
+				this.logger.error(`パラメーター asin（${requestQuery.asin}）の値が不正: ${req.get('User-Agent')}`);
 				res.status(403).end();
 				return;
 			}
 		} catch (e) {
-			this.logger.error(`パラメーター asin（${asins}）の型が不正: ${req.get('User-Agent')}`);
+			this.logger.error(`パラメーター asin（${requestQuery.asin}）の型が不正: ${req.get('User-Agent')}`);
 			res.status(403).end();
 			return;
 		}
 
 		const dao = new BlogAmazonDao(this.#configCommon);
 		const registeredAsins = await dao.getAsins(); // DB に登録済みの ASIN
-		const unregisteredAsins = (<string[]>asins).filter((asin) => !registeredAsins.includes(asin)); // DB に登録されていない ASIN
+		const unregisteredAsins = Array.from(requestQuery.asin).filter((asin) => !registeredAsins.includes(asin)); // DB に登録されていない ASIN
 
 		const paapiErros: Set<string> = new Set(); // PA-API でのエラー情報を格納
 
@@ -134,12 +136,10 @@ export default class AmazonImageController extends Controller implements Control
 			}
 		}
 
-		this.logger.debug(asins);
-		const imageUrls = await dao.getImageUrls(<string[]>asins);
-		this.logger.debug(imageUrls);
+		const imageUrls = await dao.getImageUrls(requestQuery.asin);
 
 		const responseJson: BlogApi.AmazonImage = {
-			image_urls: imageUrls,
+			image_urls: Array.from(imageUrls),
 			errors: Array.from(paapiErros),
 		};
 

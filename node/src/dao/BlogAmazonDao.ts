@@ -117,15 +117,16 @@ export default class BlogAmazonDao extends BlogDao {
 	/**
 	 * 対象商品の画像 URL を取得する
 	 *
-	 * @param {string[]} asins - ASIN
+	 * @param {Set<string>} asins - ASIN
 	 *
-	 * @returns {Array} 画像 URL
+	 * @returns {Set<string>} 画像 URL
 	 */
-	async getImageUrls(asins: string[]): Promise<string[]> {
+	async getImageUrls(asins: Set<string>): Promise<Set<string>> {
 		const dbh = await this.getDbh();
 
+		const asinsArray = Array.from(asins);
 		const bind = new Map<number, string>();
-		asins.forEach((asin, i) => {
+		asinsArray.forEach((asin, i) => {
 			bind.set(i + 1, asin);
 		});
 
@@ -135,15 +136,15 @@ export default class BlogAmazonDao extends BlogDao {
 			FROM
 				d_amazon
 			WHERE
-				asin IN (${asins.fill('?')})
+				asin IN (${asinsArray.fill('?')})
 		`);
 		await sth.bind(Object.fromEntries(bind));
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const imageUrls: string[] = [];
+		const imageUrls: Set<string> = new Set();
 		for (const row of rows) {
-			imageUrls.push(row.image_url);
+			imageUrls.add(row.image_url);
 		}
 
 		return imageUrls;

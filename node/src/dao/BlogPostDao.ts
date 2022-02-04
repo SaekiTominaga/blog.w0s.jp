@@ -12,7 +12,7 @@ interface ReviseData {
 	title: string;
 	description: string | null;
 	message: string;
-	category_ids: string[];
+	category_ids: Set<string>;
 	image: string | null;
 	image_external: string | null;
 	relation_ids: string[];
@@ -179,7 +179,7 @@ export default class BlogPostDao extends BlogDao {
 	 * @param {string} title - タイトル
 	 * @param {string | null} description - 概要
 	 * @param {string} message - 本文
-	 * @param {string[] | null} categoryIds - カテゴリー ID
+	 * @param {Set<string>} categoryIds - カテゴリー ID
 	 * @param {string | null} imagePath - 画像パス
 	 * @param {number[]} relationIds - 関連記事 ID
 	 * @param {boolean} publicFlag - 公開フラグ
@@ -190,7 +190,7 @@ export default class BlogPostDao extends BlogDao {
 		title: string,
 		description: string | null,
 		message: string,
-		categoryIds: string[] | null,
+		categoryIds: Set<string>,
 		imagePath: string | null,
 		relationIds: string[] | null,
 		publicFlag: boolean
@@ -232,7 +232,7 @@ export default class BlogPostDao extends BlogDao {
 				throw new Error('Failed to INSERT into `d_topic` table.');
 			}
 
-			if (categoryIds !== null && categoryIds.length > 0) {
+			if (categoryIds.size > 0) {
 				const categoryInsertSth = await dbh.prepare(`
 					INSERT INTO d_topic_category
 						(topic_id, category_id)
@@ -280,7 +280,7 @@ export default class BlogPostDao extends BlogDao {
 	 * @param {string} title - タイトル
 	 * @param {string | null} description - 概要
 	 * @param {string} message - 本文
-	 * @param {string[] | null} categoryIds - カテゴリー ID
+	 * @param {Set<string>} categoryIds - カテゴリー ID
 	 * @param {string | null} imagePath - 画像パス
 	 * @param {number[] | null} relationIds - 関連記事 ID
 	 * @param {boolean} publicFlag - 公開フラグ
@@ -291,7 +291,7 @@ export default class BlogPostDao extends BlogDao {
 		title: string,
 		description: string | null,
 		message: string,
-		categoryIds: string[] | null,
+		categoryIds: Set<string>,
 		imagePath: string | null,
 		relationIds: string[] | null,
 		publicFlag: boolean,
@@ -375,7 +375,7 @@ export default class BlogPostDao extends BlogDao {
 			});
 			await categoryDeleteSth.finalize();
 
-			if (categoryIds !== null && categoryIds.length > 0) {
+			if (categoryIds.size > 0) {
 				const categoryInsertSth = await dbh.prepare(`
 					INSERT INTO d_topic_category
 						(topic_id, category_id)
@@ -466,7 +466,7 @@ export default class BlogPostDao extends BlogDao {
 			title: row.title,
 			description: row.description,
 			message: row.message,
-			category_ids: row.category_ids !== null ? row.category_ids.split(' ') : [],
+			category_ids: row.category_ids !== null ? new Set(row.category_ids.split(' ')) : new Set(),
 			image: row.image,
 			image_external: row.image_external,
 			relation_ids: row.relation_ids !== null ? row.relation_ids.split(' ') : [],

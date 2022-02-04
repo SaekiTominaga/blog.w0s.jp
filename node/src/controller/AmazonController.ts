@@ -1,13 +1,14 @@
 import BlogAmazonDao from '../dao/BlogAmazonDao.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
+import dayjs from 'dayjs';
 import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
+import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
+import RequestUtil from '../util/RequestUtil.js';
 import { Amazon as Configure } from '../../configure/type/amazon';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
-import dayjs from 'dayjs';
-import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 
 /**
  * Amazon 商品管理
@@ -31,12 +32,12 @@ export default class BlogAmazonController extends Controller implements Controll
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const requestQuery: BlogRequest.Amazon = {
-			asin: req.body.asin ?? null,
-			action_delete: Boolean(req.body.actiondel),
-		};
-
 		const httpResponse = new HttpResponse(req, res, this.#configCommon);
+
+		const requestQuery: BlogRequest.Amazon = {
+			asin: RequestUtil.string(req.body.asin),
+			action_delete: RequestUtil.boolean(req.body.actiondel),
+		};
 
 		const dao = new BlogAmazonDao(this.#configCommon);
 

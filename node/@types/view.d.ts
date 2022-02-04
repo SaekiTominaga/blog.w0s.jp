@@ -1,5 +1,5 @@
 declare namespace BlogView {
-	export interface EntryData {
+	interface EntryData {
 		id: number;
 		title: string;
 		message?: string;
@@ -10,12 +10,12 @@ declare namespace BlogView {
 		last_updated?: import('dayjs').Dayjs | null;
 	}
 
-	export interface Category {
+	interface Category {
 		id: string;
 		name: string;
 	}
 
-	export interface FeedEntry {
+	interface FeedEntry {
 		id: number;
 		title: string;
 		message: string;
@@ -23,17 +23,17 @@ declare namespace BlogView {
 		update: boolean;
 	}
 
-	export interface SitemapEntry {
+	interface SitemapEntry {
 		id: number;
 		updated_at: import('dayjs').Dayjs;
 	}
 
-	export interface NewlyJsonEntry {
+	interface NewlyJsonEntry {
 		id: number;
 		title: string;
 	}
 
-	export interface AmazonDp {
+	interface AmazonDp {
 		asin: string;
 		title: string;
 		binding: string | null;

@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
+import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import { NoName as Configure } from '../../configure/type/entry.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
@@ -32,9 +33,12 @@ export default class EntryController extends Controller implements ControllerInt
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const paramEntryId = Number(req.params.entry_id);
-
 		const httpResponse = new HttpResponse(req, res, this.#configCommon);
+
+		const requestQuery: BlogRequest.Entry = {
+			entry_id: <number>RequestUtil.number(req.params.entry_id),
+		};
+
 		const dao = new BlogEntryDao(this.#configCommon);
 
 		/* 最終更新日時をセット */
@@ -43,23 +47,24 @@ export default class EntryController extends Controller implements ControllerInt
 		}
 
 		/* DB からデータ取得 */
-		const entryDto = await dao.getEntry(paramEntryId);
+		const entryDto = await dao.getEntry(requestQuery.entry_id);
 
 		if (entryDto === null) {
 			httpResponse.send404();
 			return;
 		}
 
+		const messageParser = new MessageParser(this.#configCommon, await dao.getDbh(), requestQuery.entry_id);
+
 		const sidebar = new Sidebar(dao);
 
-		const [categoryDataListDto, relationDataListDto, entryCountOfCategoryListDto, newlyEntriesDto] = await Promise.all([
-			dao.getCategories(paramEntryId),
-			dao.getRelations(paramEntryId),
+		const [message, categoriesDto, relationDataListDto, entryCountOfCategoryListDto, newlyEntriesDto] = await Promise.all([
+			messageParser.toHtml(entryDto.message),
+			dao.getCategories(requestQuery.entry_id),
+			dao.getRelations(requestQuery.entry_id),
 			sidebar.getEntryCountOfCategory(),
 			sidebar.getNewlyEntries(this.#config.sidebar.newly.maximum_number),
 		]);
-
-		const messageParser = new MessageParser(this.#configCommon, await dao.getDbh(), paramEntryId);
 
 		let ogImage: string | null = null;
 		if (entryDto.image_internal !== null) {
@@ -68,9 +73,9 @@ export default class EntryController extends Controller implements ControllerInt
 			ogImage = entryDto.image_external;
 		}
 
-		const relationDataList: BlogView.EntryData[] = [];
+		const relations: BlogView.EntryData[] = [];
 		for (const relationData of relationDataListDto) {
-			relationDataList.push({
+			relations.push({
 				id: relationData.id,
 				title: relationData.title,
 				image_internal: relationData.image_internal,
@@ -82,10 +87,10 @@ export default class EntryController extends Controller implements ControllerInt
 		res.render(this.#config.view.success, {
 			page: {
 				path: req.path,
+				query: requestQuery,
 			},
-			entryId: paramEntryId,
 			title: entryDto.title,
-			message: await messageParser.toHtml(entryDto.message),
+			message: message,
 			description: entryDto.description,
 			created: dayjs(entryDto.created_at),
 			lastUpdated: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : null,
@@ -93,10 +98,10 @@ export default class EntryController extends Controller implements ControllerInt
 			ogImage: ogImage,
 			tweet: messageParser.isTweetExit(),
 
-			categories: categoryDataListDto.map((categoryData) => categoryData.name),
-			relations: relationDataList,
-			book: categoryDataListDto[0]?.book ?? null,
-			sidebarAmazon: categoryDataListDto[0]?.sidebar_amazon ?? null,
+			categories: categoriesDto.map((categoryData) => categoryData.name),
+			relations: relations,
+			book: categoriesDto[0]?.book ?? null,
+			sidebarAmazon: categoriesDto[0]?.sidebar_amazon ?? null,
 
 			entryCountOfCategoryList: entryCountOfCategoryListDto,
 			newlyEntries: newlyEntriesDto,

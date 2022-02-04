@@ -18,6 +18,7 @@ import { NoName as Configure } from '../../configure/type/post';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
 import { Result as ValidationResult, ValidationError } from 'express-validator';
+import RequestUtil from '../util/RequestUtil.js';
 
 interface PostResults {
 	success: boolean;
@@ -63,22 +64,22 @@ export default class PostController extends Controller implements ControllerInte
 		}
 
 		const requestQuery: BlogRequest.Post = {
-			id: req.query.id !== undefined ? Number(req.query.id) : req.body.id !== undefined ? Number(req.body.id) : null,
-			title: req.body.title ?? null,
-			description: req.body.description ?? null,
-			message: req.body.message ?? null,
-			category: req.body.category ?? null,
-			image: req.body.image ?? null,
-			relation: req.body.relation ?? null,
-			public: Boolean(req.body.public),
-			timestamp: Boolean(req.body.timestamp),
-			social: Boolean(req.body.social),
-			social_tag: req.body.socialtag ?? null,
-			media_overwrite: Boolean(req.body.mediaoverwrite),
-			action_add: Boolean(req.body.actionadd),
-			action_revise: Boolean(req.body.actionrev),
-			action_revise_preview: Boolean(req.query.actionrevpre),
-			action_media: Boolean(req.body.actionmedia),
+			id: RequestUtil.number(req.query.id ?? req.body.id),
+			title: RequestUtil.string(req.body.title),
+			description: RequestUtil.string(req.body.description),
+			message: RequestUtil.string(req.body.message),
+			category: RequestUtil.strings(req.body.category),
+			image: RequestUtil.string(req.body.image),
+			relation: RequestUtil.string(req.body.relation),
+			public: RequestUtil.boolean(req.body.public),
+			timestamp: RequestUtil.boolean(req.body.timestamp),
+			social: RequestUtil.boolean(req.body.social),
+			social_tag: RequestUtil.string(req.body.socialtag),
+			media_overwrite: RequestUtil.boolean(req.body.mediaoverwrite),
+			action_add: RequestUtil.boolean(req.body.actionadd),
+			action_revise: RequestUtil.boolean(req.body.actionrev),
+			action_revise_preview: RequestUtil.boolean(req.query.actionrevpre),
+			action_media: RequestUtil.boolean(req.body.actionmedia),
 		};
 
 		const validator = new PostValidator(req, this.#config);

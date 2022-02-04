@@ -16,7 +16,7 @@
 		<meta property="og:image:width" content="360" />
 		<meta property="og:image:height" content="360" />
 		<% } %>
-		<meta property="og:url" content="https://blog.w0s.jp/<%= entryId %>" />
+		<meta property="og:url" content="https://blog.w0s.jp/<%= page.query.entry_id %>" />
 		<meta property="og:locale" content="ja_JP" />
 		<meta property="og:site_name" content="富永日記帳" />
 		<% if (description !== null) { %>
@@ -87,7 +87,7 @@
 									</a>
 								</li>
 								<li class="c-flex__item">
-									<a href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new?title=%5B<%= entryId %>%5D%20<%= encodeURI(title) %>;labels=comment" class="c-button -github">
+									<a href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new?title=%5B<%= page.query.entry_id %>%5D%20<%= encodeURI(title) %>;labels=comment" class="c-button -github">
 										<img src="/image/icon/github.svg" alt="(GitHub)" width="16" height="16" class="c-button__icon" />
 										<span class="c-button__text">コメントを書く</span>
 									</a>

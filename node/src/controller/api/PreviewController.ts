@@ -3,6 +3,7 @@ import ControllerInterface from '../../ControllerInterface.js';
 import MessageParser from '../../util/MessageParser.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common';
 import { Request, Response } from 'express';
+import RequestUtil from '../../util/RequestUtil.js';
 
 /**
  * 本文プレビュー
@@ -24,9 +25,11 @@ export default class PreviewController extends Controller implements ControllerI
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const markdown = <string | undefined>req.body.md;
+		const requestQuery: BlogRequest.ApiPreview = {
+			markdown: RequestUtil.string(req.body.md),
+		};
 
-		if (markdown === undefined) {
+		if (requestQuery.markdown === null) {
 			this.logger.error(`パラメーター message が未設定: ${req.get('User-Agent')}`);
 			res.status(403).end();
 			return;
@@ -35,7 +38,7 @@ export default class PreviewController extends Controller implements ControllerI
 		const messageParser = new MessageParser(this.#configCommon);
 
 		const responseJson: BlogApi.Preview = {
-			html: await messageParser.toHtml(markdown),
+			html: await messageParser.toHtml(requestQuery.markdown),
 		};
 
 		res.status(200).json(responseJson);

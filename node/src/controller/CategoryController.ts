@@ -9,6 +9,7 @@ import Sidebar from '../util/Sidebar.js';
 import { NoName as Configure } from '../../configure/type/category.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
+import RequestUtil from '../util/RequestUtil.js';
 
 /**
  * 記事リスト
@@ -32,9 +33,12 @@ export default class CategoryController extends Controller implements Controller
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const paramCategoryName = <string>req.params.category_name;
-
 		const httpResponse = new HttpResponse(req, res, this.#configCommon);
+
+		const requestQuery: BlogRequest.Category = {
+			category_name: <string>RequestUtil.string(req.params.category_name),
+		};
+
 		const dao = new BlogCategoryDao(this.#configCommon);
 
 		/* 最終更新日時をセット */
@@ -43,10 +47,10 @@ export default class CategoryController extends Controller implements Controller
 		}
 
 		/* DB からデータ取得 */
-		const entriesDto = await dao.getEntries(paramCategoryName);
+		const entriesDto = await dao.getEntries(requestQuery.category_name);
 
 		if (entriesDto.length === 0) {
-			this.logger.info(`無効なカテゴリが指定: ${paramCategoryName}`);
+			this.logger.info(`無効なカテゴリが指定: ${requestQuery.category_name}`);
 			httpResponse.send404();
 			return;
 		}
@@ -83,8 +87,8 @@ export default class CategoryController extends Controller implements Controller
 		res.render(this.#config.view.success, {
 			page: {
 				path: req.path,
+				query: requestQuery,
 			},
-			categoryName: paramCategoryName,
 			count: entries.length,
 			entries: entries,
 			entryCountOfCategoryList: entryCountOfCategoryListDto,
