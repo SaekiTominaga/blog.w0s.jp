@@ -575,7 +575,7 @@ export default class BlogPostDao extends BlogDao {
 			SELECT
 				id,
 				insert_date AS created_at,
-				last_update AS updated_at,
+				last_update AS updated_at
 			FROM
 				d_topic
 			WHERE
