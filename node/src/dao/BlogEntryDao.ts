@@ -4,8 +4,7 @@ import BlogDao from './BlogDao.js';
 export interface Category {
 	id: string;
 	name: string;
-	sidebar_amazon: string | null;
-	book: string | null;
+	file_name: string | null;
 }
 
 export interface Relation {
@@ -74,7 +73,7 @@ export default class BlogEntryDao extends BlogDao {
 	 *
 	 * @param {number} entryId - 記事 ID
 	 *
-	 * @returns {Array} カテゴリー情報
+	 * @returns {object[]} カテゴリー情報
 	 */
 	async getCategories(entryId: number): Promise<Category[]> {
 		const dbh = await this.getDbh();
@@ -83,8 +82,7 @@ export default class BlogEntryDao extends BlogDao {
 			SELECT
 				c.id AS id,
 				c.name AS name,
-				c.sidebar_amazon AS sidebar_amazon,
-				c.book AS book
+				cg.file_name AS file_name
 			FROM
 				d_topic_category tc,
 				m_category c,
@@ -108,8 +106,7 @@ export default class BlogEntryDao extends BlogDao {
 			categories.push({
 				id: row.id,
 				name: row.name,
-				sidebar_amazon: row.sidebar_amazon,
-				book: row.book,
+				file_name: row.file_name,
 			});
 		}
 

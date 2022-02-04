@@ -98,10 +98,9 @@ export default class EntryController extends Controller implements ControllerInt
 			ogImage: ogImage,
 			tweet: messageParser.isTweetExit(),
 
-			categories: categoriesDto.map((categoryData) => categoryData.name),
+			categoryNames: categoriesDto.map((category) => category.name),
+			categoryFileNames: categoriesDto.map((category) => category.file_name).filter((fileName) => fileName !== null).at(0),
 			relations: relations,
-			book: categoriesDto[0]?.book ?? null,
-			sidebarAmazon: categoriesDto[0]?.sidebar_amazon ?? null,
 
 			entryCountOfCategoryList: entryCountOfCategoryListDto,
 			newlyEntries: newlyEntriesDto,

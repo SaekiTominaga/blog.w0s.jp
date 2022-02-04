@@ -11,15 +11,6 @@ declare namespace BlogDb {
 		public: boolean;
 	}
 
-	interface CategoryMaster {
-		id: string;
-		name: string;
-		catgroup: string;
-		sort: number;
-		sidebar_amazon: string | null;
-		book: string | null;
-	}
-
 	interface AmazonData {
 		asin: string;
 		url: string;

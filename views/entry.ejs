@@ -4,8 +4,8 @@
 		<title><%= title %></title>
 
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<% if (sidebarAmazon !== null) { %>
-		<meta name="w0s:sidebar:amazon" content="<%= sidebarAmazon %>" />
+		<% if (categoryFileNames !== undefined) { %>
+		<meta name="w0s:sidebar:amazon" content="<%= categoryFileNames %>" />
 		<% } %>
 		<meta property="og:title" content="<%= title %>" />
 		<meta property="og:type" content="article" />
@@ -67,13 +67,13 @@
 						<main class="p-entry__body" itemprop="articleBody"><%- message %></main>
 
 						<footer class="p-entry__footer">
-							<% if (categories.length >= 1) { %>
+							<% if (categoryNames.length >= 1) { %>
 							<section class="p-entry-footer-category">
 								<h2 class="p-entry-footer-category__hdg">カテゴリ</h2>
 
 								<ul class="p-entry-footer-category__list">
-									<% for (const category of categories) { %>
-									<li><a href="/category/<%= encodeURI(category) %>" rel="tag"><%= category %></a></li>
+									<% for (const categoryName of categoryNames) { %>
+									<li><a href="/category/<%= encodeURI(categoryName) %>" rel="tag"><%= categoryName %></a></li>
 									<% } %>
 								</ul>
 							</section>
@@ -136,13 +136,12 @@
 					</article>
 				</div>
 
-				<% if (book !== null) { %>
+				<% if (categoryFileNames === 'train') { %>
 				<div class="l-content__footer">
 					<aside class="p-box" aria-labelledby="bookcm-heading">
 						<h2 class="p-box__hdg" id="bookcm-heading">著書の紹介</h2>
 
 						<ul class="c-grid -wide">
-							<% if (book === 'tokyu') { %>
 							<li class="c-grid__item p-item">
 								<a href="https://w0s.jp/tokyu/book/7700">
 									<picture>
@@ -171,40 +170,6 @@
 									<p>平成時代の東急電車の動向をまとめた本です。「現役車両ガイド」の一部の本文解説を担当しました。</p>
 								</div>
 							</li>
-							<% } else if (book === 'madoka') { %>
-							<li class="c-grid__item p-item">
-								<a href="https://w0s.jp/madoka-magica/dojin/pictorial11">
-									<picture>
-										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
-										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
-										<img src="https://media.w0s.jp/thumbimage/blog/book/pictorial11_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" loading="lazy" class="p-item__image" />
-									</picture>
-									<span class="p-item__title">マギアレコード海外版動向</span>
-								</a>
-								<div class="p-item__text">
-									<p>
-										<b>自費出版、<time datetime="2019-08">2019年8月</time>発売</b>
-									</p>
-									<p>マギレコ中国版、繁中版、北米版のゲーム概要、イベントレポート、街頭広告の掲出例などを紹介します。</p>
-								</div>
-							</li>
-							<li class="c-grid__item p-item">
-								<a href="https://w0s.jp/madoka-magica/dojin/pictorial7">
-									<picture>
-										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
-										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
-										<img src="https://media.w0s.jp/thumbimage/blog/book/pictorial7_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" loading="lazy" class="p-item__image" />
-									</picture>
-									<span class="p-item__title">TVシリーズ　放送版とパッケージ版の比較</span>
-								</a>
-								<div class="p-item__text">
-									<p>
-										<b>自費出版、<time datetime="2017-08-12">2017年8月</time>発売</b>
-									</p>
-									<p>『魔法少女まどか☆マギカ』 TV シリーズの放送版と Blu-ray / DVD 版の違いをまとめました。</p>
-								</div>
-							</li>
-							<% } %>
 						</ul>
 					</aside>
 				</div>
