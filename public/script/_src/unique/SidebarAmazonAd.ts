@@ -27,7 +27,7 @@ export default class {
 	 * 初期処理
 	 */
 	async init(): Promise<void> {
-		const jsonName = (<HTMLMetaElement | null>document.querySelector('meta[name="w0s:sidebar:amazon"]'))?.content;
+		const jsonName = (<HTMLMetaElement | null>document.querySelector('meta[name="w0s:amazon"]'))?.content;
 		if (jsonName === undefined) {
 			return;
 		}
