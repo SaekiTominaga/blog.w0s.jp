@@ -49,11 +49,11 @@
 			<a href="#<%= group_name %>" slot="tab" class="p-sidebar-category-tab__item"><%= group_name %></a>
 			<% } %><% for (const [group_name, countDataList] of entryCountOfCategoryList) { %>
 			<div slot="tabpanel" class="p-sidebar-category-tab__panel" id="<%= group_name %>">
-				<% if (typeof(categoryName) !== 'undefined') { %>
+				<% if (typeof(page.query.category_name) !== 'undefined') { %>
 				<ul class="p-sidebar-links -category">
 					<% for (const countData of countDataList) { %>
 					<li>
-						<% if (categoryName === countData.category_name) { %>
+						<% if (page.query.category_name === countData.category_name) { %>
 						<a aria-current="page">
 							<%= countData.category_name %>
 							<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
@@ -88,11 +88,11 @@
 		<h2 class="p-sidebar-newly-entry__hdg" id="sidebar-newly-entries-heading">最近の記事</h2>
 
 		<div class="p-sidebar-newly-entry__link">
-			<% if (typeof(entryId) !== 'undefined') { %>
+			<% if (typeof(page.query.entry_id) !== 'undefined') { %>
 			<ul class="p-sidebar-links -entry">
 				<% for (const newlyEntry of newlyEntries) { %>
 				<li>
-					<% if (entryId === newlyEntry.id) { %>
+					<% if (page.query.entry_id === newlyEntry.id) { %>
 					<a aria-current="page"><%= newlyEntry.title %></a>
 					<% } else { %>
 					<a href="/<%= newlyEntry.id %>"><%= newlyEntry.title %></a>
