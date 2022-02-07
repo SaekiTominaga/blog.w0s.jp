@@ -44,7 +44,6 @@
 /* ===== 注釈リスト ===== */
 .p-notes {
 	color: var(--color-darkgray);
-	line-height: var(--line-height-normal);
 
 	& > li {
 		margin-inline-start: 1.25em;
@@ -80,7 +79,6 @@
 		& > a {
 			margin-inline-start: calc(0px - var(--_icon-width) - var(--_icon-gap));
 			font-size: calc(100% * var(--font-ratio-2));
-			line-height: var(--line-height-normal);
 
 			&::before {
 				margin-inline-end: var(--_icon-gap);
@@ -167,7 +165,6 @@
 	width: 100%;
 	background: var(--color-bg-light);
 	font-size: calc(100% / var(--font-ratio-1));
-	line-height: var(--line-height-normal);
 
 	@nest .p-entry & {
 		border-color: var(--color-bg-dark);

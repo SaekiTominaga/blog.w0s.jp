@@ -240,7 +240,6 @@
 /* 本体 */
 .p-entry__body {
 	padding: 30px var(--_entry-padding-block);
-	line-height: var(--line-height-wide);
 }
 
 /* フッター */

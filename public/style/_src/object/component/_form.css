@@ -77,7 +77,7 @@
 	--_color: var(--color-black);
 	--_bg-color: var(--color-white);
 
-	padding: calc(var(--form-control-padding-block) * var(--line-height-normal) / 1.25) var(--form-control-padding-block);
+	padding: calc(var(--form-control-padding-block) * 1.25) var(--form-control-padding-block);
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
 	color: var(--_color);

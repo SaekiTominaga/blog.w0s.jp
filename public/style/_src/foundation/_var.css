@@ -49,7 +49,7 @@
 	--font-weight-bold: 700;
 
 	/* ===== テキスト ===== */
-	--line-height-wide: 1.8; /* 広い行高さ（長い本文など） */
+	--line-height-wide: 1.8; /* 広い行高さ（本文など） */
 	--line-height-normal: 1.5; /* 通常の行高さ */
 	--line-height-narrow: 1.25; /* 狭い行高さ（見出しやボタンなど） */
 	--line-height-nowrap: 1; /* 改行しない文の行高さ */

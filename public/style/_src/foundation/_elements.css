@@ -4,7 +4,7 @@
 
 	color: var(--_color);
 	background: var(--_bg-color);
-	font: var(--font-weight-normal) var(--page-font-size) / var(--line-height-normal) arial, sans-serif;
+	font: var(--font-weight-normal) var(--page-font-size) / var(--line-height-wide) arial, sans-serif;
 
 	@media (prefers-reduced-motion: no-preference) {
 		scroll-behavior: smooth;
