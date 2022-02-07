@@ -22,12 +22,13 @@
 	flex-flow: wrap;
 	justify-content: center;
 	gap: 0.5em 5%;
+	line-height: var(--line-height-narrow);
 }
 
 .p-page-nav__link {
 	--_bg-color: var(--color-white);
 
-	padding: 0.6em 1em;
+	padding: 0.75em 1em;
 	border: 1px solid var(--color-border-light);
 	border-radius: var(--border-radius-normal);
 	display: inline-block;
