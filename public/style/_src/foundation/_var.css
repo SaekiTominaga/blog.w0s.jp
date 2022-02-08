@@ -73,7 +73,7 @@
 	--invalid-border-color: var(--color-red);
 
 	/* ===== Stack ===== */
-	--stack-margin-base: 1.5em;
+	--stack-margin-base: 1.5rem;
 
 	/* ===== 図形 ===== */
 	--shape-link-triangle: polygon(0 0, 100% 50%, 0 100%); /* リンクアイコン ( ▶ ) */

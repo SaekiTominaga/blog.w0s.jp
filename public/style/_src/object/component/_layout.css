@@ -6,32 +6,20 @@ Styleguide 1.5.
 
 /* ===== Stack ===== */
 :is(.l-content__header, .l-content__main, .l-content__footer, .c-stack, .p-section, .p-quote, .p-box, .p-entry__footer) {
-	& > *:not(:first-child) {
+	& > * + * {
 		margin-block-start: var(--stack-margin-base);
-	}
-
-	& > *:not(:last-child) {
-		margin-block-end: var(--stack-margin-base);
 	}
 }
 
 .p-entry__header {
-	& > *:not(:first-child) {
+	& > * + * {
 		margin-block-start: calc(var(--stack-margin-base) / 2);
-	}
-
-	& > *:not(:last-child) {
-		margin-block-end: calc(var(--stack-margin-base) / 2);
 	}
 }
 
 :is(.p-entry__body, .p-entry__body .p-entry-section1, .p-entry__body .p-entry-section2) {
-	& > *:not(:first-child) {
+	& > * + * {
 		margin-block-start: calc(var(--stack-margin-base) * 1.5);
-	}
-
-	& > *:not(:last-child) {
-		margin-block-end: calc(var(--stack-margin-base) * 1.5);
 	}
 }
 
