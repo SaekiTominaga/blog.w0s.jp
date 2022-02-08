@@ -70,10 +70,10 @@ export default class MessageParser {
 	#quote = false;
 	#quoteFigureElement: HTMLElement | undefined;
 	#quoteElement: HTMLQuoteElement | undefined;
-	#quoteMeta = false;
-	#quoteLanguage: string | undefined; // 引用文の言語
+	#quoteCite = false;
 	#quoteTitle: string | undefined; // 引用元タイトル
 	#quoteUrl: URL | undefined; // 引用元 URL
+	#quoteLanguage: string | undefined; // 引用文の言語
 
 	/* コード */
 	#code = false;
@@ -179,6 +179,8 @@ export default class MessageParser {
 		const LF = '\n';
 
 		for (const line of message.replaceAll(CRLF, LF).split(LF)) {
+			const firstCharactor = line.substring(0, 1); // 先頭文字
+
 			if (this.#code) {
 				if (line === '```') {
 					/* コードの終端になったらそれまでの蓄積分を append する */
@@ -195,12 +197,12 @@ export default class MessageParser {
 				continue;
 			}
 
-			if (!this.#quoteMeta) {
+			if (this.#quoteCite && firstCharactor !== '?') {
 				this.#appendQuoteCite();
 
-				this.#quoteLanguage = undefined;
 				this.#quoteTitle = undefined;
 				this.#quoteUrl = undefined;
+				this.#quoteLanguage = undefined;
 			}
 
 			if (!this.#thead && !this.#tbody) {
@@ -214,9 +216,7 @@ export default class MessageParser {
 				continue;
 			}
 
-			switch (
-				line.substring(0, 1) // 先頭文字
-			) {
+			switch (firstCharactor) {
 				case '#': {
 					if (line === '#') {
 						this.#section1 = false;
@@ -362,7 +362,7 @@ export default class MessageParser {
 					break;
 				}
 				case '?': {
-					if ((this.#quote || this.#quoteMeta) && this.#quoteElement !== undefined) {
+					if ((this.#quote || this.#quoteCite) && this.#quoteElement !== undefined) {
 						/* ブロックレベル引用の直後行かつ先頭が ? な場合は引用の出典 */
 						const metaText = line.substring(1); // 先頭記号を削除
 
@@ -382,7 +382,7 @@ export default class MessageParser {
 						}
 
 						this.#resetStackFlag();
-						this.#quoteMeta = true;
+						this.#quoteCite = true;
 
 						continue;
 					}
@@ -549,7 +549,7 @@ export default class MessageParser {
 		this.#notes = false;
 
 		this.#quote = false;
-		this.#quoteMeta = false;
+		this.#quoteCite = false;
 
 		this.#code = false;
 
