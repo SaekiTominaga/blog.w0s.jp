@@ -84,6 +84,9 @@ export default class EntryController extends Controller implements ControllerInt
 			});
 		}
 
+		/* レンダリング */
+		res.setHeader('Content-Security-Policy', this.#configCommon.response.header.csp_html);
+		res.setHeader('Content-Security-Policy-Report-Only', this.#configCommon.response.header.cspro_html);
 		res.render(this.#config.view.success, {
 			page: {
 				path: req.path,
@@ -99,7 +102,10 @@ export default class EntryController extends Controller implements ControllerInt
 			tweet: messageParser.isTweetExit(),
 
 			categoryNames: categoriesDto.map((category) => category.name),
-			categoryFileNames: categoriesDto.map((category) => category.file_name).filter((fileName) => fileName !== null).at(0),
+			categoryFileNames: categoriesDto
+				.map((category) => category.file_name)
+				.filter((fileName) => fileName !== null)
+				.at(0),
 			relations: relations,
 
 			entryCountOfCategoryList: entryCountOfCategoryListDto,

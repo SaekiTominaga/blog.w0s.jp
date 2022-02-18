@@ -84,6 +84,8 @@ export default class CategoryController extends Controller implements Controller
 		}
 
 		/* レンダリング */
+		res.setHeader('Content-Security-Policy', this.#configCommon.response.header.csp_html);
+		res.setHeader('Content-Security-Policy-Report-Only', this.#configCommon.response.header.cspro_html);
 		res.render(this.#config.view.success, {
 			page: {
 				path: req.path,
