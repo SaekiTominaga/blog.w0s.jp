@@ -2,9 +2,6 @@
 	"extends": "../tsconfig.json",
 	"include": ["@types/*.d.ts", "src/**/*.ts"],
 	"compilerOptions": {
-		/* Type Checking */
-		"noUnusedParameters": false,
-
 		/* Modules */
 		"module": "es2022",
 

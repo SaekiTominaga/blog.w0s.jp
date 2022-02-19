@@ -36,7 +36,7 @@ const EXTENTIONS = {
 }; // 静的ファイル拡張子の定義
 
 app.use(
-	(req, res, next) => {
+	(_req, res, next) => {
 		/* HSTS */
 		res.setHeader('Strict-Transport-Security', config.response.header.hsts);
 
