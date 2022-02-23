@@ -7,7 +7,6 @@ export default {
 	entry: {
 		'trusted-types.js': './public/script/_src/trusted-types.ts',
 		'analytics.js': './public/script/_src/analytics.ts',
-		'google-analytics.js': './public/script/_src/google-analytics.ts',
 		'blog.mjs': './public/script/_src/blog.ts',
 		'error.mjs': './public/script/_src/error.ts',
 		'admin.mjs': './public/script/_src/admin.ts',
