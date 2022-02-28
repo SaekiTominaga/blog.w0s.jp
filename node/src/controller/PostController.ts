@@ -10,6 +10,8 @@ import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
 import path from 'path';
 import PostValidator from '../validator/PostValidator.js';
+import prettier from 'prettier';
+import RequestUtil from '../util/RequestUtil.js';
 import Tweet from '../util/Tweet.js';
 import Twitter from 'twitter';
 import xmlFormatter from 'xml-formatter';
@@ -18,7 +20,6 @@ import { NoName as Configure } from '../../configure/type/post';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
 import { Result as ValidationResult, ValidationError } from 'express-validator';
-import RequestUtil from '../util/RequestUtil.js';
 
 interface PostResults {
 	success: boolean;
@@ -256,11 +257,27 @@ export default class PostController extends Controller implements ControllerInte
 				entries: entriesView,
 			});
 
-			const feedXmlBrotli = zlib.brotliCompressSync(feedXml, {
+			let feedXmlFormatted = '';
+			try {
+				feedXmlFormatted = prettier
+					.format(feedXml, {
+						/* https://prettier.io/docs/en/options.html */
+						printWidth: 9999,
+						useTabs: true,
+						parser: 'html',
+					})
+					.replaceAll(/\t*<!-- prettier-ignore -->\t*\n/g, '')
+					.trim();
+			} catch (e) {
+				this.logger.error('Prettier failed', e);
+				feedXmlFormatted = feedXml;
+			}
+
+			const feedXmlBrotli = zlib.brotliCompressSync(feedXmlFormatted, {
 				params: {
 					[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
 					[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
-					[zlib.constants.BROTLI_PARAM_SIZE_HINT]: feedXml.length,
+					[zlib.constants.BROTLI_PARAM_SIZE_HINT]: feedXmlFormatted.length,
 				},
 			});
 
@@ -268,7 +285,7 @@ export default class PostController extends Controller implements ControllerInte
 			const filePath = `${this.#configCommon.static.root}${this.#config.feed_create.path}`;
 			const brotliFilePath = `${filePath}.br`;
 
-			await Promise.all([fs.promises.writeFile(filePath, feedXml), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
+			await Promise.all([fs.promises.writeFile(filePath, feedXmlFormatted), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
 			this.logger.info('Feed file created', filePath);
 			this.logger.info('Feed Brotli file created', brotliFilePath);
 		} catch (e) {
