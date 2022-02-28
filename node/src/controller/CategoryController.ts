@@ -59,7 +59,7 @@ export default class CategoryController extends Controller implements Controller
 
 		const [entryCountOfCategoryListDto, newlyEntriesDto] = await Promise.all([
 			sidebar.getEntryCountOfCategory(),
-			sidebar.getNewlyEntries(this.#config.sidebar.newly.maximum_number),
+			sidebar.getNewlyEntries(this.#configCommon.sidebar.newly.maximum_number),
 		]);
 
 		const entries: BlogView.EntryData[] = [];

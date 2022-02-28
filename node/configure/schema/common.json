@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "response", "static", "views", "temp", "errorpage", "logger", "sqlite", "twitter"],
+	"required": ["port", "response", "static", "views", "temp", "errorpage", "logger", "sqlite", "twitter", "sidebar"],
 	"properties": {
 		"port": {
 			"type": "integer",
@@ -339,6 +339,27 @@
 					"additionalProperties": false
 				}
 			}
+		},
+		"sidebar": {
+			"type": "object",
+			"title": "サイドバー",
+			"required": ["newly"],
+			"properties": {
+				"newly": {
+					"type": "object",
+					"title": "新着記事",
+					"required": ["maximum_number"],
+					"properties": {
+						"maximum_number": {
+							"type": "integer",
+							"minimum": 1,
+							"title": "最大表示件数"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
 		}
 	},
 	"additionalProperties": false

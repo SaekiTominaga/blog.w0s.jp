@@ -63,7 +63,7 @@ export default class EntryController extends Controller implements ControllerInt
 			dao.getCategories(requestQuery.entry_id),
 			dao.getRelations(requestQuery.entry_id),
 			sidebar.getEntryCountOfCategory(),
-			sidebar.getNewlyEntries(this.#config.sidebar.newly.maximum_number),
+			sidebar.getNewlyEntries(this.#configCommon.sidebar.newly.maximum_number),
 		]);
 
 		let ogImage: string | null = null;

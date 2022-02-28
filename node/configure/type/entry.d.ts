@@ -6,18 +6,10 @@
  */
 
 export type NoName1 = string;
-export type NoName4 = number;
 
 export interface NoName {
   view: View;
-  sidebar: NoName2;
 }
 export interface View {
   success: NoName1;
-}
-export interface NoName2 {
-  newly: NoName3;
-}
-export interface NoName3 {
-  maximum_number: NoName4;
 }

@@ -8,20 +8,12 @@
 export type NoName1 = number;
 export type Amazon = number;
 export type NoName2 = string;
-export type NoName5 = number;
 
 export interface NoName {
   maximum_number: NoName1;
   amazon_image_size: Amazon;
   view: View;
-  sidebar: NoName3;
 }
 export interface View {
   success: NoName2;
-}
-export interface NoName3 {
-  newly: NoName4;
-}
-export interface NoName4 {
-  maximum_number: NoName5;
 }

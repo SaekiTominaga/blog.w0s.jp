@@ -52,6 +52,7 @@ export type APIKey = string;
 export type APIKeySecret = string;
 export type AccessToken = string;
 export type AccessTokenSecret = string;
+export type NoName29 = number;
 
 export interface NoName {
   port: HTTP;
@@ -63,6 +64,7 @@ export interface NoName {
   logger: Logger;
   sqlite: SQLite;
   twitter: TwitterAPI;
+  sidebar: NoName27;
 }
 export interface NoName1 {
   header: NoName2;
@@ -135,4 +137,10 @@ export interface NoName26 {
   consumer_secret: APIKeySecret;
   access_token: AccessToken;
   access_token_secret: AccessTokenSecret;
+}
+export interface NoName27 {
+  newly: NoName28;
+}
+export interface NoName28 {
+  maximum_number: NoName29;
 }

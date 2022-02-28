@@ -58,7 +58,7 @@ export default class ListController extends Controller implements ControllerInte
 		const [entryCount, entryCountOfCategoryListDto, newlyEntriesDto] = await Promise.all([
 			dao.getEntryCount(),
 			sidebar.getEntryCountOfCategory(),
-			sidebar.getNewlyEntries(this.#config.sidebar.newly.maximum_number),
+			sidebar.getNewlyEntries(this.#configCommon.sidebar.newly.maximum_number),
 		]);
 
 		const entries: BlogView.EntryData[] = [];
