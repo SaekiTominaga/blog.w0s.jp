@@ -64,11 +64,23 @@
 		"update_modified": {
 			"type": "object",
 			"title": "最終更新日時記録",
-			"required": ["message_success"],
+			"required": ["response"],
 			"properties": {
-				"message_success": {
-					"type": "string",
-					"title": "成功時のメッセージ"
+				"response": {
+					"type": "object",
+					"title": "レスポンス",
+					"required": ["message_success", "message_failure"],
+					"properties": {
+						"message_success": {
+							"type": "string",
+							"title": "成功時のメッセージ"
+						},
+						"message_failure": {
+							"type": "string",
+							"title": "失敗時のメッセージ"
+						}
+					},
+					"additionalProperties": false
 				}
 			},
 			"additionalProperties": false

@@ -26,6 +26,7 @@ declare namespace BlogRequest {
 		media_overwrite: boolean;
 		action_add: boolean;
 		action_revise: boolean;
+		action_view: boolean;
 		action_revise_preview: boolean;
 		action_media: boolean;
 	}

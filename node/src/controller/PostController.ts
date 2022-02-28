@@ -26,6 +26,11 @@ interface PostResults {
 	message: string;
 }
 
+interface ViewUpdateResults {
+	success: boolean;
+	message: string;
+}
+
 interface MediaUploadResults {
 	success: boolean;
 	message: string;
@@ -79,6 +84,7 @@ export default class PostController extends Controller implements ControllerInte
 			media_overwrite: RequestUtil.boolean(req.body.mediaoverwrite),
 			action_add: RequestUtil.boolean(req.body.actionadd),
 			action_revise: RequestUtil.boolean(req.body.actionrev),
+			action_view: RequestUtil.boolean(req.body.actionview),
 			action_revise_preview: RequestUtil.boolean(req.query.actionrevpre),
 			action_media: RequestUtil.boolean(req.body.actionmedia),
 		};
@@ -86,7 +92,8 @@ export default class PostController extends Controller implements ControllerInte
 		const validator = new PostValidator(req, this.#config);
 		let topicValidationResult: ValidationResult<ValidationError> | null = null;
 		const topicPostResults: Set<PostResults> = new Set();
-		let mediaUploadResults: Set<MediaUploadResults> = new Set();
+		const viewUpdateResults: Set<ViewUpdateResults> = new Set();
+		const mediaUploadResults: Set<MediaUploadResults> = new Set();
 
 		const dao = new BlogPostDao(this.#configCommon);
 
@@ -112,12 +119,10 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('データ登録', topicId);
 				topicPostResults.add({ success: true, message: this.#config.insert.message_success });
 
-				await dao.updateModified();
-				this.logger.info('最終更新日時記録', requestQuery.id);
-				topicPostResults.add({ success: true, message: this.#config.update_modified.message_success });
-
-				topicPostResults.add(await this.#createFeed(dao));
-				topicPostResults.add(await this.#createSitemap(dao));
+				topicPostResults.add(await this.#updateModified(dao));
+				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao)]);
+				topicPostResults.add(createFeedResult);
+				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson(dao));
 				if (requestQuery.social) {
 					topicPostResults.add(await this.#postSocial(req, requestQuery, topicId));
@@ -147,12 +152,10 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('データ更新', requestQuery.id);
 				topicPostResults.add({ success: true, message: this.#config.update.message_success });
 
-				await dao.updateModified();
-				this.logger.info('最終更新日時記録', requestQuery.id);
-				topicPostResults.add({ success: true, message: this.#config.update_modified.message_success });
-
-				topicPostResults.add(await this.#createFeed(dao));
-				topicPostResults.add(await this.#createSitemap(dao));
+				topicPostResults.add(await this.#updateModified(dao));
+				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao)]);
+				topicPostResults.add(createFeedResult);
+				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson(dao));
 			}
 		} else if (requestQuery.action_revise_preview) {
@@ -179,7 +182,14 @@ export default class PostController extends Controller implements ControllerInte
 			requestQuery.public = reviseData.public;
 		} else if (requestQuery.action_media) {
 			/* ファイルアップロード */
-			mediaUploadResults = await this.#mediaUpload(req, requestQuery, httpBasicCredentials);
+			for (const result of await this.#mediaUpload(req, requestQuery, httpBasicCredentials)) {
+				mediaUploadResults.add(result);
+			}
+		} else if (requestQuery.action_view) {
+			/* View アップデート反映 */
+			const [updateModifiedResult, createFeedResult] = await Promise.all([this.#updateModified(dao), this.#createFeed(dao)]);
+			viewUpdateResults.add(updateModifiedResult);
+			viewUpdateResults.add(createFeedResult);
 		} else {
 			requestQuery.public = true; // デフォルトの公開状態を設定
 		}
@@ -216,10 +226,31 @@ export default class PostController extends Controller implements ControllerInte
 			topicValidateErrors: topicValidationResult?.array({ onlyFirstError: true }) ?? [],
 			topicPostResults: topicPostResults,
 			mediaUploadResults: mediaUploadResults,
+			viewUpdateResults: viewUpdateResults,
 			latestId: latestId, // 最新記事 ID
 			targetId: requestQuery.id ?? latestId + 1, // 編集対象の記事 ID
 			categoryMaster: categoryMasterView, // カテゴリー情報
 		});
+	}
+
+	/**
+	 * DB の最終更新日時を更新する
+	 *
+	 * @param {BlogPostDao} dao - Dao
+	 *
+	 * @returns {PostResults} 処理結果のメッセージ
+	 */
+	async #updateModified(dao: BlogPostDao): Promise<PostResults> {
+		try {
+			await dao.updateModified();
+			this.logger.info('`d_info` table update success');
+		} catch (e) {
+			this.logger.error('`d_info` table update failed', e);
+
+			return { success: false, message: this.#config.update_modified.response.message_failure };
+		}
+
+		return { success: true, message: this.#config.update_modified.response.message_success };
 	}
 
 	/**

@@ -22,7 +22,7 @@
 					</div>
 
 					<ul class="p-links">
-						<li><a aria-current="page">記事投稿</a></li>
+						<li><a href="/admin/post" aria-current="page">記事投稿</a></li>
 						<li><a href="/admin/amazon">Amazon 商品管理</a></li>
 					</ul>
 				</div>
@@ -264,6 +264,28 @@
 
 							<div class="c-form-controls -submit">
 								<p><button class="c-submit" name="actionmedia" value="1">ファイル送信</button></p>
+							</div>
+						</form>
+					</section>
+
+					<section class="p-section -hdg-a" id="view">
+						<div class="p-section__hdg">
+							<h2>View アップデート反映</h2>
+						</div>
+
+						<form action="<%= page.path %>#view" method="post" class="c-stack">
+							<% if (viewUpdateResults.size > 0) { %>
+							<ul class="p-form-results">
+								<% for (const result of viewUpdateResults) { %><% if (result.success) { %>
+								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %></span></li>
+								<% } else { %>
+								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %></span></li>
+								<% } %> <% } %>
+							</ul>
+							<% } %>
+
+							<div class="c-form-controls">
+								<p><button class="c-submit" name="actionview" value="1">反映</button></p>
 							</div>
 						</form>
 					</section>
