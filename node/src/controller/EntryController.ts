@@ -12,7 +12,7 @@ import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
 
 /**
- * 記事リスト
+ * 記事
  */
 export default class EntryController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;

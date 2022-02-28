@@ -12,7 +12,7 @@ import { Request, Response } from 'express';
 import RequestUtil from '../util/RequestUtil.js';
 
 /**
- * 記事リスト
+ * カテゴリー
  */
 export default class CategoryController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
