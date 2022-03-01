@@ -1,4 +1,5 @@
 import BlogPostDao from '../dao/BlogPostDao.js';
+import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import dayjs from 'dayjs';
@@ -15,7 +16,6 @@ import RequestUtil from '../util/RequestUtil.js';
 import Tweet from '../util/Tweet.js';
 import Twitter from 'twitter';
 import xmlFormatter from 'xml-formatter';
-import zlib from 'zlib';
 import { NoName as Configure } from '../../configure/type/post';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
@@ -291,12 +291,7 @@ export default class PostController extends Controller implements ControllerInte
 			let feedXmlFormatted = '';
 			try {
 				feedXmlFormatted = prettier
-					.format(feedXml, {
-						/* https://prettier.io/docs/en/options.html */
-						printWidth: 9999,
-						useTabs: true,
-						parser: 'html',
-					})
+					.format(feedXml, <prettier.Options>this.#configCommon.prettier.html)
 					.replaceAll(/\t*<!-- prettier-ignore -->\t*\n/g, '')
 					.trim();
 			} catch (e) {
@@ -304,13 +299,7 @@ export default class PostController extends Controller implements ControllerInte
 				feedXmlFormatted = feedXml;
 			}
 
-			const feedXmlBrotli = zlib.brotliCompressSync(feedXmlFormatted, {
-				params: {
-					[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
-					[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
-					[zlib.constants.BROTLI_PARAM_SIZE_HINT]: feedXmlFormatted.length,
-				},
-			});
+			const feedXmlBrotli = Compress.brotliText(feedXmlFormatted);
 
 			/* ファイル出力 */
 			const filePath = `${this.#configCommon.static.root}${this.#config.feed_create.path}`;
@@ -391,13 +380,7 @@ export default class PostController extends Controller implements ControllerInte
 			for (const [fileNameType, data] of datas) {
 				const newlyJson = JSON.stringify(data);
 
-				const newlyJsonBrotli = zlib.brotliCompressSync(newlyJson, {
-					params: {
-						[zlib.constants.BROTLI_PARAM_MODE]: zlib.constants.BROTLI_MODE_TEXT,
-						[zlib.constants.BROTLI_PARAM_QUALITY]: zlib.constants.BROTLI_MAX_QUALITY,
-						[zlib.constants.BROTLI_PARAM_SIZE_HINT]: newlyJson.length,
-					},
-				});
+				const newlyJsonBrotli = Compress.brotliText(newlyJson);
 
 				/* ファイル出力 */
 				const fileName =

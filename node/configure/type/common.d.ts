@@ -65,6 +65,7 @@ export interface NoName {
   sqlite: SQLite;
   twitter: TwitterAPI;
   sidebar: NoName27;
+  prettier: Prettier;
 }
 export interface NoName1 {
   header: NoName2;
@@ -143,4 +144,10 @@ export interface NoName27 {
 }
 export interface NoName28 {
   maximum_number: NoName29;
+}
+/**
+ * https://prettier.io/docs/en/options.html
+ */
+export interface Prettier {
+  [k: string]: unknown;
 }

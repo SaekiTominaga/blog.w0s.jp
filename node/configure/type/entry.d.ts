@@ -6,10 +6,19 @@
  */
 
 export type NoName1 = string;
+export type NoName2 = string;
+export type NoName3 = string;
+export type Brotli = string;
 
 export interface NoName {
   view: View;
+  html: HTML;
 }
 export interface View {
   success: NoName1;
+}
+export interface HTML {
+  directory: NoName2;
+  extension: NoName3;
+  brotli_extension: Brotli;
 }

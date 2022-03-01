@@ -1,7 +1,8 @@
+import fs from 'fs';
 import path from 'path';
+import StringEscapeHtml from '@saekitominaga/string-escape-html';
 import { NoName as Configure } from '../../configure/type/common';
 import { Request, Response } from 'express';
-import StringEscapeHtml from '@saekitominaga/string-escape-html';
 
 type HttpAuthType = 'Basic' | 'Bearer' | 'Digest' | 'HOBA' | 'Mutual' | 'Negotiate' | 'OAuth' | 'SCRAM-SHA-1' | 'SCRAM-SHA-256' | 'vapid';
 
@@ -13,7 +14,7 @@ export default class HttpResponse {
 	readonly #res: Response;
 	readonly #config: Configure;
 
-	readonly #MIME_HTML = 'text/html;charset=utf-8';
+	readonly #MIME_HTML = 'text/html; charset=utf-8';
 
 	/**
 	 * @param {Request} req - Request
@@ -29,22 +30,65 @@ export default class HttpResponse {
 	/**
 	 * 最終更新日時を確認する（ドキュメントに変更がなければ 304 を返して終了、変更があれば Last-Modified ヘッダをセットする）
 	 *
-	 * @param {Request} req - Request
 	 * @param {Date} lastModified - 今回のアクセスに対して発行する最終更新日時
 	 *
 	 * @returns {boolean} ドキュメントに変更がなければ true
 	 */
-	checkLastModified(req: Request, lastModified: Date): boolean {
-		const ifModifiedSince = req.get('If-Modified-Since');
-		if (ifModifiedSince !== undefined) {
-			if (Math.floor(lastModified.getTime() / 1000) <= Math.floor(new Date(ifModifiedSince).getTime() / 1000)) {
-				this.#res.status(304).end();
-				return true;
-			}
+	checkLastModified(lastModified: Date): boolean {
+		const ifModifiedSince = this.#req.get('If-Modified-Since');
+		if (ifModifiedSince !== undefined && lastModified <= new Date(ifModifiedSince)) {
+			this.#res.status(304).end();
+			return true;
 		}
 
 		this.#res.set('Last-Modified', lastModified.toUTCString());
 		return false;
+	}
+
+	/**
+	 * 200 OK
+	 *
+	 * @param {object} data - 圧縮レスポンスボディ
+	 * @param {string | object} data.body - レスポンスボディ
+	 * @param {string | object} data.brotliBody - レスポンスボディ（Brotli 圧縮）
+	 * @param {string} data.filePath - ファイルパス
+	 * @param {string} data.brotliFilePath - Brotli ファイルパス
+	 */
+	async send200(data: { body?: string | Buffer; brotliBody?: string | Buffer; filePath?: string; brotliFilePath?: string }): Promise<void> {
+		/* Brotli 圧縮 */
+		if (this.#req.acceptsEncodings('br') === 'br') {
+			let responseBody = data.brotliBody;
+			if (responseBody === undefined && data.brotliFilePath !== undefined) {
+				responseBody = await fs.promises.readFile(data.brotliFilePath);
+			}
+
+			if (responseBody !== undefined) {
+				this.#res
+					.setHeader('Content-Type', this.#MIME_HTML)
+					.setHeader('Content-Encoding', 'br')
+					.setHeader('Content-Security-Policy', this.#config.response.header.csp_html)
+					.setHeader('Content-Security-Policy-Report-Only', this.#config.response.header.cspro_html)
+					.send(responseBody);
+				return;
+			}
+		}
+
+		/* 無圧縮 */
+		let responseBody = data.body;
+		if (responseBody === undefined && data.filePath !== undefined) {
+			responseBody = await fs.promises.readFile(data.filePath);
+		}
+
+		if (responseBody !== undefined) {
+			this.#res
+				.setHeader('Content-Type', this.#MIME_HTML)
+				.setHeader('Content-Security-Policy', this.#config.response.header.csp_html)
+				.setHeader('Content-Security-Policy-Report-Only', this.#config.response.header.cspro_html)
+				.send(responseBody);
+			return;
+		}
+
+		throw new Error('');
 	}
 
 	/**

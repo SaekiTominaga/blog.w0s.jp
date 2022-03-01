@@ -8,12 +8,21 @@
 export type NoName1 = number;
 export type Amazon = number;
 export type NoName2 = string;
+export type NoName3 = string;
+export type NoName4 = string;
+export type Brotli = string;
 
 export interface NoName {
   maximum_number: NoName1;
   amazon_image_size: Amazon;
   view: View;
+  html: HTML;
 }
 export interface View {
   success: NoName2;
+}
+export interface HTML {
+  directory: NoName3;
+  extension: NoName4;
+  brotli_extension: Brotli;
 }

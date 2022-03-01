@@ -3,6 +3,8 @@
 
 /coverage/
 
+/html/
+
 /log/
 
 /node/configure/*.json

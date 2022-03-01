@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/list.json",
 	"type": "object",
 	"title": "記事リスト",
-	"required": ["maximum_number", "amazon_image_size", "view"],
+	"required": ["maximum_number", "amazon_image_size", "view", "html"],
 	"properties": {
 		"maximum_number": {
 			"type": "integer",
@@ -23,6 +23,26 @@
 				"success": {
 					"type": "string",
 					"title": "正常時"
+				}
+			},
+			"additionalProperties": false
+		},
+		"html": {
+			"type": "object",
+			"title": "HTML ファイル生成",
+			"required": ["directory", "extension", "brotli_extension"],
+			"properties": {
+				"directory": {
+					"type": "string",
+					"title": "格納ディレクトリ"
+				},
+				"extension": {
+					"type": "string",
+					"title": "拡張子"
+				},
+				"brotli_extension": {
+					"type": "string",
+					"title": "Brotli 拡張子"
 				}
 			},
 			"additionalProperties": false

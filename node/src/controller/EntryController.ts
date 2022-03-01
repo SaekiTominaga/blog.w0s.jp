@@ -1,10 +1,13 @@
 import BlogEntryDao from '../dao/BlogEntryDao.js';
+import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import dayjs from 'dayjs';
+import ejs from 'ejs';
 import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
+import prettier from 'prettier';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import { NoName as Configure } from '../../configure/type/entry.js';
@@ -41,8 +44,19 @@ export default class EntryController extends Controller implements ControllerInt
 
 		const dao = new BlogEntryDao(this.#configCommon);
 
+		const lastModified = await dao.getLastModified();
+
 		/* 最終更新日時をセット */
-		if (httpResponse.checkLastModified(req, await dao.getLastModified())) {
+		if (httpResponse.checkLastModified(lastModified)) {
+			return;
+		}
+
+		const htmlFilePath = `${this.#config.html.directory}/${requestQuery.entry_id}.${this.#config.html.extension}`;
+		const htmlBrotliFilePath = `${htmlFilePath}.${this.#config.html.brotli_extension}`;
+
+		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
+			/* 生成された HTML をロードする */
+			await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath });
 			return;
 		}
 
@@ -84,10 +98,8 @@ export default class EntryController extends Controller implements ControllerInt
 			});
 		}
 
-		/* レンダリング */
-		res.setHeader('Content-Security-Policy', this.#configCommon.response.header.csp_html);
-		res.setHeader('Content-Security-Policy-Report-Only', this.#configCommon.response.header.cspro_html);
-		res.render(this.#config.view.success, {
+		/* HTML 生成 */
+		const html = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view.success}`, {
 			page: {
 				path: req.path,
 				query: requestQuery,
@@ -111,5 +123,24 @@ export default class EntryController extends Controller implements ControllerInt
 			entryCountOfCategoryList: entryCountOfCategoryListDto,
 			newlyEntries: newlyEntriesDto,
 		});
+
+		let htmlFormatted = '';
+		try {
+			htmlFormatted = prettier.format(html, <prettier.Options>this.#configCommon.prettier.html).trim();
+		} catch (e) {
+			this.logger.error('Prettier failed', e);
+			htmlFormatted = html;
+		}
+
+		/* レンダリング、ファイル出力 */
+		const htmlBrotli = Compress.brotliText(htmlFormatted);
+
+		await Promise.all([
+			httpResponse.send200({ body: htmlFormatted, brotliBody: htmlBrotli }),
+			fs.promises.writeFile(htmlFilePath, htmlFormatted),
+			fs.promises.writeFile(htmlBrotliFilePath, htmlBrotli),
+		]);
+		this.logger.info('HTML file created', htmlFilePath);
+		this.logger.info('HTML Brotli file created', htmlBrotliFilePath);
 	}
 }
