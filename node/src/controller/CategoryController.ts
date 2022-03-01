@@ -4,6 +4,7 @@ import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
+import filenamify from 'filenamify';
 import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
@@ -51,7 +52,7 @@ export default class CategoryController extends Controller implements Controller
 			return;
 		}
 
-		const htmlFilePath = `${this.#config.html.directory}/${requestQuery.category_name}.${this.#config.html.extension}`;
+		const htmlFilePath = `${this.#config.html.directory}/${filenamify(requestQuery.category_name)}.${this.#config.html.extension}`;
 		const htmlBrotliFilePath = `${htmlFilePath}.${this.#config.html.brotli_extension}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {

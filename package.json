@@ -57,6 +57,7 @@
 		"ejs": "^3.1.6",
 		"express": "^4.17.2",
 		"express-validator": "^6.14.0",
+		"filenamify": "^5.1.0",
 		"github-slugger": "^1.4.0",
 		"highlight.js": "^11.4.0",
 		"htpasswd-js": "^1.0.2",
