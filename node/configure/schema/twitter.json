@@ -8,7 +8,7 @@
 		"production": {
 			"type": "object",
 			"title": "Production",
-			"required": ["consumer_key", "consumer_secret"],
+			"required": ["consumer_key", "consumer_secret", "bearer_token"],
 			"properties": {
 				"consumer_key": {
 					"type": "string",
@@ -25,6 +25,10 @@
 				"access_token_secret": {
 					"type": "string",
 					"title": "Access token secret"
+				},
+				"bearer_token": {
+					"type": "string",
+					"title": "Bearer Token"
 				}
 			}
 		}

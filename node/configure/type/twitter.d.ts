@@ -9,6 +9,7 @@ export type APIKey = string;
 export type APIKeySecret = string;
 export type AccessToken = string;
 export type AccessTokenSecret = string;
+export type BearerToken = string;
 
 export interface TwitterAPI {
   production: Production;
@@ -18,5 +19,6 @@ export interface Production {
   consumer_secret: APIKeySecret;
   access_token?: AccessToken;
   access_token_secret?: AccessTokenSecret;
+  bearer_token: BearerToken;
   [k: string]: unknown;
 }

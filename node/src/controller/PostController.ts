@@ -14,12 +14,12 @@ import PostValidator from '../validator/PostValidator.js';
 import prettier from 'prettier';
 import RequestUtil from '../util/RequestUtil.js';
 import Tweet from '../util/Tweet.js';
-import Twitter from 'twitter';
 import xmlFormatter from 'xml-formatter';
 import { NoName as Configure } from '../../configure/type/post';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
 import { Result as ValidationResult, ValidationError } from 'express-validator';
+import { TwitterApi, TwitterApiTokens } from 'twitter-api-v2';
 
 interface PostResults {
 	success: boolean;
@@ -420,25 +420,25 @@ export default class PostController extends Controller implements ControllerInte
 			const mediaUrl = `${this.#config.twitter.media_url_prefix}${requestQuery.image}`;
 
 			/* Twitter */
-			let twitterAccessTokenOptions: Twitter.AccessTokenOptions;
+			let twitterAccessTokenOptions: TwitterApiTokens;
 			if (req.hostname === 'localhost') {
 				twitterAccessTokenOptions = {
-					consumer_key: this.#configCommon.twitter.dev.consumer_key,
-					consumer_secret: this.#configCommon.twitter.dev.consumer_secret,
-					access_token_key: this.#configCommon.twitter.dev.access_token,
-					access_token_secret: this.#configCommon.twitter.dev.access_token_secret,
+					appKey: this.#configCommon.twitter.dev.consumer_key,
+					appSecret: this.#configCommon.twitter.dev.consumer_secret,
+					accessToken: this.#configCommon.twitter.dev.access_token,
+					accessSecret: this.#configCommon.twitter.dev.access_token_secret,
 				};
 			} else {
 				twitterAccessTokenOptions = {
-					consumer_key: this.#config.twitter.production.consumer_key,
-					consumer_secret: this.#config.twitter.production.consumer_secret,
-					access_token_key: this.#config.twitter.production.access_token,
-					access_token_secret: this.#config.twitter.production.access_token_secret,
+					appKey: this.#config.twitter.production.consumer_key,
+					appSecret: this.#config.twitter.production.consumer_secret,
+					accessToken: this.#config.twitter.production.access_token,
+					accessSecret: this.#config.twitter.production.access_token_secret,
 				};
 			}
 
-			const twitter = new Twitter(twitterAccessTokenOptions);
-			const tweet = new Tweet(twitter);
+			const twitterApi = new TwitterApi(twitterAccessTokenOptions);
+			const tweet = new Tweet(twitterApi);
 
 			const hashtag = requestQuery.social_tag !== null && requestQuery.social_tag !== '' ? `#${requestQuery.social_tag}` : ''; // ハッシュタグ
 
@@ -456,7 +456,7 @@ export default class PostController extends Controller implements ControllerInte
 			if (requestQuery.description !== '') {
 				message += `\n\n${requestQuery.description}`;
 			}
-			const response = await tweet.postMessage(message, '', hashtag, medias);
+			const response = await tweet.postMessage(message, '', hashtag, Array.from(medias));
 
 			this.logger.info('Twitter post success', response);
 		} catch (e) {

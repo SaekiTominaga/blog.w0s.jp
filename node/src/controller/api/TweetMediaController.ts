@@ -3,30 +3,10 @@ import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
 import RequestUtil from '../../util/RequestUtil.js';
-import Twitter from 'twitter-v2';
 import { NoName as ConfigureCommon } from '../../../configure/type/common';
 import { Request, Response } from 'express';
 import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
-
-interface Tweet {
-	text: string;
-	author_id: string;
-	created_at: string;
-	id: string;
-}
-
-interface Media {
-	media_key: string;
-	type: string;
-	url?: string;
-	preview_image_url?: string;
-}
-
-interface User {
-	id: string;
-	name: string;
-	username: string;
-}
+import { TwitterApi } from 'twitter-api-v2';
 
 /**
  * ツイート情報取得
@@ -71,23 +51,17 @@ export default class TweetMediaController extends Controller implements Controll
 			return;
 		}
 
-		const twitter = new Twitter({
-			consumer_key: this.#configTwitter.production.consumer_key,
-			consumer_secret: this.#configTwitter.production.consumer_secret,
-			access_token_key: '',
-			access_token_secret: '',
-		});
+		const twitterApi = new TwitterApi(this.#configTwitter.production.bearer_token);
+		const twitterApiReadOnly = twitterApi.readOnly.v2;
 
-		const { data, includes } = await twitter.get('tweets', {
-			expansions: 'attachments.media_keys,author_id',
-			ids: Array.from(requestQuery.id).join(','), // TODO: 最大100件の考慮は未実装 https://developer.twitter.com/en/docs/twitter-api/tweets/lookup/api-reference/get-tweets
-			media: {
-				fields: 'preview_image_url,type,url',
-			},
-			tweet: {
-				fields: 'created_at',
-			},
-		});
+		const { data, includes } = await twitterApiReadOnly.tweets(
+			Array.from(requestQuery.id) /* TODO: 最大100件の考慮は未実装 https://developer.twitter.com/en/docs/twitter-api/tweets/lookup/api-reference/get-tweets */,
+			{
+				expansions: ['attachments.media_keys', 'author_id'],
+				'media.fields': ['preview_image_url', 'type', 'url'],
+				'tweet.fields': ['created_at'],
+			}
+		);
 
 		const dao = new BlogTweetDao(this.#configCommon);
 		const registeredTweetIds = await dao.getAllTweetIds();
@@ -96,7 +70,7 @@ export default class TweetMediaController extends Controller implements Controll
 			const tweetIdList: string[] = [];
 			const tweetDataList: BlogDb.TweetData[] = [];
 
-			for (const tweet of <Tweet[]>data) {
+			for (const tweet of data) {
 				const tweetId = tweet.id;
 
 				if (registeredTweetIds.includes(tweetId)) {
@@ -104,7 +78,7 @@ export default class TweetMediaController extends Controller implements Controll
 					continue;
 				}
 
-				const user = (<User[]>includes.users).find((user: User) => user.id === tweet.author_id);
+				const user = includes?.users?.find((user) => user.id === tweet.author_id);
 				if (user === undefined) {
 					this.logger.error(`API から取得したユーザー情報が不整合: ${tweetId}`);
 					continue;
@@ -116,7 +90,7 @@ export default class TweetMediaController extends Controller implements Controll
 					name: user.name,
 					username: user.username,
 					text: tweet.text,
-					created_at: new Date(tweet.created_at),
+					created_at: new Date(tweet.created_at ?? 0),
 				});
 			}
 
@@ -128,7 +102,7 @@ export default class TweetMediaController extends Controller implements Controll
 
 		const mediaUrls: Set<string> = new Set();
 		if (includes?.media !== undefined) {
-			for (const media of <Media[]>includes.media) {
+			for (const media of includes.media) {
 				if (media.url !== undefined) {
 					mediaUrls.add(media.url);
 				} else if (media.preview_image_url !== undefined) {
