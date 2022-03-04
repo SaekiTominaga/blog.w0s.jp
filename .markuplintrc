@@ -78,12 +78,6 @@
 					}
 				}
 			}
-		},
-		{
-			"selector": "svg use",
-			"rules": {
-				"deprecated-attr": false
-			}
 		}
 	]
 }
