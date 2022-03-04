@@ -18,7 +18,6 @@
 		"class-naming": [
 			"/^[lcpu]-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$/",
 			"/^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
-			"/^entry$/",
 			"/^js-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
 			"/^adsbygoogle$/"
 		],
@@ -26,13 +25,13 @@
 		"attr-equal-space-before": "never",
 		"attr-spacing": true,
 		"attr-value-quotes": "double",
-		"case-sensitive-attr-name": "no-upper",
+		"case-sensitive-attr-name": "lower",
 		"case-sensitive-tag-name": "lower",
 		"indentation": "tab"
 	},
 	"nodeRules": [
 		{
-			"tagName": "html",
+			"selector": "html",
 			"rules": {
 				"invalid-attr": {
 					"option": {
@@ -44,19 +43,7 @@
 			}
 		},
 		{
-			"tagName": "base",
-			"rules": {
-				"invalid-attr": {
-					"option": {
-						"ignoreAttrNamePrefix": [
-							"target"
-						]
-					}
-				}
-			}
-		},
-		{
-			"tagName": "meta",
+			"selector": "meta",
 			"rules": {
 				"invalid-attr": {
 					"option": {
@@ -66,6 +53,36 @@
 						]
 					}
 				}
+			}
+		},
+		{
+			"selector": "meta[property]",
+			"rules": {
+				"required-attr": false
+			}
+		},
+		{
+			"selector": "table",
+			"rules": {
+				"permitted-contents": false
+			}
+		},
+		{
+			"selector": "template time",
+			"rules": {
+				"invalid-attr": {
+					"option": {
+						"ignoreAttrNamePrefix": [
+							"datetime"
+						]
+					}
+				}
+			}
+		},
+		{
+			"selector": "svg use",
+			"rules": {
+				"deprecated-attr": false
 			}
 		}
 	]
