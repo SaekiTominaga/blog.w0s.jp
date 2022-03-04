@@ -32,7 +32,7 @@
 							<h2>記事選択</h2>
 						</div>
 
-						<form action="<%= page.path %>#post" class="c-stack">
+						<form action="<%= `${page.path}#post` %>" class="c-stack">
 							<div class="c-form-controls">
 								<p>
 									<label class="c-label -input">
@@ -50,7 +50,7 @@
 							<h2>記事投稿</h2>
 						</div>
 
-						<form action="<%= page.path %>#post" method="post" class="c-stack js-form-beforeunload-confirm">
+						<form action="<%= `${page.path}#post` %>" method="post" class="c-stack js-form-beforeunload-confirm">
 							<% if (topicValidateErrors.length > 0) { %>
 							<div class="p-form-errors js-form-errors">
 								<p><strong><%= topicValidateErrors.length %>個のエラーがあります。</strong></p>
@@ -232,7 +232,7 @@
 							<h2>画像、動画登録</h2>
 						</div>
 
-						<form action="<%= page.path %>#media" method="post" enctype="multipart/form-data" class="c-stack">
+						<form action="<%= `${page.path}#media` %>" method="post" enctype="multipart/form-data" class="c-stack">
 							<% if (mediaUploadResults.size > 0) { %>
 							<ul class="p-form-results">
 								<% for (const result of mediaUploadResults) { %><% if (result.success) { %>
@@ -249,7 +249,7 @@
 										<legend class="p-form-grid__legend"><label for="c-input-media" class="c-label">ファイル</label></legend>
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
-												<p><input is="w0s-input-file-preview" type="file" class="c-input-file" id="c-input-media" name="media" accept="image/*,video/*" required="" multiple="" data-target-for="image-preview" data-error-message='&lt;strong class="error">「&lt;span class="filename"&gt;${name}&lt;/span&gt;」（${size} byte）はプレビューできません。&lt;/strong&gt;' /></p>
+												<p><input is="w0s-input-file-preview" type="file" class="c-input-file" id="c-input-media" name="media" accept="image/*,video/*" required="" multiple="" data-target-for="image-preview" data-error-message="&lt;strong class='error'&gt;「&lt;span class='filename'&gt;${name}&lt;/span&gt;」（${size} byte）はプレビューできません。&lt;/strong&gt;" /></p>
 												<p>
 													<label class="c-label -check"><input type="checkbox" name="mediaoverwrite" value="1" /><span class="c-label__text">上書き許可</span></label>
 												</p>
@@ -273,7 +273,7 @@
 							<h2>View アップデート反映</h2>
 						</div>
 
-						<form action="<%= page.path %>#view" method="post" class="c-stack">
+						<form action="<%= `${page.path}#view` %>" method="post" class="c-stack">
 							<% if (viewUpdateResults.size > 0) { %>
 							<ul class="p-form-results">
 								<% for (const result of viewUpdateResults) { %><% if (result.success) { %>
@@ -343,7 +343,7 @@
 								</tr>
 								<tr>
 									<th>```</th>
-									<td>コード表示（<code class="c-code">pre > code</code>）</td>
+									<td>コード表示（<code class="c-code">pre &gt; code</code>）</td>
 								</tr>
 								<tr>
 									<th>|</th>
