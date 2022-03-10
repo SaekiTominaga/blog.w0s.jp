@@ -6,90 +6,98 @@
  */
 
 export type HTTP = number;
+export type NoName2 = string;
 export type StrictTransportSecurity = string;
 export type ContentSecurityPolicyHTML = string;
 export type ContentSecurityPolicyHTML1 = string;
 export type ContentSecurityPolicyReportOnlyHTML = string;
 export type Threshold = string;
-export type NoName5 = string;
-export type NoName6 = string[];
-export type NoName7 = string[];
+export type NoName7 = string;
+export type NoName8 = string[];
 export type NoName9 = string[];
-export type NoName10 = string[];
-export type NoName12 = string;
-export type NoName14 = string[];
-export type NoName15 = string;
-export type NoName13 = {
-  paths: NoName14;
-  value: NoName15;
+export type NoName11 = string[];
+export type NoName12 = string[];
+export type NoName14 = string;
+export type NoName16 = string[];
+export type NoName17 = string;
+export type NoName15 = {
+  paths: NoName16;
+  value: NoName17;
 }[];
-export type NoName17 = string[];
-export type NoName18 = string;
-export type NoName16 = {
-  extensions: NoName17;
-  value: NoName18;
+export type NoName19 = string[];
+export type NoName20 = string;
+export type NoName18 = {
+  extensions: NoName19;
+  value: NoName20;
 }[];
 export type CORS1 = string[];
-export type NoName19 = string[];
-export type NoName20 = string[];
+export type NoName21 = string[];
+export type NoName22 = string[];
 export type Directory = string[];
-export type NoName21 = string;
+export type NoName23 = string;
 export type Htpasswd = string;
 export type BasicAuthentication = {
   directory: Directory;
-  realm: NoName21;
+  realm: NoName23;
   htpasswd: Htpasswd;
 }[];
-export type NoName22 = string;
-export type NoName23 = string;
+export type NoName24 = string;
+export type NoName25 = string;
 export type FilepathFor401Unauthorized = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
 export type FilepathFor500InternalServerError = string;
-export type NoName25 = string;
+export type NoName27 = string;
 export type Blog = string;
 export type APIKey = string;
 export type APIKeySecret = string;
 export type AccessToken = string;
 export type AccessTokenSecret = string;
-export type NoName29 = number;
+export type NoName31 = number;
 
 export interface NoName {
   port: HTTP;
-  response: NoName1;
-  static: NoName4;
-  views: NoName22;
-  temp: NoName23;
-  errorpage: NoName24;
+  request: NoName1;
+  response: NoName3;
+  static: NoName6;
+  views: NoName24;
+  temp: NoName25;
+  errorpage: NoName26;
   logger: Logger;
   sqlite: SQLite;
   twitter: TwitterAPI;
-  sidebar: NoName27;
+  sidebar: NoName29;
   prettier: Prettier;
 }
 export interface NoName1 {
-  header: NoName2;
-  compression: NoName3;
+  urlencoded: Urlencoded;
 }
-export interface NoName2 {
+export interface Urlencoded {
+  limit: NoName2;
+}
+export interface NoName3 {
+  header: NoName4;
+  compression: NoName5;
+}
+export interface NoName4 {
   hsts: StrictTransportSecurity;
   csp: ContentSecurityPolicyHTML;
   csp_html: ContentSecurityPolicyHTML1;
   cspro_html: ContentSecurityPolicyReportOnlyHTML;
 }
-export interface NoName3 {
+export interface NoName5 {
   threshold: Threshold;
 }
-export interface NoName4 {
-  root: NoName5;
-  extensions?: NoName6;
-  indexes?: NoName7;
-  headers: NoName8;
+export interface NoName6 {
+  root: NoName7;
+  extensions?: NoName8;
+  indexes?: NoName9;
+  headers: NoName10;
   auth_basic?: BasicAuthentication;
 }
-export interface NoName8 {
+export interface NoName10 {
   mime: MIME;
-  cache_control?: NoName11;
+  cache_control?: NoName13;
   cors?: CORS;
   source_map?: SourceMap;
 }
@@ -98,31 +106,31 @@ export interface MIME {
   extension: MIME2;
 }
 export interface MIME1 {
-  [k: string]: NoName9;
+  [k: string]: NoName11;
 }
 export interface MIME2 {
-  [k: string]: NoName10;
+  [k: string]: NoName12;
 }
-export interface NoName11 {
-  default: NoName12;
-  path: NoName13;
-  extension: NoName16;
+export interface NoName13 {
+  default: NoName14;
+  path: NoName15;
+  extension: NoName18;
 }
 export interface CORS {
   directory: CORS1;
-  origin: NoName19;
+  origin: NoName21;
 }
 export interface SourceMap {
-  extensions?: NoName20;
+  extensions?: NoName22;
 }
-export interface NoName24 {
+export interface NoName26 {
   path_401: FilepathFor401Unauthorized;
   path_403: FilepathFor403Forbidden;
   path_404: FilepathFor404NotFound;
   path_500: FilepathFor500InternalServerError;
 }
 export interface Logger {
-  path: NoName25;
+  path: NoName27;
 }
 export interface SQLite {
   db: DBNode;
@@ -131,19 +139,19 @@ export interface DBNode {
   blog: Blog;
 }
 export interface TwitterAPI {
-  dev: NoName26;
+  dev: NoName28;
 }
-export interface NoName26 {
+export interface NoName28 {
   consumer_key: APIKey;
   consumer_secret: APIKeySecret;
   access_token: AccessToken;
   access_token_secret: AccessTokenSecret;
 }
-export interface NoName27 {
-  newly: NoName28;
+export interface NoName29 {
+  newly: NoName30;
 }
-export interface NoName28 {
-  maximum_number: NoName29;
+export interface NoName30 {
+  maximum_number: NoName31;
 }
 /**
  * https://prettier.io/docs/en/options.html

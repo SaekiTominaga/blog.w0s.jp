@@ -3,13 +3,33 @@
 	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "response", "static", "views", "temp", "errorpage", "logger", "sqlite", "twitter", "sidebar", "prettier"],
+	"required": ["port", "request", "response", "static", "views", "temp", "errorpage", "logger", "sqlite", "twitter", "sidebar", "prettier"],
 	"properties": {
 		"port": {
 			"type": "integer",
 			"minimum": 1,
 			"maximum": 65535,
 			"title": "HTTP サーバーのポート番号"
+		},
+		"request": {
+			"type": "object",
+			"title": "リクエスト",
+			"required": ["urlencoded"],
+			"properties": {
+				"urlencoded": {
+					"type": "object",
+					"title": "urlencoded",
+					"required": ["limit"],
+					"properties": {
+						"limit": {
+							"type": "string",
+							"title": "リクエストの最大本文サイズ"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
 		},
 		"response": {
 			"type": "object",

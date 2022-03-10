@@ -53,6 +53,7 @@ app.use(
 	}),
 	express.urlencoded({
 		extended: true,
+		limit: config.request.urlencoded.limit,
 	}),
 	async (req, res, next) => {
 		/* Basic Authentication */
