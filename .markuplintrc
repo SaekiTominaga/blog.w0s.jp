@@ -7,12 +7,33 @@
 		"character-reference": true,
 		"deprecated-attr": true,
 		"deprecated-element": true,
+		"disallowed-element": [
+			"base",
+			"style",
+			"h3",
+			"h4",
+			"h5",
+			"h6",
+			"hgroup",
+			"hr",
+			"s",
+			"i",
+			"u",
+			"br",
+			"wbr",
+			"embed",
+			"area",
+			"noscript"
+		],
 		"doctype": true,
 		"id-duplication": true,
+		"ineffective-attr": true,
+		"invalid-attr": true,
 		"permitted-contents": true,
 		"required-attr": true,
-		"invalid-attr": true,
 		"landmark-roles": true,
+		"no-refer-to-non-existent-id": true,
+		"require-accessible-name": true,
 		"required-h1": false,
 		"wai-aria": true,
 		"class-naming": [
@@ -21,13 +42,16 @@
 			"/^js-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
 			"/^adsbygoogle$/"
 		],
+		"no-use-event-handler-attr": true,
 		"attr-equal-space-after": "never",
 		"attr-equal-space-before": "never",
 		"attr-spacing": true,
 		"attr-value-quotes": "double",
 		"case-sensitive-attr-name": "lower",
 		"case-sensitive-tag-name": "lower",
-		"indentation": "tab"
+		"end-tag": true,
+		"indentation": "tab",
+		"no-default-value": true
 	},
 	"nodeRules": [
 		{
@@ -62,9 +86,25 @@
 			}
 		},
 		{
-			"selector": "table",
+			"selector": "div",
 			"rules": {
-				"permitted-contents": false
+				"required-attr": [
+					"class"
+				]
+			}
+		},
+		{
+			"selector": "img",
+			"rules": {
+				"required-attr": [
+					"alt"
+				]
+			}
+		},
+		{
+			"selector": "table, th, template *",
+			"rules": {
+				"require-accessible-name": false
 			}
 		},
 		{
