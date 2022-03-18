@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "request", "response", "static", "views", "temp", "errorpage", "logger", "sqlite", "twitter", "sidebar", "prettier"],
+	"required": ["port", "request", "response", "static", "views", "temp", "errorpage", "logger", "sqlite", "sidebar", "prettier"],
 	"properties": {
 		"port": {
 			"type": "integer",
@@ -321,44 +321,6 @@
 				}
 			},
 			"additionalProperties": false
-		},
-		"twitter": {
-			"type": "object",
-			"title": "Twitter API",
-			"required": ["dev"],
-			"properties": {
-				"dev": {
-					"type": "object",
-					"title": "開発時に使用するアプリ情報",
-					"$ref": "#/properties/twitter/definitions/app_keys"
-				}
-			},
-			"additionalProperties": false,
-			"definitions": {
-				"app_keys": {
-					"type": "object",
-					"required": ["consumer_key", "consumer_secret", "access_token", "access_token_secret"],
-					"properties": {
-						"consumer_key": {
-							"type": "string",
-							"title": "API key"
-						},
-						"consumer_secret": {
-							"type": "string",
-							"title": "API key secret"
-						},
-						"access_token": {
-							"type": "string",
-							"title": "Access token"
-						},
-						"access_token_secret": {
-							"type": "string",
-							"title": "Access token secret"
-						}
-					},
-					"additionalProperties": false
-				}
-			}
 		},
 		"sidebar": {
 			"type": "object",

@@ -5,20 +5,28 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
+export type BearerToken = string;
 export type APIKey = string;
 export type APIKeySecret = string;
 export type AccessToken = string;
 export type AccessTokenSecret = string;
-export type BearerToken = string;
 
 export interface TwitterAPI {
+  dev: Development;
   production: Production;
+  additionalProperties?: false;
 }
-export interface Production {
+export interface Development {
+  bearer_token: BearerToken;
   consumer_key: APIKey;
   consumer_secret: APIKeySecret;
-  access_token?: AccessToken;
-  access_token_secret?: AccessTokenSecret;
+  access_token: AccessToken;
+  access_token_secret: AccessTokenSecret;
+}
+export interface Production {
   bearer_token: BearerToken;
-  [k: string]: unknown;
+  consumer_key: APIKey;
+  consumer_secret: APIKeySecret;
+  access_token: AccessToken;
+  access_token_secret: AccessTokenSecret;
 }

@@ -3,13 +3,30 @@
 	"$id": "https://blog.w0s.jp/twitter.json",
 	"type": "object",
 	"title": "Twitter API",
-	"required": ["production"],
+	"required": ["dev", "production"],
 	"properties": {
+		"dev": {
+			"type": "object",
+			"title": "Development",
+			"$ref": "#/definitions/app_keys"
+		},
 		"production": {
 			"type": "object",
 			"title": "Production",
-			"required": ["consumer_key", "consumer_secret", "bearer_token"],
+			"$ref": "#/definitions/app_keys"
+		},
+		"additionalProperties": false
+	},
+	"additionalProperties": false,
+	"definitions": {
+		"app_keys": {
+			"type": "object",
+			"required": ["bearer_token", "consumer_key", "consumer_secret", "access_token", "access_token_secret"],
 			"properties": {
+				"bearer_token": {
+					"type": "string",
+					"title": "Bearer Token"
+				},
 				"consumer_key": {
 					"type": "string",
 					"title": "API key"
@@ -25,13 +42,9 @@
 				"access_token_secret": {
 					"type": "string",
 					"title": "Access token secret"
-				},
-				"bearer_token": {
-					"type": "string",
-					"title": "Bearer Token"
 				}
-			}
+			},
+			"additionalProperties": false
 		}
-	},
-	"additionalProperties": false
+	}
 }

@@ -19,6 +19,7 @@ import { NoName as Configure } from '../../configure/type/post';
 import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
 import { Result as ValidationResult, ValidationError } from 'express-validator';
+import { TwitterAPI as ConfigureTwitter } from '../../configure/type/twitter.js';
 import { TwitterApi, TwitterApiTokens } from 'twitter-api-v2';
 
 interface PostResults {
@@ -43,6 +44,7 @@ interface MediaUploadResults {
 export default class PostController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
 	#config: Configure;
+	#configTwitter: ConfigureTwitter;
 
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
@@ -52,6 +54,7 @@ export default class PostController extends Controller implements ControllerInte
 
 		this.#configCommon = configCommon;
 		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/post.json', 'utf8'));
+		this.#configTwitter = <ConfigureTwitter>JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
 	}
 
 	/**
@@ -423,17 +426,17 @@ export default class PostController extends Controller implements ControllerInte
 			let twitterAccessTokenOptions: TwitterApiTokens;
 			if (req.hostname === 'localhost') {
 				twitterAccessTokenOptions = {
-					appKey: this.#configCommon.twitter.dev.consumer_key,
-					appSecret: this.#configCommon.twitter.dev.consumer_secret,
-					accessToken: this.#configCommon.twitter.dev.access_token,
-					accessSecret: this.#configCommon.twitter.dev.access_token_secret,
+					appKey: this.#configTwitter.dev.consumer_key,
+					appSecret: this.#configTwitter.dev.consumer_secret,
+					accessToken: this.#configTwitter.dev.access_token,
+					accessSecret: this.#configTwitter.dev.access_token_secret,
 				};
 			} else {
 				twitterAccessTokenOptions = {
-					appKey: this.#config.twitter.production.consumer_key,
-					appSecret: this.#config.twitter.production.consumer_secret,
-					accessToken: this.#config.twitter.production.access_token,
-					accessSecret: this.#config.twitter.production.access_token_secret,
+					appKey: this.#configTwitter.production.consumer_key,
+					appSecret: this.#configTwitter.production.consumer_secret,
+					accessToken: this.#configTwitter.production.access_token,
+					accessSecret: this.#configTwitter.production.access_token_secret,
 				};
 			}
 

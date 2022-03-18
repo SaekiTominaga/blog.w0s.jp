@@ -49,11 +49,7 @@ export type FilepathFor404NotFound = string;
 export type FilepathFor500InternalServerError = string;
 export type NoName27 = string;
 export type Blog = string;
-export type APIKey = string;
-export type APIKeySecret = string;
-export type AccessToken = string;
-export type AccessTokenSecret = string;
-export type NoName31 = number;
+export type NoName30 = number;
 
 export interface NoName {
   port: HTTP;
@@ -65,8 +61,7 @@ export interface NoName {
   errorpage: NoName26;
   logger: Logger;
   sqlite: SQLite;
-  twitter: TwitterAPI;
-  sidebar: NoName29;
+  sidebar: NoName28;
   prettier: Prettier;
 }
 export interface NoName1 {
@@ -138,20 +133,11 @@ export interface SQLite {
 export interface DBNode {
   blog: Blog;
 }
-export interface TwitterAPI {
-  dev: NoName28;
-}
 export interface NoName28 {
-  consumer_key: APIKey;
-  consumer_secret: APIKeySecret;
-  access_token: AccessToken;
-  access_token_secret: AccessTokenSecret;
+  newly: NoName29;
 }
 export interface NoName29 {
-  newly: NoName30;
-}
-export interface NoName30 {
-  maximum_number: NoName31;
+  maximum_number: NoName30;
 }
 /**
  * https://prettier.io/docs/en/options.html

@@ -213,7 +213,7 @@
 		"twitter": {
 			"type": "object",
 			"title": "Twitter API",
-			"required": ["message_prefix", "url_prefix", "media_url_prefix", "production", "api_response"],
+			"required": ["message_prefix", "url_prefix", "media_url_prefix", "api_response"],
 			"properties": {
 				"message_prefix": {
 					"type": "string",
@@ -226,11 +226,6 @@
 				"media_url_prefix": {
 					"type": "string",
 					"title": "画像 URL の冒頭"
-				},
-				"production": {
-					"type": "object",
-					"title": "開発時に使用するアプリ情報",
-					"$ref": "#/properties/twitter/definitions/app_keys"
 				},
 				"api_response": {
 					"type": "object",
@@ -249,32 +244,7 @@
 					"additionalProperties": false
 				}
 			},
-			"additionalProperties": false,
-			"definitions": {
-				"app_keys": {
-					"type": "object",
-					"required": ["consumer_key", "consumer_secret", "access_token", "access_token_secret"],
-					"properties": {
-						"consumer_key": {
-							"type": "string",
-							"title": "API key"
-						},
-						"consumer_secret": {
-							"type": "string",
-							"title": "API key secret"
-						},
-						"access_token": {
-							"type": "string",
-							"title": "Access token"
-						},
-						"access_token_secret": {
-							"type": "string",
-							"title": "Access token secret"
-						}
-					},
-					"additionalProperties": false
-				}
-			}
+			"additionalProperties": false
 		},
 		"media_upload": {
 			"type": "object",

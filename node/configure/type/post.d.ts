@@ -34,23 +34,19 @@ export type NoName30 = string;
 export type NoName31 = string;
 export type URL1 = string;
 export type URL2 = string;
-export type APIKey = string;
-export type APIKeySecret = string;
-export type AccessToken = string;
-export type AccessTokenSecret = string;
+export type NoName32 = string;
 export type NoName33 = string;
-export type NoName34 = string;
 export type URL3 = string;
 export type URLLocal = string;
-export type NoName37 = number;
-export type NoName38 = string;
-export type NoName39 = number;
-export type NoName40 = string;
-export type NoName42 = number;
-export type NoName43 = string;
-export type NoName45 = number;
+export type NoName36 = number;
+export type NoName37 = string;
+export type NoName38 = number;
+export type NoName39 = string;
+export type NoName41 = number;
+export type NoName42 = string;
+export type NoName44 = number;
+export type NoName45 = string;
 export type NoName46 = string;
-export type NoName47 = string;
 
 export interface NoName {
   view: View;
@@ -62,7 +58,7 @@ export interface NoName {
   sitemap_create: NoName19;
   newly_json_create: JSON;
   twitter: TwitterAPI;
-  media_upload: NoName35;
+  media_upload: NoName34;
 }
 export interface View {
   init: NoName1;
@@ -126,44 +122,37 @@ export interface TwitterAPI {
   message_prefix: NoName31;
   url_prefix: URL1;
   media_url_prefix: URL2;
-  production: NoName32;
   api_response: API1;
 }
-export interface NoName32 {
-  consumer_key: APIKey;
-  consumer_secret: APIKeySecret;
-  access_token: AccessToken;
-  access_token_secret: AccessTokenSecret;
-}
 export interface API1 {
-  message_success: NoName33;
-  message_failure: NoName34;
+  message_success: NoName32;
+  message_failure: NoName33;
 }
-export interface NoName35 {
+export interface NoName34 {
   url: URL3;
   url_dev: URLLocal;
   api_response: API2;
 }
 export interface API2 {
-  success: NoName36;
+  success: NoName35;
   type: MIME;
-  overwrite: NoName41;
-  size: NoName44;
-  other_message_failure: NoName47;
+  overwrite: NoName40;
+  size: NoName43;
+  other_message_failure: NoName46;
 }
-export interface NoName36 {
-  code: NoName37;
-  message: NoName38;
+export interface NoName35 {
+  code: NoName36;
+  message: NoName37;
 }
 export interface MIME {
-  code: NoName39;
-  message: NoName40;
+  code: NoName38;
+  message: NoName39;
 }
-export interface NoName41 {
-  code: NoName42;
-  message: NoName43;
+export interface NoName40 {
+  code: NoName41;
+  message: NoName42;
 }
-export interface NoName44 {
-  code: NoName45;
-  message: NoName46;
+export interface NoName43 {
+  code: NoName44;
+  message: NoName45;
 }
