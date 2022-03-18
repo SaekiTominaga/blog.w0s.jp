@@ -34,13 +34,13 @@ export default class TweetMediaController extends Controller implements Controll
 			id: RequestUtil.strings(req.body.id),
 		};
 
-		if (requestQuery.id.size === 0) {
+		if (requestQuery.id.length === 0) {
 			this.logger.error(`パラメーター id が未設定: ${req.get('User-Agent')}`);
 			res.status(403).end();
 			return;
 		}
 		try {
-			if (!Array.from(requestQuery.id).every((id) => /^[0-9]+$/.test(id))) {
+			if (!requestQuery.id.every((id) => /^[0-9]+$/.test(id))) {
 				this.logger.error(`パラメーター id（${requestQuery.id}）の値が不正: ${req.get('User-Agent')}`);
 				res.status(403).end();
 				return;
@@ -55,7 +55,7 @@ export default class TweetMediaController extends Controller implements Controll
 		const twitterApiReadOnly = twitterApi.readOnly.v2;
 
 		const { data, includes } = await twitterApiReadOnly.tweets(
-			Array.from(requestQuery.id) /* TODO: 最大100件の考慮は未実装 https://developer.twitter.com/en/docs/twitter-api/tweets/lookup/api-reference/get-tweets */,
+			requestQuery.id /* TODO: 最大100件の考慮は未実装 https://developer.twitter.com/en/docs/twitter-api/tweets/lookup/api-reference/get-tweets */,
 			{
 				expansions: ['attachments.media_keys', 'author_id'],
 				'media.fields': ['preview_image_url', 'type', 'url'],
@@ -100,19 +100,19 @@ export default class TweetMediaController extends Controller implements Controll
 			}
 		}
 
-		const mediaUrls: Set<string> = new Set();
+		const mediaUrls: string[] = [];
 		if (includes?.media !== undefined) {
 			for (const media of includes.media) {
 				if (media.url !== undefined) {
-					mediaUrls.add(media.url);
+					mediaUrls.push(media.url);
 				} else if (media.preview_image_url !== undefined) {
-					mediaUrls.add(media.preview_image_url);
+					mediaUrls.push(media.preview_image_url);
 				}
 			}
 		}
 
 		const responseJson: BlogApi.TweetMedia = {
-			media_urls: Array.from(mediaUrls),
+			media_urls: mediaUrls,
 		};
 
 		res.status(200).json(responseJson);

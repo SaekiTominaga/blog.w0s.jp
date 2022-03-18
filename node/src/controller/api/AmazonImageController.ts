@@ -36,13 +36,13 @@ export default class AmazonImageController extends Controller implements Control
 			asin: RequestUtil.strings(req.body.asin),
 		};
 
-		if (requestQuery.asin.size === 0) {
+		if (requestQuery.asin.length === 0) {
 			this.logger.error(`パラメーター asin が未設定: ${req.get('User-Agent')}`);
 			res.status(403).end();
 			return;
 		}
 		try {
-			if (!Array.from(requestQuery.asin).every((asin) => /^[\dA-Z]{10}$/.test(asin))) {
+			if (!requestQuery.asin.every((asin) => /^[\dA-Z]{10}$/.test(asin))) {
 				this.logger.error(`パラメーター asin（${requestQuery.asin}）の値が不正: ${req.get('User-Agent')}`);
 				res.status(403).end();
 				return;
@@ -55,7 +55,7 @@ export default class AmazonImageController extends Controller implements Control
 
 		const dao = new BlogAmazonDao(this.#configCommon);
 		const registeredAsins = await dao.getAsins(); // DB に登録済みの ASIN
-		const unregisteredAsins = Array.from(requestQuery.asin).filter((asin) => !registeredAsins.includes(asin)); // DB に登録されていない ASIN
+		const unregisteredAsins = requestQuery.asin.filter((asin) => !registeredAsins.includes(asin)); // DB に登録されていない ASIN
 
 		const paapiErros: Set<string> = new Set(); // PA-API でのエラー情報を格納
 
@@ -139,7 +139,7 @@ export default class AmazonImageController extends Controller implements Control
 		const imageUrls = await dao.getImageUrls(requestQuery.asin);
 
 		const responseJson: BlogApi.AmazonImage = {
-			image_urls: Array.from(imageUrls),
+			image_urls: imageUrls,
 			errors: Array.from(paapiErros),
 		};
 

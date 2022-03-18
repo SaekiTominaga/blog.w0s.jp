@@ -14,7 +14,7 @@ interface ReviseData {
 	title: string;
 	description: string | null;
 	message: string;
-	category_ids: Set<string>;
+	category_ids: string[];
 	image: string | null;
 	image_external: string | null;
 	relation_ids: string[];
@@ -127,9 +127,9 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * カテゴリーグループに紐付けられたファイル名リストを取得
 	 *
-	 * @returns {Set<string>} ファイル名
+	 * @returns {string[]} ファイル名
 	 */
-	async getCategoryGroupMasterFileName(): Promise<Set<string>> {
+	async getCategoryGroupMasterFileName(): Promise<string[]> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -144,9 +144,9 @@ export default class BlogPostDao extends BlogDao {
 		const rows = await sth.all();
 		await sth.finalize();
 
-		const fileNames: Set<string> = new Set();
+		const fileNames: string[] = [];
 		for (const row of rows) {
-			fileNames.add(row.file_name);
+			fileNames.push(row.file_name);
 		}
 
 		return fileNames;
@@ -209,7 +209,7 @@ export default class BlogPostDao extends BlogDao {
 	 * @param {string} title - タイトル
 	 * @param {string | null} description - 概要
 	 * @param {string} message - 本文
-	 * @param {Set<string>} categoryIds - カテゴリー ID
+	 * @param {string[]} categoryIds - カテゴリー ID
 	 * @param {string | null} imagePath - 画像パス
 	 * @param {number[]} relationIds - 関連記事 ID
 	 * @param {boolean} publicFlag - 公開フラグ
@@ -220,7 +220,7 @@ export default class BlogPostDao extends BlogDao {
 		title: string,
 		description: string | null,
 		message: string,
-		categoryIds: Set<string>,
+		categoryIds: string[],
 		imagePath: string | null,
 		relationIds: string[] | null,
 		publicFlag: boolean
@@ -262,7 +262,7 @@ export default class BlogPostDao extends BlogDao {
 				throw new Error('Failed to INSERT into `d_topic` table.');
 			}
 
-			if (categoryIds.size > 0) {
+			if (categoryIds.length > 0) {
 				const categoryInsertSth = await dbh.prepare(`
 					INSERT INTO d_topic_category
 						(topic_id, category_id)
@@ -310,7 +310,7 @@ export default class BlogPostDao extends BlogDao {
 	 * @param {string} title - タイトル
 	 * @param {string | null} description - 概要
 	 * @param {string} message - 本文
-	 * @param {Set<string>} categoryIds - カテゴリー ID
+	 * @param {string[]} categoryIds - カテゴリー ID
 	 * @param {string | null} imagePath - 画像パス
 	 * @param {number[] | null} relationIds - 関連記事 ID
 	 * @param {boolean} publicFlag - 公開フラグ
@@ -321,7 +321,7 @@ export default class BlogPostDao extends BlogDao {
 		title: string,
 		description: string | null,
 		message: string,
-		categoryIds: Set<string>,
+		categoryIds: string[],
 		imagePath: string | null,
 		relationIds: string[] | null,
 		publicFlag: boolean,
@@ -405,7 +405,7 @@ export default class BlogPostDao extends BlogDao {
 			});
 			await categoryDeleteSth.finalize();
 
-			if (categoryIds.size > 0) {
+			if (categoryIds.length > 0) {
 				const categoryInsertSth = await dbh.prepare(`
 					INSERT INTO d_topic_category
 						(topic_id, category_id)
@@ -496,7 +496,7 @@ export default class BlogPostDao extends BlogDao {
 			title: row.title,
 			description: row.description,
 			message: row.message,
-			category_ids: row.category_ids !== null ? new Set(row.category_ids.split(' ')) : new Set(),
+			category_ids: row.category_ids !== null ? row.category_ids.split(' ') : [],
 			image: row.image,
 			image_external: row.image_external,
 			relation_ids: row.relation_ids !== null ? row.relation_ids.split(' ') : [],

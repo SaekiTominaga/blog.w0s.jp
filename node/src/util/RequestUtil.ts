@@ -20,10 +20,10 @@ export default class RequestUtil {
 	 *
 	 * @param {any} request - Request string
 	 *
-	 * @returns {Set<string>} Converted
+	 * @returns {string[]} Converted
 	 */
-	static strings(request: unknown): Set<string> {
-		return Array.isArray(request) ? new Set(request) : new Set();
+	static strings(request: unknown): string[] {
+		return Array.isArray(request) ? request : [];
 	}
 
 	/**

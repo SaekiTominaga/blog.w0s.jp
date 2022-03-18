@@ -16,7 +16,7 @@ declare namespace BlogRequest {
 		title: string | null;
 		description: string | null;
 		message: string | null;
-		category: Set<string>;
+		category: string[];
 		image: string | null;
 		relation: string | null;
 		public: boolean;
@@ -37,7 +37,7 @@ declare namespace BlogRequest {
 	}
 
 	interface ApiAmazonImage {
-		asin: Set<string>;
+		asin: string[];
 	}
 
 	interface ApiPreview {
@@ -45,6 +45,6 @@ declare namespace BlogRequest {
 	}
 
 	interface ApiTweetMedia {
-		id: Set<string>;
+		id: string[];
 	}
 }
