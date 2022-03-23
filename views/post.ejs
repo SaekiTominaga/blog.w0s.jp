@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div class="l-page">
-			<%- include('./_include/_header', { heading: false }) %>
+			<%- include('./_include/_header', { heading: false } ) -%>
 
 			<div id="content" class="l-content -nosidebar">
 				<div class="l-content__header">
@@ -51,24 +51,24 @@
 						</div>
 
 						<form action="<%= `${page.path}#post` %>" method="post" class="c-stack js-form-beforeunload-confirm">
-							<% if (topicValidateErrors.length > 0) { %>
+							<%_ if (topicValidateErrors.length > 0) { _%>
 							<div class="p-form-errors js-form-errors">
 								<p><strong><%= topicValidateErrors.length %>個のエラーがあります。</strong></p>
 								<ul class="p-list">
-									<% for (const validateError of topicValidateErrors) { %>
+									<%_ for (const validateError of topicValidateErrors) { _%>
 									<li><%= validateError.msg %></li>
-									<% } %>
+									<%_ } _%>
 								</ul>
 							</div>
-							<% } %> <% if (topicPostResults.size > 0) { %>
+							<%_ } _%> <%_ if (topicPostResults.size > 0) { _%>
 							<ul class="p-form-results">
-								<% for (const result of topicPostResults) { %><% if (result.success) { %>
+								<%_ for (const result of topicPostResults) { _%><%_ if (result.success) { _%>
 								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<% } else { %>
+								<%_ } else { _%>
 								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<% } %> <% } %>
+								<%_ } _%> <%_ } _%>
 							</ul>
-							<% } %>
+							<%_ } _%>
 
 							<div class="p-form-grid">
 								<div class="p-form-grid__group">
@@ -110,20 +110,20 @@
 									<fieldset>
 										<legend class="p-form-grid__legend">カテゴリ</legend>
 										<div class="p-form-grid__contents">
-											<% for (const [categoryGroupName, categories] of categoryMaster) { %>
+											<%_ for (const [categoryGroupName, categories] of categoryMaster) { _%>
 											<div class="c-form-controls -checkbox">
-												<% for (const category of categories) { %>
+												<%_ for (const category of categories) { _%>
 												<label class="c-label -check">
-													<% if (page.query.category.includes(category.id)) { %>
+													<%_ if (page.query.category.includes(category.id)) { _%>
 													<input type="checkbox" name="category[]" value="<%= category.id %>" checked="" />
-													<% } else { %>
+													<%_ } else { _%>
 													<input type="checkbox" name="category[]" value="<%= category.id %>" />
-													<% } %>
+													<%_ } _%>
 													<span class="c-label__text"><%= category.name %></span></label
 												>
-												<% } %>
+												<%_ } _%>
 											</div>
-											<% } %>
+											<%_ } _%>
 										</div>
 									</fieldset>
 								</div>
@@ -165,44 +165,44 @@
 										<legend class="p-form-grid__legend">公開</legend>
 										<div class="p-form-grid__contents">
 											<label class="c-label -check">
-												<% if (page.query.public) { %>
+												<%_ if (page.query.public) { _%>
 												<input type="checkbox" name="public" value="1" checked="" />
-												<% } else { %>
+												<%_ } else { _%>
 												<input type="checkbox" name="public" value="1" />
-												<% } %>
+												<%_ } _%>
 												<span class="c-label__text">公開状態</span>
 											</label>
 										</div>
 									</fieldset>
 								</div>
-								<% if (updateMode) { %>
+								<%_ if (updateMode) { _%>
 								<div class="p-form-grid__group">
 									<fieldset>
 										<legend class="p-form-grid__legend">更新時の処理</legend>
 										<div class="p-form-grid__contents">
 											<label class="c-label -check">
-												<% if (page.query.timestamp) { %>
+												<%_ if (page.query.timestamp) { _%>
 												<input type="checkbox" name="timestamp" value="1" checked="" />
-												<% } else { %>
+												<%_ } else { _%>
 												<input type="checkbox" name="timestamp" value="1" />
-												<% } %>
+												<%_ } _%>
 												<span class="c-label__text">更新日時を変更</span>
 											</label>
 										</div>
 									</fieldset>
 								</div>
-								<% } else { %>
+								<%_ } else { _%>
 								<div class="p-form-grid__group">
 									<fieldset>
 										<legend class="p-form-grid__legend">外部サービス</legend>
 										<div class="p-form-grid__contents">
 											<p>
 												<label class="c-label -check">
-													<% if (page.query.social === 1) { %>
+													<%_ if (page.query.social === 1) { _%>
 													<input type="checkbox" name="social" value="1" checked="" />
-													<% } else { %>
+													<%_ } else { _%>
 													<input type="checkbox" name="social" value="1" />
-													<% } %>
+													<%_ } _%>
 													<span class="c-label__text">ソーシャルサービスへ投稿する</span>
 												</label>
 											</p>
@@ -212,17 +212,17 @@
 										</div>
 									</fieldset>
 								</div>
-								<% } %>
+								<%_ } _%>
 							</div>
 
 							<p><input type="hidden" name="id" value="<%= targetId %>" /></p>
 
 							<div class="c-form-controls -submit">
-								<% if (updateMode) { %>
+								<%_ if (updateMode) { _%>
 								<p><button class="c-submit" name="actionrev" value="1">修正実行</button></p>
-								<% } else { %>
+								<%_ } else { _%>
 								<p><button class="c-submit" name="actionadd" value="1">新規追加</button></p>
-								<% } %>
+								<%_ } _%>
 							</div>
 						</form>
 					</section>
@@ -233,15 +233,15 @@
 						</div>
 
 						<form action="<%= `${page.path}#media` %>" method="post" enctype="multipart/form-data" class="c-stack">
-							<% if (mediaUploadResults.size > 0) { %>
+							<%_ if (mediaUploadResults.size > 0) { _%>
 							<ul class="p-form-results">
-								<% for (const result of mediaUploadResults) { %><% if (result.success) { %>
+								<%_ for (const result of mediaUploadResults) { _%><%_ if (result.success) { _%>
 								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %>: <%= result.filename %></span></li>
-								<% } else { %>
+								<%_ } else { _%>
 								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %>: <%= result.filename %></span></li>
-								<% } %> <% } %>
+								<%_ } _%> <%_ } _%>
 							</ul>
-							<% } %>
+							<%_ } _%>
 
 							<div class="p-form-grid">
 								<div class="p-form-grid__group">
@@ -274,15 +274,15 @@
 						</div>
 
 						<form action="<%= `${page.path}#view` %>" method="post" class="c-stack">
-							<% if (viewUpdateResults.size > 0) { %>
+							<%_ if (viewUpdateResults.size > 0) { _%>
 							<ul class="p-form-results">
-								<% for (const result of viewUpdateResults) { %><% if (result.success) { %>
+								<%_ for (const result of viewUpdateResults) { _%><%_ if (result.success) { _%>
 								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<% } else { %>
+								<%_ } else { _%>
 								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<% } %> <% } %>
+								<%_ } _%> <%_ } _%>
 							</ul>
-							<% } %>
+							<%_ } _%>
 
 							<div class="c-form-controls">
 								<p><button class="c-submit" name="actionview" value="1">反映</button></p>
@@ -421,7 +421,7 @@
 				</main>
 			</div>
 
-			<%- include('./_include/_footer') %>
+			<%- include('./_include/_footer') -%>
 		</div>
 	</body>
 </html>

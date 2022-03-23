@@ -4,26 +4,26 @@
 		<title><%= title %></title>
 
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<% if (categoryFileNames !== undefined) { %>
+		<%_ if (categoryFileNames !== undefined) { _%>
 		<meta name="w0s:amazon" content="<%= categoryFileNames %>" />
-		<% } %>
+		<%_ } _%>
 		<meta property="og:title" content="<%= title %>" />
 		<meta property="og:type" content="article" />
-		<% if (ogImage !== null) { %>
+		<%_ if (ogImage !== null) { _%>
 		<meta property="og:image" content="<%= ogImage %>" />
-		<% } else { %>
+		<%_ } else { _%>
 		<meta property="og:image" content="https://blog.w0s.jp/image/site-icon.png" />
 		<meta property="og:image:width" content="360" />
 		<meta property="og:image:height" content="360" />
-		<% } %>
+		<%_ } _%>
 		<meta property="og:url" content="https://blog.w0s.jp/<%= page.query.entry_id %>" />
 		<meta property="og:locale" content="ja_JP" />
 		<meta property="og:site_name" content="富永日記帳" />
-		<% if (description !== null) { %>
+		<%_ if (description !== null) { _%>
 		<meta property="og:description" content="<%= description %>" />
 		<meta name="twitter:card" content="summary" />
 		<meta name="twitter:site" content="@SaekiTominaga" />
-		<% } %>
+		<%_ } _%>
 
 		<link rel="alternate" href="/feed" type="application/atom+xml" title="「富永日記帳」の新着フィード" />
 		<link rel="stylesheet" href="/style/blog.css" />
@@ -32,15 +32,15 @@
 
 		<script src="/script/trusted-types.js"></script>
 		<script src="/script/blog.mjs" type="module"></script>
-		<% if (tweet) { %>
+		<%_ if (tweet) { _%>
 		<script src="https://platform.twitter.com/widgets.js" async=""></script>
-		<% } %>
+		<%_ } _%>
 		<script src="https://analytics.w0s.jp/matomo/matomo.js" async=""></script>
 		<script src="/script/analytics.js" defer=""></script>
 	</head>
 	<body itemscope="" itemtype="http://schema.org/Blog">
 		<div class="l-page">
-			<%- include('./_include/_header', { heading: false }) %>
+			<%- include('./_include/_header', { heading: false } ) -%>
 
 			<div id="content" class="l-content">
 				<div class="l-content__main">
@@ -55,29 +55,29 @@
 									<dt>投稿</dt>
 									<dd><time datetime="<%= created.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="datePublished"><%= created.format('YYYY年M月D日') %></time></dd>
 								</div>
-								<% if (lastUpdated !== null) { %>
+								<%_ if (lastUpdated !== null) { _%>
 								<div class="c-entry-meta__group">
 									<dt>最終更新</dt>
 									<dd><time datetime="<%= lastUpdated.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="dateModified"><%= lastUpdated.format('YYYY年M月D日') %></time></dd>
 								</div>
-								<% } %>
+								<%_ } _%>
 							</dl>
 						</header>
 
 						<main class="p-entry__body" itemprop="articleBody"><%- message %></main>
 
 						<footer class="p-entry__footer">
-							<% if (categoryNames.length >= 1) { %>
+							<%_ if (categoryNames.length >= 1) { _%>
 							<section class="p-entry-footer-category">
 								<h2 class="p-entry-footer-category__hdg">カテゴリ</h2>
 
 								<ul class="p-entry-footer-category__list">
-									<% for (const categoryName of categoryNames) { %>
+									<%_ for (const categoryName of categoryNames) { _%>
 									<li><a href="/category/<%= encodeURI(categoryName) %>" rel="tag"><%= categoryName %></a></li>
-									<% } %>
+									<%_ } _%>
 								</ul>
 							</section>
-							<% } %>
+							<%_ } _%>
 
 							<ul class="p-entry-footer-social c-flex -buttons">
 								<li class="c-flex__item">
@@ -99,27 +99,27 @@
 								</li>
 							</ul>
 
-							<% if (relations.length > 0) { %>
+							<%_ if (relations.length > 0) { _%>
 							<section class="p-entry-footer-relation p-box">
 								<h2 class="p-box__hdg">関連記事</h2>
 
 								<ul class="c-grid -wide">
-									<% for (const relation of relations) { %>
+									<%_ for (const relation of relations) { _%>
 									<li class="c-grid__item">
 										<div class="c-entry-link">
 											<a href="<%= relation.id %>">
 												<span class="c-entry-link__thumb">
-													<% if (relation.image_internal !== null) { %>
+													<%_ if (relation.image_internal !== null) { _%>
 													<picture>
 														<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=360;h=240;quality=30 2x" />
 														<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=360;h=240;quality=30 2x" />
 														<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" class="c-entry-link__image" />
 													</picture>
-													<% } else if (relation.image_external !== null) { %>
+													<%_ } else if (relation.image_external !== null) { _%>
 													<img src="<%= relation.image_external %>" alt="" class="c-entry-link__image" />
-													<% } else { %>
+													<%_ } else { _%>
 													<img src="/image/noimage.svg" alt="" width="180" height="120" class="c-entry-link__image" />
-													<% } %>
+													<%_ } _%>
 												</span>
 												<span class="c-entry-link__title"><%= relation.title %></span>
 											</a>
@@ -128,15 +128,15 @@
 											</div>
 										</div>
 									</li>
-									<% } %>
+									<%_ } _%>
 								</ul>
 							</section>
-							<% } %>
+							<%_ } _%>
 						</footer>
 					</article>
 				</div>
 
-				<% if (categoryFileNames === 'train') { %>
+				<%_ if (categoryFileNames === 'train') { _%>
 				<div class="l-content__footer">
 					<aside class="p-box" aria-labelledby="bookcm-heading">
 						<h2 class="p-box__hdg" id="bookcm-heading">著書の紹介</h2>
@@ -173,10 +173,10 @@
 						</ul>
 					</aside>
 				</div>
-				<% } %>
+				<%_ } _%>
 			</div>
 
-			<%- include('./_include/_sidebar') %><%- include('./_include/_footer') %>
+			<%- include('./_include/_sidebar') -%><%- include('./_include/_footer') -%>
 		</div>
 	</body>
 </html>

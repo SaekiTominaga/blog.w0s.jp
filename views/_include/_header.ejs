@@ -2,16 +2,16 @@
 	<div class="l-header__main">
 		<div class="l-header__site">
 			<div class="p-header-site">
-				<% if (heading) { %><% if (page.path === '/') { %>
+				<%_ if (heading) { _%><%_ if (page.path === '/') { _%>
 				<h1 class="p-header-site__name" itemprop="name"><a aria-current="page">富永日記帳</a></h1>
-				<% } else { %>
+				<%_ } else { _%>
 				<h1 class="p-header-site__name" itemprop="name"><a href="/">富永日記帳</a></h1>
-				<% } %>
+				<%_ } _%>
 				<p class="p-header-site__summary" itemprop="description">ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ</p>
-				<% } else { %>
+				<%_ } else { _%>
 				<div class="p-header-site__name"><a href="/">富永日記帳</a></div>
 				<p class="p-header-site__summary">ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ</p>
-				<% } %>
+				<%_ } _%>
 			</div>
 		</div>
 		<div class="l-header__nav">

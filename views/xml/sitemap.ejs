@@ -4,10 +4,10 @@
 		<loc>https://blog.w0s.jp/</loc>
 		<lastmod><%= updated_at.format('YYYY-MM-DDTHH:mm:ssZ') %></lastmod>
 	</url>
-	<% for (const entry of entries) { %>
+	<%_ for (const entry of entries) { _%>
 	<url>
 		<loc>https://blog.w0s.jp/<%= entry.id %></loc>
 		<lastmod><%= entry.updated_at.format('YYYY-MM-DDTHH:mm:ssZ') %></lastmod>
 	</url>
-	<% } %>
+	<%_ } _%>
 </urlset>

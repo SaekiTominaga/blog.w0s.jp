@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div class="l-page">
-			<%- include('./_include/_header', { heading: false } ) %>
+			<%- include('./_include/_header', { heading: false } ) -%>
 
 			<div id="content" class="l-content -nosidebar">
 				<div class="l-content__header">
@@ -41,40 +41,40 @@
 							</tr>
 						</thead>
 						<tbody>
-							<% for (const dp of dpList) { %>
+							<%_ for (const dp of dpList) { _%>
 							<tr>
 								<td>
-									<% if (dp.entry_ids.length === 0) { %>
+									<%_ if (dp.entry_ids.length === 0) { _%>
 									<form method="post">
 										<p><input type="hidden" name="asin" value="<%= dp.asin %>" /></p>
 										<p><button name="actiondel" value="1" is="w0s-confirm-button" data-message="削除しますか?" class="c-submit -compact">削除</button></p>
 									</form>
-									<% } %>
+									<%_ } _%>
 								</td>
 								<td><%= dp.asin %></td>
 								<td>
 									<a href="https://www.amazon.co.jp/dp/<%= dp.asin %>">
-										<% if (dp.image_url !== null) { %>
+										<%_ if (dp.image_url !== null) { _%>
 										<img src="<%= dp.image_url %>" alt="" width="<%= dp.image_width %>" height="<%= dp.image_height %>" style="width: auto; max-height: 36px" />
-										<% } %> <%= dp.title %>
+										<%_ } _%> <%= dp.title %>
 									</a>
 								</td>
 								<td><%= dp.binding %></td>
 								<td><%= dp.product_group %></td>
-								<td><% if (dp.publication_date !== null) { %> <%= dp.publication_date.format('YYYY-MM-DD') %> <% } %></td>
+								<td><%_ if (dp.publication_date !== null) { _%> <%= dp.publication_date.format('YYYY-MM-DD') %> <%_ } _%></td>
 								<td>
-									<% for (const id of dp.entry_ids) { %>
+									<%_ for (const id of dp.entry_ids) { _%>
 									<a href="https://blog.w0s.jp/<%= id %>"><%= id %></a>
-									<% } %>
+									<%_ } _%>
 								</td>
 							</tr>
-							<% } %>
+							<%_ } _%>
 						</tbody>
 					</table>
 				</main>
 			</div>
 
-			<%- include('./_include/_footer') %>
+			<%- include('./_include/_footer') -%>
 		</div>
 	</body>
 </html>

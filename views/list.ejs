@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
-		<title><% if (page.query.page === 1) { %>富永日記帳<% } else { %>タイトル一覧（<%= page.query.page %>ページ目）<% } %></title>
+		<title><%_ if (page.query.page === 1) { _%>富永日記帳<%_ } else { _%>タイトル一覧（<%= page.query.page %>ページ目）<%_ } _%></title>
 
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 
 		<link rel="alternate" href="/feed" type="application/atom+xml" title="「富永日記帳」の新着フィード" />
-		<% if (page.query.page > 2) { %>
+		<%_ if (page.query.page > 2) { _%>
 		<link rel="prev" href="/list/<%= page.query.page - 1 %>" title="新しい記事" />
-		<% } else if (page.query.page === 2) { %>
+		<%_ } else if (page.query.page === 2) { _%>
 		<link rel="prev" href="/" title="新しい記事" />
-		<% } %> <% if (page.query.page < totalPage) { %>
+		<%_ } _%> <%_ if (page.query.page < totalPage) { _%>
 		<link rel="next" href="/list/<%= page.query.page + 1 %>" title="古い記事" />
-		<% } %>
+		<%_ } _%>
 		<link rel="stylesheet" href="/style/blog.css" />
 		<link rel="stylesheet" href="/style/layout_full.css" title="通常表示" />
 		<link rel="alternate stylesheet" href="/style/layout_reader.css" title="リーダー表示" id="stylesheet-print" />
@@ -24,40 +24,40 @@
 	</head>
 	<body itemscope="" itemtype="http://schema.org/Blog">
 		<div class="l-page">
-			<%- include('./_include/_header', { heading: true }) %>
+			<%- include('./_include/_header', { heading: true } ) -%>
 
 			<div id="content" class="l-content">
 				<div class="l-content__header">
 					<nav aria-label="前後記事">
 						<ul class="p-page-nav">
-							<% if (page.query.page > 2) { %>
+							<%_ if (page.query.page > 2) { _%>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
 							<li><a href="/list/<%= page.query.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<% } else if (page.query.page === 2) { %>
+							<%_ } else if (page.query.page === 2) { _%>
 							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<% } %><% if (page.query.page < totalPage) { %>
+							<%_ } _%><%_ if (page.query.page < totalPage) { _%>
 							<li><a href="/list/<%= page.query.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
-							<% } %>
+							<%_ } _%>
 						</ul>
 					</nav>
 				</div>
 				<main class="l-content__main">
 					<ul class="p-title-list -list">
-						<% for (const entry of entries) { %>
+						<%_ for (const entry of entries) { _%>
 						<li class="c-entry-link">
 							<a href="/<%= entry.id %>">
 								<span class="c-entry-link__thumb">
-									<% if (entry.image_internal !== null) { %>
+									<%_ if (entry.image_internal !== null) { _%>
 									<picture>
 										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=360;h=240;quality=30 2x" />
 										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=360;h=240;quality=30 2x" />
 										<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" class="c-entry-link__image" />
 									</picture>
-									<% } else if (entry.image_external !== null) { %>
+									<%_ } else if (entry.image_external !== null) { _%>
 									<img src="<%= entry.image_external %>" alt="" class="c-entry-link__image" />
-									<% } else { %>
+									<%_ } else { _%>
 									<img src="/image/noimage.svg" alt="" width="180" height="120" class="c-entry-link__image" />
-									<% } %>
+									<%_ } _%>
 								</span>
 								<span class="c-entry-link__title"><%= entry.title %></span>
 							</a>
@@ -67,35 +67,35 @@
 										<dt>投稿</dt>
 										<dd><time datetime="<%= entry.created.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.created.format('YYYY年M月D日') %></time></dd>
 									</div>
-									<% if (entry.last_updated !== null) { %>
+									<%_ if (entry.last_updated !== null) { _%>
 									<div class="c-entry-meta__group">
 										<dt>最終更新</dt>
 										<dd><time datetime="<%= entry.last_updated.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.last_updated.format('YYYY年M月D日') %></time></dd>
 									</div>
-									<% } %>
+									<%_ } _%>
 								</dl>
 							</div>
 						</li>
-						<% } %>
+						<%_ } _%>
 					</ul>
 				</main>
 				<div class="l-content__footer">
 					<nav aria-label="前後記事">
 						<ul class="p-page-nav">
-							<% if (page.query.page > 2) { %>
+							<%_ if (page.query.page > 2) { _%>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
 							<li><a href="/list/<%= page.query.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<% } else if (page.query.page === 2) { %>
+							<%_ } else if (page.query.page === 2) { _%>
 							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<% } %><% if (page.query.page < totalPage) { %>
+							<%_ } _%><%_ if (page.query.page < totalPage) { _%>
 							<li><a href="/list/<%= page.query.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
-							<% } %>
+							<%_ } _%>
 						</ul>
 					</nav>
 				</div>
 			</div>
 
-			<%- include('./_include/_sidebar') %><%- include('./_include/_footer') %>
+			<%- include('./_include/_sidebar') -%><%- include('./_include/_footer') -%>
 		</div>
 	</body>
 </html>
