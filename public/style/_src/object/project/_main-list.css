@@ -69,11 +69,13 @@
 	--_icon-color: var(--color-gray);
 	--_icon-gap: 0.5em;
 
+	line-height: var(--line-height-normal);
+
 	& > li {
 		margin-inline-start: calc((var(--_icon-width) + var(--_icon-gap)) * var(--font-ratio-2));
 
 		& + li {
-			margin-block-start: 0.5em;
+			margin-block-start: 1em;
 		}
 
 		& > a {
