@@ -1613,7 +1613,7 @@ export default class MessageParser {
 	#markupLink(linkText: string, urlText: string): string {
 		if (/^([1-9]{1}[0-9]{0,2})$/.test(urlText)) {
 			// TODO: 記事数が 1000 を超えたら正規表現要修正
-			return `<a href="${urlText}">${linkText}</a>`;
+			return `<a href="/${urlText}">${linkText}</a>`;
 		} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(urlText)) {
 			return `<a href="${urlText}">${linkText}</a>`;
 		} else if (/^\/[a-zA-Z0-9-_#/.]+$/.test(urlText)) {
