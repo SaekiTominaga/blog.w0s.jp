@@ -419,9 +419,6 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #postSocial(req: Request, requestQuery: BlogRequest.Post, topicId: number): Promise<PostResults> {
 		try {
-			const topicUrl = `${this.#config.twitter.url_prefix}${topicId}`;
-			const mediaUrl = `${this.#config.twitter.media_url_prefix}${requestQuery.image}`;
-
 			/* Twitter */
 			let twitterAccessTokenOptions: TwitterApiTokens;
 			if (req.hostname === 'localhost') {
@@ -446,15 +443,20 @@ export default class PostController extends Controller implements ControllerInte
 			const hashtag = requestQuery.social_tag !== null && requestQuery.social_tag !== '' ? `#${requestQuery.social_tag}` : ''; // ハッシュタグ
 
 			const medias: Set<Buffer> = new Set();
-			if (requestQuery.image !== null && !path.isAbsolute(requestQuery.image)) {
+			if (requestQuery.image !== null && !/^https?:/.test(requestQuery.image)) {
 				/* 画像が投稿されていた場合（外部サービスの画像を除く） */
+				const mediaUrl = `${this.#config.twitter.media_url_prefix}${requestQuery.image}`;
+
 				const response = await fetch(mediaUrl);
 				if (!response.ok) {
 					this.logger.error('Fetch error', mediaUrl);
+				} else {
+					this.logger.info('Fetch success', mediaUrl);
+					medias.add(Buffer.from(await response.arrayBuffer()));
 				}
-				medias.add(Buffer.from(await response.arrayBuffer()));
 			}
 
+			const topicUrl = `${this.#config.twitter.url_prefix}${topicId}`;
 			let message = `${this.#config.twitter.message_prefix}\n\n${requestQuery.title}\n${topicUrl}`;
 			if (requestQuery.description !== '') {
 				message += `\n\n${requestQuery.description}`;
