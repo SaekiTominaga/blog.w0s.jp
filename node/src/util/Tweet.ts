@@ -51,7 +51,7 @@ export default class Tweet {
 		}
 
 		/* メディアをアップロードする */
-		if (medias !== undefined) {
+		if (medias !== undefined && medias.length >= 1) {
 			if (medias.length > this.#IMAGE_LIMIT) {
 				throw new RangeError(`There should be no more than ${this.#IMAGE_LIMIT} media attachments.`);
 			}
