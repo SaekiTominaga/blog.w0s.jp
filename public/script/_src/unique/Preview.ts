@@ -15,17 +15,9 @@ export default class {
 	}
 
 	/**
-	 * 初期処理
-	 */
-	init(): void {
-		this.#exec();
-		this.#ctrlElement.addEventListener('change', () => this.#exec(), { passive: true });
-	}
-
-	/**
 	 * 処理実行
 	 */
-	async #exec(): Promise<void> {
+	async exec(): Promise<void> {
 		const formData = new FormData();
 		formData.append('md', this.#ctrlElement.value);
 
