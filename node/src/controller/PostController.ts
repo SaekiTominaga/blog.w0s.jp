@@ -4,7 +4,6 @@ import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
-import fetch from 'node-fetch';
 import fs from 'fs';
 import HttpBasicAuth, { Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
