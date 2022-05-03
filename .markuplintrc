@@ -34,7 +34,7 @@
 		"landmark-roles": true,
 		"no-refer-to-non-existent-id": true,
 		"require-accessible-name": true,
-		"required-h1": false,
+		"required-h1": true,
 		"wai-aria": true,
 		"class-naming": [
 			"/^[lcpu]-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$/",
@@ -119,5 +119,12 @@
 				}
 			}
 		}
-	]
+	],
+	"overrides": {
+		"./views/list.ejs": {
+			"rules": {
+				"required-h1": false
+			}
+		}
+	}
 }
