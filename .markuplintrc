@@ -28,13 +28,27 @@
 		"doctype": true,
 		"id-duplication": true,
 		"ineffective-attr": true,
-		"invalid-attr": true,
+		"invalid-attr": {
+			"option": {
+				"attrs": {
+					"accesskey": {
+						"disallowed": true
+					},
+					"tabindex": {
+						"enum": [
+							"-1",
+							"0"
+						]
+					}
+				}
+			}
+		},
 		"permitted-contents": true,
 		"required-attr": true,
 		"landmark-roles": true,
 		"no-refer-to-non-existent-id": true,
 		"require-accessible-name": true,
-		"required-h1": true,
+		"required-h1": false,
 		"wai-aria": true,
 		"class-naming": [
 			"/^[lcpu]-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$/",
@@ -63,25 +77,27 @@
 							"prefix"
 						]
 					}
-				}
-			}
-		},
-		{
-			"selector": "meta",
-			"rules": {
-				"invalid-attr": {
-					"option": {
-						"ignoreAttrNamePrefix": [
-							"content",
-							"property"
-						]
-					}
-				}
+				},
+				"required-attr": [
+					"lang"
+				]
 			}
 		},
 		{
 			"selector": "meta[property]",
 			"rules": {
+				"invalid-attr": {
+					"option": {
+						"attrs": {
+							"property": {
+								"pattern": "/^og:[a-z_]+/"
+							},
+							"content": {
+								"type": "NoEmptyAny"
+							}
+						}
+					}
+				},
 				"required-attr": false
 			}
 		},
@@ -94,6 +110,12 @@
 			}
 		},
 		{
+			"selector": "dl > div, object > div",
+			"rules": {
+				"required-attr": false
+			}
+		},
+		{
 			"selector": "img",
 			"rules": {
 				"required-attr": [
@@ -102,7 +124,49 @@
 			}
 		},
 		{
-			"selector": "table, th, template *",
+			"selector": "iframe",
+			"rules": {
+				"required-attr": [
+					"title"
+				]
+			}
+		},
+		{
+			"selector": "table",
+			"rules": {
+				"require-accessible-name": false
+			}
+		},
+		{
+			"selector": "thead th",
+			"rules": {
+				"required-attr": [
+					{
+						"name": "scope",
+						"value": [
+							"col",
+							"colgroup"
+						]
+					}
+				]
+			}
+		},
+		{
+			"selector": "tbody th",
+			"rules": {
+				"required-attr": [
+					{
+						"name": "scope",
+						"value": [
+							"row",
+							"rowgroup"
+						]
+					}
+				]
+			}
+		},
+		{
+			"selector": "template *",
 			"rules": {
 				"require-accessible-name": false
 			}
@@ -119,12 +183,5 @@
 				}
 			}
 		}
-	],
-	"overrides": {
-		"./views/list.ejs": {
-			"rules": {
-				"required-h1": false
-			}
-		}
-	}
+	]
 }
