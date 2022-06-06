@@ -861,8 +861,10 @@ export default class MessageParser {
 				const iconElement = this.#document.createElement('img');
 				iconElement.src = '/image/icon/pdf.png';
 				iconElement.alt = '(PDF)';
+				iconElement.width = 16;
+				iconElement.height = 16;
 				iconElement.className = 'c-link-icon';
-				aElement.appendChild(iconElement);
+				captionElement.appendChild(iconElement);
 			}
 
 			const domainElement = this.#document.createElement('b');
@@ -1192,7 +1194,7 @@ export default class MessageParser {
 		iconElement.width = 16;
 		iconElement.height = 16;
 		iconElement.className = 'c-link-icon';
-		aElement.appendChild(iconElement);
+		captionTitleElement.appendChild(iconElement);
 
 		this.#videoNum++;
 	}
@@ -1259,7 +1261,7 @@ export default class MessageParser {
 			iconElement.width = 16;
 			iconElement.height = 16;
 			iconElement.className = 'c-link-icon';
-			aElement.appendChild(iconElement);
+			captionTitleElement.appendChild(iconElement);
 
 			this.#tweetExist = true;
 		}
@@ -1619,14 +1621,14 @@ export default class MessageParser {
 		} else if (/^\/[a-zA-Z0-9-_#/.]+$/.test(urlText)) {
 			// TODO: これは将来的に廃止したい
 			if (urlText.endsWith('.pdf')) {
-				return `<a href="https://w0s.jp${urlText}" type="application/pdf">${linkText}<img src="/image/icon/pdf.png" alt="(PDF)"  width="16" height="16" class="c-link-icon"></a>`;
+				return `<a href="https://w0s.jp${urlText}" type="application/pdf">${linkText}</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>`;
 			}
 
 			return `<a href="https://w0s.jp${urlText}">${linkText}</a>`;
 		} else if (/^asin:[0-9A-Z]{10}$/.test(urlText)) {
 			return `<a href="https://www.amazon.co.jp/dp/${urlText.substring(
 				5
-			)}/ref=nosim?tag=w0s.jp-22">${linkText}<img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/></a>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
+			)}/ref=nosim?tag=w0s.jp-22">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
 		} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(urlText)) {
 			if (linkText.startsWith('https://') || linkText.startsWith('http://')) {
 				/* URL表記の場合はドメインを記載しない */
@@ -1638,37 +1640,36 @@ export default class MessageParser {
 
 			let typeAttr = '';
 			let typeIcon = '';
-			let externalIcon = '';
-			let domain = '';
+			let hostIcon = '';
 
 			/* PDFアイコン */
 			if (url.pathname.endsWith('.pdf')) {
 				typeAttr = ' type="application/pdf"';
-				typeIcon = '<img src="/image/icon/pdf.png" alt="(PDF)" class="c-link-icon"/>';
+				typeIcon = '<img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>';
 			}
 
 			/* サイトアイコン */
 			switch (host) {
 				case 'twitter.com': {
-					externalIcon = '<img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"/>';
+					hostIcon = '<img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				case 'ja.wikipedia.org': {
-					externalIcon = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon"/>';
+					hostIcon = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				case 'www.youtube.com': {
-					externalIcon = '<img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"/>';
+					hostIcon = '<img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 			}
 
-			/* サイトアイコンがない場合はドメイン表記 */
-			if (externalIcon === '') {
-				domain = `<b class="c-domain">(${host})</b>`;
+			/* サイトアイコンがない場合はホスト名をテキストで表記 */
+			if (hostIcon === '') {
+				hostIcon = `<b class="c-domain">(${host})</b>`;
 			}
 
-			return `<a href="${urlText}"${typeAttr}>${linkText}${typeIcon}${externalIcon}</a>${domain}`;
+			return `<a href="${urlText}"${typeAttr}>${linkText}</a>${typeIcon}${hostIcon}`;
 		}
 
 		throw new Error(`不正なリンクURL: ${urlText}`);
