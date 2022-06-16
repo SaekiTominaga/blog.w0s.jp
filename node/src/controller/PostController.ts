@@ -279,7 +279,7 @@ export default class PostController extends Controller implements ControllerInte
 				entriesView.add({
 					id: entry.id,
 					title: entry.title,
-					message: await new MessageParser(this.#configCommon, dbh, entry.id).toHtml(entry.message),
+					message: await new MessageParser(this.#configCommon, dbh, entry.id).toXml(entry.message),
 					updated_at: dayjs(entry.updated_at ?? entry.created_at),
 					update: Boolean(entry.updated_at),
 				});

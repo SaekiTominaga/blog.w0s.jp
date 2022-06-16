@@ -156,7 +156,7 @@ export default class MessageParser {
 	async toXml(message: string): Promise<string> {
 		await this.#convert(message);
 
-		const xml = serialize(this.#rootElement, { requireWellFormed: true });
+		const xml = serialize(this.#rootElement);
 		return xml.substring(39 + this.#ROOT_ELEMENT_NAME.length, xml.length - 3 - this.#ROOT_ELEMENT_NAME.length); // 外枠の <x xmlns="http://www.w3.org/1999/xhtml"></x> を削除
 	}
 
