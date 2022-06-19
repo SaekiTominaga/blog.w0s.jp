@@ -649,7 +649,7 @@ export default class MessageParser {
 				tocElement.appendChild(liElement);
 
 				const aElement = this.#document.createElement('a');
-				aElement.href = `#${encodeURI(id)}`;
+				aElement.href = `#${encodeURIComponent(id)}`;
 				aElement.textContent = headingText;
 				liElement.appendChild(aElement);
 			}
