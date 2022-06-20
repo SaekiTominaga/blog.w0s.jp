@@ -223,6 +223,7 @@
 	box-shadow: var(--_entry-box-shadow);
 	color: var(--_entry-color);
 	background: var(--_entry-bg-color);
+	font-family: arial, sans-serif;
 
 	@media print {
 		--_entry-padding-block: 0;
