@@ -844,8 +844,12 @@ export default class MessageParser {
 		captionElement.className = 'c-caption -meta';
 		this.#quoteFigureElement.appendChild(captionElement);
 
+		const captionTitleElement = this.#document.createElement('span');
+		captionTitleElement.className = 'c-caption__title';
+		captionElement.appendChild(captionTitleElement);
+
 		if (this.#quoteUrl === undefined) {
-			captionElement.textContent = this.#quoteTitle;
+			captionTitleElement.textContent = this.#quoteTitle;
 		} else {
 			const aElement = this.#document.createElement('a');
 			aElement.href = this.#quoteUrl.toString();
@@ -853,7 +857,7 @@ export default class MessageParser {
 				aElement.setAttribute('hreflang', this.#quoteLanguage);
 			}
 			aElement.textContent = this.#quoteTitle;
-			captionElement.appendChild(aElement);
+			captionTitleElement.appendChild(aElement);
 
 			if (this.#quoteUrl.pathname.endsWith('.pdf')) {
 				aElement.type = 'application/pdf';
@@ -864,13 +868,13 @@ export default class MessageParser {
 				iconElement.width = 16;
 				iconElement.height = 16;
 				iconElement.className = 'c-link-icon';
-				captionElement.appendChild(iconElement);
+				captionTitleElement.appendChild(iconElement);
 			}
 
 			const domainElement = this.#document.createElement('b');
 			domainElement.className = 'c-domain';
 			domainElement.textContent = `(${this.#quoteUrl.hostname})`;
-			captionElement.appendChild(domainElement);
+			captionTitleElement.appendChild(domainElement);
 		}
 	}
 
