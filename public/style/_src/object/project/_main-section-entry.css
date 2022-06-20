@@ -41,20 +41,25 @@
 
 .p-entry-section2__hdg {
 	& > h3 {
+		--_stick-width: 0.25em;
+		--_stick-height: 80%;
+
+		padding-inline-start: calc(var(--_stick-width) + 0.5em);
+		contain: content;
+		position: relative; /* for Safari */
 		font-size: calc(100% * var(--font-ratio-3));
 		line-height: var(--line-height-narrow);
 
 		&::before {
-			--_width: 0.25em;
-
-			margin-inline-end: 0.5em;
-			border-radius: var(--_width);
+			border-radius: var(--border-radius-full);
 			content: "";
 			display: inline-block;
-			width: var(--_width);
-			height: calc(1em * var(--line-height-narrow));
+			width: var(--_stick-width);
+			height: var(--_stick-height);
+			position: absolute;
+			inset-block-start: calc((100% - var(--_stick-height)) / 2);
+			inset-inline-start: 0;
 			background: var(--color-border-dark);
-			vertical-align: text-top;
 		}
 	}
 }
