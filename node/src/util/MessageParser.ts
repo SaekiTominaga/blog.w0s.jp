@@ -5,6 +5,7 @@ import GithubSlugger from 'github-slugger';
 import hljs from 'highlight.js/lib/core';
 import hljsCss from 'highlight.js/lib/languages/css';
 import hljsJavaScript from 'highlight.js/lib/languages/javascript';
+import hljsJson from 'highlight.js/lib/languages/json';
 import hljsTypeScript from 'highlight.js/lib/languages/typescript';
 import hljsXml from 'highlight.js/lib/languages/xml';
 import Log4js from 'log4js';
@@ -1460,6 +1461,11 @@ export default class MessageParser {
 			case 'typescript': {
 				registLanguageName = 'typescript';
 				registLanguage = hljsTypeScript;
+				break;
+			}
+			case 'json': {
+				registLanguageName = 'json';
+				registLanguage = hljsJson;
 				break;
 			}
 			default: {
