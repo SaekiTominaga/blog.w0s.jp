@@ -1,24 +1,21 @@
 {
 	"map": {
 		"inline": false,
-		"annotation": false,
+		"annotation": false
 	},
 	"plugins": {
-		"postcss-import": {
-		},
+		"postcss-import": {},
 		"postcss-custom-media": {
-				"importFrom": "public/style/_src/foundation/_@custom-media.css"
+			"importFrom": "public/style/_src/foundation/_@custom-media.css"
 		},
-		"postcss-nesting": {
-		},
+		"postcss-nesting": {},
 		"cssnano": {
-			preset: [
-				'default',
+			"preset": [
+				"lite",
 				{
-					cssDeclarationSorter: false,
-					minifySelectors: false
-				},
-			],
+					"normalizeWhitespace": false
+				}
+			]
 		}
 	}
 }
