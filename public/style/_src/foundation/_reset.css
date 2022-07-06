@@ -76,10 +76,6 @@ optgroup {
 	font-style: inherit;
 }
 
-textarea {
-	overflow: auto; /* for IE */
-}
-
 button {
 	&::-moz-focus-inner {
 		border: none; /* for Firefox */
