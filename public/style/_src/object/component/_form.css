@@ -163,6 +163,7 @@
 	font-weight: var(--font-weight-bold);
 	font-size: var(--_font-size);
 	line-height: var(--line-height-nowrap);
+	font-family: var(--font-yu-gothic); /* Chrome で下側の空きが出てしまう対策 */
 	white-space: nowrap;
 
 	&:enabled {
