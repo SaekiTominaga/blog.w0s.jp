@@ -64,10 +64,7 @@ mark {
 	color: inherit;
 }
 
-input,
-select,
-button,
-textarea {
+:where(input, select, button, textarea, ::file-selector-button) {
 	font: inherit;
 }
 
