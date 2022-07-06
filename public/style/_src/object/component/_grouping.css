@@ -11,8 +11,8 @@
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
-	contain: layout;
 	display: flow-root; /* for Safari */
+	contain: layout;
 	font-size: calc(100% * var(--_title-font-expand-ratio));
 	line-height: var(--line-height-narrow);
 
@@ -41,11 +41,11 @@
 	--_image-min-width-px: 120px;
 	--_image-min-width-vw: 30vw;
 
-	margin-block-end: var(--_margin-block-end);
-	margin-inline: var(--_margin-inline-start) var(--_margin-inline-end);
-	float: var(--_float);
 	display: flex;
 	justify-content: center;
+	float: var(--_float);
+	margin-inline: var(--_margin-inline-start) var(--_margin-inline-end);
+	margin-block-end: var(--_margin-block-end);
 	width: calc(var(--_image-width) + var(--_image-border-width) * 2);
 	height: calc(var(--_image-width) / var(--_image-aspect-ratio) + var(--_image-border-width) * 2);
 	pointer-events: none;
@@ -60,13 +60,13 @@
 }
 
 .c-entry-link__image {
-	border: var(--_image-border-width) solid;
 	display: block;
+	border: var(--_image-border-width) solid;
+	background: var(--color-white);
 	max-width: var(--_image-width);
 	max-height: calc(var(--_image-width) / var(--_image-aspect-ratio));
-	color: var(--color-black);
-	background: var(--color-white);
 	pointer-events: auto;
+	color: var(--color-black);
 
 	@nest :any-link:hover & {
 		box-shadow: 0 0 5px var(--color-border-dark);
@@ -81,16 +81,6 @@
 .c-entry-link__title {
 	margin-inline-start: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
 
-	&::before {
-		margin-inline-end: var(--_bullet-gap);
-		content: "";
-		display: inline-block;
-		clip-path: var(--shape-link-triangle);
-		width: var(--_bullet-width);
-		height: var(--_bullet-height);
-		background: var(--_bullet-color);
-	}
-
 	@nest :any-link:hover & {
 		--_bullet-color: var(--link-color-hover);
 	}
@@ -99,20 +89,30 @@
 		outline: var(--outline-width) solid var(--outline-color);
 		outline-offset: var(--outline-offset-linkonly);
 	}
+
+	&::before {
+		display: inline-block;
+		clip-path: var(--shape-link-triangle);
+		margin-inline-end: var(--_bullet-gap);
+		background: var(--_bullet-color);
+		width: var(--_bullet-width);
+		height: var(--_bullet-height);
+		content: "";
+	}
 }
 
 .c-entry-link__date {
 	margin-block-start: 0.5em;
-	font-size: calc(100% / var(--_title-font-expand-ratio));
 	overflow: hidden;
+	font-size: calc(100% / var(--_title-font-expand-ratio));
 }
 
 /* ===== キャプション ===== */
 .c-caption {
-	width: fit-content;
 	display: flex;
-	font-size: calc(100% / var(--font-ratio-1));
+	width: fit-content;
 	font-weight: var(--font-weight-bold);
+	font-size: calc(100% / var(--font-ratio-1));
 	line-height: var(--line-height-narrow);
 
 	@nest figure > &:first-child {

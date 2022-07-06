@@ -19,9 +19,9 @@
 
 .p-entry-section1__hdg {
 	& > h2 {
-		padding-block: 0.25em;
 		border-block-start: 1px solid transparent;
 		border-block-end: 1px solid var(--color-border-dark);
+		padding-block: 0.25em;
 		font-size: calc(100% * var(--font-ratio-5));
 		line-height: var(--line-height-narrow);
 	}
@@ -44,22 +44,22 @@
 		--_stick-width: 0.25em;
 		--_stick-height: 80%;
 
-		padding-inline-start: calc(var(--_stick-width) + 0.5em);
-		contain: content;
 		position: relative; /* for Safari */
+		contain: content;
+		padding-inline-start: calc(var(--_stick-width) + 0.5em);
 		font-size: calc(100% * var(--font-ratio-3));
 		line-height: var(--line-height-narrow);
 
 		&::before {
-			border-radius: var(--border-radius-full);
-			content: "";
 			display: inline-block;
-			width: var(--_stick-width);
-			height: var(--_stick-height);
 			position: absolute;
 			inset-block-start: calc((100% - var(--_stick-height)) / 2);
 			inset-inline-start: 0;
+			border-radius: var(--border-radius-full);
 			background: var(--color-border-dark);
+			width: var(--_stick-width);
+			height: var(--_stick-height);
+			content: "";
 		}
 	}
 }

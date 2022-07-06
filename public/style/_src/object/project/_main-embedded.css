@@ -6,8 +6,8 @@
 .p-embed {
 	--_border-width: 0px;
 
-	contain: layout;
 	position: relative; /* for Safari */
+	contain: layout;
 
 	@nest .p-entry & {
 		--_border-width: 1px;
@@ -21,15 +21,15 @@
 		outline-offset: -1px;
 
 		&::before {
-			padding: var(--_expand-icon-padding);
-			box-sizing: border-box;
-			position: absolute;
-			inset: 1px;
-			content: "";
 			display: block;
+			position: absolute;
+			box-sizing: border-box;
+			inset: 1px;
+			background: rgb(0 0 0 / 70%) url("/image/entry/media-expansion.svg") center/contain no-repeat content-box border-box;
+			padding: var(--_expand-icon-padding);
 			width: 24px;
 			height: 24px;
-			background: rgb(0 0 0 / 70%) url("/image/entry/media-expansion.svg") center/contain no-repeat content-box border-box;
+			content: "";
 		}
 
 		&:hover {
@@ -47,11 +47,11 @@
 
 .p-embed__image,
 .p-embed__video {
-	border: var(--_border-width) solid var(--color-black);
 	display: inline-block;
+	vertical-align: top;
+	border: var(--_border-width) solid var(--color-black);
 	max-width: calc(100% - var(--_border-width) * 2);
 	height: auto;
-	vertical-align: top;
 }
 
 .p-embed__image {
@@ -64,16 +64,16 @@
 }
 
 .p-embed__frame {
-	border: var(--_border-width) solid var(--color-black);
-	box-sizing: border-box;
 	display: block;
-	width: 100%;
+	box-sizing: border-box;
+	border: var(--_border-width) solid var(--color-black);
 	aspect-ratio: var(--aspect-ratio, auto);
+	width: 100%;
 }
 
 .p-embed__tweet {
-	padding: 20px;
 	border: 1px solid var(--color-border-light);
 	border-radius: var(--border-radius-normal);
 	background: var(--color-white);
+	padding: 20px;
 }

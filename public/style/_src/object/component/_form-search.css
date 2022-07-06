@@ -7,13 +7,13 @@
 	--_border-color: var(--color-lightgray);
 	--_height: 2em;
 
-	border: 1px solid var(--_border-color);
-	border-radius: var(--border-radius-small);
 	display: flex;
 	align-items: center;
-	color: var(--color-darkgray);
-	background: var(--color-white);
 	outline-offset: -1px;
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-small);
+	background: var(--color-white);
+	color: var(--color-darkgray);
 
 	&:focus-within {
 		outline: var(--outline-width-bold) solid var(--outline-color);
@@ -34,8 +34,8 @@
 
 	& > input {
 		all: initial;
-		padding: 0.25em;
 		box-sizing: border-box;
+		padding: 0.25em;
 		width: 100%;
 		height: var(--_height);
 		font: inherit;
@@ -48,10 +48,10 @@
 		--_color: hsl(220 70% 45%);
 
 		all: initial;
+		display: flex;
+		box-sizing: border-box;
 		margin: var(--outline-width-bold);
 		padding: 0.25em;
-		box-sizing: border-box;
-		display: flex;
 		width: var(--_height);
 		height: var(--_height);
 		color: var(--_color);

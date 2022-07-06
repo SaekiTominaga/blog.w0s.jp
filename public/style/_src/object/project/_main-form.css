@@ -8,15 +8,15 @@
 	--_gap-inline: 1em;
 
 	display: grid;
-	grid-template-areas: "legend contents";
 	grid-template-columns: auto 1fr;
+	grid-template-areas: "legend contents";
 	gap: var(--_gap-block) var(--_gap-inline);
 }
 
 .p-form-grid__group {
 	display: grid;
-	grid-column: legend / contents;
 	grid-template-columns: subgrid;
+	grid-column: legend / contents;
 
 	@supports not (grid-template-columns: subgrid) {
 		display: contents; /* for Chrome, Safari, Edge */
@@ -24,8 +24,8 @@
 
 	/* 複雑なフォームは区切り線を付ける */
 	@nest .p-form-grid.-complex & {
-		padding-block-end: var(--_gap-block);
 		border-block-end: 1px solid var(--color-border-light);
+		padding-block-end: var(--_gap-block);
 	}
 
 	& > fieldset {
@@ -34,8 +34,8 @@
 }
 
 .p-form-grid__legend {
-	margin-block-start: calc(0.5em + 1px);
 	grid-column: legend;
+	margin-block-start: calc(0.5em + 1px);
 	font-weight: var(--font-weight-bold);
 }
 
@@ -45,10 +45,10 @@
 
 @media (max-width: 36em) {
 	.p-form-grid {
+		grid-template-columns: auto;
 		grid-template-areas:
 			"legend"
 			"contents";
-		grid-template-columns: auto;
 	}
 
 	.p-form-grid__legend {
@@ -62,20 +62,20 @@
 
 /* ===== エラー文言 ===== */
 .p-form-errors {
-	padding: 1em;
+	outline: none;
 	border: 1px solid var(--color-red);
 	border-radius: var(--border-radius-large);
 	background: var(--color-verylightred);
-	outline: none;
+	padding: 1em;
 }
 
 /* ===== 送信結果 ===== */
 .p-form-results {
-	padding: 1em;
 	border: 1px solid;
 	border-radius: var(--border-radius-large);
-	color: var(--color-black);
 	background: var(--color-white);
+	padding: 1em;
+	color: var(--color-black);
 }
 
 .p-form-results__item {
@@ -113,17 +113,17 @@
 	}
 
 	& img {
-		object-fit: contain;
-		object-position: 0 0;
 		width: 100%;
 		height: 100%;
+		object-fit: contain;
+		object-position: 0 0;
 	}
 
 	/* stylelint-disable selector-class-pattern */
 	& .error {
-		padding: 10px;
-		border: 1px solid var(--color-border-dark);
 		display: block;
+		border: 1px solid var(--color-border-dark);
+		padding: 10px;
 		font-weight: var(--font-weight-normal);
 	}
 

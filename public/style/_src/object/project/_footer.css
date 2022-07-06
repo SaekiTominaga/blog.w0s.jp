@@ -10,10 +10,6 @@
 	gap: 0.5em 0;
 	font-size: calc(100% * var(--font-ratio-1));
 
-	& :any-link {
-		outline-offset: var(--outline-offset-linkonly);
-	}
-
 	@media (min-width: 30em) {
 		flex-direction: row;
 		justify-content: center;
@@ -23,14 +19,18 @@
 			align-items: center;
 
 			&:not(:last-child)::after {
+				transform: rotate(22.5deg);
 				margin-inline: 2em;
-				content: "";
+				background-color: var(--page-color);
 				width: 1px;
 				height: 0.8em;
-				background-color: var(--page-color);
-				transform: rotate(22.5deg);
+				content: "";
 			}
 		}
+	}
+
+	& :any-link {
+		outline-offset: var(--outline-offset-linkonly);
 	}
 }
 

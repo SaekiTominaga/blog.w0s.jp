@@ -60,8 +60,8 @@ dfn {
 }
 
 mark {
-	color: inherit;
 	background: transparent;
+	color: inherit;
 }
 
 input,
@@ -85,15 +85,15 @@ textarea {
 
 button {
 	&::-moz-focus-inner {
-		padding: 0; /* for Firefox */
 		border: none; /* for Firefox */
+		padding: 0; /* for Firefox */
 	}
 }
 
 fieldset {
 	margin: 0;
-	padding: 0;
 	border: none;
+	padding: 0;
 	min-width: 0;
 }
 

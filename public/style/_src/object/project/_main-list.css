@@ -45,19 +45,19 @@
 .p-notes {
 	color: var(--color-darkgray);
 
+	@nest .p-entry & {
+		margin-inline: 1em;
+		color: var(--color-note);
+	}
+
 	& > li {
 		margin-inline-start: 1.25em;
-		list-style-type: "※ ";
 		font-size: calc(100% / var(--font-ratio-1));
+		list-style-type: "※ ";
 
 		& + li {
 			margin-block-start: 0.75em;
 		}
-	}
-
-	@nest .p-entry & {
-		margin-inline: 1em;
-		color: var(--color-note);
 	}
 }
 
@@ -83,13 +83,13 @@
 			font-size: calc(100% * var(--font-ratio-2));
 
 			&::before {
-				margin-inline-end: var(--_icon-gap);
-				content: "";
 				display: inline-block;
 				clip-path: var(--_icon-clip-path);
+				margin-inline-end: var(--_icon-gap);
+				background: var(--_icon-color);
 				width: var(--_icon-width);
 				height: var(--_icon-height);
-				background: var(--_icon-color);
+				content: "";
 			}
 		}
 
@@ -112,10 +112,10 @@
 	--_icon-color: var(--color-gray); /* アイコンの色 */
 	--_icon-gap: 0.5em; /* アイコンと後続テキストの間隔 */
 
-	padding: 1.25em min(1.25vw, 1.25em);
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal);
 	background: var(--color-bg-superlight);
+	padding: 1.25em min(1.25vw, 1.25em);
 	line-height: var(--line-height-narrow);
 
 	@nest .p-entry & {
@@ -141,13 +141,13 @@
 			outline-offset: var(--outline-offset-linkonly);
 
 			&::before {
-				margin-inline-end: var(--_icon-gap);
-				content: "";
 				display: inline-block;
 				clip-path: var(--shape-pagelink-triangle);
+				margin-inline-end: var(--_icon-gap);
+				background: var(--_icon-color);
 				width: var(--_icon-width);
 				height: var(--_icon-height);
-				background: var(--_icon-color);
+				content: "";
 			}
 
 			&:hover {
@@ -159,13 +159,13 @@
 
 /* ===== 脚注リスト ===== */
 .p-footnotes {
-	padding: 1em;
+	display: table;
+	box-sizing: border-box;
 	border: 1px solid var(--color-bg-light);
 	border-radius: var(--border-radius-large);
-	box-sizing: border-box;
-	display: table;
-	width: 100%;
 	background: var(--color-bg-light);
+	padding: 1em;
+	width: 100%;
 	font-size: calc(100% / var(--font-ratio-1));
 
 	@nest .p-entry & {
@@ -200,8 +200,8 @@
 	white-space: nowrap;
 
 	& > a {
-		padding: 0.25em;
 		display: inline-block;
+		padding: 0.25em;
 		text-decoration-skip-ink: none;
 	}
 }

@@ -7,10 +7,10 @@
 	line-height: var(--line-height-narrow);
 
 	& > h1 {
-		padding: 0.75em 1.5%;
 		border: 1px solid;
 		border-radius: var(--border-radius-small);
 		background: linear-gradient(var(--color-white), var(--color-bg-dark));
+		padding: 0.75em 1.5%;
 		font-size: clamp(calc(100% * var(--font-ratio-1)), 7vw, calc(100% * var(--font-ratio-5)));
 		text-shadow: 1px 1px 1px var(--color-lightgray);
 	}
@@ -28,14 +28,14 @@
 .p-page-nav__link {
 	--_bg-color: var(--color-white);
 
-	padding: 0.75em 1em;
-	border: 1px solid var(--color-border-light);
-	border-radius: var(--border-radius-normal);
 	display: inline-block;
-	background: var(--_bg-color);
-	text-decoration: none;
 	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
+	border: 1px solid var(--color-border-light);
+	border-radius: var(--border-radius-normal);
+	background: var(--_bg-color);
+	padding: 0.75em 1em;
+	text-decoration: none;
 
 	&:hover {
 		--_bg-color: var(--color-bg-superlight);
@@ -45,10 +45,10 @@
 	&.-prev::before,
 	&.-next::after {
 		display: inline-block;
-		font: var(--font-weight-bold) 50% YuGothic, sans-serif;
-		letter-spacing: -0.1em;
 		vertical-align: 0.3em;
 		transform: scaleY(2.2);
+		font: var(--font-weight-bold) 50% YuGothic, sans-serif;
+		letter-spacing: -0.1em;
 	}
 
 	&.-start::before {

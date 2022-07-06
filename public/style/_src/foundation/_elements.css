@@ -2,8 +2,8 @@
 	--_color: var(--page-color);
 	--_bg-color: var(--page-bg-color);
 
-	color: var(--_color);
 	background: var(--_bg-color);
+	color: var(--_color);
 	font: var(--font-weight-normal) var(--page-font-size) / var(--line-height-wide) sans-serif;
 
 	@media (prefers-reduced-motion: no-preference) {
@@ -25,8 +25,8 @@ w0s-tooltip:focus {
 }
 
 :any-link {
-	text-decoration-thickness: from-font;
 	outline-offset: var(--outline-offset);
+	text-decoration-thickness: from-font;
 }
 
 :link {
@@ -46,8 +46,8 @@ w0s-tooltip:focus {
 }
 
 ::placeholder {
-	color: var(--color-black);
 	opacity: 0.54;
+	color: var(--color-black);
 }
 
 h1,
@@ -64,9 +64,9 @@ th {
 }
 
 pre {
-	tab-size: 2;
 	font: inherit;
 	white-space: pre-wrap;
+	tab-size: 2;
 }
 
 code {

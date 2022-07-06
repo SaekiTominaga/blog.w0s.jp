@@ -20,13 +20,13 @@
 		--_padding: 0.05em;
 		--_text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
 
-		margin: calc(0px - var(--_padding));
-		padding: var(--_padding);
 		display: inline-block;
-		border-radius: var(--border-radius-small); /* outline を柔らかくする */
-		text-shadow: var(--_text-shadow);
+		margin: calc(0px - var(--_padding));
 		outline-width: var(--outline-width-bold);
 		outline-offset: 0;
+		border-radius: var(--border-radius-small); /* outline を柔らかくする */
+		padding: var(--_padding);
+		text-shadow: var(--_text-shadow);
 
 		&:any-link {
 			color: inherit;

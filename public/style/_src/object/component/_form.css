@@ -8,16 +8,16 @@
 	--_color: var(--color-black);
 	--_bg-color: var(--color-white);
 
-	padding: var(--form-control-padding-block);
+	box-sizing: border-box;
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	box-sizing: border-box;
+	background: var(--_bg-color);
+	padding: var(--form-control-padding-block);
 	width: var(--width, auto);
 	max-width: 100%;
 	color: var(--_color);
-	background: var(--_bg-color);
-	outline-width: var(--outline-width-bold);
-	outline-offset: -1px;
 
 	/* 全幅 */
 	&.-full {
@@ -51,13 +51,13 @@
 	--_color: var(--color-black);
 	--_bg-color: transparent;
 
-	padding: var(--form-control-padding-block) 0;
-	border: 1px solid var(--_border-color);
-	border-radius: var(--border-radius-normal);
-	color: var(--_color);
-	background: var(--_bg-color);
 	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	background: var(--_bg-color);
+	padding: var(--form-control-padding-block) 0;
+	color: var(--_color);
 
 	&:enabled {
 		&:hover {
@@ -77,13 +77,13 @@
 	--_color: var(--color-black);
 	--_bg-color: var(--color-white);
 
-	padding: calc(var(--form-control-padding-block) * 1.25) var(--form-control-padding-block);
-	border: 1px solid var(--_border-color);
-	border-radius: var(--border-radius-normal);
-	color: var(--_color);
-	background: var(--_bg-color);
 	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	background: var(--_bg-color);
+	padding: calc(var(--form-control-padding-block) * 1.25) var(--form-control-padding-block);
+	color: var(--_color);
 
 	&:enabled {
 		&:hover {
@@ -103,16 +103,16 @@
 	--_color: var(--color-black);
 	--_bg-color: var(--color-white);
 
-	padding: var(--form-control-padding-block);
+	box-sizing: border-box;
+	outline-width: var(--outline-width-bold);
+	outline-offset: -1px;
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	box-sizing: border-box;
+	background: var(--_bg-color);
+	padding: var(--form-control-padding-block);
 	width: 100%;
 	min-height: var(--height, auto);
 	color: var(--_color);
-	background: var(--_bg-color);
-	outline-width: var(--outline-width-bold);
-	outline-offset: -1px;
 
 	&:enabled:read-write {
 		&:hover {
@@ -148,24 +148,22 @@
 	--_ripple-opacity: 0.25;
 	--_ripple-transition-duration: 0.5s;
 
-	padding: var(--_padding-block) var(--_padding-inline);
-	border: 1px solid var(--_border-color);
-	border-radius: var(--border-radius-normal);
 	display: inline-block;
-	color: var(--_color);
-	background: var(--_bg-color);
-	font-size: var(--_font-size);
-	font-weight: var(--font-weight-bold);
-	line-height: var(--line-height-nowrap);
+	position: relative; /* ripple effect・for Safari */
 	vertical-align: middle;
-	white-space: nowrap;
+	contain: layout; /* ripple effect */
 	outline-width: var(--outline-width-bold);
 	outline-offset: 1px;
-
-	/* ripple effect */
-	contain: layout;
-	position: relative; /* for Safari */
-	overflow: hidden;
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	background: var(--_bg-color);
+	padding: var(--_padding-block) var(--_padding-inline);
+	overflow: hidden; /* ripple effect */
+	color: var(--_color);
+	font-weight: var(--font-weight-bold);
+	font-size: var(--_font-size);
+	line-height: var(--line-height-nowrap);
+	white-space: nowrap;
 
 	&:enabled {
 		&:hover {
@@ -174,21 +172,21 @@
 
 		/* ripple effect */
 		&::before {
-			content: "";
-			width: 100%;
-			height: 100%;
 			position: absolute;
+			transform: scale(4);
+			opacity: 0;
+			transition: var(--_ripple-transition-duration);
 			inset: 0;
 			background-image: radial-gradient(circle, var(--_ripple-color) 25%, transparent 0);
-			opacity: 0;
-			transform: scale(4);
-			transition: var(--_ripple-transition-duration);
+			width: 100%;
+			height: 100%;
+			content: "";
 		}
 
 		/* ripple effect */
 		&:active::before {
-			opacity: var(--_ripple-opacity);
 			transform: scale(0);
+			opacity: var(--_ripple-opacity);
 			transition: initial;
 		}
 	}
@@ -233,10 +231,10 @@
 		--_bg-color: transparent;
 
 		margin-block: calc(var(--form-control-padding-block) / 2);
-		padding: calc(var(--form-control-padding-block) / 2) 0.25em;
 		border: 1px solid var(--_border-color);
 		border-radius: var(--border-radius-normal);
 		background: var(--_bg-color);
+		padding: calc(var(--form-control-padding-block) / 2) 0.25em;
 
 		&:hover {
 			--_border-color: var(--color-superlightblue);
@@ -251,9 +249,9 @@
 		}
 
 		& input {
+			outline: none;
 			width: 1em;
 			height: 1em;
-			outline: none;
 		}
 
 		&:has(input.-invalid) {
@@ -276,12 +274,12 @@
 	--color: var(--color-white);
 	--bg-color: var(--color-gray);
 
-	padding: 0.375em 0.5em;
+	display: inline-block;
 	border: 1px solid var(--bg-color);
 	border-radius: var(--border-radius-large);
-	display: inline-block;
-	color: var(--color);
 	background: var(--bg-color);
+	padding: 0.375em 0.5em;
+	color: var(--color);
 	font-size: calc(100% / var(--font-ratio-3));
 	line-height: var(--line-height-nowrap);
 	white-space: nowrap;

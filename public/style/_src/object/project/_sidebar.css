@@ -6,9 +6,9 @@
 .p-sidebar-profile {
 	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
 
-	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal);
+	padding: 0 10px 10px;
 
 	&:first-child {
 		margin-block-start: calc(0px - var(--_heading-offset));
@@ -16,17 +16,17 @@
 }
 
 .p-sidebar-profile__hdg {
-	padding: 0 0.5em;
 	display: inline-block;
 	position: relative;
 	inset-block-start: var(--_heading-offset);
 	background: var(--page-bg-color);
+	padding: 0 0.5em;
 }
 
 .p-sidebar-profile__info {
-	margin-block-start: calc(10px + var(--_heading-offset));
-	contain: layout;
 	display: flow-root; /* for Safari */
+	contain: layout;
+	margin-block-start: calc(10px + var(--_heading-offset));
 }
 
 .p-sidebar-profile__address {
@@ -39,8 +39,8 @@
 
 /* アバター */
 .p-sidebar-profile__avatar {
-	margin-inline-end: 10px;
 	float: left;
+	margin-inline-end: 10px;
 
 	@nest :focus & {
 		outline: var(--outline-width-bold) solid var(--outline-color);
@@ -54,17 +54,17 @@
 /* BIO */
 .p-sidebar-profile__bio {
 	margin-block-start: 0.5em;
+	overflow: hidden;
 	font-size: calc(100% / var(--font-ratio-1));
 	text-align: justify;
-	overflow: hidden;
 }
 
 /* バナー */
 .p-sidebar-profile__banners {
-	margin-block-start: 1em;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: 5px;
+	margin-block-start: 1em;
 	font-size: calc(100% / var(--font-ratio-1));
 }
 
@@ -80,16 +80,16 @@
 	--_bg-color: var(--color-bg-superlight);
 	--_font-weight: inherit;
 
-	padding: var(--_padding-block) 0.2em;
+	display: inline-block; /* JS 無効環境向け */
+	flex: auto;
 	border: 1px solid var(--_border-color);
 	border-radius: var(--_border-radius-top) var(--_border-radius-top) 0 0;
-	flex: auto;
-	color: var(--_color);
 	background: var(--_bg-color);
-	font-size: calc(100% / var(--font-ratio-2));
+	padding: var(--_padding-block) 0.2em;
+	color: var(--_color);
 	font-weight: var(--_font-weight);
+	font-size: calc(100% / var(--font-ratio-2));
 	text-align: center;
-	display: inline-block; /* JS 無効環境向け */
 	white-space: nowrap; /* JS 無効環境向け */
 
 	&[role="tab"] {
@@ -136,12 +136,12 @@
 }
 
 .p-sidebar-newly-entry__hdg {
-	margin-inline: 10px;
-	padding: 0 0.5em;
 	display: inline-block;
 	position: relative;
+	margin-inline: 10px;
 	inset-block-start: var(--_heading-offset);
 	background: var(--page-bg-color);
+	padding: 0 0.5em;
 }
 
 .p-sidebar-newly-entry__link {
@@ -156,16 +156,16 @@
 	--_bg-color: var(--color-verylightblue);
 
 	& a {
-		padding: var(--_padding-block) var(--_padding-inline);
 		display: flex;
+		position: relative; /* for Safari */
 		align-items: center;
 		contain: content;
-		position: relative; /* for Safari */
-		min-height: var(--_min-height);
-		font-size: calc(100% / var(--font-ratio-1));
-		background: var(--_bg-color);
 		outline-width: var(--outline-width-bold);
 		outline-offset: -1px;
+		background: var(--_bg-color);
+		padding: var(--_padding-block) var(--_padding-inline);
+		min-height: var(--_min-height);
+		font-size: calc(100% / var(--font-ratio-1));
 
 		&:any-link {
 			--_bg-color: var(--color-white);
@@ -178,14 +178,14 @@
 			text-decoration: none;
 
 			&::after {
-				content: "";
-				clip-path: var(--shape-link-arrow);
-				width: var(--_icon-width);
-				height: var(--_icon-height);
-				background: var(--_icon-color);
 				position: absolute;
+				clip-path: var(--shape-link-arrow);
 				inset-block-start: calc(50% - var(--_icon-height) / 2);
 				inset-inline-end: var(--_padding-inline);
+				background: var(--_icon-color);
+				width: var(--_icon-width);
+				height: var(--_icon-height);
+				content: "";
 			}
 
 			&:hover {
@@ -233,33 +233,33 @@
 .p-sidebar-amazon {
 	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
 
-	padding: 0 10px 10px;
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal);
+	padding: 0 10px 10px;
 }
 
 .p-sidebar-amazon__hdg {
-	margin-inline: 4px;
-	padding: 0 0.5em;
 	display: inline-block;
 	position: relative;
+	margin-inline: 4px;
 	inset-block-start: var(--_heading-offset);
 	background: var(--page-bg-color);
+	padding: 0 0.5em;
 }
 
 .p-sidebar-amazon__link {
-	margin-block-start: calc(10px + var(--_heading-offset));
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(90px, 100%), 1fr));
 	gap: 10px;
+	margin-block-start: calc(10px + var(--_heading-offset));
 }
 
 /* ===== Amazon 商品リンク ===== */
 .p-sidebar-amazon-link {
 	display: block;
-	text-decoration: none;
 	outline-width: var(--outline-width-bold);
 	outline-offset: var(--outline-offset-linkonly);
+	text-decoration: none;
 }
 
 /* 画像エリア */
@@ -269,9 +269,9 @@
 /* 商品画像 */
 .p-sidebar-amazon-link__image {
 	display: block;
+	transition: box-shadow var(--link-hover-transition-duration);
 	width: 100%;
 	height: auto;
-	transition: box-shadow var(--link-hover-transition-duration);
 
 	@nest :any-link:hover & {
 		box-shadow: 0 0 3px 3px var(--color-amazon-verydark);
@@ -283,13 +283,13 @@
 	--_color: var(--color-darkgray);
 	--_bg-color: var(--color-amazon);
 
-	margin-block-start: 1px;
-	padding: 5px;
-	border-radius: var(--border-radius-large);
-	color: var(--_color);
-	background: var(--_bg-color);
-	overflow-wrap: anywhere;
 	transition: background-color var(--link-hover-transition-duration);
+	margin-block-start: 1px;
+	border-radius: var(--border-radius-large);
+	background: var(--_bg-color);
+	padding: 5px;
+	color: var(--_color);
+	overflow-wrap: anywhere;
 
 	@nest :any-link:hover & {
 		--_bg-color: var(--color-amazon-dark);
@@ -308,8 +308,8 @@
 /* 発売日 */
 .p-sidebar-amazon-link__date {
 	margin-block-start: 0.5em;
-	font-size: calc(100% / var(--font-ratio-2));
 	font-weight: var(--font-weight-bold);
+	font-size: calc(100% / var(--font-ratio-2));
 
 	&:not([hidden]) {
 		display: block;
