@@ -439,7 +439,7 @@ export default class PostController extends Controller implements ControllerInte
 			const twitterApi = new TwitterApi(twitterAccessTokenOptions);
 			const tweet = new Tweet(twitterApi);
 
-			const hashtag = requestQuery.social_tag !== null && requestQuery.social_tag !== '' ? `#${requestQuery.social_tag}` : ''; // ハッシュタグ
+			const hashtags = requestQuery.social_tag?.split(' '); // ハッシュタグ
 
 			const medias: Set<Buffer> = new Set();
 			if (requestQuery.image !== null && !/^https?:/.test(requestQuery.image)) {
@@ -460,7 +460,7 @@ export default class PostController extends Controller implements ControllerInte
 			if (requestQuery.description !== '') {
 				message += `\n\n${requestQuery.description}`;
 			}
-			const response = await tweet.postMessage(message, '', hashtag, Array.from(medias));
+			const response = await tweet.postMessage(message, '', hashtags, Array.from(medias));
 
 			this.logger.info('Twitter post success', response);
 		} catch (e) {

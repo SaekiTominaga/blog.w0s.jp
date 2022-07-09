@@ -29,21 +29,21 @@ export default class Tweet {
 	 *
 	 * @param {string} text - 本文
 	 * @param {string} url - URL
-	 * @param {string} hashtag - ハッシュタグ
+	 * @param {string[]} hashtags - ハッシュタグ
 	 * @param {object[]} medias - 添付するメディア
 	 *
 	 * @returns {TweetV2PostTweetResult} ツイート結果
 	 */
-	async postMessage(text: string, url?: string, hashtag?: string, medias?: Buffer[]): Promise<TweetV2PostTweetResult> {
+	async postMessage(text: string, url?: string, hashtags?: string[], medias?: Buffer[]): Promise<TweetV2PostTweetResult> {
 		const requestParams: Map<string, unknown> = new Map();
 
 		/* 本文を組み立てる */
 		let postText = text;
-		let postMessage = this.#assembleTweetMessage(postText, url, hashtag);
+		let postMessage = this.#assembleTweetMessage(postText, url, hashtags);
 
 		while (!TwitterText.parseTweet(postMessage).valid) {
 			postText = postText.substring(0, postText.length - 1);
-			postMessage = this.#assembleTweetMessage(postText, url, hashtag, this.#POST_MARKER);
+			postMessage = this.#assembleTweetMessage(postText, url, hashtags, this.#POST_MARKER);
 
 			if (postText.length === 0) {
 				throw new Error('The tweet will fail even if the length of the body is shortened to 0 characters.');
@@ -112,22 +112,31 @@ export default class Tweet {
 	 *
 	 * @param {string} text - 本文
 	 * @param {string} url - URL
-	 * @param {string} hashtag - ハッシュタグ
+	 * @param {string[]} hashtags - ハッシュタグ
 	 * @param {string} trimMaker - 最大文字数超過時の本文末尾に追加する文字列
 	 *
 	 * @returns {string} 組み立てたメッセージ
 	 */
-	#assembleTweetMessage(text: string, url?: string, hashtag?: string, trimMaker?: string): string {
+	#assembleTweetMessage(text: string, url?: string, hashtags?: string[], trimMaker?: string): string {
 		let message = text;
 		if (trimMaker !== undefined && trimMaker !== '') {
 			message += trimMaker;
 		}
-		if (hashtag !== undefined && hashtag !== '') {
-			message += ` ${hashtag}`;
+		if (hashtags !== undefined) {
+			message += ` ${hashtags
+				.map((hashtag) => {
+					if (!hashtag.startsWith('#')) {
+						return `#${hashtag}`;
+					}
+					return hashtag;
+				})
+				.join(' ')}`;
 		}
 		if (url !== undefined && url !== '') {
 			message += `\n${url}`;
 		}
+
+		console.debug(message);
 
 		return message;
 	}
