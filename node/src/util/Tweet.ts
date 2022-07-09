@@ -136,8 +136,6 @@ export default class Tweet {
 			message += `\n${url}`;
 		}
 
-		console.debug(message);
-
 		return message;
 	}
 }
