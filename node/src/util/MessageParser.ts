@@ -1530,7 +1530,7 @@ export default class MessageParser {
 				const num = this.#footnotes.length;
 				const href = `${this.#entryId}-${num}`;
 
-				return `<sup class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-element="w0s-tooltip" data-tooltip-close-text="閉じる">[${num}]</a></sup>`;
+				return `<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-element="w0s-tooltip" data-tooltip-close-text="閉じる">[${num}]</a></span>`;
 			});
 		}
 
