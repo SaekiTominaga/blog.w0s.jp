@@ -3,7 +3,6 @@ import ButtonShare from '@saekitominaga/customelements-button-share';
 import GoogleAdsense from './unique/GoogleAdsense';
 import ReportJsError from '@saekitominaga/report-js-error';
 import SidebarAmazonAd from './unique/SidebarAmazonAd';
-import StyleSheetPrint from './unique/StyleSheetPrint';
 import Tab from '@saekitominaga/customelements-tab';
 import Tooltip from '@saekitominaga/customelements-tooltip';
 import TooltipTrigger from '@saekitominaga/customelements-tooltip-trigger';
@@ -53,9 +52,6 @@ if (window.customElements !== undefined) {
 
 /* Amazon 商品広告 */
 new SidebarAmazonAd(<HTMLTemplateElement>document.getElementById('sidebar-amazon-ad-template')).init();
-
-/* 印刷用スタイルシート */
-new StyleSheetPrint(<HTMLLinkElement>document.getElementById('stylesheet-print')).init();
 
 /* Google AdSense */
 for (const adsGoogleElement of document.querySelectorAll('.js-ads-google')) {
