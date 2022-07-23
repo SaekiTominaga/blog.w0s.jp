@@ -181,7 +181,7 @@
 .p-code__code {
 	padding: 1em;
 	line-height: var(--line-height-narrow);
-	font-family: monospace;
+	font-family: var(--font-monospace);
 
 	@nest .p-entry & {
 		font-size: calc(100% / var(--font-ratio-1));
