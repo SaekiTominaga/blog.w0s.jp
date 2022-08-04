@@ -38,15 +38,17 @@
 
 /* ナビゲーション */
 .l-header__nav {
+	--_justify-content: flex-end;
+
 	display: flex;
 	grid-column: nav;
 	flex-wrap: wrap;
-	justify-content: flex-end;
+	place-content: start var(--_justify-content);
 	align-items: center;
 	gap: 10px 20px;
 
 	@media (max-width: 36em) {
-		justify-content: flex-start;
+		--_justify-content: flex-start;
 	}
 }
 
