@@ -273,7 +273,7 @@
 	width: 100%;
 	height: auto;
 
-	@nest :any-link:hover & {
+	@nest :any-link:hover:not(:focus) & {
 		box-shadow: 0 0 3px 3px var(--color-amazon-verydark);
 	}
 }
