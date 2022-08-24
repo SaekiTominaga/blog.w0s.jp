@@ -11,7 +11,7 @@
 	display: grid;
 	grid-template-columns: [full-start] var(--page-margin-inline) var(--page-padding-inline) [content-start] 1fr [content-end] var(--page-padding-inline) var(--page-margin-inline) [full-end];
 	grid-column: header;
-	padding: 20px 0 40px;
+	padding: 10px 0 40px;
 	line-height: var(--line-height-narrow);
 }
 
@@ -34,6 +34,7 @@
 /* サイトロゴ */
 .l-header__site {
 	grid-column: site;
+	margin-block-start: 10px;
 }
 
 /* ナビゲーション */
@@ -43,8 +44,8 @@
 	display: flex;
 	grid-column: nav;
 	flex-wrap: wrap;
-	place-content: start var(--_justify-content);
-	align-items: center;
+	place-content: flex-start var(--_justify-content);
+	align-items: flex-end;
 	gap: 10px 20px;
 
 	@media (max-width: 36em) {

@@ -53,5 +53,25 @@
 
 /* ===== サイト内検索 ===== */
 .p-header-search {
+	display: grid;
+	grid-template-areas:
+		"legend"
+		"ctrl";
+	justify-content: center;
 	width: min(18em, 100%);
+
+	& > fieldset {
+		display: contents;
+	}
+}
+
+.p-header-search__legend {
+	grid-area: legend;
+	font-weight: var(--font-weight-bold);
+	font-size: calc(100% / var(--font-ratio-1));
+}
+
+.p-header-search__ctrl {
+	grid-area: ctrl;
+	margin-block-start: 0.1em;
 }

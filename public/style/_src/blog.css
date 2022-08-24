@@ -22,3 +22,6 @@
 @import "object/project/_main.css";
 @import "object/project/_sidebar.css";
 @import "object/project/_footer.css";
+
+/* Object - Utility */
+@import "object/utility/_text.css";
