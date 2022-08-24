@@ -76,6 +76,9 @@
 	/* ===== Stack ===== */
 	--stack-margin-base: 1.5rem;
 
+	/* ===== セルフリンク ===== */
+	--self-link-size: 2.6ex;
+
 	/* ===== 図形 ===== */
 	--shape-link-triangle: polygon(0 0, 100% 50%, 0 100%); /* リンクアイコン ( ▶ ) */
 	--shape-pagelink-triangle: polygon(0 0, 100% 0, 50% 100%); /* リンクアイコン ( ▼ ) */

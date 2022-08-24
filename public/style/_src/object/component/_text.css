@@ -33,8 +33,8 @@
 	justify-content: center;
 	align-items: center;
 	outline-width: var(--outline-width-bold);
-	min-width: 3ex;
-	min-height: 3ex;
+	min-width: var(--self-link-size);
+	min-height: var(--self-link-size);
 	color: var(--link-color);
 	font-size: calc(100% / var(--font-ratio-3));
 	text-decoration: none;
