@@ -598,6 +598,12 @@ export default class MessageParser {
 		headingElement.textContent = headingText;
 		headingWrapElement.appendChild(headingElement);
 
+		const selfLinkElement = this.#document.createElement('a');
+		selfLinkElement.href = `#${id}`;
+		selfLinkElement.className = 'c-self-link';
+		selfLinkElement.textContent = '§';
+		headingWrapElement.appendChild(selfLinkElement);
+
 		this.#section1Elements.push(sectionElement);
 		this.#section1Headings.set(id, headingText);
 	}
@@ -622,6 +628,12 @@ export default class MessageParser {
 		const headingElement = this.#document.createElement('h3');
 		headingElement.textContent = headingText;
 		headingWrapElement.appendChild(headingElement);
+
+		const selfLinkElement = this.#document.createElement('a');
+		selfLinkElement.href = `#${id}`;
+		selfLinkElement.className = 'c-self-link';
+		selfLinkElement.textContent = '§';
+		headingWrapElement.appendChild(selfLinkElement);
 
 		this.#section2Elements.push(sectionElement);
 	}

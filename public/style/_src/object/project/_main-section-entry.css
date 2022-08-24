@@ -18,12 +18,18 @@
 }
 
 .p-entry-section1__hdg {
+	border-block-start: 1px solid transparent;
+	border-block-end: 1px solid var(--color-border-dark);
+	padding-block: 0.25em;
+	font-size: calc(100% * var(--font-ratio-5));
+	line-height: var(--line-height-narrow);
+
+	& > * {
+		vertical-align: middle;
+	}
+
 	& > h2 {
-		border-block-start: 1px solid transparent;
-		border-block-end: 1px solid var(--color-border-dark);
-		padding-block: 0.25em;
-		font-size: calc(100% * var(--font-ratio-5));
-		line-height: var(--line-height-narrow);
+		display: inline;
 	}
 }
 
@@ -40,27 +46,33 @@
 }
 
 .p-entry-section2__hdg {
+	--_stick-width: 0.25em;
+	--_stick-height: 80%;
+
+	position: relative; /* for Safari */
+	contain: content;
+	padding-inline-start: calc(var(--_stick-width) + 0.5em);
+	font-size: calc(100% * var(--font-ratio-3));
+	line-height: var(--line-height-narrow);
+
+	&::before {
+		display: inline-block;
+		position: absolute;
+		inset-block-start: calc((100% - var(--_stick-height)) / 2);
+		inset-inline-start: 0;
+		border-radius: var(--border-radius-full);
+		background: var(--color-border-dark);
+		width: var(--_stick-width);
+		height: var(--_stick-height);
+		content: "";
+	}
+
+	& > * {
+		vertical-align: middle;
+	}
+
 	& > h3 {
-		--_stick-width: 0.25em;
-		--_stick-height: 80%;
-
-		position: relative; /* for Safari */
-		contain: content;
-		padding-inline-start: calc(var(--_stick-width) + 0.5em);
-		font-size: calc(100% * var(--font-ratio-3));
-		line-height: var(--line-height-narrow);
-
-		&::before {
-			display: inline-block;
-			position: absolute;
-			inset-block-start: calc((100% - var(--_stick-height)) / 2);
-			inset-inline-start: 0;
-			border-radius: var(--border-radius-full);
-			background: var(--color-border-dark);
-			width: var(--_stick-width);
-			height: var(--_stick-height);
-			content: "";
-		}
+		display: inline;
 	}
 }
 

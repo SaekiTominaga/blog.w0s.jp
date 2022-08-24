@@ -27,6 +27,19 @@
 	}
 }
 
+/* ===== セルフリンク <a href="#foo">§</a> ===== */
+.c-self-link {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	outline-width: var(--outline-width-bold);
+	min-width: 3ex;
+	min-height: 3ex;
+	color: var(--link-color);
+	font-size: calc(100% / var(--font-ratio-3));
+	text-decoration: none;
+}
+
 /* ===== ボタン ===== */
 .c-button {
 	--_padding-block: 0.5em;
