@@ -57,7 +57,6 @@
 	grid-template-areas:
 		"legend"
 		"ctrl";
-	justify-content: center;
 	width: min(18em, 100%);
 
 	& > fieldset {
