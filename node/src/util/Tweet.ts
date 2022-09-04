@@ -124,11 +124,13 @@ export default class Tweet {
 		}
 		if (hashtags !== undefined) {
 			message += ` ${hashtags
+				.filter((hashtag) => hashtag !== '')
 				.map((hashtag) => {
-					if (!hashtag.startsWith('#')) {
-						return `#${hashtag}`;
+					/* 入力欄で # 記号を含めるかどうかは任意なので、ここで # 付きに統一する */
+					if (hashtag.startsWith('#')) {
+						return hashtag;
 					}
-					return hashtag;
+					return `#${hashtag}`;
 				})
 				.join(' ')}`;
 		}
