@@ -6,8 +6,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<%_ if (categoryFileNames !== undefined) { _%>
 		<meta name="w0s:amazon" content="<%= categoryFileNames %>" />
-		<%_ } _%>
-		<%_ if (ogImage !== null) { _%>
+		<%_ } _%> <%_ if (ogImage !== null) { _%>
 		<meta property="og:title" content="<%= title %>" />
 		<meta property="og:type" content="article" />
 		<meta property="og:image" content="<%= ogImage %>" />
@@ -19,6 +18,11 @@
 		<meta property="og:site_name" content="富永日記帳" />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:site" content="@SaekiTominaga" />
+		<%_ } else if (description !== null) { _%>
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:site" content="@SaekiTominaga" />
+		<meta name="twitter:title" content="<%= title %>" />
+		<meta name="twitter:description" content="<%= description %>" />
 		<%_ } _%>
 
 		<link rel="alternate" href="/feed" type="application/atom+xml" title="「富永日記帳」の新着フィード" />
