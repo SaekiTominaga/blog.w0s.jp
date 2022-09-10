@@ -441,26 +441,12 @@ export default class PostController extends Controller implements ControllerInte
 
 			const hashtags = requestQuery.social_tag?.split(' '); // ハッシュタグ
 
-			const medias: Set<Buffer> = new Set();
-			if (requestQuery.image !== null && !/^https?:/.test(requestQuery.image)) {
-				/* 画像が投稿されていた場合（外部サービスの画像を除く） */
-				const mediaUrl = `${this.#config.twitter.media_url_prefix}${requestQuery.image}`;
-
-				const response = await fetch(mediaUrl);
-				if (!response.ok) {
-					this.logger.error('Fetch error', mediaUrl);
-				} else {
-					this.logger.info('Fetch success', mediaUrl);
-					medias.add(Buffer.from(await response.arrayBuffer()));
-				}
-			}
-
 			const topicUrl = `${this.#config.twitter.url_prefix}${topicId}`;
 			let message = `${this.#config.twitter.message_prefix}\n\n${requestQuery.title}\n${topicUrl}`;
 			if (requestQuery.description !== '') {
 				message += `\n\n${requestQuery.description}`;
 			}
-			const response = await tweet.postMessage(message, '', hashtags, Array.from(medias));
+			const response = await tweet.postMessage(message, '', hashtags);
 
 			this.logger.info('Twitter post success', response);
 		} catch (e) {
