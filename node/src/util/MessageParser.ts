@@ -586,23 +586,27 @@ export default class MessageParser {
 		const id = this.#generateSectionId(headingText);
 
 		const sectionElement = this.#document.createElement('section');
-		sectionElement.className = 'p-entry-section1';
+		sectionElement.className = 'p-entry-section -hdg1';
 		sectionElement.id = id;
 		this.#rootElement.appendChild(sectionElement);
 
 		const headingWrapElement = this.#document.createElement('div');
-		headingWrapElement.className = 'p-entry-section1__hdg';
+		headingWrapElement.className = 'p-entry-section__hdg';
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h2');
 		headingElement.textContent = headingText;
 		headingWrapElement.appendChild(headingElement);
 
+		const selfLinkWrapElement = this.#document.createElement('p');
+		selfLinkWrapElement.className = 'p-entry-section__self-link';
+		headingWrapElement.appendChild(selfLinkWrapElement);
+
 		const selfLinkElement = this.#document.createElement('a');
 		selfLinkElement.href = `#${id}`;
 		selfLinkElement.className = 'c-self-link';
 		selfLinkElement.textContent = '§';
-		headingWrapElement.appendChild(selfLinkElement);
+		selfLinkWrapElement.appendChild(selfLinkElement);
 
 		this.#section1Elements.push(sectionElement);
 		this.#section1Headings.set(id, headingText);
@@ -617,23 +621,27 @@ export default class MessageParser {
 		const id = this.#generateSectionId(headingText);
 
 		const sectionElement = this.#document.createElement('section');
-		sectionElement.className = 'p-entry-section2';
+		sectionElement.className = 'p-entry-section -hdg2';
 		sectionElement.id = id;
 		this.#section1Elements.slice(-1)[0]?.appendChild(sectionElement);
 
 		const headingWrapElement = this.#document.createElement('div');
-		headingWrapElement.className = 'p-entry-section2__hdg';
+		headingWrapElement.className = 'p-entry-section__hdg';
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h3');
 		headingElement.textContent = headingText;
 		headingWrapElement.appendChild(headingElement);
 
+		const selfLinkWrapElement = this.#document.createElement('p');
+		selfLinkWrapElement.className = 'p-entry-section__self-link';
+		headingWrapElement.appendChild(selfLinkWrapElement);
+
 		const selfLinkElement = this.#document.createElement('a');
 		selfLinkElement.href = `#${id}`;
 		selfLinkElement.className = 'c-self-link';
 		selfLinkElement.textContent = '§';
-		headingWrapElement.appendChild(selfLinkElement);
+		selfLinkWrapElement.appendChild(selfLinkElement);
 
 		this.#section2Elements.push(sectionElement);
 	}

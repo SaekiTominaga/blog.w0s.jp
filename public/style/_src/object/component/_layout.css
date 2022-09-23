@@ -17,7 +17,7 @@ Styleguide 1.5.
 	}
 }
 
-:is(.p-entry__body, .p-entry-section1, .p-entry-section2, .p-entry__footer) {
+:is(.p-entry__body, .p-entry-section, .p-entry__footer) {
 	& > * + * {
 		margin-block-start: calc(var(--stack-margin-base) * 1.5);
 	}
