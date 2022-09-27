@@ -15,10 +15,15 @@ if (window.trustedTypes !== undefined) {
 			return inputUrl;
 		},
 		createScriptURL: (inputUrl: string): string => {
-			const ALLOWLIST: string[] = ['https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'];
-			const ALLOWLIST_REGEXP: RegExp[] = [/^https:\/\/platform.twitter.com\/js\/horizon_tweet\.[0-9a-z]+\.js$/];
+			const ALLOW_URLS: string[] = ['https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'];
+			const ALLOW_ORIGINS: string[] = ['https://platform.twitter.com'];
+			const ALLOW_REGEXPS: RegExp[] = [];
 
-			if (!ALLOWLIST.includes(inputUrl) && !ALLOWLIST_REGEXP.some((allowUrl) => allowUrl.test(inputUrl))) {
+			if (
+				!ALLOW_URLS.includes(inputUrl) &&
+				!ALLOW_ORIGINS.includes(new URL(inputUrl).origin) &&
+				!ALLOW_REGEXPS.some((allow) => allow.test(inputUrl))
+			) {
 				console.error(`[Trusted ScriptURL] URL not accepted: ${inputUrl}`);
 				throw new TypeError(`URL not accepted: ${inputUrl}`);
 			}
