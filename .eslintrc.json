@@ -5,8 +5,7 @@
 		"jest/globals": true
 	},
 	"extends": ["eslint:recommended"],
-	"globals": {
-	},
+	"globals": {},
 	"plugins": ["jsdoc", "jest"],
 	"parserOptions": {
 		"ecmaVersion": 2021,
@@ -39,7 +38,7 @@
 		"no-console": [
 			"warn",
 			{
-				"allow": ["info"]
+				"allow": ["info", "error"]
 			}
 		],
 		"no-empty": [

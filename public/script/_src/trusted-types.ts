@@ -8,7 +8,8 @@ if (window.trustedTypes !== undefined) {
 		},
 		createURL: (inputUrl: string): string => {
 			if (new URL(inputUrl).origin !== new URL(location.href).origin) {
-				throw new Error(`[Trusted URL] URL not accepted: ${inputUrl}`);
+				console.error(`[Trusted URL] URL with different origin are not allowed: ${inputUrl}`);
+				throw new TypeError(`URL with different origin are not allowed: ${inputUrl}`);
 			}
 
 			return inputUrl;
@@ -18,7 +19,8 @@ if (window.trustedTypes !== undefined) {
 			const ALLOWLIST_REGEXP: RegExp[] = [/^https:\/\/platform.twitter.com\/js\/horizon_tweet\.[0-9a-z]+\.js$/];
 
 			if (!ALLOWLIST.includes(inputUrl) && !ALLOWLIST_REGEXP.some((allowUrl) => allowUrl.test(inputUrl))) {
-				throw new Error(`[Trusted ScriptURL] URL not accepted: ${inputUrl}`);
+				console.error(`[Trusted ScriptURL] URL not accepted: ${inputUrl}`);
+				throw new TypeError(`URL not accepted: ${inputUrl}`);
 			}
 
 			return inputUrl;
