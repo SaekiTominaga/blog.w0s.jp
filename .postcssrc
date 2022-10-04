@@ -4,11 +4,12 @@
 		"annotation": false
 	},
 	"plugins": {
-		"postcss-import": {},
+		"postcss-media-minmax": {},
 		"postcss-custom-media": {
 			"importFrom": "public/style/_src/foundation/_@custom-media.css"
 		},
 		"postcss-nesting": {},
+		"postcss-import": {},
 		"cssnano": {
 			"preset": [
 				"lite",
