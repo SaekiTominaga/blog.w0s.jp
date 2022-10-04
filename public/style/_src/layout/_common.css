@@ -23,7 +23,7 @@
 	grid-column: content;
 	gap: 20px;
 
-	@media (max-width: 60em) {
+	@media (width <= 60em) {
 		grid-template-columns: auto;
 		grid-template-areas:
 			"site"
@@ -48,7 +48,7 @@
 	align-items: flex-end;
 	gap: 10px 20px;
 
-	@media (max-width: 36em) {
+	@media (width <= 36em) {
 		--_justify-content: flex-start;
 	}
 }
