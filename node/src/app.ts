@@ -16,8 +16,6 @@ import PreviewController from './controller/api/PreviewController.js';
 import TweetMediaController from './controller/api/TweetMediaController.js';
 import { NoName as Configure } from '../configure/type/common';
 
-type Environment = 'production' | 'development';
-
 /* 設定ファイル読み込み */
 const config = <Configure>JSON.parse(fs.readFileSync('node/configure/common.json', 'utf8'));
 
@@ -26,7 +24,7 @@ Log4js.configure(config.logger.path);
 const logger = Log4js.getLogger();
 
 const app = express();
-const env: Environment = app.get('env');
+const env: Express.Env = app.get('env');
 
 app.set('trust proxy', true);
 app.set('views', config.views);
@@ -203,14 +201,14 @@ app
 	.route('/admin/post')
 	.get(async (req, res, next) => {
 		try {
-			await new PostController(config).execute(req, res);
+			await new PostController(config, env).execute(req, res);
 		} catch (e) {
 			next(e);
 		}
 	})
 	.post(upload.array('media'), async (req, res, next) => {
 		try {
-			await new PostController(config).execute(req, res);
+			await new PostController(config, env).execute(req, res);
 		} catch (e) {
 			next(e);
 		}

@@ -19,7 +19,7 @@ import { NoName as ConfigureCommon } from '../../configure/type/common';
 import { Request, Response } from 'express';
 import { Result as ValidationResult, ValidationError } from 'express-validator';
 import { TwitterAPI as ConfigureTwitter } from '../../configure/type/twitter.js';
-import { TwitterApi, TwitterApiTokens } from 'twitter-api-v2';
+import { TwitterApi } from 'twitter-api-v2';
 
 interface PostResults {
 	success: boolean;
@@ -45,15 +45,20 @@ export default class PostController extends Controller implements ControllerInte
 	#config: Configure;
 	#configTwitter: ConfigureTwitter;
 
+	#env: Express.Env;
+
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
+	 * @param {string} env - 共通設定
 	 */
-	constructor(configCommon: ConfigureCommon) {
+	constructor(configCommon: ConfigureCommon, env: Express.Env) {
 		super();
 
 		this.#configCommon = configCommon;
 		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/post.json', 'utf8'));
 		this.#configTwitter = <ConfigureTwitter>JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
+
+		this.#env = env;
 	}
 
 	/**
@@ -127,7 +132,7 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson(dao));
 				if (requestQuery.social) {
-					topicPostResults.add(await this.#postSocial(req, requestQuery, topicId));
+					topicPostResults.add(await this.#postSocial(requestQuery, topicId));
 				}
 			}
 		} else if (requestQuery.action_revise) {
@@ -410,33 +415,22 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * ソーシャルサービスに投稿する
 	 *
-	 * @param {Request} req - Request
 	 * @param {object} requestQuery - URL クエリー情報
 	 * @param {number} topicId - 記事 ID
 	 *
 	 * @returns {PostResults} 処理結果のメッセージ
 	 */
-	async #postSocial(req: Request, requestQuery: BlogRequest.Post, topicId: number): Promise<PostResults> {
+	async #postSocial(requestQuery: BlogRequest.Post, topicId: number): Promise<PostResults> {
 		try {
 			/* Twitter */
-			let twitterAccessTokenOptions: TwitterApiTokens;
-			if (req.hostname === 'localhost') {
-				twitterAccessTokenOptions = {
-					appKey: this.#configTwitter.dev.consumer_key,
-					appSecret: this.#configTwitter.dev.consumer_secret,
-					accessToken: this.#configTwitter.dev.access_token,
-					accessSecret: this.#configTwitter.dev.access_token_secret,
-				};
-			} else {
-				twitterAccessTokenOptions = {
-					appKey: this.#configTwitter.production.consumer_key,
-					appSecret: this.#configTwitter.production.consumer_secret,
-					accessToken: this.#configTwitter.production.access_token,
-					accessSecret: this.#configTwitter.production.access_token_secret,
-				};
-			}
+			const configTwitter = this.#env === 'development' ? this.#configTwitter.dev : this.#configTwitter.production;
 
-			const twitterApi = new TwitterApi(twitterAccessTokenOptions);
+			const twitterApi = new TwitterApi({
+				appKey: configTwitter.consumer_key,
+				appSecret: configTwitter.consumer_secret,
+				accessToken: configTwitter.access_token,
+				accessSecret: configTwitter.access_token_secret,
+			});
 			const tweet = new Tweet(twitterApi);
 
 			const hashtags = requestQuery.social_tag?.split(' '); // ハッシュタグ
@@ -470,7 +464,7 @@ export default class PostController extends Controller implements ControllerInte
 			throw new Error('メディアアップロード時にファイルが指定されていない');
 		}
 
-		const url = req.hostname === 'localhost' ? this.#config.media_upload.url_dev : this.#config.media_upload.url;
+		const url = this.#env === 'development' ? this.#config.media_upload.url_dev : this.#config.media_upload.url;
 
 		const result: Set<MediaUploadResults> = new Set();
 
