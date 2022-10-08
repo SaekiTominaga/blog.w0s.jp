@@ -182,9 +182,8 @@
 				clip-path: var(--shape-link-arrow);
 				inset-block-start: calc(50% - var(--_icon-height) / 2);
 				inset-inline-end: var(--_padding-inline);
-				background: var(--_icon-color);
+				border-block-start: var(--_icon-height) solid var(--_icon-color);
 				width: var(--_icon-width);
-				height: var(--_icon-height);
 				content: "";
 			}
 

@@ -104,9 +104,8 @@
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
 		margin-inline-end: var(--_bullet-gap);
-		background: var(--_bullet-color);
+		border-block-start: var(--_bullet-height) solid var(--_bullet-color);
 		width: var(--_bullet-width);
-		height: var(--_bullet-height);
 		content: "";
 	}
 }
