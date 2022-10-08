@@ -17,51 +17,51 @@ export type NoName8 = string[];
 export type NoName9 = string[];
 export type NoName11 = string[];
 export type NoName12 = string[];
-export type NoName14 = string;
-export type NoName16 = string[];
-export type NoName17 = string;
-export type NoName15 = {
-  paths: NoName16;
-  value: NoName17;
+export type NoName15 = string;
+export type NoName17 = string[];
+export type NoName18 = string;
+export type NoName16 = {
+  paths: NoName17;
+  value: NoName18;
 }[];
-export type NoName19 = string[];
-export type NoName20 = string;
-export type NoName18 = {
-  extensions: NoName19;
-  value: NoName20;
+export type NoName20 = string[];
+export type NoName21 = string;
+export type NoName19 = {
+  extensions: NoName20;
+  value: NoName21;
 }[];
 export type CORS1 = string[];
-export type NoName21 = string[];
-export type NoName22 = string[];
+export type NoName23 = string[];
+export type NoName24 = string[];
 export type Directory = string[];
-export type NoName23 = string;
+export type NoName25 = string;
 export type Htpasswd = string;
 export type BasicAuthentication = {
   directory: Directory;
-  realm: NoName23;
+  realm: NoName25;
   htpasswd: Htpasswd;
 }[];
-export type NoName24 = string;
-export type NoName25 = string;
+export type NoName26 = string;
+export type NoName27 = string;
 export type FilepathFor401Unauthorized = string;
 export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
 export type FilepathFor500InternalServerError = string;
-export type NoName27 = string;
+export type NoName29 = string;
 export type Blog = string;
-export type NoName30 = number;
+export type NoName32 = number;
 
 export interface NoName {
   port: HTTP;
   request: NoName1;
   response: NoName3;
   static: NoName6;
-  views: NoName24;
-  temp: NoName25;
-  errorpage: NoName26;
+  views: NoName26;
+  temp: NoName27;
+  errorpage: NoName28;
   logger: Logger;
   sqlite: SQLite;
-  sidebar: NoName28;
+  sidebar: NoName30;
   prettier: Prettier;
 }
 export interface NoName1 {
@@ -107,25 +107,36 @@ export interface MIME2 {
   [k: string]: NoName12;
 }
 export interface NoName13 {
-  default: NoName14;
-  path: NoName15;
-  extension: NoName18;
+  development: NoName14;
+  production: NoName22;
+}
+export interface NoName14 {
+  default: NoName15;
+  path?: NoName16;
+  extension?: NoName19;
+  [k: string]: unknown;
+}
+export interface NoName22 {
+  default: NoName15;
+  path?: NoName16;
+  extension?: NoName19;
+  [k: string]: unknown;
 }
 export interface CORS {
   directory: CORS1;
-  origin: NoName21;
+  origin: NoName23;
 }
 export interface SourceMap {
-  extensions?: NoName22;
+  extensions?: NoName24;
 }
-export interface NoName26 {
+export interface NoName28 {
   path_401: FilepathFor401Unauthorized;
   path_403: FilepathFor403Forbidden;
   path_404: FilepathFor404NotFound;
   path_500: FilepathFor500InternalServerError;
 }
 export interface Logger {
-  path: NoName27;
+  path: NoName29;
 }
 export interface SQLite {
   db: DBNode;
@@ -133,11 +144,11 @@ export interface SQLite {
 export interface DBNode {
   blog: Blog;
 }
-export interface NoName28 {
-  newly: NoName29;
+export interface NoName30 {
+  newly: NoName31;
 }
-export interface NoName29 {
-  maximum_number: NoName30;
+export interface NoName31 {
+  maximum_number: NoName32;
 }
 /**
  * https://prettier.io/docs/en/options.html

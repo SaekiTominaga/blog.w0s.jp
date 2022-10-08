@@ -16,6 +16,8 @@ import PreviewController from './controller/api/PreviewController.js';
 import TweetMediaController from './controller/api/TweetMediaController.js';
 import { NoName as Configure } from '../configure/type/common';
 
+type Environment = 'production' | 'development';
+
 /* 設定ファイル読み込み */
 const config = <Configure>JSON.parse(fs.readFileSync('node/configure/common.json', 'utf8'));
 
@@ -24,6 +26,7 @@ Log4js.configure(config.logger.path);
 const logger = Log4js.getLogger();
 
 const app = express();
+const env: Environment = app.get('env');
 
 app.set('trust proxy', true);
 app.set('views', config.views);
@@ -122,10 +125,12 @@ app.use(
 
 			/* Cache-Control */
 			if (config.static.headers.cache_control !== undefined) {
+				const cacheControlConfig = env === 'production' ? config.static.headers.cache_control.production : config.static.headers.cache_control.development;
+
 				const cacheControlValue =
-					config.static.headers.cache_control.path.find((path) => path.paths.includes(requestUrlOrigin))?.value ??
-					config.static.headers.cache_control.extension.find((ext) => ext.extensions.includes(extensionOrigin))?.value ??
-					config.static.headers.cache_control.default;
+					cacheControlConfig.path?.find((path) => path.paths.includes(requestUrlOrigin))?.value ??
+					cacheControlConfig.extension?.find((ext) => ext.extensions.includes(extensionOrigin))?.value ??
+					cacheControlConfig.default;
 
 				res.setHeader('Cache-Control', cacheControlValue);
 			}

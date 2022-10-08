@@ -135,56 +135,18 @@
 						},
 						"cache_control": {
 							"type": "object",
-							"required": ["default", "path", "extension"],
-							"title": "キャッシュ定義",
+							"required": ["development", "production"],
+							"title": "環境",
 							"properties": {
-								"default": {
-									"type": "string",
-									"title": "デフォルト値"
+								"development": {
+									"type": "object",
+									"title": "キャッシュ定義（開発環境）",
+									"$ref": "#/properties/static/definitions/cache_control"
 								},
-								"path": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"required": ["paths", "value"],
-										"properties": {
-											"paths": {
-												"type": "array",
-												"items": {
-													"type": "string"
-												},
-												"title": "拡張子"
-											},
-											"value": {
-												"type": "string",
-												"title": "値"
-											}
-										},
-										"additionalProperties": false
-									},
-									"title": "ファイルパスによるキャッシュ定義"
-								},
-								"extension": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"required": ["extensions", "value"],
-										"properties": {
-											"extensions": {
-												"type": "array",
-												"items": {
-													"type": "string"
-												},
-												"title": "拡張子"
-											},
-											"value": {
-												"type": "string",
-												"title": "値"
-											}
-										},
-										"additionalProperties": false
-									},
-									"title": "拡張子によるキャッシュ定義"
+								"production": {
+									"type": "object",
+									"title": "キャッシュ定義（本番環境）",
+									"$ref": "#/properties/static/definitions/cache_control"
 								}
 							},
 							"additionalProperties": false
@@ -256,7 +218,64 @@
 					"title": "Basic Authentication"
 				}
 			},
-			"additionalProperties": false
+			"additionalProperties": false,
+			"definitions": {
+				"cache_control": {
+					"type": "object",
+					"required": ["default"],
+					"title": "キャッシュ定義",
+					"properties": {
+						"default": {
+							"type": "string",
+							"title": "デフォルト値"
+						},
+						"path": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"required": ["paths", "value"],
+								"properties": {
+									"paths": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"title": "拡張子"
+									},
+									"value": {
+										"type": "string",
+										"title": "値"
+									}
+								},
+								"additionalProperties": false
+							},
+							"title": "ファイルパスによるキャッシュ定義"
+						},
+						"extension": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"required": ["extensions", "value"],
+								"properties": {
+									"extensions": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"title": "拡張子"
+									},
+									"value": {
+										"type": "string",
+										"title": "値"
+									}
+								},
+								"additionalProperties": false
+							},
+							"title": "拡張子によるキャッシュ定義"
+						}
+					}
+				}
+			}
 		},
 		"views": {
 			"type": "string",
