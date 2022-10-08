@@ -12,7 +12,7 @@ export type AccessToken = string;
 export type AccessTokenSecret = string;
 
 export interface TwitterAPI {
-  dev: Development;
+  development: Development;
   production: Production;
   additionalProperties?: false;
 }

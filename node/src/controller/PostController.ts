@@ -423,7 +423,7 @@ export default class PostController extends Controller implements ControllerInte
 	async #postSocial(requestQuery: BlogRequest.Post, topicId: number): Promise<PostResults> {
 		try {
 			/* Twitter */
-			const configTwitter = this.#env === 'development' ? this.#configTwitter.dev : this.#configTwitter.production;
+			const configTwitter = this.#env === 'development' ? this.#configTwitter.development : this.#configTwitter.production;
 
 			const twitterApi = new TwitterApi({
 				appKey: configTwitter.consumer_key,

@@ -3,9 +3,9 @@
 	"$id": "https://blog.w0s.jp/twitter.json",
 	"type": "object",
 	"title": "Twitter API",
-	"required": ["dev", "production"],
+	"required": ["development", "production"],
 	"properties": {
-		"dev": {
+		"development": {
 			"type": "object",
 			"title": "Development",
 			"$ref": "#/definitions/app_keys"
