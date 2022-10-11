@@ -1,13 +1,15 @@
+@layer reset, elements, layout, component, project, utility;
+
 /* Foundation */
 @import "foundation/_var.css";
-@import "foundation/_reset.css";
-@import "foundation/_elements.css";
+@import "foundation/_reset.css" layer(reset);
+@import "foundation/_elements.css" layer(elements);
 
 /* Layout */
-@import "layout/_error.css";
+@import "layout/_error.css" layer(layout);
 
 /* Object - Component */
-@import "object/component/_form-search.css";
+@import "object/component/_form-search.css" layer(component);
 
 /* Object - Project */
-@import "object/project/_error.css";
+@import "object/project/_error.css" layer(project);

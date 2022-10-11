@@ -1,3 +1,3 @@
 /* Layout */
-@import "layout/_common.css";
-@import "layout/_page-full.css";
+@import "layout/_common.css" layer(layout);
+@import "layout/_page-full.css" layer(layout);

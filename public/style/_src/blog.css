@@ -1,27 +1,29 @@
+@layer reset, elements, layout, component, project, utility;
+
 /* Foundation */
 @import "foundation/_var.css";
-@import "foundation/_reset.css";
-@import "foundation/_elements.css";
+@import "foundation/_reset.css" layer(reset);
+@import "foundation/_elements.css" layer(elements);
 
 /* Object - Component */
-@import "object/component/_grouping.css";
-@import "object/component/_text.css";
-@import "object/component/_embedded.css";
-@import "object/component/_form-search.css";
-@import "object/component/_layout.css";
+@import "object/component/_grouping.css" layer(component);
+@import "object/component/_text.css" layer(component);
+@import "object/component/_embedded.css" layer(component);
+@import "object/component/_form-search.css" layer(component);
+@import "object/component/_layout.css" layer(component);
 
 /* Object - Project */
-@import "object/project/_header.css";
-@import "object/project/_content.css";
-@import "object/project/_main-section-entry.css";
-@import "object/project/_main-text.css";
-@import "object/project/_main-list.css";
-@import "object/project/_main-link.css";
-@import "object/project/_main-embedded.css";
-@import "object/project/_main-tabular.css";
-@import "object/project/_main.css";
-@import "object/project/_sidebar.css";
-@import "object/project/_footer.css";
+@import "object/project/_header.css" layer(project);
+@import "object/project/_content.css" layer(project);
+@import "object/project/_main-section-entry.css" layer(project);
+@import "object/project/_main-text.css" layer(project);
+@import "object/project/_main-list.css" layer(project);
+@import "object/project/_main-link.css" layer(project);
+@import "object/project/_main-embedded.css" layer(project);
+@import "object/project/_main-tabular.css" layer(project);
+@import "object/project/_main.css" layer(project);
+@import "object/project/_sidebar.css" layer(project);
+@import "object/project/_footer.css" layer(project);
 
 /* Object - Utility */
-@import "object/utility/_text.css";
+@import "object/utility/_text.css" layer(utility);
