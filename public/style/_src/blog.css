@@ -5,6 +5,9 @@
 @import "foundation/_reset.css" layer(reset);
 @import "foundation/_elements.css" layer(elements);
 
+/* Layout */
+@import "layout/_common.css" layer(layout);
+
 /* Object - Component */
 @import "object/component/_grouping.css" layer(component);
 @import "object/component/_text.css" layer(component);
