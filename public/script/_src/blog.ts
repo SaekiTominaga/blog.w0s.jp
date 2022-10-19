@@ -4,7 +4,6 @@ import GoogleAdsense from './unique/GoogleAdsense';
 import ReportJsError from '@saekitominaga/report-js-error';
 import SidebarAmazonAd from './unique/SidebarAmazonAd';
 import Tab from '@saekitominaga/customelements-tab';
-import Tooltip from '@saekitominaga/customelements-tooltip';
 import TooltipTrigger from '@saekitominaga/customelements-tooltip-trigger';
 
 /* JS エラーレポート */
@@ -29,7 +28,6 @@ if (window.customElements !== undefined) {
 
 	/* ツールチップ */
 	if (document.querySelector('a[is="w0s-tooltip-trigger"]') !== null) {
-		customElements.define('w0s-tooltip', Tooltip);
 		customElements.define('w0s-tooltip-trigger', TooltipTrigger, {
 			extends: 'a',
 		});

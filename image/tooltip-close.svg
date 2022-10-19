@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+<style>
+path {
+	stroke: #767676;
+	stroke-width: 6px;
+	stroke-linecap: round;
+}
+</style>
+<path d="M 3 3 L 33 33"/>
+<path d="M 3 33 L 33 3"/>
+</svg>

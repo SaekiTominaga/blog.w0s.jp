@@ -1550,7 +1550,7 @@ export default class MessageParser {
 				const num = this.#footnotes.length;
 				const href = `${this.#entryId}-${num}`;
 
-				return `<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-element="w0s-tooltip" data-tooltip-close-text="閉じる">[${num}]</a></span>`;
+				return `<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
 			});
 		}
 
