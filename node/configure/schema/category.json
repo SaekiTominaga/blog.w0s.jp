@@ -3,17 +3,57 @@
 	"$id": "https://blog.w0s.jp/category.json",
 	"type": "object",
 	"title": "カテゴリ",
-	"required": ["maximum_number", "amazon_image_size", "view", "html"],
+	"required": ["maximum_number", "image_external", "view", "html"],
 	"properties": {
 		"maximum_number": {
 			"type": "integer",
 			"minimum": 1,
 			"title": "1ページあたりの最大表示件数"
 		},
-		"amazon_image_size": {
-			"type": "integer",
-			"minimum": 1,
-			"title": "Amazon 商品画像のサイズ"
+		"image_external": {
+			"type": "object",
+			"title": "外部サービスの画像",
+			"required": ["amazon", "twitter"],
+			"properties": {
+				"amazon": {
+					"type": "object",
+					"title": "Amazon",
+					"required": ["origin", "size"],
+					"properties": {
+						"origin": {
+							"type": "string",
+							"title": "URL origin"
+						},
+						"size": {
+							"type": "integer",
+							"minimum": 1,
+							"title": "画像サイズ"
+						}
+					},
+					"additionalProperties": false
+				},
+				"twitter": {
+					"type": "object",
+					"title": "Twitter",
+					"required": ["origin", "params"],
+					"properties": {
+						"origin": {
+							"type": "string",
+							"title": "URL origin"
+						},
+						"params": {
+							"type": "object",
+							"title": "パラメーター",
+							"additionalProperties": {
+								"type": "string",
+								"title": "パラメーターの値"
+							}
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
 		},
 		"view": {
 			"type": "object",

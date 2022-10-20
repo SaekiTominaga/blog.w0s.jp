@@ -6,23 +6,41 @@
  */
 
 export type NoName1 = number;
-export type Amazon = number;
-export type NoName2 = string;
-export type NoName3 = string;
-export type NoName4 = string;
+export type URLOrigin = string;
+export type NoName3 = number;
+export type URLOrigin1 = string;
+export type NoName5 = string;
+export type NoName6 = string;
+export type NoName7 = string;
+export type NoName8 = string;
 export type Brotli = string;
 
 export interface NoName {
   maximum_number: NoName1;
-  amazon_image_size: Amazon;
+  image_external: NoName2;
   view: View;
   html: HTML;
 }
+export interface NoName2 {
+  amazon: Amazon;
+  twitter: Twitter;
+}
+export interface Amazon {
+  origin: URLOrigin;
+  size: NoName3;
+}
+export interface Twitter {
+  origin: URLOrigin1;
+  params: NoName4;
+}
+export interface NoName4 {
+  [k: string]: NoName5;
+}
 export interface View {
-  success: NoName2;
+  success: NoName6;
 }
 export interface HTML {
-  directory: NoName3;
-  extension: NoName4;
+  directory: NoName7;
+  extension: NoName8;
   brotli_extension: Brotli;
 }
