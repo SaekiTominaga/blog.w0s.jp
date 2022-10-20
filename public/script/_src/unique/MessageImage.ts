@@ -78,9 +78,6 @@ export default class {
 		/* YouTube */
 		for (const youtubeId of youtubeIds) {
 			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/hqdefault.jpg`);
-			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/1.jpg`);
-			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/2.jpg`);
-			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/3.jpg`);
 		}
 
 		/* Tweet */
