@@ -11,7 +11,7 @@
 		"strict": true,
 
 		/* Modules */
-		"module": "ES2020",
+		"module": "ES2022",
 		"moduleResolution": "node",
 
 		/* Emit */
@@ -21,7 +21,7 @@
 		"forceConsistentCasingInFileNames": true,
 
 		/* Language and Environment */
-		"target": "ESNext",
+		"target": "ES2022",
 
 		/* Projects */
 		"incremental": true
