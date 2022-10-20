@@ -1,3 +1,5 @@
+import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
+
 /**
  * 記事を解析して画像情報を抜粋する
  */
@@ -124,7 +126,9 @@ export default class {
 				const responseJson: BlogApi.AmazonImage = await response.json();
 
 				for (const imageUrl of responseJson.image_urls) {
-					imageNames.add(imageUrl);
+					const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageUrl));
+					paapiItemImageUrlParser.removeSize();
+					imageNames.add(paapiItemImageUrlParser.toString());
 				}
 				for (const error of responseJson.errors) {
 					errorMessages.add(error);
