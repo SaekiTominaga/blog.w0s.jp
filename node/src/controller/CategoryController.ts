@@ -80,12 +80,29 @@ export default class CategoryController extends Controller implements Controller
 		const entries: BlogView.EntryData[] = [];
 		for (const entryDto of entriesDto) {
 			let imageExternal = entryDto.image_external;
-			if (imageExternal !== null && imageExternal.startsWith('https://m.media-amazon.com/')) {
-				/* Amazon 商品画像の場合 */
-				const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageExternal));
-				paapi5ItemImageUrlParser.setSize(this.#config.amazon_image_size);
+			if (imageExternal !== null) {
+				const url = new URL(imageExternal);
 
-				imageExternal = paapi5ItemImageUrlParser.toString();
+				switch (url.origin) {
+					case this.#config.image_external.amazon.origin: {
+						/* Amazon */
+						const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageExternal));
+						paapi5ItemImageUrlParser.setSize(this.#config.image_external.amazon.size);
+
+						imageExternal = paapi5ItemImageUrlParser.toString();
+						break;
+					}
+					case this.#config.image_external.twitter.origin: {
+						/* Twitter */
+						const searchParams = url.searchParams;
+						for (const [name, value] of Object.entries(this.#config.image_external.twitter.params)) {
+							searchParams.set(name, value);
+						}
+						url.search = searchParams.toString();
+						imageExternal = url.toString();
+						break;
+					}
+				}
 			}
 
 			entries.push({
