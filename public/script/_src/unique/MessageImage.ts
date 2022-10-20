@@ -48,9 +48,14 @@ export default class {
 
 		/* 本文内のテキストから画像パスと ASIN を抜き出す */
 		this.#ctrlElement.value.split('\n').forEach((value: string): void => {
-			const imageRegResult = /^!([^ ]+) (.+)/.exec(value);
+			const imageRegResult = /^!([^:]+?) (.+)/.exec(value);
 			if (imageRegResult !== null) {
 				imageNames.add(<string>imageRegResult[1]);
+			}
+
+			const youtubeRegResult = /^!youtube:(.+?) ([0-9]+)x([0-9]+) (.+)/.exec(value);
+			if (youtubeRegResult !== null) {
+				youtubeIds.add(<string>youtubeRegResult[1]);
 			}
 
 			const twitterRegResult = /^\$tweet: ([ 0-9]+)/.exec(value);
@@ -60,11 +65,6 @@ export default class {
 				});
 			}
 
-			const youtubeRegResult = /^\$youtube: ([^ ]+) ([0-9]+)x([0-9]+) (.+)/.exec(value);
-			if (youtubeRegResult !== null) {
-				youtubeIds.add(<string>youtubeRegResult[1]);
-			}
-
 			const asinRegResult = /^\$amazon: ([ 0-9A-Z]+)/.exec(value);
 			if (asinRegResult !== null) {
 				(<string>asinRegResult[1]).split(' ').forEach((asin) => {
@@ -72,6 +72,14 @@ export default class {
 				});
 			}
 		});
+
+		/* YouTube */
+		for (const youtubeId of youtubeIds) {
+			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/hqdefault.jpg`);
+			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/1.jpg`);
+			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/2.jpg`);
+			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/3.jpg`);
+		}
 
 		/* Tweet */
 		if (tweetIds.size >= 1) {
@@ -96,14 +104,6 @@ export default class {
 			} catch (e) {
 				errorMessages.add(e instanceof Error ? e.message : 'Tweet API Error');
 			}
-		}
-
-		/* YouTube */
-		for (const youtubeId of youtubeIds) {
-			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/hqdefault.jpg`);
-			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/1.jpg`);
-			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/2.jpg`);
-			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/3.jpg`);
 		}
 
 		/* Amazon */
