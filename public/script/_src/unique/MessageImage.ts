@@ -135,7 +135,6 @@ export default class {
 			}
 		}
 
-		console.debug(imageNames);
 		this.#displayRadioButtons(imageNames, selectedImageName);
 		this.#displayErrorMessages(errorMessages);
 	}
