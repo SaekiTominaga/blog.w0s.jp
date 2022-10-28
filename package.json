@@ -20,7 +20,7 @@
 		"css-build": "run-p _css-build:*",
 		"js-build": "run-p _js-build:*",
 		"svg-build": "run-p _svg-build:*",
-		"node-build": "tsc --project node/tsconfig.json",
+		"node-build-all": "tsc --project node/tsconfig.json",
 		"node-build-watch": "tsc --project node/tsconfig.json -w",
 		"node-config-convert": "json2ts -i node/configure/schema -o node/configure/type",
 		"node-config-validate": "run-p _node-config-validate:*",
