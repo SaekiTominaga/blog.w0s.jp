@@ -1,3 +1,4 @@
+/.rollup.cache/
 /coverage/
 
 /html/
@@ -19,5 +20,6 @@
 /public/json/
 /public/script/*.js
 /public/script/*.mjs
+/public/script/tsconfig.tsbuildinfo
 /public/style/*.css
 /public/node_modules/
