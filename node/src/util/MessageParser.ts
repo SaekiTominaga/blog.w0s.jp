@@ -16,7 +16,7 @@ import serialize from 'w3c-xmlserializer';
 import StringEscapeHtml from '@saekitominaga/string-escape-html';
 import { JSDOM } from 'jsdom';
 import { LanguageFn } from 'highlight.js';
-import { NoName as Configure } from '../../configure/type/common';
+import { NoName as Configure } from '../../configure/type/common.js';
 
 /**
  * 記事メッセージのパーサー

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import StringEscapeHtml from '@saekitominaga/string-escape-html';
-import { NoName as Configure } from '../../configure/type/common';
+import { NoName as Configure } from '../../configure/type/common.js';
 import { Request, Response } from 'express';
 
 type HttpAuthType = 'Basic' | 'Bearer' | 'Digest' | 'HOBA' | 'Mutual' | 'Negotiate' | 'OAuth' | 'SCRAM-SHA-1' | 'SCRAM-SHA-256' | 'vapid';

@@ -1,7 +1,7 @@
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import MessageParser from '../../util/MessageParser.js';
-import { NoName as ConfigureCommon } from '../../../configure/type/common';
+import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import { Request, Response } from 'express';
 import RequestUtil from '../../util/RequestUtil.js';
 

@@ -6,8 +6,8 @@ import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import RequestUtil from '../util/RequestUtil.js';
-import { Amazon as Configure } from '../../configure/type/amazon';
-import { NoName as ConfigureCommon } from '../../configure/type/common';
+import { Amazon as Configure } from '../../configure/type/amazon.js';
+import { NoName as ConfigureCommon } from '../../configure/type/common.js';
 import { Request, Response } from 'express';
 
 /**

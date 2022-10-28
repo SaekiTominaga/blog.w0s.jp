@@ -11,7 +11,7 @@ import prettier from 'prettier';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import { NoName as Configure } from '../../configure/type/entry.js';
-import { NoName as ConfigureCommon } from '../../configure/type/common';
+import { NoName as ConfigureCommon } from '../../configure/type/common.js';
 import { Request, Response } from 'express';
 
 /**

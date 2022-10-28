@@ -14,7 +14,7 @@ import path from 'path';
 import PostController from './controller/PostController.js';
 import PreviewController from './controller/api/PreviewController.js';
 import TweetMediaController from './controller/api/TweetMediaController.js';
-import { NoName as Configure } from '../configure/type/common';
+import { NoName as Configure } from '../configure/type/common.js';
 
 /* 設定ファイル読み込み */
 const config = <Configure>JSON.parse(fs.readFileSync('node/configure/common.json', 'utf8'));

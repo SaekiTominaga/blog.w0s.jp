@@ -5,7 +5,7 @@ import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import fs from 'fs';
 import { GetItemsResponse } from 'paapi5-typescript-sdk';
-import { NoName as ConfigureCommon } from '../../../configure/type/common';
+import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import { PAAPI as ConfigurePaapi } from '../../../configure/type/paapi.js';
 import { Request, Response } from 'express';
 import RequestUtil from '../../util/RequestUtil.js';
