@@ -2,16 +2,10 @@
 	"extends": "../tsconfig.json",
 	"include": ["@types/*.d.ts", "src/**/*.ts"],
 	"compilerOptions": {
-		/* Modules */
-		"module": "es2022",
-
 		/* Emit */
 		"outDir": "dist",
 
 		/* Interop Constraints */
-		"esModuleInterop": true,
-
-		/* Language and Environment */
-		"target": "ESNext"
+		"esModuleInterop": true
 	}
 }
