@@ -1,6 +1,7 @@
-import typescript from '@rollup/plugin-typescript';
+import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
+import typescript from '@rollup/plugin-typescript';
 
 const baseDir = 'public/script';
 const inputDir = `${baseDir}/_src`;
@@ -9,6 +10,7 @@ const outputDir = `${baseDir}`;
 const moduleFiles = ['blog.ts', 'error.ts', 'admin.ts'];
 const jsFiles = ['trusted-types.ts', 'analytics.ts'];
 
+const pluginCommonjs = commonjs();
 const pluginTypeScript = typescript({
 	tsconfig: `${baseDir}/tsconfig.json`,
 });
@@ -18,7 +20,7 @@ const pluginTerser = terser();
 const moduleConfigurations = moduleFiles.map((file) => {
 	return {
 		input: `${inputDir}/${file}`,
-		plugins: [pluginTypeScript, pluginResolve, pluginTerser],
+		plugins: [pluginCommonjs, pluginTypeScript, pluginResolve, pluginTerser],
 		output: {
 			dir: outputDir,
 			sourcemap: 'hidden',
