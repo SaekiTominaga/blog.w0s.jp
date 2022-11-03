@@ -93,7 +93,7 @@
 }
 
 .p-form-results__mark {
-	min-width: 1em;
+	min-inline-size: 1em;
 	font-weight: var(--font-weight-bold);
 	text-align: center;
 }
@@ -109,12 +109,12 @@
 	font-size: calc(100% / var(--font-ratio-1));
 
 	& > li {
-		width: 120px;
+		inline-size: 120px;
 	}
 
 	& img {
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 		object-fit: contain;
 		object-position: 0 0;
 	}

@@ -6,6 +6,6 @@
 .c-link-icon {
 	vertical-align: -0.25em;
 	margin-inline: 0.25em;
-	width: auto;
-	height: 1.15em;
+	inline-size: auto;
+	block-size: 1.15em;
 }

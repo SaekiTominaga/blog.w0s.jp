@@ -27,25 +27,25 @@ Styleguide 1.5.
 .c-grid {
 	--_gap-row: 1em;
 	--_gap-col: 50px;
-	--_max-width: auto;
+	--_max-inline-size: auto;
 
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(min(var(--_max-width), 100%), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(min(var(--_max-inline-size), 100%), 1fr));
 	gap: var(--_gap-row) var(--_gap-col);
 
 	/* 2カラム */
 	&.-wide {
-		--_max-width: 330px;
+		--_max-inline-size: 330px;
 	}
 
 	/* 3カラム */
 	&.-medium {
-		--_max-width: 240px;
+		--_max-inline-size: 240px;
 	}
 
 	/* 4カラム */
 	&.-narrow {
-		--_max-width: 180px;
+		--_max-inline-size: 180px;
 	}
 }
 

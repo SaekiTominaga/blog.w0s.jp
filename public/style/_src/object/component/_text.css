@@ -4,16 +4,16 @@
 
 /* ===== リンク ===== */
 .c-link {
-	--_icon-width: 0.45em;
-	--_icon-height: 0.75em;
+	--_icon-inline-size: 0.45em;
+	--_icon-inline-size: 0.75em;
 	--_icon-color: var(--color-gray);
 
 	&::before {
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
 		margin-inline-end: 0.5em;
-		border-block-start: var(--_icon-height) solid var(--_icon-color);
-		width: var(--_icon-width);
+		border-block-start: var(--_icon-inline-size) solid var(--_icon-color);
+		inline-size: var(--_icon-inline-size);
 		content: "";
 	}
 
@@ -32,8 +32,8 @@
 	justify-content: center;
 	align-items: center;
 	outline-width: var(--outline-width-bold);
-	min-width: var(--self-link-size);
-	min-height: var(--self-link-size);
+	min-inline-size: var(--self-link-size);
+	min-block-size: var(--self-link-size);
 	color: var(--link-color);
 	font-size: calc(100% / var(--font-ratio-3));
 	text-decoration: none;
@@ -44,7 +44,7 @@
 	--_padding-block: 0.5em;
 	--_padding-inline: 0.75em;
 	--_border-color: var(--color-border-dark);
-	--_width: auto;
+	--_inline-size: auto;
 	--_color: var(--color-black);
 	--_background: var(--color-white);
 	--_icon-size: 1.25em;
@@ -60,7 +60,7 @@
 	border-radius: var(--border-radius-normal);
 	background: var(--_background);
 	padding: var(--_padding-block) var(--_padding-inline);
-	width: var(--_width);
+	inline-size: var(--_inline-size);
 	color: var(--_color);
 	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-narrow);
@@ -72,7 +72,7 @@
 
 	@nest .p-sidebar-profile__banners & {
 		--_padding-inline: 1px;
-		--_width: 100%;
+		--_inline-size: 100%;
 	}
 
 	@nest .p-entry-footer-social & {
@@ -125,8 +125,8 @@
 }
 
 .c-button__icon {
-	width: var(--_icon-size);
-	height: var(--_icon-size);
+	inline-size: var(--_icon-size);
+	block-size: var(--_icon-size);
 }
 
 .c-button__text {

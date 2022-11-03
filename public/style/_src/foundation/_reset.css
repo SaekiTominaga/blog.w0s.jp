@@ -87,7 +87,7 @@ fieldset {
 	margin: 0;
 	border: none;
 	padding: 0;
-	min-width: 0;
+	min-inline-size: 0;
 }
 
 legend {

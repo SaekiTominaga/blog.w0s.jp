@@ -64,30 +64,30 @@
 /* ===== リンクリスト ===== */
 .p-links {
 	--_icon-clip-path: var(--shape-link-triangle);
-	--_icon-height: 0.75em;
-	--_icon-width: calc(var(--_icon-height) * 0.6);
+	--_icon-block-size: 0.75em;
+	--_icon-inline-size: calc(var(--_icon-block-size) * 0.6);
 	--_icon-color: var(--color-gray);
 	--_icon-gap: 0.5em;
 
 	line-height: var(--line-height-normal);
 
 	& > li {
-		margin-inline-start: calc((var(--_icon-width) + var(--_icon-gap)) * var(--font-ratio-2));
+		margin-inline-start: calc((var(--_icon-inline-size) + var(--_icon-gap)) * var(--font-ratio-2));
 
 		& + li {
 			margin-block-start: 1em;
 		}
 
 		& > a {
-			margin-inline-start: calc(0px - var(--_icon-width) - var(--_icon-gap));
+			margin-inline-start: calc(0px - var(--_icon-inline-size) - var(--_icon-gap));
 			font-size: calc(100% * var(--font-ratio-2));
 
 			&::before {
 				display: inline-block;
 				clip-path: var(--_icon-clip-path);
 				margin-inline-end: var(--_icon-gap);
-				border-block-start: var(--_icon-height) solid var(--_icon-color);
-				width: var(--_icon-width);
+				border-block-start: var(--_icon-block-size) solid var(--_icon-color);
+				inline-size: var(--_icon-inline-size);
 				content: "";
 			}
 		}
@@ -106,8 +106,8 @@
 
 /* ===== 目次 ===== */
 .p-toc {
-	--_icon-width: 0.75em; /* アイコンの幅 */
-	--_icon-height: calc(var(--_icon-width) * 0.75); /* アイコンの高さ */
+	--_icon-inline-size: 0.75em; /* アイコンの幅 */
+	--_icon-block-size: calc(var(--_icon-inline-size) * 0.75); /* アイコンの高さ */
 	--_icon-color: var(--color-gray); /* アイコンの色 */
 	--_icon-gap: 0.5em; /* アイコンと後続テキストの間隔 */
 
@@ -128,7 +128,7 @@
 	}
 
 	& > li {
-		margin-inline-start: calc(var(--_icon-width) + var(--_icon-gap));
+		margin-inline-start: calc(var(--_icon-inline-size) + var(--_icon-gap));
 		font-size: calc(100% * var(--font-ratio-1));
 
 		& + li {
@@ -136,15 +136,15 @@
 		}
 
 		& > :any-link {
-			margin-inline-start: calc(0px - var(--_icon-width) - var(--_icon-gap));
+			margin-inline-start: calc(0px - var(--_icon-inline-size) - var(--_icon-gap));
 			outline-offset: var(--outline-offset-linkonly);
 
 			&::before {
 				display: inline-block;
 				clip-path: var(--shape-pagelink-triangle);
 				margin-inline-end: var(--_icon-gap);
-				border-block-start: var(--_icon-height) solid var(--_icon-color);
-				width: var(--_icon-width);
+				border-block-start: var(--_icon-block-size) solid var(--_icon-color);
+				inline-size: var(--_icon-inline-size);
 				content: "";
 			}
 
@@ -163,7 +163,7 @@
 	border-radius: var(--border-radius-large);
 	background: var(--color-bg-light);
 	padding: 1em;
-	width: 100%;
+	inline-size: 100%;
 	font-size: calc(100% / var(--font-ratio-1));
 
 	@nest .p-entry & {
@@ -206,5 +206,5 @@
 
 .p-footnotes__text {
 	padding: 0.25em;
-	width: 100%;
+	inline-size: 100%;
 }

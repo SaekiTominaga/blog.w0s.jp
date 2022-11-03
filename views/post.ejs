@@ -38,7 +38,7 @@
 								<p>
 									<label class="c-label -input">
 										<span class="c-label__text">記事 ID</span>
-										<input type="number" class="c-input" id="fc-idselect" name="id" value="<%= page.query.id ?? latestId %>" min="1" max="<%= latestId %>" required="" style="--width: 4.5em"
+										<input type="number" class="c-input" id="fc-idselect" name="id" value="<%= page.query.id ?? latestId %>" min="1" max="<%= latestId %>" required="" style="--inline-size: 4.5em"
 									/></label>
 								</p>
 								<p><button class="c-submit" name="actionrevpre" value="1">修正</button></p>
@@ -97,7 +97,7 @@
 										</legend>
 										<div class="p-form-grid__contents">
 											<p>
-												<textarea class="c-textarea js-convert-trim" name="message" id="fc-message" required="" style="--height: 15em"><%= page.query.message %></textarea>
+												<textarea class="c-textarea js-convert-trim" name="message" id="fc-message" required="" style="--block-size: 15em"><%= page.query.message %></textarea>
 											</p>
 											<div class="p-post-preview">
 												<article aria-label="本文プレビュー" class="p-entry">
@@ -156,7 +156,7 @@
 									<fieldset>
 										<legend class="p-form-grid__legend"><label for="fc-relation" class="c-label">関連記事</label></legend>
 										<div class="p-form-grid__contents">
-											<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= page.query.relation %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" style="--width: 15em" />
+											<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= page.query.relation %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" style="--inline-size: 15em" />
 											<span class="u-small">（カンマ区切り）</span>
 										</div>
 									</fieldset>
@@ -208,7 +208,7 @@
 												</label>
 											</p>
 											<p>
-												<label class="c-label -input"><span class="c-label__text">ハッシュタグ</span><input class="c-input js-convert-trim" name="socialtag" value="<%= page.query.socialtag %>" pattern="[^,]+" style="--width: 12em" /></label>
+												<label class="c-label -input"><span class="c-label__text">ハッシュタグ</span><input class="c-input js-convert-trim" name="socialtag" value="<%= page.query.socialtag %>" pattern="[^,]+" style="--inline-size: 12em" /></label>
 												<span class="u-small">（スペース区切り）</span>
 											</p>
 										</div>

@@ -24,15 +24,15 @@
 	border-radius: var(--border-radius-normal);
 	background: var(--color-white);
 	padding: 15px;
-	max-width: min(30em, 100%);
+	max-inline-size: min(30em, 100%);
 	color: var(--color-black);
 	font-size: calc(100% / var(--font-ratio-1));
 
 	&::before {
 		display: block;
 		float: right;
-		width: calc(var(--_close-button-image-size) + var(--_close-button-padding) * 2);
-		height: calc(var(--_close-button-image-size) + var(--_close-button-padding) * 2);
+		inline-size: calc(var(--_close-button-image-size) + var(--_close-button-padding) * 2);
+		block-size: calc(var(--_close-button-image-size) + var(--_close-button-padding) * 2);
 		content: "";
 	}
 
@@ -57,8 +57,8 @@
 
 			& > img {
 				display: block;
-				width: var(--_close-button-image-size);
-				height: var(--_close-button-image-size);
+				inline-size: var(--_close-button-image-size);
+				block-size: var(--_close-button-image-size);
 			}
 		}
 	}
@@ -124,8 +124,8 @@
 	display: block;
 	transition: box-shadow var(--link-hover-transition-duration);
 	margin: auto;
-	max-width: 100%;
-	height: auto;
+	max-inline-size: 100%;
+	block-size: auto;
 
 	@nest :any-link:hover & {
 		box-shadow: 0 0 4px 3px var(--color-amazon-verydark);
@@ -134,19 +134,19 @@
 
 /* テキストエリア */
 .p-amazon__text {
-	--_bullet-height: 0.75em;
-	--_bullet-width: calc(var(--_bullet-height) * 0.6);
+	--_bullet-block-size: 0.75em;
+	--_bullet-inline-size: calc(var(--_bullet-block-size) * 0.6);
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
 	grid-column: text;
-	margin-inline-start: calc(var(--_bullet-width) + var(--_bullet-gap));
+	margin-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
 }
 
 /* 商品タイトル */
 .p-amazon__title {
 	display: inline;
-	margin-inline-start: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+	margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
 	font-weight: var(--font-weight-bold);
 	text-decoration-line: underline;
 
@@ -154,8 +154,8 @@
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
 		margin-inline-end: var(--_bullet-gap);
-		border-block-start: var(--_bullet-height) solid var(--_bullet-color);
-		width: var(--_bullet-width);
+		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
+		inline-size: var(--_bullet-inline-size);
 		content: "";
 	}
 }
@@ -208,8 +208,8 @@
 		transition: var(--_ripple-transition-duration);
 		inset: 0;
 		background-image: radial-gradient(circle, var(--_ripple-color) 25%, transparent 0);
-		width: 100%;
-		height: 100%;
+		inline-size: 100%;
+		block-size: 100%;
 		content: "";
 	}
 
@@ -222,8 +222,8 @@
 
 	& > img {
 		display: block;
-		width: 1.5em;
-		height: 1.5em;
+		inline-size: 1.5em;
+		block-size: 1.5em;
 	}
 }
 

@@ -5,8 +5,8 @@
 /* ===== 商品リンク ===== */
 .p-item {
 	--_gap: 15px;
-	--_bullet-width: 0.45em;
-	--_bullet-height: 0.75em;
+	--_bullet-inline-size: 0.45em;
+	--_bullet-block-size: 0.75em;
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
@@ -22,10 +22,10 @@
 
 .p-item__image {
 	float: left;
-	margin-inline-end: calc(var(--_gap) + var(--_bullet-width) + var(--_bullet-gap));
+	margin-inline-end: calc(var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
 	border: 1px solid var(--color-black);
-	max-width: 50%;
-	height: auto;
+	max-inline-size: 50%;
+	block-size: auto;
 
 	@nest :any-link:hover & {
 		box-shadow: 0 0 5px var(--color-border-dark);
@@ -38,7 +38,7 @@
 }
 
 .p-item__title {
-	margin-inline-start: calc(0px - var(--_bullet-width) - var(--_bullet-gap));
+	margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
 
 	@nest :any-link:hover & {
 		--_bullet-color: var(--link-color-hover);
@@ -53,8 +53,8 @@
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
 		margin-inline-end: var(--_bullet-gap);
-		border-block-start: var(--_bullet-height) solid var(--_bullet-color);
-		width: var(--_bullet-width);
+		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
+		inline-size: var(--_bullet-inline-size);
 		content: "";
 	}
 }

@@ -152,7 +152,7 @@
 .p-sidebar-links {
 	--_padding-block: 0.5em;
 	--_padding-inline: 0.5em;
-	--_min-height: auto;
+	--_min-block-size: auto;
 	--_bg-color: var(--color-verylightblue);
 
 	& a {
@@ -164,26 +164,26 @@
 		outline-offset: -1px;
 		background: var(--_bg-color);
 		padding: var(--_padding-block) var(--_padding-inline);
-		min-height: var(--_min-height);
+		min-block-size: var(--_min-block-size);
 		font-size: calc(100% / var(--font-ratio-1));
 
 		&:any-link {
 			--_bg-color: var(--color-white);
 			--_icon-color: var(--color-lightgray); /* アイコンの色 */
-			--_icon-width: 0.67em; /* アイコンの幅 */
-			--_icon-height: 1em; /* アイコンの高さ */
+			--_icon-inline-size: 0.67em; /* アイコンの幅 */
+			--_icon-block-size: 1em; /* アイコンの高さ */
 			--_icon-gap: 0.75em; /* テキストとアイコンの間隔 */
 
-			padding-inline-end: calc(var(--_icon-gap) + var(--_icon-width) + var(--_padding-inline));
+			padding-inline-end: calc(var(--_icon-gap) + var(--_icon-inline-size) + var(--_padding-inline));
 			text-decoration: none;
 
 			&::after {
 				position: absolute;
 				clip-path: var(--shape-link-arrow);
-				inset-block-start: calc(50% - var(--_icon-height) / 2);
+				inset-block-start: calc(50% - var(--_icon-block-size) / 2);
 				inset-inline-end: var(--_padding-inline);
-				border-block-start: var(--_icon-height) solid var(--_icon-color);
-				width: var(--_icon-width);
+				border-block-start: var(--_icon-block-size) solid var(--_icon-color);
+				inline-size: var(--_icon-inline-size);
 				content: "";
 			}
 
@@ -220,7 +220,7 @@
 
 	/* 記事 */
 	&.-entry {
-		--_min-height: 2em;
+		--_min-block-size: 2em;
 	}
 }
 
@@ -269,8 +269,8 @@
 .p-sidebar-amazon-link__image {
 	display: block;
 	transition: box-shadow var(--link-hover-transition-duration);
-	width: 100%;
-	height: auto;
+	inline-size: 100%;
+	block-size: auto;
 
 	@nest :any-link:hover:not(:focus) & {
 		box-shadow: 0 0 3px 3px var(--color-amazon-verydark);

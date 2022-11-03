@@ -27,8 +27,8 @@
 			inset: 1px;
 			background: rgb(0 0 0 / 70%) url("/image/entry/media-expansion.svg") center/contain no-repeat content-box border-box;
 			padding: var(--_expand-icon-padding);
-			width: 24px;
-			height: 24px;
+			inline-size: 24px;
+			block-size: 24px;
 			content: "";
 		}
 
@@ -50,12 +50,12 @@
 	display: inline-block;
 	vertical-align: top;
 	border: var(--_border-width) solid var(--color-black);
-	max-width: calc(100% - var(--_border-width) * 2);
-	height: auto;
+	max-inline-size: calc(100% - var(--_border-width) * 2);
+	block-size: auto;
 }
 
 .p-embed__image {
-	min-width: calc(360px / 1.5 + var(--_border-width) * 2);
+	min-inline-size: calc(360px / 1.5 + var(--_border-width) * 2);
 }
 
 .p-embed__video {
@@ -68,7 +68,7 @@
 	box-sizing: border-box;
 	border: var(--_border-width) solid var(--color-black);
 	aspect-ratio: var(--aspect-ratio, auto);
-	width: 100%;
+	inline-size: 100%;
 }
 
 .p-embed__tweet {

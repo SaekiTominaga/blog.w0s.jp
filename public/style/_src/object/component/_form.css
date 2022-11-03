@@ -15,13 +15,13 @@
 	border-radius: var(--border-radius-normal);
 	background: var(--_bg-color);
 	padding: var(--form-control-padding-block);
-	width: var(--width, auto);
-	max-width: 100%;
+	inline-size: var(--inline-size, auto);
+	max-inline-size: 100%;
 	color: var(--_color);
 
 	/* 全幅 */
 	&.-full {
-		width: 100%;
+		inline-size: 100%;
 	}
 
 	&:enabled:read-write {
@@ -110,8 +110,8 @@
 	border-radius: var(--border-radius-normal);
 	background: var(--_bg-color);
 	padding: var(--form-control-padding-block);
-	width: 100%;
-	min-height: var(--height, auto);
+	inline-size: 100%;
+	min-block-size: var(--block-size, auto);
 	color: var(--_color);
 
 	&:enabled:read-write {
@@ -179,8 +179,8 @@
 			transition: var(--_ripple-transition-duration);
 			inset: 0;
 			background-image: radial-gradient(circle, var(--_ripple-color) 25%, transparent 0);
-			width: 100%;
-			height: 100%;
+			inline-size: 100%;
+			block-size: 100%;
 			content: "";
 		}
 
@@ -251,8 +251,8 @@
 
 		& input {
 			outline: none;
-			width: 1em;
-			height: 1em;
+			inline-size: 1em;
+			block-size: 1em;
 		}
 
 		&:has(input.-invalid) {

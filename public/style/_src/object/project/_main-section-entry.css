@@ -80,8 +80,8 @@
 .p-section-break {
 	margin-inline: auto;
 	border: 1px solid var(--color-lightgray);
-	width: 15%;
-	height: 0;
+	inline-size: 15%;
+	block-size: 0;
 
 	@nest .p-entry & {
 		&:not(:first-child) {
