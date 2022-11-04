@@ -185,7 +185,6 @@
 	--_ripple-opacity: 0.25;
 	--_ripple-transition-duration: 0.5s;
 
-	position: relative; /* ripple effect・for Safari */
 	contain: layout; /* ripple effect */
 	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;

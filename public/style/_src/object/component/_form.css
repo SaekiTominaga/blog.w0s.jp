@@ -149,7 +149,6 @@
 	--_ripple-transition-duration: 0.5s;
 
 	display: inline-block;
-	position: relative; /* ripple effect・for Safari */
 	vertical-align: middle;
 	contain: layout; /* ripple effect */
 	outline-width: var(--outline-width-bold);

@@ -12,7 +12,6 @@
 
 /* ===== 画像選択 ===== */
 .p-post-select-image {
-	position: relative; /* for Safari */
 	contain: layout;
 	inline-size: 240px;
 	block-size: 240px;

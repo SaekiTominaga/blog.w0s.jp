@@ -157,7 +157,6 @@
 
 	& a {
 		display: flex;
-		position: relative; /* for Safari */
 		align-items: center;
 		contain: content;
 		outline-width: var(--outline-width-bold);

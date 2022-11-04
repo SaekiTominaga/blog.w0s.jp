@@ -6,7 +6,6 @@
 .p-embed {
 	--_border-width: 0px;
 
-	position: relative; /* for Safari */
 	contain: layout;
 
 	@nest .p-entry & {
