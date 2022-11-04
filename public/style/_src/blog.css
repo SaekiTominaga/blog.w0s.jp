@@ -1,32 +1,32 @@
 @layer reset, elements, layout, component, project, utility;
 
 /* Foundation */
-@import "foundation/_var.css";
-@import "foundation/_reset.css" layer(reset);
-@import "foundation/_elements.css" layer(elements);
+@import url("foundation/_var.css");
+@import url("foundation/_reset.css") layer(reset);
+@import url("foundation/_elements.css") layer(elements);
 
 /* Layout */
-@import "layout/_common.css" layer(layout);
+@import url("layout/_common.css") layer(layout);
 
 /* Object - Component */
-@import "object/component/_grouping.css" layer(component);
-@import "object/component/_text.css" layer(component);
-@import "object/component/_embedded.css" layer(component);
-@import "object/component/_form-search.css" layer(component);
-@import "object/component/_layout.css" layer(component);
+@import url("object/component/_grouping.css") layer(component);
+@import url("object/component/_text.css") layer(component);
+@import url("object/component/_embedded.css") layer(component);
+@import url("object/component/_form-search.css") layer(component);
+@import url("object/component/_layout.css") layer(component);
 
 /* Object - Project */
-@import "object/project/_header.css" layer(project);
-@import "object/project/_content.css" layer(project);
-@import "object/project/_main-section-entry.css" layer(project);
-@import "object/project/_main-text.css" layer(project);
-@import "object/project/_main-list.css" layer(project);
-@import "object/project/_main-link.css" layer(project);
-@import "object/project/_main-embedded.css" layer(project);
-@import "object/project/_main-tabular.css" layer(project);
-@import "object/project/_main.css" layer(project);
-@import "object/project/_sidebar.css" layer(project);
-@import "object/project/_footer.css" layer(project);
+@import url("object/project/_header.css") layer(project);
+@import url("object/project/_content.css") layer(project);
+@import url("object/project/_main-section-entry.css") layer(project);
+@import url("object/project/_main-text.css") layer(project);
+@import url("object/project/_main-list.css") layer(project);
+@import url("object/project/_main-link.css") layer(project);
+@import url("object/project/_main-embedded.css") layer(project);
+@import url("object/project/_main-tabular.css") layer(project);
+@import url("object/project/_main.css") layer(project);
+@import url("object/project/_sidebar.css") layer(project);
+@import url("object/project/_footer.css") layer(project);
 
 /* Object - Utility */
-@import "object/utility/_text.css" layer(utility);
+@import url("object/utility/_text.css") layer(utility);

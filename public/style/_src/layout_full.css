@@ -1,2 +1,2 @@
 /* Layout */
-@import "layout/_page-full.css" layer(layout);
+@import url("layout/_page-full.css") layer(layout);

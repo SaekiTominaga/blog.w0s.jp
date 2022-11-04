@@ -1,2 +1,2 @@
 /* Layout */
-@import "layout/_page-reader.css" layer(layout);
+@import url("layout/_page-reader.css") layer(layout);
