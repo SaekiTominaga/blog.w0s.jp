@@ -5,14 +5,14 @@
 /* ===== リンク ===== */
 .c-link {
 	--_icon-inline-size: 0.45em;
-	--_icon-inline-size: 0.75em;
+	--_icon-block-size: 0.75em;
 	--_icon-color: var(--color-gray);
 
 	&::before {
 		display: inline-block;
 		clip-path: var(--shape-link-triangle);
 		margin-inline-end: 0.5em;
-		border-block-start: var(--_icon-inline-size) solid var(--_icon-color);
+		border-block-start: var(--_icon-block-size) solid var(--_icon-color);
 		inline-size: var(--_icon-inline-size);
 		content: "";
 	}
