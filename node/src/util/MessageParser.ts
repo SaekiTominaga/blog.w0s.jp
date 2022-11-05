@@ -1323,8 +1323,8 @@ export default class MessageParser {
 		amazonElement.appendChild(headingElement);
 
 		const headingImageElement = this.#document.createElement('img');
-		headingImageElement.src = '/image/entry/amazon_buy.png';
-		headingImageElement.srcset = '/image/entry/amazon_buy@2x.png 2x';
+		headingImageElement.src = '/image/entry/amazon-buy.png';
+		headingImageElement.srcset = '/image/entry/amazon-buy@2x.png 2x';
 		headingImageElement.alt = 'Amazon で買う';
 		headingImageElement.width = 127;
 		headingImageElement.height = 26;
