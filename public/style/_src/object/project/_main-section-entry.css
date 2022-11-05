@@ -79,8 +79,9 @@
 /* ===== セクション終了 ===== */
 .p-section-break {
 	margin-inline: auto;
-	border: 1px solid var(--color-lightgray);
-	inline-size: 15%;
+	border-block-start: 2px solid;
+	border-image: linear-gradient(to right, transparent 0%, var(--color-lightgray) 50%, transparent 100%) 1 / 1px;
+	inline-size: min(30em, 100%);
 	block-size: 0;
 
 	@nest .p-entry & {
