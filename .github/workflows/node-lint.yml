@@ -1,4 +1,4 @@
-name: js-lint
+name: node-lint
 on:
   push:
     branches: 
