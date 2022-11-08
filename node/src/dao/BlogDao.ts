@@ -18,6 +18,7 @@ interface EntryCountOfCategory {
  */
 export default class BlogDao {
 	#dbh: sqlite.Database<sqlite3.Database, sqlite3.Statement> | null = null;
+
 	#config: Configure;
 
 	/**

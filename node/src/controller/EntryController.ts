@@ -1,24 +1,25 @@
+import dayjs from 'dayjs';
+import ejs from 'ejs';
+import fs from 'fs';
+import prettier from 'prettier';
+import { Request, Response } from 'express';
 import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
-import dayjs from 'dayjs';
-import ejs from 'ejs';
-import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
-import prettier from 'prettier';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import { NoName as Configure } from '../../configure/type/entry.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
-import { Request, Response } from 'express';
 
 /**
  * 記事
  */
 export default class EntryController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
+
 	#config: Configure;
 
 	/**
@@ -126,7 +127,7 @@ export default class EntryController extends Controller implements ControllerInt
 
 		let htmlFormatted = '';
 		try {
-			htmlFormatted = prettier.format(html, <prettier.Options>this.#configCommon.prettier.html).trim();
+			htmlFormatted = prettier.format(html, this.#configCommon.prettier.html as prettier.Options).trim();
 		} catch (e) {
 			this.logger.error('Prettier failed', e);
 			htmlFormatted = html;

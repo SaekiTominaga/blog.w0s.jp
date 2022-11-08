@@ -1,5 +1,5 @@
+/* eslint-disable lines-between-class-members */
 import * as sqlite from 'sqlite';
-import BlogMessageDao from '../dao/BlogMessageDao.js';
 import dayjs from 'dayjs';
 import GithubSlugger from 'github-slugger';
 import hljs from 'highlight.js/lib/core';
@@ -16,6 +16,7 @@ import serialize from 'w3c-xmlserializer';
 import StringEscapeHtml from '@saekitominaga/string-escape-html';
 import { JSDOM } from 'jsdom';
 import { LanguageFn } from 'highlight.js';
+import BlogMessageDao from '../dao/BlogMessageDao.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 
 /**
@@ -458,10 +459,10 @@ export default class MessageParser {
 							metaMatchGroups.height !== undefined &&
 							metaMatchGroups.caption !== undefined
 						) {
-							const id = metaMatchGroups.id;
+							const { id } = metaMatchGroups;
 							const width = Number(metaMatchGroups.width);
 							const height = Number(metaMatchGroups.height);
-							const caption = metaMatchGroups.caption;
+							const { caption } = metaMatchGroups;
 
 							this.#appendYouTube(id, width, height, caption);
 
@@ -515,6 +516,7 @@ export default class MessageParser {
 					}
 					break;
 				}
+				default:
 			}
 
 			/* その他の場合は段落（p） */
@@ -1128,7 +1130,7 @@ export default class MessageParser {
 				captionTitleElement.textContent = caption;
 				figcaptionElement.appendChild(captionTitleElement);
 
-				this.#imageNum++;
+				this.#imageNum += 1;
 				break;
 			}
 			case '.mp4': {
@@ -1153,9 +1155,10 @@ export default class MessageParser {
 				captionTitleElement.textContent = caption;
 				figcaptionElement.appendChild(captionTitleElement);
 
-				this.#videoNum++;
+				this.#videoNum += 1;
 				break;
 			}
+			default:
 		}
 	}
 
@@ -1221,7 +1224,7 @@ export default class MessageParser {
 		iconElement.className = 'c-link-icon';
 		captionTitleElement.appendChild(iconElement);
 
-		this.#videoNum++;
+		this.#videoNum += 1;
 	}
 
 	/**
@@ -1388,7 +1391,7 @@ export default class MessageParser {
 			}
 
 			if (amazonData.date !== null) {
-				const date = amazonData.date;
+				const { date } = amazonData;
 
 				const dpTimeElement = this.#document.createElement('p');
 				dpTimeElement.className = 'p-amazon__date';
@@ -1587,9 +1590,8 @@ export default class MessageParser {
 			if (regResult === null) {
 				if (parsedTextList.length === 0) {
 					return str;
-				} else {
-					break;
 				}
+				break;
 			}
 
 			const url = <string>regResult[1]; // リンクURL
@@ -1692,6 +1694,7 @@ export default class MessageParser {
 					hostIcon = '<img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
+				default:
 			}
 
 			/* サイトアイコンがない場合はホスト名をテキストで表記 */

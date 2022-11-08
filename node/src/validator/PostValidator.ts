@@ -1,13 +1,14 @@
-import BlogPostDao from '../dao/BlogPostDao.js';
-import { NoName as Configure } from '../../configure/type/post.js';
 import { body, Result, ValidationError, validationResult } from 'express-validator';
 import { Request } from 'express';
+import BlogPostDao from '../dao/BlogPostDao.js';
+import { NoName as Configure } from '../../configure/type/post.js';
 
 /**
  * 記事投稿
  */
 export default class PostValidator {
 	#req: Request;
+
 	#config: Configure;
 
 	/**

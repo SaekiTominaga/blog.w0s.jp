@@ -2,7 +2,7 @@ import Portal from '@saekitominaga/customelements-portal';
 import ReportJsError from '@saekitominaga/report-js-error';
 import ReportSameReferrer from '@saekitominaga/report-same-referrer';
 
-const portalHost = window.portalHost;
+const { portalHost } = window;
 if (portalHost === null || portalHost === undefined /* 未対応ブラウザは undefined になる */) {
 	/* JS エラーレポート */
 	new ReportJsError('https://report.w0s.jp/js', {

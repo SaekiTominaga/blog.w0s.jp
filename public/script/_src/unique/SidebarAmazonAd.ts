@@ -13,7 +13,7 @@ interface JsonColumn {
 /**
  * Amazon 商品広告情報を取得し、サイドバーに挿入する
  */
-export default class {
+export default class SidebarAmazonAd {
 	#templateElement: HTMLTemplateElement;
 
 	/**
@@ -33,13 +33,13 @@ export default class {
 		}
 
 		/* エンドポイントから JSON ファイルを取得する */
-		const jsonDataList = await this.fetch(jsonName);
+		const jsonDataList = await SidebarAmazonAd.#fetch(jsonName);
 
 		/* 取得したデータを HTML ページ内に挿入する */
-		this.insert(jsonDataList);
+		this.#insert(jsonDataList);
 
 		/* 直近の祖先要素の hidden 状態を解除する */
-		const ancestorHiddenElement = <HTMLElement | null>this.#templateElement.closest('[hidden]');
+		const ancestorHiddenElement = this.#templateElement.closest('[hidden]') as HTMLElement | null;
 		if (ancestorHiddenElement !== null) {
 			ancestorHiddenElement.hidden = false;
 		}
@@ -52,13 +52,14 @@ export default class {
 	 *
 	 * @returns {object[]} Amazon 商品情報のデータ
 	 */
-	private async fetch(jsonName: string): Promise<JsonColumn[]> {
+	static async #fetch(jsonName: string): Promise<JsonColumn[]> {
 		const response = await fetch(`https://w0s.jp/assets/json/amazon-ads/${jsonName}.json`);
 		if (!response.ok) {
 			throw new Error(`"${response.url}" is ${response.status} ${response.statusText}`);
 		}
 
-		return await response.json();
+		const json = await response.json();
+		return json;
 	}
 
 	/**
@@ -66,7 +67,7 @@ export default class {
 	 *
 	 * @param {object[]} jsonData - JSON から取得した Amazon 商品情報のデータ
 	 */
-	private insert(jsonData: JsonColumn[]): void {
+	#insert(jsonData: JsonColumn[]): void {
 		const nowTime = Date.now();
 		const nowYear = new Date().getFullYear();
 
@@ -81,7 +82,7 @@ export default class {
 			const imageWidth = jsonColumn.w; // 画像幅
 			const imageHeight = jsonColumn.h; // 画像高さ
 
-			const templateElementClone = <DocumentFragment>this.#templateElement.content.cloneNode(true);
+			const templateElementClone = this.#templateElement.content.cloneNode(true) as DocumentFragment;
 
 			const dpAnchorElement = <HTMLAnchorElement>templateElementClone.querySelector('a');
 			dpAnchorElement.href = `https://www.amazon.co.jp/dp/${asin}?tag=w0s.jp-22&linkCode=ogi&th=1&psc=1`;

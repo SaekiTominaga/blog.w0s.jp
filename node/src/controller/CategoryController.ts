@@ -1,25 +1,26 @@
-import BlogCategoryDao from '../dao/BlogCategoryDao.js';
-import Compress from '../util/Compress.js';
-import Controller from '../Controller.js';
-import ControllerInterface from '../ControllerInterface.js';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import filenamify from 'filenamify';
 import fs from 'fs';
-import HttpResponse from '../util/HttpResponse.js';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import prettier from 'prettier';
+import { Request, Response } from 'express';
+import BlogCategoryDao from '../dao/BlogCategoryDao.js';
+import Compress from '../util/Compress.js';
+import Controller from '../Controller.js';
+import ControllerInterface from '../ControllerInterface.js';
+import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import { NoName as Configure } from '../../configure/type/category.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
-import { Request, Response } from 'express';
 
 /**
  * カテゴリー
  */
 export default class CategoryController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
+
 	#config: Configure;
 
 	/**
@@ -94,7 +95,7 @@ export default class CategoryController extends Controller implements Controller
 					}
 					case this.#config.image_external.twitter.origin: {
 						/* Twitter */
-						const searchParams = url.searchParams;
+						const { searchParams } = url;
 						for (const [name, value] of Object.entries(this.#config.image_external.twitter.params)) {
 							searchParams.set(name, value);
 						}
@@ -102,6 +103,7 @@ export default class CategoryController extends Controller implements Controller
 						imageExternal = url.toString();
 						break;
 					}
+					default:
 				}
 			}
 
@@ -129,7 +131,7 @@ export default class CategoryController extends Controller implements Controller
 
 		let htmlFormatted = '';
 		try {
-			htmlFormatted = prettier.format(html, <prettier.Options>this.#configCommon.prettier.html).trim();
+			htmlFormatted = prettier.format(html, this.#configCommon.prettier.html as prettier.Options).trim();
 		} catch (e) {
 			this.logger.error('Prettier failed', e);
 			htmlFormatted = html;

@@ -1,10 +1,10 @@
 import ButtonClipboard from '@saekitominaga/customelements-button-clipboard';
 import ButtonShare from '@saekitominaga/customelements-button-share';
-import GoogleAdsense from './unique/GoogleAdsense';
 import ReportJsError from '@saekitominaga/report-js-error';
-import SidebarAmazonAd from './unique/SidebarAmazonAd';
 import Tab from '@saekitominaga/customelements-tab';
 import TooltipTrigger from '@saekitominaga/customelements-tooltip-trigger';
+import GoogleAdsense from './unique/GoogleAdsense';
+import SidebarAmazonAd from './unique/SidebarAmazonAd';
 
 /* JS エラーレポート */
 new ReportJsError('https://report.w0s.jp/js', {

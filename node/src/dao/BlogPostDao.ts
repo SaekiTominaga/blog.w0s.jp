@@ -1,7 +1,7 @@
+import { Dayjs } from 'dayjs';
 import * as sqlite from 'sqlite';
 import BlogDao from './BlogDao.js';
 import DbUtil from '../util/DbUtil.js';
-import { Dayjs } from 'dayjs';
 
 interface CategoryMaster {
 	group_name: string;
@@ -182,8 +182,9 @@ export default class BlogPostDao extends BlogDao {
 			await sth.finalize();
 
 			return row !== undefined && row.count > 0;
-		} else {
-			const sth = await dbh.prepare(`
+		}
+
+		const sth = await dbh.prepare(`
 				SELECT
 					COUNT() AS count
 				FROM
@@ -192,15 +193,14 @@ export default class BlogPostDao extends BlogDao {
 					title = :title
 				LIMIT 1
 			`);
-			await sth.bind({
-				':title': title,
-			});
+		await sth.bind({
+			':title': title,
+		});
 
-			const row = await sth.get();
-			await sth.finalize();
+		const row = await sth.get();
+		await sth.finalize();
 
-			return row !== undefined && row.count > 0;
-		}
+		return row !== undefined && row.count > 0;
 	}
 
 	/**

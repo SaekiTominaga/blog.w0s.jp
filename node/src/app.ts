@@ -1,16 +1,16 @@
-import AmazonController from './controller/AmazonController.js';
-import AmazonImageController from './controller/api/AmazonImageController.js';
-import CategoryController from './controller/CategoryController.js';
 import compression from 'compression';
-import EntryController from './controller/EntryController.js';
 import express, { NextFunction, Request, Response } from 'express';
 import fs from 'fs';
-import HttpBasicAuth from './util/HttpBasicAuth.js';
-import HttpResponse from './util/HttpResponse.js';
-import ListController from './controller/ListController.js';
 import Log4js from 'log4js';
 import multer from 'multer';
 import path from 'path';
+import AmazonController from './controller/AmazonController.js';
+import AmazonImageController from './controller/api/AmazonImageController.js';
+import CategoryController from './controller/CategoryController.js';
+import EntryController from './controller/EntryController.js';
+import HttpBasicAuth from './util/HttpBasicAuth.js';
+import HttpResponse from './util/HttpResponse.js';
+import ListController from './controller/ListController.js';
 import PostController from './controller/PostController.js';
 import PreviewController from './controller/api/PreviewController.js';
 import TweetMediaController from './controller/api/TweetMediaController.js';
@@ -58,7 +58,7 @@ app.use(
 	}),
 	async (req, res, next) => {
 		/* Basic Authentication */
-		const basic = config.static.auth_basic?.find((basic) => basic.directory.find((urlPath) => req.url.startsWith(urlPath)));
+		const basic = config.static.auth_basic?.find((basicAuth) => basicAuth.directory.find((urlPath) => req.url.startsWith(urlPath)));
 		if (basic !== undefined) {
 			const httpBasicAuth = new HttpBasicAuth(req);
 			if (!(await httpBasicAuth.htpasswd(basic.htpasswd))) {
@@ -85,11 +85,9 @@ app.use(
 			if (extension !== undefined) {
 				requestFilePath = `${requestPath}.${extension}`;
 			}
-		} else {
+		} else if (fs.existsSync(`${config.static.root}/${requestPath}`)) {
 			/* 拡張子のある URL（e.g. /foo.txt ） */
-			if (fs.existsSync(`${config.static.root}/${requestPath}`)) {
-				requestFilePath = requestPath;
-			}
+			requestFilePath = requestPath;
 		}
 
 		/* Brotli */
@@ -126,8 +124,8 @@ app.use(
 				const cacheControlConfig = env === 'production' ? config.static.headers.cache_control.production : config.static.headers.cache_control.development;
 
 				const cacheControlValue =
-					cacheControlConfig.path?.find((path) => path.paths.includes(requestUrlOrigin))?.value ??
-					cacheControlConfig.extension?.find((ext) => ext.extensions.includes(extensionOrigin))?.value ??
+					cacheControlConfig.path?.find((ccPath) => ccPath.paths.includes(requestUrlOrigin))?.value ??
+					cacheControlConfig.extension?.find((ccExt) => ccExt.extensions.includes(extensionOrigin))?.value ??
 					cacheControlConfig.default;
 
 				res.setHeader('Cache-Control', cacheControlValue);

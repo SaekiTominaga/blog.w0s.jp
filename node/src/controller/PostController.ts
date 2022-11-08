@@ -1,25 +1,25 @@
+import dayjs from 'dayjs';
+import ejs from 'ejs';
+import fs from 'fs';
+import path from 'path';
+import prettier from 'prettier';
+import xmlFormatter from 'xml-formatter';
+import { Request, Response } from 'express';
+import { Result as ValidationResult, ValidationError } from 'express-validator';
+import { TwitterApi } from 'twitter-api-v2';
 import BlogPostDao from '../dao/BlogPostDao.js';
 import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
-import dayjs from 'dayjs';
-import ejs from 'ejs';
-import fs from 'fs';
 import HttpBasicAuth, { Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
-import path from 'path';
 import PostValidator from '../validator/PostValidator.js';
-import prettier from 'prettier';
 import RequestUtil from '../util/RequestUtil.js';
 import Tweet from '../util/Tweet.js';
-import xmlFormatter from 'xml-formatter';
 import { NoName as Configure } from '../../configure/type/post.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
-import { Request, Response } from 'express';
-import { Result as ValidationResult, ValidationError } from 'express-validator';
 import { TwitterAPI as ConfigureTwitter } from '../../configure/type/twitter.js';
-import { TwitterApi } from 'twitter-api-v2';
 
 interface PostResults {
 	success: boolean;
@@ -42,7 +42,9 @@ interface MediaUploadResults {
  */
 export default class PostController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
+
 	#config: Configure;
+
 	#configTwitter: ConfigureTwitter;
 
 	#env: Express.Env;
@@ -298,7 +300,7 @@ export default class PostController extends Controller implements ControllerInte
 			let feedXmlFormatted = '';
 			try {
 				feedXmlFormatted = prettier
-					.format(feedXml, <prettier.Options>this.#configCommon.prettier.html)
+					.format(feedXml, this.#configCommon.prettier.html as prettier.Options)
 					.replaceAll(/\t*<!-- prettier-ignore -->\t*\n/g, '')
 					.trim();
 			} catch (e) {
@@ -501,7 +503,7 @@ export default class PostController extends Controller implements ControllerInte
 						continue;
 					}
 
-					const responseFile = <MediaApi.Upload>await response.json();
+					const responseFile = await response.json() as MediaApi.Upload;
 					switch (responseFile.code) {
 						case this.#config.media_upload.api_response.success.code:
 							/* 成功 */
