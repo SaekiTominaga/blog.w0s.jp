@@ -5,7 +5,8 @@ on:
       - main
     paths:
       - 'errorpage/*.html'
-      - 'views/**/*.ejs'
+      - 'views/*.ejs'
+      - 'views/_include/*.ejs'
 
 jobs:
   build:
