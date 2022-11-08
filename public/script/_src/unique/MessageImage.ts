@@ -3,9 +3,11 @@ import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser'
 /**
  * 記事を解析して画像情報を抜粋する
  */
-export default class {
+export default class MessageImage {
 	readonly #ctrlElement: HTMLTextAreaElement; // 本文入力欄
+
 	readonly #selectImageElement: HTMLTemplateElement; // 選択画像を表示する要素
+
 	readonly #selectImageErrorElement: HTMLTemplateElement; // エラー情報を表示する要素
 
 	readonly #imageName: string | undefined; // 既存記事でもともと指定されていた画像（ファイル名 or 外部サービス URL）
@@ -31,7 +33,7 @@ export default class {
 
 		/* いったんクリア */
 		while (this.#selectImageElement.nextElementSibling) {
-			const radioCheckedElements = <NodeListOf<HTMLInputElement>>this.#selectImageElement.nextElementSibling.querySelectorAll('input[type="radio"]:checked');
+			const radioCheckedElements = this.#selectImageElement.nextElementSibling.querySelectorAll<HTMLInputElement>('input[type="radio"]:checked');
 			if (radioCheckedElements.length === 1) {
 				selectedImageName = radioCheckedElements[0]?.value;
 			}
@@ -148,7 +150,7 @@ export default class {
 	#displayRadioButtons(imageNames: Set<string>, selectedImageName?: string): void {
 		const fragment = document.createDocumentFragment();
 		for (const imageName of imageNames) {
-			const templateElementClone = <HTMLElement>this.#selectImageElement.content.cloneNode(true);
+			const templateElementClone = this.#selectImageElement.content.cloneNode(true) as HTMLElement;
 
 			const radioElement = <HTMLInputElement>templateElementClone.querySelector('input[type="radio"]');
 			radioElement.value = imageName;
@@ -156,10 +158,8 @@ export default class {
 				if (imageName === selectedImageName) {
 					radioElement.checked = true;
 				}
-			} else {
-				if (imageName === this.#imageName) {
-					radioElement.checked = true;
-				}
+			} else if (imageName === this.#imageName) {
+				radioElement.checked = true;
 			}
 
 			const imgElement = <HTMLImageElement>templateElementClone.querySelector('img');
@@ -184,7 +184,7 @@ export default class {
 	#displayErrorMessages(messages: Set<string>): void {
 		const fragment = document.createDocumentFragment();
 		for (const message of messages) {
-			const templateElementClone = <HTMLElement>this.#selectImageErrorElement.content.cloneNode(true);
+			const templateElementClone = this.#selectImageErrorElement.content.cloneNode(true) as HTMLElement;
 
 			const liElement = <HTMLLIElement>templateElementClone.querySelector('li');
 			liElement.textContent = message;

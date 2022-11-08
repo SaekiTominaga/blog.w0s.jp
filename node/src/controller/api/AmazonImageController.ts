@@ -1,13 +1,13 @@
 // @ts-expect-error: ts(7016)
 import amazonPaapi from 'amazon-paapi';
+import fs from 'fs';
+import { GetItemsResponse } from 'paapi5-typescript-sdk';
+import { Request, Response } from 'express';
 import BlogAmazonDao from '../../dao/BlogAmazonDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
-import fs from 'fs';
-import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import { PAAPI as ConfigurePaapi } from '../../../configure/type/paapi.js';
-import { Request, Response } from 'express';
 import RequestUtil from '../../util/RequestUtil.js';
 
 /**
@@ -15,6 +15,7 @@ import RequestUtil from '../../util/RequestUtil.js';
  */
 export default class AmazonImageController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
+
 	#configPaapi: ConfigurePaapi;
 
 	/**
@@ -60,7 +61,7 @@ export default class AmazonImageController extends Controller implements Control
 		const paapiErros: Set<string> = new Set(); // PA-API でのエラー情報を格納
 
 		if (unregisteredAsins.length >= 1) {
-			const paapiResponse = <GetItemsResponse>await amazonPaapi.GetItems(
+			const paapiResponse = await amazonPaapi.GetItems(
 				{
 					PartnerTag: this.#configPaapi.partner_tag,
 					PartnerType: 'Associates',
@@ -74,7 +75,7 @@ export default class AmazonImageController extends Controller implements Control
 					ItemIds: unregisteredAsins,
 					Resources: ['Images.Primary.Large', 'ItemInfo.Classifications', 'ItemInfo.ContentInfo', 'ItemInfo.Title'],
 				}
-			);
+			) as GetItemsResponse;
 			const paapiResponseErrors = paapiResponse.Errors;
 			if (paapiResponseErrors !== undefined) {
 				for (const error of paapiResponseErrors) {

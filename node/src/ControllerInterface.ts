@@ -1,3 +1,4 @@
+/* eslint-disable semi */
 import { Request, Response } from 'express';
 
 export default interface ControllerInterface {

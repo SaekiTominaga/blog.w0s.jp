@@ -6,12 +6,15 @@ import { TweetV2PostTweetResult, TwitterApi } from 'twitter-api-v2';
 
 export default class Tweet {
 	readonly #twitterApiv1: TwitterApiv1ReadWrite;
+
 	readonly #twitterApiv2: TwitterApiv2ReadWrite;
 
 	/* 画像の添付最大数 */
 	readonly #IMAGE_LIMIT = 4;
+
 	/* API のアクセス取得間隔（ミリ秒） */
 	readonly #ACCESS_INTERVAL = 1000;
+
 	/* 最大文字数超過時の本文末尾に追加する文字列 */
 	readonly #POST_MARKER = '...';
 
@@ -39,11 +42,11 @@ export default class Tweet {
 
 		/* 本文を組み立てる */
 		let postText = text;
-		let postMessage = this.#assembleTweetMessage(postText, url, hashtags);
+		let postMessage = Tweet.#assembleTweetMessage(postText, url, hashtags);
 
 		while (!TwitterText.parseTweet(postMessage).valid) {
 			postText = postText.substring(0, postText.length - 1);
-			postMessage = this.#assembleTweetMessage(postText, url, hashtags, this.#POST_MARKER);
+			postMessage = Tweet.#assembleTweetMessage(postText, url, hashtags, this.#POST_MARKER);
 
 			if (postText.length === 0) {
 				throw new Error('The tweet will fail even if the length of the body is shortened to 0 characters.');
@@ -93,7 +96,9 @@ export default class Tweet {
 
 		await this.#apiConnectPreprocessing();
 
-		return await this.#twitterApiv1.uploadMedia(media, { mimeType: fileTypeResult.mime }); // https://developer.twitter.com/en/docs/twitter-api/v1/media/upload-media/api-reference/post-media-upload
+		const uploadResult = await this.#twitterApiv1.uploadMedia(media, { mimeType: fileTypeResult.mime }); // https://developer.twitter.com/en/docs/twitter-api/v1/media/upload-media/api-reference/post-media-upload
+
+		return uploadResult;
 	}
 
 	/**
@@ -102,9 +107,11 @@ export default class Tweet {
 	async #apiConnectPreprocessing(): Promise<void> {
 		if (this.#requestCount > 0) {
 			/* 初回リクエスト時以外は一定間隔を空けてアクセス */
-			await new Promise((resolve) => setTimeout(resolve, this.#ACCESS_INTERVAL));
+			await new Promise((resolve) => {
+				setTimeout(resolve, this.#ACCESS_INTERVAL);
+			});
 		}
-		this.#requestCount++;
+		this.#requestCount += 1;
 	}
 
 	/**
@@ -117,7 +124,7 @@ export default class Tweet {
 	 *
 	 * @returns {string} 組み立てたメッセージ
 	 */
-	#assembleTweetMessage(text: string, url?: string, hashtags?: string[], trimMaker?: string): string {
+	static #assembleTweetMessage(text: string, url?: string, hashtags?: string[], trimMaker?: string): string {
 		let message = text;
 		if (trimMaker !== undefined && trimMaker !== '') {
 			message += trimMaker;

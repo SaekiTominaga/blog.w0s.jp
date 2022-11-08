@@ -1,8 +1,8 @@
 import ButtonConfirm from '@saekitominaga/customelements-button-confirm';
 import FormBeforeUnloadConfirm from '@saekitominaga/htmlformelement-before-unload-confirm';
 import InputFilePreview from '@saekitominaga/customelements-input-file-preview';
-import Preview from './unique/Preview';
 import StringConvert from '@saekitominaga/string-convert';
+import Preview from './unique/Preview';
 import MessageImage from './unique/MessageImage';
 
 if (document.querySelector('button[is="w0s-confirm-button"]') !== null) {

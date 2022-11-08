@@ -1,20 +1,21 @@
+import dayjs from 'dayjs';
+import fs from 'fs';
+import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
+import { Request, Response } from 'express';
 import BlogAmazonDao from '../dao/BlogAmazonDao.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
-import dayjs from 'dayjs';
-import fs from 'fs';
 import HttpResponse from '../util/HttpResponse.js';
-import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import RequestUtil from '../util/RequestUtil.js';
 import { Amazon as Configure } from '../../configure/type/amazon.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
-import { Request, Response } from 'express';
 
 /**
  * Amazon 商品管理
  */
 export default class BlogAmazonController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
+
 	#config: Configure;
 
 	/**
@@ -43,7 +44,7 @@ export default class BlogAmazonController extends Controller implements Controll
 
 		if (requestQuery.action_delete) {
 			/* 削除 */
-			const asin = requestQuery.asin;
+			const { asin } = requestQuery;
 
 			if (asin === null) {
 				this.logger.warn('データ削除時に必要なパラメーターが指定されていない');

@@ -1,8 +1,9 @@
 /**
  * 本文プレビュー
  */
-export default class {
+export default class Preview {
 	readonly #ctrlElement: HTMLTextAreaElement; // 本文入力欄
+
 	readonly #previewElement: HTMLElement; // プレビューを表示する要素
 
 	/**

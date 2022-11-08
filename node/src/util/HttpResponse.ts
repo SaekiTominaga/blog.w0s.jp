@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import StringEscapeHtml from '@saekitominaga/string-escape-html';
-import { NoName as Configure } from '../../configure/type/common.js';
 import { Request, Response } from 'express';
+import { NoName as Configure } from '../../configure/type/common.js';
 
 type HttpAuthType = 'Basic' | 'Bearer' | 'Digest' | 'HOBA' | 'Mutual' | 'Negotiate' | 'OAuth' | 'SCRAM-SHA-1' | 'SCRAM-SHA-256' | 'vapid';
 
@@ -11,7 +11,9 @@ type HttpAuthType = 'Basic' | 'Bearer' | 'Digest' | 'HOBA' | 'Mutual' | 'Negotia
  */
 export default class HttpResponse {
 	readonly #req: Request;
+
 	readonly #res: Response;
+
 	readonly #config: Configure;
 
 	readonly #MIME_HTML = 'text/html; charset=utf-8';

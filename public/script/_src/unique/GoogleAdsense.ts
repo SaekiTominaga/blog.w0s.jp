@@ -7,8 +7,9 @@ declare global {
 /**
  * Google AdSense
  */
-export default class {
+export default class GoogleAdsense {
 	#thisElement: Element;
+
 	#SCRIPT_ID = 'script-adsbygoogle'; // 埋め込む <script> 要素の ID
 
 	/**

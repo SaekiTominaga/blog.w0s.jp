@@ -1,18 +1,19 @@
+import fs from 'fs';
+import { Request, Response } from 'express';
+import { TwitterApi } from 'twitter-api-v2';
 import BlogTweetDao from '../../dao/BlogTweetDao.js';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
-import fs from 'fs';
 import RequestUtil from '../../util/RequestUtil.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
-import { Request, Response } from 'express';
 import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
-import { TwitterApi } from 'twitter-api-v2';
 
 /**
  * ツイート情報取得
  */
 export default class TweetMediaController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
+
 	#configTwitter: ConfigureTwitter;
 
 	/**
@@ -78,7 +79,7 @@ export default class TweetMediaController extends Controller implements Controll
 					continue;
 				}
 
-				const user = includes?.users?.find((user) => user.id === tweet.author_id);
+				const user = includes?.users?.find((userInfo) => userInfo.id === tweet.author_id);
 				if (user === undefined) {
 					this.logger.error(`API から取得したユーザー情報が不整合: ${tweetId}`);
 					continue;

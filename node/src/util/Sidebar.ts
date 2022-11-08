@@ -49,6 +49,7 @@ export default class Sidebar {
 	 * @returns {Array} 新着記事
 	 */
 	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
-		return await this.#dao.getNewlyEntries(limit);
+		const entries = await this.#dao.getNewlyEntries(limit);
+		return entries;
 	}
 }
