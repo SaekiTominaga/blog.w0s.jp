@@ -16,8 +16,8 @@
 	"scripts": {
 		"app": "nodemon --inspect node/dist/app.js",
 		"html-lint": "markuplint errorpage/*.html views/*.ejs views/_include/*.ejs",
-		"css-stylelint": "stylelint public/style/_src/**/*.css",
 		"css-build": "run-p _css-build:*",
+		"css-lint": "stylelint public/style/_src/**/*.css",
 		"js-build": "run-p _js-build:*",
 		"js-lint": "eslint public/script/_src/**/*.ts",
 		"svg-build": "run-p _svg-build:*",
