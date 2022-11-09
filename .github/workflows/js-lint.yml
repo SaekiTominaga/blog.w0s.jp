@@ -4,7 +4,7 @@ on:
     branches: 
       - main
     paths:
-      - 'public/script/_src/*.ts'
+      - 'public/script/_src/**/*.ts'
 
 jobs:
   build:
