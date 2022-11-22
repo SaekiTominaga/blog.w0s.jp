@@ -1,12 +1,12 @@
 {
+	"extends": [
+		"./node_modules/markuplint-config-w0s/.markuplintrc"
+	],
 	"parser": {
 		".ejs$": "@markuplint/ejs-parser"
 	},
 	"rules": {
-		"attr-duplication": true,
 		"character-reference": true,
-		"deprecated-attr": true,
-		"deprecated-element": true,
 		"disallowed-element": [
 			"base",
 			"style",
@@ -25,148 +25,18 @@
 			"area",
 			"noscript"
 		],
-		"doctype": true,
-		"id-duplication": true,
-		"ineffective-attr": true,
-		"invalid-attr": {
-			"option": {
-				"attrs": {
-					"accesskey": {
-						"disallowed": true
-					},
-					"tabindex": {
-						"enum": [
-							"-1",
-							"0"
-						]
-					}
-				}
-			}
-		},
-		"permitted-contents": true,
-		"required-attr": true,
-		"landmark-roles": true,
-		"no-refer-to-non-existent-id": true,
-		"require-accessible-name": true,
 		"required-h1": false,
-		"wai-aria": true,
 		"class-naming": [
 			"/^[lcpu]-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$/",
 			"/^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
 			"/^js-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
 			"/^adsbygoogle$/"
 		],
-		"no-use-event-handler-attr": true,
-		"attr-equal-space-after": "never",
-		"attr-equal-space-before": "never",
-		"attr-spacing": true,
-		"attr-value-quotes": "double",
-		"case-sensitive-attr-name": "lower",
-		"case-sensitive-tag-name": "lower",
-		"end-tag": true,
-		"indentation": "tab",
-		"no-default-value": true
+		"indentation": "tab"
 	},
 	"nodeRules": [
 		{
-			"selector": "html",
-			"rules": {
-				"invalid-attr": {
-					"option": {
-						"ignoreAttrNamePrefix": [
-							"prefix"
-						]
-					}
-				},
-				"required-attr": [
-					"lang"
-				]
-			}
-		},
-		{
-			"selector": "meta[property]",
-			"rules": {
-				"invalid-attr": {
-					"option": {
-						"attrs": {
-							"property": {
-								"pattern": "/^og:[a-z_]+/"
-							},
-							"content": {
-								"type": "NoEmptyAny"
-							}
-						}
-					}
-				},
-				"required-attr": false
-			}
-		},
-		{
-			"selector": "div",
-			"rules": {
-				"required-attr": [
-					"class"
-				]
-			}
-		},
-		{
-			"selector": "dl > div, object > div",
-			"rules": {
-				"required-attr": false
-			}
-		},
-		{
-			"selector": "img",
-			"rules": {
-				"required-attr": [
-					"alt"
-				]
-			}
-		},
-		{
-			"selector": "iframe",
-			"rules": {
-				"required-attr": [
-					"title"
-				]
-			}
-		},
-		{
 			"selector": "table",
-			"rules": {
-				"require-accessible-name": false
-			}
-		},
-		{
-			"selector": "thead th",
-			"rules": {
-				"required-attr": [
-					{
-						"name": "scope",
-						"value": [
-							"col",
-							"colgroup"
-						]
-					}
-				]
-			}
-		},
-		{
-			"selector": "tbody th",
-			"rules": {
-				"required-attr": [
-					{
-						"name": "scope",
-						"value": [
-							"row",
-							"rowgroup"
-						]
-					}
-				]
-			}
-		},
-		{
-			"selector": "template *",
 			"rules": {
 				"require-accessible-name": false
 			}
