@@ -45,7 +45,7 @@
 /* 送信ボタン */
 .c-search__submit {
 	& > button {
-		--_color: hsl(220 70% 45%);
+		--_color: hsl(220deg 70% 45%);
 
 		all: initial;
 		display: flex;
@@ -59,7 +59,7 @@
 		fill: currentColor; /* SVG */
 
 		&:focus:not(:focus-visible) {
-			--_color: hsl(220 70% 35%);
+			--_color: hsl(220deg 70% 35%);
 		}
 
 		&:focus-visible {
@@ -67,7 +67,7 @@
 		}
 
 		&:hover {
-			--_color: hsl(220 70% 55%);
+			--_color: hsl(220deg 70% 55%);
 		}
 
 		& > svg {

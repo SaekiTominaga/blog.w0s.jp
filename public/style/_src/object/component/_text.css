@@ -90,18 +90,18 @@
 
 	/* Feed */
 	&.-feed {
-		--_border-color: hsl(41 100% 53%);
+		--_border-color: hsl(41deg 100% 53%);
 		--_color: var(--color-darkgray);
-		--_background: hsl(41 100% 93%);
+		--_background: hsl(41deg 100% 93%);
 	}
 
 	/* Twitter */
 	&.-twitter {
-		--_border-color: hsl(204 88% 43%);
+		--_border-color: hsl(204deg 88% 43%);
 		--_color: var(--color-white);
-		--_background: hsl(204 88% 53%);
+		--_background: hsl(204deg 88% 53%);
 
-		outline-color: hsl(204 88% 73%);
+		outline-color: hsl(204deg 88% 73%);
 	}
 
 	/* GitHub */
@@ -113,7 +113,7 @@
 	/* Amazon */
 	&.-amazon {
 		--_border-color: #c2a24e;
-		--_background: linear-gradient(var(--color-amazon), hsl(44 90% 62%));
+		--_background: linear-gradient(var(--color-amazon), hsl(44deg 90% 62%));
 	}
 
 	/* YouTube */

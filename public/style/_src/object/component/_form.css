@@ -141,8 +141,8 @@
 	--_padding-inline: 1em;
 	--_border-color: var(--_bg-color);
 	--_color: var(--color-white);
-	--_bg-color: hsl(204 100% 42%);
-	--_bg-color-hover: hsl(204 100% 48%); /* 太字の 15pt なのでコントラスト比の基準は 3:1 以上 */
+	--_bg-color: hsl(204deg 100% 42%);
+	--_bg-color-hover: hsl(204deg 100% 48%); /* 太字の 15pt なのでコントラスト比の基準は 3:1 以上 */
 	--_font-size: calc(100% * var(--font-ratio-2));
 	--_ripple-color: var(--color-white);
 	--_ripple-opacity: 0.25;

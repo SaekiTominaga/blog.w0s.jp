@@ -30,10 +30,10 @@
 	--color-bg-light: #eee;
 	--color-bg-dark: #ddd;
 	--color-note: #960;
-	--color-amazon: hsl(30 100% 87%);
-	--color-amazon-light: hsl(30 100% 92%);
-	--color-amazon-dark: hsl(30 100% 84%);
-	--color-amazon-verydark: hsl(30 100% 60%);
+	--color-amazon: hsl(30deg 100% 87%);
+	--color-amazon-light: hsl(30deg 100% 92%);
+	--color-amazon-dark: hsl(30deg 100% 84%);
+	--color-amazon-verydark: hsl(30deg 100% 60%);
 
 	/* ===== フォント ===== */
 	--font-ratio-1: 1.12; /* 1.12 / 0.89 */
@@ -42,9 +42,9 @@
 	--font-ratio-4: calc(var(--font-ratio-3) * var(--font-ratio-1)); /* 1.57 / 0.64 */
 	--font-ratio-5: calc(var(--font-ratio-4) * var(--font-ratio-1)); /* 1.76 / 0.57 */
 	--font-ratio-6: calc(var(--font-ratio-5) * var(--font-ratio-1)); /* 1.97 / 0.51 */
-	--font-yu-gothic: system-ui, -apple-system, YuGothic, "Yu Gothic", "Hiragino Sans", Meiryo, sans-serif; /* 遊ゴシック体（'-apple-system' は macOS, iOS の Firefox 向け） */
-	--font-kaku-gothic: system-ui, -apple-system, "Hiragino Sans", Meiryo, sans-serif; /* 角ゴシック体（'-apple-system' は macOS, iOS の Firefox 向け） */
-	--font-mincho: YuMincho, "Yu Mincho", serif; /* 明朝体 */
+	--font-yu-gothic: system-ui, -apple-system, "YuGothic", "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif; /* 遊ゴシック体（'-apple-system' は macOS, iOS の Firefox 向け） */
+	--font-kaku-gothic: system-ui, -apple-system, "Hiragino Sans", "Meiryo", sans-serif; /* 角ゴシック体（'-apple-system' は macOS, iOS の Firefox 向け） */
+	--font-mincho: "YuMincho", "Yu Mincho", serif; /* 明朝体 */
 	--font-monospace: monospace, serif; /* 等幅（'serif' 指定は Chrome 13px 対策） */
 	--font-weight-normal: 500; /* Windows + 游ゴシック 対策で 400 より大きな値とする */
 	--font-weight-bold: 700;
