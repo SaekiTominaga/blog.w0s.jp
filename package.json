@@ -109,11 +109,8 @@
 		"postcss-media-minmax": "^5.0.0",
 		"postcss-nesting": "^10.2.0",
 		"rollup": "^3.2.3",
-		"stylelint": "^14.14.0",
-		"stylelint-config-prettier": "^9.0.3",
-		"stylelint-config-standard": "^29.0.0",
+		"stylelint-config-w0s": "^1.0.0",
 		"stylelint-order": "^5.0.0",
-		"stylelint-prettier": "^2.0.0",
 		"svgo": "^3.0.0",
 		"typescript": "^4.8.4"
 	}
