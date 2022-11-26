@@ -6,6 +6,7 @@ on:
     paths:
       - 'node/src/**/*.ts'
       - 'node/@types/*.d.ts'
+      - '.eslintrc.json'
 
 jobs:
   build:
