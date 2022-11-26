@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - 'public/script/_src/**/*.ts'
+      - '.eslintrc.json'
 
 jobs:
   build:
