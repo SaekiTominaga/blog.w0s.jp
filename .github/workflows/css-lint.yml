@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - 'public/style/_src/**/*.css'
+      - '.stylelintrc.json'
 
 jobs:
   build:
