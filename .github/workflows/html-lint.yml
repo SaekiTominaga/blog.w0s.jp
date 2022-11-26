@@ -7,6 +7,7 @@ on:
       - 'errorpage/*.html'
       - 'views/*.ejs'
       - 'views/_include/*.ejs'
+      - '.markuplintrc'
 
 jobs:
   build:
