@@ -1,5 +1,5 @@
 {
-	"extends": ["stylelint-config-w0s"],
+	"extends": ["@w0s/tsconfig"],
 	"plugins": ["stylelint-order"],
 	"ignoreFiles": ["**/*.html", "**/*.svg", "*.cjs"],
 	"rules": {
