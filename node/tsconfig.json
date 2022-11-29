@@ -1,11 +1,11 @@
 {
-	"extends": "../tsconfig.json",
+	"extends": "@w0s/tsconfig",
 	"include": ["@types/*.d.ts", "src/**/*.ts"],
 	"compilerOptions": {
-		/* Emit */
-		"outDir": "dist",
+		/* Modules */
+		"moduleResolution": "Node", // "Node16" だと `node_modules/highlight.js/es/core.d.ts:1:18 - error TS7016` でコンパイル不能
 
-		/* Interop Constraints */
-		"esModuleInterop": true
+		/* Emit */
+		"outDir": "dist"
 	}
 }
