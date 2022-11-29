@@ -36,8 +36,8 @@ export default class BlogAmazonController extends Controller implements Controll
 		const httpResponse = new HttpResponse(req, res, this.#configCommon);
 
 		const requestQuery: BlogRequest.Amazon = {
-			asin: RequestUtil.string(req.body.asin),
-			action_delete: RequestUtil.boolean(req.body.actiondel),
+			asin: RequestUtil.string(req.body['asin']),
+			action_delete: RequestUtil.boolean(req.body['actiondel']),
 		};
 
 		const dao = new BlogAmazonDao(this.#configCommon);

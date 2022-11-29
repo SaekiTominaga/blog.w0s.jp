@@ -40,7 +40,7 @@ export default class EntryController extends Controller implements ControllerInt
 		const httpResponse = new HttpResponse(req, res, this.#configCommon);
 
 		const requestQuery: BlogRequest.Entry = {
-			entry_id: <number>RequestUtil.number(req.params.entry_id),
+			entry_id: <number>RequestUtil.number(req.params['entry_id']),
 		};
 
 		const dao = new BlogEntryDao(this.#configCommon);
@@ -127,7 +127,7 @@ export default class EntryController extends Controller implements ControllerInt
 
 		let htmlFormatted = '';
 		try {
-			htmlFormatted = prettier.format(html, this.#configCommon.prettier.html as prettier.Options).trim();
+			htmlFormatted = prettier.format(html, this.#configCommon.prettier['html'] as prettier.Options).trim();
 		} catch (e) {
 			this.logger.error('Prettier failed', e);
 			htmlFormatted = html;

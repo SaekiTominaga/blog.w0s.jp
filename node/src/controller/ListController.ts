@@ -40,7 +40,7 @@ export default class ListController extends Controller implements ControllerInte
 		const httpResponse = new HttpResponse(req, res, this.#configCommon);
 
 		const requestQuery: BlogRequest.List = {
-			page: RequestUtil.number(req.params.page) ?? 1,
+			page: RequestUtil.number(req.params['page']) ?? 1,
 		};
 
 		const dao = new BlogListDao(this.#configCommon);
@@ -132,7 +132,7 @@ export default class ListController extends Controller implements ControllerInte
 
 		let htmlFormatted = '';
 		try {
-			htmlFormatted = prettier.format(html, this.#configCommon.prettier.html as prettier.Options).trim();
+			htmlFormatted = prettier.format(html, this.#configCommon.prettier['html'] as prettier.Options).trim();
 		} catch (e) {
 			this.logger.error('Prettier failed', e);
 			htmlFormatted = html;

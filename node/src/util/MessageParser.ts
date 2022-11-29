@@ -454,14 +454,14 @@ export default class MessageParser {
 						const metaMatchGroups = mediaMeta.match(/^(?<id>[^ ]+) (?<width>[1-9]\d{2,3})x(?<height>[1-9]\d{2,3}) (?<caption>.+)$/)?.groups;
 						if (
 							metaMatchGroups !== undefined &&
-							metaMatchGroups.id !== undefined &&
-							metaMatchGroups.width !== undefined &&
-							metaMatchGroups.height !== undefined &&
-							metaMatchGroups.caption !== undefined
+							metaMatchGroups['id'] !== undefined &&
+							metaMatchGroups['width'] !== undefined &&
+							metaMatchGroups['height'] !== undefined &&
+							metaMatchGroups['caption'] !== undefined
 						) {
 							const { id } = metaMatchGroups;
-							const width = Number(metaMatchGroups.width);
-							const height = Number(metaMatchGroups.height);
+							const width = Number(metaMatchGroups['width']);
+							const height = Number(metaMatchGroups['height']);
 							const { caption } = metaMatchGroups;
 
 							this.#appendYouTube(id, width, height, caption);
@@ -1258,7 +1258,7 @@ export default class MessageParser {
 
 			const tweetElement = this.#document.createElement('blockquote');
 			tweetElement.className = 'p-embed__tweet twitter-tweet';
-			tweetElement.dataset.dnt = 'true';
+			tweetElement.dataset['dnt'] = 'true';
 			embeddElement.appendChild(tweetElement);
 
 			const tweetTextElement = this.#document.createElement('p');

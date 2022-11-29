@@ -22,7 +22,7 @@ export default class MessageImage {
 		this.#selectImageElement = selectImageElement;
 		this.#selectImageErrorElement = selectImageErrorElement;
 
-		this.#imageName = selectImageElement.dataset.selected;
+		this.#imageName = selectImageElement.dataset['selected'];
 	}
 
 	/**

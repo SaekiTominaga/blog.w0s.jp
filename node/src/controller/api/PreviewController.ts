@@ -26,7 +26,7 @@ export default class PreviewController extends Controller implements ControllerI
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
 		const requestQuery: BlogRequest.ApiPreview = {
-			markdown: RequestUtil.string(req.body.md),
+			markdown: RequestUtil.string(req.body['md']),
 		};
 
 		if (requestQuery.markdown === null) {

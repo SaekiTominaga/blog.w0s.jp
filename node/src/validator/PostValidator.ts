@@ -38,7 +38,7 @@ export default class PostValidator {
 					return true;
 				}
 			)
-			.withMessage(this.#config.validator.title.message.unique_constraint)
+			.withMessage(this.#config.validator.title.message['unique_constraint'])
 			.run(this.#req);
 
 		return validationResult(this.#req);

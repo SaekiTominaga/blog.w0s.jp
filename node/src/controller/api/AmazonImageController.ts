@@ -34,7 +34,7 @@ export default class AmazonImageController extends Controller implements Control
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
 		const requestQuery: BlogRequest.ApiAmazonImage = {
-			asin: RequestUtil.strings(req.body.asin),
+			asin: RequestUtil.strings(req.body['asin']),
 		};
 
 		if (requestQuery.asin.length === 0) {

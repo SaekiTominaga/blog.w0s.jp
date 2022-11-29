@@ -32,7 +32,7 @@ export default class TweetMediaController extends Controller implements Controll
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
 		const requestQuery: BlogRequest.ApiTweetMedia = {
-			id: RequestUtil.strings(req.body.id),
+			id: RequestUtil.strings(req.body['id']),
 		};
 
 		if (requestQuery.id.length === 0) {

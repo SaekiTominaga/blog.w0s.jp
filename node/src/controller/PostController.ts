@@ -79,23 +79,23 @@ export default class PostController extends Controller implements ControllerInte
 		}
 
 		const requestQuery: BlogRequest.Post = {
-			id: RequestUtil.number(req.query.id ?? req.body.id),
-			title: RequestUtil.string(req.body.title),
-			description: RequestUtil.string(req.body.description),
-			message: RequestUtil.string(req.body.message),
-			category: RequestUtil.strings(req.body.category),
-			image: RequestUtil.string(req.body.image),
-			relation: RequestUtil.string(req.body.relation),
-			public: RequestUtil.boolean(req.body.public),
-			timestamp: RequestUtil.boolean(req.body.timestamp),
-			social: RequestUtil.boolean(req.body.social),
-			social_tag: RequestUtil.string(req.body.socialtag),
-			media_overwrite: RequestUtil.boolean(req.body.mediaoverwrite),
-			action_add: RequestUtil.boolean(req.body.actionadd),
-			action_revise: RequestUtil.boolean(req.body.actionrev),
-			action_view: RequestUtil.boolean(req.body.actionview),
-			action_revise_preview: RequestUtil.boolean(req.query.actionrevpre),
-			action_media: RequestUtil.boolean(req.body.actionmedia),
+			id: RequestUtil.number(req.query['id'] ?? req.body['id']),
+			title: RequestUtil.string(req.body['title']),
+			description: RequestUtil.string(req.body['description']),
+			message: RequestUtil.string(req.body['message']),
+			category: RequestUtil.strings(req.body['category']),
+			image: RequestUtil.string(req.body['image']),
+			relation: RequestUtil.string(req.body['relation']),
+			public: RequestUtil.boolean(req.body['public']),
+			timestamp: RequestUtil.boolean(req.body['timestamp']),
+			social: RequestUtil.boolean(req.body['social']),
+			social_tag: RequestUtil.string(req.body['socialtag']),
+			media_overwrite: RequestUtil.boolean(req.body['mediaoverwrite']),
+			action_add: RequestUtil.boolean(req.body['actionadd']),
+			action_revise: RequestUtil.boolean(req.body['actionrev']),
+			action_view: RequestUtil.boolean(req.body['actionview']),
+			action_revise_preview: RequestUtil.boolean(req.query['actionrevpre']),
+			action_media: RequestUtil.boolean(req.body['actionmedia']),
 		};
 
 		const validator = new PostValidator(req, this.#config);
@@ -300,7 +300,7 @@ export default class PostController extends Controller implements ControllerInte
 			let feedXmlFormatted = '';
 			try {
 				feedXmlFormatted = prettier
-					.format(feedXml, this.#configCommon.prettier.html as prettier.Options)
+					.format(feedXml, this.#configCommon.prettier['html'] as prettier.Options)
 					.replaceAll(/\t*<!-- prettier-ignore -->\t*\n/g, '')
 					.trim();
 			} catch (e) {

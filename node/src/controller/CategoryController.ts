@@ -41,7 +41,7 @@ export default class CategoryController extends Controller implements Controller
 		const httpResponse = new HttpResponse(req, res, this.#configCommon);
 
 		const requestQuery: BlogRequest.Category = {
-			category_name: <string>RequestUtil.string(req.params.category_name),
+			category_name: <string>RequestUtil.string(req.params['category_name']),
 		};
 
 		const dao = new BlogCategoryDao(this.#configCommon);
@@ -131,7 +131,7 @@ export default class CategoryController extends Controller implements Controller
 
 		let htmlFormatted = '';
 		try {
-			htmlFormatted = prettier.format(html, this.#configCommon.prettier.html as prettier.Options).trim();
+			htmlFormatted = prettier.format(html, this.#configCommon.prettier['html'] as prettier.Options).trim();
 		} catch (e) {
 			this.logger.error('Prettier failed', e);
 			htmlFormatted = html;
