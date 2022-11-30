@@ -1,6 +1,6 @@
 {
 	"extends": [
-		"./node_modules/markuplint-config-w0s/.markuplintrc"
+		"./node_modules/@w0s/markuplint-config/.markuplintrc"
 	],
 	"parser": {
 		".ejs$": "@markuplint/ejs-parser"
