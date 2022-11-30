@@ -3,7 +3,7 @@
 	"env": {
 		"es2022": true
 	},
-	"extends": ["w0s"],
+	"extends": ["@w0s/eslint-config"],
 	"parserOptions": {
 		"sourceType": "module"
 	}
