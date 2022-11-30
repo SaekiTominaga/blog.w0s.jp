@@ -6,5 +6,21 @@
 	"extends": ["@w0s/eslint-config"],
 	"parserOptions": {
 		"sourceType": "module"
-	}
+	},
+	"overrides": [
+		{
+			"files": ["node/src/*Interface.ts"],
+			"rules": {
+				"semi": "off"
+			}
+		},
+		{
+			"files": ["public/script/_src/analytics.ts"],
+			"rules": {
+				"no-multi-assign": "off",
+				"no-underscore-dangle": "off",
+				"no-var": "off"
+			}
+		}
+	]
 }
