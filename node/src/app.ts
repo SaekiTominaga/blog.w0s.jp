@@ -17,7 +17,7 @@ import TweetMediaController from './controller/api/TweetMediaController.js';
 import { NoName as Configure } from '../configure/type/common.js';
 
 /* 設定ファイル読み込み */
-const config = <Configure>JSON.parse(fs.readFileSync('node/configure/common.json', 'utf8'));
+const config = <Configure>JSON.parse(await fs.promises.readFile('node/configure/common.json', 'utf8'));
 
 /* Logger 設定 */
 Log4js.configure(config.logger.path);

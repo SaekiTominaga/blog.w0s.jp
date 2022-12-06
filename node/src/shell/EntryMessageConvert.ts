@@ -27,7 +27,7 @@ const convert = (message: string): string => {
 };
 
 /* 設定ファイル読み込み */
-const config = <Configure>JSON.parse(fs.readFileSync('node/configure/common.json', 'utf8'));
+const config = <Configure>JSON.parse(await fs.promises.readFile('node/configure/common.json', 'utf8'));
 
 const dao = new BlogEntryMessageConvertDao(config);
 
