@@ -1,18 +1,6 @@
 {
 	"name": "blog.w0s.jp",
-	"version": "1.0.0",
-	"description": "blog.w0s.jp",
-	"homepage": "https://github.com/SaekiTominaga/blog.w0s.jp#readme",
-	"bugs": {
-		"url": "https://github.com/SaekiTominaga/blog.w0s.jp/issues"
-	},
-	"license": "MIT",
-	"author": "Saeki Tominaga",
 	"type": "module",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/SaekiTominaga/blog.w0s.jp.git"
-	},
 	"scripts": {
 		"app": "nodemon --inspect node/dist/app.js",
 		"html-lint": "markuplint errorpage/*.html views/*.ejs views/_include/*.ejs",
