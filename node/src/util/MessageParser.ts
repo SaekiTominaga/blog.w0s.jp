@@ -1635,7 +1635,6 @@ export default class MessageParser {
 	 *
 	 * [リンク名](記事ID) → <a href="記事ID">リンク名</a>
 	 * [リンク名](#section-セクションID) → <a href="#section-セクションID">リンク名</a>
-	 * [リンク名](/相対URL) → <a href="/相対URL">リンク名</a>
 	 * [リンク名](asin:ASIN) → <a href="アマゾンURL">リンク名</a><img src="アイコン"/>
 	 * [リンク名](絶対URL) → <a href="URL">リンク名</a><b class="c-domain">ドメイン名</b>
 	 *
@@ -1651,12 +1650,9 @@ export default class MessageParser {
 		} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(urlText)) {
 			return `<a href="${urlText}">${linkText}</a>`;
 		} else if (/^\/[a-zA-Z0-9-_#/.]+$/.test(urlText)) {
-			// TODO: これは将来的に廃止したい
-			if (urlText.endsWith('.pdf')) {
-				return `<a href="https://w0s.jp${urlText}" type="application/pdf">${linkText}</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>`;
-			}
-
-			return `<a href="https://w0s.jp${urlText}">${linkText}</a>`;
+			// TODO: 一時的な処理、問題なさそうなら削除する
+			this.#logger.error(`相対 URL 指定が残っている: ${this.#entryId}`);
+			return '';
 		} else if (/^asin:[0-9A-Z]{10}$/.test(urlText)) {
 			return `<a href="https://www.amazon.co.jp/dp/${urlText.substring(
 				5
