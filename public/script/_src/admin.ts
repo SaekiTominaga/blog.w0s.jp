@@ -1,5 +1,6 @@
 import ButtonConfirm from '@saekitominaga/customelements-button-confirm';
 import FormBeforeUnloadConfirm from '@saekitominaga/htmlformelement-before-unload-confirm';
+import FormSubmitOverlay from '@saekitominaga/htmlformelement-submit-overlay';
 import InputFilePreview from '@saekitominaga/customelements-input-file-preview';
 import StringConvert from '@saekitominaga/string-convert';
 import Preview from './unique/Preview';
@@ -20,7 +21,7 @@ if (document.querySelector('input[is="w0s-input-file-preview"]') !== null) {
 }
 
 /* 入力値の変換 */
-for (const formCtrlElement of <NodeListOf<HTMLInputElement | HTMLTextAreaElement>>document.querySelectorAll('.js-convert-trim')) {
+for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim')) {
 	formCtrlElement.addEventListener(
 		'change',
 		() => {
@@ -33,9 +34,14 @@ for (const formCtrlElement of <NodeListOf<HTMLInputElement | HTMLTextAreaElement
 }
 
 /* フォーム入力中にページが閉じられようとしたら確認メッセージを表示 */
-for (const beforeunloadConfirmElement of <NodeListOf<HTMLFormElement>>document.querySelectorAll('.js-form-beforeunload-confirm')) {
+for (const beforeunloadConfirmElement of document.querySelectorAll<HTMLFormElement>('.js-form-beforeunload-confirm')) {
 	const formBeforeUnloadConfirm = new FormBeforeUnloadConfirm(beforeunloadConfirmElement);
 	formBeforeUnloadConfirm.init();
+}
+
+/* 送信ボタン2度押し防止 */
+for (const formElement of document.querySelectorAll<HTMLFormElement>('.js-submit-overlay')) {
+	new FormSubmitOverlay(formElement).init();
 }
 
 /* 本文プレビュー */
@@ -47,10 +53,8 @@ if (messageCtrlElement !== null && selectImageElement !== null && selectImageErr
 	const messageImage = new MessageImage(messageCtrlElement, selectImageElement, selectImageErrorElement);
 	const preview = new Preview(messageCtrlElement, messagePreviewElement);
 
-	(async () => {
-		await messageImage.exec();
-		await preview.exec();
-	})();
+	await messageImage.exec();
+	await preview.exec();
 
 	messageCtrlElement.addEventListener(
 		'change',

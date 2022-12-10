@@ -371,3 +371,27 @@
 		margin-block-start: calc(var(--stack-margin-base) * 3);
 	}
 }
+
+/* ===== ダイアログオーバーレイ ===== */
+.p-dialog-overlay {
+	position: fixed;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	inset: 0;
+	background: transparent;
+	padding: 1em;
+	inline-size: 100vw;
+	block-size: 100vh;
+	color: var(--color-white);
+	font-size: 1.2rem;
+
+	&[open] {
+		display: flex;
+	}
+
+	&::backdrop {
+		background: rgb(0 0 0 / 80%);
+	}
+}
