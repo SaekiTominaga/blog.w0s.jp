@@ -2,17 +2,17 @@
 	"name": "blog.w0s.jp-public",
 	"type": "module",
 	"dependencies": {
-		"@saekitominaga/customelements-button-clipboard": "^1.1.3",
-		"@saekitominaga/customelements-button-confirm": "^1.1.3",
-		"@saekitominaga/customelements-button-share": "^1.2.1",
-		"@saekitominaga/customelements-input-file-preview": "^1.1.3",
-		"@saekitominaga/customelements-portal": "^2.4.0",
-		"@saekitominaga/customelements-tab": "^1.6.4",
-		"@saekitominaga/customelements-tooltip-trigger": "^2.1.1",
-		"@saekitominaga/htmlformelement-before-unload-confirm": "^1.2.3",
+		"@saekitominaga/customelements-button-clipboard": "^1.1.4",
+		"@saekitominaga/customelements-button-confirm": "^1.1.4",
+		"@saekitominaga/customelements-button-share": "^1.2.2",
+		"@saekitominaga/customelements-input-file-preview": "^1.1.4",
+		"@saekitominaga/customelements-portal": "^2.4.1",
+		"@saekitominaga/customelements-tab": "^1.6.6",
+		"@saekitominaga/customelements-tooltip-trigger": "^2.1.2",
+		"@saekitominaga/htmlformelement-before-unload-confirm": "^1.2.4",
 		"@saekitominaga/paapi-item-image-url-parser": "^2.2.4",
-		"@saekitominaga/report-js-error": "^1.2.2",
-		"@saekitominaga/report-same-referrer": "^1.1.2",
+		"@saekitominaga/report-js-error": "^1.2.3",
+		"@saekitominaga/report-same-referrer": "^1.1.3",
 		"@saekitominaga/string-convert": "^1.0.4"
 	}
 }
