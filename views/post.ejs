@@ -51,7 +51,7 @@
 							<h2>記事投稿</h2>
 						</div>
 
-						<form action="#post" method="post" class="c-stack js-form-beforeunload-confirm">
+						<form action="#post" method="post" class="c-stack js-form-beforeunload-confirm js-submit-overlay" data-overlayed-by="form-submit-overlay">
 							<%_ if (topicValidateErrors.length > 0) { _%>
 							<div class="p-form-errors">
 								<p><strong><%= topicValidateErrors.length %>個のエラーがあります。</strong></p>
@@ -420,6 +420,10 @@
 							</tbody>
 						</table>
 					</section>
+
+					<dialog class="p-dialog-overlay" id="form-submit-overlay" aria-labelledby="form-submit-overlay-message" aria-describedby="form-submit-overlay-message">
+						<p id="form-submit-overlay-message">送信中</p>
+					</dialog>
 				</main>
 			</div>
 
