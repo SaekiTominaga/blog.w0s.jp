@@ -1649,10 +1649,6 @@ export default class MessageParser {
 			return `<a href="/${urlText}">${linkText}</a>`;
 		} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(urlText)) {
 			return `<a href="${urlText}">${linkText}</a>`;
-		} else if (/^\/[a-zA-Z0-9-_#/.]+$/.test(urlText)) {
-			// TODO: 一時的な処理、問題なさそうなら削除する
-			this.#logger.error(`相対 URL 指定が残っている: ${this.#entryId}`);
-			return '';
 		} else if (/^asin:[0-9A-Z]{10}$/.test(urlText)) {
 			return `<a href="https://www.amazon.co.jp/dp/${urlText.substring(
 				5
