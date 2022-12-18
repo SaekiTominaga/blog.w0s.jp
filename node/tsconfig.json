@@ -1,11 +1,15 @@
 {
 	"extends": "@w0s/tsconfig",
 	"include": ["@types/*.d.ts", "src/**/*.ts"],
+	"exclude": ["__tests__/*.test.js"],
 	"compilerOptions": {
 		/* Modules */
 		"moduleResolution": "Node", // "Node16" だと `node_modules/highlight.js/es/core.d.ts:1:18 - error TS7016` でコンパイル不能
 
 		/* Emit */
-		"outDir": "dist"
+		"outDir": "dist",
+
+		/* Completeness */
+		"skipLibCheck": true //
 	}
 }

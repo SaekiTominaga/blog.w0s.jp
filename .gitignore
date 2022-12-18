@@ -1,5 +1,7 @@
 /.rollup.cache/
 
+/coverage/
+
 /html/
 
 /log/

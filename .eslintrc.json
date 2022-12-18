@@ -5,6 +5,7 @@
 	},
 	"extends": ["@w0s/eslint-config"],
 	"parserOptions": {
+		"ecmaVersion": 2022,
 		"sourceType": "module"
 	},
 	"ignorePatterns": ["node/dist/**/*.js", "public/script/*.js", "public/script/*.mjs"],
