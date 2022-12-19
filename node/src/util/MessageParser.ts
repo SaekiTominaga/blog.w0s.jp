@@ -414,7 +414,7 @@ export default class MessageParser {
 
 						this.#appendTable();
 
-						const alignRow = tableRowDatas.every((data) => /-+/.test(data));
+						const alignRow = tableRowDatas.every((data) => /^-+$/.test(data));
 						if (!alignRow) {
 							if (!this.#thead) {
 								this.#tbodyData.push(tableRowDatas);
