@@ -19,12 +19,17 @@ import { LanguageFn } from 'highlight.js';
 import BlogMessageDao from '../dao/BlogMessageDao.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 
+interface Option {
+	entry_id?: number; // 記事 ID
+	dbh?: sqlite.Database; // DB 接続情報
+}
+
 interface InlineMarkupOption {
-	link?: boolean;
-	emphasis?: boolean;
-	code?: boolean;
-	quote?: boolean;
-	footnote?: boolean;
+	link?: boolean; // <a>
+	emphasis?: boolean; // <em>
+	code?: boolean; // <code>
+	quote?: boolean; // <q>
+	footnote?: boolean; // .c-annotate
 }
 
 /**
@@ -118,19 +123,18 @@ export default class MessageParser {
 	 * コンストラクタ
 	 *
 	 * @param {Configure} config - 共通設定ファイル
-	 * @param {sqlite.Database} dbh - DB 接続情報
-	 * @param {number} entryId - 記事 ID
+	 * @param {object} options - パースで必要な様々な情報
 	 */
-	constructor(config: Configure, dbh?: sqlite.Database, entryId?: number) {
+	constructor(config: Configure, options?: Option) {
 		/* Logger */
-		this.#logger = Log4js.getLogger(entryId !== undefined ? `${this.constructor.name} (ID: ${entryId})` : this.constructor.name);
+		this.#logger = Log4js.getLogger(options?.entry_id !== undefined ? `${this.constructor.name} (ID: ${options.entry_id})` : this.constructor.name);
 
 		/* 設定ファイル */
 		this.#config = config;
 
 		/* 記事 ID */
-		if (entryId !== undefined) {
-			this.#entryId = entryId;
+		if (options?.entry_id !== undefined) {
+			this.#entryId = options.entry_id;
 		}
 
 		/* Slugger */
@@ -140,7 +144,7 @@ export default class MessageParser {
 		this.#document = new JSDOM().window.document;
 
 		/* Dao */
-		this.#dao = new BlogMessageDao(config, dbh);
+		this.#dao = new BlogMessageDao(config, options?.dbh);
 
 		/* ルート要素 */
 		this.#rootElement = this.#document.createElement(this.#ROOT_ELEMENT_NAME);

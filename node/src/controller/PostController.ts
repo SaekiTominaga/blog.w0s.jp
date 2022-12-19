@@ -286,7 +286,7 @@ export default class PostController extends Controller implements ControllerInte
 				entriesView.add({
 					id: entry.id,
 					title: entry.title,
-					message: await new MessageParser(this.#configCommon, dbh, entry.id).toXml(entry.message),
+					message: await new MessageParser(this.#configCommon, { entry_id: entry.id, dbh: dbh }).toXml(entry.message),
 					updated_at: dayjs(entry.updated_at ?? entry.created_at),
 					update: Boolean(entry.updated_at),
 				});
@@ -503,7 +503,7 @@ export default class PostController extends Controller implements ControllerInte
 						continue;
 					}
 
-					const responseFile = await response.json() as MediaApi.Upload;
+					const responseFile = (await response.json()) as MediaApi.Upload;
 					switch (responseFile.code) {
 						case this.#config.media_upload.api_response.success.code:
 							/* 成功 */

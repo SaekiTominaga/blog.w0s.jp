@@ -9,7 +9,7 @@ const dbh = await new BlogDao(config).getDbh();
 describe('block', () => {
 	test('p', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 text1
 text2
 `)
@@ -18,7 +18,7 @@ text2
 
 	test('ul', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 - list1
 - list2
 `)
@@ -27,7 +27,7 @@ text2
 
 	test('link list', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 -- list1
 -- list2
 `)
@@ -36,7 +36,7 @@ text2
 
 	test('-', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 -text
 `)
 		).toBe('<p>-text</p>');
@@ -44,7 +44,7 @@ text2
 
 	test('ol', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 1. list1
 1. list2
 `)
@@ -53,7 +53,7 @@ text2
 
 	test('1', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 1text
 `)
 		).toBe('<p>1text</p>');
@@ -61,7 +61,7 @@ text2
 
 	test('dl', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 : dt1 | dd1
 : dt2 | dd2
 `)
@@ -70,7 +70,7 @@ text2
 
 	test(':', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 :text
 `)
 		).toBe('<p>:text</p>');
@@ -78,7 +78,7 @@ text2
 
 	test('note', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 * note1
 * note2
 `)
@@ -87,7 +87,7 @@ text2
 
 	test('insert', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 *2022-01-01: insert1
 *2022-01-01: insert2
 `)
@@ -98,7 +98,7 @@ text2
 
 	test('*', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 *text
 `)
 		).toBe('<p>*text</p>');
@@ -106,7 +106,7 @@ text2
 
 	test('blockquote', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 > text1
 >
 > text2
@@ -116,7 +116,7 @@ text2
 
 	test('blockquote - cite', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 > text1
 > text2
 ?cite
@@ -128,7 +128,7 @@ text2
 
 	test('blockquote - cite - URL', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 > text1
 > text2
 ?en
@@ -142,7 +142,7 @@ text2
 
 	test('blockquote - cite - ISBN', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 > text1
 > text2
 ?en
@@ -156,7 +156,7 @@ text2
 
 	test('>', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 >text
 `)
 		).toBe('<p>&gt;text</p>');
@@ -164,7 +164,7 @@ text2
 
 	test('?', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 ?text
 `)
 		).toBe('<p>?text</p>');
@@ -172,7 +172,7 @@ text2
 
 	test('code', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 \`\`\`
 code1
 code2
@@ -185,7 +185,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - html', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 \`\`\`html
 code1
 code2
@@ -198,7 +198,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - css', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 \`\`\`css
 code1
 code2
@@ -211,7 +211,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - javascript', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 \`\`\`javascript
 code1
 code2
@@ -224,7 +224,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - typescript', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 \`\`\`typescript
 code1
 code2
@@ -237,7 +237,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - json', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 \`\`\`json
 code1
 code2
@@ -250,7 +250,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - invalid', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 \`\`\`xxx
 code1
 code2
@@ -263,7 +263,7 @@ code2</code></pre></div>`);
 
 	test('code - no close', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 \`\`\`
 code
 `)
@@ -274,7 +274,7 @@ code
 
 	test('`', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 \`text
 `)
 		).toBe('<p>`text</p>');
@@ -282,7 +282,7 @@ code
 
 	test('table', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 | th1 | th2 |
 | - | - |
 |~ th1-1 | td1-2 |
@@ -295,7 +295,7 @@ code
 
 	test('|', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 |text
 `)
 		).toBe('<p>|text</p>');
@@ -303,7 +303,7 @@ code
 
 	test('box', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 / text1
 / text2
 `)
@@ -312,7 +312,7 @@ code
 
 	test('/', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 /text
 `)
 		).toBe('<p>/text</p>');
@@ -320,7 +320,7 @@ code
 
 	test('media', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 !foo.jpg caption1
 !bar.svg caption2
 !baz.mp4 caption3
@@ -332,7 +332,7 @@ code
 
 	test('YouTube', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 !youtube:HJxspEKHqCs 560x315 caption
 `)
 		).toBe(
@@ -342,7 +342,7 @@ code
 
 	test('!', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 !text
 `)
 		).toBe('<p>!text</p>');
@@ -350,7 +350,7 @@ code
 
 	test('Tweet', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 $tweet: 1511319225541210113 1530514683383672832
 `)
 		)
@@ -360,7 +360,7 @@ $tweet: 1511319225541210113 1530514683383672832
 
 	test('Amazon', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 $amazon: B01GRDKGZW 4091220754
 `)
 		).toBe(
@@ -370,7 +370,7 @@ $amazon: B01GRDKGZW 4091220754
 
 	test('Amazon - <h3>', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 # heading
 $amazon: B01GRDKGZW
 `)
@@ -381,7 +381,7 @@ $amazon: B01GRDKGZW
 
 	test('Amazon - <h4>', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 # heading
 ## heading
 $amazon: B01GRDKGZW
@@ -393,7 +393,7 @@ $amazon: B01GRDKGZW
 
 	test('$', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 $text
 `)
 		).toBe('<p>$text</p>');
@@ -402,133 +402,133 @@ $text
 
 describe('inline', () => {
 	test('empty', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('- ')).toBe('<ul class="p-list"><li></li></ul>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('- ')).toBe('<ul class="p-list"><li></li></ul>');
 	});
 
 	test('link - entry ID', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](1)text')).toBe('<p>text<a href="/1">link</a>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](1)text')).toBe('<p>text<a href="/1">link</a>text</p>');
 	});
 
 	test('link - #section', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](#section-1)text')).toBe('<p>text<a href="#section-1">link</a>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](#section-1)text')).toBe('<p>text<a href="#section-1">link</a>text</p>');
 	});
 
 	test('link - URL', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](https://example.com/)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/)text')).toBe(
 			'<p>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
 	test('link - URL - URL text', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[https://example.com/](https://example.com/)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[https://example.com/](https://example.com/)text')).toBe(
 			'<p>text<a href="https://example.com/">https://example.com/</a>text</p>'
 		);
 	});
 
 	test('link - URL - PDF', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](https://example.com/foo.pdf)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/foo.pdf)text')).toBe(
 			'<p>text<a href="https://example.com/foo.pdf" type="application/pdf">link</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
 	test('link - URL - Twitter', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](https://twitter.com/)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://twitter.com/)text')).toBe(
 			'<p>text<a href="https://twitter.com/">link</a><img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon">text</p>'
 		);
 	});
 
 	test('link - URL - Wikipedia', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](https://ja.wikipedia.org/)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://ja.wikipedia.org/)text')).toBe(
 			'<p>text<a href="https://ja.wikipedia.org/">link</a><img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon">text</p>'
 		);
 	});
 
 	test('link - URL - YouTube', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](https://www.youtube.com/)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://www.youtube.com/)text')).toBe(
 			'<p>text<a href="https://www.youtube.com/">link</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon">text</p>'
 		);
 	});
 
 	test('link - asin', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](asin:4065199816)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](asin:4065199816)text')).toBe(
 			'<p>text<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=w0s.jp-22">link</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon">text</p>'
 		);
 	});
 
 	test('link - multi', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](https://example.com/)text[link](https://example.com/)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/)text[link](https://example.com/)text')).toBe(
 			'<p>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
 	test('link - text[', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link[link](https://example.com/)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link[link](https://example.com/)text')).toBe(
 			'<p>text[link<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
 	test('link - text]', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link]link](https://example.com/)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link]link](https://example.com/)text')).toBe(
 			'<p>text<a href="https://example.com/">link]link</a><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
 	test('link - text[]', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link[link]link](https://example.com/)text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link[link]link](https://example.com/)text')).toBe(
 			'<p>text<a href="https://example.com/">link[link]link</a><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
 	test('link - feint1', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[text')).toBe('<p>text[text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[text')).toBe('<p>text[text</p>');
 	});
 
 	test('link - feint2', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text[link](https://example.com/)text[text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/)text[text')).toBe(
 			'<p>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text[text</p>'
 		);
 	});
 
 	test('em', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text**em**text')).toBe('<p>text<em>em</em>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text**em**text')).toBe('<p>text<em>em</em>text</p>');
 	});
 
 	test('em - escape', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text\\**em\\**text')).toBe('<p>text**em**text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text\\**em\\**text')).toBe('<p>text**em**text</p>');
 	});
 
 	test('code', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text`code`text')).toBe('<p>text<code class="c-code">code</code>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text`code`text')).toBe('<p>text<code class="c-code">code</code>text</p>');
 	});
 
 	test('code - escape', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text\\`code\\`text')).toBe('<p>text`code`text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text\\`code\\`text')).toBe('<p>text`code`text</p>');
 	});
 
 	test('quote', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text{{quote}}text')).toBe('<p>text<q class="c-quote">quote</q>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote}}text')).toBe('<p>text<q class="c-quote">quote</q>text</p>');
 	});
 
 	test('quote - cite - URL', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text{{https://example.com/ quote}}text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{https://example.com/ quote}}text')).toBe(
 			'<p>text<a href="https://example.com/"><q class="c-quote" cite="https://example.com/">quote</q></a>text</p>'
 		);
 	});
 
 	test('quote - cite - ISBN', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text{{978-4-06-519981-7 quote}}text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{978-4-06-519981-7 quote}}text')).toBe(
 			'<p>text<q class="c-quote" cite="urn:ISBN:978-4-06-519981-7">quote</q>text</p>'
 		);
 	});
 
 	test('footnote', async () => {
-		expect(await new MessageParser(config, dbh).toHtml('text((footnote))text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text((footnote))text')).toBe(
 			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote</span></li></ul>'
 		);
 	});
 
 	test('footnote - entry ID', async () => {
-		expect(await new MessageParser(config, dbh, 99).toHtml('text((footnote))text')).toBe(
+		expect(await new MessageParser(config, { entry_id: 99, dbh: dbh }).toHtml('text((footnote))text')).toBe(
 			'<p>text<span class="c-annotate"><a href="#fn99-1" id="nt99-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt99-1">[1]</a></span><span class="p-footnotes__text" id="fn99-1">footnote</span></li></ul>'
 		);
 	});
@@ -536,27 +536,35 @@ describe('inline', () => {
 
 describe('HTML escape', () => {
 	test('link text', async () => {
-		expect(await new MessageParser(config, dbh).toXml('text[link<s>link</s>](1)text')).toBe('<p>text<a href="/1">link&lt;s&gt;link&lt;/s&gt;</a>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toXml('text[link<s>link</s>](1)text')).toBe(
+			'<p>text<a href="/1">link&lt;s&gt;link&lt;/s&gt;</a>text</p>'
+		);
 	});
 
 	test('link url', async () => {
-		expect(await new MessageParser(config, dbh).toXml('text[link](https://example.com/foo<s>bar</s>)text')).toBe('<p>text<a href="https://example.com/foo&lt;s&gt;bar&lt;/s&gt;">link</a><b class="c-domain">(example.com)</b>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toXml('text[link](https://example.com/foo<s>bar</s>)text')).toBe(
+			'<p>text<a href="https://example.com/foo&lt;s&gt;bar&lt;/s&gt;">link</a><b class="c-domain">(example.com)</b>text</p>'
+		);
 	});
 
 	test('em', async () => {
-		expect(await new MessageParser(config, dbh).toXml('text**em<s>em</s>**text')).toBe('<p>text<em>em&lt;s&gt;em&lt;/s&gt;</em>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toXml('text**em<s>em</s>**text')).toBe('<p>text<em>em&lt;s&gt;em&lt;/s&gt;</em>text</p>');
 	});
 
 	test('code', async () => {
-		expect(await new MessageParser(config, dbh).toXml('text`code<s>code</s>`text')).toBe('<p>text<code class="c-code">code&lt;s&gt;code&lt;/s&gt;</code>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toXml('text`code<s>code</s>`text')).toBe(
+			'<p>text<code class="c-code">code&lt;s&gt;code&lt;/s&gt;</code>text</p>'
+		);
 	});
 
 	test('quote', async () => {
-		expect(await new MessageParser(config, dbh).toXml('text{{quote<s>quote</s>}}text')).toBe('<p>text<q class="c-quote">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toXml('text{{quote<s>quote</s>}}text')).toBe(
+			'<p>text<q class="c-quote">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
+		);
 	});
 
 	test('footnote', async () => {
-		expect(await new MessageParser(config, dbh).toXml('text((footnote<s>footnote</s>))text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toXml('text((footnote<s>footnote</s>))text')).toBe(
 			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote&lt;s&gt;footnote&lt;/s&gt;</span></li></ul>'
 		);
 	});
@@ -565,7 +573,7 @@ describe('HTML escape', () => {
 describe('section', () => {
 	test('section1', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 # heading1
 text1
 `)
@@ -576,7 +584,7 @@ text1
 
 	test('section1 - hr', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 # heading1
 text1
 #
@@ -589,7 +597,7 @@ text2
 
 	test('section2', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 # heading1
 text1
 ## heading2
@@ -602,7 +610,7 @@ text2
 
 	test('section2 - hr2', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 # heading1
 text1
 ## heading2
@@ -617,7 +625,7 @@ text3
 
 	test('section2 - hr1', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 # heading1
 text1
 ## heading2
@@ -632,7 +640,7 @@ text3
 
 	test('toc', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 # heading1
 text1
 # heading2
@@ -645,7 +653,7 @@ text2
 
 	test('#', async () => {
 		expect(
-			await new MessageParser(config, dbh).toHtml(`
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
 #text
 `)
 		).toBe('<p>#text</p>');
@@ -655,7 +663,7 @@ text2
 describe('toXml()', () => {
 	test('hr', async () => {
 		expect(
-			await new MessageParser(config, dbh).toXml(`
+			await new MessageParser(config, { dbh: dbh }).toXml(`
 # heading1
 #
 `)
@@ -667,13 +675,13 @@ describe('toXml()', () => {
 
 describe('isTweetExit()', () => {
 	test('false', async () => {
-		const messageParser = new MessageParser(config, dbh);
+		const messageParser = new MessageParser(config, { dbh: dbh });
 		await messageParser.toHtml('');
 		expect(messageParser.isTweetExit()).toBeFalsy();
 	});
 
 	test('true', async () => {
-		const messageParser = new MessageParser(config, dbh);
+		const messageParser = new MessageParser(config, { dbh: dbh });
 		await messageParser.toHtml('$tweet: 1511319225541210113');
 		expect(messageParser.isTweetExit()).toBeTruthy();
 	});

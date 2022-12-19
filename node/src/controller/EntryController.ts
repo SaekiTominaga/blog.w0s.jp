@@ -69,7 +69,7 @@ export default class EntryController extends Controller implements ControllerInt
 			return;
 		}
 
-		const messageParser = new MessageParser(this.#configCommon, await dao.getDbh(), requestQuery.entry_id);
+		const messageParser = new MessageParser(this.#configCommon, { entry_id: requestQuery.entry_id, dbh: await dao.getDbh() });
 
 		const sidebar = new Sidebar(dao);
 
