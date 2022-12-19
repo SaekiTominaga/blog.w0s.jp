@@ -534,6 +534,34 @@ describe('inline', () => {
 	});
 });
 
+describe('HTML escape', () => {
+	test('link text', async () => {
+		expect(await new MessageParser(config, dbh).toXml('text[link<s>link</s>](1)text')).toBe('<p>text<a href="/1">link&lt;s&gt;link&lt;/s&gt;</a>text</p>');
+	});
+
+	test('link url', async () => {
+		expect(await new MessageParser(config, dbh).toXml('text[link](https://example.com/foo<s>bar</s>)text')).toBe('<p>text<a href="https://example.com/foo&lt;s&gt;bar&lt;/s&gt;">link</a><b class="c-domain">(example.com)</b>text</p>');
+	});
+
+	test('em', async () => {
+		expect(await new MessageParser(config, dbh).toXml('text**em<s>em</s>**text')).toBe('<p>text<em>em&lt;s&gt;em&lt;/s&gt;</em>text</p>');
+	});
+
+	test('code', async () => {
+		expect(await new MessageParser(config, dbh).toXml('text`code<s>code</s>`text')).toBe('<p>text<code class="c-code">code&lt;s&gt;code&lt;/s&gt;</code>text</p>');
+	});
+
+	test('quote', async () => {
+		expect(await new MessageParser(config, dbh).toXml('text{{quote<s>quote</s>}}text')).toBe('<p>text<q class="c-quote">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>');
+	});
+
+	test('footnote', async () => {
+		expect(await new MessageParser(config, dbh).toXml('text((footnote<s>footnote</s>))text')).toBe(
+			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote&lt;s&gt;footnote&lt;/s&gt;</span></li></ul>'
+		);
+	});
+});
+
 describe('section', () => {
 	test('section1', async () => {
 		expect(
