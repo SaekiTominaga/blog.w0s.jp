@@ -882,30 +882,10 @@ export default class MessageParser {
 		if (this.#quoteUrl === undefined) {
 			captionTitleElement.textContent = this.#quoteTitle;
 		} else {
-			const aElement = this.#document.createElement('a');
-			aElement.href = this.#quoteUrl.toString();
-			if (this.#quoteLanguage !== undefined) {
-				aElement.setAttribute('hreflang', this.#quoteLanguage);
-			}
-			aElement.textContent = this.#quoteTitle;
-			captionTitleElement.appendChild(aElement);
-
-			if (this.#quoteUrl.pathname.endsWith('.pdf')) {
-				aElement.type = 'application/pdf';
-
-				const iconElement = this.#document.createElement('img');
-				iconElement.src = '/image/icon/pdf.png';
-				iconElement.alt = '(PDF)';
-				iconElement.width = 16;
-				iconElement.height = 16;
-				iconElement.className = 'c-link-icon';
-				captionTitleElement.appendChild(iconElement);
-			}
-
-			const domainElement = this.#document.createElement('b');
-			domainElement.className = 'c-domain';
-			domainElement.textContent = `(${this.#quoteUrl.hostname})`;
-			captionTitleElement.appendChild(domainElement);
+			captionTitleElement.insertAdjacentHTML(
+				'beforeend',
+				MessageParser.#anchor(this.#quoteTitle, this.#quoteUrl.toString(), { hreflang: this.#quoteLanguage })
+			);
 		}
 	}
 
@@ -1517,7 +1497,7 @@ export default class MessageParser {
 	 *
 	 * @param {object} parentElement - 親要素
 	 * @param {string} str - 変換前の文字列
-	 * @param {InlineMarkupOption} options - 変換を行う対象
+	 * @param {object} options - 変換を行う対象
 	 */
 	#inlineMarkup(
 		parentElement: HTMLElement,
@@ -1608,7 +1588,7 @@ export default class MessageParser {
 						)}/ref=nosim?tag=w0s.jp-22">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
 					} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(url)) {
 						/* 絶対 URL */
-						linkHtml = MessageParser.#markupLink(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
+						linkHtml = MessageParser.#anchor(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
 					} else {
 						throw new Error(`不正なリンクURL: ${url}`);
 					}
@@ -1666,16 +1646,25 @@ export default class MessageParser {
 	}
 
 	/**
-	 * 絶対パスでのリンクの HTML 文字列を設定する
+	 * <a> 要素によるリンク HTML を組み立てる
 	 *
 	 * @param {string} linkText - リンク文字列
 	 * @param {string} urlText - リンク URL
+	 * @param {object} attributes - href 属性以外に設定する属性情報
 	 *
-	 * @returns {string} 変換後の文字列
+	 * @returns {string} <a> 要素の HTML 文字列
 	 */
-	static #markupLink(linkText: string, urlText: string): string {
+	static #anchor(linkText: string, urlText: string, attributes?: Readonly<{ [k: string]: string | undefined }>): string {
+		const attributeMap = new Map<string, string>([['href', urlText]]);
+		if (attributes !== undefined) {
+			for (const [name, value] of Object.entries(attributes)) {
+				if (name !== 'href' && value !== undefined) {
+					attributeMap.set(name, value);
+				}
+			}
+		}
+
 		const url = new URL(urlText);
-		const host = url.hostname;
 
 		let typeAttrHtml = '';
 		let typeIconHtml = '';
@@ -1683,12 +1672,14 @@ export default class MessageParser {
 
 		/* PDFアイコン */
 		if (url.pathname.endsWith('.pdf')) {
-			typeAttrHtml = ' type="application/pdf"';
+			attributeMap.set('type', 'application/pdf');
 			typeIconHtml = '<img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>';
 		}
 
 		/* URL 表記でない場合はドメイン情報を記載 */
 		if (!linkText.startsWith('https://') && !linkText.startsWith('http://')) {
+			const host = url.hostname;
+
 			/* サイトアイコン */
 			switch (host) {
 				case 'twitter.com': {
@@ -1712,6 +1703,10 @@ export default class MessageParser {
 			}
 		}
 
-		return `<a href="${StringEscapeHtml.escape(urlText)}"${typeAttrHtml}>${StringEscapeHtml.escape(linkText)}</a>${typeIconHtml}${hostIconHtml}`;
+		for (const [name, value] of attributeMap) {
+			typeAttrHtml += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
+		}
+
+		return `<a${typeAttrHtml}>${StringEscapeHtml.escape(linkText)}</a>${typeIconHtml}${hostIconHtml}`;
 	}
 }
