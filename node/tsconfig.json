@@ -10,6 +10,6 @@
 		"outDir": "dist",
 
 		/* Completeness */
-		"skipLibCheck": true //
+		"skipLibCheck": true // `node_modules/twitter-api-v2/dist/paginators/user.paginator.v1.d.ts:8:15 - error TS2416` 対策
 	}
 }
