@@ -1,10 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import fs from 'fs';
-import BlogEntryDao from '../dist/dao/BlogEntryDao.js';
+import BlogDao from '../dist/dao/BlogDao.js';
 import MessageParser from '../dist/util/MessageParser.js';
 
 const config = JSON.parse(await fs.promises.readFile('node/configure/common.json', 'utf8'));
-const dbh = await new BlogEntryDao(config).getDbh();
+const dbh = await new BlogDao(config).getDbh();
 
 describe('block', () => {
 	test('p', async () => {
