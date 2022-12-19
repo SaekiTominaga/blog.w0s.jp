@@ -31,6 +31,9 @@ interface InlineMarkupOption {
  * 記事メッセージのパーサー
  */
 export default class MessageParser {
+	readonly #REGEXP_URL = "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+";
+	readonly #REGEXP_ISBN = '[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]|97[8-9]-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]';
+
 	/* Logger */
 	readonly #logger: Log4js.Logger;
 
@@ -376,11 +379,11 @@ export default class MessageParser {
 						/* ブロックレベル引用の直後行かつ先頭が ? な場合は引用の出典 */
 						const metaText = line.substring(1); // 先頭記号を削除
 
-						if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(metaText)) {
+						if (new RegExp(`^${this.#REGEXP_URL}$`).test(metaText)) {
 							/* URL */
 							this.#quoteElement.setAttribute('cite', metaText);
 							this.#quoteUrl = new URL(metaText);
-						} else if (/^\d{1,5}-\d{1,7}-\d{1,7}-[\dX]|97[8-9]-\d{1,5}-\d{1,7}-\d{1,7}-\d$/.test(metaText)) {
+						} else if (new RegExp(`^${this.#REGEXP_ISBN}$`).test(metaText)) {
 							/* ISBN */
 							this.#quoteElement.setAttribute('cite', `urn:ISBN:${metaText}`);
 						} else if (/^[a-z]{2}$/.test(metaText)) {
@@ -1574,9 +1577,8 @@ export default class MessageParser {
 					/* HTML文字列に変換 */
 					let linkHtml = '';
 
-					if (/^([1-9]{1}[0-9]{0,2})$/.test(url)) {
+					if (/^([1-9][0-9]*)$/.test(url)) {
 						/* 別記事へのリンク */
-						// TODO: 記事数が 1000 を超えたら正規表現要修正
 						linkHtml = `<a href="/${url}">${linkText}</a>`;
 					} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
 						/* ページ内リンク */
@@ -1586,7 +1588,7 @@ export default class MessageParser {
 						linkHtml = `<a href="https://www.amazon.co.jp/dp/${url.substring(
 							5
 						)}/ref=nosim?tag=w0s.jp-22">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
-					} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(url)) {
+					} else if (new RegExp(`^${this.#REGEXP_URL}$`).test(url)) {
 						/* 絶対 URL */
 						linkHtml = MessageParser.#anchor(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
 					} else {
@@ -1604,36 +1606,40 @@ export default class MessageParser {
 			})();
 		}
 		if (options.emphasis) {
-			htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, p1: string, p2: string) => {
-				if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
-					return `**${p2.substring(0, p2.length - 1)}**`;
+			htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, beforeEmphasis: string, emphasis: string) => {
+				if (beforeEmphasis === '\\' && emphasis.substring(emphasis.length - 1) === '\\') {
+					return `**${emphasis.substring(0, emphasis.length - 1)}**`;
 				}
-				return `${p1}<em>${p2}</em>`;
+				return `${beforeEmphasis}<em>${emphasis}</em>`;
 			});
 		}
 		if (options.code) {
-			htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, p1: string, p2: string) => {
-				if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
-					return `\`${p2.substring(0, p2.length - 1)}\``;
+			htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, beforeCode: string, code: string) => {
+				if (beforeCode === '\\' && code.substring(code.length - 1) === '\\') {
+					return `\`${code.substring(0, code.length - 1)}\``;
 				}
-				return `${p1}<code class="c-code">${p2}</code>`;
+				return `${beforeCode}<code class="c-code">${code}</code>`;
 			});
 		}
 		if (options.quote) {
-			htmlFragment = htmlFragment.replace(
-				/{{(\d{1,5}-\d{1,7}-\d{1,7}-[\dX]|97[8-9]-\d{1,5}-\d{1,7}-\d{1,7}-\d) ([^{}]+)}}/g,
-				(_match, p1: string, p2: string) => `<q class="c-quote" cite="urn:ISBN:${p1}">${p2}</q>`
-			);
-			htmlFragment = htmlFragment.replace(
-				/{{(https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+) ([^{}]+)}}/g,
-				(_match, p1: string, p2: string) => `<a href="${p1}"><q class="c-quote" cite="${p1}">${p2}</q></a>`
-			);
-			htmlFragment = htmlFragment.replace(/{{([^{}]+)}}/g, (_match, p1: string) => `<q class="c-quote">${p1}</q>`);
+			htmlFragment = htmlFragment.replace(/{{(.+?)}}/g, (_match, quote: string) => {
+				const urlMatchGroups = quote.match(new RegExp(`(?<url>${this.#REGEXP_URL}) (?<text>.+)`))?.groups;
+				if (urlMatchGroups !== undefined) {
+					return `<a href="${urlMatchGroups['url']}"><q class="c-quote" cite="${urlMatchGroups['url']}">${urlMatchGroups['text']}</q></a>`;
+				}
+
+				const isbnMatchGroups = quote.match(new RegExp(`(?<isbn>${this.#REGEXP_ISBN}) (?<text>.+)`))?.groups;
+				if (isbnMatchGroups !== undefined) {
+					return `<q class="c-quote" cite="urn:ISBN:${isbnMatchGroups['isbn']}">${isbnMatchGroups['text']}</q>`;
+				}
+
+				return `<q class="c-quote">${quote}</q>`;
+			});
 		}
 
 		if (options.footnote) {
-			htmlFragment = htmlFragment.replace(/\(\((.+?)\)\)/g, (_match, p1: string) => {
-				this.#footnotes.push(p1); // 注釈文
+			htmlFragment = htmlFragment.replace(/\(\((.+?)\)\)/g, (_match, footnote: string) => {
+				this.#footnotes.push(footnote); // 注釈文
 
 				const num = this.#footnotes.length;
 				const href = `${this.#entryId}-${num}`;
