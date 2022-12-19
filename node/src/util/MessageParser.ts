@@ -732,7 +732,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		liElement.insertAdjacentHTML('beforeend', this.#parsingInlineLink(StringEscapeHtml.escape(listText))); // リンクを設定
+		this.#inlineMarkup(liElement, listText, { link: true }); // リンクを設定
 		this.#linksElement.appendChild(liElement);
 	}
 
@@ -1536,7 +1536,92 @@ export default class MessageParser {
 		}
 
 		if (options.link) {
-			htmlFragment = this.#parsingInlineLink(htmlFragment);
+			/**
+			 * Markdown 形式でリンク文字列をパースする
+			 *
+			 * [リンク名](URL) → <a href="URL">リンク名</a>
+			 *
+			 * @returns {string} 変換後の文字列
+			 */
+			htmlFragment = (() => {
+				let openingTextDelimiterIndex = htmlFragment.indexOf('[');
+				if (openingTextDelimiterIndex === -1) {
+					/* 文中にリンク構文が存在しない場合は何もしない */
+					return htmlFragment;
+				}
+
+				let parseTargetText = htmlFragment; // パース対象の文字列
+				const parsedTextList: string[] = []; // パース後の文字列を格納する配列
+				let afterLinkText = '';
+
+				while (openingTextDelimiterIndex !== -1) {
+					let beforeOpeningTextDelimiterText = parseTargetText.substring(0, openingTextDelimiterIndex);
+					const afterOpeningTextDelimiterText = parseTargetText.substring(openingTextDelimiterIndex + 1);
+
+					const regResult = /\]\((.+?)\)(.*)/.exec(afterOpeningTextDelimiterText);
+
+					/* [ が出現したが、 [TEXT](URL) の構文になっていない場合 */
+					if (regResult === null) {
+						if (parsedTextList.length === 0) {
+							return htmlFragment;
+						}
+						break;
+					}
+
+					const url = <string>regResult[1]; // リンクURL
+					let linkText = afterOpeningTextDelimiterText.substring(0, afterOpeningTextDelimiterText.indexOf(`](${url}`)); // リンク文字列
+					afterLinkText = <string>regResult[2]; // リンク後の文字列
+
+					/* リンク文字列の中に [ や ] 記号が含まれていたときの処理 */
+					let scanText = linkText;
+					let tempLinkText = '';
+					let linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
+					while (linkTextOpeningTextDelimiterIndex !== -1) {
+						const linkTextClosingTextDelimiterIndex = scanText.indexOf(']', linkTextOpeningTextDelimiterIndex);
+						if (linkTextClosingTextDelimiterIndex !== -1) {
+							tempLinkText = scanText.substring(linkTextOpeningTextDelimiterIndex) + tempLinkText;
+							scanText = scanText.substring(0, linkTextOpeningTextDelimiterIndex);
+						} else {
+							beforeOpeningTextDelimiterText += `[${scanText.substring(0, linkTextOpeningTextDelimiterIndex)}`;
+							scanText = scanText.substring(linkTextOpeningTextDelimiterIndex + 1);
+						}
+
+						linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
+					}
+
+					linkText = scanText + tempLinkText;
+
+					/* HTML文字列に変換 */
+					let linkHtml = '';
+
+					if (/^([1-9]{1}[0-9]{0,2})$/.test(url)) {
+						/* 別記事へのリンク */
+						// TODO: 記事数が 1000 を超えたら正規表現要修正
+						linkHtml = `<a href="/${url}">${linkText}</a>`;
+					} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
+						/* ページ内リンク */
+						linkHtml = `<a href="${url}">${linkText}</a>`;
+					} else if (/^asin:[0-9A-Z]{10}$/.test(url)) {
+						/* Amazon 商品ページへのリンク */
+						linkHtml = `<a href="https://www.amazon.co.jp/dp/${url.substring(
+							5
+						)}/ref=nosim?tag=w0s.jp-22">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
+					} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(url)) {
+						/* 絶対 URL */
+						linkHtml = MessageParser.#markupLink(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
+					} else {
+						throw new Error(`不正なリンクURL: ${url}`);
+					}
+
+					/* 後処理 */
+					parsedTextList.push(`${beforeOpeningTextDelimiterText}${linkHtml}`);
+					parseTargetText = afterLinkText;
+
+					openingTextDelimiterIndex = parseTargetText.indexOf('[');
+				}
+
+				return `${parsedTextList.join('')}${afterLinkText}`;
+			})();
 		}
 		if (options.emphasis) {
 			htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, p1: string, p2: string) => {
@@ -1581,142 +1666,52 @@ export default class MessageParser {
 	}
 
 	/**
-	 * Markdown 形式でリンク文字列をパースする
-	 *
-	 * [リンク名](URL) → <a href="URL">リンク名</a>
-	 *
-	 * @param {string} str - 変換前の文字列
-	 *
-	 * @returns {string} 変換後の文字列
-	 */
-	#parsingInlineLink(str: string): string {
-		let openingTextDelimiterIndex = str.indexOf('[');
-		if (openingTextDelimiterIndex === -1) {
-			/* 文中にリンク構文が存在しない場合は何もしない */
-			return str;
-		}
-
-		let parseTargetText = str; // パース対象の文字列
-		const parsedTextList: string[] = []; // パース後の文字列を格納する配列
-		let afterLinkText = '';
-
-		while (openingTextDelimiterIndex !== -1) {
-			let beforeOpeningTextDelimiterText = parseTargetText.substring(0, openingTextDelimiterIndex);
-			const afterOpeningTextDelimiterText = parseTargetText.substring(openingTextDelimiterIndex + 1);
-
-			const regResult = /\]\((.+?)\)(.*)/.exec(afterOpeningTextDelimiterText);
-
-			/* [ が出現したが、 [TEXT](URL) の構文になっていない場合 */
-			if (regResult === null) {
-				if (parsedTextList.length === 0) {
-					return str;
-				}
-				break;
-			}
-
-			const url = <string>regResult[1]; // リンクURL
-			let linkText = afterOpeningTextDelimiterText.substring(0, afterOpeningTextDelimiterText.indexOf(`](${url}`)); // リンク文字列
-			afterLinkText = <string>regResult[2]; // リンク後の文字列
-
-			/* リンク文字列の中に [ や ] 記号が含まれていたときの処理 */
-			let scanText = linkText;
-			let tempLinkText = '';
-			let linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
-			while (linkTextOpeningTextDelimiterIndex !== -1) {
-				const linkTextClosingTextDelimiterIndex = scanText.indexOf(']', linkTextOpeningTextDelimiterIndex);
-				if (linkTextClosingTextDelimiterIndex !== -1) {
-					tempLinkText = scanText.substring(linkTextOpeningTextDelimiterIndex) + tempLinkText;
-					scanText = scanText.substring(0, linkTextOpeningTextDelimiterIndex);
-				} else {
-					beforeOpeningTextDelimiterText += `[${scanText.substring(0, linkTextOpeningTextDelimiterIndex)}`;
-					scanText = scanText.substring(linkTextOpeningTextDelimiterIndex + 1);
-				}
-
-				linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
-			}
-
-			linkText = scanText + tempLinkText;
-
-			/* HTML文字列に変換 */
-			const linkHtml = this.#markupLink(linkText, url);
-
-			/* 後処理 */
-			parsedTextList.push(`${beforeOpeningTextDelimiterText}${linkHtml}`);
-			parseTargetText = afterLinkText;
-
-			openingTextDelimiterIndex = parseTargetText.indexOf('[');
-		}
-
-		return `${parsedTextList.join('')}${afterLinkText}`;
-	}
-
-	/**
-	 * リンクのHTML文字列を設定する
-	 *
-	 * [リンク名](記事ID) → <a href="記事ID">リンク名</a>
-	 * [リンク名](#section-セクションID) → <a href="#section-セクションID">リンク名</a>
-	 * [リンク名](asin:ASIN) → <a href="アマゾンURL">リンク名</a><img src="アイコン"/>
-	 * [リンク名](絶対URL) → <a href="URL">リンク名</a><b class="c-domain">ドメイン名</b>
+	 * 絶対パスでのリンクの HTML 文字列を設定する
 	 *
 	 * @param {string} linkText - リンク文字列
 	 * @param {string} urlText - リンク URL
 	 *
 	 * @returns {string} 変換後の文字列
 	 */
-	#markupLink(linkText: string, urlText: string): string {
-		if (/^([1-9]{1}[0-9]{0,2})$/.test(urlText)) {
-			// TODO: 記事数が 1000 を超えたら正規表現要修正
-			return `<a href="/${urlText}">${linkText}</a>`;
-		} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(urlText)) {
-			return `<a href="${urlText}">${linkText}</a>`;
-		} else if (/^asin:[0-9A-Z]{10}$/.test(urlText)) {
-			return `<a href="https://www.amazon.co.jp/dp/${urlText.substring(
-				5
-			)}/ref=nosim?tag=w0s.jp-22">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
-		} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(urlText)) {
-			if (linkText.startsWith('https://') || linkText.startsWith('http://')) {
-				/* URL表記の場合はドメインを記載しない */
-				return `<a href="${urlText}">${linkText}</a>`;
-			}
+	static #markupLink(linkText: string, urlText: string): string {
+		const url = new URL(urlText);
+		const host = url.hostname;
 
-			const url = new URL(urlText);
-			const host = url.hostname;
+		let typeAttrHtml = '';
+		let typeIconHtml = '';
+		let hostIconHtml = '';
 
-			let typeAttr = '';
-			let typeIcon = '';
-			let hostIcon = '';
+		/* PDFアイコン */
+		if (url.pathname.endsWith('.pdf')) {
+			typeAttrHtml = ' type="application/pdf"';
+			typeIconHtml = '<img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>';
+		}
 
-			/* PDFアイコン */
-			if (url.pathname.endsWith('.pdf')) {
-				typeAttr = ' type="application/pdf"';
-				typeIcon = '<img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>';
-			}
-
+		/* URL 表記でない場合はドメイン情報を記載 */
+		if (!linkText.startsWith('https://') && !linkText.startsWith('http://')) {
 			/* サイトアイコン */
 			switch (host) {
 				case 'twitter.com': {
-					hostIcon = '<img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"/>';
+					hostIconHtml = '<img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				case 'ja.wikipedia.org': {
-					hostIcon = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon"/>';
+					hostIconHtml = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				case 'www.youtube.com': {
-					hostIcon = '<img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"/>';
+					hostIconHtml = '<img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				default:
 			}
 
 			/* サイトアイコンがない場合はホスト名をテキストで表記 */
-			if (hostIcon === '') {
-				hostIcon = `<b class="c-domain">(${host})</b>`;
+			if (hostIconHtml === '') {
+				hostIconHtml = `<b class="c-domain">(${StringEscapeHtml.escape(host)})</b>`;
 			}
-
-			return `<a href="${urlText}"${typeAttr}>${linkText}</a>${typeIcon}${hostIcon}`;
 		}
 
-		throw new Error(`不正なリンクURL: ${urlText}`);
+		return `<a href="${StringEscapeHtml.escape(urlText)}"${typeAttrHtml}>${StringEscapeHtml.escape(linkText)}</a>${typeIconHtml}${hostIconHtml}`;
 	}
 }
