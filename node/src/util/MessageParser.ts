@@ -19,6 +19,14 @@ import { LanguageFn } from 'highlight.js';
 import BlogMessageDao from '../dao/BlogMessageDao.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 
+interface InlineMarkupOption {
+	link?: boolean;
+	emphasis?: boolean;
+	code?: boolean;
+	quote?: boolean;
+	footnote?: boolean;
+}
+
 /**
  * 記事メッセージのパーサー
  */
@@ -1434,7 +1442,7 @@ export default class MessageParser {
 			const textElement = this.#document.createElement('span');
 			textElement.className = 'p-footnotes__text';
 			textElement.id = `fn${href}`;
-			this.#inlineMarkup(textElement, footnote, false);
+			this.#inlineMarkup(textElement, footnote, { link: true, emphasis: true, code: true, quote: true });
 			liElement.appendChild(textElement);
 		});
 	}
@@ -1509,9 +1517,13 @@ export default class MessageParser {
 	 *
 	 * @param {object} parentElement - 親要素
 	 * @param {string} str - 変換前の文字列
-	 * @param {boolean} footnoteConvert - 注釈の変換を行うか
+	 * @param {InlineMarkupOption} options - 変換を行う対象
 	 */
-	#inlineMarkup(parentElement: HTMLElement, str: string, footnoteConvert = true): void {
+	#inlineMarkup(
+		parentElement: HTMLElement,
+		str: string,
+		options: Readonly<InlineMarkupOption> = { link: true, emphasis: true, code: true, quote: true, footnote: true }
+	): void {
 		if (str === '') {
 			parentElement.textContent = '';
 			return;
@@ -1519,34 +1531,42 @@ export default class MessageParser {
 
 		let htmlFragment = str;
 
-		if (footnoteConvert) {
+		if (options.footnote) {
 			htmlFragment = StringEscapeHtml.escape(htmlFragment); // 注釈がここを通るのは2回目なので処理不要
 		}
 
-		htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, p1: string, p2: string) => {
-			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
-				return `**${p2.substring(0, p2.length - 1)}**`;
-			}
-			return `${p1}<em>${p2}</em>`;
-		});
-		htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, p1: string, p2: string) => {
-			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
-				return `\`${p2.substring(0, p2.length - 1)}\``;
-			}
-			return `${p1}<code class="c-code">${p2}</code>`;
-		});
-		htmlFragment = htmlFragment.replace(
-			/{{(\d{1,5}-\d{1,7}-\d{1,7}-[\dX]|97[8-9]-\d{1,5}-\d{1,7}-\d{1,7}-\d) ([^{}]+)}}/g,
-			(_match, p1: string, p2: string) => `<q class="c-quote" cite="urn:ISBN:${p1}">${p2}</q>`
-		);
-		htmlFragment = htmlFragment.replace(
-			/{{(https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+) ([^{}]+)}}/g,
-			(_match, p1: string, p2: string) => `<a href="${p1}"><q class="c-quote" cite="${p1}">${p2}</q></a>`
-		);
-		htmlFragment = htmlFragment.replace(/{{([^{}]+)}}/g, (_match, p1: string) => `<q class="c-quote">${p1}</q>`);
-		htmlFragment = this.#parsingInlineLink(htmlFragment);
+		if (options.link) {
+			htmlFragment = this.#parsingInlineLink(htmlFragment);
+		}
+		if (options.emphasis) {
+			htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, p1: string, p2: string) => {
+				if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
+					return `**${p2.substring(0, p2.length - 1)}**`;
+				}
+				return `${p1}<em>${p2}</em>`;
+			});
+		}
+		if (options.code) {
+			htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, p1: string, p2: string) => {
+				if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
+					return `\`${p2.substring(0, p2.length - 1)}\``;
+				}
+				return `${p1}<code class="c-code">${p2}</code>`;
+			});
+		}
+		if (options.quote) {
+			htmlFragment = htmlFragment.replace(
+				/{{(\d{1,5}-\d{1,7}-\d{1,7}-[\dX]|97[8-9]-\d{1,5}-\d{1,7}-\d{1,7}-\d) ([^{}]+)}}/g,
+				(_match, p1: string, p2: string) => `<q class="c-quote" cite="urn:ISBN:${p1}">${p2}</q>`
+			);
+			htmlFragment = htmlFragment.replace(
+				/{{(https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+) ([^{}]+)}}/g,
+				(_match, p1: string, p2: string) => `<a href="${p1}"><q class="c-quote" cite="${p1}">${p2}</q></a>`
+			);
+			htmlFragment = htmlFragment.replace(/{{([^{}]+)}}/g, (_match, p1: string) => `<q class="c-quote">${p1}</q>`);
+		}
 
-		if (footnoteConvert) {
+		if (options.footnote) {
 			htmlFragment = htmlFragment.replace(/\(\((.+?)\)\)/g, (_match, p1: string) => {
 				this.#footnotes.push(p1); // 注釈文
 
