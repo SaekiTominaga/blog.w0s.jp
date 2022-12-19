@@ -1073,12 +1073,14 @@ export default class MessageParser {
 			case '.jpeg':
 			case '.png':
 			case '.svg': {
-				const mime = Object.entries(this.#config.static.headers.mime.extension).find(([, extensions]) => extensions.includes(fileExtension.substring(1)))?.[0];
+				const mimeType = Object.entries(this.#config.static.headers.mime.extension).find(([, extensions]) =>
+					extensions.includes(fileExtension.substring(1))
+				)?.[0];
 
 				const aElement = this.#document.createElement('a');
 				aElement.href = `https://media.w0s.jp/image/blog/${fileName}`;
-				if (mime !== undefined) {
-					aElement.type = mime;
+				if (mimeType !== undefined) {
+					aElement.type = mimeType;
 				}
 				embeddElement.appendChild(aElement);
 
