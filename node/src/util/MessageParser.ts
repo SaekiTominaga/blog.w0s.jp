@@ -1512,11 +1512,7 @@ export default class MessageParser {
 			return;
 		}
 
-		let htmlFragment = str;
-
-		if (options.footnote) {
-			htmlFragment = StringEscapeHtml.escape(htmlFragment); // 注釈がここを通るのは2回目なので処理不要
-		}
+		let htmlFragment = StringEscapeHtml.escape(str);
 
 		if (options.link) {
 			/**
@@ -1639,7 +1635,7 @@ export default class MessageParser {
 
 		if (options.footnote) {
 			htmlFragment = htmlFragment.replace(/\(\((.+?)\)\)/g, (_match, footnote: string) => {
-				this.#footnotes.push(footnote); // 注釈文
+				this.#footnotes.push(StringEscapeHtml.unescape(footnote)); // 注釈文
 
 				const num = this.#footnotes.length;
 				const href = `${this.#entryId}-${num}`;
