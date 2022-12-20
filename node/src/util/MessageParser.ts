@@ -640,7 +640,7 @@ export default class MessageParser {
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h2');
-		headingElement.textContent = headingText;
+		this.#inlineMarkup(headingElement, headingText, { code: true });
 		headingWrapElement.appendChild(headingElement);
 
 		const selfLinkWrapElement = this.#document.createElement('p');
@@ -675,7 +675,7 @@ export default class MessageParser {
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h3');
-		headingElement.textContent = headingText;
+		this.#inlineMarkup(headingElement, headingText, { code: true });
 		headingWrapElement.appendChild(headingElement);
 
 		const selfLinkWrapElement = this.#document.createElement('p');
@@ -716,7 +716,7 @@ export default class MessageParser {
 
 				const aElement = this.#document.createElement('a');
 				aElement.href = `#${encodeURIComponent(id)}`;
-				aElement.textContent = headingText;
+				this.#inlineMarkup(aElement, headingText, { code: true });
 				liElement.appendChild(aElement);
 			}
 		}
