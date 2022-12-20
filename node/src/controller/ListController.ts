@@ -29,7 +29,7 @@ export default class ListController extends Controller implements ControllerInte
 		super();
 
 		this.#configCommon = configCommon;
-		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/list.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('node/configure/list.json', 'utf8'));
 	}
 
 	/**

@@ -23,7 +23,7 @@ export default class TweetMediaController extends Controller implements Controll
 		super();
 
 		this.#configCommon = configCommon;
-		this.#configTwitter = <ConfigureTwitter>JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
+		this.#configTwitter = JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
 	}
 
 	/**

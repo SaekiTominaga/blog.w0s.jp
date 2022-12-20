@@ -25,7 +25,7 @@ export default class AmazonImageController extends Controller implements Control
 		super();
 
 		this.#configCommon = configCommon;
-		this.#configPaapi = <ConfigurePaapi>JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
+		this.#configPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
 	}
 
 	/**

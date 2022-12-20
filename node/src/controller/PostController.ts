@@ -60,9 +60,9 @@ export default class PostController extends Controller implements ControllerInte
 		super();
 
 		this.#configCommon = configCommon;
-		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/post.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('node/configure/post.json', 'utf8'));
 		this.#ConfigPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
-		this.#configTwitter = <ConfigureTwitter>JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
+		this.#configTwitter = JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
 
 		this.#env = env;
 	}
