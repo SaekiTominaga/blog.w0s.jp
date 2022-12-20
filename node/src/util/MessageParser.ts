@@ -1,4 +1,3 @@
-/* eslint-disable lines-between-class-members */
 import * as sqlite from 'sqlite';
 import dayjs from 'dayjs';
 import GithubSlugger from 'github-slugger';
