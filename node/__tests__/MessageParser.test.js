@@ -541,14 +541,14 @@ describe('inline', () => {
 	});
 
 	test('footnote', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text((footnote))text')).toBe(
-			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote</span></li></ul>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text((footnote**emphasis**))text')).toBe(
+			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote<em>emphasis</em></span></li></ul>'
 		);
 	});
 
 	test('footnote - entry ID', async () => {
-		expect(await new MessageParser(config, { entry_id: 99, dbh: dbh }).toHtml('text((footnote))text')).toBe(
-			'<p>text<span class="c-annotate"><a href="#fn99-1" id="nt99-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt99-1">[1]</a></span><span class="p-footnotes__text" id="fn99-1">footnote</span></li></ul>'
+		expect(await new MessageParser(config, { entry_id: 99, dbh: dbh }).toHtml('text((footnote**emphasis**))text')).toBe(
+			'<p>text<span class="c-annotate"><a href="#fn99-1" id="nt99-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt99-1">[1]</a></span><span class="p-footnotes__text" id="fn99-1">footnote<em>emphasis</em></span></li></ul>'
 		);
 	});
 });

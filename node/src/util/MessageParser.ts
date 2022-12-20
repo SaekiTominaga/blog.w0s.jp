@@ -37,7 +37,7 @@ interface InlineMarkupOption {
 	emphasis?: boolean; // <em>
 	code?: boolean; // <code>
 	quote?: boolean; // <q>
-	footnote?: boolean; // .c-annotate
+	footnote?: boolean; // 注釈
 }
 
 /**
@@ -1545,6 +1545,19 @@ export default class MessageParser {
 
 		let htmlFragment = StringEscapeHtml.escape(str);
 
+		/* 注釈（HTML エスケープの関係で注釈は最初に処理する必要がある） */
+		if (options.footnote) {
+			htmlFragment = htmlFragment.replace(/\(\((.+?)\)\)/g, (_match, footnote: string) => {
+				this.#footnotes.push(StringEscapeHtml.unescape(footnote)); // 注釈文
+
+				const num = this.#footnotes.length;
+				const href = `${this.#entryId}-${num}`;
+
+				return `<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
+			});
+		}
+
+		/* <a> */
 		if (options.link) {
 			/**
 			 * Markdown 形式でリンク文字列をパースする
@@ -1637,6 +1650,8 @@ export default class MessageParser {
 				return `${parsedTextList.join('')}${afterLinkText}`;
 			})();
 		}
+
+		/* <em> */
 		if (options.emphasis) {
 			htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, beforeEmphasis: string, emphasis: string) => {
 				if (beforeEmphasis === '\\' && emphasis.substring(emphasis.length - 1) === '\\') {
@@ -1645,6 +1660,8 @@ export default class MessageParser {
 				return `${beforeEmphasis}<em>${emphasis}</em>`;
 			});
 		}
+
+		/* <code> */
 		if (options.code) {
 			htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, beforeCode: string, code: string) => {
 				if (beforeCode === '\\' && code.substring(code.length - 1) === '\\') {
@@ -1653,6 +1670,8 @@ export default class MessageParser {
 				return `${beforeCode}<code class="c-code">${code}</code>`;
 			});
 		}
+
+		/* <q> */
 		if (options.quote) {
 			htmlFragment = htmlFragment.replace(/{{(.+?)}}/g, (_match, quote: string) => {
 				const urlMatchGroups = quote.match(new RegExp(`(?<url>${this.#REGEXP_URL}) (?<text>.+)`))?.groups;
@@ -1677,17 +1696,6 @@ export default class MessageParser {
 				}
 
 				return `<q class="c-quote">${quote}</q>`;
-			});
-		}
-
-		if (options.footnote) {
-			htmlFragment = htmlFragment.replace(/\(\((.+?)\)\)/g, (_match, footnote: string) => {
-				this.#footnotes.push(StringEscapeHtml.unescape(footnote)); // 注釈文
-
-				const num = this.#footnotes.length;
-				const href = `${this.#entryId}-${num}`;
-
-				return `<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
 			});
 		}
 
