@@ -1,8 +1,10 @@
+import fs from 'fs';
 import { Request, Response } from 'express';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
 import MessageParser from '../../util/MessageParser.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
+import { NoName as ConfigureMessage } from '../../../configure/type/message.js';
 import RequestUtil from '../../util/RequestUtil.js';
 
 /**
@@ -11,6 +13,8 @@ import RequestUtil from '../../util/RequestUtil.js';
 export default class PreviewController extends Controller implements ControllerInterface {
 	#configCommon: ConfigureCommon;
 
+	#configureMessage: ConfigureMessage;
+
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
 	 */
@@ -18,6 +22,7 @@ export default class PreviewController extends Controller implements ControllerI
 		super();
 
 		this.#configCommon = configCommon;
+		this.#configureMessage = JSON.parse(fs.readFileSync('node/configure/message.json', 'utf8'));
 	}
 
 	/**
@@ -35,7 +40,9 @@ export default class PreviewController extends Controller implements ControllerI
 			return;
 		}
 
-		const messageParser = new MessageParser(this.#configCommon);
+		const messageParser = new MessageParser(this.#configCommon, {
+			anchorHostIcons: this.#configureMessage.anchor_host_icon,
+		});
 
 		const responseJson: BlogApi.Preview = {
 			html: await messageParser.toHtml(requestQuery.markdown),

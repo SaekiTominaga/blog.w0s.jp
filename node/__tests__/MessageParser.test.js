@@ -437,22 +437,19 @@ describe('inline', () => {
 		);
 	});
 
-	test('link - URL - Twitter', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://twitter.com/)text')).toBe(
-			'<p>text<a href="https://twitter.com/">link</a><img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon">text</p>'
-		);
-	});
-
-	test('link - URL - Wikipedia', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://ja.wikipedia.org/)text')).toBe(
-			'<p>text<a href="https://ja.wikipedia.org/">link</a><img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon">text</p>'
-		);
-	});
-
-	test('link - URL - YouTube', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://www.youtube.com/)text')).toBe(
-			'<p>text<a href="https://www.youtube.com/">link</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon">text</p>'
-		);
+	test('link - URL - icon', async () => {
+		expect(
+			await new MessageParser(config, {
+				dbh: dbh,
+				anchorHostIcons: [
+					{
+						host: 'example.com',
+						name: 'Example',
+						src: '/example.svg',
+					},
+				],
+			}).toHtml('text[link](https://example.com/)text')
+		).toBe('<p>text<a href="https://example.com/">link</a><img src="/example.svg" alt="(Example)" width="16" height="16" class="c-link-icon">text</p>');
 	});
 
 	test('link - entry ID', async () => {

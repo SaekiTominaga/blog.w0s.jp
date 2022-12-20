@@ -13,6 +13,7 @@ import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
 import { NoName as Configure } from '../../configure/type/entry.js';
+import { NoName as ConfigureMessage } from '../../configure/type/message.js';
 import { PAAPI as ConfigurePaapi } from '../../configure/type/paapi.js';
 
 /**
@@ -23,7 +24,9 @@ export default class EntryController extends Controller implements ControllerInt
 
 	#config: Configure;
 
-	#ConfigPaapi: ConfigurePaapi;
+	#configureMessage: ConfigureMessage;
+
+	#configPaapi: ConfigurePaapi;
 
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
@@ -33,7 +36,8 @@ export default class EntryController extends Controller implements ControllerInt
 
 		this.#configCommon = configCommon;
 		this.#config = JSON.parse(fs.readFileSync('node/configure/entry.json', 'utf8'));
-		this.#ConfigPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
+		this.#configureMessage = JSON.parse(fs.readFileSync('node/configure/message.json', 'utf8'));
+		this.#configPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
 	}
 
 	/**
@@ -76,7 +80,8 @@ export default class EntryController extends Controller implements ControllerInt
 		const messageParser = new MessageParser(this.#configCommon, {
 			entry_id: requestQuery.entry_id,
 			dbh: await dao.getDbh(),
-			amazon_tracking_id: this.#ConfigPaapi.partner_tag,
+			anchorHostIcons: this.#configureMessage.anchor_host_icon,
+			amazon_tracking_id: this.#configPaapi.partner_tag,
 		});
 
 		const sidebar = new Sidebar(dao);
