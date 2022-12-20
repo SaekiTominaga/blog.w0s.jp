@@ -234,7 +234,7 @@
 							<h2>画像、動画登録</h2>
 						</div>
 
-						<form action="#media" method="post" enctype="multipart/form-data" class="c-stack">
+						<form action="#media" method="post" enctype="multipart/form-data" class="c-stack js-submit-overlay" data-overlayed-by="form-submit-overlay">
 							<%_ if (mediaUploadResults.size > 0) { _%>
 							<ul class="p-form-results">
 								<%_ for (const result of mediaUploadResults) { _%><%_ if (result.success) { _%>
@@ -275,7 +275,7 @@
 							<h2>View アップデート反映</h2>
 						</div>
 
-						<form action="#view" method="post" class="c-stack">
+						<form action="#view" method="post" class="c-stack js-submit-overlay" data-overlayed-by="form-submit-overlay">
 							<%_ if (viewUpdateResults.size > 0) { _%>
 							<ul class="p-form-results">
 								<%_ for (const result of viewUpdateResults) { _%><%_ if (result.success) { _%>
