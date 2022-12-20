@@ -30,7 +30,7 @@ export default class CategoryController extends Controller implements Controller
 		super();
 
 		this.#configCommon = configCommon;
-		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/category.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('node/configure/category.json', 'utf8'));
 	}
 
 	/**

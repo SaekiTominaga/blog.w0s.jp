@@ -25,7 +25,7 @@ export default class BlogAmazonController extends Controller implements Controll
 		super();
 
 		this.#configCommon = configCommon;
-		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/amazon.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('node/configure/amazon.json', 'utf8'));
 	}
 
 	/**

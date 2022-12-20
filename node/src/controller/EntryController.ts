@@ -32,7 +32,7 @@ export default class EntryController extends Controller implements ControllerInt
 		super();
 
 		this.#configCommon = configCommon;
-		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/entry.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('node/configure/entry.json', 'utf8'));
 		this.#ConfigPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
 	}
 
