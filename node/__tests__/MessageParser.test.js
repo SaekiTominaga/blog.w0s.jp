@@ -460,8 +460,8 @@ describe('inline', () => {
 	});
 
 	test('link - asin', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](asin:4065199816)text')).toBe(
-			'<p>text<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=w0s.jp-22">link</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon">text</p>'
+		expect(await new MessageParser(config, { dbh: dbh, amazon_tracking_id: 'xxx-22' }).toHtml('text[link](asin:4065199816)text')).toBe(
+			'<p>text<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=xxx-22">link</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon">text</p>'
 		);
 	});
 
@@ -470,9 +470,7 @@ describe('inline', () => {
 	});
 
 	test('link - invalid', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](foo)text')).toBe(
-			'<p>text[link](foo)text</p>'
-		);
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](foo)text')).toBe('<p>text[link](foo)text</p>');
 	});
 
 	test('link - multi', async () => {
@@ -542,9 +540,7 @@ describe('inline', () => {
 	});
 
 	test('quote - cite - ISBN - invalid check digit', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{978-4-06-519981-0 quote}}text')).toBe(
-			'<p>text<q class="c-quote">quote</q>text</p>'
-		);
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{978-4-06-519981-0 quote}}text')).toBe('<p>text<q class="c-quote">quote</q>text</p>');
 	});
 
 	test('footnote', async () => {

@@ -22,6 +22,7 @@ import { NoName as Configure } from '../../configure/type/common.js';
 interface Option {
 	entry_id?: number; // 記事 ID
 	dbh?: sqlite.Database; // DB 接続情報
+	amazon_tracking_id?: string; // Amazon トラッキング ID
 }
 
 interface InlineMarkupOption {
@@ -45,6 +46,12 @@ export default class MessageParser {
 	/* 設定ファイル */
 	readonly #config: Configure;
 
+	/* 記事 ID */
+	readonly #entryId: number = 0;
+
+	/* Amazon トラッキング ID */
+	readonly #amazonTrackingId?: string;
+
 	/* Slugger */
 	readonly #slugger: GithubSlugger;
 
@@ -53,9 +60,6 @@ export default class MessageParser {
 
 	/* Dao */
 	readonly #dao: BlogMessageDao;
-
-	/* 記事 ID */
-	readonly #entryId: number = 0;
 
 	/* 記事内に埋め込みツイートが存在するか */
 	#tweetExist = false;
@@ -135,6 +139,11 @@ export default class MessageParser {
 		/* 記事 ID */
 		if (options?.entry_id !== undefined) {
 			this.#entryId = options.entry_id;
+		}
+
+		/* Amazon トラッキング ID */
+		if (options?.amazon_tracking_id !== undefined) {
+			this.#amazonTrackingId = options?.amazon_tracking_id;
 		}
 
 		/* Slugger */
@@ -1590,9 +1599,14 @@ export default class MessageParser {
 						linkHtml = `<a href="/${url}">${linkText}</a>`;
 					} else if (/^asin:[0-9A-Z]{10}$/.test(url)) {
 						/* Amazon 商品ページへのリンク */
-						linkHtml = `<a href="https://www.amazon.co.jp/dp/${url.substring(
-							5
-						)}/ref=nosim?tag=w0s.jp-22">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
+						const asin = url.substring(5);
+
+						const href =
+							this.#amazonTrackingId === undefined
+								? `https://www.amazon.co.jp/dp/${asin}/`
+								: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${this.#amazonTrackingId}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+
+						linkHtml = `<a href="${href}">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
 					} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
 						/* ページ内リンク */
 						linkHtml = `<a href="${url}">${linkText}</a>`;

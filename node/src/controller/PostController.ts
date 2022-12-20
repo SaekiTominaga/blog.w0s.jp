@@ -17,8 +17,9 @@ import MessageParser from '../util/MessageParser.js';
 import PostValidator from '../validator/PostValidator.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Tweet from '../util/Tweet.js';
-import { NoName as Configure } from '../../configure/type/post.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { PAAPI as ConfigurePaapi } from '../../configure/type/paapi.js';
+import { NoName as Configure } from '../../configure/type/post.js';
 import { TwitterAPI as ConfigureTwitter } from '../../configure/type/twitter.js';
 
 interface PostResults {
@@ -45,6 +46,8 @@ export default class PostController extends Controller implements ControllerInte
 
 	#config: Configure;
 
+	#ConfigPaapi: ConfigurePaapi;
+
 	#configTwitter: ConfigureTwitter;
 
 	#env: Express.Env;
@@ -58,6 +61,7 @@ export default class PostController extends Controller implements ControllerInte
 
 		this.#configCommon = configCommon;
 		this.#config = <Configure>JSON.parse(fs.readFileSync('node/configure/post.json', 'utf8'));
+		this.#ConfigPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
 		this.#configTwitter = <ConfigureTwitter>JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
 
 		this.#env = env;
@@ -286,7 +290,9 @@ export default class PostController extends Controller implements ControllerInte
 				entriesView.add({
 					id: entry.id,
 					title: entry.title,
-					message: await new MessageParser(this.#configCommon, { entry_id: entry.id, dbh: dbh }).toXml(entry.message),
+					message: await new MessageParser(this.#configCommon, { entry_id: entry.id, dbh: dbh, amazon_tracking_id: this.#ConfigPaapi.partner_tag }).toXml(
+						entry.message
+					),
 					updated_at: dayjs(entry.updated_at ?? entry.created_at),
 					update: Boolean(entry.updated_at),
 				});
