@@ -1,4 +1,3 @@
-/* eslint-disable lines-between-class-members */
 import * as sqlite from 'sqlite';
 import dayjs from 'dayjs';
 import GithubSlugger from 'github-slugger';
@@ -8,6 +7,7 @@ import hljsJavaScript from 'highlight.js/lib/languages/javascript';
 import hljsJson from 'highlight.js/lib/languages/json';
 import hljsTypeScript from 'highlight.js/lib/languages/typescript';
 import hljsXml from 'highlight.js/lib/languages/xml';
+import IsbnVerify from '@saekitominaga/isbn-verify';
 import Log4js from 'log4js';
 import md5 from 'md5';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
@@ -19,15 +19,38 @@ import { LanguageFn } from 'highlight.js';
 import BlogMessageDao from '../dao/BlogMessageDao.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 
+interface Option {
+	entry_id?: number; // 記事 ID
+	dbh?: sqlite.Database; // DB 接続情報
+	amazon_tracking_id?: string; // Amazon トラッキング ID
+}
+
+interface InlineMarkupOption {
+	link?: boolean; // <a>
+	emphasis?: boolean; // <em>
+	code?: boolean; // <code>
+	quote?: boolean; // <q>
+	footnote?: boolean; // .c-annotate
+}
+
 /**
  * 記事メッセージのパーサー
  */
 export default class MessageParser {
+	readonly #REGEXP_URL = "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+";
+	readonly #REGEXP_ISBN = '(978|979)-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]|[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]';
+
 	/* Logger */
 	readonly #logger: Log4js.Logger;
 
 	/* 設定ファイル */
 	readonly #config: Configure;
+
+	/* 記事 ID */
+	readonly #entryId: number = 0;
+
+	/* Amazon トラッキング ID */
+	readonly #amazonTrackingId?: string;
 
 	/* Slugger */
 	readonly #slugger: GithubSlugger;
@@ -37,9 +60,6 @@ export default class MessageParser {
 
 	/* Dao */
 	readonly #dao: BlogMessageDao;
-
-	/* 記事 ID */
-	readonly #entryId: number = 0;
 
 	/* 記事内に埋め込みツイートが存在するか */
 	#tweetExist = false;
@@ -107,19 +127,23 @@ export default class MessageParser {
 	 * コンストラクタ
 	 *
 	 * @param {Configure} config - 共通設定ファイル
-	 * @param {sqlite.Database} dbh - DB 接続情報
-	 * @param {number} entryId - 記事 ID
+	 * @param {object} options - パースで必要な様々な情報
 	 */
-	constructor(config: Configure, dbh?: sqlite.Database, entryId?: number) {
+	constructor(config: Configure, options?: Option) {
 		/* Logger */
-		this.#logger = Log4js.getLogger(entryId !== undefined ? `${this.constructor.name} (ID: ${entryId})` : this.constructor.name);
+		this.#logger = Log4js.getLogger(options?.entry_id !== undefined ? `${this.constructor.name} (ID: ${options.entry_id})` : this.constructor.name);
 
 		/* 設定ファイル */
 		this.#config = config;
 
 		/* 記事 ID */
-		if (entryId !== undefined) {
-			this.#entryId = entryId;
+		if (options?.entry_id !== undefined) {
+			this.#entryId = options.entry_id;
+		}
+
+		/* Amazon トラッキング ID */
+		if (options?.amazon_tracking_id !== undefined) {
+			this.#amazonTrackingId = options?.amazon_tracking_id;
 		}
 
 		/* Slugger */
@@ -129,7 +153,7 @@ export default class MessageParser {
 		this.#document = new JSDOM().window.document;
 
 		/* Dao */
-		this.#dao = new BlogMessageDao(config, dbh);
+		this.#dao = new BlogMessageDao(config, options?.dbh);
 
 		/* ルート要素 */
 		this.#rootElement = this.#document.createElement(this.#ROOT_ELEMENT_NAME);
@@ -368,13 +392,17 @@ export default class MessageParser {
 						/* ブロックレベル引用の直後行かつ先頭が ? な場合は引用の出典 */
 						const metaText = line.substring(1); // 先頭記号を削除
 
-						if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(metaText)) {
+						if (new RegExp(`^${this.#REGEXP_URL}$`).test(metaText)) {
 							/* URL */
 							this.#quoteElement.setAttribute('cite', metaText);
 							this.#quoteUrl = new URL(metaText);
-						} else if (/^\d{1,5}-\d{1,7}-\d{1,7}-[\dX]|97[8-9]-\d{1,5}-\d{1,7}-\d{1,7}-\d$/.test(metaText)) {
+						} else if (new RegExp(`^${this.#REGEXP_ISBN}$`).test(metaText)) {
 							/* ISBN */
-							this.#quoteElement.setAttribute('cite', `urn:ISBN:${metaText}`);
+							if (new IsbnVerify(metaText, { strict: true }).isValid()) {
+								this.#quoteElement.setAttribute('cite', `urn:ISBN:${metaText}`);
+							} else {
+								this.#logger.warn(`ISBN のチェックデジット不正: ${metaText}`);
+							}
 						} else if (/^[a-z]{2}$/.test(metaText)) {
 							/* 言語 */
 							this.#quoteElement.setAttribute('lang', metaText);
@@ -414,7 +442,7 @@ export default class MessageParser {
 
 						this.#appendTable();
 
-						const alignRow = tableRowDatas.every((data) => /-+/.test(data));
+						const alignRow = tableRowDatas.every((data) => /^-+$/.test(data));
 						if (!alignRow) {
 							if (!this.#thead) {
 								this.#tbodyData.push(tableRowDatas);
@@ -724,7 +752,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		liElement.insertAdjacentHTML('beforeend', this.#parsingInlineLink(StringEscapeHtml.escape(listText))); // リンクを設定
+		this.#inlineMarkup(liElement, listText, { link: true }); // リンクを設定
 		this.#linksElement.appendChild(liElement);
 	}
 
@@ -874,30 +902,10 @@ export default class MessageParser {
 		if (this.#quoteUrl === undefined) {
 			captionTitleElement.textContent = this.#quoteTitle;
 		} else {
-			const aElement = this.#document.createElement('a');
-			aElement.href = this.#quoteUrl.toString();
-			if (this.#quoteLanguage !== undefined) {
-				aElement.setAttribute('hreflang', this.#quoteLanguage);
-			}
-			aElement.textContent = this.#quoteTitle;
-			captionTitleElement.appendChild(aElement);
-
-			if (this.#quoteUrl.pathname.endsWith('.pdf')) {
-				aElement.type = 'application/pdf';
-
-				const iconElement = this.#document.createElement('img');
-				iconElement.src = '/image/icon/pdf.png';
-				iconElement.alt = '(PDF)';
-				iconElement.width = 16;
-				iconElement.height = 16;
-				iconElement.className = 'c-link-icon';
-				captionTitleElement.appendChild(iconElement);
-			}
-
-			const domainElement = this.#document.createElement('b');
-			domainElement.className = 'c-domain';
-			domainElement.textContent = `(${this.#quoteUrl.hostname})`;
-			captionTitleElement.appendChild(domainElement);
+			captionTitleElement.insertAdjacentHTML(
+				'beforeend',
+				MessageParser.#anchor(this.#quoteTitle, this.#quoteUrl.toString(), { hreflang: this.#quoteLanguage })
+			);
 		}
 	}
 
@@ -1078,12 +1086,14 @@ export default class MessageParser {
 			case '.jpeg':
 			case '.png':
 			case '.svg': {
-				const mime = Object.entries(this.#config.static.headers.mime.extension).find(([, extensions]) => extensions.includes(fileExtension.substring(1)))?.[0];
+				const mimeType = Object.entries(this.#config.static.headers.mime.extension).find(([, extensions]) =>
+					extensions.includes(fileExtension.substring(1))
+				)?.[0];
 
 				const aElement = this.#document.createElement('a');
 				aElement.href = `https://media.w0s.jp/image/blog/${fileName}`;
-				if (mime !== undefined) {
-					aElement.type = mime;
+				if (mimeType !== undefined) {
+					aElement.type = mimeType;
 				}
 				embeddElement.appendChild(aElement);
 
@@ -1434,7 +1444,7 @@ export default class MessageParser {
 			const textElement = this.#document.createElement('span');
 			textElement.className = 'p-footnotes__text';
 			textElement.id = `fn${href}`;
-			this.#inlineMarkup(textElement, footnote, false);
+			this.#inlineMarkup(textElement, footnote, { link: true, emphasis: true, code: true, quote: true });
 			liElement.appendChild(textElement);
 		});
 	}
@@ -1509,46 +1519,158 @@ export default class MessageParser {
 	 *
 	 * @param {object} parentElement - 親要素
 	 * @param {string} str - 変換前の文字列
-	 * @param {boolean} footnoteConvert - 注釈の変換を行うか
+	 * @param {object} options - 変換を行う対象
 	 */
-	#inlineMarkup(parentElement: HTMLElement, str: string, footnoteConvert = true): void {
+	#inlineMarkup(
+		parentElement: HTMLElement,
+		str: string,
+		options: Readonly<InlineMarkupOption> = { link: true, emphasis: true, code: true, quote: true, footnote: true }
+	): void {
 		if (str === '') {
 			parentElement.textContent = '';
 			return;
 		}
 
-		let htmlFragment = str;
+		let htmlFragment = StringEscapeHtml.escape(str);
 
-		if (footnoteConvert) {
-			htmlFragment = StringEscapeHtml.escape(htmlFragment); // 注釈がここを通るのは2回目なので処理不要
+		if (options.link) {
+			/**
+			 * Markdown 形式でリンク文字列をパースする
+			 *
+			 * [リンク名](URL) → <a href="URL">リンク名</a>
+			 *
+			 * @returns {string} 変換後の文字列
+			 */
+			htmlFragment = (() => {
+				let openingTextDelimiterIndex = htmlFragment.indexOf('[');
+				if (openingTextDelimiterIndex === -1) {
+					/* 文中にリンク構文が存在しない場合は何もしない */
+					return htmlFragment;
+				}
+
+				let parseTargetText = htmlFragment; // パース対象の文字列
+				const parsedTextList: string[] = []; // パース後の文字列を格納する配列
+				let afterLinkText = '';
+
+				while (openingTextDelimiterIndex !== -1) {
+					let beforeOpeningTextDelimiterText = parseTargetText.substring(0, openingTextDelimiterIndex);
+					const afterOpeningTextDelimiterText = parseTargetText.substring(openingTextDelimiterIndex + 1);
+
+					const regResult = /\]\((.+?)\)(.*)/.exec(afterOpeningTextDelimiterText);
+
+					/* [ が出現したが、 [TEXT](URL) の構文になっていない場合 */
+					if (regResult === null) {
+						if (parsedTextList.length === 0) {
+							return htmlFragment;
+						}
+						break;
+					}
+
+					const url = <string>regResult[1]; // リンクURL
+					let linkText = afterOpeningTextDelimiterText.substring(0, afterOpeningTextDelimiterText.indexOf(`](${url}`)); // リンク文字列
+					afterLinkText = <string>regResult[2]; // リンク後の文字列
+
+					/* リンク文字列の中に [ や ] 記号が含まれていたときの処理 */
+					let scanText = linkText;
+					let tempLinkText = '';
+					let linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
+					while (linkTextOpeningTextDelimiterIndex !== -1) {
+						const linkTextClosingTextDelimiterIndex = scanText.indexOf(']', linkTextOpeningTextDelimiterIndex);
+						if (linkTextClosingTextDelimiterIndex !== -1) {
+							tempLinkText = scanText.substring(linkTextOpeningTextDelimiterIndex) + tempLinkText;
+							scanText = scanText.substring(0, linkTextOpeningTextDelimiterIndex);
+						} else {
+							beforeOpeningTextDelimiterText += `[${scanText.substring(0, linkTextOpeningTextDelimiterIndex)}`;
+							scanText = scanText.substring(linkTextOpeningTextDelimiterIndex + 1);
+						}
+
+						linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
+					}
+
+					linkText = scanText + tempLinkText;
+
+					/* HTML文字列に変換 */
+					let linkHtml = '';
+					if (new RegExp(`^${this.#REGEXP_URL}$`).test(url)) {
+						/* 絶対 URL */
+						linkHtml = MessageParser.#anchor(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
+					} else if (/^([1-9][0-9]*)$/.test(url)) {
+						/* 別記事へのリンク */
+						linkHtml = `<a href="/${url}">${linkText}</a>`;
+					} else if (/^asin:[0-9A-Z]{10}$/.test(url)) {
+						/* Amazon 商品ページへのリンク */
+						const asin = url.substring(5);
+
+						const href =
+							this.#amazonTrackingId === undefined
+								? `https://www.amazon.co.jp/dp/${asin}/`
+								: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${this.#amazonTrackingId}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+
+						linkHtml = `<a href="${href}">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
+					} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
+						/* ページ内リンク */
+						linkHtml = `<a href="${url}">${linkText}</a>`;
+					} else {
+						this.#logger.warn(`不正なリンクURL: ${url}`);
+						return htmlFragment;
+					}
+
+					/* 後処理 */
+					parsedTextList.push(`${beforeOpeningTextDelimiterText}${linkHtml}`);
+					parseTargetText = afterLinkText;
+
+					openingTextDelimiterIndex = parseTargetText.indexOf('[');
+				}
+
+				return `${parsedTextList.join('')}${afterLinkText}`;
+			})();
+		}
+		if (options.emphasis) {
+			htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, beforeEmphasis: string, emphasis: string) => {
+				if (beforeEmphasis === '\\' && emphasis.substring(emphasis.length - 1) === '\\') {
+					return `**${emphasis.substring(0, emphasis.length - 1)}**`;
+				}
+				return `${beforeEmphasis}<em>${emphasis}</em>`;
+			});
+		}
+		if (options.code) {
+			htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, beforeCode: string, code: string) => {
+				if (beforeCode === '\\' && code.substring(code.length - 1) === '\\') {
+					return `\`${code.substring(0, code.length - 1)}\``;
+				}
+				return `${beforeCode}<code class="c-code">${code}</code>`;
+			});
+		}
+		if (options.quote) {
+			htmlFragment = htmlFragment.replace(/{{(.+?)}}/g, (_match, quote: string) => {
+				const urlMatchGroups = quote.match(new RegExp(`(?<url>${this.#REGEXP_URL}) (?<text>.+)`))?.groups;
+				if (urlMatchGroups !== undefined) {
+					const { url, text } = urlMatchGroups;
+
+					return `<a href="${url}"><q class="c-quote" cite="${url}">${text}</q></a>`;
+				}
+
+				const isbnMatchGroups = quote.match(new RegExp(`(?<isbn>${this.#REGEXP_ISBN}) (?<text>.+)`))?.groups;
+				if (isbnMatchGroups !== undefined) {
+					const { isbn, text } = isbnMatchGroups;
+
+					if (isbn !== undefined) {
+						if (new IsbnVerify(isbn, { strict: true }).isValid()) {
+							return `<q class="c-quote" cite="urn:ISBN:${isbn}">${text}</q>`;
+						}
+
+						this.#logger.warn(`ISBN のチェックデジット不正: ${isbn}`);
+						return `<q class="c-quote">${text}</q>`;
+					}
+				}
+
+				return `<q class="c-quote">${quote}</q>`;
+			});
 		}
 
-		htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, p1: string, p2: string) => {
-			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
-				return `**${p2.substring(0, p2.length - 1)}**`;
-			}
-			return `${p1}<em>${p2}</em>`;
-		});
-		htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, p1: string, p2: string) => {
-			if (p1 === '\\' && p2.substring(p2.length - 1) === '\\') {
-				return `\`${p2.substring(0, p2.length - 1)}\``;
-			}
-			return `${p1}<code class="c-code">${p2}</code>`;
-		});
-		htmlFragment = htmlFragment.replace(
-			/{{(\d{1,5}-\d{1,7}-\d{1,7}-[\dX]|97[8-9]-\d{1,5}-\d{1,7}-\d{1,7}-\d) ([^{}]+)}}/g,
-			(_match, p1: string, p2: string) => `<q class="c-quote" cite="urn:ISBN:${p1}">${p2}</q>`
-		);
-		htmlFragment = htmlFragment.replace(
-			/{{(https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+) ([^{}]+)}}/g,
-			(_match, p1: string, p2: string) => `<a href="${p1}"><q class="c-quote" cite="${p1}">${p2}</q></a>`
-		);
-		htmlFragment = htmlFragment.replace(/{{([^{}]+)}}/g, (_match, p1: string) => `<q class="c-quote">${p1}</q>`);
-		htmlFragment = this.#parsingInlineLink(htmlFragment);
-
-		if (footnoteConvert) {
-			htmlFragment = htmlFragment.replace(/\(\((.+?)\)\)/g, (_match, p1: string) => {
-				this.#footnotes.push(p1); // 注釈文
+		if (options.footnote) {
+			htmlFragment = htmlFragment.replace(/\(\((.+?)\)\)/g, (_match, footnote: string) => {
+				this.#footnotes.push(StringEscapeHtml.unescape(footnote)); // 注釈文
 
 				const num = this.#footnotes.length;
 				const href = `${this.#entryId}-${num}`;
@@ -1561,142 +1683,67 @@ export default class MessageParser {
 	}
 
 	/**
-	 * Markdown 形式でリンク文字列をパースする
-	 *
-	 * [リンク名](URL) → <a href="URL">リンク名</a>
-	 *
-	 * @param {string} str - 変換前の文字列
-	 *
-	 * @returns {string} 変換後の文字列
-	 */
-	#parsingInlineLink(str: string): string {
-		let openingTextDelimiterIndex = str.indexOf('[');
-		if (openingTextDelimiterIndex === -1) {
-			/* 文中にリンク構文が存在しない場合は何もしない */
-			return str;
-		}
-
-		let parseTargetText = str; // パース対象の文字列
-		const parsedTextList: string[] = []; // パース後の文字列を格納する配列
-		let afterLinkText = '';
-
-		while (openingTextDelimiterIndex !== -1) {
-			let beforeOpeningTextDelimiterText = parseTargetText.substring(0, openingTextDelimiterIndex);
-			const afterOpeningTextDelimiterText = parseTargetText.substring(openingTextDelimiterIndex + 1);
-
-			const regResult = /\]\((.+?)\)(.*)/.exec(afterOpeningTextDelimiterText);
-
-			/* [ が出現したが、 [TEXT](URL) の構文になっていない場合 */
-			if (regResult === null) {
-				if (parsedTextList.length === 0) {
-					return str;
-				}
-				break;
-			}
-
-			const url = <string>regResult[1]; // リンクURL
-			let linkText = afterOpeningTextDelimiterText.substring(0, afterOpeningTextDelimiterText.indexOf(`](${url}`)); // リンク文字列
-			afterLinkText = <string>regResult[2]; // リンク後の文字列
-
-			/* リンク文字列の中に [ や ] 記号が含まれていたときの処理 */
-			let scanText = linkText;
-			let tempLinkText = '';
-			let linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
-			while (linkTextOpeningTextDelimiterIndex !== -1) {
-				const linkTextClosingTextDelimiterIndex = scanText.indexOf(']', linkTextOpeningTextDelimiterIndex);
-				if (linkTextClosingTextDelimiterIndex !== -1) {
-					tempLinkText = scanText.substring(linkTextOpeningTextDelimiterIndex) + tempLinkText;
-					scanText = scanText.substring(0, linkTextOpeningTextDelimiterIndex);
-				} else {
-					beforeOpeningTextDelimiterText += `[${scanText.substring(0, linkTextOpeningTextDelimiterIndex)}`;
-					scanText = scanText.substring(linkTextOpeningTextDelimiterIndex + 1);
-				}
-
-				linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
-			}
-
-			linkText = scanText + tempLinkText;
-
-			/* HTML文字列に変換 */
-			const linkHtml = this.#markupLink(linkText, url);
-
-			/* 後処理 */
-			parsedTextList.push(`${beforeOpeningTextDelimiterText}${linkHtml}`);
-			parseTargetText = afterLinkText;
-
-			openingTextDelimiterIndex = parseTargetText.indexOf('[');
-		}
-
-		return `${parsedTextList.join('')}${afterLinkText}`;
-	}
-
-	/**
-	 * リンクのHTML文字列を設定する
-	 *
-	 * [リンク名](記事ID) → <a href="記事ID">リンク名</a>
-	 * [リンク名](#section-セクションID) → <a href="#section-セクションID">リンク名</a>
-	 * [リンク名](asin:ASIN) → <a href="アマゾンURL">リンク名</a><img src="アイコン"/>
-	 * [リンク名](絶対URL) → <a href="URL">リンク名</a><b class="c-domain">ドメイン名</b>
+	 * <a> 要素によるリンク HTML を組み立てる
 	 *
 	 * @param {string} linkText - リンク文字列
 	 * @param {string} urlText - リンク URL
+	 * @param {object} attributes - href 属性以外に設定する属性情報
 	 *
-	 * @returns {string} 変換後の文字列
+	 * @returns {string} <a> 要素の HTML 文字列
 	 */
-	#markupLink(linkText: string, urlText: string): string {
-		if (/^([1-9]{1}[0-9]{0,2})$/.test(urlText)) {
-			// TODO: 記事数が 1000 を超えたら正規表現要修正
-			return `<a href="/${urlText}">${linkText}</a>`;
-		} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(urlText)) {
-			return `<a href="${urlText}">${linkText}</a>`;
-		} else if (/^asin:[0-9A-Z]{10}$/.test(urlText)) {
-			return `<a href="https://www.amazon.co.jp/dp/${urlText.substring(
-				5
-			)}/ref=nosim?tag=w0s.jp-22">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
-		} else if (/^https?:\/\/[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+$/.test(urlText)) {
-			if (linkText.startsWith('https://') || linkText.startsWith('http://')) {
-				/* URL表記の場合はドメインを記載しない */
-				return `<a href="${urlText}">${linkText}</a>`;
+	static #anchor(linkText: string, urlText: string, attributes?: Readonly<{ [k: string]: string | undefined }>): string {
+		const attributeMap = new Map<string, string>([['href', urlText]]);
+		if (attributes !== undefined) {
+			for (const [name, value] of Object.entries(attributes)) {
+				if (name !== 'href' && value !== undefined) {
+					attributeMap.set(name, value);
+				}
 			}
+		}
 
-			const url = new URL(urlText);
+		const url = new URL(urlText);
+
+		let typeAttrHtml = '';
+		let typeIconHtml = '';
+		let hostIconHtml = '';
+
+		/* PDFアイコン */
+		if (url.pathname.endsWith('.pdf')) {
+			attributeMap.set('type', 'application/pdf');
+			typeIconHtml = '<img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>';
+		}
+
+		/* URL 表記でない場合はドメイン情報を記載 */
+		if (!linkText.startsWith('https://') && !linkText.startsWith('http://')) {
 			const host = url.hostname;
-
-			let typeAttr = '';
-			let typeIcon = '';
-			let hostIcon = '';
-
-			/* PDFアイコン */
-			if (url.pathname.endsWith('.pdf')) {
-				typeAttr = ' type="application/pdf"';
-				typeIcon = '<img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>';
-			}
 
 			/* サイトアイコン */
 			switch (host) {
 				case 'twitter.com': {
-					hostIcon = '<img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"/>';
+					hostIconHtml = '<img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				case 'ja.wikipedia.org': {
-					hostIcon = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon"/>';
+					hostIconHtml = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				case 'www.youtube.com': {
-					hostIcon = '<img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"/>';
+					hostIconHtml = '<img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"/>';
 					break;
 				}
 				default:
 			}
 
 			/* サイトアイコンがない場合はホスト名をテキストで表記 */
-			if (hostIcon === '') {
-				hostIcon = `<b class="c-domain">(${host})</b>`;
+			if (hostIconHtml === '') {
+				hostIconHtml = `<b class="c-domain">(${StringEscapeHtml.escape(host)})</b>`;
 			}
-
-			return `<a href="${urlText}"${typeAttr}>${linkText}</a>${typeIcon}${hostIcon}`;
 		}
 
-		throw new Error(`不正なリンクURL: ${urlText}`);
+		for (const [name, value] of attributeMap) {
+			typeAttrHtml += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
+		}
+
+		return `<a${typeAttrHtml}>${StringEscapeHtml.escape(linkText)}</a>${typeIconHtml}${hostIconHtml}`;
 	}
 }
