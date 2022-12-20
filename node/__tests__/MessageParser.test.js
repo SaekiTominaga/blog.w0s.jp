@@ -455,6 +455,12 @@ describe('inline', () => {
 		);
 	});
 
+	test('link - invalid', async () => {
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](foo)text')).toBe(
+			'<p>text[link](foo)text</p>'
+		);
+	});
+
 	test('link - multi', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/)text[link](https://example.com/)text')).toBe(
 			'<p>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text</p>'

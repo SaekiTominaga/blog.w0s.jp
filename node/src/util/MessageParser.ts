@@ -1594,7 +1594,8 @@ export default class MessageParser {
 						/* 絶対 URL */
 						linkHtml = MessageParser.#anchor(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
 					} else {
-						throw new Error(`不正なリンクURL: ${url}`);
+						this.#logger.warn(`不正なリンクURL: ${url}`);
+						return htmlFragment;
 					}
 
 					/* 後処理 */
