@@ -7,6 +7,7 @@ import hljsJavaScript from 'highlight.js/lib/languages/javascript';
 import hljsJson from 'highlight.js/lib/languages/json';
 import hljsTypeScript from 'highlight.js/lib/languages/typescript';
 import hljsXml from 'highlight.js/lib/languages/xml';
+import IsbnVerify from '@saekitominaga/isbn-verify';
 import Log4js from 'log4js';
 import md5 from 'md5';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
@@ -36,7 +37,7 @@ interface InlineMarkupOption {
  */
 export default class MessageParser {
 	readonly #REGEXP_URL = "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+";
-	readonly #REGEXP_ISBN = '[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]|97[8-9]-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]';
+	readonly #REGEXP_ISBN = '(978|979)-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]|[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]';
 
 	/* Logger */
 	readonly #logger: Log4js.Logger;
@@ -388,7 +389,11 @@ export default class MessageParser {
 							this.#quoteUrl = new URL(metaText);
 						} else if (new RegExp(`^${this.#REGEXP_ISBN}$`).test(metaText)) {
 							/* ISBN */
-							this.#quoteElement.setAttribute('cite', `urn:ISBN:${metaText}`);
+							if (new IsbnVerify(metaText, { strict: true }).isValid()) {
+								this.#quoteElement.setAttribute('cite', `urn:ISBN:${metaText}`);
+							} else {
+								this.#logger.warn(`ISBN のチェックデジット不正: ${metaText}`);
+							}
 						} else if (/^[a-z]{2}$/.test(metaText)) {
 							/* 言語 */
 							this.#quoteElement.setAttribute('lang', metaText);
@@ -1627,12 +1632,23 @@ export default class MessageParser {
 			htmlFragment = htmlFragment.replace(/{{(.+?)}}/g, (_match, quote: string) => {
 				const urlMatchGroups = quote.match(new RegExp(`(?<url>${this.#REGEXP_URL}) (?<text>.+)`))?.groups;
 				if (urlMatchGroups !== undefined) {
-					return `<a href="${urlMatchGroups['url']}"><q class="c-quote" cite="${urlMatchGroups['url']}">${urlMatchGroups['text']}</q></a>`;
+					const { url, text } = urlMatchGroups;
+
+					return `<a href="${url}"><q class="c-quote" cite="${url}">${text}</q></a>`;
 				}
 
 				const isbnMatchGroups = quote.match(new RegExp(`(?<isbn>${this.#REGEXP_ISBN}) (?<text>.+)`))?.groups;
 				if (isbnMatchGroups !== undefined) {
-					return `<q class="c-quote" cite="urn:ISBN:${isbnMatchGroups['isbn']}">${isbnMatchGroups['text']}</q>`;
+					const { isbn, text } = isbnMatchGroups;
+
+					if (isbn !== undefined) {
+						if (new IsbnVerify(isbn, { strict: true }).isValid()) {
+							return `<q class="c-quote" cite="urn:ISBN:${isbn}">${text}</q>`;
+						}
+
+						this.#logger.warn(`ISBN のチェックデジット不正: ${isbn}`);
+						return `<q class="c-quote">${text}</q>`;
+					}
 				}
 
 				return `<q class="c-quote">${quote}</q>`;

@@ -154,6 +154,20 @@ text2
 		);
 	});
 
+	test('blockquote - cite - ISBN - invalid check digit', async () => {
+		expect(
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
+> text1
+> text2
+?en
+?cite
+?978-4-06-519981-0
+`)
+		).toBe(
+			'<figure><blockquote class="p-quote" lang="en"><p>text1</p><p>text2</p></blockquote><figcaption class="c-caption -meta"><span class="c-caption__title">cite</span></figcaption></figure>'
+		);
+	});
+
 	test('>', async () => {
 		expect(
 			await new MessageParser(config, { dbh: dbh }).toHtml(`
@@ -524,6 +538,12 @@ describe('inline', () => {
 	test('quote - cite - ISBN', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{978-4-06-519981-7 quote}}text')).toBe(
 			'<p>text<q class="c-quote" cite="urn:ISBN:978-4-06-519981-7">quote</q>text</p>'
+		);
+	});
+
+	test('quote - cite - ISBN - invalid check digit', async () => {
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{978-4-06-519981-0 quote}}text')).toBe(
+			'<p>text<q class="c-quote">quote</q>text</p>'
 		);
 	});
 

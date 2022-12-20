@@ -33,6 +33,7 @@
 	},
 	"dependencies": {
 		"@log4js-node/smtp": "^2.0.8",
+		"@saekitominaga/isbn-verify": "^2.0.1",
 		"@saekitominaga/paapi-item-image-url-parser": "^2.2.2",
 		"@saekitominaga/string-escape-html": "^1.1.0",
 		"amazon-paapi": "^1.0.7",
