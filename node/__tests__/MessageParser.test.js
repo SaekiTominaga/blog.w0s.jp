@@ -419,14 +419,6 @@ describe('inline', () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('- ')).toBe('<ul class="p-list"><li></li></ul>');
 	});
 
-	test('link - entry ID', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](1)text')).toBe('<p>text<a href="/1">link</a>text</p>');
-	});
-
-	test('link - #section', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](#section-1)text')).toBe('<p>text<a href="#section-1">link</a>text</p>');
-	});
-
 	test('link - URL', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/)text')).toBe(
 			'<p>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text</p>'
@@ -463,10 +455,18 @@ describe('inline', () => {
 		);
 	});
 
+	test('link - entry ID', async () => {
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](1)text')).toBe('<p>text<a href="/1">link</a>text</p>');
+	});
+
 	test('link - asin', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](asin:4065199816)text')).toBe(
 			'<p>text<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=w0s.jp-22">link</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon">text</p>'
 		);
+	});
+
+	test('link - #section', async () => {
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](#section-1)text')).toBe('<p>text<a href="#section-1">link</a>text</p>');
 	});
 
 	test('link - invalid', async () => {

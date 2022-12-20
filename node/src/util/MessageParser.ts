@@ -1582,21 +1582,20 @@ export default class MessageParser {
 
 					/* HTML文字列に変換 */
 					let linkHtml = '';
-
-					if (/^([1-9][0-9]*)$/.test(url)) {
+					if (new RegExp(`^${this.#REGEXP_URL}$`).test(url)) {
+						/* 絶対 URL */
+						linkHtml = MessageParser.#anchor(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
+					} else if (/^([1-9][0-9]*)$/.test(url)) {
 						/* 別記事へのリンク */
 						linkHtml = `<a href="/${url}">${linkText}</a>`;
-					} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
-						/* ページ内リンク */
-						linkHtml = `<a href="${url}">${linkText}</a>`;
 					} else if (/^asin:[0-9A-Z]{10}$/.test(url)) {
 						/* Amazon 商品ページへのリンク */
 						linkHtml = `<a href="https://www.amazon.co.jp/dp/${url.substring(
 							5
 						)}/ref=nosim?tag=w0s.jp-22">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`; // https://affiliate.amazon.co.jp/help/node/entry/GP38PJ6EUR6PFBEC
-					} else if (new RegExp(`^${this.#REGEXP_URL}$`).test(url)) {
-						/* 絶対 URL */
-						linkHtml = MessageParser.#anchor(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
+					} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
+						/* ページ内リンク */
+						linkHtml = `<a href="${url}">${linkText}</a>`;
 					} else {
 						this.#logger.warn(`不正なリンクURL: ${url}`);
 						return htmlFragment;
