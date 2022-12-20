@@ -1193,17 +1193,8 @@ export default class MessageParser {
 	 * @param {string} caption - タイトル
 	 */
 	#appendYouTube(id: string, width: number, height: number, caption: string): void {
-		if (!this.#media || this.#mediaWrapElement === undefined) {
-			const gridElement = this.#document.createElement('div');
-			gridElement.className = 'c-flex';
-			this.#appendChild(gridElement);
-
-			this.#mediaWrapElement = gridElement;
-		}
-
 		const figureElement = this.#document.createElement('figure');
-		figureElement.className = 'c-flex__item';
-		this.#mediaWrapElement.appendChild(figureElement);
+		this.#appendChild(figureElement);
 
 		const embeddElement = this.#document.createElement('div');
 		embeddElement.className = 'p-embed';
