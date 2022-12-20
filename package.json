@@ -27,6 +27,7 @@
 		"_node-config-validate:common": "ajv --spec=draft7 -s node/configure/schema/common.json -d node/configure/common.json",
 		"_node-config-validate:entry": "ajv --spec=draft7 -s node/configure/schema/entry.json -d node/configure/entry.json",
 		"_node-config-validate:list": "ajv --spec=draft7 -s node/configure/schema/list.json -d node/configure/list.json",
+		"_node-config-validate:message": "ajv --spec=draft7 -s node/configure/schema/message.json -d node/configure/message.json",
 		"_node-config-validate:paapi": "ajv --spec=draft7 -s node/configure/schema/paapi.json -d node/configure/paapi.json",
 		"_node-config-validate:post": "ajv --spec=draft7 -s node/configure/schema/post.json -d node/configure/post.json",
 		"_node-config-validate:twitter": "ajv --spec=draft7 -s node/configure/schema/twitter.json -d node/configure/twitter.json"

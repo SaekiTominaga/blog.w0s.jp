@@ -18,6 +18,7 @@ import PostValidator from '../validator/PostValidator.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Tweet from '../util/Tweet.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
+import { NoName as ConfigureMessage } from '../../configure/type/message.js';
 import { PAAPI as ConfigurePaapi } from '../../configure/type/paapi.js';
 import { NoName as Configure } from '../../configure/type/post.js';
 import { TwitterAPI as ConfigureTwitter } from '../../configure/type/twitter.js';
@@ -46,7 +47,9 @@ export default class PostController extends Controller implements ControllerInte
 
 	#config: Configure;
 
-	#ConfigPaapi: ConfigurePaapi;
+	#configPaapi: ConfigurePaapi;
+
+	#configureMessage: ConfigureMessage;
 
 	#configTwitter: ConfigureTwitter;
 
@@ -61,7 +64,8 @@ export default class PostController extends Controller implements ControllerInte
 
 		this.#configCommon = configCommon;
 		this.#config = JSON.parse(fs.readFileSync('node/configure/post.json', 'utf8'));
-		this.#ConfigPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
+		this.#configureMessage = JSON.parse(fs.readFileSync('node/configure/message.json', 'utf8'));
+		this.#configPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
 		this.#configTwitter = JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
 
 		this.#env = env;
@@ -290,9 +294,12 @@ export default class PostController extends Controller implements ControllerInte
 				entriesView.add({
 					id: entry.id,
 					title: entry.title,
-					message: await new MessageParser(this.#configCommon, { entry_id: entry.id, dbh: dbh, amazon_tracking_id: this.#ConfigPaapi.partner_tag }).toXml(
-						entry.message
-					),
+					message: await new MessageParser(this.#configCommon, {
+						entry_id: entry.id,
+						dbh: dbh,
+						anchorHostIcons: this.#configureMessage.anchor_host_icon,
+						amazon_tracking_id: this.#configPaapi.partner_tag,
+					}).toXml(entry.message),
 					updated_at: dayjs(entry.updated_at ?? entry.created_at),
 					update: Boolean(entry.updated_at),
 				});

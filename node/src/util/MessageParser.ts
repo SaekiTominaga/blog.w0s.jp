@@ -19,9 +19,16 @@ import { LanguageFn } from 'highlight.js';
 import BlogMessageDao from '../dao/BlogMessageDao.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 
+interface AnchorHostIcon {
+	host: string;
+	name: string;
+	src: string;
+}
+
 interface Option {
 	entry_id?: number; // 記事 ID
 	dbh?: sqlite.Database; // DB 接続情報
+	anchorHostIcons?: AnchorHostIcon[]; // リンクのサイトアイコン
 	amazon_tracking_id?: string; // Amazon トラッキング ID
 }
 
@@ -48,6 +55,9 @@ export default class MessageParser {
 
 	/* 記事 ID */
 	readonly #entryId: number = 0;
+
+	/* リンクのサイトアイコン */
+	readonly #anchorHostIcons?: AnchorHostIcon[];
 
 	/* Amazon トラッキング ID */
 	readonly #amazonTrackingId?: string;
@@ -139,6 +149,11 @@ export default class MessageParser {
 		/* 記事 ID */
 		if (options?.entry_id !== undefined) {
 			this.#entryId = options.entry_id;
+		}
+
+		/* リンクのサイトアイコン */
+		if (options?.anchorHostIcons !== undefined) {
+			this.#anchorHostIcons = options?.anchorHostIcons;
 		}
 
 		/* Amazon トラッキング ID */
@@ -902,10 +917,7 @@ export default class MessageParser {
 		if (this.#quoteUrl === undefined) {
 			captionTitleElement.textContent = this.#quoteTitle;
 		} else {
-			captionTitleElement.insertAdjacentHTML(
-				'beforeend',
-				MessageParser.#anchor(this.#quoteTitle, this.#quoteUrl.toString(), { hreflang: this.#quoteLanguage })
-			);
+			captionTitleElement.insertAdjacentHTML('beforeend', this.#anchor(this.#quoteTitle, this.#quoteUrl.toString(), { hreflang: this.#quoteLanguage }));
 		}
 	}
 
@@ -1593,7 +1605,7 @@ export default class MessageParser {
 					let linkHtml = '';
 					if (new RegExp(`^${this.#REGEXP_URL}$`).test(url)) {
 						/* 絶対 URL */
-						linkHtml = MessageParser.#anchor(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
+						linkHtml = this.#anchor(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
 					} else if (/^([1-9][0-9]*)$/.test(url)) {
 						/* 別記事へのリンク */
 						linkHtml = `<a href="/${url}">${linkText}</a>`;
@@ -1691,7 +1703,7 @@ export default class MessageParser {
 	 *
 	 * @returns {string} <a> 要素の HTML 文字列
 	 */
-	static #anchor(linkText: string, urlText: string, attributes?: Readonly<{ [k: string]: string | undefined }>): string {
+	#anchor(linkText: string, urlText: string, attributes?: Readonly<{ [k: string]: string | undefined }>): string {
 		const attributeMap = new Map<string, string>([['href', urlText]]);
 		if (attributes !== undefined) {
 			for (const [name, value] of Object.entries(attributes)) {
@@ -1718,20 +1730,9 @@ export default class MessageParser {
 			const host = url.hostname;
 
 			/* サイトアイコン */
-			switch (host) {
-				case 'twitter.com': {
-					hostIconHtml = '<img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"/>';
-					break;
-				}
-				case 'ja.wikipedia.org': {
-					hostIconHtml = '<img src="/image/icon/wikipedia.svg" alt="(Wikipedia)" width="16" height="16" class="c-link-icon"/>';
-					break;
-				}
-				case 'www.youtube.com': {
-					hostIconHtml = '<img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"/>';
-					break;
-				}
-				default:
+			const hostIcon = this.#anchorHostIcons?.find((icon) => icon.host === host);
+			if (hostIcon !== undefined) {
+				hostIconHtml = `<img src="${hostIcon.src}" alt="(${hostIcon.name})" width="16" height="16" class="c-link-icon"/>`;
 			}
 
 			/* サイトアイコンがない場合はホスト名をテキストで表記 */
