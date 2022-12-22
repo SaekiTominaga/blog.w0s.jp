@@ -460,8 +460,8 @@ describe('inline', () => {
 		);
 	});
 
-	test('link - asin', async () => {
-		expect(await new MessageParser(config, { dbh: dbh, amazon_tracking_id: 'xxx-22' }).toHtml('text[link<s>link</s>](asin:4065199816)text')).toBe(
+	test('link - amazon', async () => {
+		expect(await new MessageParser(config, { dbh: dbh, amazon_tracking_id: 'xxx-22' }).toHtml('text[link<s>link</s>](amazon:4065199816)text')).toBe(
 			'<p>text<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=xxx-22">link&lt;s&gt;link&lt;/s&gt;</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon">text</p>'
 		);
 	});
