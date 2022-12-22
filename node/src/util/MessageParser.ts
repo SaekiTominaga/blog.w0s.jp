@@ -1201,7 +1201,7 @@ export default class MessageParser {
 		figureElement.appendChild(embeddElement);
 
 		const iframeElement = this.#document.createElement('iframe');
-		iframeElement.src = `https://www.youtube-nocookie.com/embed/${id}`;
+		iframeElement.src = `https://www.youtube-nocookie.com/embed/${id}?cc_load_policy=1`; // https://support.google.com/youtube/answer/171780
 		iframeElement.allow = 'encrypted-media;fullscreen;gyroscope;picture-in-picture';
 		iframeElement.title = 'YouTube 動画';
 		iframeElement.width = String(width);
