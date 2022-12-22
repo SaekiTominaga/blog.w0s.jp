@@ -44,7 +44,7 @@ interface InlineMarkupOption {
  * 記事メッセージのパーサー
  */
 export default class MessageParser {
-	readonly #REGEXP_URL = "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+";
+	readonly #REGEXP_ABSOLUTE_URL = "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+";
 	readonly #REGEXP_ISBN = '(978|979)-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]|[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]';
 
 	/* Logger */
@@ -407,7 +407,7 @@ export default class MessageParser {
 						/* ブロックレベル引用の直後行かつ先頭が ? な場合は引用の出典 */
 						const metaText = line.substring(1); // 先頭記号を削除
 
-						if (new RegExp(`^${this.#REGEXP_URL}$`).test(metaText)) {
+						if (new RegExp(`^${this.#REGEXP_ABSOLUTE_URL}$`).test(metaText)) {
 							/* URL */
 							this.#quoteElement.setAttribute('cite', metaText);
 							this.#quoteUrl = new URL(metaText);
@@ -1612,37 +1612,55 @@ export default class MessageParser {
 
 					linkText = scanText + tempLinkText;
 
-					/* HTML文字列に変換 */
+					/* HTML 文字列に変換 */
 					let linkHtml = '';
 					try {
 						linkHtml = ((): string => {
 							/* 絶対 URL */
-							if (new RegExp(`^${this.#REGEXP_URL}$`).test(url)) {
-								return this.#anchor(linkText, url);
+							const absoluteUrlMatchGroups = url.match(new RegExp(`^(?<absoluteUrl>${this.#REGEXP_ABSOLUTE_URL})$`))?.groups;
+							if (absoluteUrlMatchGroups !== undefined) {
+								const { absoluteUrl } = absoluteUrlMatchGroups;
+
+								if (absoluteUrl !== undefined) {
+									return this.#anchor(linkText, absoluteUrl);
+								}
 							}
 
 							/* 別記事へのリンク */
-							if (/^([1-9][0-9]*)$/.test(url)) {
-								return `<a href="/${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(linkText)}</a>`;
+							const entryMatchGroups = url.match(/^(?<id>[1-9][0-9]*)$/)?.groups;
+							if (entryMatchGroups !== undefined) {
+								const { id } = entryMatchGroups;
+
+								if (id !== undefined) {
+									return `<a href="/${StringEscapeHtml.escape(id)}">${StringEscapeHtml.escape(linkText)}</a>`;
+								}
 							}
 
 							/* Amazon 商品ページへのリンク */
-							if (/^asin:[0-9A-Z]{10}$/.test(url)) {
-								const asin = url.substring(5);
+							const asinMatchGroups = url.match(/^asin:(?<asin>[0-9A-Z]{10})$/)?.groups;
+							if (asinMatchGroups !== undefined) {
+								const { asin } = asinMatchGroups;
 
-								const href =
-									this.#amazonTrackingId === undefined
-										? `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/`
-										: `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/ref=nosim?tag=${StringEscapeHtml.escape(this.#amazonTrackingId)}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+								if (asin !== undefined) {
+									const href =
+										this.#amazonTrackingId === undefined
+											? `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/`
+											: `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/ref=nosim?tag=${StringEscapeHtml.escape(this.#amazonTrackingId)}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
 
-								return `<a href="${StringEscapeHtml.escape(href)}">${StringEscapeHtml.escape(
-									linkText
-								)}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
+									return `<a href="${StringEscapeHtml.escape(href)}">${StringEscapeHtml.escape(
+										linkText
+									)}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
+								}
 							}
 
 							/* ページ内リンク */
-							if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
-								return `<a href="${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(linkText)}</a>`;
+							const pageLinkMatchGroups = url.match(new RegExp(`^#(?<id>${this.#SECTION_ID_PREFIX}.+)`))?.groups;
+							if (pageLinkMatchGroups !== undefined) {
+								const { id } = pageLinkMatchGroups;
+
+								if (id !== undefined) {
+									return `<a href="#${StringEscapeHtml.escape(id)}">${StringEscapeHtml.escape(linkText)}</a>`;
+								}
 							}
 
 							throw new Error(`不正なリンクURL: ${url}`);
@@ -1701,7 +1719,7 @@ export default class MessageParser {
 			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(/{{(.+?)}}/g, (_match, quote_htmlescaped: string) => {
 				const quote = StringEscapeHtml.unescape(quote_htmlescaped);
 
-				const urlMatchGroups = quote.match(new RegExp(`(?<url>${this.#REGEXP_URL}) (?<text>.+)`))?.groups;
+				const urlMatchGroups = quote.match(new RegExp(`(?<url>${this.#REGEXP_ABSOLUTE_URL}) (?<text>.+)`))?.groups;
 				if (urlMatchGroups !== undefined) {
 					const { url, text } = urlMatchGroups;
 
