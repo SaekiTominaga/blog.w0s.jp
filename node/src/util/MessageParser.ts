@@ -1202,7 +1202,7 @@ export default class MessageParser {
 
 		const iframeElement = this.#document.createElement('iframe');
 		iframeElement.src = `https://www.youtube-nocookie.com/embed/${id}?cc_load_policy=1`; // https://support.google.com/youtube/answer/171780
-		iframeElement.allow = 'encrypted-media;fullscreen;gyroscope;picture-in-picture';
+		iframeElement.setAttribute('allow', 'encrypted-media;fullscreen;gyroscope;picture-in-picture'); // `allow` プロパティへの代入は HTML に反映されない
 		iframeElement.title = 'YouTube 動画';
 		iframeElement.width = String(width);
 		iframeElement.height = String(height);
