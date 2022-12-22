@@ -6,7 +6,7 @@ import { NoName as Configure } from '../../configure/type/common.js';
  * 記事本文の構文書き換え
  */
 
-const convert = (message: string): string => {
+const convert = (id: number, message: string): string => {
 	const CRLF = '\r\n';
 	const LF = '\n';
 
@@ -15,7 +15,10 @@ const convert = (message: string): string => {
 		.replaceAll(CRLF, LF)
 		.split(LF)
 		.forEach((line, index) => {
-			const convertedLine = line; // TODO: ここに変換処理を書く
+			const convertedLine = line.replaceAll(/(.+?)/g, (match, text) => {
+				console.info(`${id}: ${match}`);
+				return `${text}`;
+			}); // TODO: ここに変換処理を書く
 
 			if (index > 0) {
 				convertedMessage += LF;
@@ -35,5 +38,9 @@ const dao = new BlogEntryMessageConvertDao(config);
 const allEntryiesMessageDto = await dao.getAllEntriesMessage();
 
 for (const [id, message] of allEntryiesMessageDto) {
-	await dao.update(id, convert(message));
+	const messageConverted = convert(id, message);
+	if (message !== messageConverted) {
+		console.info(`記事 ${id} を更新`);
+		await dao.update(id, messageConverted);
+	}
 }

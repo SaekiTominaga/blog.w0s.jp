@@ -17,6 +17,12 @@
 			}
 		},
 		{
+			"files": ["node/src/shell/*.ts"],
+			"rules": {
+				"no-console": "off"
+			}
+		},
+		{
 			"files": ["node/src/util/MessageParser.ts"],
 			"rules": {
 				"camelcase": "off",
