@@ -350,7 +350,7 @@ code
 !youtube:HJxspEKHqCs 560x315 caption
 `)
 		).toBe(
-			'<figure><div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/HJxspEKHqCs?rel=0" title="YouTube 動画" width="560" height="315" class="p-embed__frame" style="--aspect-ratio:560/315"></iframe></div><figcaption class="c-caption"><span class="c-caption__no">動画1</span><span class="c-caption__title"><a href="https://www.youtube.com/watch?v=HJxspEKHqCs">caption</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"></span></figcaption></figure>'
+			'<figure><div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/HJxspEKHqCs?cc_load_policy=1" title="YouTube 動画" width="560" height="315" class="p-embed__frame" style="--aspect-ratio:560/315"></iframe></div><figcaption class="c-caption"><span class="c-caption__no">動画1</span><span class="c-caption__title"><a href="https://www.youtube.com/watch?v=HJxspEKHqCs">caption</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"></span></figcaption></figure>'
 		);
 	});
 
