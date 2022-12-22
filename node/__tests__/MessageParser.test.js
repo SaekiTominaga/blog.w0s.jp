@@ -579,8 +579,8 @@ describe('inline', () => {
 	});
 
 	test('footnote', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text((footnote<s>footnote</s>**emphasis**))text')).toBe(
-			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote&lt;s&gt;footnote&lt;/s&gt;<em>emphasis</em></span></li></ul>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text((footnote<s>footnote</s>[link](1)**emphasis**))text')).toBe(
+			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote&lt;s&gt;footnote&lt;/s&gt;<a href="/1">link</a><em>emphasis</em></span></li></ul>'
 		);
 	});
 

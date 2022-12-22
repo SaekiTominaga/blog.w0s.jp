@@ -1563,13 +1563,15 @@ export default class MessageParser {
 			 * @returns {string} 変換後の文字列
 			 */
 			htmlFragment_htmlescaped = ((): string => {
-				let openingTextDelimiterIndex = htmlFragment.indexOf('[');
+				const htmlFragmentAnchor = StringEscapeHtml.unescape(htmlFragment_htmlescaped);
+
+				let openingTextDelimiterIndex = htmlFragmentAnchor.indexOf('[');
 				if (openingTextDelimiterIndex === -1) {
 					/* 文中にリンク構文が存在しない場合は何もしない */
 					return htmlFragment_htmlescaped;
 				}
 
-				let parseTargetText = htmlFragment; // パース対象の文字列
+				let parseTargetText = htmlFragmentAnchor; // パース対象の文字列
 				const parsedTextList_htmlescaped: string[] = []; // パース後の文字列を格納する配列
 				let afterLinkText = '';
 
