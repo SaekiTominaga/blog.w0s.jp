@@ -19,6 +19,7 @@
 		{
 			"files": ["node/src/util/MessageParser.ts"],
 			"rules": {
+				"camelcase": "off",
 				"lines-between-class-members": "off",
 				"no-await-in-loop": "off",
 				"no-continue": "off"

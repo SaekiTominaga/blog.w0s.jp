@@ -420,8 +420,8 @@ describe('inline', () => {
 	});
 
 	test('link - URL', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/)text')).toBe(
-			'<p>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](https://example.com/)text')).toBe(
+			'<p>text<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
@@ -432,8 +432,8 @@ describe('inline', () => {
 	});
 
 	test('link - URL - PDF', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/foo.pdf)text')).toBe(
-			'<p>text<a href="https://example.com/foo.pdf" type="application/pdf">link</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"><b class="c-domain">(example.com)</b>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](https://example.com/foo.pdf)text')).toBe(
+			'<p>text<a href="https://example.com/foo.pdf" type="application/pdf">link&lt;s&gt;link&lt;/s&gt;</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
@@ -448,31 +448,39 @@ describe('inline', () => {
 						src: '/example.svg',
 					},
 				],
-			}).toHtml('text[link](https://example.com/)text')
-		).toBe('<p>text<a href="https://example.com/">link</a><img src="/example.svg" alt="(Example)" width="16" height="16" class="c-link-icon">text</p>');
+			}).toHtml('text[link<s>link</s>](https://example.com/)text')
+		).toBe(
+			'<p>text<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><img src="/example.svg" alt="(Example)" width="16" height="16" class="c-link-icon">text</p>'
+		);
 	});
 
 	test('link - entry ID', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](1)text')).toBe('<p>text<a href="/1">link</a>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](1)text')).toBe(
+			'<p>text<a href="/1">link&lt;s&gt;link&lt;/s&gt;</a>text</p>'
+		);
 	});
 
 	test('link - asin', async () => {
-		expect(await new MessageParser(config, { dbh: dbh, amazon_tracking_id: 'xxx-22' }).toHtml('text[link](asin:4065199816)text')).toBe(
-			'<p>text<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=xxx-22">link</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon">text</p>'
+		expect(await new MessageParser(config, { dbh: dbh, amazon_tracking_id: 'xxx-22' }).toHtml('text[link<s>link</s>](asin:4065199816)text')).toBe(
+			'<p>text<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=xxx-22">link&lt;s&gt;link&lt;/s&gt;</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon">text</p>'
 		);
 	});
 
 	test('link - #section', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](#section-1)text')).toBe('<p>text<a href="#section-1">link</a>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](#section-1)text')).toBe(
+			'<p>text<a href="#section-1">link&lt;s&gt;link&lt;/s&gt;</a>text</p>'
+		);
 	});
 
 	test('link - invalid', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](foo)text')).toBe('<p>text[link](foo)text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](foo)text')).toBe('<p>text[link&lt;s&gt;link&lt;/s&gt;](foo)text</p>');
 	});
 
 	test('link - multi', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/)text[link](https://example.com/)text')).toBe(
-			'<p>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text</p>'
+		expect(
+			await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](https://example.com/)text[link<s>link</s>](https://example.com/)text')
+		).toBe(
+			'<p>text<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b>text<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
@@ -505,86 +513,56 @@ describe('inline', () => {
 	});
 
 	test('em', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text**em**text')).toBe('<p>text<em>em</em>text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text**em<s>em</s>**text')).toBe('<p>text<em>em&lt;s&gt;em&lt;/s&gt;</em>text</p>');
 	});
 
 	test('em - escape', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text\\**em\\**text')).toBe('<p>text**em**text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text\\**em<s>em</s>\\**text')).toBe('<p>text**em&lt;s&gt;em&lt;/s&gt;**text</p>');
 	});
 
 	test('code', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text`code`text')).toBe('<p>text<code class="c-code">code</code>text</p>');
-	});
-
-	test('code - escape', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text\\`code\\`text')).toBe('<p>text`code`text</p>');
-	});
-
-	test('quote', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote}}text')).toBe('<p>text<q class="c-quote">quote</q>text</p>');
-	});
-
-	test('quote - cite - URL', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{https://example.com/ quote}}text')).toBe(
-			'<p>text<a href="https://example.com/"><q class="c-quote" cite="https://example.com/">quote</q></a>text</p>'
-		);
-	});
-
-	test('quote - cite - ISBN', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{978-4-06-519981-7 quote}}text')).toBe(
-			'<p>text<q class="c-quote" cite="urn:ISBN:978-4-06-519981-7">quote</q>text</p>'
-		);
-	});
-
-	test('quote - cite - ISBN - invalid check digit', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{978-4-06-519981-0 quote}}text')).toBe('<p>text<q class="c-quote">quote</q>text</p>');
-	});
-
-	test('footnote', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text((footnote**emphasis**))text')).toBe(
-			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote<em>emphasis</em></span></li></ul>'
-		);
-	});
-
-	test('footnote - entry ID', async () => {
-		expect(await new MessageParser(config, { entry_id: 99, dbh: dbh }).toHtml('text((footnote**emphasis**))text')).toBe(
-			'<p>text<span class="c-annotate"><a href="#fn99-1" id="nt99-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt99-1">[1]</a></span><span class="p-footnotes__text" id="fn99-1">footnote<em>emphasis</em></span></li></ul>'
-		);
-	});
-});
-
-describe('HTML escape', () => {
-	test('link text', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toXml('text[link<s>link</s>](1)text')).toBe(
-			'<p>text<a href="/1">link&lt;s&gt;link&lt;/s&gt;</a>text</p>'
-		);
-	});
-
-	test('link url', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toXml('text[link](https://example.com/foo<s>bar</s>)text')).toBe(
-			'<p>text<a href="https://example.com/foo&lt;s&gt;bar&lt;/s&gt;">link</a><b class="c-domain">(example.com)</b>text</p>'
-		);
-	});
-
-	test('em', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toXml('text**em<s>em</s>**text')).toBe('<p>text<em>em&lt;s&gt;em&lt;/s&gt;</em>text</p>');
-	});
-
-	test('code', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toXml('text`code<s>code</s>`text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text`code<s>code</s>`text')).toBe(
 			'<p>text<code class="c-code">code&lt;s&gt;code&lt;/s&gt;</code>text</p>'
 		);
 	});
 
+	test('code - escape', async () => {
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text\\`code<s>code</s>\\`text')).toBe('<p>text`code&lt;s&gt;code&lt;/s&gt;`text</p>');
+	});
+
 	test('quote', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toXml('text{{quote<s>quote</s>}}text')).toBe(
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote<s>quote</s>}}text')).toBe(
+			'<p>text<q class="c-quote">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
+		);
+	});
+
+	test('quote - cite - URL', async () => {
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{https://example.com/ quote<s>quote</s>}}text')).toBe(
+			'<p>text<a href="https://example.com/"><q class="c-quote" cite="https://example.com/">quote&lt;s&gt;quote&lt;/s&gt;</q></a>text</p>'
+		);
+	});
+
+	test('quote - cite - ISBN', async () => {
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{978-4-06-519981-7 quote<s>quote</s>}}text')).toBe(
+			'<p>text<q class="c-quote" cite="urn:ISBN:978-4-06-519981-7">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
+		);
+	});
+
+	test('quote - cite - ISBN - invalid check digit', async () => {
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{978-4-06-519981-0 quote<s>quote</s>}}text')).toBe(
 			'<p>text<q class="c-quote">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
 		);
 	});
 
 	test('footnote', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toXml('text((footnote<s>footnote</s>))text')).toBe(
-			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote&lt;s&gt;footnote&lt;/s&gt;</span></li></ul>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text((footnote<s>footnote</s>**emphasis**))text')).toBe(
+			'<p>text<span class="c-annotate"><a href="#fn0-1" id="nt0-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt0-1">[1]</a></span><span class="p-footnotes__text" id="fn0-1">footnote&lt;s&gt;footnote&lt;/s&gt;<em>emphasis</em></span></li></ul>'
+		);
+	});
+
+	test('footnote - entry ID', async () => {
+		expect(await new MessageParser(config, { entry_id: 99, dbh: dbh }).toHtml('text((footnote<s>footnote</s>**emphasis**))text')).toBe(
+			'<p>text<span class="c-annotate"><a href="#fn99-1" id="nt99-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt99-1">[1]</a></span><span class="p-footnotes__text" id="fn99-1">footnote&lt;s&gt;footnote&lt;/s&gt;<em>emphasis</em></span></li></ul>'
 		);
 	});
 });

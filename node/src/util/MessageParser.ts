@@ -1521,30 +1521,34 @@ export default class MessageParser {
 	 * インライン要素を設定
 	 *
 	 * @param {object} parentElement - 親要素
-	 * @param {string} str - 変換前の文字列
+	 * @param {string} htmlFragment - 変換前の文字列
 	 * @param {object} options - 変換を行う対象
 	 */
 	#inlineMarkup(
 		parentElement: HTMLElement,
-		str: string,
+		htmlFragment: string,
 		options: Readonly<InlineMarkupOption> = { link: true, emphasis: true, code: true, quote: true, footnote: true }
 	): void {
-		if (str === '') {
+		if (htmlFragment === '') {
 			parentElement.textContent = '';
 			return;
 		}
 
-		let htmlFragment = StringEscapeHtml.escape(str);
+		let htmlFragment_htmlescaped = StringEscapeHtml.escape(htmlFragment);
 
 		/* 注釈（HTML エスケープの関係で注釈は最初に処理する必要がある） */
 		if (options.footnote) {
-			htmlFragment = htmlFragment.replace(/\(\((.+?)\)\)/g, (_match, footnote: string) => {
-				this.#footnotes.push(StringEscapeHtml.unescape(footnote)); // 注釈文
+			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(/\(\((.+?)\)\)/g, (_match, footnote_htmlescaped: string) => {
+				const footnote = StringEscapeHtml.unescape(footnote_htmlescaped);
+
+				this.#footnotes.push(footnote); // 注釈文
 
 				const num = this.#footnotes.length;
 				const href = `${this.#entryId}-${num}`;
 
-				return `<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
+				return `<span class="c-annotate"><a href="#fn${StringEscapeHtml.escape(href)}" id="nt${StringEscapeHtml.escape(
+					href
+				)}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
 			});
 		}
 
@@ -1557,11 +1561,11 @@ export default class MessageParser {
 			 *
 			 * @returns {string} 変換後の文字列
 			 */
-			htmlFragment = (() => {
+			htmlFragment_htmlescaped = ((): string => {
 				let openingTextDelimiterIndex = htmlFragment.indexOf('[');
 				if (openingTextDelimiterIndex === -1) {
 					/* 文中にリンク構文が存在しない場合は何もしない */
-					return htmlFragment;
+					return htmlFragment_htmlescaped;
 				}
 
 				let parseTargetText = htmlFragment; // パース対象の文字列
@@ -1577,7 +1581,7 @@ export default class MessageParser {
 					/* [ が出現したが、 [TEXT](URL) の構文になっていない場合 */
 					if (regResult === null) {
 						if (parsedTextList.length === 0) {
-							return htmlFragment;
+							return htmlFragment_htmlescaped;
 						}
 						break;
 					}
@@ -1609,26 +1613,28 @@ export default class MessageParser {
 					let linkHtml = '';
 					if (new RegExp(`^${this.#REGEXP_URL}$`).test(url)) {
 						/* 絶対 URL */
-						linkHtml = this.#anchor(StringEscapeHtml.unescape(linkText), StringEscapeHtml.unescape(url));
+						linkHtml = this.#anchor(linkText, url);
 					} else if (/^([1-9][0-9]*)$/.test(url)) {
 						/* 別記事へのリンク */
-						linkHtml = `<a href="/${url}">${linkText}</a>`;
+						linkHtml = `<a href="/${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(linkText)}</a>`;
 					} else if (/^asin:[0-9A-Z]{10}$/.test(url)) {
 						/* Amazon 商品ページへのリンク */
 						const asin = url.substring(5);
 
 						const href =
 							this.#amazonTrackingId === undefined
-								? `https://www.amazon.co.jp/dp/${asin}/`
-								: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${this.#amazonTrackingId}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+								? `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/`
+								: `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/ref=nosim?tag=${StringEscapeHtml.escape(this.#amazonTrackingId)}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
 
-						linkHtml = `<a href="${href}">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
+						linkHtml = `<a href="${StringEscapeHtml.escape(href)}">${StringEscapeHtml.escape(
+							linkText
+						)}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
 					} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
 						/* ページ内リンク */
-						linkHtml = `<a href="${url}">${linkText}</a>`;
+						linkHtml = `<a href="${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(linkText)}</a>`;
 					} else {
 						this.#logger.warn(`不正なリンクURL: ${url}`);
-						return htmlFragment;
+						return htmlFragment_htmlescaped;
 					}
 
 					/* 後処理 */
@@ -1644,53 +1650,68 @@ export default class MessageParser {
 
 		/* <em> */
 		if (options.emphasis) {
-			htmlFragment = htmlFragment.replace(/(.?)\*\*(.+?)\*\*/g, (_match, beforeEmphasis: string, emphasis: string) => {
-				if (beforeEmphasis === '\\' && emphasis.substring(emphasis.length - 1) === '\\') {
-					return `**${emphasis.substring(0, emphasis.length - 1)}**`;
+			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(
+				/(.?)\*\*(.+?)\*\*/g,
+				(_match, beforeEmphasis_htmlescaped: string, emphasis_htmlescaped: string) => {
+					const beforeEmphasis = StringEscapeHtml.unescape(beforeEmphasis_htmlescaped);
+					const emphasis = StringEscapeHtml.unescape(emphasis_htmlescaped);
+
+					if (beforeEmphasis === '\\' && emphasis.substring(emphasis.length - 1) === '\\') {
+						return `**${emphasis_htmlescaped.substring(0, emphasis_htmlescaped.length - 1)}**`;
+					}
+					return `${beforeEmphasis_htmlescaped}<em>${emphasis_htmlescaped}</em>`;
 				}
-				return `${beforeEmphasis}<em>${emphasis}</em>`;
-			});
+			);
 		}
 
 		/* <code> */
 		if (options.code) {
-			htmlFragment = htmlFragment.replace(/(.?)`(.+?)`/g, (_match, beforeCode: string, code: string) => {
+			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(/(.?)`(.+?)`/g, (_match, beforeCode_htmlescaped: string, code_htmlescaped: string) => {
+				const beforeCode = StringEscapeHtml.unescape(beforeCode_htmlescaped);
+				const code = StringEscapeHtml.unescape(code_htmlescaped);
+
 				if (beforeCode === '\\' && code.substring(code.length - 1) === '\\') {
-					return `\`${code.substring(0, code.length - 1)}\``;
+					return `\`${code_htmlescaped.substring(0, code_htmlescaped.length - 1)}\``;
 				}
-				return `${beforeCode}<code class="c-code">${code}</code>`;
+				return `${beforeCode_htmlescaped}<code class="c-code">${code_htmlescaped}</code>`;
 			});
 		}
 
 		/* <q> */
 		if (options.quote) {
-			htmlFragment = htmlFragment.replace(/{{(.+?)}}/g, (_match, quote: string) => {
+			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(/{{(.+?)}}/g, (_match, quote_htmlescaped: string) => {
+				const quote = StringEscapeHtml.unescape(quote_htmlescaped);
+
 				const urlMatchGroups = quote.match(new RegExp(`(?<url>${this.#REGEXP_URL}) (?<text>.+)`))?.groups;
 				if (urlMatchGroups !== undefined) {
 					const { url, text } = urlMatchGroups;
 
-					return `<a href="${url}"><q class="c-quote" cite="${url}">${text}</q></a>`;
+					if (url !== undefined && text !== undefined) {
+						return `<a href="${StringEscapeHtml.escape(url)}"><q class="c-quote" cite="${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(
+							text
+						)}</q></a>`;
+					}
 				}
 
 				const isbnMatchGroups = quote.match(new RegExp(`(?<isbn>${this.#REGEXP_ISBN}) (?<text>.+)`))?.groups;
 				if (isbnMatchGroups !== undefined) {
 					const { isbn, text } = isbnMatchGroups;
 
-					if (isbn !== undefined) {
+					if (isbn !== undefined && text !== undefined) {
 						if (new IsbnVerify(isbn, { strict: true }).isValid()) {
-							return `<q class="c-quote" cite="urn:ISBN:${isbn}">${text}</q>`;
+							return `<q class="c-quote" cite="urn:ISBN:${StringEscapeHtml.escape(isbn)}">${StringEscapeHtml.escape(text)}</q>`;
 						}
 
 						this.#logger.warn(`ISBN のチェックデジット不正: ${isbn}`);
-						return `<q class="c-quote">${text}</q>`;
+						return `<q class="c-quote">${StringEscapeHtml.escape(text)}</q>`;
 					}
 				}
 
-				return `<q class="c-quote">${quote}</q>`;
+				return `<q class="c-quote">${quote_htmlescaped}</q>`;
 			});
 		}
 
-		parentElement.insertAdjacentHTML('beforeend', htmlFragment);
+		parentElement.insertAdjacentHTML('beforeend', htmlFragment_htmlescaped);
 	}
 
 	/**
@@ -1714,14 +1735,14 @@ export default class MessageParser {
 
 		const url = new URL(urlText);
 
-		let typeAttrHtml = '';
-		let typeIconHtml = '';
-		let hostIconHtml = '';
+		let typeAttr_htmlescaped = '';
+		let typeIcon_htmlescaped = '';
+		let hostIcon_htmlescaped = '';
 
 		/* PDFアイコン */
 		if (url.pathname.endsWith('.pdf')) {
 			attributeMap.set('type', 'application/pdf');
-			typeIconHtml = '<img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>';
+			typeIcon_htmlescaped = '<img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>';
 		}
 
 		/* URL 表記でない場合はドメイン情報を記載 */
@@ -1731,19 +1752,19 @@ export default class MessageParser {
 			/* サイトアイコン */
 			const hostIcon = this.#anchorHostIcons?.find((icon) => icon.host === host);
 			if (hostIcon !== undefined) {
-				hostIconHtml = `<img src="${hostIcon.src}" alt="(${hostIcon.name})" width="16" height="16" class="c-link-icon"/>`;
+				hostIcon_htmlescaped = `<img src="${hostIcon.src}" alt="(${hostIcon.name})" width="16" height="16" class="c-link-icon"/>`;
 			}
 
 			/* サイトアイコンがない場合はホスト名をテキストで表記 */
-			if (hostIconHtml === '') {
-				hostIconHtml = `<b class="c-domain">(${StringEscapeHtml.escape(host)})</b>`;
+			if (hostIcon_htmlescaped === '') {
+				hostIcon_htmlescaped = `<b class="c-domain">(${StringEscapeHtml.escape(host)})</b>`;
 			}
 		}
 
 		for (const [name, value] of attributeMap) {
-			typeAttrHtml += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
+			typeAttr_htmlescaped += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
 		}
 
-		return `<a${typeAttrHtml}>${StringEscapeHtml.escape(linkText)}</a>${typeIconHtml}${hostIconHtml}`;
+		return `<a${typeAttr_htmlescaped}>${StringEscapeHtml.escape(linkText)}</a>${typeIcon_htmlescaped}${hostIcon_htmlescaped}`;
 	}
 }
