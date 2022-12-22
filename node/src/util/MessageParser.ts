@@ -46,6 +46,7 @@ interface InlineMarkupOption {
 export default class MessageParser {
 	readonly #REGEXP_ABSOLUTE_URL = "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+";
 	readonly #REGEXP_ISBN = '(978|979)-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]|[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]';
+	readonly #REGEXP_LANG = '[a-z]{2}';
 
 	/* Logger */
 	readonly #logger: Log4js.Logger;
@@ -418,7 +419,7 @@ export default class MessageParser {
 							} else {
 								this.#logger.warn(`ISBN のチェックデジット不正: ${metaText}`);
 							}
-						} else if (/^[a-z]{2}$/.test(metaText)) {
+						} else if (new RegExp(`^${this.#REGEXP_LANG}$`).test(metaText)) {
 							/* 言語 */
 							this.#quoteElement.setAttribute('lang', metaText);
 							this.#quoteLanguage = metaText;
@@ -1716,36 +1717,57 @@ export default class MessageParser {
 
 		/* <q> */
 		if (options.quote) {
-			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(/{{(.+?)}}/g, (_match, quote_htmlescaped: string) => {
-				const quote = StringEscapeHtml.unescape(quote_htmlescaped);
+			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(
+				/{{(.+?)}}(\((.+?)\))?/g,
+				(_match, quote_htmlescaped: string, _metagroup_htmlescaped: string, metas_htmlescaped?: string) => {
+					const qAttributeMap = new Map<string, string>();
 
-				const urlMatchGroups = quote.match(new RegExp(`(?<url>${this.#REGEXP_ABSOLUTE_URL}) (?<text>.+)`))?.groups;
-				if (urlMatchGroups !== undefined) {
-					const { url, text } = urlMatchGroups;
+					if (metas_htmlescaped !== undefined) {
+						const metas = StringEscapeHtml.unescape(metas_htmlescaped);
 
-					if (url !== undefined && text !== undefined) {
-						return `<a href="${StringEscapeHtml.escape(url)}"><q class="c-quote" cite="${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(
-							text
-						)}</q></a>`;
-					}
-				}
+						let url: string | undefined;
+						let isbn: string | undefined;
 
-				const isbnMatchGroups = quote.match(new RegExp(`(?<isbn>${this.#REGEXP_ISBN}) (?<text>.+)`))?.groups;
-				if (isbnMatchGroups !== undefined) {
-					const { isbn, text } = isbnMatchGroups;
-
-					if (isbn !== undefined && text !== undefined) {
-						if (new IsbnVerify(isbn, { strict: true }).isValid()) {
-							return `<q class="c-quote" cite="urn:ISBN:${StringEscapeHtml.escape(isbn)}">${StringEscapeHtml.escape(text)}</q>`;
+						for (const metaWord of metas.split(' ')) {
+							if (new RegExp(`^${this.#REGEXP_ABSOLUTE_URL}$`).test(metaWord)) {
+								url = metaWord;
+							} else if (new RegExp(`^${this.#REGEXP_ISBN}$`).test(metaWord)) {
+								isbn = metaWord;
+							} else if (new RegExp(`^${this.#REGEXP_LANG}$`).test(metaWord)) {
+								qAttributeMap.set('lang', metaWord);
+							}
 						}
 
-						this.#logger.warn(`ISBN のチェックデジット不正: ${isbn}`);
-						return `<q class="c-quote">${StringEscapeHtml.escape(text)}</q>`;
-					}
-				}
+						if (url !== undefined) {
+							if (isbn !== undefined) {
+								this.#logger.warn(`インライン引用に URL<${url}> と ISBN<${isbn}> が両方指定`);
+							}
 
-				return `<q class="c-quote">${quote_htmlescaped}</q>`;
-			});
+							qAttributeMap.set('cite', url);
+
+							let qAttr_htmlescaped = '';
+							for (const [name, value] of qAttributeMap) {
+								qAttr_htmlescaped += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
+							}
+
+							return `<a href="${StringEscapeHtml.escape(url)}"><q class="c-quote"${qAttr_htmlescaped}>${quote_htmlescaped}</q></a>`;
+						} else if (isbn !== undefined) {
+							if (new IsbnVerify(isbn, { strict: true }).isValid()) {
+								qAttributeMap.set('cite', `urn:ISBN:${isbn}`);
+							} else {
+								this.#logger.warn(`ISBN<${isbn}> のチェックデジット不正`);
+							}
+						}
+					}
+
+					let qAttr_htmlescaped = '';
+					for (const [name, value] of qAttributeMap) {
+						qAttr_htmlescaped += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
+					}
+
+					return `<q class="c-quote"${qAttr_htmlescaped}>${quote_htmlescaped}</q>`;
+				}
+			);
 		}
 
 		parentElement.insertAdjacentHTML('beforeend', htmlFragment_htmlescaped);
