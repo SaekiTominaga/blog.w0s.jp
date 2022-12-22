@@ -39,7 +39,8 @@ const allEntryiesMessageDto = await dao.getAllEntriesMessage();
 
 for (const [id, message] of allEntryiesMessageDto) {
 	const messageConverted = convert(id, message);
-
-	console.info(`記事 ${id} を更新`);
-	await dao.update(id, messageConverted);
+	if (message !== messageConverted) {
+		console.info(`記事 ${id} を更新`);
+		await dao.update(id, messageConverted);
+	}
 }
