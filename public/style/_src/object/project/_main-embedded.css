@@ -67,7 +67,7 @@
 	box-sizing: border-box;
 	border: var(--_border-width) solid var(--color-black);
 	aspect-ratio: var(--aspect-ratio, auto);
-	inline-size: 100%;
+	max-inline-size: 100%;
 	block-size: auto;
 }
 
