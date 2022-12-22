@@ -1637,9 +1637,9 @@ export default class MessageParser {
 							}
 
 							/* Amazon 商品ページへのリンク */
-							const asinMatchGroups = url.match(/^asin:(?<asin>[0-9A-Z]{10})$/)?.groups;
-							if (asinMatchGroups !== undefined) {
-								const { asin } = asinMatchGroups;
+							const amazonMatchGroups = url.match(/^amazon:(?<asin>[0-9A-Z]{10})$/)?.groups;
+							if (amazonMatchGroups !== undefined) {
+								const { asin } = amazonMatchGroups;
 
 								if (asin !== undefined) {
 									const href =
