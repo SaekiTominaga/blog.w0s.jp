@@ -420,20 +420,20 @@ describe('inline', () => {
 	});
 
 	test('link - URL', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](https://example.com/)text')).toBe(
-			'<p>text<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[link<s>link</s>](https://example.com/)<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b>&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - URL - URL text', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[https://example.com/](https://example.com/)text')).toBe(
-			'<p>text<a href="https://example.com/">https://example.com/</a>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[https://example.com/](https://example.com/)<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">https://example.com/</a>&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - URL - PDF', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](https://example.com/foo.pdf)text')).toBe(
-			'<p>text<a href="https://example.com/foo.pdf" type="application/pdf">link&lt;s&gt;link&lt;/s&gt;</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"><b class="c-domain">(example.com)</b>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[link<s>link</s>](https://example.com/foo.pdf)<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/foo.pdf" type="application/pdf">link&lt;s&gt;link&lt;/s&gt;</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"><b class="c-domain">(example.com)</b>&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
@@ -448,67 +448,73 @@ describe('inline', () => {
 						src: '/example.svg',
 					},
 				],
-			}).toHtml('text[link<s>link</s>](https://example.com/)text')
+			}).toHtml('<s>text</s>[link<s>link</s>](https://example.com/)<s>text</s>')
 		).toBe(
-			'<p>text<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><img src="/example.svg" alt="(Example)" width="16" height="16" class="c-link-icon">text</p>'
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><img src="/example.svg" alt="(Example)" width="16" height="16" class="c-link-icon">&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - entry ID', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](1)text')).toBe(
-			'<p>text<a href="/1">link&lt;s&gt;link&lt;/s&gt;</a>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[link<s>link</s>](1)<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="/1">link&lt;s&gt;link&lt;/s&gt;</a>&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - amazon', async () => {
-		expect(await new MessageParser(config, { dbh: dbh, amazon_tracking_id: 'xxx-22' }).toHtml('text[link<s>link</s>](amazon:4065199816)text')).toBe(
-			'<p>text<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=xxx-22">link&lt;s&gt;link&lt;/s&gt;</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon">text</p>'
+		expect(
+			await new MessageParser(config, { dbh: dbh, amazon_tracking_id: 'xxx-22' }).toHtml('<s>text</s>[link<s>link</s>](amazon:4065199816)<s>text</s>')
+		).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=xxx-22">link&lt;s&gt;link&lt;/s&gt;</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon">&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - #section', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](#section-1)text')).toBe(
-			'<p>text<a href="#section-1">link&lt;s&gt;link&lt;/s&gt;</a>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[link<s>link</s>](#section-1)<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="#section-1">link&lt;s&gt;link&lt;/s&gt;</a>&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - invalid', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](foo)text')).toBe('<p>text[link&lt;s&gt;link&lt;/s&gt;](foo)text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[link<s>link</s>](foo)<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;[link&lt;s&gt;link&lt;/s&gt;](foo)&lt;s&gt;text&lt;/s&gt;</p>'
+		);
 	});
 
 	test('link - multi', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml('text[link<s>link</s>](https://example.com/)text[link<s>link</s>](https://example.com/)text')
+			await new MessageParser(config, { dbh: dbh }).toHtml(
+				'<s>text</s>[link<s>link</s>](https://example.com/)<s>text</s>[link<s>link</s>](https://example.com/)<s>text</s>'
+			)
 		).toBe(
-			'<p>text<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b>text<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b>text</p>'
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b>&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - text[', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link[link](https://example.com/)text')).toBe(
-			'<p>text[link<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[link[link](https://example.com/)<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;[link<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - text]', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link]link](https://example.com/)text')).toBe(
-			'<p>text<a href="https://example.com/">link]link</a><b class="c-domain">(example.com)</b>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[link]link](https://example.com/)<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link]link</a><b class="c-domain">(example.com)</b>&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - text[]', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link[link]link](https://example.com/)text')).toBe(
-			'<p>text<a href="https://example.com/">link[link]link</a><b class="c-domain">(example.com)</b>text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[link[link]link](https://example.com/)<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link[link]link</a><b class="c-domain">(example.com)</b>&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 
 	test('link - feint1', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[text')).toBe('<p>text[text</p>');
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[<s>text</s>')).toBe('<p>&lt;s&gt;text&lt;/s&gt;[&lt;s&gt;text&lt;/s&gt;</p>');
 	});
 
 	test('link - feint2', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text[link](https://example.com/)text[text')).toBe(
-			'<p>text<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text[text</p>'
+		expect(await new MessageParser(config, { dbh: dbh }).toHtml('<s>text</s>[link](https://example.com/)text[<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link</a><b class="c-domain">(example.com)</b>text[&lt;s&gt;text&lt;/s&gt;</p>'
 		);
 	});
 

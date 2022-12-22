@@ -1570,7 +1570,7 @@ export default class MessageParser {
 				}
 
 				let parseTargetText = htmlFragment; // パース対象の文字列
-				const parsedTextList: string[] = []; // パース後の文字列を格納する配列
+				const parsedTextList_htmlescaped: string[] = []; // パース後の文字列を格納する配列
 				let afterLinkText = '';
 
 				while (openingTextDelimiterIndex !== -1) {
@@ -1581,7 +1581,7 @@ export default class MessageParser {
 
 					/* [ が出現したが、 [TEXT](URL) の構文になっていない場合 */
 					if (matchGroups === undefined) {
-						if (parsedTextList.length === 0) {
+						if (parsedTextList_htmlescaped.length === 0) {
 							return htmlFragment_htmlescaped;
 						}
 						break;
@@ -1614,9 +1614,9 @@ export default class MessageParser {
 					linkText = scanText + tempLinkText;
 
 					/* HTML 文字列に変換 */
-					let linkHtml = '';
+					let anchor_htmlescaped = '';
 					try {
-						linkHtml = ((): string => {
+						anchor_htmlescaped = ((): string => {
 							/* 絶対 URL */
 							const absoluteUrlMatchGroups = url.match(new RegExp(`^(?<absoluteUrl>${this.#REGEXP_ABSOLUTE_URL})$`))?.groups;
 							if (absoluteUrlMatchGroups !== undefined) {
@@ -1676,13 +1676,13 @@ export default class MessageParser {
 					}
 
 					/* 後処理 */
-					parsedTextList.push(`${beforeOpeningTextDelimiterText}${linkHtml}`);
+					parsedTextList_htmlescaped.push(`${StringEscapeHtml.escape(beforeOpeningTextDelimiterText)}${anchor_htmlescaped}`);
 					parseTargetText = afterLinkText;
 
 					openingTextDelimiterIndex = parseTargetText.indexOf('[');
 				}
 
-				return `${parsedTextList.join('')}${afterLinkText}`;
+				return `${parsedTextList_htmlescaped.join('')}${StringEscapeHtml.escape(afterLinkText)}`;
 			})();
 		}
 
