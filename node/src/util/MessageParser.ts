@@ -1796,7 +1796,7 @@ export default class MessageParser {
 
 		const url = new URL(urlText);
 
-		let typeAttr_htmlescaped = '';
+		let attrs_htmlescaped = '';
 		let typeIcon_htmlescaped = '';
 		let hostIcon_htmlescaped = '';
 
@@ -1823,9 +1823,9 @@ export default class MessageParser {
 		}
 
 		for (const [name, value] of attributeMap) {
-			typeAttr_htmlescaped += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
+			attrs_htmlescaped += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
 		}
 
-		return `<a${typeAttr_htmlescaped}>${StringEscapeHtml.escape(linkText)}</a>${typeIcon_htmlescaped}${hostIcon_htmlescaped}`;
+		return `<a${attrs_htmlescaped}>${StringEscapeHtml.escape(linkText)}</a>${typeIcon_htmlescaped}${hostIcon_htmlescaped}`;
 	}
 }
