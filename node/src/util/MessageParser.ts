@@ -1576,19 +1576,22 @@ export default class MessageParser {
 					let beforeOpeningTextDelimiterText = parseTargetText.substring(0, openingTextDelimiterIndex);
 					const afterOpeningTextDelimiterText = parseTargetText.substring(openingTextDelimiterIndex + 1);
 
-					const regResult = /\]\((.+?)\)(.*)/.exec(afterOpeningTextDelimiterText);
+					const matchGroups = afterOpeningTextDelimiterText.match(/\]\((?<url>.+?)\)(?<afterLink>.*)/)?.groups;
 
 					/* [ が出現したが、 [TEXT](URL) の構文になっていない場合 */
-					if (regResult === null) {
+					if (matchGroups === undefined) {
 						if (parsedTextList.length === 0) {
 							return htmlFragment_htmlescaped;
 						}
 						break;
 					}
 
-					const url = <string>regResult[1]; // リンクURL
+					const { url, afterLink } = matchGroups;
+					if (url === undefined || afterLink === undefined) {
+						return htmlFragment_htmlescaped;
+					}
 					let linkText = afterOpeningTextDelimiterText.substring(0, afterOpeningTextDelimiterText.indexOf(`](${url}`)); // リンク文字列
-					afterLinkText = <string>regResult[2]; // リンク後の文字列
+					afterLinkText = afterLink; // リンク後の文字列
 
 					/* リンク文字列の中に [ や ] 記号が含まれていたときの処理 */
 					let scanText = linkText;
@@ -1611,30 +1614,46 @@ export default class MessageParser {
 
 					/* HTML文字列に変換 */
 					let linkHtml = '';
-					if (new RegExp(`^${this.#REGEXP_URL}$`).test(url)) {
-						/* 絶対 URL */
-						linkHtml = this.#anchor(linkText, url);
-					} else if (/^([1-9][0-9]*)$/.test(url)) {
-						/* 別記事へのリンク */
-						linkHtml = `<a href="/${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(linkText)}</a>`;
-					} else if (/^asin:[0-9A-Z]{10}$/.test(url)) {
-						/* Amazon 商品ページへのリンク */
-						const asin = url.substring(5);
+					try {
+						linkHtml = ((): string => {
+							/* 絶対 URL */
+							if (new RegExp(`^${this.#REGEXP_URL}$`).test(url)) {
+								return this.#anchor(linkText, url);
+							}
 
-						const href =
-							this.#amazonTrackingId === undefined
-								? `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/`
-								: `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/ref=nosim?tag=${StringEscapeHtml.escape(this.#amazonTrackingId)}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+							/* 別記事へのリンク */
+							if (/^([1-9][0-9]*)$/.test(url)) {
+								return `<a href="/${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(linkText)}</a>`;
+							}
 
-						linkHtml = `<a href="${StringEscapeHtml.escape(href)}">${StringEscapeHtml.escape(
-							linkText
-						)}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
-					} else if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
-						/* ページ内リンク */
-						linkHtml = `<a href="${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(linkText)}</a>`;
-					} else {
-						this.#logger.warn(`不正なリンクURL: ${url}`);
-						return htmlFragment_htmlescaped;
+							/* Amazon 商品ページへのリンク */
+							if (/^asin:[0-9A-Z]{10}$/.test(url)) {
+								const asin = url.substring(5);
+
+								const href =
+									this.#amazonTrackingId === undefined
+										? `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/`
+										: `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/ref=nosim?tag=${StringEscapeHtml.escape(this.#amazonTrackingId)}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+
+								return `<a href="${StringEscapeHtml.escape(href)}">${StringEscapeHtml.escape(
+									linkText
+								)}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
+							}
+
+							/* ページ内リンク */
+							if (new RegExp(`^#${this.#SECTION_ID_PREFIX}`).test(url)) {
+								return `<a href="${StringEscapeHtml.escape(url)}">${StringEscapeHtml.escape(linkText)}</a>`;
+							}
+
+							throw new Error(`不正なリンクURL: ${url}`);
+						})();
+					} catch (e) {
+						if (e instanceof Error) {
+							this.#logger.warn(e.message);
+							return htmlFragment_htmlescaped;
+						}
+
+						throw e;
 					}
 
 					/* 後処理 */
