@@ -106,13 +106,11 @@ export default class HttpResponse {
 	 * @param {string} locationUrl - 遷移先 URL
 	 */
 	send301(locationUrl: string): void {
-		const locationUrlEscapedHtml = StringEscapeHtml.escape(locationUrl);
-
-		this.#res.status(301).setHeader('Content-Type', this.#MIME_HTML).location(locationUrl).send(`<!DOCTYPE html>
+		this.#res.status(301).setHeader('Content-Type', this.#MIME_HTML).location(locationUrl).send(StringEscapeHtml.template`<!DOCTYPE html>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Moved Permanently</title>
 <h1>301 Moved Permanently</h1>
-<p><a href="${locationUrlEscapedHtml}">${locationUrlEscapedHtml}</a>`);
+<p><a href="${locationUrl}">${locationUrl}</a>`);
 	}
 
 	/**
@@ -127,13 +125,12 @@ export default class HttpResponse {
 		}
 
 		const locationUrl = url ?? this.#req.path;
-		const locationUrlEscapedHtml = StringEscapeHtml.escape(locationUrl);
 
-		this.#res.status(303).setHeader('Content-Type', this.#MIME_HTML).location(locationUrl).send(`<!DOCTYPE html>
+		this.#res.status(303).setHeader('Content-Type', this.#MIME_HTML).location(locationUrl).send(StringEscapeHtml.template`<!DOCTYPE html>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>See Other</title>
 <h1>303 See Other</h1>
-<p><a href="${locationUrlEscapedHtml}">${locationUrlEscapedHtml}</a>`);
+<p><a href="${locationUrl}">${locationUrl}</a>`);
 	}
 
 	/**
