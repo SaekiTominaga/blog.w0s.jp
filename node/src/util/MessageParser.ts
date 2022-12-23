@@ -1547,9 +1547,7 @@ export default class MessageParser {
 				const num = this.#footnotes.length;
 				const href = `${this.#entryId}-${num}`;
 
-				return `<span class="c-annotate"><a href="#fn${StringEscapeHtml.escape(href)}" id="nt${StringEscapeHtml.escape(
-					href
-				)}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
+				return StringEscapeHtml.template`<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
 			});
 		}
 
@@ -1635,7 +1633,7 @@ export default class MessageParser {
 								const { id } = entryMatchGroups;
 
 								if (id !== undefined) {
-									return `<a href="/${StringEscapeHtml.escape(id)}">${StringEscapeHtml.escape(linkText)}</a>`;
+									return StringEscapeHtml.template`<a href="/${id}">${linkText}</a>`;
 								}
 							}
 
@@ -1647,12 +1645,10 @@ export default class MessageParser {
 								if (asin !== undefined) {
 									const href =
 										this.#amazonTrackingId === undefined
-											? `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/`
-											: `https://www.amazon.co.jp/dp/${StringEscapeHtml.escape(asin)}/ref=nosim?tag=${StringEscapeHtml.escape(this.#amazonTrackingId)}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+											? `https://www.amazon.co.jp/dp/${asin}/`
+											: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${this.#amazonTrackingId}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
 
-									return `<a href="${StringEscapeHtml.escape(href)}">${StringEscapeHtml.escape(
-										linkText
-									)}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
+									return StringEscapeHtml.template`<a href="${href}">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
 								}
 							}
 
@@ -1662,7 +1658,7 @@ export default class MessageParser {
 								const { id } = pageLinkMatchGroups;
 
 								if (id !== undefined) {
-									return `<a href="#${StringEscapeHtml.escape(id)}">${StringEscapeHtml.escape(linkText)}</a>`;
+									return StringEscapeHtml.template`<a href="#${id}">${linkText}</a>`;
 								}
 							}
 
@@ -1722,6 +1718,8 @@ export default class MessageParser {
 			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(
 				/{{(.+?)}}(\((.+?)\))?/g,
 				(_match, quote_htmlescaped: string, _metagroup_htmlescaped: string, metas_htmlescaped?: string) => {
+					const quote = StringEscapeHtml.unescape(quote_htmlescaped);
+
 					const qAttributeMap = new Map<string, string>();
 
 					if (metas_htmlescaped !== undefined) {
@@ -1747,12 +1745,12 @@ export default class MessageParser {
 
 							qAttributeMap.set('cite', url);
 
-							let qAttr_htmlescaped = '';
+							let qAttr = '';
 							for (const [name, value] of qAttributeMap) {
-								qAttr_htmlescaped += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
+								qAttr += ` ${name}=${value}`;
 							}
 
-							return `<a href="${StringEscapeHtml.escape(url)}"><q class="c-quote"${qAttr_htmlescaped}>${quote_htmlescaped}</q></a>`;
+							return StringEscapeHtml.template`<a href="${url}"><q class="c-quote"${qAttr}>${quote}</q></a>`;
 						} else if (isbn !== undefined) {
 							if (new IsbnVerify(isbn, { strict: true }).isValid()) {
 								qAttributeMap.set('cite', `urn:ISBN:${isbn}`);
@@ -1762,12 +1760,12 @@ export default class MessageParser {
 						}
 					}
 
-					let qAttr_htmlescaped = '';
+					let qAttr = '';
 					for (const [name, value] of qAttributeMap) {
-						qAttr_htmlescaped += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
+						qAttr += ` ${name}=${value}`;
 					}
 
-					return `<q class="c-quote"${qAttr_htmlescaped}>${quote_htmlescaped}</q>`;
+					return StringEscapeHtml.template`<q class="c-quote"${qAttr}>${quote}</q>`;
 				}
 			);
 		}
@@ -1796,7 +1794,7 @@ export default class MessageParser {
 
 		const url = new URL(urlText);
 
-		let attrs_htmlescaped = '';
+		let attrs = '';
 		let typeIcon_htmlescaped = '';
 		let hostIcon_htmlescaped = '';
 
@@ -1813,19 +1811,19 @@ export default class MessageParser {
 			/* サイトアイコン */
 			const hostIcon = this.#anchorHostIcons?.find((icon) => icon.host === host);
 			if (hostIcon !== undefined) {
-				hostIcon_htmlescaped = `<img src="${hostIcon.src}" alt="(${hostIcon.name})" width="16" height="16" class="c-link-icon"/>`;
+				hostIcon_htmlescaped = StringEscapeHtml.template`<img src="${hostIcon.src}" alt="(${hostIcon.name})" width="16" height="16" class="c-link-icon"/>`;
 			}
 
 			/* サイトアイコンがない場合はホスト名をテキストで表記 */
 			if (hostIcon_htmlescaped === '') {
-				hostIcon_htmlescaped = `<b class="c-domain">(${StringEscapeHtml.escape(host)})</b>`;
+				hostIcon_htmlescaped = StringEscapeHtml.template`<b class="c-domain">(${host})</b>`;
 			}
 		}
 
 		for (const [name, value] of attributeMap) {
-			attrs_htmlescaped += ` ${StringEscapeHtml.escape(name)}=${StringEscapeHtml.escape(value)}`;
+			attrs += ` ${name}=${value}`;
 		}
 
-		return `<a${attrs_htmlescaped}>${StringEscapeHtml.escape(linkText)}</a>${typeIcon_htmlescaped}${hostIcon_htmlescaped}`;
+		return StringEscapeHtml.template`<a${attrs}>${linkText}</a>` + typeIcon_htmlescaped + hostIcon_htmlescaped;
 	}
 }
