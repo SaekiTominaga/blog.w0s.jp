@@ -335,12 +335,12 @@ code
 	test('media', async () => {
 		expect(
 			await new MessageParser(config, { dbh: dbh }).toHtml(`
-!foo.jpg caption1
-!bar.svg caption2
-!baz.mp4 caption3
+!foo.jpg caption1\`code\`
+!bar.svg caption2\`code\`
+!baz.mp4 caption3\`code\`
 `)
 		).toBe(
-			'<div class="c-flex"><figure class="c-flex__item"><div class="p-embed"><a href="https://media.w0s.jp/image/blog/foo.jpg" type="image/jpeg"><picture><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/foo.jpg?type=avif;w=720;h=720;quality=30 2x"><source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/foo.jpg?type=webp;w=720;h=720;quality=30 2x"><img alt="オリジナル画像" class="p-embed__image" src="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=jpeg;w=360;h=360;quality=60"></picture></a></div><figcaption class="c-caption"><span class="c-caption__no">画像1</span><span class="c-caption__title">caption1</span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><a href="https://media.w0s.jp/image/blog/bar.svg" type="image/svg+xml; charset=utf-8"><img alt="オリジナル画像" class="p-embed__image" src="https://media.w0s.jp/image/blog/bar.svg"></a></div><figcaption class="c-caption"><span class="c-caption__no">画像2</span><span class="c-caption__title">caption2</span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><video src="https://media.w0s.jp/video/blog/baz.mp4" controls="" class="p-embed__video"></video></div><figcaption class="c-caption"><span class="c-caption__no">動画1</span><span class="c-caption__title">caption3</span></figcaption></figure></div>'
+			'<div class="c-flex"><figure class="c-flex__item"><div class="p-embed"><a href="https://media.w0s.jp/image/blog/foo.jpg" type="image/jpeg"><picture><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/foo.jpg?type=avif;w=720;h=720;quality=30 2x"><source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/foo.jpg?type=webp;w=720;h=720;quality=30 2x"><img alt="オリジナル画像" class="p-embed__image" src="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=jpeg;w=360;h=360;quality=60"></picture></a></div><figcaption class="c-caption"><span class="c-caption__no">画像1</span><span class="c-caption__title">caption1<code>code</code></span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><a href="https://media.w0s.jp/image/blog/bar.svg" type="image/svg+xml; charset=utf-8"><img alt="オリジナル画像" class="p-embed__image" src="https://media.w0s.jp/image/blog/bar.svg"></a></div><figcaption class="c-caption"><span class="c-caption__no">画像2</span><span class="c-caption__title">caption2<code>code</code></span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><video src="https://media.w0s.jp/video/blog/baz.mp4" controls="" class="p-embed__video"></video></div><figcaption class="c-caption"><span class="c-caption__no">動画1</span><span class="c-caption__title">caption3<code>code</code></span></figcaption></figure></div>'
 		);
 	});
 
