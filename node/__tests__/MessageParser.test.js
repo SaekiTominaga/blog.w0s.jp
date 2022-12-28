@@ -528,7 +528,7 @@ describe('inline', () => {
 
 	test('code', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text`code<s>code</s>`text')).toBe(
-			'<p>text<code class="c-code">code&lt;s&gt;code&lt;/s&gt;</code>text</p>'
+			'<p>text<code>code&lt;s&gt;code&lt;/s&gt;</code>text</p>'
 		);
 	});
 
@@ -538,43 +538,43 @@ describe('inline', () => {
 
 	test('quote', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote<s>quote</s>}}text')).toBe(
-			'<p>text<q class="c-quote">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
+			'<p>text<q>quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
 		);
 	});
 
 	test('quote - cite - URL', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote<s>quote</s>}}(https://example.com/)text')).toBe(
-			'<p>text<a href="https://example.com/"><q class="c-quote" cite="https://example.com/">quote&lt;s&gt;quote&lt;/s&gt;</q></a>text</p>'
+			'<p>text<a href="https://example.com/"><q cite="https://example.com/">quote&lt;s&gt;quote&lt;/s&gt;</q></a><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
 	test('quote - cite - ISBN', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote<s>quote</s>}}(978-4-06-519981-7)text')).toBe(
-			'<p>text<q class="c-quote" cite="urn:ISBN:978-4-06-519981-7">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
+			'<p>text<q cite="urn:ISBN:978-4-06-519981-7">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
 		);
 	});
 
 	test('quote - cite - ISBN - invalid check digit', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote<s>quote</s>}}(978-4-06-519981-0)text')).toBe(
-			'<p>text<q class="c-quote">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
+			'<p>text<q>quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
 		);
 	});
 
 	test('quote - cite - lang', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote<s>quote</s>}}(en)text')).toBe(
-			'<p>text<q class="c-quote" lang="en">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
+			'<p>text<q lang="en">quote&lt;s&gt;quote&lt;/s&gt;</q>text</p>'
 		);
 	});
 
 	test('quote - cite - URL & ISBN & lang', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote<s>quote</s>}}(https://example.com/ 978-4-06-519981-7 en)text')).toBe(
-			'<p>text<a href="https://example.com/"><q class="c-quote" lang="en" cite="https://example.com/">quote&lt;s&gt;quote&lt;/s&gt;</q></a>text</p>'
+			'<p>text<a href="https://example.com/"><q lang="en" cite="https://example.com/">quote&lt;s&gt;quote&lt;/s&gt;</q></a><b class="c-domain">(example.com)</b>text</p>'
 		);
 	});
 
 	test('quote - cite - empty', async () => {
 		expect(await new MessageParser(config, { dbh: dbh }).toHtml('text{{quote<s>quote</s>}}()text')).toBe(
-			'<p>text<q class="c-quote">quote&lt;s&gt;quote&lt;/s&gt;</q>()text</p>'
+			'<p>text<q>quote&lt;s&gt;quote&lt;/s&gt;</q>()text</p>'
 		);
 	});
 
