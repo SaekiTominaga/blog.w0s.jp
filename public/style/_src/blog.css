@@ -18,13 +18,16 @@
 /* Object - Project */
 @import url("object/project/_header.css") layer(project);
 @import url("object/project/_content.css") layer(project);
-@import url("object/project/_main-section-entry.css") layer(project);
 @import url("object/project/_main-text.css") layer(project);
 @import url("object/project/_main-list.css") layer(project);
 @import url("object/project/_main-link.css") layer(project);
 @import url("object/project/_main-embedded.css") layer(project);
 @import url("object/project/_main-tabular.css") layer(project);
 @import url("object/project/_main.css") layer(project);
+@import url("object/project/entry/_entry.css") layer(project);
+@import url("object/project/entry/_header.css") layer(project);
+@import url("object/project/entry/_body.css") layer(project);
+@import url("object/project/entry/_footer.css") layer(project);
 @import url("object/project/_sidebar.css") layer(project);
 @import url("object/project/_footer.css") layer(project);
 
