@@ -589,6 +589,12 @@ describe('inline', () => {
 			'<p>text<span class="c-annotate"><a href="#fn99-1" id="nt99-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt99-1">[1]</a></span><span class="p-footnotes__text" id="fn99-1">footnote&lt;s&gt;footnote&lt;/s&gt;<em>emphasis</em></span></li></ul>'
 		);
 	});
+
+	test('all', async () => {
+		expect(await new MessageParser(config, { entry_id: 99, dbh: dbh }).toHtml('<s>text</s>[link<s>link</s>](https://example.com/)**em<s>em</s>**`code<s>code</s>`{{quote<s>quote</s>}}((footnote<s>footnote</s>))<s>text</s>')).toBe(
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b><em>em&lt;s&gt;em&lt;/s&gt;</em><code>code&lt;s&gt;code&lt;/s&gt;</code><q>quote&lt;s&gt;quote&lt;/s&gt;</q><span class="c-annotate"><a href="#fn99-1" id="nt99-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>&lt;s&gt;text&lt;/s&gt;</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt99-1">[1]</a></span><span class="p-footnotes__text" id="fn99-1">footnote&lt;s&gt;footnote&lt;/s&gt;</span></li></ul>'
+		);
+	});
 });
 
 describe('section', () => {
