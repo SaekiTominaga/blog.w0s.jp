@@ -1150,7 +1150,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				captionTitleElement.textContent = caption;
+				this.#inlineMarkup(captionTitleElement, caption, { code: true });
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#imageNum += 1;
@@ -1175,7 +1175,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				captionTitleElement.textContent = caption;
+				this.#inlineMarkup(captionTitleElement, caption, { code: true });
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#videoNum += 1;
