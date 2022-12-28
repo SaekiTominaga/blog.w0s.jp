@@ -1750,7 +1750,9 @@ export default class MessageParser {
 								qAttr += ` ${name}=${value}`;
 							}
 
-							return StringEscapeHtml.template`<a href="${url}"><q class="c-quote"${qAttr}>${quote}</q></a>`;
+							return this.#anchor(quote, url)
+								.replace(/^<a (?<attr>.+?)>/, `<a $<attr>><q${qAttr}>`)
+								.replace('</a>', '</q></a>');
 						} else if (isbn !== undefined) {
 							if (new IsbnVerify(isbn, { strict: true }).isValid()) {
 								qAttributeMap.set('cite', `urn:ISBN:${isbn}`);
