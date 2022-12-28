@@ -1561,23 +1561,21 @@ export default class MessageParser {
 			 * @returns {string} 変換後の文字列
 			 */
 			htmlFragment_htmlescaped = ((): string => {
-				const htmlFragmentAnchor = StringEscapeHtml.unescape(htmlFragment_htmlescaped);
-
-				let openingTextDelimiterIndex = htmlFragmentAnchor.indexOf('[');
+				let openingTextDelimiterIndex = htmlFragment_htmlescaped.indexOf('[');
 				if (openingTextDelimiterIndex === -1) {
 					/* 文中にリンク構文が存在しない場合は何もしない */
 					return htmlFragment_htmlescaped;
 				}
 
-				let parseTargetText = htmlFragmentAnchor; // パース対象の文字列
+				let parseTargetText_htmlescaped = htmlFragment_htmlescaped; // パース対象の文字列
 				const parsedTextList_htmlescaped: string[] = []; // パース後の文字列を格納する配列
-				let afterLinkText = '';
+				let afterLinkText_htmlescaped = '';
 
 				while (openingTextDelimiterIndex !== -1) {
-					let beforeOpeningTextDelimiterText = parseTargetText.substring(0, openingTextDelimiterIndex);
-					const afterOpeningTextDelimiterText = parseTargetText.substring(openingTextDelimiterIndex + 1);
+					let beforeOpeningTextDelimiterText_htmlescaped = parseTargetText_htmlescaped.substring(0, openingTextDelimiterIndex);
+					const afterOpeningTextDelimiterText_htmlescaped = parseTargetText_htmlescaped.substring(openingTextDelimiterIndex + 1);
 
-					const matchGroups = afterOpeningTextDelimiterText.match(/\]\((?<url>.+?)\)(?<afterLink>.*)/)?.groups;
+					const matchGroups = afterOpeningTextDelimiterText_htmlescaped.match(/\]\((?<url>.+?)\)(?<afterLink>.*)/)?.groups;
 
 					/* [ が出現したが、 [TEXT](URL) の構文になっていない場合 */
 					if (matchGroups === undefined) {
@@ -1587,12 +1585,16 @@ export default class MessageParser {
 						break;
 					}
 
-					const { url, afterLink } = matchGroups;
-					if (url === undefined || afterLink === undefined) {
+					const { url: url_htmlescaped, afterLink: afterLink_htmlescaped } = matchGroups;
+					if (url_htmlescaped === undefined || afterLink_htmlescaped === undefined) {
 						return htmlFragment_htmlescaped;
 					}
-					let linkText = afterOpeningTextDelimiterText.substring(0, afterOpeningTextDelimiterText.indexOf(`](${url}`)); // リンク文字列
-					afterLinkText = afterLink; // リンク後の文字列
+
+					afterLinkText_htmlescaped = afterLink_htmlescaped; // リンク後の文字列
+
+					let linkText = StringEscapeHtml.unescape(
+						afterOpeningTextDelimiterText_htmlescaped.substring(0, afterOpeningTextDelimiterText_htmlescaped.indexOf(`](${url_htmlescaped}`))
+					); // リンク文字列
 
 					/* リンク文字列の中に [ や ] 記号が含まれていたときの処理 */
 					let scanText = linkText;
@@ -1604,19 +1606,18 @@ export default class MessageParser {
 							tempLinkText = scanText.substring(linkTextOpeningTextDelimiterIndex) + tempLinkText;
 							scanText = scanText.substring(0, linkTextOpeningTextDelimiterIndex);
 						} else {
-							beforeOpeningTextDelimiterText += `[${scanText.substring(0, linkTextOpeningTextDelimiterIndex)}`;
+							beforeOpeningTextDelimiterText_htmlescaped += `[${scanText.substring(0, linkTextOpeningTextDelimiterIndex)}`;
 							scanText = scanText.substring(linkTextOpeningTextDelimiterIndex + 1);
 						}
 
 						linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
 					}
-
-					linkText = scanText + tempLinkText;
+					linkText = `${scanText}${tempLinkText}`;
 
 					/* HTML 文字列に変換 */
 					let anchor_htmlescaped = '';
 					try {
-						anchor_htmlescaped = ((): string => {
+						anchor_htmlescaped = ((url: string): string => {
 							/* 絶対 URL */
 							const absoluteUrlMatchGroups = url.match(new RegExp(`^(?<absoluteUrl>${this.#REGEXP_ABSOLUTE_URL})$`))?.groups;
 							if (absoluteUrlMatchGroups !== undefined) {
@@ -1663,7 +1664,7 @@ export default class MessageParser {
 							}
 
 							throw new Error(`不正なリンクURL: ${url}`);
-						})();
+						})(StringEscapeHtml.unescape(url_htmlescaped));
 					} catch (e) {
 						if (e instanceof Error) {
 							this.#logger.warn(e.message);
@@ -1674,13 +1675,13 @@ export default class MessageParser {
 					}
 
 					/* 後処理 */
-					parsedTextList_htmlescaped.push(`${StringEscapeHtml.escape(beforeOpeningTextDelimiterText)}${anchor_htmlescaped}`);
-					parseTargetText = afterLinkText;
+					parsedTextList_htmlescaped.push(`${beforeOpeningTextDelimiterText_htmlescaped}${anchor_htmlescaped}`);
+					parseTargetText_htmlescaped = afterLinkText_htmlescaped;
 
-					openingTextDelimiterIndex = parseTargetText.indexOf('[');
+					openingTextDelimiterIndex = parseTargetText_htmlescaped.indexOf('[');
 				}
 
-				return `${parsedTextList_htmlescaped.join('')}${StringEscapeHtml.escape(afterLinkText)}`;
+				return `${parsedTextList_htmlescaped.join('')}${afterLinkText_htmlescaped}`;
 			})();
 		}
 
