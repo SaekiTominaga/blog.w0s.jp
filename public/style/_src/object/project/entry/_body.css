@@ -1,0 +1,244 @@
+/* ==============================
+ *   記事本体
+ * ============================== */
+
+@keyframes entry-section-target {
+	0% {
+		background-color: var(--color-verylightred);
+	}
+
+	50% {
+		background-color: var(--color-verylightred);
+	}
+
+	100% {
+		background-color: transparent;
+	}
+}
+
+.p-entry__body {
+	padding: 30px var(--_entry-padding-block);
+
+	/* <code> */
+	& code {
+		border-radius: var(--border-radius-normal);
+		background-color: var(--color-ultralightgreen);
+		padding-block: 0.25em;
+		color: var(--color-green);
+		font-weight: var(--font-weight-bold);
+	}
+
+	& :where(a, pre, .p-entry-section__hdg) code {
+		border-radius: 0;
+		background-color: transparent;
+		padding-block: 0;
+		color: inherit;
+		font-weight: inherit;
+	}
+
+	/* <q> */
+	& q {
+		background: linear-gradient(transparent, transparent 75%, var(--color-yellow) 75%);
+		quotes: "\201C""\201D""\2018""\2019";
+
+		&::before {
+			padding-inline-start: 0.25em;
+			content: open-quote;
+		}
+
+		&::after {
+			padding-inline-end: 0.25em;
+			content: close-quote;
+		}
+	}
+}
+
+.p-entry-section {
+	--_margin-block: var(--stack-margin-base);
+
+	@nest .p-entry & {
+		&:not(:first-child) {
+			margin-block-start: var(--_margin-block);
+		}
+
+		&:not(:last-child) {
+			margin-block-end: var(--_margin-block);
+		}
+	}
+
+	&.-hdg1 {
+		--_margin-block: calc(var(--stack-margin-base) * 4);
+
+		@nest .p-entry .p-toc + & {
+			margin-block-start: calc(var(--stack-margin-base) * 3);
+		}
+	}
+
+	&.-hdg2 {
+		--_margin-block: calc(var(--stack-margin-base) * 2);
+	}
+
+	&:target {
+		animation: entry-section-target 1s;
+	}
+}
+
+.p-entry-section__hdg {
+	display: flex;
+	gap: 0.5em;
+	line-height: var(--line-height-narrow);
+
+	@nest .p-entry-section.-hdg1 > & {
+		border-block-start: 1px solid transparent;
+		border-block-end: 1px solid var(--color-border-dark);
+		padding-block: 0.25em;
+		font-size: calc(100% * var(--font-ratio-5));
+	}
+
+	@nest .p-entry-section.-hdg2 > & {
+		font-size: calc(100% * var(--font-ratio-3));
+
+		&::before {
+			transform: scaleY(80%);
+			border: 0.125em solid var(--color-border-dark);
+			border-radius: var(--border-radius-full);
+			background: var(--color-border-dark); /* for Chrome */
+			content: "";
+		}
+	}
+}
+
+.p-entry-section__self-link {
+	display: flex;
+	align-items: center;
+}
+
+/* ===== セクション終了 ===== */
+.p-section-break {
+	margin-inline: auto;
+	border-block-start: 2px solid;
+	border-image: linear-gradient(to right, transparent 0%, var(--color-lightgray) 50%, transparent 100%) 1 / 1px;
+	inline-size: min(30em, 100%);
+	block-size: 0;
+
+	@nest .p-entry & {
+		&:not(:first-child) {
+			margin-block-start: calc(var(--stack-margin-base) * 4);
+		}
+
+		&:not(:last-child) {
+			margin-block-end: calc(var(--stack-margin-base) * 4);
+		}
+	}
+}
+
+/* ===== コードハイライト https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css ===== */
+/* stylelint-disable selector-class-pattern */
+.hljs-doctag,
+.hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+	/* prettylights-syntax-keyword */
+	color: #d73a49;
+}
+
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+	/* prettylights-syntax-entity */
+	color: #6f42c1;
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+	/* prettylights-syntax-constant */
+	color: #005cc5;
+}
+
+.hljs-regexp,
+.hljs-string {
+	/* prettylights-syntax-string */
+	color: #032f62;
+}
+
+.hljs-built_in,
+.hljs-symbol {
+	/* prettylights-syntax-variable */
+	color: #e36209;
+}
+
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+	/* prettylights-syntax-comment */
+	color: #6a737d;
+}
+
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+	/* prettylights-syntax-entity-tag */
+	color: #22863a;
+}
+
+.hljs-subst {
+	/* prettylights-syntax-storage-modifier-import */
+	color: #24292e;
+}
+
+.hljs-section {
+	/* prettylights-syntax-markup-heading */
+	color: #005cc5;
+	font-weight: var(--font-weight-bold);
+}
+
+.hljs-bullet {
+	/* prettylights-syntax-markup-list */
+	color: #735c0f;
+}
+
+.hljs-emphasis {
+	/* prettylights-syntax-markup-italic */
+	color: #24292e;
+	font-style: italic;
+}
+
+.hljs-strong {
+	/* prettylights-syntax-markup-bold */
+	color: #24292e;
+	font-weight: var(--font-weight-bold);
+}
+
+.hljs-addition {
+	/* prettylights-syntax-markup-inserted */
+	background-color: #f0fff4;
+	color: #22863a;
+}
+
+.hljs-deletion {
+	/* prettylights-syntax-markup-deleted */
+	background-color: #ffeef0;
+	color: #b31d28;
+}
+
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+	/* purposely ignored */
+}
+/* stylelint-enable selector-class-pattern */

@@ -1709,7 +1709,7 @@ export default class MessageParser {
 				if (beforeCode === '\\' && code.substring(code.length - 1) === '\\') {
 					return `\`${code_htmlescaped.substring(0, code_htmlescaped.length - 1)}\``;
 				}
-				return `${beforeCode_htmlescaped}<code class="c-code">${code_htmlescaped}</code>`;
+				return `${beforeCode_htmlescaped}<code>${code_htmlescaped}</code>`;
 			});
 		}
 
@@ -1765,7 +1765,7 @@ export default class MessageParser {
 						qAttr += ` ${name}=${value}`;
 					}
 
-					return StringEscapeHtml.template`<q class="c-quote"${qAttr}>${quote}</q>`;
+					return StringEscapeHtml.template`<q${qAttr}>${quote}</q>`;
 				}
 			);
 		}

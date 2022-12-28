@@ -1,0 +1,33 @@
+/* ==============================
+ *   記事ヘッダー
+ * ============================== */
+
+.p-entry__header {
+	padding-block: 0 30px;
+}
+
+/* 記事タイトル */
+.p-entry-header-title {
+	--_border-width: 1px;
+	--_bg-color: #9fc;
+
+	border: var(--_border-width) solid var(--_bg-color);
+	background: var(--_bg-color);
+	padding: calc(15px - var(--_border-width)) calc(var(--_entry-padding-block) - var(--_border-width));
+	color: var(--color-black);
+
+	@media print {
+		padding: 10px;
+	}
+
+	& > h1 {
+		font-size: clamp(calc(100% * var(--font-ratio-3)), 5vw, calc(100% * var(--font-ratio-5)));
+		line-height: var(--line-height-narrow);
+		text-shadow: 0 0 0.05em var(--color-border-light);
+	}
+}
+
+/* 公開日、更新日 */
+.p-entry-header-date {
+	margin-inline: auto var(--_entry-padding-block);
+}
