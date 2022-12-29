@@ -1703,8 +1703,13 @@ export default class MessageParser {
 		/* <q> */
 		if (options.quote) {
 			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(
-				/{{(.+?)}}(\((.+?)\))?/g,
-				(_match, quote_htmlescaped: string, _metagroup_htmlescaped: string, metas_htmlescaped?: string) => {
+				/{{(?<quoteWithMetas>.+?)}}\((?<metas>[^(].*?)\)|{{(?<quoteOnly>.+?)}}/g,
+				(_match, quoteWithMeta_htmlescaped?: string, metas_htmlescaped?: string, quoteOnly_htmlescaped?: string) => {
+					const quote_htmlescaped = quoteWithMeta_htmlescaped ?? quoteOnly_htmlescaped;
+					if (quote_htmlescaped === undefined) {
+						return htmlFragment_htmlescaped;
+					}
+
 					const quote = StringEscapeHtml.unescape(quote_htmlescaped);
 
 					const qAttributeMap = new Map<string, string>();
