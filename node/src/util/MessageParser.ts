@@ -1428,7 +1428,7 @@ export default class MessageParser {
 		footnoteElement.setAttribute('class', 'p-footnotes');
 		this.#rootElement.appendChild(footnoteElement);
 
-		footnotes.forEach((footnote, index) => {
+		footnotes.forEach((footnote_htmlescape, index) => {
 			const no = index + 1;
 
 			const href = `${this.#entryId}-${no}`;
@@ -1448,7 +1448,7 @@ export default class MessageParser {
 			const textElement = this.#document.createElement('span');
 			textElement.className = 'p-footnotes__text';
 			textElement.id = `fn${href}`;
-			this.#inlineMarkup(textElement, footnote, { link: true, emphasis: true, code: true, quote: true });
+			textElement.insertAdjacentHTML('beforeend', footnote_htmlescape);
 			liElement.appendChild(textElement);
 		});
 	}
@@ -1536,20 +1536,6 @@ export default class MessageParser {
 		}
 
 		let htmlFragment_htmlescaped = StringEscapeHtml.escape(htmlFragment);
-
-		/* 注釈（HTML エスケープの関係で注釈は最初に処理する必要がある） */
-		if (options.footnote) {
-			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(/\(\((.+?)\)\)/g, (_match, footnote_htmlescaped: string) => {
-				const footnote = StringEscapeHtml.unescape(footnote_htmlescaped);
-
-				this.#footnotes.push(footnote); // 注釈文
-
-				const num = this.#footnotes.length;
-				const href = `${this.#entryId}-${num}`;
-
-				return StringEscapeHtml.template`<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
-			});
-		}
 
 		/* <a> */
 		if (options.link) {
@@ -1771,6 +1757,18 @@ export default class MessageParser {
 					return StringEscapeHtml.template`<q${qAttr}>${quote}</q>`;
 				}
 			);
+		}
+
+		/* 注釈（HTML エスケープの関係で注釈は最初に処理する必要がある） */
+		if (options.footnote) {
+			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(/\(\((.+?)\)\)/g, (_match, footnote_htmlescaped: string) => {
+				this.#footnotes.push(footnote_htmlescaped); // 注釈文
+
+				const num = this.#footnotes.length;
+				const href = `${this.#entryId}-${num}`;
+
+				return StringEscapeHtml.template`<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
+			});
 		}
 
 		parentElement.insertAdjacentHTML('beforeend', htmlFragment_htmlescaped);
