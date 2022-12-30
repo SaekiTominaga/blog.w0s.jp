@@ -424,7 +424,7 @@ describe('inline', () => {
 			await new MessageParser(config, {
 				entry_id: 99,
 				dbh: dbh,
-				anchorHostIcons: [
+				anchor_host_icons: [
 					{
 						host: 'icon.example.com',
 						name: 'Example',

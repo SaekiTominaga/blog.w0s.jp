@@ -23,7 +23,7 @@ import { NoName as Configure } from '../../configure/type/common.js';
 interface Option {
 	entry_id: number; // 記事 ID
 	dbh: sqlite.Database; // DB 接続情報
-	anchorHostIcons: {
+	anchor_host_icons: {
 		host: string;
 		name: string;
 		src: string;
@@ -148,8 +148,8 @@ export default class MessageParser {
 		/* インライン */
 		const inlineOptions: Map<string, unknown> = new Map();
 		inlineOptions.set('entry_id', this.#entryId);
-		if (options?.anchorHostIcons !== undefined) {
-			inlineOptions.set('anchor_host_icons', options.anchorHostIcons);
+		if (options?.anchor_host_icons !== undefined) {
+			inlineOptions.set('anchor_host_icons', options.anchor_host_icons);
 		}
 		if (options?.amazon_tracking_id !== undefined) {
 			inlineOptions.set('amazon_tracking_id', options.amazon_tracking_id);
