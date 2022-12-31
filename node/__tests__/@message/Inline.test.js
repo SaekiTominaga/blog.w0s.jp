@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import fs from 'fs';
-import Inline from '../dist/util/@message/Inline.js';
+import Inline from '../../dist/util/@message/Inline.js';
 
 const config = JSON.parse(await fs.promises.readFile('node/configure/common.json', 'utf8'));
 
@@ -49,6 +49,12 @@ describe('anchor', () => {
 	test('multiple', () => {
 		expect(inline.mark('<s>text1</s>[<s>link1</s>](https://example.com/)<s>text2</s>[<s>link2</s>](https://example.com/)')).toBe(
 			'&lt;s&gt;text1&lt;/s&gt;<a href="https://example.com/">&lt;s&gt;link1&lt;/s&gt;</a><b class="c-domain">(example.com)</b>&lt;s&gt;text2&lt;/s&gt;<a href="https://example.com/">&lt;s&gt;link2&lt;/s&gt;</a><b class="c-domain">(example.com)</b>'
+		);
+	});
+
+	test('URL &', () => {
+		expect(inline.mark('<s>text1</s>[<s>link1</s>](https://example.com/?foo=hoge&bar=piyo)<s>text2</s>')).toBe(
+			'&lt;s&gt;text1&lt;/s&gt;<a href="https://example.com/?foo=hoge&amp;bar=piyo">&lt;s&gt;link1&lt;/s&gt;</a><b class="c-domain">(example.com)</b>&lt;s&gt;text2&lt;/s&gt;'
 		);
 	});
 
@@ -193,33 +199,21 @@ describe('footnote', () => {
 describe('mix', () => {
 	const inline = new Inline(config, { entry_id: 1 });
 
-	test('code & anchor & emphasis & quote & footnote', () => {
-		expect(inline.mark('<s>text1</s>`<s>code1</s>`[<s>link1</s>](https://example.com/)**<s>em1</s>**{{<s>quote1</s>}}((<s>footnote1</s>))<s>text2</s>')).toBe(
-			'&lt;s&gt;text1&lt;/s&gt;<code>&lt;s&gt;code1&lt;/s&gt;</code><a href="https://example.com/">&lt;s&gt;link1&lt;/s&gt;</a><b class="c-domain">(example.com)</b><em>&lt;s&gt;em1&lt;/s&gt;</em><q>&lt;s&gt;quote1&lt;/s&gt;</q><span class="c-annotate"><a href="#fn1-1" id="nt1-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>&lt;s&gt;text2&lt;/s&gt;'
-		);
-	});
-
-	test('code > anchor', () => {
-		expect(inline.mark('<s>text1</s>`[<s>link1</s>](https://example.com/)`<s>text2</s>')).toBe(
-			'&lt;s&gt;text1&lt;/s&gt;<code>[&lt;s&gt;link1&lt;/s&gt;](https://example.com/)</code>&lt;s&gt;text2&lt;/s&gt;'
+	test('anchor & emphasis & code & quote & footnote', () => {
+		expect(inline.mark('<s>text1</s>[<s>link1</s>](https://example.com/)**<s>em1</s>**`<s>code1</s>`{{<s>quote1</s>}}((<s>footnote1</s>))<s>text2</s>')).toBe(
+			'&lt;s&gt;text1&lt;/s&gt;<a href="https://example.com/">&lt;s&gt;link1&lt;/s&gt;</a><b class="c-domain">(example.com)</b><em>&lt;s&gt;em1&lt;/s&gt;</em><code>&lt;s&gt;code1&lt;/s&gt;</code><q>&lt;s&gt;quote1&lt;/s&gt;</q><span class="c-annotate"><a href="#fn1-1" id="nt1-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>&lt;s&gt;text2&lt;/s&gt;'
 		);
 	});
 
 	test('anchor > code', () => {
 		expect(inline.mark('<s>text1</s>[`<s>link1</s>`](https://example.com/)<s>text2</s>')).toBe(
-			'&lt;s&gt;text1&lt;/s&gt;[<code>&lt;s&gt;link1&lt;/s&gt;</code>](https://example.com/)&lt;s&gt;text2&lt;/s&gt;'
+			'&lt;s&gt;text1&lt;/s&gt;<a href="https://example.com/"><code>&lt;s&gt;link1&lt;/s&gt;</code></a><b class="c-domain">(example.com)</b>&lt;s&gt;text2&lt;/s&gt;'
 		);
 	});
 
-	test('anchor > emphasis', () => {
-		expect(inline.mark('<s>text1</s>[**<s>link1</s>**](https://example.com/)<s>text2</s>')).toBe(
-			'&lt;s&gt;text1&lt;/s&gt;<a href="https://example.com/"><em>&lt;s&gt;link1&lt;/s&gt;</em></a><b class="c-domain">(example.com)</b>&lt;s&gt;text2&lt;/s&gt;'
-		);
-	});
-
-	test('emphasis > anchor', () => {
-		expect(inline.mark('<s>text1</s>**[<s>link1</s>](https://example.com/)**<s>text2</s>')).toBe(
-			'&lt;s&gt;text1&lt;/s&gt;<em><a href="https://example.com/">&lt;s&gt;link1&lt;/s&gt;</a><b class="c-domain">(example.com)</b></em>&lt;s&gt;text2&lt;/s&gt;'
+	test('code > anchor', () => {
+		expect(inline.mark('<s>text1</s>`[<s>link1</s>](https://example.com/)`<s>text2</s>')).toBe(
+			'&lt;s&gt;text1&lt;/s&gt;<code><a href="https://example.com/">&lt;s&gt;link1&lt;/s&gt;</a><b class="c-domain">(example.com)</b></code>&lt;s&gt;text2&lt;/s&gt;'
 		);
 	});
 });
