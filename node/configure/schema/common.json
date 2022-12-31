@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "request", "response", "static", "views", "temp", "errorpage", "logger", "sqlite", "sidebar", "prettier"],
+	"required": ["port", "request", "response", "static", "views", "temp", "errorpage", "logger", "regexp", "sqlite", "sidebar", "prettier"],
 	"properties": {
 		"port": {
 			"type": "integer",
@@ -320,6 +320,14 @@
 				}
 			},
 			"additionalProperties": false
+		},
+		"regexp": {
+			"type": "object",
+			"title": "正規表現",
+			"additionalProperties": {
+				"type": "string",
+				"title": "正規表現の値"
+			}
 		},
 		"sqlite": {
 			"type": "object",

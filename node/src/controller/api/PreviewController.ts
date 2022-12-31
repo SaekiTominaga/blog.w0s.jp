@@ -41,7 +41,7 @@ export default class PreviewController extends Controller implements ControllerI
 		}
 
 		const messageParser = new MessageParser(this.#configCommon, {
-			anchorHostIcons: this.#configureMessage.anchor_host_icon,
+			anchor_host_icons: this.#configureMessage.anchor_host_icon,
 		});
 
 		const responseJson: BlogApi.Preview = {

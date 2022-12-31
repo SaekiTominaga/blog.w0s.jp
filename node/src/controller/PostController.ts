@@ -297,7 +297,7 @@ export default class PostController extends Controller implements ControllerInte
 					message: await new MessageParser(this.#configCommon, {
 						entry_id: entry.id,
 						dbh: dbh,
-						anchorHostIcons: this.#configureMessage.anchor_host_icon,
+						anchor_host_icons: this.#configureMessage.anchor_host_icon,
 						amazon_tracking_id: this.#configPaapi.partner_tag,
 					}).toXml(entry.message),
 					updated_at: dayjs(entry.updated_at ?? entry.created_at),

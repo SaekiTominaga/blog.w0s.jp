@@ -80,7 +80,7 @@ export default class EntryController extends Controller implements ControllerInt
 		const messageParser = new MessageParser(this.#configCommon, {
 			entry_id: requestQuery.entry_id,
 			dbh: await dao.getDbh(),
-			anchorHostIcons: this.#configureMessage.anchor_host_icon,
+			anchor_host_icons: this.#configureMessage.anchor_host_icon,
 			amazon_tracking_id: this.#configPaapi.partner_tag,
 		});
 

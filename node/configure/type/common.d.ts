@@ -48,8 +48,9 @@ export type FilepathFor403Forbidden = string;
 export type FilepathFor404NotFound = string;
 export type FilepathFor500InternalServerError = string;
 export type NoName29 = string;
+export type NoName31 = string;
 export type Blog = string;
-export type NoName32 = number;
+export type NoName34 = number;
 
 export interface NoName {
   port: HTTP;
@@ -60,8 +61,9 @@ export interface NoName {
   temp: NoName27;
   errorpage: NoName28;
   logger: Logger;
+  regexp: NoName30;
   sqlite: SQLite;
-  sidebar: NoName30;
+  sidebar: NoName32;
   prettier: Prettier;
 }
 export interface NoName1 {
@@ -138,17 +140,20 @@ export interface NoName28 {
 export interface Logger {
   path: NoName29;
 }
+export interface NoName30 {
+  [k: string]: NoName31;
+}
 export interface SQLite {
   db: DBNode;
 }
 export interface DBNode {
   blog: Blog;
 }
-export interface NoName30 {
-  newly: NoName31;
+export interface NoName32 {
+  newly: NoName33;
 }
-export interface NoName31 {
-  maximum_number: NoName32;
+export interface NoName33 {
+  maximum_number: NoName34;
 }
 /**
  * https://prettier.io/docs/en/options.html

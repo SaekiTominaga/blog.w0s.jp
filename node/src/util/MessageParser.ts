@@ -13,41 +13,28 @@ import md5 from 'md5';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import path from 'path';
 import serialize from 'w3c-xmlserializer';
-import StringEscapeHtml from '@saekitominaga/string-escape-html';
 import { JSDOM } from 'jsdom';
 import { LanguageFn } from 'highlight.js';
 import BlogMessageDao from '../dao/BlogMessageDao.js';
+import Inline from './@message/Inline.js';
+import Util from './@message/Util.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 
-interface AnchorHostIcon {
-	host: string;
-	name: string;
-	src: string;
-}
-
 interface Option {
-	entry_id?: number; // 記事 ID
-	dbh?: sqlite.Database; // DB 接続情報
-	anchorHostIcons?: AnchorHostIcon[]; // リンクのサイトアイコン
-	amazon_tracking_id?: string; // Amazon トラッキング ID
-}
-
-interface InlineMarkupOption {
-	link?: boolean; // <a>
-	emphasis?: boolean; // <em>
-	code?: boolean; // <code>
-	quote?: boolean; // <q>
-	footnote?: boolean; // 注釈
+	entry_id: number; // 記事 ID
+	dbh: sqlite.Database; // DB 接続情報
+	anchor_host_icons: {
+		host: string;
+		name: string;
+		src: string;
+	}[]; // リンクのサイトアイコン
+	amazon_tracking_id: string; // Amazon トラッキング ID
 }
 
 /**
  * 記事メッセージのパーサー
  */
 export default class MessageParser {
-	readonly #REGEXP_ABSOLUTE_URL = "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+";
-	readonly #REGEXP_ISBN = '(978|979)-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]|[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]';
-	readonly #REGEXP_LANG = '[a-z]{2}';
-
 	/* Logger */
 	readonly #logger: Log4js.Logger;
 
@@ -56,12 +43,6 @@ export default class MessageParser {
 
 	/* 記事 ID */
 	readonly #entryId: number = 0;
-
-	/* リンクのサイトアイコン */
-	readonly #anchorHostIcons?: AnchorHostIcon[];
-
-	/* Amazon トラッキング ID */
-	readonly #amazonTrackingId?: string;
 
 	/* Slugger */
 	readonly #slugger: GithubSlugger;
@@ -78,6 +59,9 @@ export default class MessageParser {
 	/* （記事メッセージ内の）ルート要素 */
 	readonly #rootElement: HTMLElement;
 	readonly #ROOT_ELEMENT_NAME = 'x-x'; // ルート要素名（仮で設定するものなのでなんでも良い）
+
+	/* インライン */
+	readonly #inline: Inline;
 
 	/* section */
 	readonly #SECTION_ID_PREFIX = 'section-';
@@ -131,16 +115,13 @@ export default class MessageParser {
 	#imageNum = 1; /* 画像の番号 */
 	#videoNum = 1; /* 動画の番号 */
 
-	/* 注釈 */
-	readonly #footnotes: string[] = [];
-
 	/**
 	 * コンストラクタ
 	 *
 	 * @param {Configure} config - 共通設定ファイル
 	 * @param {object} options - パースで必要な様々な情報
 	 */
-	constructor(config: Configure, options?: Option) {
+	constructor(config: Configure, options?: Partial<Option>) {
 		/* Logger */
 		this.#logger = Log4js.getLogger(options?.entry_id !== undefined ? `${this.constructor.name} (ID: ${options.entry_id})` : this.constructor.name);
 
@@ -150,16 +131,6 @@ export default class MessageParser {
 		/* 記事 ID */
 		if (options?.entry_id !== undefined) {
 			this.#entryId = options.entry_id;
-		}
-
-		/* リンクのサイトアイコン */
-		if (options?.anchorHostIcons !== undefined) {
-			this.#anchorHostIcons = options?.anchorHostIcons;
-		}
-
-		/* Amazon トラッキング ID */
-		if (options?.amazon_tracking_id !== undefined) {
-			this.#amazonTrackingId = options?.amazon_tracking_id;
 		}
 
 		/* Slugger */
@@ -173,6 +144,18 @@ export default class MessageParser {
 
 		/* ルート要素 */
 		this.#rootElement = this.#document.createElement(this.#ROOT_ELEMENT_NAME);
+
+		/* インライン */
+		const inlineOptions: Map<string, unknown> = new Map();
+		inlineOptions.set('entry_id', this.#entryId);
+		if (options?.anchor_host_icons !== undefined) {
+			inlineOptions.set('anchor_host_icons', options.anchor_host_icons);
+		}
+		if (options?.amazon_tracking_id !== undefined) {
+			inlineOptions.set('amazon_tracking_id', options.amazon_tracking_id);
+		}
+		inlineOptions.set('section_id_prefix', this.#SECTION_ID_PREFIX);
+		this.#inline = new Inline(this.#config, Object.fromEntries(inlineOptions));
 	}
 
 	/**
@@ -183,7 +166,7 @@ export default class MessageParser {
 	 * @returns {string} HTML
 	 */
 	async toHtml(message: string): Promise<string> {
-		await this.#convert(message);
+		await this.#mark(message);
 
 		return this.#rootElement.innerHTML;
 	}
@@ -196,7 +179,7 @@ export default class MessageParser {
 	 * @returns {string} XML
 	 */
 	async toXml(message: string): Promise<string> {
-		await this.#convert(message);
+		await this.#mark(message);
 
 		const xml = serialize(this.#rootElement);
 		return xml.substring(39 + this.#ROOT_ELEMENT_NAME.length, xml.length - 3 - this.#ROOT_ELEMENT_NAME.length); // 外枠の <x xmlns="http://www.w3.org/1999/xhtml"></x> を削除
@@ -216,7 +199,7 @@ export default class MessageParser {
 	 *
 	 * @param {string} message - 本文
 	 */
-	async #convert(message: string): Promise<void> {
+	async #mark(message: string): Promise<void> {
 		const CRLF = '\r\n';
 		const LF = '\n';
 
@@ -408,18 +391,18 @@ export default class MessageParser {
 						/* ブロックレベル引用の直後行かつ先頭が ? な場合は引用の出典 */
 						const metaText = line.substring(1); // 先頭記号を削除
 
-						if (new RegExp(`^${this.#REGEXP_ABSOLUTE_URL}$`).test(metaText)) {
+						if (new RegExp(`^${this.#config.regexp['absolute_url']}$`).test(metaText)) {
 							/* URL */
 							this.#quoteElement.setAttribute('cite', metaText);
 							this.#quoteUrl = new URL(metaText);
-						} else if (new RegExp(`^${this.#REGEXP_ISBN}$`).test(metaText)) {
+						} else if (new RegExp(`^${this.#config.regexp['isbn']}$`).test(metaText)) {
 							/* ISBN */
 							if (new IsbnVerify(metaText, { strict: true }).isValid()) {
 								this.#quoteElement.setAttribute('cite', `urn:ISBN:${metaText}`);
 							} else {
 								this.#logger.warn(`ISBN のチェックデジット不正: ${metaText}`);
 							}
-						} else if (new RegExp(`^${this.#REGEXP_LANG}$`).test(metaText)) {
+						} else if (new RegExp(`^${this.#config.regexp['lang']}$`).test(metaText)) {
 							/* 言語 */
 							this.#quoteElement.setAttribute('lang', metaText);
 							this.#quoteLanguage = metaText;
@@ -641,7 +624,7 @@ export default class MessageParser {
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h2');
-		this.#inlineMarkup(headingElement, headingText, { code: true });
+		headingElement.insertAdjacentHTML('beforeend', this.#inline.mark(headingText, { code: true }));
 		headingWrapElement.appendChild(headingElement);
 
 		const selfLinkWrapElement = this.#document.createElement('p');
@@ -676,7 +659,7 @@ export default class MessageParser {
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h3');
-		this.#inlineMarkup(headingElement, headingText, { code: true });
+		headingElement.insertAdjacentHTML('beforeend', this.#inline.mark(headingText, { code: true }));
 		headingWrapElement.appendChild(headingElement);
 
 		const selfLinkWrapElement = this.#document.createElement('p');
@@ -717,7 +700,7 @@ export default class MessageParser {
 
 				const aElement = this.#document.createElement('a');
 				aElement.href = `#${encodeURIComponent(id)}`;
-				this.#inlineMarkup(aElement, headingText, { code: true });
+				aElement.insertAdjacentHTML('beforeend', this.#inline.mark(headingText, { code: true }));
 				liElement.appendChild(aElement);
 			}
 		}
@@ -730,7 +713,7 @@ export default class MessageParser {
 	 */
 	#appendParagraph(paragraphText: string): void {
 		const pElement = this.#document.createElement('p');
-		this.#inlineMarkup(pElement, paragraphText); // インライン要素を設定
+		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(paragraphText)); // インライン要素を設定
 		this.#appendChild(pElement);
 	}
 
@@ -749,7 +732,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		this.#inlineMarkup(liElement, listText); // インライン要素を設定
+		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText)); // インライン要素を設定
 		this.#ulElement.appendChild(liElement);
 	}
 
@@ -768,7 +751,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		this.#inlineMarkup(liElement, listText, { link: true }); // リンクを設定
+		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText, { anchor: true })); // リンクを設定
 		this.#linksElement.appendChild(liElement);
 	}
 
@@ -787,7 +770,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		this.#inlineMarkup(liElement, listText); // インライン要素を設定
+		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText)); // インライン要素を設定
 		this.#olElement.appendChild(liElement);
 	}
 
@@ -812,7 +795,7 @@ export default class MessageParser {
 
 		for (const ddText of ddTextList) {
 			const ddElement = this.#document.createElement('dd');
-			this.#inlineMarkup(ddElement, ddText); // インライン要素を設定
+			ddElement.insertAdjacentHTML('beforeend', this.#inline.mark(ddText)); // インライン要素を設定
 			this.#dlElement.appendChild(ddElement);
 		}
 	}
@@ -832,7 +815,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		this.#inlineMarkup(liElement, noteText); // インライン要素を設定
+		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(noteText)); // インライン要素を設定
 		this.#notesElement.appendChild(liElement);
 	}
 
@@ -855,7 +838,7 @@ export default class MessageParser {
 		const insElement = this.#document.createElement('ins');
 		insElement.setAttribute('datetime', insertDate.format('YYYY-MM-DD'));
 		insElement.className = 'p-insert__text';
-		this.#inlineMarkup(insElement, insertText); // インライン要素を設定
+		insElement.insertAdjacentHTML('beforeend', this.#inline.mark(insertText)); // インライン要素を設定
 		wrapElement.appendChild(insElement);
 	}
 
@@ -918,7 +901,7 @@ export default class MessageParser {
 		if (this.#quoteUrl === undefined) {
 			captionTitleElement.textContent = this.#quoteTitle;
 		} else {
-			captionTitleElement.insertAdjacentHTML('beforeend', this.#anchor(this.#quoteTitle, this.#quoteUrl.toString(), { hreflang: this.#quoteLanguage }));
+			captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.anchor(this.#quoteTitle, this.#quoteUrl.toString(), { hreflang: this.#quoteLanguage }));
 		}
 	}
 
@@ -1034,11 +1017,11 @@ export default class MessageParser {
 					if (index === 0 && data.substring(0, 1) === '~') {
 						const cellElement = this.#document.createElement('th');
 						cellElement.setAttribute('scope', 'row');
-						this.#inlineMarkup(cellElement, data.substring(1).trim()); // インライン要素を設定
+						cellElement.insertAdjacentHTML('beforeend', this.#inline.mark(data.substring(1).trim())); // インライン要素を設定
 						rowElement.appendChild(cellElement);
 					} else {
 						const cellElement = this.#document.createElement('td');
-						this.#inlineMarkup(cellElement, data.trim()); // インライン要素を設定
+						cellElement.insertAdjacentHTML('beforeend', this.#inline.mark(data.trim())); // インライン要素を設定
 						rowElement.appendChild(cellElement);
 					}
 				});
@@ -1065,7 +1048,7 @@ export default class MessageParser {
 		}
 
 		const pElement = this.#document.createElement('p');
-		this.#inlineMarkup(pElement, boxText); // インライン要素を設定
+		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(boxText)); // インライン要素を設定
 		this.#boxElement.appendChild(pElement);
 	}
 
@@ -1150,7 +1133,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				this.#inlineMarkup(captionTitleElement, caption, { code: true });
+				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { code: true })); // インライン要素を設定
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#imageNum += 1;
@@ -1175,7 +1158,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				this.#inlineMarkup(captionTitleElement, caption, { code: true });
+				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { code: true })); // インライン要素を設定
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#videoNum += 1;
@@ -1419,7 +1402,7 @@ export default class MessageParser {
 	 * 脚注を挿入する
 	 */
 	#appendFootnote(): void {
-		const footnotes = this.#footnotes;
+		const { footnotes } = this.#inline;
 		if (footnotes.length === 0) {
 			return;
 		}
@@ -1428,10 +1411,10 @@ export default class MessageParser {
 		footnoteElement.setAttribute('class', 'p-footnotes');
 		this.#rootElement.appendChild(footnoteElement);
 
-		footnotes.forEach((footnote_htmlescape, index) => {
+		footnotes.forEach((footnote, index) => {
 			const no = index + 1;
 
-			const href = `${this.#entryId}-${no}`;
+			const href = Util.getFootnoteId(this.#entryId, no);
 
 			const liElement = this.#document.createElement('li');
 			footnoteElement.appendChild(liElement);
@@ -1448,7 +1431,7 @@ export default class MessageParser {
 			const textElement = this.#document.createElement('span');
 			textElement.className = 'p-footnotes__text';
 			textElement.id = `fn${href}`;
-			textElement.insertAdjacentHTML('beforeend', footnote_htmlescape);
+			textElement.insertAdjacentHTML('beforeend', footnote);
 			liElement.appendChild(textElement);
 		});
 	}
@@ -1516,320 +1499,5 @@ export default class MessageParser {
 		}
 
 		return registLanguageName;
-	}
-
-	/**
-	 * インライン要素を設定
-	 *
-	 * @param {object} parentElement - 親要素
-	 * @param {string} htmlFragment - 変換前の文字列
-	 * @param {object} options - 変換を行う対象
-	 */
-	#inlineMarkup(
-		parentElement: HTMLElement,
-		htmlFragment: string,
-		options: Readonly<InlineMarkupOption> = { link: true, emphasis: true, code: true, quote: true, footnote: true }
-	): void {
-		if (htmlFragment === '') {
-			parentElement.textContent = '';
-			return;
-		}
-
-		let htmlFragment_htmlescaped = StringEscapeHtml.escape(htmlFragment);
-
-		/* <a> */
-		if (options.link) {
-			/**
-			 * Markdown 形式でリンク文字列をパースする
-			 *
-			 * [リンク名](URL) → <a href="URL">リンク名</a>
-			 *
-			 * @returns {string} 変換後の文字列
-			 */
-			htmlFragment_htmlescaped = ((): string => {
-				let openingTextDelimiterIndex = htmlFragment_htmlescaped.indexOf('[');
-				if (openingTextDelimiterIndex === -1) {
-					/* 文中にリンク構文が存在しない場合は何もしない */
-					return htmlFragment_htmlescaped;
-				}
-
-				let parseTargetText_htmlescaped = htmlFragment_htmlescaped; // パース対象の文字列
-				const parsedTextList_htmlescaped: string[] = []; // パース後の文字列を格納する配列
-				let afterLinkText_htmlescaped = '';
-
-				while (openingTextDelimiterIndex !== -1) {
-					let beforeOpeningTextDelimiterText_htmlescaped = parseTargetText_htmlescaped.substring(0, openingTextDelimiterIndex);
-					const afterOpeningTextDelimiterText_htmlescaped = parseTargetText_htmlescaped.substring(openingTextDelimiterIndex + 1);
-
-					const matchGroups = afterOpeningTextDelimiterText_htmlescaped.match(/\]\((?<url>.+?)\)(?<afterLink>.*)/)?.groups;
-
-					/* [ が出現したが、 [TEXT](URL) の構文になっていない場合 */
-					if (matchGroups === undefined) {
-						if (parsedTextList_htmlescaped.length === 0) {
-							return htmlFragment_htmlescaped;
-						}
-						break;
-					}
-
-					const { url: url_htmlescaped, afterLink: afterLink_htmlescaped } = matchGroups;
-					if (url_htmlescaped === undefined || afterLink_htmlescaped === undefined) {
-						return htmlFragment_htmlescaped;
-					}
-
-					afterLinkText_htmlescaped = afterLink_htmlescaped; // リンク後の文字列
-
-					let linkText = StringEscapeHtml.unescape(
-						afterOpeningTextDelimiterText_htmlescaped.substring(0, afterOpeningTextDelimiterText_htmlescaped.indexOf(`](${url_htmlescaped}`))
-					); // リンク文字列
-
-					/* リンク文字列の中に [ や ] 記号が含まれていたときの処理 */
-					let scanText = linkText;
-					let tempLinkText = '';
-					let linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
-					while (linkTextOpeningTextDelimiterIndex !== -1) {
-						const linkTextClosingTextDelimiterIndex = scanText.indexOf(']', linkTextOpeningTextDelimiterIndex);
-						if (linkTextClosingTextDelimiterIndex !== -1) {
-							tempLinkText = scanText.substring(linkTextOpeningTextDelimiterIndex) + tempLinkText;
-							scanText = scanText.substring(0, linkTextOpeningTextDelimiterIndex);
-						} else {
-							beforeOpeningTextDelimiterText_htmlescaped += `[${scanText.substring(0, linkTextOpeningTextDelimiterIndex)}`;
-							scanText = scanText.substring(linkTextOpeningTextDelimiterIndex + 1);
-						}
-
-						linkTextOpeningTextDelimiterIndex = scanText.indexOf('[');
-					}
-					linkText = `${scanText}${tempLinkText}`;
-
-					/* HTML 文字列に変換 */
-					let anchor_htmlescaped = '';
-					try {
-						anchor_htmlescaped = ((url: string): string => {
-							/* 絶対 URL */
-							const absoluteUrlMatchGroups = url.match(new RegExp(`^(?<absoluteUrl>${this.#REGEXP_ABSOLUTE_URL})$`))?.groups;
-							if (absoluteUrlMatchGroups !== undefined) {
-								const { absoluteUrl } = absoluteUrlMatchGroups;
-
-								if (absoluteUrl !== undefined) {
-									return this.#anchor(linkText, absoluteUrl);
-								}
-							}
-
-							/* 別記事へのリンク */
-							const entryMatchGroups = url.match(/^(?<id>[1-9][0-9]*)$/)?.groups;
-							if (entryMatchGroups !== undefined) {
-								const { id } = entryMatchGroups;
-
-								if (id !== undefined) {
-									return StringEscapeHtml.template`<a href="/${id}">${linkText}</a>`;
-								}
-							}
-
-							/* Amazon 商品ページへのリンク */
-							const amazonMatchGroups = url.match(/^amazon:(?<asin>[0-9A-Z]{10})$/)?.groups;
-							if (amazonMatchGroups !== undefined) {
-								const { asin } = amazonMatchGroups;
-
-								if (asin !== undefined) {
-									const href =
-										this.#amazonTrackingId === undefined
-											? `https://www.amazon.co.jp/dp/${asin}/`
-											: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${this.#amazonTrackingId}`; // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
-
-									return StringEscapeHtml.template`<a href="${href}">${linkText}</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon"/>`;
-								}
-							}
-
-							/* ページ内リンク */
-							const pageLinkMatchGroups = url.match(new RegExp(`^#(?<id>${this.#SECTION_ID_PREFIX}.+)`))?.groups;
-							if (pageLinkMatchGroups !== undefined) {
-								const { id } = pageLinkMatchGroups;
-
-								if (id !== undefined) {
-									return StringEscapeHtml.template`<a href="#${id}">${linkText}</a>`;
-								}
-							}
-
-							throw new Error(`不正なリンクURL: ${url}`);
-						})(StringEscapeHtml.unescape(url_htmlescaped));
-					} catch (e) {
-						if (e instanceof Error) {
-							this.#logger.warn(e.message);
-							return htmlFragment_htmlescaped;
-						}
-
-						throw e;
-					}
-
-					/* 後処理 */
-					parsedTextList_htmlescaped.push(`${beforeOpeningTextDelimiterText_htmlescaped}${anchor_htmlescaped}`);
-					parseTargetText_htmlescaped = afterLinkText_htmlescaped;
-
-					openingTextDelimiterIndex = parseTargetText_htmlescaped.indexOf('[');
-				}
-
-				return `${parsedTextList_htmlescaped.join('')}${afterLinkText_htmlescaped}`;
-			})();
-		}
-
-		/* <em> */
-		if (options.emphasis) {
-			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(
-				/(.?)\*\*(.+?)\*\*/g,
-				(_match, beforeEmphasis_htmlescaped: string, emphasis_htmlescaped: string) => {
-					const beforeEmphasis = StringEscapeHtml.unescape(beforeEmphasis_htmlescaped);
-					const emphasis = StringEscapeHtml.unescape(emphasis_htmlescaped);
-
-					if (beforeEmphasis === '\\' && emphasis.substring(emphasis.length - 1) === '\\') {
-						return `**${emphasis_htmlescaped.substring(0, emphasis_htmlescaped.length - 1)}**`;
-					}
-					return `${beforeEmphasis_htmlescaped}<em>${emphasis_htmlescaped}</em>`;
-				}
-			);
-		}
-
-		/* <code> */
-		if (options.code) {
-			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(/(.?)`(.+?)`/g, (_match, beforeCode_htmlescaped: string, code_htmlescaped: string) => {
-				const beforeCode = StringEscapeHtml.unescape(beforeCode_htmlescaped);
-				const code = StringEscapeHtml.unescape(code_htmlescaped);
-
-				if (beforeCode === '\\' && code.substring(code.length - 1) === '\\') {
-					return `\`${code_htmlescaped.substring(0, code_htmlescaped.length - 1)}\``;
-				}
-				return `${beforeCode_htmlescaped}<code>${code_htmlescaped}</code>`;
-			});
-		}
-
-		/* <q> */
-		if (options.quote) {
-			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(
-				/{{(?<quoteWithMetas>.+?)}}\((?<metas>[^(].*?)\)|{{(?<quoteOnly>.+?)}}/g,
-				(_match, quoteWithMeta_htmlescaped?: string, metas_htmlescaped?: string, quoteOnly_htmlescaped?: string) => {
-					const quote_htmlescaped = quoteWithMeta_htmlescaped ?? quoteOnly_htmlescaped;
-					if (quote_htmlescaped === undefined) {
-						return htmlFragment_htmlescaped;
-					}
-
-					const quote = StringEscapeHtml.unescape(quote_htmlescaped);
-
-					const qAttributeMap = new Map<string, string>();
-
-					if (metas_htmlescaped !== undefined) {
-						const metas = StringEscapeHtml.unescape(metas_htmlescaped);
-
-						let url: string | undefined;
-						let isbn: string | undefined;
-
-						for (const metaWord of metas.split(' ')) {
-							if (new RegExp(`^${this.#REGEXP_ABSOLUTE_URL}$`).test(metaWord)) {
-								url = metaWord;
-							} else if (new RegExp(`^${this.#REGEXP_ISBN}$`).test(metaWord)) {
-								isbn = metaWord;
-							} else if (new RegExp(`^${this.#REGEXP_LANG}$`).test(metaWord)) {
-								qAttributeMap.set('lang', metaWord);
-							}
-						}
-
-						if (url !== undefined) {
-							if (isbn !== undefined) {
-								this.#logger.warn(`インライン引用に URL<${url}> と ISBN<${isbn}> が両方指定`);
-							}
-
-							qAttributeMap.set('cite', url);
-
-							let qAttr = '';
-							for (const [name, value] of qAttributeMap) {
-								qAttr += ` ${name}=${value}`;
-							}
-
-							return this.#anchor(quote, url)
-								.replace(/^<a (?<attr>.+?)>/, `<a $<attr>><q${qAttr}>`)
-								.replace('</a>', '</q></a>');
-						} else if (isbn !== undefined) {
-							if (new IsbnVerify(isbn, { strict: true }).isValid()) {
-								qAttributeMap.set('cite', `urn:ISBN:${isbn}`);
-							} else {
-								this.#logger.warn(`ISBN<${isbn}> のチェックデジット不正`);
-							}
-						}
-					}
-
-					let qAttr = '';
-					for (const [name, value] of qAttributeMap) {
-						qAttr += ` ${name}=${value}`;
-					}
-
-					return StringEscapeHtml.template`<q${qAttr}>${quote}</q>`;
-				}
-			);
-		}
-
-		/* 注釈（HTML エスケープの関係で注釈は最初に処理する必要がある） */
-		if (options.footnote) {
-			htmlFragment_htmlescaped = htmlFragment_htmlescaped.replace(/\(\((.+?)\)\)/g, (_match, footnote_htmlescaped: string) => {
-				this.#footnotes.push(footnote_htmlescaped); // 注釈文
-
-				const num = this.#footnotes.length;
-				const href = `${this.#entryId}-${num}`;
-
-				return StringEscapeHtml.template`<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${num}]</a></span>`;
-			});
-		}
-
-		parentElement.insertAdjacentHTML('beforeend', htmlFragment_htmlescaped);
-	}
-
-	/**
-	 * <a> 要素によるリンク HTML を組み立てる
-	 *
-	 * @param {string} linkText - リンク文字列
-	 * @param {string} urlText - リンク URL
-	 * @param {object} attributes - href 属性以外に設定する属性情報
-	 *
-	 * @returns {string} <a> 要素の HTML 文字列
-	 */
-	#anchor(linkText: string, urlText: string, attributes?: Readonly<{ [k: string]: string | undefined }>): string {
-		const attributeMap = new Map<string, string>([['href', urlText]]);
-		if (attributes !== undefined) {
-			for (const [name, value] of Object.entries(attributes)) {
-				if (name !== 'href' && value !== undefined) {
-					attributeMap.set(name, value);
-				}
-			}
-		}
-
-		const url = new URL(urlText);
-
-		let attrs = '';
-		let typeIcon_htmlescaped = '';
-		let hostIcon_htmlescaped = '';
-
-		/* PDFアイコン */
-		if (url.pathname.endsWith('.pdf')) {
-			attributeMap.set('type', 'application/pdf');
-			typeIcon_htmlescaped = '<img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"/>';
-		}
-
-		/* URL 表記でない場合はドメイン情報を記載 */
-		if (!linkText.startsWith('https://') && !linkText.startsWith('http://')) {
-			const host = url.hostname;
-
-			/* サイトアイコン */
-			const hostIcon = this.#anchorHostIcons?.find((icon) => icon.host === host);
-			if (hostIcon !== undefined) {
-				hostIcon_htmlescaped = StringEscapeHtml.template`<img src="${hostIcon.src}" alt="(${hostIcon.name})" width="16" height="16" class="c-link-icon"/>`;
-			}
-
-			/* サイトアイコンがない場合はホスト名をテキストで表記 */
-			if (hostIcon_htmlescaped === '') {
-				hostIcon_htmlescaped = StringEscapeHtml.template`<b class="c-domain">(${host})</b>`;
-			}
-		}
-
-		for (const [name, value] of attributeMap) {
-			attrs += ` ${name}=${value}`;
-		}
-
-		return StringEscapeHtml.template`<a${attrs}>${linkText}</a>` + typeIcon_htmlescaped + hostIcon_htmlescaped;
 	}
 }
