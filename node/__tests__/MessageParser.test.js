@@ -136,7 +136,7 @@ text2
 ?https://example.com/foo.pdf
 `)
 		).toBe(
-			'<figure><blockquote class="p-quote" lang="en" cite="https://example.com/foo.pdf"><p>text1</p><p>text2</p></blockquote><figcaption class="c-caption -meta"><span class="c-caption__title"><a href="https://example.com/foo.pdf" hreflang="en" type="application/pdf">cite</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"><b class="c-domain">(example.com)</b></span></figcaption></figure>'
+			'<figure><blockquote class="p-quote" lang="en" cite="https://example.com/foo.pdf"><p>text1</p><p>text2</p></blockquote><figcaption class="c-caption -meta"><span class="c-caption__title"><a href="https://example.com/foo.pdf" type="application/pdf">cite</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"><b class="c-domain">(example.com)</b></span></figcaption></figure>'
 		);
 	});
 
