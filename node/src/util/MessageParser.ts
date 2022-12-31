@@ -90,7 +90,6 @@ export default class MessageParser {
 	#quoteCite = false;
 	#quoteTitle: string | undefined; // 引用元タイトル
 	#quoteUrl: URL | undefined; // 引用元 URL
-	#quoteLanguage: string | undefined; // 引用文の言語
 
 	/* コード */
 	#code = false;
@@ -227,7 +226,6 @@ export default class MessageParser {
 
 				this.#quoteTitle = undefined;
 				this.#quoteUrl = undefined;
-				this.#quoteLanguage = undefined;
 			}
 
 			if (!this.#thead && !this.#tbody) {
@@ -405,7 +403,6 @@ export default class MessageParser {
 						} else if (new RegExp(`^${this.#config.regexp['lang']}$`).test(metaText)) {
 							/* 言語 */
 							this.#quoteElement.setAttribute('lang', metaText);
-							this.#quoteLanguage = metaText;
 						} else {
 							this.#quoteTitle = metaText;
 						}
@@ -901,7 +898,7 @@ export default class MessageParser {
 		if (this.#quoteUrl === undefined) {
 			captionTitleElement.textContent = this.#quoteTitle;
 		} else {
-			captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.anchor(this.#quoteTitle, this.#quoteUrl.toString(), { hreflang: this.#quoteLanguage }));
+			captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.anchor(this.#quoteTitle, this.#quoteUrl.toString()));
 		}
 	}
 
