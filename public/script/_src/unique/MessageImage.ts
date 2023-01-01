@@ -51,29 +51,48 @@ export default class MessageImage {
 		const asins: Set<string> = new Set(); // ASIN
 
 		/* 本文内のテキストから画像パスと ASIN を抜き出す */
-		this.#ctrlElement.value.split('\n').forEach((value: string): void => {
-			const imageRegResult = /^!([^:]+?) (.+)/.exec(value);
-			if (imageRegResult !== null) {
-				imageNames.add(<string>imageRegResult[1]);
-			}
+		this.#ctrlElement.value.split('\n').forEach((line: string): void => {
+			const firstCharactor = line.substring(0, 1); // 先頭文字
+			switch (firstCharactor) {
+				case '!': {
+					if (line.startsWith('!youtube:')) {
+						const youtubeMatchGroups = line.match(/^!youtube:(?<id>[-_a-zA-Z0-9]+) [^<>]+( <.+>)?$/)?.groups;
+						if (youtubeMatchGroups !== undefined) {
+							if (youtubeMatchGroups['id'] !== undefined) {
+								youtubeIds.add(youtubeMatchGroups['id']);
+							}
+						}
+					} else {
+						const imageMatchGroups = line.match(/^!(?<filename>[^ ]+)/)?.groups;
+						if (imageMatchGroups !== undefined) {
+							if (imageMatchGroups['filename'] !== undefined) {
+								imageNames.add(imageMatchGroups['filename']);
+							}
+						}
+					}
 
-			const youtubeRegResult = /^!youtube:(.+?) ([0-9]+)x([0-9]+) (.+)/.exec(value);
-			if (youtubeRegResult !== null) {
-				youtubeIds.add(<string>youtubeRegResult[1]);
-			}
+					break;
+				}
+				case '$': {
+					if (line.startsWith('$tweet: ')) {
+						const twitterMatchGroups = line.match(/^\$tweet: (?<ids>[0-9][ 0-9]*)$/)?.groups;
+						if (twitterMatchGroups !== undefined) {
+							twitterMatchGroups['ids']?.split(' ').forEach((tweetId) => {
+								tweetIds.add(tweetId);
+							});
+						}
+					} else if (line.startsWith('$amazon: ')) {
+						const asinMatchGroups = line.match(/^\$amazon: (?<asins>[0-9A-Z][ 0-9A-Z]*)$/)?.groups;
+						if (asinMatchGroups !== undefined) {
+							asinMatchGroups['asins']?.split(' ').forEach((asin) => {
+								asins.add(asin);
+							});
+						}
+					}
 
-			const twitterRegResult = /^\$tweet: ([ 0-9]+)/.exec(value);
-			if (twitterRegResult !== null) {
-				(<string>twitterRegResult[1]).split(' ').forEach((tweetId) => {
-					tweetIds.add(tweetId);
-				});
-			}
-
-			const asinRegResult = /^\$amazon: ([ 0-9A-Z]+)/.exec(value);
-			if (asinRegResult !== null) {
-				(<string>asinRegResult[1]).split(' ').forEach((asin) => {
-					asins.add(asin);
-				});
+					break;
+				}
+				default:
 			}
 		});
 
