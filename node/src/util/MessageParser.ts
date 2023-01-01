@@ -1181,12 +1181,6 @@ export default class MessageParser {
 	 * @param {number} start - 開始秒
 	 */
 	#appendYouTube(id: string, caption: string, width: number, height: number, start?: number): void {
-		const urlSearchParams = new URLSearchParams();
-		urlSearchParams.set('cc_load_policy', '1');
-		if (start !== undefined && start > 1) {
-			urlSearchParams.set('start', String(start));
-		}
-
 		const figureElement = this.#document.createElement('figure');
 		this.#appendChild(figureElement);
 
@@ -1194,8 +1188,14 @@ export default class MessageParser {
 		embeddElement.className = 'p-embed';
 		figureElement.appendChild(embeddElement);
 
+		const iframeUrlSearchParams = new URLSearchParams();
+		iframeUrlSearchParams.set('cc_load_policy', '1');
+		if (start !== undefined && start > 1) {
+			iframeUrlSearchParams.set('start', String(start));
+		}
+
 		const iframeElement = this.#document.createElement('iframe');
-		iframeElement.src = `https://www.youtube-nocookie.com/embed/${id}?${urlSearchParams.toString()}`; // https://support.google.com/youtube/answer/171780
+		iframeElement.src = `https://www.youtube-nocookie.com/embed/${id}?${iframeUrlSearchParams.toString()}`; // https://support.google.com/youtube/answer/171780
 		iframeElement.setAttribute('allow', 'encrypted-media;fullscreen;gyroscope;picture-in-picture'); // `allow` プロパティへの代入は HTML に反映されない
 		iframeElement.title = 'YouTube 動画';
 		iframeElement.width = String(width);
@@ -1218,8 +1218,17 @@ export default class MessageParser {
 		captionTitleElement.className = 'c-caption__title';
 		figcaptionElement.appendChild(captionTitleElement);
 
+		const aUrlSearchParams = new URLSearchParams();
+		if (start !== undefined && start > 1) {
+			aUrlSearchParams.set('t', `${start}s`);
+		}
+
 		const aElement = this.#document.createElement('a');
-		aElement.href = `https://www.youtube.com/watch?v=${id}`;
+		if ([...aUrlSearchParams].length === 0 /* URLSearchParams のサイズ取得 https://github.com/whatwg/url/issues/163 */) {
+			aElement.href = `https://www.youtube.com/watch?v=${id}`;
+		} else {
+			aElement.href = `https://www.youtube.com/watch?v=${id}?${aUrlSearchParams.toString()}`;
+		}
 		aElement.textContent = caption;
 		captionTitleElement.appendChild(aElement);
 
