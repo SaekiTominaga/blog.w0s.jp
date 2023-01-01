@@ -347,10 +347,20 @@ code
 	test('YouTube', async () => {
 		expect(
 			await new MessageParser(config, { dbh: dbh }).toHtml(`
-!youtube:HJxspEKHqCs 560x315 caption
+!youtube:HJxspEKHqCs caption
 `)
 		).toBe(
 			'<figure><div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/HJxspEKHqCs?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="560" height="315" class="p-embed__frame" style="--aspect-ratio:560/315"></iframe></div><figcaption class="c-caption"><span class="c-caption__no">動画1</span><span class="c-caption__title"><a href="https://www.youtube.com/watch?v=HJxspEKHqCs">caption</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"></span></figcaption></figure>'
+		);
+	});
+
+	test('YouTube - meta', async () => {
+		expect(
+			await new MessageParser(config, { dbh: dbh }).toHtml(`
+!youtube:HJxspEKHqCs caption <640x480 10>
+`)
+		).toBe(
+			'<figure><div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/HJxspEKHqCs?cc_load_policy=1&amp;start=10" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="640" height="480" class="p-embed__frame" style="--aspect-ratio:640/480"></iframe></div><figcaption class="c-caption"><span class="c-caption__no">動画1</span><span class="c-caption__title"><a href="https://www.youtube.com/watch?v=HJxspEKHqCs?t=10s">caption</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon"></span></figcaption></figure>'
 		);
 	});
 
