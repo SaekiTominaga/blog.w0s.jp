@@ -475,20 +475,26 @@ export default class MessageParser {
 						/* 先頭が !youtube: な場合は YouTube 動画 */
 						const mediaMeta = line.substring(9); // 先頭記号を削除
 
-						const metaMatchGroups = mediaMeta.match(/^(?<id>[^ ]+) (?<width>[1-9]\d{2,3})x(?<height>[1-9]\d{2,3}) (?<caption>.+)$/)?.groups;
-						if (
-							metaMatchGroups !== undefined &&
-							metaMatchGroups['id'] !== undefined &&
-							metaMatchGroups['width'] !== undefined &&
-							metaMatchGroups['height'] !== undefined &&
-							metaMatchGroups['caption'] !== undefined
-						) {
-							const { id } = metaMatchGroups;
-							const width = Number(metaMatchGroups['width']);
-							const height = Number(metaMatchGroups['height']);
-							const { caption } = metaMatchGroups;
+						const metaMatchGroups = mediaMeta.match(/^(?<id>[-_a-zA-Z0-9]+) (?<caption>[^<>]+)( <(?<metas>.+)>)?$/)?.groups;
+						if (metaMatchGroups !== undefined && metaMatchGroups['id'] !== undefined && metaMatchGroups['caption'] !== undefined) {
+							const { id, caption, metas } = metaMatchGroups;
 
-							this.#appendYouTube(id, width, height, caption);
+							let width = 560;
+							let height = 315;
+							let start = 0;
+							metas?.split(' ').forEach((meta) => {
+								if (/^[1-9][0-9]{2,3}x[1-9][0-9]{2,3}$/.test(meta)) {
+									/* サイズ */
+									const sizes = meta.split('x');
+									width = Number(sizes.at(0));
+									height = Number(sizes.at(1));
+								} else if (/^[1-9][0-9]*$/.test(meta)) {
+									/* 開始位置（秒） */
+									start = Number(meta);
+								}
+							});
+
+							this.#appendYouTube(id, caption, width, height, start);
 
 							this.#resetStackFlag();
 							this.#media = true;
@@ -1169,11 +1175,12 @@ export default class MessageParser {
 	 * YouTube 動画を設定
 	 *
 	 * @param {string} id - 動画 ID
+	 * @param {string} caption - タイトル
 	 * @param {number} width - 幅
 	 * @param {number} height - 高さ
-	 * @param {string} caption - タイトル
+	 * @param {number} start - 開始秒
 	 */
-	#appendYouTube(id: string, width: number, height: number, caption: string): void {
+	#appendYouTube(id: string, caption: string, width: number, height: number, start?: number): void {
 		const figureElement = this.#document.createElement('figure');
 		this.#appendChild(figureElement);
 
@@ -1181,8 +1188,14 @@ export default class MessageParser {
 		embeddElement.className = 'p-embed';
 		figureElement.appendChild(embeddElement);
 
+		const iframeUrlSearchParams = new URLSearchParams();
+		iframeUrlSearchParams.set('cc_load_policy', '1');
+		if (start !== undefined && start > 1) {
+			iframeUrlSearchParams.set('start', String(start));
+		}
+
 		const iframeElement = this.#document.createElement('iframe');
-		iframeElement.src = `https://www.youtube-nocookie.com/embed/${id}?cc_load_policy=1`; // https://support.google.com/youtube/answer/171780
+		iframeElement.src = `https://www.youtube-nocookie.com/embed/${id}?${iframeUrlSearchParams.toString()}`; // https://support.google.com/youtube/answer/171780
 		iframeElement.setAttribute('allow', 'encrypted-media;fullscreen;gyroscope;picture-in-picture'); // `allow` プロパティへの代入は HTML に反映されない
 		iframeElement.title = 'YouTube 動画';
 		iframeElement.width = String(width);
@@ -1205,8 +1218,17 @@ export default class MessageParser {
 		captionTitleElement.className = 'c-caption__title';
 		figcaptionElement.appendChild(captionTitleElement);
 
+		const aUrlSearchParams = new URLSearchParams();
+		if (start !== undefined && start > 1) {
+			aUrlSearchParams.set('t', `${start}s`);
+		}
+
 		const aElement = this.#document.createElement('a');
-		aElement.href = `https://www.youtube.com/watch?v=${id}`;
+		if ([...aUrlSearchParams].length === 0 /* URLSearchParams のサイズ取得 https://github.com/whatwg/url/issues/163 */) {
+			aElement.href = `https://www.youtube.com/watch?v=${id}`;
+		} else {
+			aElement.href = `https://www.youtube.com/watch?v=${id}?${aUrlSearchParams.toString()}`;
+		}
 		aElement.textContent = caption;
 		captionTitleElement.appendChild(aElement);
 
