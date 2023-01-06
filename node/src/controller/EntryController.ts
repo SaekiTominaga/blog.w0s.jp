@@ -11,6 +11,7 @@ import HttpResponse from '../util/HttpResponse.js';
 import MessageParser from '../util/MessageParser.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
+import MessageParserInline from '../util/@message/Inline.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
 import { NoName as Configure } from '../../configure/type/entry.js';
 import { NoName as ConfigureMessage } from '../../configure/type/message.js';
@@ -71,7 +72,6 @@ export default class EntryController extends Controller implements ControllerInt
 
 		/* DB からデータ取得 */
 		const entryDto = await dao.getEntry(requestQuery.entry_id);
-
 		if (entryDto === null) {
 			httpResponse.send404();
 			return;
@@ -84,9 +84,11 @@ export default class EntryController extends Controller implements ControllerInt
 			amazon_tracking_id: this.#configPaapi.partner_tag,
 		});
 
-		const sidebar = new Sidebar(dao);
+		const messageParserInline = new MessageParserInline(this.#configCommon);
 
-		const [message, categoriesDto, relationDataListDto, entryCountOfCategoryListDto, newlyEntriesDto] = await Promise.all([
+		const sidebar = new Sidebar(dao, messageParserInline);
+
+		const [message, categoriesDto, relationDataListDto, entryCountOfCategoryList, newlyEntries] = await Promise.all([
 			messageParser.toHtml(entryDto.message),
 			dao.getCategories(requestQuery.entry_id),
 			dao.getRelations(requestQuery.entry_id),
@@ -105,7 +107,7 @@ export default class EntryController extends Controller implements ControllerInt
 		for (const relationData of relationDataListDto) {
 			relations.push({
 				id: relationData.id,
-				title: relationData.title,
+				title: messageParserInline.mark(relationData.title, { code: true }),
 				image_internal: relationData.image_internal,
 				image_external: relationData.image_external,
 				created: dayjs(relationData.created),
@@ -119,6 +121,7 @@ export default class EntryController extends Controller implements ControllerInt
 				query: requestQuery,
 			},
 			title: entryDto.title,
+			title_marked: messageParserInline.mark(entryDto.title, { code: true }),
 			message: message,
 			description: entryDto.description,
 			created: dayjs(entryDto.created_at),
@@ -134,8 +137,8 @@ export default class EntryController extends Controller implements ControllerInt
 				.at(0),
 			relations: relations,
 
-			entryCountOfCategoryList: entryCountOfCategoryListDto,
-			newlyEntries: newlyEntriesDto,
+			entryCountOfCategoryList: entryCountOfCategoryList,
+			newlyEntries: newlyEntries,
 		});
 
 		let htmlFormatted = '';

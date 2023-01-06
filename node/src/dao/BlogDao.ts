@@ -3,7 +3,7 @@ import sqlite3 from 'sqlite3';
 import { NoName as Configure } from '../../configure/type/common.js';
 
 interface NewlyEntry {
-	id: string;
+	id: number;
 	title: string;
 }
 
@@ -141,7 +141,7 @@ export default class BlogDao {
 		const newlyEntries: NewlyEntry[] = [];
 		for (const row of rows) {
 			newlyEntries.push({
-				id: row.id,
+				id: Number(row.id),
 				title: row.title,
 			});
 		}

@@ -1,7 +1,8 @@
 import BlogDao from '../dao/BlogDao.js';
+import MessageParserInline from '../util/@message/Inline.js';
 
 interface NewlyEntry {
-	id: string;
+	id: number;
 	title: string;
 }
 
@@ -14,10 +15,18 @@ interface EntryCountOfCategory {
  * サイドバー
  */
 export default class Sidebar {
+	#messageParserInline: MessageParserInline;
+
 	#dao: BlogDao;
 
-	constructor(dao: BlogDao) {
+	/**
+	 * @param {BlogDao} dao - 日記共通 Dao
+	 * @param {MessageParserInline} messageParserInline - 記事メッセージのインライン処理
+	 */
+	constructor(dao: BlogDao, messageParserInline: MessageParserInline) {
 		this.#dao = dao;
+
+		this.#messageParserInline = messageParserInline;
 	}
 
 	/**
@@ -49,7 +58,16 @@ export default class Sidebar {
 	 * @returns {Array} 新着記事
 	 */
 	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
-		const entries = await this.#dao.getNewlyEntries(limit);
+		const entriesDto = await this.#dao.getNewlyEntries(limit);
+
+		const entries: BlogView.NewlyEntry[] = [];
+		for (const entryDto of entriesDto) {
+			entries.push({
+				id: entryDto.id,
+				title: this.#messageParserInline.mark(entryDto.title, { code: true }),
+			});
+		}
+
 		return entries;
 	}
 }
