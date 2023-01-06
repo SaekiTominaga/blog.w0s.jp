@@ -156,8 +156,7 @@
 	--_bg-color: var(--color-verylightblue);
 
 	& a {
-		display: flex;
-		align-items: center;
+		display: block;
 		contain: content;
 		outline-width: var(--outline-width-bold);
 		outline-offset: -1px;
@@ -224,7 +223,7 @@
 }
 
 .p-sidebar-links__icon {
-	margin-inline-start: 1em;
+	margin-inline-start: 0.5em;
 }
 
 /* ===== Amazon 商品広告 ===== */

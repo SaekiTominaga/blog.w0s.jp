@@ -17,6 +17,7 @@ import MessageParser from '../util/MessageParser.js';
 import PostValidator from '../validator/PostValidator.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Tweet from '../util/Tweet.js';
+import MessageParserInline from '../util/@message/Inline.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
 import { NoName as ConfigureMessage } from '../../configure/type/message.js';
 import { PAAPI as ConfigurePaapi } from '../../configure/type/paapi.js';
@@ -391,16 +392,20 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createNewlyJson(dao: BlogPostDao): Promise<PostResults> {
 		try {
-			const datas: Map<string, BlogView.NewlyEntry[]> = new Map();
-			datas.set('', await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number));
+			const datasCatgroup: Map<string, BlogView.NewlyEntry[]> = new Map();
+			datasCatgroup.set('', await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number));
 
-			const fileNames = await dao.getCategoryGroupMasterFileName();
-			for (const fileNameType of fileNames) {
-				datas.set(fileNameType, await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number, fileNameType));
+			for (const fileNameType of await dao.getCategoryGroupMasterFileName()) {
+				datasCatgroup.set(fileNameType, await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number, fileNameType));
 			}
 
-			for (const [fileNameType, data] of datas) {
-				const newlyJson = JSON.stringify(data);
+			for (const [fileNameType, datas] of datasCatgroup) {
+				const newlyJson = JSON.stringify(
+					datas.map((data) => ({
+						id: data.id,
+						title: new MessageParserInline(this.#configCommon).mark(data.title, { code: true }),
+					}))
+				);
 
 				const newlyJsonBrotli = Compress.brotliText(newlyJson);
 

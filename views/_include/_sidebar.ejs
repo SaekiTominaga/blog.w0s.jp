@@ -93,9 +93,9 @@
 				<%_ for (const newlyEntry of newlyEntries) { _%>
 				<li>
 					<%_ if (page.query.entry_id === newlyEntry.id) { _%>
-					<a aria-current="page"><%= newlyEntry.title %></a>
+					<a aria-current="page"><%- newlyEntry.title %></a>
 					<%_ } else { _%>
-					<a href="/<%= newlyEntry.id %>"><%= newlyEntry.title %></a>
+					<a href="/<%= newlyEntry.id %>"><%- newlyEntry.title %></a>
 					<%_ } _%>
 				</li>
 				<%_ } _%>
@@ -104,7 +104,7 @@
 			<ul class="p-sidebar-links -entry">
 				<%_ for (const newlyEntry of newlyEntries) { _%>
 				<li>
-					<a href="/<%= newlyEntry.id %>"><%= newlyEntry.title %></a>
+					<a href="/<%= newlyEntry.id %>"><%- newlyEntry.title %></a>
 				</li>
 				<%_ } _%>
 			</ul>

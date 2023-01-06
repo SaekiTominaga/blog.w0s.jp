@@ -11,6 +11,7 @@ import ControllerInterface from '../ControllerInterface.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
+import MessageParserInline from '../util/@message/Inline.js';
 import { NoName as Configure } from '../../configure/type/list.js';
 import { NoName as ConfigureCommon } from '../../configure/type/common.js';
 
@@ -69,9 +70,11 @@ export default class ListController extends Controller implements ControllerInte
 			return;
 		}
 
-		const sidebar = new Sidebar(dao);
+		const messageParserInline = new MessageParserInline(this.#configCommon);
 
-		const [entryCount, entryCountOfCategoryListDto, newlyEntriesDto] = await Promise.all([
+		const sidebar = new Sidebar(dao, messageParserInline);
+
+		const [entryCount, entryCountOfCategoryList, newlyEntries] = await Promise.all([
 			dao.getEntryCount(),
 			sidebar.getEntryCountOfCategory(),
 			sidebar.getNewlyEntries(this.#configCommon.sidebar.newly.maximum_number),
@@ -108,7 +111,7 @@ export default class ListController extends Controller implements ControllerInte
 
 			entries.push({
 				id: entryDto.id,
-				title: entryDto.title,
+				title: messageParserInline.mark(entryDto.title, { code: true }),
 				image_internal: entryDto.image_internal,
 				image_external: imageExternal,
 				created: dayjs(entryDto.created),
@@ -126,8 +129,8 @@ export default class ListController extends Controller implements ControllerInte
 			},
 			totalPage: totalPage,
 			entries: entries,
-			entryCountOfCategoryList: entryCountOfCategoryListDto,
-			newlyEntries: newlyEntriesDto,
+			entryCountOfCategoryList: entryCountOfCategoryList,
+			newlyEntries: newlyEntries,
 		});
 
 		let htmlFormatted = '';
