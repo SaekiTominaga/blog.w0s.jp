@@ -5,6 +5,10 @@
 	"parser": {
 		".ejs$": "@markuplint/ejs-parser"
 	},
+	"excludeFiles": [
+		"views/feed/*.ejs",
+		"views/xml/*.ejs"
+	],
 	"rules": {
 		"disallowed-element": [
 			"base",
