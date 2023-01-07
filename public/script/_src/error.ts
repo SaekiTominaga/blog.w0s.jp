@@ -25,6 +25,7 @@ if (portalHost === null || portalHost === undefined /* 未対応ブラウザは 
 			referrer: 'referrer',
 		},
 		fetchContentType: 'application/json',
+		same: ['https://w0s.jp'],
 	});
 	reportSameReferrer.init();
 
