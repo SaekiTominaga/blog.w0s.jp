@@ -50,6 +50,7 @@ Styleguide 1.5.
 }
 
 .c-grid__item {
+	container-type: inline-size;
 }
 
 /* ===== フレックスボックス ===== */
