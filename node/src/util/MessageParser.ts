@@ -1083,8 +1083,7 @@ export default class MessageParser {
 		switch (fileExtension) {
 			case '.jpg':
 			case '.jpeg':
-			case '.png':
-			case '.svg': {
+			case '.png': {
 				const mimeType = Object.entries(this.#config.static.headers.mime.extension).find(([, extensions]) =>
 					extensions.includes(fileExtension.substring(1))
 				)?.[0];
@@ -1096,34 +1095,25 @@ export default class MessageParser {
 				}
 				embeddElement.appendChild(aElement);
 
+				const pictureElement = this.#document.createElement('picture');
+				aElement.appendChild(pictureElement);
+
+				const sourceElementAvif = this.#document.createElement('source');
+				sourceElementAvif.type = 'image/avif';
+				sourceElementAvif.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=720;h=720;quality=30 2x`;
+				pictureElement.appendChild(sourceElementAvif);
+
+				const sourceElementWebp = this.#document.createElement('source');
+				sourceElementWebp.type = 'image/webp';
+				sourceElementWebp.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=720;h=720;quality=30 2x`;
+				pictureElement.appendChild(sourceElementWebp);
+
 				const imgElement = this.#document.createElement('img');
+				imgElement.src = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=jpeg;w=360;h=360;quality=60`;
 				imgElement.alt = 'オリジナル画像';
 				imgElement.className = 'p-embed__image';
 
-				switch (fileExtension) {
-					case '.svg': {
-						imgElement.src = `https://media.w0s.jp/image/blog/${fileName}`;
-						aElement.appendChild(imgElement);
-						break;
-					}
-					default: {
-						const pictureElement = this.#document.createElement('picture');
-						aElement.appendChild(pictureElement);
-
-						const sourceElementAvif = this.#document.createElement('source');
-						sourceElementAvif.type = 'image/avif';
-						sourceElementAvif.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=avif;w=720;h=720;quality=30 2x`;
-						pictureElement.appendChild(sourceElementAvif);
-
-						const sourceElementWebp = this.#document.createElement('source');
-						sourceElementWebp.type = 'image/webp';
-						sourceElementWebp.srcset = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${fileName}?type=webp;w=720;h=720;quality=30 2x`;
-						pictureElement.appendChild(sourceElementWebp);
-
-						imgElement.src = `https://media.w0s.jp/thumbimage/blog/${fileName}?type=jpeg;w=360;h=360;quality=60`;
-						pictureElement.appendChild(imgElement);
-					}
-				}
+				pictureElement.appendChild(imgElement);
 
 				const figcaptionElement = this.#document.createElement('figcaption');
 				figcaptionElement.className = 'c-caption';
@@ -1140,6 +1130,32 @@ export default class MessageParser {
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#imageNum += 1;
+
+				break;
+			}
+			case '.svg': {
+				const imgElement = this.#document.createElement('img');
+				imgElement.src = `https://media.w0s.jp/image/blog/${fileName}`;
+				imgElement.alt = '';
+				imgElement.className = 'p-embed__image';
+				embeddElement.appendChild(imgElement);
+
+				const figcaptionElement = this.#document.createElement('figcaption');
+				figcaptionElement.className = 'c-caption';
+				figureElement.appendChild(figcaptionElement);
+
+				const numElement = this.#document.createElement('span');
+				numElement.className = 'c-caption__no';
+				numElement.textContent = `画像${this.#imageNum}`;
+				figcaptionElement.appendChild(numElement);
+
+				const captionTitleElement = this.#document.createElement('span');
+				captionTitleElement.className = 'c-caption__title';
+				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { code: true })); // インライン要素を設定
+				figcaptionElement.appendChild(captionTitleElement);
+
+				this.#imageNum += 1;
+
 				break;
 			}
 			case '.mp4': {
@@ -1165,6 +1181,7 @@ export default class MessageParser {
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#videoNum += 1;
+
 				break;
 			}
 			default:
