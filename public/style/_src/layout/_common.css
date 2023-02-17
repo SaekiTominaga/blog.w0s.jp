@@ -13,6 +13,7 @@
 	grid-column: header;
 	padding: 10px 0 40px;
 	line-height: var(--line-height-narrow);
+	container: header / inline-size;
 }
 
 /* ヘッダーメイン */
@@ -22,8 +23,9 @@
 	grid-template-areas: "site nav";
 	grid-column: content;
 	gap: 20px;
+	container: header-main / inline-size;
 
-	@media (width <= 60em) {
+	@container header (inline-size <= 60em) {
 		grid-template-columns: auto;
 		grid-template-areas:
 			"site"
@@ -48,7 +50,7 @@
 	align-items: flex-end;
 	gap: 10px 20px;
 
-	@media (width <= 36em) {
+	@container header-main (inline-size <= 32em) {
 		--_justify-content: flex-start;
 	}
 }
@@ -56,6 +58,7 @@
 /* ===== コンテンツエリア ===== */
 .l-content {
 	grid-column: content;
+	container: content / inline-size;
 
 	/* サイドバーがない場合は全幅で表示 */
 	&.-nosidebar {
@@ -101,6 +104,7 @@
 .l-sidebar {
 	grid-column: sidebar;
 	line-height: var(--line-height-narrow);
+	container: sidebar / inline-size;
 
 	& > [class^="p-sidebar-"]:not([hidden]) {
 		& + [class^="p-sidebar-"] {
@@ -120,15 +124,18 @@
 	background: var(--color-bg-superlight);
 	padding: 50px 0;
 	line-height: var(--line-height-narrow);
+	container: footer / inline-size;
 }
 
 /* サイト横断ナビゲーション */
 .l-footer__nav {
 	grid-column: content;
+	container: footer-nav / inline-size;
 }
 
 /* アドセンス */
 .l-footer__ads {
 	grid-column: content;
 	margin-block-start: 100px;
+	container: footer-ads / inline-size;
 }

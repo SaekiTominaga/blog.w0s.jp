@@ -16,10 +16,6 @@
 	font-size: calc(100% * var(--_title-font-expand-ratio));
 	line-height: var(--line-height-narrow);
 
-	@media (--breakpoint-entry-link) {
-		margin-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
-	}
-
 	@nest .p-title-list & {
 		--_gap: 25px;
 		--_title-font-expand-ratio: var(--font-ratio-3);
@@ -49,8 +45,14 @@
 	inline-size: calc(var(--_image-inline-size) + var(--_image-border-width) * 2);
 	block-size: calc(var(--_image-inline-size) / var(--_image-aspect-ratio) + var(--_image-border-width) * 2);
 	pointer-events: none;
+}
 
-	@media (--breakpoint-entry-link) {
+@container (inline-size <= 24em) {
+	.c-entry-link {
+		margin-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
+	}
+
+	.c-entry-link__thumb {
 		--_margin-block-end: clamp(0px, var(--_image-min-inline-size-px) - var(--_image-min-inline-size-vw), var(--_gap));
 		--_margin-inline-end: 0px;
 		--_margin-inline-start: var(--_gap);

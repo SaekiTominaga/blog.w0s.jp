@@ -13,7 +13,7 @@
 	gap: 0.5em 0;
 	font-size: calc(100% * var(--font-ratio-1));
 
-	@media (width >= 30em) {
+	@container footer-nav (inline-size >= 30em) {
 		--_flex-direction: row;
 		--_justify-content: center;
 

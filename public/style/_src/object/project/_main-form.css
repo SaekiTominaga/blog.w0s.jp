@@ -43,7 +43,7 @@
 	grid-column: contents;
 }
 
-@media (width <= 36em) {
+@container content (inline-size <= 36em) {
 	.p-form-grid {
 		grid-template-columns: auto;
 		grid-template-areas:
