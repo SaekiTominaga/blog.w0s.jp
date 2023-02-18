@@ -138,6 +138,12 @@
 
 				"box-sizing",
 				"contain",
+				"contain-intrinsic-height",
+				"contain-intrinsic-size",
+				"contain-intrinsic-width",
+				"container",
+				"container-name",
+				"container-type",
 				"margin",
 				"margin-top",
 				"margin-right",
