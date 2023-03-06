@@ -13,7 +13,6 @@
 
 	display: flow-root; /* for Safari */
 	contain: layout;
-	container-type: inline-size;
 	font-size: calc(100% * var(--_title-font-expand-ratio));
 	line-height: var(--line-height-narrow);
 
@@ -48,7 +47,8 @@
 	pointer-events: none;
 }
 
-@container (inline-size <= 24em) {
+@media (width <= 36em) {
+	/* @container は Chrome で効かない https://github.com/SaekiTominaga/blog.w0s.jp/pull/219 */
 	.c-entry-link {
 		margin-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
 	}
