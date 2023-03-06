@@ -13,6 +13,7 @@
 
 	display: flow-root; /* for Safari */
 	contain: layout;
+	container-type: inline-size;
 	font-size: calc(100% * var(--_title-font-expand-ratio));
 	line-height: var(--line-height-narrow);
 
