@@ -243,7 +243,7 @@
 /* ===== 記事タイトルリスト ===== */
 .p-title-list {
 	& > li {
-		padding-block: 1em;
+		padding-block: 1.5em;
 
 		@media (--breakpoint) {
 			padding-inline: var(--page-padding-inline);
