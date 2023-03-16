@@ -1236,16 +1236,13 @@ export default class MessageParser {
 		figcaptionElement.appendChild(captionTitleElement);
 
 		const aUrlSearchParams = new URLSearchParams();
+		aUrlSearchParams.set('v', id);
 		if (start !== undefined && start > 1) {
 			aUrlSearchParams.set('t', `${start}s`);
 		}
 
 		const aElement = this.#document.createElement('a');
-		if ([...aUrlSearchParams].length === 0 /* URLSearchParams のサイズ取得 https://github.com/whatwg/url/issues/163 */) {
-			aElement.href = `https://www.youtube.com/watch?v=${id}`;
-		} else {
-			aElement.href = `https://www.youtube.com/watch?v=${id}?${aUrlSearchParams.toString()}`;
-		}
+		aElement.href = `https://www.youtube.com/watch?${aUrlSearchParams.toString()}`;
 		aElement.textContent = caption;
 		captionTitleElement.appendChild(aElement);
 
