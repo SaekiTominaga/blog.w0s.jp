@@ -1126,7 +1126,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { code: true })); // インライン要素を設定
+				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { anchor: true, code: true })); // インライン要素を設定
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#imageNum += 1;
@@ -1151,7 +1151,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { code: true })); // インライン要素を設定
+				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { anchor: true, code: true })); // インライン要素を設定
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#imageNum += 1;
@@ -1177,7 +1177,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { code: true })); // インライン要素を設定
+				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { anchor: true, code: true })); // インライン要素を設定
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#videoNum += 1;
