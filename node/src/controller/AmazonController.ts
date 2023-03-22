@@ -63,26 +63,28 @@ export default class BlogAmazonController extends Controller implements Controll
 		const dpList = await dao.getDpsOrderByPublicationDate(); // 商品情報
 
 		const dpListView: BlogView.AmazonDp[] = [];
-		for (const dp of dpList) {
-			let imageUrl = null;
-			if (dp.image_url !== null) {
-				const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(dp.image_url));
-				paapiItemImageUrlParser.setSize(72);
-				imageUrl = paapiItemImageUrlParser.toString();
-			}
+		await Promise.all(
+			dpList.map(async (dp) => {
+				let imageUrl = null;
+				if (dp.image_url !== null) {
+					const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(dp.image_url));
+					paapiItemImageUrlParser.setSize(72);
+					imageUrl = paapiItemImageUrlParser.toString();
+				}
 
-			dpListView.push({
-				asin: dp.asin,
-				title: dp.title,
-				binding: dp.binding,
-				product_group: dp.product_group,
-				publication_date: dp.publication_date !== null ? dayjs(dp.publication_date) : null,
-				image_url: imageUrl,
-				image_width: dp.image_width,
-				image_height: dp.image_height,
-				entry_ids: await dao.getEntryIds(dp.asin),
-			});
-		}
+				dpListView.push({
+					asin: dp.asin,
+					title: dp.title,
+					binding: dp.binding,
+					product_group: dp.product_group,
+					publication_date: dp.publication_date !== null ? dayjs(dp.publication_date) : null,
+					image_url: imageUrl,
+					image_width: dp.image_width,
+					image_height: dp.image_height,
+					entry_ids: await dao.getEntryIds(dp.asin),
+				});
+			})
+		);
 
 		/* レンダリング */
 		res.setHeader('Content-Security-Policy', this.#configCommon.response.header.csp_html);

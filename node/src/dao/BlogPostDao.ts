@@ -269,12 +269,14 @@ export default class BlogPostDao extends BlogDao {
 					VALUES
 						(:topic_id, :category_id)
 				`);
-				for (const categoryId of categoryIds) {
-					await categoryInsertSth.run({
-						':topic_id': topicId,
-						':category_id': categoryId,
-					});
-				}
+				await Promise.all(
+					categoryIds.map(async (categoryId) => {
+						await categoryInsertSth.run({
+							':topic_id': topicId,
+							':category_id': categoryId,
+						});
+					})
+				);
 				await categoryInsertSth.finalize();
 			}
 
@@ -285,12 +287,14 @@ export default class BlogPostDao extends BlogDao {
 					VALUES
 						(:topic_id, :relation_id)
 				`);
-				for (const relationId of relationIds) {
-					await relationInsertSth.run({
-						':topic_id': topicId,
-						':relation_id': relationId,
-					});
-				}
+				await Promise.all(
+					relationIds.map(async (relationId) => {
+						await relationInsertSth.run({
+							':topic_id': topicId,
+							':relation_id': relationId,
+						});
+					})
+				);
 				await relationInsertSth.finalize();
 			}
 
@@ -412,12 +416,14 @@ export default class BlogPostDao extends BlogDao {
 					VALUES
 						(:topic_id, :category_id)
 				`);
-				for (const categoryId of categoryIds) {
-					await categoryInsertSth.run({
-						':topic_id': topicId,
-						':category_id': categoryId,
-					});
-				}
+				await Promise.all(
+					categoryIds.map(async (categoryId) => {
+						await categoryInsertSth.run({
+							':topic_id': topicId,
+							':category_id': categoryId,
+						});
+					})
+				);
 				await categoryInsertSth.finalize();
 			}
 
@@ -439,12 +445,14 @@ export default class BlogPostDao extends BlogDao {
 					VALUES
 						(:topic_id, :relation_id)
 				`);
-				for (const relationId of relationIds) {
-					await relationInsertSth.run({
-						':topic_id': topicId,
-						':relation_id': relationId,
-					});
-				}
+				await Promise.all(
+					relationIds.map(async (relationId) => {
+						await relationInsertSth.run({
+							':topic_id': topicId,
+							':relation_id': relationId,
+						});
+					})
+				);
 				await relationInsertSth.finalize();
 			}
 
