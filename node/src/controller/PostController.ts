@@ -291,20 +291,22 @@ export default class PostController extends Controller implements ControllerInte
 			const dbh = await dao.getDbh();
 
 			const entriesView: Set<BlogView.FeedEntry> = new Set();
-			for (const entry of entriesDto) {
-				entriesView.add({
-					id: entry.id,
-					title: entry.title,
-					message: await new MessageParser(this.#configCommon, {
-						entry_id: entry.id,
-						dbh: dbh,
-						anchor_host_icons: this.#configureMessage.anchor_host_icon,
-						amazon_tracking_id: this.#configPaapi.partner_tag,
-					}).toXml(entry.message),
-					updated_at: dayjs(entry.updated_at ?? entry.created_at),
-					update: Boolean(entry.updated_at),
-				});
-			}
+			await Promise.all(
+				entriesDto.map(async (entry) => {
+					entriesView.add({
+						id: entry.id,
+						title: entry.title,
+						message: await new MessageParser(this.#configCommon, {
+							entry_id: entry.id,
+							dbh: dbh,
+							anchor_host_icons: this.#configureMessage.anchor_host_icon,
+							amazon_tracking_id: this.#configPaapi.partner_tag,
+						}).toXml(entry.message),
+						updated_at: dayjs(entry.updated_at ?? entry.created_at),
+						update: Boolean(entry.updated_at),
+					});
+				})
+			);
 
 			const feedXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.feed_create.view_path}`, {
 				updated_at: [...entriesView].at(0)?.updated_at,
@@ -395,34 +397,40 @@ export default class PostController extends Controller implements ControllerInte
 			const datasCatgroup: Map<string, BlogView.NewlyEntry[]> = new Map();
 			datasCatgroup.set('', await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number));
 
-			for (const fileNameType of await dao.getCategoryGroupMasterFileName()) {
-				datasCatgroup.set(fileNameType, await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number, fileNameType));
-			}
+			await Promise.all(
+				(
+					await dao.getCategoryGroupMasterFileName()
+				).map(async (fileNameType) => {
+					datasCatgroup.set(fileNameType, await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number, fileNameType));
+				})
+			);
 
-			for (const [fileNameType, datas] of datasCatgroup) {
-				const newlyJson = JSON.stringify(
-					datas.map((data) => ({
-						id: data.id,
-						title: new MessageParserInline(this.#configCommon).mark(data.title, { code: true }),
-					}))
-				);
+			await Promise.all(
+				[...datasCatgroup].map(async ([fileNameType, datas]) => {
+					const newlyJson = JSON.stringify(
+						datas.map((data) => ({
+							id: data.id,
+							title: new MessageParserInline(this.#configCommon).mark(data.title, { code: true }),
+						}))
+					);
 
-				const newlyJsonBrotli = Compress.brotliText(newlyJson);
+					const newlyJsonBrotli = Compress.brotliText(newlyJson);
 
-				/* ファイル出力 */
-				const fileName =
-					fileNameType === ''
-						? `${this.#config.newly_json_create.filename_prefix}`
-						: `${this.#config.newly_json_create.filename_prefix}${this.#config.newly_json_create.filename_separator}${fileNameType}`;
-				const filePath = `${this.#configCommon.static.root}/${this.#config.newly_json_create.directory}/${fileName}.${
-					this.#config.newly_json_create.extension
-				}`;
-				const brotliFilePath = `${filePath}.br`;
+					/* ファイル出力 */
+					const fileName =
+						fileNameType === ''
+							? `${this.#config.newly_json_create.filename_prefix}`
+							: `${this.#config.newly_json_create.filename_prefix}${this.#config.newly_json_create.filename_separator}${fileNameType}`;
+					const filePath = `${this.#configCommon.static.root}/${this.#config.newly_json_create.directory}/${fileName}.${
+						this.#config.newly_json_create.extension
+					}`;
+					const brotliFilePath = `${filePath}.br`;
 
-				await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
-				this.logger.info('JSON file created', filePath);
-				this.logger.info('JSON Brotli file created', brotliFilePath);
-			}
+					await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
+					this.logger.info('JSON file created', filePath);
+					this.logger.info('JSON Brotli file created', brotliFilePath);
+				})
+			);
 		} catch (e) {
 			this.logger.error('新着 JSON 生成失敗', e);
 
@@ -489,109 +497,111 @@ export default class PostController extends Controller implements ControllerInte
 		const result: Set<MediaUploadResults> = new Set();
 
 		try {
-			for (const file of <Express.Multer.File[]>req.files) {
-				const urlSearchParams = new URLSearchParams();
-				urlSearchParams.append('name', file.originalname);
-				urlSearchParams.append('type', file.mimetype);
-				urlSearchParams.append('temppath', path.resolve(file.path));
-				urlSearchParams.append('size', String(file.size));
-				if (requestQuery.media_overwrite) {
-					urlSearchParams.append('overwrite', '1');
-				}
-
-				this.logger.info('Fetch', url);
-				this.logger.info('Fetch', urlSearchParams);
-
-				try {
-					const response = await fetch(url, {
-						method: 'POST',
-						headers: {
-							Authorization: `Basic ${Buffer.from(`${httpBasicCredentials?.username}:${httpBasicCredentials?.password}`).toString('base64')}`,
-						},
-						body: urlSearchParams,
-					});
-					if (!response.ok) {
-						this.logger.error('Fetch error', url);
-
-						result.add({
-							success: false,
-							message: this.#config.media_upload.api_response.other_message_failure,
-							filename: file.originalname,
-						});
-						continue;
+			await Promise.all(
+				(<Express.Multer.File[]>req.files).map(async (file) => {
+					const urlSearchParams = new URLSearchParams();
+					urlSearchParams.append('name', file.originalname);
+					urlSearchParams.append('type', file.mimetype);
+					urlSearchParams.append('temppath', path.resolve(file.path));
+					urlSearchParams.append('size', String(file.size));
+					if (requestQuery.media_overwrite) {
+						urlSearchParams.append('overwrite', '1');
 					}
 
-					const responseFile = (await response.json()) as MediaApi.Upload;
-					switch (responseFile.code) {
-						case this.#config.media_upload.api_response.success.code:
-							/* 成功 */
-							this.logger.info('File upload success', responseFile.name);
+					this.logger.info('Fetch', url);
+					this.logger.info('Fetch', urlSearchParams);
 
-							result.add({
-								success: true,
-								message: this.#config.media_upload.api_response.success.message,
-								filename: file.originalname,
-							});
-							break;
-						case this.#config.media_upload.api_response.type.code:
-							/* MIME エラー */
-							this.logger.warn('File upload failure', responseFile.name);
-
-							result.add({
-								success: false,
-								message: this.#config.media_upload.api_response.type.message,
-								filename: file.originalname,
-							});
-							break;
-						case this.#config.media_upload.api_response.overwrite.code:
-							/* 上書きエラー */
-							this.logger.warn('File upload failure', responseFile.name);
-
-							result.add({
-								success: false,
-								message: this.#config.media_upload.api_response.overwrite.message,
-								filename: file.originalname,
-							});
-							break;
-						case this.#config.media_upload.api_response.size.code:
-							/* サイズ超過エラー */
-							this.logger.warn('File upload failure', responseFile.name);
-
-							result.add({
-								success: false,
-								message: this.#config.media_upload.api_response.size.message,
-								filename: file.originalname,
-							});
-							break;
-						default:
-							this.logger.warn('File upload failure', responseFile.name);
+					try {
+						const response = await fetch(url, {
+							method: 'POST',
+							headers: {
+								Authorization: `Basic ${Buffer.from(`${httpBasicCredentials?.username}:${httpBasicCredentials?.password}`).toString('base64')}`,
+							},
+							body: urlSearchParams,
+						});
+						if (!response.ok) {
+							this.logger.error('Fetch error', url);
 
 							result.add({
 								success: false,
 								message: this.#config.media_upload.api_response.other_message_failure,
 								filename: file.originalname,
 							});
-					}
-				} catch (e) {
-					this.logger.warn(e);
+							return;
+						}
 
-					result.add({
-						success: false,
-						message: this.#config.media_upload.api_response.other_message_failure,
-						filename: file.originalname,
-					});
-				}
-			}
+						const responseFile = (await response.json()) as MediaApi.Upload;
+						switch (responseFile.code) {
+							case this.#config.media_upload.api_response.success.code:
+								/* 成功 */
+								this.logger.info('File upload success', responseFile.name);
+
+								result.add({
+									success: true,
+									message: this.#config.media_upload.api_response.success.message,
+									filename: file.originalname,
+								});
+								break;
+							case this.#config.media_upload.api_response.type.code:
+								/* MIME エラー */
+								this.logger.warn('File upload failure', responseFile.name);
+
+								result.add({
+									success: false,
+									message: this.#config.media_upload.api_response.type.message,
+									filename: file.originalname,
+								});
+								break;
+							case this.#config.media_upload.api_response.overwrite.code:
+								/* 上書きエラー */
+								this.logger.warn('File upload failure', responseFile.name);
+
+								result.add({
+									success: false,
+									message: this.#config.media_upload.api_response.overwrite.message,
+									filename: file.originalname,
+								});
+								break;
+							case this.#config.media_upload.api_response.size.code:
+								/* サイズ超過エラー */
+								this.logger.warn('File upload failure', responseFile.name);
+
+								result.add({
+									success: false,
+									message: this.#config.media_upload.api_response.size.message,
+									filename: file.originalname,
+								});
+								break;
+							default:
+								this.logger.warn('File upload failure', responseFile.name);
+
+								result.add({
+									success: false,
+									message: this.#config.media_upload.api_response.other_message_failure,
+									filename: file.originalname,
+								});
+						}
+					} catch (e) {
+						this.logger.warn(e);
+
+						result.add({
+							success: false,
+							message: this.#config.media_upload.api_response.other_message_failure,
+							filename: file.originalname,
+						});
+					}
+				})
+			);
 		} finally {
 			/* アップロードされた一時ファイルを削除する */
-			for (const file of <Express.Multer.File[]>req.files) {
+			(<Express.Multer.File[]>req.files).forEach((file) => {
 				const filePath = file.path;
 				fs.unlink(file.path, (error) => {
 					if (error === null) {
 						this.logger.info('Temp file delete success', filePath);
 					}
 				});
-			}
+			});
 		}
 
 		return result;

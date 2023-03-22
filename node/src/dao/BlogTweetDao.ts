@@ -45,15 +45,17 @@ export default class BlogTweetDao extends BlogDao {
 				VALUES
 					(:id, :name, :username, :text, :created_at)
 			`);
-			for (const tweetData of tweetDataList) {
-				await sth.run({
-					':id': tweetData.id,
-					':name': tweetData.name,
-					':username': tweetData.username,
-					':text': tweetData.text,
-					':created_at': Math.round(tweetData.created_at.getTime() / 1000),
-				});
-			}
+			await Promise.all(
+				tweetDataList.map(async (tweetData) => {
+					await sth.run({
+						':id': tweetData.id,
+						':name': tweetData.name,
+						':username': tweetData.username,
+						':text': tweetData.text,
+						':created_at': Math.round(tweetData.created_at.getTime() / 1000),
+					});
+				})
+			);
 			await sth.finalize();
 			dbh.exec('COMMIT');
 		} catch (e) {

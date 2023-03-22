@@ -37,10 +37,12 @@ const dao = new BlogEntryMessageConvertDao(config);
 /* DB からデータ取得 */
 const allEntryiesMessageDto = await dao.getAllEntriesMessage();
 
-for (const [id, message] of allEntryiesMessageDto) {
-	const messageConverted = convert(id, message);
-	if (message !== messageConverted) {
-		console.info(`記事 ${id} を更新`);
-		await dao.update(id, messageConverted);
-	}
-}
+await Promise.all(
+	[...allEntryiesMessageDto].map(async ([id, message]) => {
+		const messageConverted = convert(id, message);
+		if (message !== messageConverted) {
+			console.info(`記事 ${id} を更新`);
+			await dao.update(id, messageConverted);
+		}
+	})
+);

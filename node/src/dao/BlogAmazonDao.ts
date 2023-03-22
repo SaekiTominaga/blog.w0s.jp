@@ -167,20 +167,22 @@ export default class BlogAmazonDao extends BlogDao {
 				VALUES
 					(:asin, :url, :title, :binding, :product_group, :date, :image_url, :image_width, :image_height, :last_updated)
 			`);
-			for (const amazonData of amazonDataList) {
-				await sth.run({
-					':asin': amazonData.asin,
-					':url': amazonData.url,
-					':title': amazonData.title,
-					':binding': amazonData.binding,
-					':product_group': amazonData.product_group,
-					':date': amazonData.publication_date !== null ? Math.round(amazonData.publication_date.getTime() / 1000) : null,
-					':image_url': amazonData.image_url,
-					':image_width': amazonData.image_width,
-					':image_height': amazonData.image_height,
-					':last_updated': Math.round(amazonData.updated_at.getTime() / 1000),
-				});
-			}
+			await Promise.all(
+				amazonDataList.map(async (amazonData) => {
+					await sth.run({
+						':asin': amazonData.asin,
+						':url': amazonData.url,
+						':title': amazonData.title,
+						':binding': amazonData.binding,
+						':product_group': amazonData.product_group,
+						':date': amazonData.publication_date !== null ? Math.round(amazonData.publication_date.getTime() / 1000) : null,
+						':image_url': amazonData.image_url,
+						':image_width': amazonData.image_width,
+						':image_height': amazonData.image_height,
+						':last_updated': Math.round(amazonData.updated_at.getTime() / 1000),
+					});
+				})
+			);
 			await sth.finalize();
 			dbh.exec('COMMIT');
 		} catch (e) {
