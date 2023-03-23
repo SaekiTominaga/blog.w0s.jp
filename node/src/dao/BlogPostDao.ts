@@ -79,9 +79,9 @@ export default class BlogPostDao extends BlogDao {
 			});
 			await insertSth.finalize();
 
-			dbh.exec('COMMIT');
+			await dbh.exec('COMMIT');
 		} catch (e) {
-			dbh.exec('ROLLBACK');
+			await dbh.exec('ROLLBACK');
 			throw e;
 		}
 	}
@@ -298,11 +298,11 @@ export default class BlogPostDao extends BlogDao {
 				await relationInsertSth.finalize();
 			}
 
-			dbh.exec('COMMIT');
+			await dbh.exec('COMMIT');
 
 			return topicId;
 		} catch (e) {
-			dbh.exec('ROLLBACK');
+			await dbh.exec('ROLLBACK');
 			throw e;
 		}
 	}
@@ -456,9 +456,9 @@ export default class BlogPostDao extends BlogDao {
 				await relationInsertSth.finalize();
 			}
 
-			dbh.exec('COMMIT');
+			await dbh.exec('COMMIT');
 		} catch (e) {
-			dbh.exec('ROLLBACK');
+			await dbh.exec('ROLLBACK');
 			throw e;
 		}
 	}
