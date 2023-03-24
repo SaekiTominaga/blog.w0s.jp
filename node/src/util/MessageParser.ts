@@ -793,7 +793,7 @@ export default class MessageParser {
 		}
 
 		const dtElement = this.#document.createElement('dt');
-		dtElement.textContent = dtText;
+		dtElement.insertAdjacentHTML('beforeend', this.#inline.mark(dtText, { code: true })); // インライン要素を設定
 		this.#dlElement.appendChild(dtElement);
 
 		for (const ddText of ddTextList) {

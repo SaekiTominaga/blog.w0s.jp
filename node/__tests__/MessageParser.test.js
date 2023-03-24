@@ -63,9 +63,9 @@ text2
 		expect(
 			await new MessageParser(config, { dbh: dbh }).toHtml(`
 : dt1 | dd1
-: dt2 | dd2
+: \`dt2\` | [dd2](http://example.com)
 `)
-		).toBe('<dl class="p-list-description"><dt>dt1</dt><dd>dd1</dd><dt>dt2</dt><dd>dd2</dd></dl>');
+		).toBe('<dl class="p-list-description"><dt>dt1</dt><dd>dd1</dd><dt><code>dt2</code></dt><dd><a href="http://example.com">dd2</a><b class="c-domain">(example.com)</b></dd></dl>');
 	});
 
 	test(':', async () => {
