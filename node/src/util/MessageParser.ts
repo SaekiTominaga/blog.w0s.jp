@@ -864,7 +864,7 @@ export default class MessageParser {
 		}
 
 		const pElement = this.#document.createElement('p');
-		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(quoteText, { code: true })); // インライン要素を設定
+		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(quoteText, { emphasis: true, code: true })); // インライン要素を設定
 		this.#quoteElement.appendChild(pElement);
 	}
 
