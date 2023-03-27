@@ -26,27 +26,29 @@
 					<w0s-portal class="p-err-topthumb__portal" id="top-portal" hidden=""></w0s-portal>
 				</div>
 
-				<form action="https://www.google.com/search" role="search" class="p-err-search">
-					<fieldset>
-						<legend class="p-err-search__legend">サイト内検索（Google 検索）</legend>
-						<div class="p-err-search__ctrl c-search">
-							<span class="c-search__hidden">
-								<input type="hidden" name="as_sitesearch" value="blog.w0s.jp" />
-							</span>
-							<span class="c-search__query">
-								<input type="search" name="q" required="" title="キーワード" />
-							</span>
-							<span class="c-search__submit">
-								<button>
-									<svg role="img" aria-labelledby="search-button">
-										<title id="search-button">検索</title>
-										<use href="/image/icon/search.svg#icon"></use>
-									</svg>
-								</button>
-							</span>
-						</div>
-					</fieldset>
-				</form>
+				<search role="search">
+					<form action="https://www.google.com/search" class="p-err-search">
+						<fieldset>
+							<legend class="p-err-search__legend">サイト内検索（Google 検索）</legend>
+							<div class="p-err-search__ctrl c-search">
+								<span class="c-search__hidden">
+									<input type="hidden" name="as_sitesearch" value="blog.w0s.jp" />
+								</span>
+								<span class="c-search__query">
+									<input type="search" name="q" required="" title="キーワード" />
+								</span>
+								<span class="c-search__submit">
+									<button>
+										<svg role="img" aria-labelledby="search-button">
+											<title id="search-button">検索</title>
+											<use href="/image/icon/search.svg#icon"></use>
+										</svg>
+									</button>
+								</span>
+							</div>
+						</fieldset>
+					</form>
+				</search>
 			</main>
 		</div>
 	</body>
