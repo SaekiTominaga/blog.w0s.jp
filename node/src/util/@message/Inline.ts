@@ -216,66 +216,58 @@ export default class Inline {
 	 * @returns {string} 変換後の HTML 文字列
 	 */
 	#markQuote(input: string): string {
-		return input.replace(
-			/{{(?<quoteWithMetas>.+?)}}\((?<metas>[^(].*?)\)|{{(?<quoteOnly>.+?)}}/g,
-			(match, quoteWithMeta_htmlescaped?: string, metas_htmlescaped?: string, quoteOnly_htmlescaped?: string) => {
-				const quote_htmlescaped = quoteWithMeta_htmlescaped ?? quoteOnly_htmlescaped;
-				if (quote_htmlescaped === undefined) {
-					return match;
-				}
+		return input.replace(/{{(?<quote>.+?)}}(\((?<metas>[^(].*?)\))?/g, (_match, quote_htmlescaped: string, _?: string, metas_htmlescaped?: string) => {
+			const quote = StringEscapeHtml.unescape(quote_htmlescaped);
 
-				const quote = StringEscapeHtml.unescape(quote_htmlescaped);
+			const qAttributeMap = new Map<string, string>();
 
-				const qAttributeMap = new Map<string, string>();
+			if (metas_htmlescaped !== undefined) {
+				const metas = StringEscapeHtml.unescape(metas_htmlescaped);
 
-				if (metas_htmlescaped !== undefined) {
-					const metas = StringEscapeHtml.unescape(metas_htmlescaped);
+				let url: string | undefined;
+				let isbn: string | undefined;
 
-					let url: string | undefined;
-					let isbn: string | undefined;
-
-					for (const metaWord of metas.split(' ')) {
-						if (new RegExp(`^${this.#config.regexp['absolute_url']}$`).test(metaWord)) {
-							url = metaWord;
-						} else if (new RegExp(`^${this.#config.regexp['isbn']}$`).test(metaWord)) {
-							isbn = metaWord;
-						} else if (new RegExp(`^${this.#config.regexp['lang']}$`).test(metaWord)) {
-							qAttributeMap.set('lang', metaWord);
-						}
-					}
-
-					if (url !== undefined) {
-						if (isbn !== undefined) {
-							this.#logger.warn(`インライン引用に URL<${url}> と ISBN<${isbn}> が両方指定`);
-						}
-
-						qAttributeMap.set('cite', url);
-
-						let qAttr_htmlescaped = '';
-						for (const [name, value] of qAttributeMap) {
-							qAttr_htmlescaped += StringEscapeHtml.template` ${name}="${value}"`;
-						}
-
-						return this.anchor(quote, url)
-							.replace(/^<a (?<attr>.+?)>/, `<a $<attr>><q${qAttr_htmlescaped}>`)
-							.replace('</a>', '</q></a>');
-					} else if (isbn !== undefined) {
-						if (new IsbnVerify(isbn, { strict: true }).isValid()) {
-							qAttributeMap.set('cite', `urn:ISBN:${isbn}`);
-						} else {
-							this.#logger.warn(`ISBN<${isbn}> のチェックデジット不正`);
-						}
+				for (const metaWord of metas.split(' ')) {
+					if (new RegExp(`^${this.#config.regexp['absolute_url']}$`).test(metaWord)) {
+						url = metaWord;
+					} else if (new RegExp(`^${this.#config.regexp['isbn']}$`).test(metaWord)) {
+						isbn = metaWord;
+					} else if (new RegExp(`^${this.#config.regexp['lang']}$`).test(metaWord)) {
+						qAttributeMap.set('lang', metaWord);
 					}
 				}
 
-				let qAttr_htmlescaped = '';
-				for (const [name, value] of qAttributeMap) {
-					qAttr_htmlescaped += StringEscapeHtml.template` ${name}="${value}"`;
-				}
+				if (url !== undefined) {
+					if (isbn !== undefined) {
+						this.#logger.warn(`インライン引用に URL<${url}> と ISBN<${isbn}> が両方指定`);
+					}
 
-				return `<q${qAttr_htmlescaped}>${quote_htmlescaped}</q>`;
+					qAttributeMap.set('cite', url);
+
+					let qAttr_htmlescaped = '';
+					for (const [name, value] of qAttributeMap) {
+						qAttr_htmlescaped += StringEscapeHtml.template` ${name}="${value}"`;
+					}
+
+					return this.anchor(quote, url)
+						.replace(/^<a (?<attr>.+?)>/, `<a $<attr>><q${qAttr_htmlescaped}>`)
+						.replace('</a>', '</q></a>');
+				} else if (isbn !== undefined) {
+					if (new IsbnVerify(isbn, { strict: true }).isValid()) {
+						qAttributeMap.set('cite', `urn:ISBN:${isbn}`);
+					} else {
+						this.#logger.warn(`ISBN<${isbn}> のチェックデジット不正`);
+					}
+				}
 			}
-		);
+
+			let qAttr_htmlescaped = '';
+			for (const [name, value] of qAttributeMap) {
+				qAttr_htmlescaped += StringEscapeHtml.template` ${name}="${value}"`;
+			}
+
+			return `<q${qAttr_htmlescaped}>${quote_htmlescaped}</q>`;
+		});
 	}
 
 	/**

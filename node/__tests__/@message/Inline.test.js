@@ -176,6 +176,24 @@ describe('quote - meta', () => {
 			'&lt;s&gt;text1&lt;/s&gt;<q>&lt;s&gt;quote1&lt;/s&gt;</q>()&lt;s&gt;text2&lt;/s&gt;'
 		);
 	});
+
+	test('multiple', () => {
+		expect(inline.mark('<s>text1</s>{{<s>quote1</s>}}(https://example.com/1)<s>text2</s>{{<s>quote2</s>}}(https://example.com/2)')).toBe(
+			'&lt;s&gt;text1&lt;/s&gt;<a href="https://example.com/1"><q cite="https://example.com/1">&lt;s&gt;quote1&lt;/s&gt;</q></a><b class="c-domain">(example.com)</b>&lt;s&gt;text2&lt;/s&gt;<a href="https://example.com/2"><q cite="https://example.com/2">&lt;s&gt;quote2&lt;/s&gt;</q></a><b class="c-domain">(example.com)</b>'
+		);
+	});
+
+	test('multiple (meta, no meta)', () => {
+		expect(inline.mark('<s>text1</s>{{<s>quote1</s>}}<s>text2</s>{{<s>quote2</s>}}(https://example.com/)')).toBe(
+			'&lt;s&gt;text1&lt;/s&gt;<q>&lt;s&gt;quote1&lt;/s&gt;</q>&lt;s&gt;text2&lt;/s&gt;<a href="https://example.com/"><q cite="https://example.com/">&lt;s&gt;quote2&lt;/s&gt;</q></a><b class="c-domain">(example.com)</b>'
+		);
+	});
+
+	test('multiple (no meta, meta)', () => {
+		expect(inline.mark('<s>text1</s>{{<s>quote1</s>}}(https://example.com/)<s>text2</s>{{<s>quote2</s>}}')).toBe(
+			'&lt;s&gt;text1&lt;/s&gt;<a href="https://example.com/"><q cite="https://example.com/">&lt;s&gt;quote1&lt;/s&gt;</q></a><b class="c-domain">(example.com)</b>&lt;s&gt;text2&lt;/s&gt;<q>&lt;s&gt;quote2&lt;/s&gt;</q>'
+		);
+	});
 });
 
 describe('footnote', () => {
