@@ -2,12 +2,6 @@
  *   テキスト
  * ============================== */
 
-/* ===== 小さい文字 ===== */
-.u-small {
-	font-weight: var(--font-weight-normal);
-	font-size: calc(100% / var(--font-ratio-2));
-}
-
 /* ===== 赤文字 ===== */
 .u-red {
 	color: var(--color-red);

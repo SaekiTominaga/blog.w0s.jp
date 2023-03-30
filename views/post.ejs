@@ -157,7 +157,7 @@
 										<legend class="p-form-grid__legend"><label for="fc-relation" class="c-label">関連記事</label></legend>
 										<div class="p-form-grid__contents">
 											<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= page.query.relation %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" style="--inline-size: 15em" />
-											<span class="u-small">（カンマ区切り）</span>
+											<small>（カンマ区切り）</small>
 										</div>
 									</fieldset>
 								</div>
@@ -209,7 +209,7 @@
 											</p>
 											<p>
 												<label class="c-label -input"><span class="c-label__text">ハッシュタグ</span><input class="c-input js-convert-trim" name="socialtag" value="<%= page.query.socialtag %>" pattern="[^,]+" style="--inline-size: 12em" /></label>
-												<span class="u-small">（スペース区切り）</span>
+												<small>（スペース区切り）</small>
 											</p>
 										</div>
 									</fieldset>
@@ -372,11 +372,11 @@
 									<td>YouTube 動画</td>
 								</tr>
 								<tr>
-									<th scope="row">$tweet:<b class="u-red">␣</b>ID<small class="u-small">（半角スペース区切りで任意数）</small></th>
+									<th scope="row">$tweet:<b class="u-red">␣</b>ID<small>（半角スペース区切りで任意数）</small></th>
 									<td>埋め込みツイート</td>
 								</tr>
 								<tr>
-									<th scope="row">$amazon:<b class="u-red">␣</b>ASIN<small class="u-small">（半角スペース区切りで任意数）</small></th>
+									<th scope="row">$amazon:<b class="u-red">␣</b>ASIN<small>（半角スペース区切りで任意数）</small></th>
 									<td>Amazon 商品</td>
 								</tr>
 							</tbody>
