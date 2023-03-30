@@ -69,6 +69,11 @@ pre {
 	tab-size: 2;
 }
 
+small {
+	font-weight: var(--font-weight-normal);
+	font-size: calc(100% / var(--font-ratio-2));
+}
+
 code {
 	font-family: var(--font-monospace);
 }
