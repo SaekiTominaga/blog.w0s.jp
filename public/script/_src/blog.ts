@@ -3,8 +3,8 @@ import ButtonShare from '@saekitominaga/customelements-button-share';
 import ReportJsError from '@saekitominaga/report-js-error';
 import Tab from '@saekitominaga/customelements-tab';
 import TooltipTrigger from '@saekitominaga/customelements-tooltip-trigger';
-import GoogleAdsense from './unique/GoogleAdsense';
-import SidebarAmazonAd from './unique/SidebarAmazonAd';
+import GoogleAdsense from './unique/GoogleAdsense.js';
+import SidebarAmazonAd from './unique/SidebarAmazonAd.js';
 
 /* JS エラーレポート */
 new ReportJsError('https://report.w0s.jp/js', {
