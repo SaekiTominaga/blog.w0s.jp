@@ -1,8 +1,4 @@
 {
 	"extends": "@w0s/tsconfig",
-	"include": ["_src/**/*.ts"],
-	"compilerOptions": {
-		/* Modules */
-		"moduleResolution": "Node" // "Node16" だと import 部分で TS1471 エラーが表示される
-	}
+	"include": ["_src/**/*.ts"]
 }
