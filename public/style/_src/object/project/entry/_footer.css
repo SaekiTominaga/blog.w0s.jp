@@ -53,7 +53,7 @@
 
 /* 関連記事 */
 .p-entry-footer-relation {
-	@nest .p-entry__footer > & {
+	.p-entry__footer > & {
 		margin-block-start: calc(var(--stack-margin-base) * 3);
 	}
 }

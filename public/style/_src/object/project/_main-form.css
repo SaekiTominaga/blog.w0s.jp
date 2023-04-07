@@ -23,7 +23,7 @@
 	}
 
 	/* 複雑なフォームは区切り線を付ける */
-	@nest .p-form-grid.-complex & {
+	.p-form-grid.-complex & {
 		border-block-end: 1px solid var(--color-border-light);
 		padding-block-end: var(--_gap-block);
 	}

@@ -110,7 +110,7 @@
 		"postcss-custom-media": "^9.1.2",
 		"postcss-import": "^15.1.0",
 		"postcss-media-minmax": "^5.0.0",
-		"postcss-nesting": "^10.2.0",
+		"postcss-nesting": "^11.2.2",
 		"rollup": "^3.2.3",
 		"stylelint": "^14.16.0",
 		"stylelint-order": "^5.0.0",

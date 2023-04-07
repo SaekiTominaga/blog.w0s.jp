@@ -66,16 +66,16 @@
 	line-height: var(--line-height-narrow);
 	text-decoration: none;
 
-	@nest button[type="button"]&:focus:not(:focus-visible) {
+	:where(button[type="button"]&):focus:not(:focus-visible) {
 		outline: none;
 	}
 
-	@nest .p-sidebar-profile__banners & {
+	.p-sidebar-profile__banners & {
 		--_padding-inline: 1px;
 		--_inline-size: 100%;
 	}
 
-	@nest .p-entry-footer-social & {
+	.p-entry-footer-social & {
 		font-size: calc(100% * var(--font-ratio-1));
 	}
 
@@ -130,7 +130,7 @@
 }
 
 .c-button__text {
-	@nest .p-entry-footer-social & {
+	.p-entry-footer-social & {
 		white-space: nowrap; /* for iPad Safari */
 	}
 }
@@ -188,7 +188,7 @@
 	font-size: calc(100% / var(--font-ratio-1));
 	line-height: var(--line-height-narrow);
 
-	@nest .entry-amazon & {
+	.entry-amazon & {
 		margin-inline-start: 0.5em;
 	}
 }

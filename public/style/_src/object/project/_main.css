@@ -127,7 +127,7 @@
 	max-inline-size: 100%;
 	block-size: auto;
 
-	@nest :any-link:hover & {
+	:any-link:hover & {
 		box-shadow: 0 0 4px 3px var(--color-amazon-verydark);
 	}
 }
@@ -231,7 +231,7 @@
 	line-height: var(--line-height-narrow);
 	font-family: var(--font-monospace);
 
-	@nest .p-entry & {
+	.p-entry & {
 		font-size: calc(100% / var(--font-ratio-1));
 	}
 

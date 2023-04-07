@@ -56,7 +56,7 @@
 .p-entry-section {
 	--_margin-block: var(--stack-margin-base);
 
-	@nest .p-entry & {
+	.p-entry & {
 		&:not(:first-child) {
 			margin-block-start: var(--_margin-block);
 		}
@@ -69,7 +69,7 @@
 	&.-hdg1 {
 		--_margin-block: calc(var(--stack-margin-base) * 4);
 
-		@nest .p-entry .p-toc + & {
+		.p-entry .p-toc + & {
 			margin-block-start: calc(var(--stack-margin-base) * 3);
 		}
 	}
@@ -88,14 +88,14 @@
 	gap: 0.5em;
 	line-height: var(--line-height-narrow);
 
-	@nest .p-entry-section.-hdg1 > & {
+	.p-entry-section.-hdg1 > & {
 		border-block-start: 1px solid transparent;
 		border-block-end: 1px solid var(--color-border-dark);
 		padding-block: 0.25em;
 		font-size: calc(100% * var(--font-ratio-5));
 	}
 
-	@nest .p-entry-section.-hdg2 > & {
+	.p-entry-section.-hdg2 > & {
 		font-size: calc(100% * var(--font-ratio-3));
 
 		&::before {
@@ -121,7 +121,7 @@
 	inline-size: min(30em, 100%);
 	block-size: 0;
 
-	@nest .p-entry & {
+	.p-entry & {
 		&:not(:first-child) {
 			margin-block-start: calc(var(--stack-margin-base) * 4);
 		}

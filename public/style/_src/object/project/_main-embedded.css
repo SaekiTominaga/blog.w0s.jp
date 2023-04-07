@@ -8,7 +8,7 @@
 
 	contain: layout;
 
-	@nest .p-entry & {
+	.p-entry & {
 		--_border-width: 1px;
 	}
 

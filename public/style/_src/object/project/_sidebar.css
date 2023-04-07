@@ -42,11 +42,11 @@
 	float: left;
 	margin-inline-end: 10px;
 
-	@nest :focus & {
+	:focus & {
 		outline: var(--outline-width-bold) solid var(--outline-color);
 	}
 
-	@nest :any-link:hover & {
+	:any-link:hover & {
 		box-shadow: 0 0 5px var(--color-lightgray);
 	}
 }
@@ -270,7 +270,7 @@
 	inline-size: 100%;
 	block-size: auto;
 
-	@nest :any-link:hover:not(:focus) & {
+	:any-link:hover:not(:focus) & {
 		box-shadow: 0 0 3px 3px var(--color-amazon-verydark);
 	}
 }
@@ -288,7 +288,7 @@
 	color: var(--_color);
 	overflow-wrap: anywhere;
 
-	@nest :any-link:hover & {
+	:any-link:hover & {
 		--_bg-color: var(--color-amazon-dark);
 	}
 }
