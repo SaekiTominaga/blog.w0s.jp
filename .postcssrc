@@ -1,8 +1,4 @@
 {
-	"map": {
-		"inline": false,
-		"annotation": false
-	},
 	"plugins": {
 		"postcss-media-minmax": {},
 		"postcss-custom-media": {
