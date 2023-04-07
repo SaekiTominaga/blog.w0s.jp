@@ -188,7 +188,7 @@
 	font-size: calc(100% / var(--font-ratio-1));
 	line-height: var(--line-height-narrow);
 
-	.entry-amazon & {
+	.p-amazon & {
 		margin-inline-start: 0.5em;
 	}
 }
