@@ -11,6 +11,12 @@
 	"ignorePatterns": ["node/dist/**/*.js", "public/script/*.js", "public/script/*.mjs"],
 	"overrides": [
 		{
+			"files": ["node/src/build.ts"],
+			"rules": {
+				"new-cap": "off"
+			}
+		},
+		{
 			"files": ["node/src/*Interface.ts"],
 			"rules": {
 				"semi": "off"

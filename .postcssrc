@@ -1,13 +1,12 @@
 {
-	"map": {
-		"inline": false,
-		"annotation": false
-	},
 	"plugins": {
-		"postcss-media-minmax": {},
-		"postcss-custom-media": {
-			"importFrom": "public/style/_src/foundation/_@custom-media.css"
+		"@csstools/postcss-global-data": {
+			"files": [
+				"public/style/_src/foundation/_@custom-media.css"
+			]
 		},
+		"postcss-media-minmax": {},
+		"postcss-custom-media": {},
 		"postcss-nesting": {},
 		"postcss-import": {},
 		"cssnano": {

@@ -16,7 +16,7 @@
 	font-size: calc(100% * var(--_title-font-expand-ratio));
 	line-height: var(--line-height-narrow);
 
-	@nest .p-title-list & {
+	.p-title-list & {
 		--_gap: 25px;
 		--_title-font-expand-ratio: var(--font-ratio-3);
 	}
@@ -71,11 +71,11 @@
 	pointer-events: auto;
 	color: var(--color-black);
 
-	@nest :any-link:hover & {
+	:any-link:hover & {
 		box-shadow: 0 0 5px var(--color-border-dark);
 	}
 
-	@nest :focus & {
+	:focus & {
 		outline: var(--outline-width-bold) solid var(--outline-color);
 		outline-offset: -1px;
 	}
@@ -84,11 +84,11 @@
 .c-entry-link__title {
 	margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
 
-	@nest :any-link:hover & {
+	:any-link:hover & {
 		--_bullet-color: var(--link-color-hover);
 	}
 
-	@nest :focus & {
+	:focus & {
 		outline: var(--outline-width) solid var(--outline-color);
 		outline-offset: var(--outline-offset-linkonly);
 	}
@@ -117,15 +117,15 @@
 	font-size: calc(100% / var(--font-ratio-1));
 	line-height: var(--line-height-narrow);
 
-	@nest figure > &:first-child {
+	:where(figure) > &:first-child {
 		margin-block-end: 0.5em;
 	}
 
-	@nest figure > &:last-child {
+	:where(figure) > &:last-child {
 		margin-block-start: 0.5em;
 	}
 
-	@nest .p-entry & {
+	.p-entry & {
 		color: var(--color-gray);
 	}
 

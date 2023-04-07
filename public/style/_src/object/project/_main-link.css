@@ -27,11 +27,11 @@
 	max-inline-size: 50%;
 	block-size: auto;
 
-	@nest :any-link:hover & {
+	:any-link:hover & {
 		box-shadow: 0 0 5px var(--color-border-dark);
 	}
 
-	@nest :focus & {
+	:focus & {
 		outline: var(--outline-width-bold) solid var(--outline-color);
 		outline-offset: -1px;
 	}
@@ -40,11 +40,11 @@
 .p-item__title {
 	margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
 
-	@nest :any-link:hover & {
+	:any-link:hover & {
 		--_bullet-color: var(--link-color-hover);
 	}
 
-	@nest :focus & {
+	:focus & {
 		outline: var(--outline-width) solid var(--outline-color);
 		outline-offset: var(--outline-offset-linkonly);
 	}

@@ -45,7 +45,7 @@
 .p-notes {
 	color: var(--color-darkgray);
 
-	@nest .p-entry & {
+	.p-entry & {
 		margin-inline: 1em;
 		color: var(--color-note);
 	}
@@ -117,7 +117,7 @@
 	padding: 1.25em min(1.25vw, 1.25em);
 	line-height: var(--line-height-narrow);
 
-	@nest .p-entry & {
+	.p-entry & {
 		&:not(:first-child) {
 			margin-block-start: calc(var(--stack-margin-base) * 3);
 		}
@@ -166,7 +166,7 @@
 	inline-size: 100%;
 	font-size: calc(100% / var(--font-ratio-1));
 
-	@nest .p-entry & {
+	.p-entry & {
 		border-color: var(--color-bg-dark);
 
 		&:last-child {

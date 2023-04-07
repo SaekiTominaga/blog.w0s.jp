@@ -8,7 +8,7 @@
 	flex-wrap: wrap;
 	line-height: var(--line-height-normal);
 
-	@nest .p-entry & {
+	.p-entry & {
 		margin-inline: 1em;
 		color: var(--color-note);
 	}
@@ -38,7 +38,7 @@
 	background: var(--color-white);
 	padding: 1em min(1vw, 1em);
 
-	@nest .p-entry & {
+	.p-entry & {
 		padding-block: 0.5em;
 
 		& > p {
