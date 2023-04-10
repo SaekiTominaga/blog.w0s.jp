@@ -71,18 +71,18 @@ export default class TweetMediaController extends Controller implements Controll
 			const tweetIdList: string[] = [];
 			const tweetDataList: BlogDb.TweetData[] = [];
 
-			for (const tweet of data) {
+			data.forEach((tweet) => {
 				const tweetId = tweet.id;
 
 				if (registeredTweetIds.includes(tweetId)) {
 					this.logger.debug(`DB 登録済み: ${tweetId}`);
-					continue;
+					return;
 				}
 
 				const user = includes?.users?.find((userInfo) => userInfo.id === tweet.author_id);
 				if (user === undefined) {
 					this.logger.error(`API から取得したユーザー情報が不整合: ${tweetId}`);
-					continue;
+					return;
 				}
 
 				tweetIdList.push(tweetId);
@@ -93,7 +93,7 @@ export default class TweetMediaController extends Controller implements Controll
 					text: tweet.text,
 					created_at: new Date(tweet.created_at ?? 0),
 				});
-			}
+			});
 
 			if (tweetDataList.length > 0) {
 				this.logger.info('ツイート情報を DB に登録', tweetIdList);
