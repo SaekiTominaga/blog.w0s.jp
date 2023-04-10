@@ -206,13 +206,13 @@ export default class MessageParser {
 			message
 				.replaceAll(CRLF, LF)
 				.split(LF)
-				.map(async (line) => {
+				.map(async (line, index) => {
 					const firstCharactor = line.substring(0, 1); // 先頭文字
 
 					if (this.#code) {
 						if (line === '```') {
 							/* コードの終端になったらそれまでの蓄積分を append する */
-							this.#appendCode();
+							this.#appendCode(index);
 
 							this.#code = false;
 							this.#codeBody = undefined;
@@ -915,15 +915,17 @@ export default class MessageParser {
 
 	/**
 	 * code を挿入する
+	 *
+	 * @param {number} lastLineNo - コードの最後の行の行数
 	 */
-	#appendCode(): void {
+	#appendCode(lastLineNo?: number): void {
 		const code = this.#codeBody;
 		if (code === undefined) {
 			return;
 		}
 
 		const language = this.#codeLanguage;
-		const codeId = `code-${md5(code)}`; // コード ID
+		const codeId = `code-${md5(lastLineNo !== undefined ? `${lastLineNo}${code}` : code)}`; // コード ID（記事内でのユニークさを保つためにコード文字列と行数を組み合わせた文字列を元にする）
 
 		/* コードの挿入 */
 		const codeWrapperElement = this.#document.createElement('div');

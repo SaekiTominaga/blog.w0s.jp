@@ -193,7 +193,7 @@ code2
 \`\`\`
 `)
 		)
-			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-7599e3e460f0cdcb6e7f57439f12a971" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-7599e3e460f0cdcb6e7f57439f12a971">code1
+			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-d58f8080245fe003007620661b93d2a9" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-d58f8080245fe003007620661b93d2a9">code1
 code2</code></pre></div>`);
 	});
 
@@ -206,7 +206,7 @@ code2
 \`\`\`
 `)
 		)
-			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-7599e3e460f0cdcb6e7f57439f12a971" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-7599e3e460f0cdcb6e7f57439f12a971" data-language="html">code1
+			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-d58f8080245fe003007620661b93d2a9" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-d58f8080245fe003007620661b93d2a9" data-language="html">code1
 code2</code></pre></div>`);
 	});
 
@@ -219,7 +219,7 @@ code2
 \`\`\`
 `)
 		)
-			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-7599e3e460f0cdcb6e7f57439f12a971" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-7599e3e460f0cdcb6e7f57439f12a971" data-language="css">code1
+			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-d58f8080245fe003007620661b93d2a9" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-d58f8080245fe003007620661b93d2a9" data-language="css">code1
 code2</code></pre></div>`);
 	});
 
@@ -232,7 +232,7 @@ code2
 \`\`\`
 `)
 		)
-			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-7599e3e460f0cdcb6e7f57439f12a971" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-7599e3e460f0cdcb6e7f57439f12a971" data-language="javascript">code1
+			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-d58f8080245fe003007620661b93d2a9" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-d58f8080245fe003007620661b93d2a9" data-language="javascript">code1
 code2</code></pre></div>`);
 	});
 
@@ -245,7 +245,7 @@ code2
 \`\`\`
 `)
 		)
-			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-7599e3e460f0cdcb6e7f57439f12a971" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-7599e3e460f0cdcb6e7f57439f12a971" data-language="typescript">code1
+			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-d58f8080245fe003007620661b93d2a9" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-d58f8080245fe003007620661b93d2a9" data-language="typescript">code1
 code2</code></pre></div>`);
 	});
 
@@ -258,7 +258,7 @@ code2
 \`\`\`
 `)
 		)
-			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-7599e3e460f0cdcb6e7f57439f12a971" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-7599e3e460f0cdcb6e7f57439f12a971" data-language="json">code1
+			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-d58f8080245fe003007620661b93d2a9" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-d58f8080245fe003007620661b93d2a9" data-language="json">code1
 code2</code></pre></div>`);
 	});
 
@@ -271,7 +271,7 @@ code2
 \`\`\`
 `)
 		)
-			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-7599e3e460f0cdcb6e7f57439f12a971" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-7599e3e460f0cdcb6e7f57439f12a971" data-language="xxx">code1
+			.toBe(`<div class="p-code"><div class="p-code__clipboard"><button type="button" is="w0s-clipboard" data-target-for="code-d58f8080245fe003007620661b93d2a9" class="p-code__clipboard-button"><img src="/image/entry/copy.svg" alt="コピー"></button></div><pre class="p-code__code"><code id="code-d58f8080245fe003007620661b93d2a9" data-language="xxx">code1
 code2</code></pre></div>`);
 	});
 
