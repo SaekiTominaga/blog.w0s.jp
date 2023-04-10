@@ -13,12 +13,9 @@
 		"disallowed-element": [
 			"base",
 			"style",
-			"h3",
-			"h4",
 			"h5",
 			"h6",
 			"hgroup",
-			"hr",
 			"s",
 			"i",
 			"u",
@@ -35,12 +32,27 @@
 			"/^[lcpu]-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$/",
 			"/^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
 			"/^js-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
+			"/^hljs-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/",
+			"/^language-[a-z]+$/",
+			"/^twitter-tweet$/",
 			"/^adsbygoogle$/"
 		]
 	},
 	"nodeRules": [
 		{
 			"selector": "[id], ins.adsbygoogle",
+			"rules": {
+				"no-empty-palpable-content": false
+			}
+		},
+		{
+			"selector": "aside",
+			"rules": {
+				"landmark-roles": false
+			}
+		},
+		{
+			"selector": "video",
 			"rules": {
 				"no-empty-palpable-content": false
 			}
@@ -61,6 +73,23 @@
 						]
 					}
 				}
+			}
+		}
+	],
+	"childNodeRules": [
+		{
+			"selector": ".p-entry__body",
+			"inheritance": true,
+			"rules": {
+				"character-reference": false
+			}
+		},
+		{
+			"selector": ".p-code__code",
+			"inheritance": true,
+			"rules": {
+				"no-empty-palpable-content": false,
+				"class-naming": false
 			}
 		}
 	]
