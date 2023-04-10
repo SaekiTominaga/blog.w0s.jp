@@ -998,10 +998,18 @@ export default class MessageParser {
 				sectionElement.appendChild(rowElement);
 
 				dataCols.forEach((data) => {
-					const cellElement = this.#document.createElement('th');
-					cellElement.setAttribute('scope', 'col');
-					cellElement.textContent = data.trim();
-					rowElement.appendChild(cellElement);
+					const text = data.trim();
+
+					if (text === '') {
+						const cellElement = this.#document.createElement('td');
+						cellElement.textContent = text;
+						rowElement.appendChild(cellElement);
+					} else {
+						const cellElement = this.#document.createElement('th');
+						cellElement.setAttribute('scope', 'col');
+						cellElement.textContent = text;
+						rowElement.appendChild(cellElement);
+					}
 				});
 			}
 
