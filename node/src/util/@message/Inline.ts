@@ -114,7 +114,7 @@ export default class Inline {
 	 * @returns {string} 変換後の HTML 文字列
 	 */
 	#markAnchor(input: string): string {
-		return input.replace(/\[(?<anchor>.+?)\]\((?<meta>[^(].*?)\)/g, (match, anchor_htmlescaped: string, meta_htmlescaped: string) => {
+		return input.replace(/\[(?<anchor>[^[]+?)\]\((?<meta>[^(].*?)\)/g, (match, anchor_htmlescaped: string, meta_htmlescaped: string) => {
 			const anchor = StringEscapeHtml.unescape(anchor_htmlescaped);
 			const meta = StringEscapeHtml.unescape(meta_htmlescaped);
 

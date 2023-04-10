@@ -52,6 +52,12 @@ describe('anchor', () => {
 		);
 	});
 
+	test('text in [', () => {
+		expect(inline.mark('[<s>text1</s>][<s>link1</s>](https://example.com/)[<s>text2</s>][<s>link2</s>](https://example.com/)')).toBe(
+			'[&lt;s&gt;text1&lt;/s&gt;]<a href="https://example.com/">&lt;s&gt;link1&lt;/s&gt;</a><b class="c-domain">(example.com)</b>[&lt;s&gt;text2&lt;/s&gt;]<a href="https://example.com/">&lt;s&gt;link2&lt;/s&gt;</a><b class="c-domain">(example.com)</b>'
+		);
+	});
+
 	test('URL &', () => {
 		expect(inline.mark('<s>text1</s>[<s>link1</s>](https://example.com/?foo=hoge&bar=piyo)<s>text2</s>')).toBe(
 			'&lt;s&gt;text1&lt;/s&gt;<a href="https://example.com/?foo=hoge&amp;bar=piyo">&lt;s&gt;link1&lt;/s&gt;</a><b class="c-domain">(example.com)</b>&lt;s&gt;text2&lt;/s&gt;'
