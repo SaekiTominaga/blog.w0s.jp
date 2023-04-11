@@ -1,10 +1,8 @@
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import fs from 'fs';
-import prettier from 'prettier';
 import { Request, Response } from 'express';
 import BlogEntryDao from '../dao/BlogEntryDao.js';
-import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import HttpResponse from '../util/HttpResponse.js';
@@ -21,8 +19,6 @@ import { PAAPI as ConfigurePaapi } from '../../configure/type/paapi.js';
  * 記事
  */
 export default class EntryController extends Controller implements ControllerInterface {
-	#configCommon: ConfigureCommon;
-
 	#config: Configure;
 
 	#configureMessage: ConfigureMessage;
@@ -33,9 +29,8 @@ export default class EntryController extends Controller implements ControllerInt
 	 * @param {ConfigureCommon} configCommon - 共通設定
 	 */
 	constructor(configCommon: ConfigureCommon) {
-		super();
+		super(configCommon);
 
-		this.#configCommon = configCommon;
 		this.#config = JSON.parse(fs.readFileSync('node/configure/entry.json', 'utf8'));
 		this.#configureMessage = JSON.parse(fs.readFileSync('node/configure/message.json', 'utf8'));
 		this.#configPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
@@ -46,13 +41,13 @@ export default class EntryController extends Controller implements ControllerInt
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const httpResponse = new HttpResponse(req, res, this.#configCommon);
+		const httpResponse = new HttpResponse(req, res, this.configCommon);
 
 		const requestQuery: BlogRequest.Entry = {
 			entry_id: <number>RequestUtil.number(req.params['entry_id']),
 		};
 
-		const dao = new BlogEntryDao(this.#configCommon);
+		const dao = new BlogEntryDao(this.configCommon);
 
 		const lastModified = await dao.getLastModified();
 
@@ -77,14 +72,14 @@ export default class EntryController extends Controller implements ControllerInt
 			return;
 		}
 
-		const messageParser = new MessageParser(this.#configCommon, {
+		const messageParser = new MessageParser(this.configCommon, {
 			entry_id: requestQuery.entry_id,
 			dbh: await dao.getDbh(),
 			anchor_host_icons: this.#configureMessage.anchor_host_icon,
 			amazon_tracking_id: this.#configPaapi.partner_tag,
 		});
 
-		const messageParserInline = new MessageParserInline(this.#configCommon);
+		const messageParserInline = new MessageParserInline(this.configCommon);
 
 		const sidebar = new Sidebar(dao, messageParserInline);
 
@@ -93,7 +88,7 @@ export default class EntryController extends Controller implements ControllerInt
 			dao.getCategories(requestQuery.entry_id),
 			dao.getRelations(requestQuery.entry_id),
 			sidebar.getEntryCountOfCategory(),
-			sidebar.getNewlyEntries(this.#configCommon.sidebar.newly.maximum_number),
+			sidebar.getNewlyEntries(this.configCommon.sidebar.newly.maximum_number),
 		]);
 
 		let ogImage: string | null = null;
@@ -115,7 +110,7 @@ export default class EntryController extends Controller implements ControllerInt
 		}
 
 		/* HTML 生成 */
-		const html = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view.success}`, {
+		const html = await ejs.renderFile(`${this.configCommon.views}/${this.#config.view.success}`, {
 			page: {
 				path: req.path,
 				query: requestQuery,
@@ -141,23 +136,12 @@ export default class EntryController extends Controller implements ControllerInt
 			newlyEntries: newlyEntries,
 		});
 
-		let htmlFormatted = '';
-		try {
-			htmlFormatted = prettier.format(html, this.#configCommon.prettier['html'] as prettier.Options).trim();
-		} catch (e) {
-			this.logger.error('Prettier failed', e);
-			htmlFormatted = html;
-		}
-
 		/* レンダリング、ファイル出力 */
-		const htmlBrotli = Compress.brotliText(htmlFormatted);
-
-		await Promise.all([
-			httpResponse.send200({ body: htmlFormatted, brotliBody: htmlBrotli }),
-			fs.promises.writeFile(htmlFilePath, htmlFormatted),
-			fs.promises.writeFile(htmlBrotliFilePath, htmlBrotli),
-		]);
-		this.logger.info('HTML file created', htmlFilePath);
-		this.logger.info('HTML Brotli file created', htmlBrotliFilePath);
+		await this.response(html, {
+			filePath: htmlFilePath,
+			brotliFilePath: htmlBrotliFilePath,
+			prettierConfig: this.configCommon.prettier.config,
+			httpResponse: httpResponse,
+		});
 	}
 }

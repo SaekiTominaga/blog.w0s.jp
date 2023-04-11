@@ -2,10 +2,8 @@ import dayjs from 'dayjs';
 import ejs from 'ejs';
 import fs from 'fs';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
-import prettier from 'prettier';
 import { Request, Response } from 'express';
 import BlogListDao from '../dao/BlogListDao.js';
-import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import HttpResponse from '../util/HttpResponse.js';
@@ -19,17 +17,14 @@ import { NoName as ConfigureCommon } from '../../configure/type/common.js';
  * 記事リスト
  */
 export default class ListController extends Controller implements ControllerInterface {
-	#configCommon: ConfigureCommon;
-
 	#config: Configure;
 
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
 	 */
 	constructor(configCommon: ConfigureCommon) {
-		super();
+		super(configCommon);
 
-		this.#configCommon = configCommon;
 		this.#config = JSON.parse(fs.readFileSync('node/configure/list.json', 'utf8'));
 	}
 
@@ -38,13 +33,13 @@ export default class ListController extends Controller implements ControllerInte
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const httpResponse = new HttpResponse(req, res, this.#configCommon);
+		const httpResponse = new HttpResponse(req, res, this.configCommon);
 
 		const requestQuery: BlogRequest.List = {
 			page: RequestUtil.number(req.params['page']) ?? 1,
 		};
 
-		const dao = new BlogListDao(this.#configCommon);
+		const dao = new BlogListDao(this.configCommon);
 
 		const lastModified = await dao.getLastModified();
 
@@ -70,14 +65,14 @@ export default class ListController extends Controller implements ControllerInte
 			return;
 		}
 
-		const messageParserInline = new MessageParserInline(this.#configCommon);
+		const messageParserInline = new MessageParserInline(this.configCommon);
 
 		const sidebar = new Sidebar(dao, messageParserInline);
 
 		const [entryCount, entryCountOfCategoryList, newlyEntries] = await Promise.all([
 			dao.getEntryCount(),
 			sidebar.getEntryCountOfCategory(),
-			sidebar.getNewlyEntries(this.#configCommon.sidebar.newly.maximum_number),
+			sidebar.getNewlyEntries(this.configCommon.sidebar.newly.maximum_number),
 		]);
 
 		const entries: BlogView.EntryData[] = [];
@@ -122,7 +117,7 @@ export default class ListController extends Controller implements ControllerInte
 		const totalPage = Math.ceil(entryCount / this.#config.maximum_number);
 
 		/* HTML 生成 */
-		const html = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view.success}`, {
+		const html = await ejs.renderFile(`${this.configCommon.views}/${this.#config.view.success}`, {
 			page: {
 				path: req.path,
 				query: requestQuery,
@@ -133,23 +128,12 @@ export default class ListController extends Controller implements ControllerInte
 			newlyEntries: newlyEntries,
 		});
 
-		let htmlFormatted = '';
-		try {
-			htmlFormatted = prettier.format(html, this.#configCommon.prettier['html'] as prettier.Options).trim();
-		} catch (e) {
-			this.logger.error('Prettier failed', e);
-			htmlFormatted = html;
-		}
-
 		/* レンダリング、ファイル出力 */
-		const htmlBrotli = Compress.brotliText(htmlFormatted);
-
-		await Promise.all([
-			httpResponse.send200({ body: htmlFormatted, brotliBody: htmlBrotli }),
-			fs.promises.writeFile(htmlFilePath, htmlFormatted),
-			fs.promises.writeFile(htmlBrotliFilePath, htmlBrotli),
-		]);
-		this.logger.info('HTML file created', htmlFilePath);
-		this.logger.info('HTML Brotli file created', htmlBrotliFilePath);
+		await this.response(html, {
+			filePath: htmlFilePath,
+			brotliFilePath: htmlBrotliFilePath,
+			prettierConfig: this.configCommon.prettier.config,
+			httpResponse: httpResponse,
+		});
 	}
 }

@@ -50,7 +50,9 @@ export type FilepathFor500InternalServerError = string;
 export type NoName29 = string;
 export type NoName31 = string;
 export type Blog = string;
-export type NoName34 = number;
+export type NoName32 = string;
+export type Lint = string;
+export type NoName35 = number;
 
 export interface NoName {
   port: HTTP;
@@ -61,10 +63,12 @@ export interface NoName {
   temp: NoName27;
   errorpage: NoName28;
   logger: Logger;
+  mail: EMail;
   regexp: NoName30;
   sqlite: SQLite;
-  sidebar: NoName32;
   prettier: Prettier;
+  markuplint: Markuplint;
+  sidebar: NoName33;
 }
 export interface NoName1 {
   urlencoded: Urlencoded;
@@ -140,6 +144,14 @@ export interface NoName28 {
 export interface Logger {
   path: NoName29;
 }
+export interface EMail {
+  smtp: string;
+  user: string;
+  password: string;
+  port: number;
+  from: string;
+  to: string;
+}
 export interface NoName30 {
   [k: string]: NoName31;
 }
@@ -149,15 +161,15 @@ export interface SQLite {
 export interface DBNode {
   blog: Blog;
 }
-export interface NoName32 {
-  newly: NoName33;
+export interface Prettier {
+  config: NoName32;
+}
+export interface Markuplint {
+  mail_title: Lint;
 }
 export interface NoName33 {
-  maximum_number: NoName34;
+  newly: NoName34;
 }
-/**
- * https://prettier.io/docs/en/options.html
- */
-export interface Prettier {
-  [k: string]: unknown;
+export interface NoName34 {
+  maximum_number: NoName35;
 }
