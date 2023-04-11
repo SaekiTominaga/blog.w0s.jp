@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "request", "response", "static", "views", "temp", "errorpage", "logger", "regexp", "sqlite", "sidebar", "prettier"],
+	"required": ["port", "request", "response", "static", "views", "temp", "errorpage", "logger", "regexp", "sqlite", "prettier", "sidebar"],
 	"properties": {
 		"port": {
 			"type": "integer",
@@ -349,6 +349,18 @@
 			},
 			"additionalProperties": false
 		},
+		"prettier": {
+			"type": "object",
+			"title": "Prettier",
+			"required": ["config"],
+			"properties": {
+				"config": {
+					"type": "string",
+					"title": "構成ファイルパス"
+				}
+			},
+			"additionalProperties": false
+		},
 		"sidebar": {
 			"type": "object",
 			"title": "サイドバー",
@@ -369,11 +381,6 @@
 				}
 			},
 			"additionalProperties": false
-		},
-		"prettier": {
-			"type": "object",
-			"title": "Prettier",
-			"description": "https://prettier.io/docs/en/options.html"
 		}
 	},
 	"additionalProperties": false

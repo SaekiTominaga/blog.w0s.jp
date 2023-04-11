@@ -6,7 +6,7 @@
 
 	"overrides": [
 		{
-			"files": "*.ejs",
+			"files": ["*.html", "*.ejs"],
 			"options": {
 				"printWidth": 9999
 			}

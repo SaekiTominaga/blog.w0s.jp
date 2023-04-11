@@ -22,7 +22,7 @@ export default class Css extends BuildComponent implements BuildComponentInterfa
 
 		const fileList = await globby(filesPath);
 
-		const prettierOptions = await PrettierUtil.getOptions(this.configBuild.prettier.config, 'css', '*.css');
+		const prettierOptions = await PrettierUtil.getOptions(this.configCommon.prettier.config, 'css', '*.css');
 
 		fileList.forEach(async (filePath) => {
 			/* ファイル読み込み */

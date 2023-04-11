@@ -1,10 +1,8 @@
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import fs from 'fs';
-import prettier from 'prettier';
 import { Request, Response } from 'express';
 import BlogEntryDao from '../dao/BlogEntryDao.js';
-import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import HttpResponse from '../util/HttpResponse.js';
@@ -141,23 +139,12 @@ export default class EntryController extends Controller implements ControllerInt
 			newlyEntries: newlyEntries,
 		});
 
-		let htmlFormatted = '';
-		try {
-			htmlFormatted = prettier.format(html, this.#configCommon.prettier['html'] as prettier.Options).trim();
-		} catch (e) {
-			this.logger.error('Prettier failed', e);
-			htmlFormatted = html;
-		}
-
 		/* レンダリング、ファイル出力 */
-		const htmlBrotli = Compress.brotliText(htmlFormatted);
-
-		await Promise.all([
-			httpResponse.send200({ body: htmlFormatted, brotliBody: htmlBrotli }),
-			fs.promises.writeFile(htmlFilePath, htmlFormatted),
-			fs.promises.writeFile(htmlBrotliFilePath, htmlBrotli),
-		]);
-		this.logger.info('HTML file created', htmlFilePath);
-		this.logger.info('HTML Brotli file created', htmlBrotliFilePath);
+		await this.response(html, {
+			filePath: htmlFilePath,
+			brotliFilePath: htmlBrotliFilePath,
+			prettierConfig: this.#configCommon.prettier.config,
+			httpResponse: httpResponse,
+		});
 	}
 }

@@ -30,7 +30,6 @@
 		"_svg-build:watch": "onchange -f add -f change -v image/**/*.svg -- svgo -i {{file}} -o public/{{file}} --config=svgo.config.cjs",
 		"_svg-build:compress": "onchange -f add -f change -v public/image/**/*.svg -- brotlin compress {{file}} -m 1",
 		"_node-config-validate:amazon": "ajv --spec=draft7 -s node/configure/schema/amazon.json -d node/configure/amazon.json",
-		"_node-config-validate:build": "ajv --spec=draft7 -s node/configure/schema/build.json -d node/configure/build.json",
 		"_node-config-validate:category": "ajv --spec=draft7 -s node/configure/schema/category.json -d node/configure/category.json",
 		"_node-config-validate:common": "ajv --spec=draft7 -s node/configure/schema/common.json -d node/configure/common.json",
 		"_node-config-validate:entry": "ajv --spec=draft7 -s node/configure/schema/entry.json -d node/configure/entry.json",

@@ -23,6 +23,7 @@ import { NoName as ConfigureMessage } from '../../configure/type/message.js';
 import { PAAPI as ConfigurePaapi } from '../../configure/type/paapi.js';
 import { NoName as Configure } from '../../configure/type/post.js';
 import { TwitterAPI as ConfigureTwitter } from '../../configure/type/twitter.js';
+import PrettierUtil from '../util/PrettierUtil.js';
 
 interface PostResults {
 	success: boolean;
@@ -313,10 +314,12 @@ export default class PostController extends Controller implements ControllerInte
 				entries: entriesView,
 			});
 
+			const prettierOptions = await PrettierUtil.getOptions(this.#configCommon.prettier.config, 'html', '*.html');
+
 			let feedXmlFormatted = '';
 			try {
 				feedXmlFormatted = prettier
-					.format(feedXml, this.#configCommon.prettier['html'] as prettier.Options)
+					.format(feedXml, prettierOptions)
 					.replaceAll(/\t*<!-- prettier-ignore -->\t*\n/g, '')
 					.trim();
 			} catch (e) {
