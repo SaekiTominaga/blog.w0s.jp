@@ -14,17 +14,14 @@ import RequestUtil from '../../util/RequestUtil.js';
  * Amazon 商品画像取得
  */
 export default class AmazonImageController extends Controller implements ControllerInterface {
-	#configCommon: ConfigureCommon;
-
 	#configPaapi: ConfigurePaapi;
 
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
 	 */
 	constructor(configCommon: ConfigureCommon) {
-		super();
+		super(configCommon);
 
-		this.#configCommon = configCommon;
 		this.#configPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
 	}
 
@@ -54,14 +51,14 @@ export default class AmazonImageController extends Controller implements Control
 			return;
 		}
 
-		const dao = new BlogAmazonDao(this.#configCommon);
+		const dao = new BlogAmazonDao(this.configCommon);
 		const registeredAsins = await dao.getAsins(); // DB に登録済みの ASIN
 		const unregisteredAsins = requestQuery.asin.filter((asin) => !registeredAsins.includes(asin)); // DB に登録されていない ASIN
 
 		const paapiErros: Set<string> = new Set(); // PA-API でのエラー情報を格納
 
 		if (unregisteredAsins.length >= 1) {
-			const paapiResponse = await amazonPaapi.GetItems(
+			const paapiResponse = (await amazonPaapi.GetItems(
 				{
 					PartnerTag: this.#configPaapi.partner_tag,
 					PartnerType: 'Associates',
@@ -75,7 +72,7 @@ export default class AmazonImageController extends Controller implements Control
 					ItemIds: unregisteredAsins,
 					Resources: ['Images.Primary.Large', 'ItemInfo.Classifications', 'ItemInfo.ContentInfo', 'ItemInfo.Title'],
 				}
-			) as GetItemsResponse;
+			)) as GetItemsResponse;
 			const paapiResponseErrors = paapiResponse.Errors;
 			if (paapiResponseErrors !== undefined) {
 				for (const error of paapiResponseErrors) {

@@ -3,7 +3,22 @@
 	"$id": "https://blog.w0s.jp/common.json",
 	"type": "object",
 	"title": "富永日記帳",
-	"required": ["port", "request", "response", "static", "views", "temp", "errorpage", "logger", "regexp", "sqlite", "prettier", "sidebar"],
+	"required": [
+		"port",
+		"request",
+		"response",
+		"static",
+		"views",
+		"temp",
+		"errorpage",
+		"logger",
+		"mail",
+		"regexp",
+		"sqlite",
+		"prettier",
+		"markuplint",
+		"sidebar"
+	],
 	"properties": {
 		"port": {
 			"type": "integer",
@@ -321,6 +336,33 @@
 			},
 			"additionalProperties": false
 		},
+		"mail": {
+			"type": "object",
+			"title": "管理者への通知に使用する E-mail の各種情報",
+			"required": ["smtp", "user", "password", "port", "from", "to"],
+			"properties": {
+				"smtp": {
+					"type": "string"
+				},
+				"user": {
+					"type": "string"
+				},
+				"password": {
+					"type": "string"
+				},
+				"port": {
+					"type": "integer",
+					"minimum": 0
+				},
+				"from": {
+					"type": "string"
+				},
+				"to": {
+					"type": "string"
+				}
+			},
+			"additionalProperties": false
+		},
 		"regexp": {
 			"type": "object",
 			"title": "正規表現",
@@ -357,6 +399,18 @@
 				"config": {
 					"type": "string",
 					"title": "構成ファイルパス"
+				}
+			},
+			"additionalProperties": false
+		},
+		"markuplint": {
+			"type": "object",
+			"title": "Markuplint",
+			"required": ["mail_title"],
+			"properties": {
+				"mail_title": {
+					"type": "string",
+					"title": "lint 違反があった際の通知メールタイトル"
 				}
 			},
 			"additionalProperties": false

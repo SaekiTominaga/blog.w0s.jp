@@ -14,17 +14,14 @@ import { NoName as ConfigureCommon } from '../../configure/type/common.js';
  * Amazon 商品管理
  */
 export default class BlogAmazonController extends Controller implements ControllerInterface {
-	#configCommon: ConfigureCommon;
-
 	#config: Configure;
 
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
 	 */
 	constructor(configCommon: ConfigureCommon) {
-		super();
+		super(configCommon);
 
-		this.#configCommon = configCommon;
 		this.#config = JSON.parse(fs.readFileSync('node/configure/amazon.json', 'utf8'));
 	}
 
@@ -33,14 +30,14 @@ export default class BlogAmazonController extends Controller implements Controll
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const httpResponse = new HttpResponse(req, res, this.#configCommon);
+		const httpResponse = new HttpResponse(req, res, this.configCommon);
 
 		const requestQuery: BlogRequest.Amazon = {
 			asin: RequestUtil.string(req.body['asin']),
 			action_delete: RequestUtil.boolean(req.body['actiondel']),
 		};
 
-		const dao = new BlogAmazonDao(this.#configCommon);
+		const dao = new BlogAmazonDao(this.configCommon);
 
 		if (requestQuery.action_delete) {
 			/* 削除 */
@@ -87,8 +84,8 @@ export default class BlogAmazonController extends Controller implements Controll
 		);
 
 		/* レンダリング */
-		res.setHeader('Content-Security-Policy', this.#configCommon.response.header.csp_html);
-		res.setHeader('Content-Security-Policy-Report-Only', this.#configCommon.response.header.cspro_html);
+		res.setHeader('Content-Security-Policy', this.configCommon.response.header.csp_html);
+		res.setHeader('Content-Security-Policy-Report-Only', this.configCommon.response.header.cspro_html);
 		res.render(this.#config.view.init, {
 			page: {
 				path: req.path,

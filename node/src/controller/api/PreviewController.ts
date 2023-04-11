@@ -11,17 +11,14 @@ import RequestUtil from '../../util/RequestUtil.js';
  * 本文プレビュー
  */
 export default class PreviewController extends Controller implements ControllerInterface {
-	#configCommon: ConfigureCommon;
-
 	#configureMessage: ConfigureMessage;
 
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
 	 */
 	constructor(configCommon: ConfigureCommon) {
-		super();
+		super(configCommon);
 
-		this.#configCommon = configCommon;
 		this.#configureMessage = JSON.parse(fs.readFileSync('node/configure/message.json', 'utf8'));
 	}
 
@@ -40,7 +37,7 @@ export default class PreviewController extends Controller implements ControllerI
 			return;
 		}
 
-		const messageParser = new MessageParser(this.#configCommon, {
+		const messageParser = new MessageParser(this.configCommon, {
 			anchor_host_icons: this.#configureMessage.anchor_host_icon,
 		});
 

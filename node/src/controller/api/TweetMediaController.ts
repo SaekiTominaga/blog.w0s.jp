@@ -12,17 +12,14 @@ import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.
  * ツイート情報取得
  */
 export default class TweetMediaController extends Controller implements ControllerInterface {
-	#configCommon: ConfigureCommon;
-
 	#configTwitter: ConfigureTwitter;
 
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
 	 */
 	constructor(configCommon: ConfigureCommon) {
-		super();
+		super(configCommon);
 
-		this.#configCommon = configCommon;
 		this.#configTwitter = JSON.parse(fs.readFileSync('node/configure/twitter.json', 'utf8'));
 	}
 
@@ -64,7 +61,7 @@ export default class TweetMediaController extends Controller implements Controll
 			}
 		);
 
-		const dao = new BlogTweetDao(this.#configCommon);
+		const dao = new BlogTweetDao(this.configCommon);
 		const registeredTweetIds = await dao.getAllTweetIds();
 
 		if (data !== undefined) {

@@ -45,8 +45,6 @@ interface MediaUploadResults {
  * 記事投稿
  */
 export default class PostController extends Controller implements ControllerInterface {
-	#configCommon: ConfigureCommon;
-
 	#config: Configure;
 
 	#configPaapi: ConfigurePaapi;
@@ -62,9 +60,8 @@ export default class PostController extends Controller implements ControllerInte
 	 * @param {string} env - 共通設定
 	 */
 	constructor(configCommon: ConfigureCommon, env: Express.Env) {
-		super();
+		super(configCommon);
 
-		this.#configCommon = configCommon;
 		this.#config = JSON.parse(fs.readFileSync('node/configure/post.json', 'utf8'));
 		this.#configureMessage = JSON.parse(fs.readFileSync('node/configure/message.json', 'utf8'));
 		this.#configPaapi = JSON.parse(fs.readFileSync('node/configure/paapi.json', 'utf8'));
@@ -78,7 +75,7 @@ export default class PostController extends Controller implements ControllerInte
 	 * @param {Response} res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const httpResponse = new HttpResponse(req, res, this.#configCommon);
+		const httpResponse = new HttpResponse(req, res, this.configCommon);
 
 		/* Basic 認証 */
 		const httpBasicCredentials = new HttpBasicAuth(req).getCredentials();
@@ -114,7 +111,7 @@ export default class PostController extends Controller implements ControllerInte
 		const viewUpdateResults: Set<ViewUpdateResults> = new Set();
 		const mediaUploadResults: Set<MediaUploadResults> = new Set();
 
-		const dao = new BlogPostDao(this.#configCommon);
+		const dao = new BlogPostDao(this.configCommon);
 
 		if (requestQuery.action_add) {
 			/* 登録 */
@@ -233,8 +230,8 @@ export default class PostController extends Controller implements ControllerInte
 		}
 
 		/* レンダリング */
-		res.setHeader('Content-Security-Policy', this.#configCommon.response.header.csp_html);
-		res.setHeader('Content-Security-Policy-Report-Only', this.#configCommon.response.header.cspro_html);
+		res.setHeader('Content-Security-Policy', this.configCommon.response.header.csp_html);
+		res.setHeader('Content-Security-Policy-Report-Only', this.configCommon.response.header.cspro_html);
 		res.setHeader('Referrer-Policy', 'no-referrer');
 		res.render(this.#config.view.init, {
 			page: {
@@ -297,7 +294,7 @@ export default class PostController extends Controller implements ControllerInte
 					entriesView.add({
 						id: entry.id,
 						title: entry.title,
-						message: await new MessageParser(this.#configCommon, {
+						message: await new MessageParser(this.configCommon, {
 							entry_id: entry.id,
 							dbh: dbh,
 							anchor_host_icons: this.#configureMessage.anchor_host_icon,
@@ -309,12 +306,12 @@ export default class PostController extends Controller implements ControllerInte
 				})
 			);
 
-			const feedXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.feed_create.view_path}`, {
+			const feedXml = await ejs.renderFile(`${this.configCommon.views}/${this.#config.feed_create.view_path}`, {
 				updated_at: [...entriesView].at(0)?.updated_at,
 				entries: entriesView,
 			});
 
-			const prettierOptions = await PrettierUtil.getOptions(this.#configCommon.prettier.config, 'html', '*.html');
+			const prettierOptions = await PrettierUtil.getOptions(this.configCommon.prettier.config, 'html', '*.html');
 
 			let feedXmlFormatted = '';
 			try {
@@ -330,7 +327,7 @@ export default class PostController extends Controller implements ControllerInte
 			const feedXmlBrotli = Compress.brotliText(feedXmlFormatted);
 
 			/* ファイル出力 */
-			const filePath = `${this.#configCommon.static.root}${this.#config.feed_create.path}`;
+			const filePath = `${this.configCommon.static.root}${this.#config.feed_create.path}`;
 			const brotliFilePath = `${filePath}.br`;
 
 			await Promise.all([fs.promises.writeFile(filePath, feedXmlFormatted), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
@@ -362,7 +359,7 @@ export default class PostController extends Controller implements ControllerInte
 				),
 			]);
 
-			const sitemapXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.sitemap_create.view_path}`, {
+			const sitemapXml = await ejs.renderFile(`${this.configCommon.views}/${this.#config.sitemap_create.view_path}`, {
 				updated_at: dayjs(lastModifiedDto),
 				entries: entries,
 			});
@@ -375,7 +372,7 @@ export default class PostController extends Controller implements ControllerInte
 			});
 
 			/* ファイル出力 */
-			const filePath = `${this.#configCommon.static.root}${this.#config.sitemap_create.path}`;
+			const filePath = `${this.configCommon.static.root}${this.#config.sitemap_create.path}`;
 
 			await fs.promises.writeFile(filePath, sitemapXmlFormated);
 			this.logger.info('Sitemap file created', filePath);
@@ -413,7 +410,7 @@ export default class PostController extends Controller implements ControllerInte
 					const newlyJson = JSON.stringify(
 						datas.map((data) => ({
 							id: data.id,
-							title: new MessageParserInline(this.#configCommon).mark(data.title, { code: true }),
+							title: new MessageParserInline(this.configCommon).mark(data.title, { code: true }),
 						}))
 					);
 
@@ -424,7 +421,7 @@ export default class PostController extends Controller implements ControllerInte
 						fileNameType === ''
 							? `${this.#config.newly_json_create.filename_prefix}`
 							: `${this.#config.newly_json_create.filename_prefix}${this.#config.newly_json_create.filename_separator}${fileNameType}`;
-					const filePath = `${this.#configCommon.static.root}/${this.#config.newly_json_create.directory}/${fileName}.${
+					const filePath = `${this.configCommon.static.root}/${this.#config.newly_json_create.directory}/${fileName}.${
 						this.#config.newly_json_create.extension
 					}`;
 					const brotliFilePath = `${filePath}.br`;
