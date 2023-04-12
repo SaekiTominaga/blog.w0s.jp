@@ -21,9 +21,7 @@
 			"u",
 			"br",
 			"wbr",
-			"embed",
-			"area",
-			"noscript"
+			"area"
 		],
 		"label-has-control": false,
 		"require-accessible-name": false,
