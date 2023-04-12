@@ -9,22 +9,23 @@
 	justify-content: center;
 	align-items: center;
 	gap: 1em;
+	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-narrow);
+
+	/* エラーメッセージ */
+	> h1 {
+		font-size: calc(100% * var(--font-ratio-5));
+	}
 }
 
 /* エラーコード */
 .p-err-title__code {
-	display: inline-block;
+	order: -1;
 	border: 1px solid;
 	border-radius: var(--border-radius-normal);
 	background: var(--color-white);
 	padding: 0.5em 0.75em;
 	font-size: calc(100% * var(--font-ratio-2));
-}
-
-/* エラーメッセージ */
-.p-err-title__msg {
-	font-size: calc(100% * var(--font-ratio-5));
 }
 
 /* ===== トップページの埋め込み ===== */
