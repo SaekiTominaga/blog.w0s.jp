@@ -94,7 +94,7 @@
 		"@types/twitter-text": "^3.1.4",
 		"@types/w3c-xmlserializer": "^2.0.2",
 		"@w0s/eslint-config": "^1.1.0",
-		"@w0s/markuplint-config": "^2.3.0",
+		"@w0s/markuplint-config": "^2.4.0",
 		"@w0s/stylelint-config": "^1.1.0",
 		"@w0s/tsconfig": "^1.0.1",
 		"ajv-cli": "^5.0.0",
