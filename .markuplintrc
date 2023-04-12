@@ -92,5 +92,22 @@
 				"class-naming": false
 			}
 		}
-	]
+	],
+	"overrides": {
+		"*.html": {
+			"rules": {
+				"label-has-control": true,
+				"require-accessible-name": true,
+				"required-h1": true
+			},
+			"nodeRules": [
+				{
+					"selector": "table",
+					"rules": {
+						"require-accessible-name": false
+					}
+				}
+			]
+		}
+	}
 }
