@@ -16,14 +16,14 @@
 		<script src="https://analytics.w0s.jp/matomo/matomo.js" async=""></script>
 		<script src="/script/analytics.js" defer=""></script>
 	</head>
-	<body itemscope="" itemtype="http://schema.org/Blog">
+	<body>
 		<div class="l-page">
 			<%- include('./_include/_header', { heading: false } ) -%>
 
 			<div id="content" class="l-content">
 				<div class="l-content__header">
 					<div class="p-title">
-						<h1 itemprop="name">「<%= page.query.category_name %>」の記事（<%= count %>件）</h1>
+						<h1>「<%= page.query.category_name %>」の記事（<%= count %>件）</h1>
 					</div>
 				</div>
 				<main class="l-content__main">
