@@ -38,34 +38,38 @@
 		<%_ } _%>
 		<script src="https://analytics.w0s.jp/matomo/matomo.js" async=""></script>
 		<script src="/script/analytics.js" defer=""></script>
+
+		<script type="application/ld+json">
+			<%- jsonLd %>
+		</script>
 	</head>
-	<body itemscope="" itemtype="http://schema.org/Blog">
+	<body>
 		<div class="l-page">
 			<%- include('./_include/_header', { heading: false } ) -%>
 
 			<div id="content" class="l-content">
 				<div class="l-content__main">
-					<article class="p-entry" itemscope="" itemtype="http://schema.org/BlogPosting">
+					<article class="p-entry">
 						<header class="p-entry__header">
 							<div class="p-entry-header-title">
-								<h1 itemprop="name"><%- title_marked %></h1>
+								<h1><%- title_marked %></h1>
 							</div>
 
 							<dl class="p-entry-header-date c-entry-meta">
 								<div class="c-entry-meta__group">
 									<dt>投稿</dt>
-									<dd><time datetime="<%= created.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="datePublished"><%= created.format('YYYY年M月D日') %></time></dd>
+									<dd><time datetime="<%= created.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= created.format('YYYY年M月D日') %></time></dd>
 								</div>
 								<%_ if (lastUpdated !== null) { _%>
 								<div class="c-entry-meta__group">
 									<dt>最終更新</dt>
-									<dd><time datetime="<%= lastUpdated.format('YYYY-MM-DDTHH:mm:ssZ') %>" itemprop="dateModified"><%= lastUpdated.format('YYYY年M月D日') %></time></dd>
+									<dd><time datetime="<%= lastUpdated.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= lastUpdated.format('YYYY年M月D日') %></time></dd>
 								</div>
 								<%_ } _%>
 							</dl>
 						</header>
 
-						<main class="p-entry__body" itemprop="articleBody"><%- message %></main>
+						<main class="p-entry__body"><%- message %></main>
 
 						<footer class="p-entry__footer">
 							<%_ if (categoryNames.length >= 1) { _%>

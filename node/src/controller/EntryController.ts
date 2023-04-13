@@ -91,11 +91,11 @@ export default class EntryController extends Controller implements ControllerInt
 			sidebar.getNewlyEntries(this.configCommon.sidebar.newly.maximum_number),
 		]);
 
-		let ogImage: string | null = null;
+		let imageUrl: string | null = null;
 		if (entryDto.image_internal !== null) {
-			ogImage = `https://media.w0s.jp/image/blog/${entryDto.image_internal}`;
+			imageUrl = `https://media.w0s.jp/image/blog/${entryDto.image_internal}`;
 		} else if (entryDto.image_external !== null) {
-			ogImage = entryDto.image_external;
+			imageUrl = entryDto.image_external;
 		}
 
 		const relations: BlogView.EntryData[] = [];
@@ -109,6 +109,22 @@ export default class EntryController extends Controller implements ControllerInt
 			});
 		}
 
+		const jsonLd: Map<string, string | string[]> = new Map([
+			['@context', 'https://schema.org/'],
+			['@type', 'BlogPosting'],
+		]);
+		jsonLd.set('datePublished', dayjs(entryDto.created_at).format('YYYY-MM-DDTHH:mm:ssZ'));
+		if (entryDto.updated_at !== null) {
+			jsonLd.set('dateModified', dayjs(entryDto.updated_at).format('YYYY-MM-DDTHH:mm:ssZ'));
+		}
+		jsonLd.set('headline', entryDto.title);
+		if (entryDto.description !== null) {
+			jsonLd.set('description', entryDto.description);
+		}
+		if (imageUrl !== null) {
+			jsonLd.set('image', imageUrl);
+		}
+
 		/* HTML 生成 */
 		const html = await ejs.renderFile(`${this.configCommon.views}/${this.#config.view.success}`, {
 			page: {
@@ -117,12 +133,13 @@ export default class EntryController extends Controller implements ControllerInt
 			},
 			title: entryDto.title,
 			title_marked: messageParserInline.mark(entryDto.title, { code: true }),
-			message: message,
 			description: entryDto.description,
 			created: dayjs(entryDto.created_at),
 			lastUpdated: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : null,
+			jsonLd: JSON.stringify(Object.fromEntries(jsonLd)),
+			message: message,
 
-			ogImage: ogImage,
+			ogImage: imageUrl,
 			tweet: messageParser.isTweetExit(),
 
 			categoryNames: categoriesDto.map((category) => category.name),
