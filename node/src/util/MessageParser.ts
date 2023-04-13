@@ -202,363 +202,358 @@ export default class MessageParser {
 		const CRLF = '\r\n';
 		const LF = '\n';
 
-		await Promise.all(
-			message
-				.replaceAll(CRLF, LF)
-				.split(LF)
-				.map(async (line, index) => {
-					const firstCharactor = line.substring(0, 1); // 先頭文字
+		for (const [index, line] of message.replaceAll(CRLF, LF).split(LF).entries()) {
+			const firstCharactor = line.substring(0, 1); // 先頭文字
 
-					if (this.#code) {
-						if (line === '```') {
-							/* コードの終端になったらそれまでの蓄積分を append する */
-							this.#appendCode(index);
+			if (this.#code) {
+				if (line === '```') {
+					/* コードの終端になったらそれまでの蓄積分を append する */
+					this.#appendCode(index);
 
-							this.#code = false;
-							this.#codeBody = undefined;
-							this.#codeLanguage = undefined;
-						} else {
-							/* 終端になるまでコード文字列を蓄積する */
-							this.#codeBody = this.#codeBody === undefined ? line : `${this.#codeBody}${LF}${line}`;
-						}
+					this.#code = false;
+					this.#codeBody = undefined;
+					this.#codeLanguage = undefined;
+				} else {
+					/* 終端になるまでコード文字列を蓄積する */
+					this.#codeBody = this.#codeBody === undefined ? line : `${this.#codeBody}${LF}${line}`;
+				}
 
-						return;
-					}
+				continue;
+			}
 
-					if (this.#quoteCite && firstCharactor !== '?') {
-						this.#appendQuoteCite();
+			if (this.#quoteCite && firstCharactor !== '?') {
+				this.#appendQuoteCite();
 
-						this.#quoteTitle = undefined;
-						this.#quoteUrl = undefined;
-					}
+				this.#quoteTitle = undefined;
+				this.#quoteUrl = undefined;
+			}
 
-					if (!this.#thead && !this.#tbody) {
-						this.#appendTableSection();
-					}
+			if (!this.#thead && !this.#tbody) {
+				this.#appendTableSection();
+			}
 
-					if (line === '') {
-						/* コード内以外の空行ではフラグのリセットのみを行う */
+			if (line === '') {
+				/* コード内以外の空行ではフラグのリセットのみを行う */
+				this.#resetStackFlag();
+
+				continue;
+			}
+
+			switch (firstCharactor) {
+				case '#': {
+					if (line === '#') {
+						this.#section1 = false;
+						this.#section2 = false;
+
+						this.#appendSectionBreak();
+
 						this.#resetStackFlag();
 
-						return;
+						continue;
+					} else if (line === '##') {
+						this.#section2 = false;
+
+						this.#appendSectionBreak();
+
+						this.#resetStackFlag();
+
+						continue;
+					} else if (line.startsWith('# ')) {
+						/* 先頭が # な場合は見出し（h2） */
+						const headingText = line.substring(2); // 先頭記号を削除
+
+						this.#appendSection1(headingText);
+
+						this.#resetStackFlag();
+						this.#section1 = true;
+						this.#section2 = false;
+
+						continue;
+					} else if (line.startsWith('## ')) {
+						/* 先頭が ** な場合は見出し（h3） */
+						const headingText = line.substring(3); // 先頭記号を削除
+
+						this.#appendSection2(headingText);
+
+						this.#resetStackFlag();
+						this.#section2 = true;
+
+						continue;
 					}
+					break;
+				}
+				case '-': {
+					if (line.startsWith('- ')) {
+						/* 先頭が - な場合は順不同リスト */
+						const listText = line.substring(2); // 先頭記号を削除
 
-					switch (firstCharactor) {
-						case '#': {
-							if (line === '#') {
-								this.#section1 = false;
-								this.#section2 = false;
+						this.#appendUl(listText);
 
-								this.#appendSectionBreak();
+						this.#resetStackFlag();
+						this.#ul = true;
 
-								this.#resetStackFlag();
+						continue;
+					} else if (line.startsWith('-- ')) {
+						/* 先頭が -- な場合はリンクリスト */
+						const listText = line.substring(3); // 先頭記号を削除
 
-								return;
-							} else if (line === '##') {
-								this.#section2 = false;
+						this.#appendLinks(listText);
 
-								this.#appendSectionBreak();
+						this.#resetStackFlag();
+						this.#links = true;
 
-								this.#resetStackFlag();
+						continue;
+					}
+					break;
+				}
+				case '1': {
+					if (line.startsWith('1. ')) {
+						/* 先頭が 1. な場合は順序リスト */
+						const listText = line.substring(3); // 先頭記号を削除
 
-								return;
-							} else if (line.startsWith('# ')) {
-								/* 先頭が # な場合は見出し（h2） */
-								const headingText = line.substring(2); // 先頭記号を削除
+						this.#appendOl(listText);
 
-								this.#appendSection1(headingText);
+						this.#resetStackFlag();
+						this.#ol = true;
 
-								this.#resetStackFlag();
-								this.#section1 = true;
-								this.#section2 = false;
+						continue;
+					}
+					break;
+				}
+				case ':': {
+					const DD_SEPARATOR = ' | ';
+					if (line.startsWith(': ') && line.includes(DD_SEPARATOR)) {
+						/* 先頭が : かつ | が存在する場合は記述リスト */
+						const strpos = line.indexOf(DD_SEPARATOR);
 
-								return;
-							} else if (line.startsWith('## ')) {
-								/* 先頭が ** な場合は見出し（h3） */
-								const headingText = line.substring(3); // 先頭記号を削除
+						const dtText = line.substring(2, strpos);
+						const ddTextList = line.substring(strpos + DD_SEPARATOR.length).split(DD_SEPARATOR);
 
-								this.#appendSection2(headingText);
+						this.#appendDl(dtText, ddTextList);
 
-								this.#resetStackFlag();
-								this.#section2 = true;
+						this.#resetStackFlag();
+						this.#dl = true;
 
-								return;
-							}
-							break;
-						}
-						case '-': {
-							if (line.startsWith('- ')) {
-								/* 先頭が - な場合は順不同リスト */
-								const listText = line.substring(2); // 先頭記号を削除
+						continue;
+					}
+					break;
+				}
+				case '*': {
+					if (line.startsWith('* ')) {
+						/* 先頭が * な場合は注釈 */
+						const noteText = line.substring(2); // 先頭記号を削除
 
-								this.#appendUl(listText);
+						this.#appendNote(noteText);
 
-								this.#resetStackFlag();
-								this.#ul = true;
+						this.#resetStackFlag();
+						this.#notes = true;
 
-								return;
-							} else if (line.startsWith('-- ')) {
-								/* 先頭が -- な場合はリンクリスト */
-								const listText = line.substring(3); // 先頭記号を削除
+						continue;
+					} else if (/^\*\d{4}-[0-1]\d-[0-3]\d: /.test(line)) {
+						/* 先頭が *YYYY-MM-DD: な場合は追記 */
+						const insertDate = dayjs(new Date(Number(line.substring(1, 5)), Number(line.substring(6, 8)) - 1, Number(line.substring(9, 11))));
+						const insertText = line.substring(13); // 先頭の「*YYYY-MM-DD: 」を削除
 
-								this.#appendLinks(listText);
+						this.#appendInsert(insertDate, insertText);
 
-								this.#resetStackFlag();
-								this.#links = true;
+						this.#resetStackFlag();
 
-								return;
-							}
-							break;
-						}
-						case '1': {
-							if (line.startsWith('1. ')) {
-								/* 先頭が 1. な場合は順序リスト */
-								const listText = line.substring(3); // 先頭記号を削除
+						continue;
+					}
+					break;
+				}
+				case '>': {
+					if (line.startsWith('> ')) {
+						/* 先頭が > な場合はブロックレベル引用 */
+						const quoteText = line.substring(2); // 先頭記号を削除
 
-								this.#appendOl(listText);
+						this.#appendQuote(quoteText);
 
-								this.#resetStackFlag();
-								this.#ol = true;
+						this.#resetStackFlag();
+						this.#quote = true;
 
-								return;
-							}
-							break;
-						}
-						case ':': {
-							const DD_SEPARATOR = ' | ';
-							if (line.startsWith(': ') && line.includes(DD_SEPARATOR)) {
-								/* 先頭が : かつ | が存在する場合は記述リスト */
-								const strpos = line.indexOf(DD_SEPARATOR);
+						continue;
+					} else if (this.#quote && line === '>') {
+						/* > のみの場合は中略 */
+						this.#appendQuoteOmit();
 
-								const dtText = line.substring(2, strpos);
-								const ddTextList = line.substring(strpos + DD_SEPARATOR.length).split(DD_SEPARATOR);
+						this.#resetStackFlag();
+						this.#quote = true;
 
-								this.#appendDl(dtText, ddTextList);
+						continue;
+					}
+					break;
+				}
+				case '?': {
+					if ((this.#quote || this.#quoteCite) && this.#quoteElement !== undefined) {
+						/* ブロックレベル引用の直後行かつ先頭が ? な場合は引用の出典 */
+						const metaText = line.substring(1); // 先頭記号を削除
 
-								this.#resetStackFlag();
-								this.#dl = true;
-
-								return;
-							}
-							break;
-						}
-						case '*': {
-							if (line.startsWith('* ')) {
-								/* 先頭が * な場合は注釈 */
-								const noteText = line.substring(2); // 先頭記号を削除
-
-								this.#appendNote(noteText);
-
-								this.#resetStackFlag();
-								this.#notes = true;
-
-								return;
-							} else if (/^\*\d{4}-[0-1]\d-[0-3]\d: /.test(line)) {
-								/* 先頭が *YYYY-MM-DD: な場合は追記 */
-								const insertDate = dayjs(new Date(Number(line.substring(1, 5)), Number(line.substring(6, 8)) - 1, Number(line.substring(9, 11))));
-								const insertText = line.substring(13); // 先頭の「*YYYY-MM-DD: 」を削除
-
-								this.#appendInsert(insertDate, insertText);
-
-								this.#resetStackFlag();
-
-								return;
-							}
-							break;
-						}
-						case '>': {
-							if (line.startsWith('> ')) {
-								/* 先頭が > な場合はブロックレベル引用 */
-								const quoteText = line.substring(2); // 先頭記号を削除
-
-								this.#appendQuote(quoteText);
-
-								this.#resetStackFlag();
-								this.#quote = true;
-
-								return;
-							} else if (this.#quote && line === '>') {
-								/* > のみの場合は中略 */
-								this.#appendQuoteOmit();
-
-								this.#resetStackFlag();
-								this.#quote = true;
-
-								return;
-							}
-							break;
-						}
-						case '?': {
-							if ((this.#quote || this.#quoteCite) && this.#quoteElement !== undefined) {
-								/* ブロックレベル引用の直後行かつ先頭が ? な場合は引用の出典 */
-								const metaText = line.substring(1); // 先頭記号を削除
-
-								if (new RegExp(`^${this.#config.regexp['absolute_url']}$`).test(metaText)) {
-									/* URL */
-									this.#quoteElement.setAttribute('cite', metaText);
-									this.#quoteUrl = new URL(metaText);
-								} else if (new RegExp(`^${this.#config.regexp['isbn']}$`).test(metaText)) {
-									/* ISBN */
-									if (new IsbnVerify(metaText, { strict: true }).isValid()) {
-										this.#quoteElement.setAttribute('cite', `urn:ISBN:${metaText}`);
-									} else {
-										this.#logger.warn(`ISBN のチェックデジット不正: ${metaText}`);
-									}
-								} else if (new RegExp(`^${this.#config.regexp['lang']}$`).test(metaText)) {
-									/* 言語 */
-									this.#quoteElement.setAttribute('lang', metaText);
-								} else {
-									this.#quoteTitle = metaText;
-								}
-
-								this.#resetStackFlag();
-								this.#quoteCite = true;
-
-								return;
-							}
-							break;
-						}
-						case '`': {
-							if (line.startsWith('```')) {
-								/* 先頭が ``` な場合はコードブロック */
-								const languageText = line.substring(3); // 先頭記号を削除
-
-								if (languageText !== '') {
-									this.#codeLanguage = languageText;
-								}
-
-								this.#resetStackFlag();
-								this.#code = true;
-
-								return;
-							}
-							break;
-						}
-						case '|': {
-							if (line.endsWith('|')) {
-								const tableRowText = line.substring(1, line.length - 1); // 両端記号を削除
-
-								const tableRowDatas = tableRowText.split('|').map((data) => data.trim());
-
-								this.#appendTable();
-
-								const alignRow = tableRowDatas.every((data) => /^-+$/.test(data));
-								if (!alignRow) {
-									if (!this.#thead) {
-										this.#tbodyData.push(tableRowDatas);
-									} else {
-										this.#theadData = this.#tbodyData;
-										this.#tbodyData = [tableRowDatas];
-									}
-								}
-
-								this.#resetStackFlag();
-								this.#thead = alignRow;
-								this.#tbody = !alignRow;
-
-								return;
-							}
-							break;
-						}
-						case '/': {
-							if (line.startsWith('/ ')) {
-								/* 先頭が / な場合は汎用ボックス */
-								const boxText = line.substring(2); // 先頭記号を削除
-
-								this.#appendBox(boxText);
-
-								this.#resetStackFlag();
-								this.#box = true;
-
-								return;
-							}
-							break;
-						}
-						case '!': {
-							if (line.startsWith('!youtube:')) {
-								/* 先頭が !youtube: な場合は YouTube 動画 */
-								const mediaMeta = line.substring(9); // 先頭記号を削除
-
-								const metaMatchGroups = mediaMeta.match(/^(?<id>[-_a-zA-Z0-9]+) (?<caption>[^<>]+)( <(?<metas>.+)>)?$/)?.groups;
-								if (metaMatchGroups !== undefined && metaMatchGroups['id'] !== undefined && metaMatchGroups['caption'] !== undefined) {
-									const { id, caption, metas } = metaMatchGroups;
-
-									let width = 560;
-									let height = 315;
-									let start = 0;
-									metas?.split(' ').forEach((meta) => {
-										if (/^[1-9][0-9]{2,3}x[1-9][0-9]{2,3}$/.test(meta)) {
-											/* サイズ */
-											const sizes = meta.split('x');
-											width = Number(sizes.at(0));
-											height = Number(sizes.at(1));
-										} else if (/^[1-9][0-9]*$/.test(meta)) {
-											/* 開始位置（秒） */
-											start = Number(meta);
-										}
-									});
-
-									this.#appendYouTube(id, caption, width, height, start);
-
-									this.#resetStackFlag();
-									this.#media = true;
-
-									return;
-								}
+						if (new RegExp(`^${this.#config.regexp['absolute_url']}$`).test(metaText)) {
+							/* URL */
+							this.#quoteElement.setAttribute('cite', metaText);
+							this.#quoteUrl = new URL(metaText);
+						} else if (new RegExp(`^${this.#config.regexp['isbn']}$`).test(metaText)) {
+							/* ISBN */
+							if (new IsbnVerify(metaText, { strict: true }).isValid()) {
+								this.#quoteElement.setAttribute('cite', `urn:ISBN:${metaText}`);
 							} else {
-								/* 先頭が ! な場合は画像ないし動画 */
-								const mediaMeta = line.substring(1); // 先頭記号を削除
-
-								const strpos = mediaMeta.indexOf(' ');
-								if (strpos !== -1) {
-									const fileName = mediaMeta.substring(0, strpos);
-									const caption = mediaMeta.substring(strpos + 1);
-
-									this.#appendMedia(fileName, caption);
-
-									this.#resetStackFlag();
-									this.#media = true;
-
-									return;
-								}
+								this.#logger.warn(`ISBN のチェックデジット不正: ${metaText}`);
 							}
-							break;
+						} else if (new RegExp(`^${this.#config.regexp['lang']}$`).test(metaText)) {
+							/* 言語 */
+							this.#quoteElement.setAttribute('lang', metaText);
+						} else {
+							this.#quoteTitle = metaText;
 						}
-						case '$': {
-							if (line.startsWith('$tweet: ')) {
-								/* 先頭が $tweet: な場合は埋め込みツイート */
-								const tweetMeta = line.substring(8); // 先頭記号を削除
 
-								const ids = tweetMeta.split(' ');
+						this.#resetStackFlag();
+						this.#quoteCite = true;
 
-								await this.#appendTweet(ids);
-
-								this.#resetStackFlag();
-
-								return;
-							} else if (line.startsWith('$amazon: ')) {
-								/* 先頭が $amazon: な場合は Amazon リンク */
-								const asinMeta = line.substring(9); // 先頭記号を削除
-
-								const asins = asinMeta.split(' ');
-
-								await this.#appendAmazon(asins);
-
-								this.#resetStackFlag();
-
-								return;
-							}
-							break;
-						}
-						default:
+						continue;
 					}
+					break;
+				}
+				case '`': {
+					if (line.startsWith('```')) {
+						/* 先頭が ``` な場合はコードブロック */
+						const languageText = line.substring(3); // 先頭記号を削除
 
-					/* その他の場合は段落（p） */
-					this.#appendParagraph(line);
+						if (languageText !== '') {
+							this.#codeLanguage = languageText;
+						}
 
-					this.#resetStackFlag();
-				})
-		);
+						this.#resetStackFlag();
+						this.#code = true;
+
+						continue;
+					}
+					break;
+				}
+				case '|': {
+					if (line.endsWith('|')) {
+						const tableRowText = line.substring(1, line.length - 1); // 両端記号を削除
+
+						const tableRowDatas = tableRowText.split('|').map((data) => data.trim());
+
+						this.#appendTable();
+
+						const alignRow = tableRowDatas.every((data) => /^-+$/.test(data));
+						if (!alignRow) {
+							if (!this.#thead) {
+								this.#tbodyData.push(tableRowDatas);
+							} else {
+								this.#theadData = this.#tbodyData;
+								this.#tbodyData = [tableRowDatas];
+							}
+						}
+
+						this.#resetStackFlag();
+						this.#thead = alignRow;
+						this.#tbody = !alignRow;
+
+						continue;
+					}
+					break;
+				}
+				case '/': {
+					if (line.startsWith('/ ')) {
+						/* 先頭が / な場合は汎用ボックス */
+						const boxText = line.substring(2); // 先頭記号を削除
+
+						this.#appendBox(boxText);
+
+						this.#resetStackFlag();
+						this.#box = true;
+
+						continue;
+					}
+					break;
+				}
+				case '!': {
+					if (line.startsWith('!youtube:')) {
+						/* 先頭が !youtube: な場合は YouTube 動画 */
+						const mediaMeta = line.substring(9); // 先頭記号を削除
+
+						const metaMatchGroups = mediaMeta.match(/^(?<id>[-_a-zA-Z0-9]+) (?<caption>[^<>]+)( <(?<metas>.+)>)?$/)?.groups;
+						if (metaMatchGroups !== undefined && metaMatchGroups['id'] !== undefined && metaMatchGroups['caption'] !== undefined) {
+							const { id, caption, metas } = metaMatchGroups;
+
+							let width = 560;
+							let height = 315;
+							let start = 0;
+							metas?.split(' ').forEach((meta) => {
+								if (/^[1-9][0-9]{2,3}x[1-9][0-9]{2,3}$/.test(meta)) {
+									/* サイズ */
+									const sizes = meta.split('x');
+									width = Number(sizes.at(0));
+									height = Number(sizes.at(1));
+								} else if (/^[1-9][0-9]*$/.test(meta)) {
+									/* 開始位置（秒） */
+									start = Number(meta);
+								}
+							});
+
+							this.#appendYouTube(id, caption, width, height, start);
+
+							this.#resetStackFlag();
+							this.#media = true;
+
+							continue;
+						}
+					} else {
+						/* 先頭が ! な場合は画像ないし動画 */
+						const mediaMeta = line.substring(1); // 先頭記号を削除
+
+						const strpos = mediaMeta.indexOf(' ');
+						if (strpos !== -1) {
+							const fileName = mediaMeta.substring(0, strpos);
+							const caption = mediaMeta.substring(strpos + 1);
+
+							this.#appendMedia(fileName, caption);
+
+							this.#resetStackFlag();
+							this.#media = true;
+
+							continue;
+						}
+					}
+					break;
+				}
+				case '$': {
+					if (line.startsWith('$tweet: ')) {
+						/* 先頭が $tweet: な場合は埋め込みツイート */
+						const tweetMeta = line.substring(8); // 先頭記号を削除
+
+						const ids = tweetMeta.split(' ');
+
+						await this.#appendTweet(ids);
+
+						this.#resetStackFlag();
+
+						continue;
+					} else if (line.startsWith('$amazon: ')) {
+						/* 先頭が $amazon: な場合は Amazon リンク */
+						const asinMeta = line.substring(9); // 先頭記号を削除
+
+						const asins = asinMeta.split(' ');
+
+						await this.#appendAmazon(asins);
+
+						this.#resetStackFlag();
+
+						continue;
+					}
+					break;
+				}
+				default:
+			}
+
+			/* その他の場合は段落（p） */
+			this.#appendParagraph(line);
+
+			this.#resetStackFlag();
+		}
 
 		/* 蓄積分の解消 */
 		this.#appendQuoteCite();
@@ -1282,8 +1277,10 @@ export default class MessageParser {
 			return;
 		}
 
-		const gridElement = this.#document.createElement('div');
-		gridElement.className = 'c-flex';
+		const tweetDatas: Map<string, BlogDb.TweetData | undefined> = new Map();
+		ids.forEach((id) => {
+			tweetDatas.set(id, undefined);
+		});
 
 		await Promise.all(
 			ids.map(async (id) => {
@@ -1294,52 +1291,63 @@ export default class MessageParser {
 					return;
 				}
 
-				const figureElement = this.#document.createElement('figure');
-				figureElement.className = 'c-flex__item';
-				gridElement.appendChild(figureElement);
-
-				const embeddElement = this.#document.createElement('div');
-				embeddElement.className = 'p-embed';
-				figureElement.appendChild(embeddElement);
-
-				const tweetElement = this.#document.createElement('blockquote');
-				tweetElement.className = 'p-embed__tweet twitter-tweet';
-				tweetElement.dataset['dnt'] = 'true';
-				embeddElement.appendChild(tweetElement);
-
-				const tweetTextElement = this.#document.createElement('p');
-				tweetTextElement.textContent = tweetData.text;
-				tweetElement.appendChild(tweetTextElement);
-
-				const tweetLinkElement = this.#document.createElement('a');
-				tweetLinkElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
-				tweetLinkElement.textContent = `— ${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
-				tweetElement.appendChild(tweetLinkElement);
-
-				const figcaptionElement = this.#document.createElement('figcaption');
-				figcaptionElement.className = 'c-caption';
-				figureElement.appendChild(figcaptionElement);
-
-				const captionTitleElement = this.#document.createElement('span');
-				captionTitleElement.className = 'c-caption__title';
-				figcaptionElement.appendChild(captionTitleElement);
-
-				const aElement = this.#document.createElement('a');
-				aElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
-				aElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
-				captionTitleElement.appendChild(aElement);
-
-				const iconElement = this.#document.createElement('img');
-				iconElement.src = '/image/icon/twitter.svg';
-				iconElement.alt = '(Twitter)';
-				iconElement.width = 16;
-				iconElement.height = 16;
-				iconElement.className = 'c-link-icon';
-				captionTitleElement.appendChild(iconElement);
-
-				this.#tweetExist = true;
+				tweetDatas.set(id, tweetData);
 			})
 		);
+
+		const gridElement = this.#document.createElement('div');
+		gridElement.className = 'c-flex';
+
+		tweetDatas.forEach((tweetData, id) => {
+			if (tweetData === undefined) {
+				return;
+			}
+
+			const figureElement = this.#document.createElement('figure');
+			figureElement.className = 'c-flex__item';
+			gridElement.appendChild(figureElement);
+
+			const embeddElement = this.#document.createElement('div');
+			embeddElement.className = 'p-embed';
+			figureElement.appendChild(embeddElement);
+
+			const tweetElement = this.#document.createElement('blockquote');
+			tweetElement.className = 'p-embed__tweet twitter-tweet';
+			tweetElement.dataset['dnt'] = 'true';
+			embeddElement.appendChild(tweetElement);
+
+			const tweetTextElement = this.#document.createElement('p');
+			tweetTextElement.textContent = tweetData.text;
+			tweetElement.appendChild(tweetTextElement);
+
+			const tweetLinkElement = this.#document.createElement('a');
+			tweetLinkElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
+			tweetLinkElement.textContent = `— ${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
+			tweetElement.appendChild(tweetLinkElement);
+
+			const figcaptionElement = this.#document.createElement('figcaption');
+			figcaptionElement.className = 'c-caption';
+			figureElement.appendChild(figcaptionElement);
+
+			const captionTitleElement = this.#document.createElement('span');
+			captionTitleElement.className = 'c-caption__title';
+			figcaptionElement.appendChild(captionTitleElement);
+
+			const aElement = this.#document.createElement('a');
+			aElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
+			aElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
+			captionTitleElement.appendChild(aElement);
+
+			const iconElement = this.#document.createElement('img');
+			iconElement.src = '/image/icon/twitter.svg';
+			iconElement.alt = '(Twitter)';
+			iconElement.width = 16;
+			iconElement.height = 16;
+			iconElement.className = 'c-link-icon';
+			captionTitleElement.appendChild(iconElement);
+
+			this.#tweetExist = true;
+		});
 
 		if (this.#tweetExist) {
 			this.#appendChild(gridElement);
@@ -1355,6 +1363,24 @@ export default class MessageParser {
 		if (asins.length === 0) {
 			return;
 		}
+
+		const amazonDatas: Map<string, BlogDb.AmazonData | undefined> = new Map();
+		asins.forEach((asin) => {
+			amazonDatas.set(asin, undefined);
+		});
+
+		await Promise.all(
+			asins.map(async (asin) => {
+				const amazonData = await this.#dao.getAmazon(asin);
+
+				if (amazonData === null) {
+					this.#logger.error(`d_amazon テーブルに存在しない ASIN が指定: ${asin}`);
+					return;
+				}
+
+				amazonDatas.set(asin, amazonData);
+			})
+		);
 
 		const amazonElement = this.#document.createElement('aside');
 		amazonElement.className = 'p-amazon';
@@ -1384,70 +1410,63 @@ export default class MessageParser {
 		ulElement.className = 'p-amazon__list';
 		amazonElement.appendChild(ulElement);
 
-		await Promise.all(
-			asins.map(async (asin) => {
-				const amazonData = await this.#dao.getAmazon(asin);
+		amazonDatas.forEach((amazonData) => {
+			if (amazonData === undefined) {
+				return;
+			}
 
-				if (amazonData === null) {
-					this.#logger.error(`d_amazon テーブルに存在しない ASIN が指定: ${asin}`);
-					return;
-				}
+			const liElement = this.#document.createElement('li');
+			ulElement.appendChild(liElement);
 
-				const liElement = this.#document.createElement('li');
-				ulElement.appendChild(liElement);
+			const dpAreaElement = this.#document.createElement('a');
+			dpAreaElement.className = 'p-amazon__link';
+			dpAreaElement.setAttribute('href', amazonData.url);
+			liElement.appendChild(dpAreaElement);
 
-				const dpAreaElement = this.#document.createElement('a');
-				dpAreaElement.className = 'p-amazon__link';
-				dpAreaElement.setAttribute('href', amazonData.url);
-				liElement.appendChild(dpAreaElement);
+			const dpImageAreaElement = this.#document.createElement('div');
+			dpImageAreaElement.className = 'p-amazon__thumb';
+			dpAreaElement.appendChild(dpImageAreaElement);
 
-				const dpImageAreaElement = this.#document.createElement('div');
-				dpImageAreaElement.className = 'p-amazon__thumb';
-				dpAreaElement.appendChild(dpImageAreaElement);
+			const dpImageElement = this.#document.createElement('img');
+			if (amazonData.image_url !== null) {
+				const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(amazonData.image_url));
+				paapi5ItemImageUrlParser.setSize(160);
 
-				const dpImageElement = this.#document.createElement('img');
-				if (amazonData.image_url !== null) {
-					const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(amazonData.image_url));
-					paapi5ItemImageUrlParser.setSize(160);
+				dpImageElement.setAttribute('src', paapi5ItemImageUrlParser.toString());
+				paapi5ItemImageUrlParser.setSizeMultiply(2);
+				dpImageElement.setAttribute('srcset', `${paapi5ItemImageUrlParser.toString()} 2x`);
+			} else {
+				dpImageElement.setAttribute('src', '/image/amazon_noimage.svg');
+				dpImageElement.setAttribute('width', '113');
+				dpImageElement.setAttribute('height', '160');
+			}
+			dpImageElement.setAttribute('alt', '');
+			dpImageElement.className = 'p-amazon__image';
+			dpImageAreaElement.appendChild(dpImageElement);
 
-					dpImageElement.setAttribute('src', paapi5ItemImageUrlParser.toString());
-					paapi5ItemImageUrlParser.setSizeMultiply(2);
-					dpImageElement.setAttribute('srcset', `${paapi5ItemImageUrlParser.toString()} 2x`);
-				} else {
-					dpImageElement.setAttribute('src', '/image/amazon_noimage.svg');
-					dpImageElement.setAttribute('width', '113');
-					dpImageElement.setAttribute('height', '160');
-				}
-				dpImageElement.setAttribute('alt', '');
-				dpImageElement.className = 'p-amazon__image';
-				dpImageAreaElement.appendChild(dpImageElement);
+			const dpTextAreaElement = this.#document.createElement('div');
+			dpTextAreaElement.className = 'p-amazon__text';
+			dpAreaElement.appendChild(dpTextAreaElement);
 
-				const dpTextAreaElement = this.#document.createElement('div');
-				dpTextAreaElement.className = 'p-amazon__text';
-				dpAreaElement.appendChild(dpTextAreaElement);
+			const dpTitleElement = this.#document.createElement('p');
+			dpTitleElement.className = 'p-amazon__title';
+			dpTitleElement.textContent = amazonData.title;
+			dpTextAreaElement.appendChild(dpTitleElement);
 
-				const dpTitleElement = this.#document.createElement('p');
-				dpTitleElement.className = 'p-amazon__title';
-				dpTitleElement.textContent = amazonData.title;
-				dpTextAreaElement.appendChild(dpTitleElement);
+			if (amazonData.binding !== null) {
+				const bindingElement = this.#document.createElement('b');
+				bindingElement.className = 'c-amazon-binding';
+				bindingElement.textContent = amazonData.binding;
+				dpTitleElement.appendChild(bindingElement);
+			}
 
-				if (amazonData.binding !== null) {
-					const bindingElement = this.#document.createElement('b');
-					bindingElement.className = 'c-amazon-binding';
-					bindingElement.textContent = amazonData.binding;
-					dpTitleElement.appendChild(bindingElement);
-				}
-
-				if (amazonData.date !== null) {
-					const { date } = amazonData;
-
-					const dpTimeElement = this.#document.createElement('p');
-					dpTimeElement.className = 'p-amazon__date';
-					dpTimeElement.textContent = `${dayjs(date).format('YYYY年M月D日')} 発売`;
-					dpTextAreaElement.appendChild(dpTimeElement);
-				}
-			})
-		);
+			if (amazonData.publication_date !== null) {
+				const dpTimeElement = this.#document.createElement('p');
+				dpTimeElement.className = 'p-amazon__date';
+				dpTimeElement.textContent = `${dayjs(amazonData.publication_date).format('YYYY年M月D日')} 発売`;
+				dpTextAreaElement.appendChild(dpTimeElement);
+			}
+		});
 	}
 
 	/**

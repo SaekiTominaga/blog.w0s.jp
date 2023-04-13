@@ -375,43 +375,51 @@ code
 	test('Tweet', async () => {
 		expect(
 			await new MessageParser(config, { dbh: dbh }).toHtml(`
+text1
 $tweet: 1511319225541210113 1530514683383672832
+text2
 `)
 		)
-			.toBe(`<div class="c-flex"><figure class="c-flex__item"><div class="p-embed"><blockquote class="p-embed__tweet twitter-tweet" data-dnt="true"><p>等々力駅到着時の自動放送、「東京都市大学、等々力キャンパス最寄り駅です。」部分の削除対応で終わりと思いきや、まさか削除の数日後に差し替え新録の追加があるとは。
-（2022年4月5日 112-192レ 普通大井町 9012F、※写真は当該列車ではありません） https://t.co/KxSFieBGGX</p><a href="https://twitter.com/SaekiTominaga/status/1511319225541210113">— トミー (@SaekiTominaga) 2022年4月5日 21:25</a></blockquote></div><figcaption class="c-caption"><span class="c-caption__title"><a href="https://twitter.com/SaekiTominaga/status/1511319225541210113">トミー (@SaekiTominaga) 2022年4月5日 21:25</a><img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"></span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><blockquote class="p-embed__tweet twitter-tweet" data-dnt="true"><p>村野監督のこだわりポイントで言えば、私が感服したのはこれ。（劇場限定版Blu-ray特典の絵コンテ集より） #R指定アニメ #かくしごと #at_x https://t.co/vi9UtiZDmb</p><a href="https://twitter.com/SaekiTominaga/status/1530514683383672832">— トミー (@SaekiTominaga) 2022年5月28日 20:41</a></blockquote></div><figcaption class="c-caption"><span class="c-caption__title"><a href="https://twitter.com/SaekiTominaga/status/1530514683383672832">トミー (@SaekiTominaga) 2022年5月28日 20:41</a><img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"></span></figcaption></figure></div>`);
+			.toBe(`<p>text1</p><div class="c-flex"><figure class="c-flex__item"><div class="p-embed"><blockquote class="p-embed__tweet twitter-tweet" data-dnt="true"><p>等々力駅到着時の自動放送、「東京都市大学、等々力キャンパス最寄り駅です。」部分の削除対応で終わりと思いきや、まさか削除の数日後に差し替え新録の追加があるとは。
+（2022年4月5日 112-192レ 普通大井町 9012F、※写真は当該列車ではありません） https://t.co/KxSFieBGGX</p><a href="https://twitter.com/SaekiTominaga/status/1511319225541210113">— トミー (@SaekiTominaga) 2022年4月5日 21:25</a></blockquote></div><figcaption class="c-caption"><span class="c-caption__title"><a href="https://twitter.com/SaekiTominaga/status/1511319225541210113">トミー (@SaekiTominaga) 2022年4月5日 21:25</a><img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"></span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><blockquote class="p-embed__tweet twitter-tweet" data-dnt="true"><p>村野監督のこだわりポイントで言えば、私が感服したのはこれ。（劇場限定版Blu-ray特典の絵コンテ集より） #R指定アニメ #かくしごと #at_x https://t.co/vi9UtiZDmb</p><a href="https://twitter.com/SaekiTominaga/status/1530514683383672832">— トミー (@SaekiTominaga) 2022年5月28日 20:41</a></blockquote></div><figcaption class="c-caption"><span class="c-caption__title"><a href="https://twitter.com/SaekiTominaga/status/1530514683383672832">トミー (@SaekiTominaga) 2022年5月28日 20:41</a><img src="/image/icon/twitter.svg" alt="(Twitter)" width="16" height="16" class="c-link-icon"></span></figcaption></figure></div><p>text2</p>`);
 	});
 
 	test('Amazon', async () => {
 		expect(
 			await new MessageParser(config, { dbh: dbh }).toHtml(`
+text1
 $amazon: B01GRDKGZW 4091220754
+text2
 `)
 		).toBe(
-			'<aside class="p-amazon"><h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26"></h2><ul class="p-amazon__list"><li><a class="p-amazon__link" href="https://www.amazon.co.jp/dp/B01GRDKGZW?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1"><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/51W2ihWPntL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51W2ihWPntL._SL320_.jpg 2x" alt="" class="p-amazon__image"></div><div class="p-amazon__text"><p class="p-amazon__title">かくしごと（１） (月刊少年マガジンコミックス)<b class="c-amazon-binding">Kindle版</b></p><p class="p-amazon__date">2016年6月17日 発売</p></div></a></li><li><a class="p-amazon__link" href="https://www.amazon.co.jp/dp/4091220754?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1"><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/31sMkfmj8NL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/31sMkfmj8NL._SL320_.jpg 2x" alt="" class="p-amazon__image"></div><div class="p-amazon__text"><p class="p-amazon__title">かってに改蔵〔新装版〕 (1) (少年サンデーコミックススペシャル)<b class="c-amazon-binding">コミック</b></p><p class="p-amazon__date">2010年4月16日 発売</p></div></a></li></ul></aside>'
+			'<p>text1</p><aside class="p-amazon"><h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26"></h2><ul class="p-amazon__list"><li><a class="p-amazon__link" href="https://www.amazon.co.jp/dp/B01GRDKGZW?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1"><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/51W2ihWPntL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51W2ihWPntL._SL320_.jpg 2x" alt="" class="p-amazon__image"></div><div class="p-amazon__text"><p class="p-amazon__title">かくしごと（１） (月刊少年マガジンコミックス)<b class="c-amazon-binding">Kindle版</b></p><p class="p-amazon__date">2016年6月17日 発売</p></div></a></li><li><a class="p-amazon__link" href="https://www.amazon.co.jp/dp/4091220754?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1"><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/31sMkfmj8NL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/31sMkfmj8NL._SL320_.jpg 2x" alt="" class="p-amazon__image"></div><div class="p-amazon__text"><p class="p-amazon__title">かってに改蔵〔新装版〕 (1) (少年サンデーコミックススペシャル)<b class="c-amazon-binding">コミック</b></p><p class="p-amazon__date">2010年4月16日 発売</p></div></a></li></ul></aside><p>text2</p>'
 		);
 	});
 
 	test('Amazon - <h3>', async () => {
 		expect(
 			await new MessageParser(config, { dbh: dbh }).toHtml(`
+text1
 # heading
 $amazon: B01GRDKGZW
+text2
 `)
 		).toBe(
-			'<section class="p-entry-section -hdg1" id="section-heading"><div class="p-entry-section__hdg"><h2>heading</h2><p class="p-entry-section__self-link"><a href="#section-heading" class="c-self-link">§</a></p></div><aside class="p-amazon"><h3 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26"></h3><ul class="p-amazon__list"><li><a class="p-amazon__link" href="https://www.amazon.co.jp/dp/B01GRDKGZW?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1"><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/51W2ihWPntL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51W2ihWPntL._SL320_.jpg 2x" alt="" class="p-amazon__image"></div><div class="p-amazon__text"><p class="p-amazon__title">かくしごと（１） (月刊少年マガジンコミックス)<b class="c-amazon-binding">Kindle版</b></p><p class="p-amazon__date">2016年6月17日 発売</p></div></a></li></ul></aside></section>'
+			'<p>text1</p><section class="p-entry-section -hdg1" id="section-heading"><div class="p-entry-section__hdg"><h2>heading</h2><p class="p-entry-section__self-link"><a href="#section-heading" class="c-self-link">§</a></p></div><aside class="p-amazon"><h3 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26"></h3><ul class="p-amazon__list"><li><a class="p-amazon__link" href="https://www.amazon.co.jp/dp/B01GRDKGZW?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1"><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/51W2ihWPntL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51W2ihWPntL._SL320_.jpg 2x" alt="" class="p-amazon__image"></div><div class="p-amazon__text"><p class="p-amazon__title">かくしごと（１） (月刊少年マガジンコミックス)<b class="c-amazon-binding">Kindle版</b></p><p class="p-amazon__date">2016年6月17日 発売</p></div></a></li></ul></aside><p>text2</p></section>'
 		);
 	});
 
 	test('Amazon - <h4>', async () => {
 		expect(
 			await new MessageParser(config, { dbh: dbh }).toHtml(`
+text1
 # heading
 ## heading
 $amazon: B01GRDKGZW
+text2
 `)
 		).toBe(
-			'<section class="p-entry-section -hdg1" id="section-heading"><div class="p-entry-section__hdg"><h2>heading</h2><p class="p-entry-section__self-link"><a href="#section-heading" class="c-self-link">§</a></p></div><section class="p-entry-section -hdg2" id="section-heading-1"><div class="p-entry-section__hdg"><h3>heading</h3><p class="p-entry-section__self-link"><a href="#section-heading-1" class="c-self-link">§</a></p></div><aside class="p-amazon"><h4 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26"></h4><ul class="p-amazon__list"><li><a class="p-amazon__link" href="https://www.amazon.co.jp/dp/B01GRDKGZW?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1"><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/51W2ihWPntL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51W2ihWPntL._SL320_.jpg 2x" alt="" class="p-amazon__image"></div><div class="p-amazon__text"><p class="p-amazon__title">かくしごと（１） (月刊少年マガジンコミックス)<b class="c-amazon-binding">Kindle版</b></p><p class="p-amazon__date">2016年6月17日 発売</p></div></a></li></ul></aside></section></section>'
+			'<p>text1</p><section class="p-entry-section -hdg1" id="section-heading"><div class="p-entry-section__hdg"><h2>heading</h2><p class="p-entry-section__self-link"><a href="#section-heading" class="c-self-link">§</a></p></div><section class="p-entry-section -hdg2" id="section-heading-1"><div class="p-entry-section__hdg"><h3>heading</h3><p class="p-entry-section__self-link"><a href="#section-heading-1" class="c-self-link">§</a></p></div><aside class="p-amazon"><h4 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26"></h4><ul class="p-amazon__list"><li><a class="p-amazon__link" href="https://www.amazon.co.jp/dp/B01GRDKGZW?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1"><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/51W2ihWPntL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51W2ihWPntL._SL320_.jpg 2x" alt="" class="p-amazon__image"></div><div class="p-amazon__text"><p class="p-amazon__title">かくしごと（１） (月刊少年マガジンコミックス)<b class="c-amazon-binding">Kindle版</b></p><p class="p-amazon__date">2016年6月17日 発売</p></div></a></li></ul></aside><p>text2</p></section></section>'
 		);
 	});
 
