@@ -38,7 +38,9 @@
 		{
 			"files": ["node/src/util/MessageParser.ts"],
 			"rules": {
-				"lines-between-class-members": "off"
+				"lines-between-class-members": "off",
+				"no-await-in-loop": "off",
+				"no-continue": "off"
 			}
 		},
 		{

@@ -1,16 +1,5 @@
 import BlogDao from './BlogDao.js';
-
-interface AmazonData {
-	asin: string;
-	url: string;
-	title: string;
-	binding: string | null;
-	product_group: string | null;
-	date: Date | null;
-	image_url: string | null;
-	image_width: number | null;
-	image_height: number | null;
-}
+import DbUtil from '../util/DbUtil.js';
 
 /**
  * 本文
@@ -23,7 +12,7 @@ export default class BlogMessageDao extends BlogDao {
 	 *
 	 * @returns {object} Amazon 商品情報
 	 */
-	async getAmazon(asin: string): Promise<AmazonData | null> {
+	async getAmazon(asin: string): Promise<BlogDb.AmazonData | null> {
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -32,10 +21,11 @@ export default class BlogMessageDao extends BlogDao {
 				title,
 				binding,
 				product_group,
-				date,
+				date AS publication_date,
 				image_url,
 				image_width,
-				image_height
+				image_height,
+				last_updated AS updated_at
 			FROM
 				d_amazon
 			WHERE
@@ -57,10 +47,11 @@ export default class BlogMessageDao extends BlogDao {
 			title: row.title,
 			binding: row.binding,
 			product_group: row.product_group,
-			date: row.date !== null ? new Date(Number(row.date) * 1000) : null,
+			publication_date: DbUtil.unixToDate(row.publication_date),
 			image_url: row.image_url,
 			image_width: Number(row.image_width),
 			image_height: Number(row.image_height),
+			updated_at: <Date>DbUtil.unixToDate(row.updated_at),
 		};
 	}
 
@@ -100,7 +91,7 @@ export default class BlogMessageDao extends BlogDao {
 			name: row.name,
 			username: row.username,
 			text: row.text,
-			created_at: new Date(Number(row.created_at) * 1000),
+			created_at: <Date>DbUtil.unixToDate(row.created_at),
 		};
 	}
 }
