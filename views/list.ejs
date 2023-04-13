@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
-		<title><%_ if (page.query.page === 1) { _%>富永日記帳<%_ } else { _%>タイトル一覧（<%= page.query.page %>ページ目）<%_ } _%></title>
+		<title>富永日記帳<%_ if (page.query.page !== 1) { _%>: タイトル一覧（<%= page.query.page %>ページ目）<%_ } _%></title>
 
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 
