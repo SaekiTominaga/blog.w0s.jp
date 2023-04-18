@@ -13,7 +13,7 @@
 		"@saekitominaga/htmlformelement-submit-overlay": "^2.1.0",
 		"@saekitominaga/paapi-item-image-url-parser": "^2.2.4",
 		"@saekitominaga/report-js-error": "^1.2.3",
-		"@saekitominaga/report-same-referrer": "^1.2.0",
+		"@saekitominaga/report-same-referrer": "^1.2.1",
 		"@saekitominaga/string-convert": "^1.0.4"
 	}
 }
