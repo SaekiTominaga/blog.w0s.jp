@@ -1,7 +1,5 @@
 import fs from 'fs';
 import Log4js from 'log4js';
-import nodemailer from 'nodemailer';
-import { MLEngine } from 'markuplint';
 import prettier from 'prettier';
 import Compress from './util/Compress.js';
 import HttpResponse from './util/HttpResponse.js';
@@ -60,42 +58,6 @@ export default class Controller {
 	async #fileWrite(filePath: string, data: string | Buffer): Promise<void> {
 		await fs.promises.writeFile(filePath, data);
 		this.logger.info('HTML file created', filePath);
-
-		/* Lint */
-		const mlFile = await MLEngine.toMLFile(filePath);
-		if (mlFile !== undefined) {
-			const engine = new MLEngine(mlFile);
-
-			const result = await engine.exec();
-			if (result !== null && result.violations.length > 0) {
-				/* 結果をメール通知 */
-				const transporter = nodemailer.createTransport({
-					host: this.configCommon.mail.smtp,
-					port: this.configCommon.mail.port,
-					auth: {
-						user: this.configCommon.mail.user,
-						pass: this.configCommon.mail.password,
-					},
-				});
-
-				const info = await transporter.sendMail({
-					from: this.configCommon.mail.from,
-					to: this.configCommon.mail.to,
-					subject: this.configCommon.markuplint.mail_title,
-					text: `${filePath}\n${result.violations
-						.map(
-							(violation) => `
-${violation.raw}
-${violation.message}
-line: ${violation.line}, col: ${violation.col}
-`
-						)
-						.join('------------------------------')}`,
-				});
-
-				this.logger.info('Message sent: %s', info.messageId);
-			}
-		}
 	}
 
 	/**
