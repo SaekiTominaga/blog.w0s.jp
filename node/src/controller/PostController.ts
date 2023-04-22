@@ -234,10 +234,8 @@ export default class PostController extends Controller implements ControllerInte
 		res.setHeader('Content-Security-Policy-Report-Only', this.configCommon.response.header.cspro_html);
 		res.setHeader('Referrer-Policy', 'no-referrer');
 		res.render(this.#config.view.init, {
-			page: {
-				path: req.path,
-				query: requestQuery,
-			},
+			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
+			requestQuery: requestQuery,
 			updateMode: (requestQuery.action_add && topicValidationResult?.isEmpty()) || requestQuery.action_revise_preview || requestQuery.action_revise,
 			topicValidateErrors: topicValidationResult?.array({ onlyFirstError: true }) ?? [],
 			topicPostResults: topicPostResults,

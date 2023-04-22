@@ -87,10 +87,8 @@ export default class BlogAmazonController extends Controller implements Controll
 		res.setHeader('Content-Security-Policy', this.configCommon.response.header.csp_html);
 		res.setHeader('Content-Security-Policy-Report-Only', this.configCommon.response.header.cspro_html);
 		res.render(this.#config.view.init, {
-			page: {
-				path: req.path,
-				query: requestQuery,
-			},
+			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
+			requestQuery: requestQuery,
 			dpList: dpListView, // 商品情報
 		});
 	}

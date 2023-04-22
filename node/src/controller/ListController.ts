@@ -118,10 +118,8 @@ export default class ListController extends Controller implements ControllerInte
 
 		/* HTML 生成 */
 		const html = await ejs.renderFile(`${this.configCommon.views}/${this.#config.view.success}`, {
-			page: {
-				path: req.path,
-				query: requestQuery,
-			},
+			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
+			requestQuery: requestQuery,
 			totalPage: totalPage,
 			entries: entries,
 			entryCountOfCategoryList: entryCountOfCategoryList,

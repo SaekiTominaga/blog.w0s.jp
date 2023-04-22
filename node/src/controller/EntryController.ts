@@ -109,37 +109,39 @@ export default class EntryController extends Controller implements ControllerInt
 			});
 		}
 
-		const jsonLd: Map<string, string | string[]> = new Map([
+		const structuredData = {
+			title: entryDto.title,
+			title_marked: messageParserInline.mark(entryDto.title, { code: true }),
+			datePublished: dayjs(entryDto.created_at),
+			dateModified: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : undefined,
+			description: entryDto.description ?? undefined,
+			image: imageUrl ?? undefined,
+		}; // 構造データ
+
+		const jsonLd: Map<string, string | string[] | object> = new Map([
 			['@context', 'https://schema.org/'],
 			['@type', 'BlogPosting'],
 		]);
-		jsonLd.set('datePublished', dayjs(entryDto.created_at).format('YYYY-MM-DDTHH:mm:ssZ'));
-		if (entryDto.updated_at !== null) {
-			jsonLd.set('dateModified', dayjs(entryDto.updated_at).format('YYYY-MM-DDTHH:mm:ssZ'));
+		jsonLd.set('datePublished', structuredData.datePublished.format('YYYY-MM-DDTHH:mm:ssZ'));
+		if (structuredData.dateModified !== undefined) {
+			jsonLd.set('dateModified', structuredData.dateModified.format('YYYY-MM-DDTHH:mm:ssZ'));
 		}
-		jsonLd.set('headline', entryDto.title);
-		if (entryDto.description !== null) {
-			jsonLd.set('description', entryDto.description);
+		jsonLd.set('headline', structuredData.title);
+		if (structuredData.description !== undefined) {
+			jsonLd.set('description', structuredData.description);
 		}
-		if (imageUrl !== null) {
-			jsonLd.set('image', imageUrl);
+		if (structuredData.image !== undefined) {
+			jsonLd.set('image', structuredData.image);
 		}
 
 		/* HTML 生成 */
 		const html = await ejs.renderFile(`${this.configCommon.views}/${this.#config.view.success}`, {
-			page: {
-				path: req.path,
-				query: requestQuery,
-			},
-			title: entryDto.title,
-			title_marked: messageParserInline.mark(entryDto.title, { code: true }),
-			description: entryDto.description,
-			created: dayjs(entryDto.created_at),
-			lastUpdated: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : null,
-			jsonLd: JSON.stringify(Object.fromEntries(jsonLd)),
-			message: message,
+			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
+			requestQuery: requestQuery,
+			structuredData: structuredData,
+			jsonLd: Object.fromEntries(jsonLd),
 
-			ogImage: imageUrl,
+			message: message,
 			tweet: messageParser.isTweetExit(),
 
 			categoryNames: categoriesDto.map((category) => category.name),

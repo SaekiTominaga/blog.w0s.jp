@@ -117,10 +117,8 @@ export default class CategoryController extends Controller implements Controller
 
 		/* HTML 生成 */
 		const html = await ejs.renderFile(`${this.configCommon.views}/${this.#config.view.success}`, {
-			page: {
-				path: req.path,
-				query: requestQuery,
-			},
+			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
+			requestQuery: requestQuery,
 			count: entries.length,
 			entries: entries,
 			entryCountOfCategoryList: entryCountOfCategoryList,

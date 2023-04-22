@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
-		<title>富永日記帳: 「<%= page.query.category_name %>」の記事（<%= count %>件）</title>
-
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 
 		<link rel="alternate" href="/feed" type="application/atom+xml" title="「富永日記帳」の新着フィード" />
@@ -15,15 +13,17 @@
 		<script src="/script/blog.mjs" type="module"></script>
 		<script src="https://analytics.w0s.jp/matomo/matomo.js" async=""></script>
 		<script src="/script/analytics.js" defer=""></script>
+
+		<title>富永日記帳: 「<%= requestQuery.category_name %>」の記事（<%= count %>件）</title>
 	</head>
 	<body>
 		<div class="l-page">
-			<%- include('./_include/_header', { heading: false } ) -%>
+			<%- include('./_include/header', { heading: false } ) -%>
 
 			<div id="content" class="l-content">
 				<div class="l-content__header">
 					<div class="p-title">
-						<h1>「<%= page.query.category_name %>」の記事（<%= count %>件）</h1>
+						<h1>「<%= requestQuery.category_name %>」の記事（<%= count %>件）</h1>
 					</div>
 				</div>
 				<main class="l-content__main">
@@ -68,7 +68,7 @@
 				</main>
 			</div>
 
-			<%- include('./_include/_sidebar') -%><%- include('./_include/_footer') -%>
+			<%- include('./_include/sidebar') -%><%- include('./_include/footer') -%>
 		</div>
 	</body>
 </html>

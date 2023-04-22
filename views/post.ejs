@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
-		<title>富永日記帳: 記事投稿</title>
-
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 
 		<link rel="stylesheet" href="/style/admin.css" />
@@ -11,10 +9,12 @@
 		<link rel="stylesheet" href="/style/layout_reader.css" media="print" />
 
 		<script src="/script/admin.mjs" type="module"></script>
+
+		<title>富永日記帳: 記事投稿</title>
 	</head>
 	<body>
 		<div class="l-page">
-			<%- include('./_include/_header', { heading: false } ) -%>
+			<%- include('./_include/header', { heading: false } ) -%>
 
 			<div id="content" class="l-content -nosidebar">
 				<div class="l-content__header">
@@ -38,7 +38,7 @@
 								<p>
 									<label class="c-label -input">
 										<span class="c-label__text">記事 ID</span>
-										<input type="number" class="c-input" id="fc-idselect" name="id" value="<%= page.query.id ?? latestId %>" min="1" max="<%= latestId %>" required="" style="--inline-size: 4.5em"
+										<input type="number" class="c-input" id="fc-idselect" name="id" value="<%= requestQuery.id ?? latestId %>" min="1" max="<%= latestId %>" required="" style="--inline-size: 4.5em"
 									/></label>
 								</p>
 								<p><button class="c-submit" name="actionrevpre" value="1">修正</button></p>
@@ -78,7 +78,7 @@
 											<label for="fc-title" class="c-label">題名 <strong class="c-label-icon -required">必須</strong></label>
 										</legend>
 										<div class="p-form-grid__contents">
-											<input class="c-input -full js-convert-trim" name="title" value="<%= page.query.title %>" id="fc-title" required="" />
+											<input class="c-input -full js-convert-trim" name="title" value="<%= requestQuery.title %>" id="fc-title" required="" />
 										</div>
 									</fieldset>
 								</div>
@@ -86,7 +86,7 @@
 									<fieldset>
 										<legend class="p-form-grid__legend"><label for="fc-description" class="c-label">概要</label></legend>
 										<div class="p-form-grid__contents">
-											<input class="c-input -full js-convert-trim" name="description" value="<%= page.query.description %>" id="fc-description" />
+											<input class="c-input -full js-convert-trim" name="description" value="<%= requestQuery.description %>" id="fc-description" />
 										</div>
 									</fieldset>
 								</div>
@@ -97,7 +97,7 @@
 										</legend>
 										<div class="p-form-grid__contents">
 											<p>
-												<textarea class="c-textarea js-convert-trim" name="message" id="fc-message" required="" style="--block-size: 15em"><%= page.query.message %></textarea>
+												<textarea class="c-textarea js-convert-trim" name="message" id="fc-message" required="" style="--block-size: 15em"><%= requestQuery.message %></textarea>
 											</p>
 											<div class="p-post-preview">
 												<article aria-label="本文プレビュー" class="p-entry">
@@ -115,7 +115,7 @@
 											<div class="c-form-controls -checkbox">
 												<%_ for (const category of categories) { _%>
 												<label class="c-label -check">
-													<%_ if (page.query.category.includes(category.id)) { _%>
+													<%_ if (requestQuery.category.includes(category.id)) { _%>
 													<input type="checkbox" name="category[]" value="<%= category.id %>" checked="" />
 													<%_ } else { _%>
 													<input type="checkbox" name="category[]" value="<%= category.id %>" />
@@ -133,7 +133,7 @@
 										<legend class="p-form-grid__legend" id="label-image">画像</legend>
 										<div class="p-form-grid__contents">
 											<ul class="c-form-controls" role="radiogroup" aria-labelledby="label-image">
-												<template id="select-image" data-selected="<%= page.query.image %>">
+												<template id="select-image" data-selected="<%= requestQuery.image %>">
 													<li class="p-post-select-image">
 														<label>
 															<input type="radio" name="image" value="" />
@@ -156,7 +156,7 @@
 									<fieldset>
 										<legend class="p-form-grid__legend"><label for="fc-relation" class="c-label">関連記事</label></legend>
 										<div class="p-form-grid__contents">
-											<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= page.query.relation %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" style="--inline-size: 15em" />
+											<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= requestQuery.relation %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" style="--inline-size: 15em" />
 											<small>（カンマ区切り）</small>
 										</div>
 									</fieldset>
@@ -166,7 +166,7 @@
 										<legend class="p-form-grid__legend">公開</legend>
 										<div class="p-form-grid__contents">
 											<label class="c-label -check">
-												<%_ if (page.query.public) { _%>
+												<%_ if (requestQuery.public) { _%>
 												<input type="checkbox" name="public" value="1" checked="" />
 												<%_ } else { _%>
 												<input type="checkbox" name="public" value="1" />
@@ -182,7 +182,7 @@
 										<legend class="p-form-grid__legend">更新時の処理</legend>
 										<div class="p-form-grid__contents">
 											<label class="c-label -check">
-												<%_ if (page.query.timestamp) { _%>
+												<%_ if (requestQuery.timestamp) { _%>
 												<input type="checkbox" name="timestamp" value="1" checked="" />
 												<%_ } else { _%>
 												<input type="checkbox" name="timestamp" value="1" />
@@ -199,7 +199,7 @@
 										<div class="p-form-grid__contents">
 											<p>
 												<label class="c-label -check">
-													<%_ if (page.query.social === 1) { _%>
+													<%_ if (requestQuery.social === 1) { _%>
 													<input type="checkbox" name="social" value="1" checked="" />
 													<%_ } else { _%>
 													<input type="checkbox" name="social" value="1" />
@@ -208,7 +208,7 @@
 												</label>
 											</p>
 											<p>
-												<label class="c-label -input"><span class="c-label__text">ハッシュタグ</span><input class="c-input js-convert-trim" name="socialtag" value="<%= page.query.socialtag %>" pattern="[^,]+" style="--inline-size: 12em" /></label>
+												<label class="c-label -input"><span class="c-label__text">ハッシュタグ</span><input class="c-input js-convert-trim" name="socialtag" value="<%= requestQuery.socialtag %>" pattern="[^,]+" style="--inline-size: 12em" /></label>
 												<small>（スペース区切り）</small>
 											</p>
 										</div>
@@ -423,7 +423,7 @@
 				</main>
 			</div>
 
-			<%- include('./_include/_footer') -%>
+			<%- include('./_include/footer') -%>
 		</div>
 	</body>
 </html>

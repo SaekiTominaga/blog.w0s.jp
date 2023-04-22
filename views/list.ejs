@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
-		<title>富永日記帳<%_ if (page.query.page !== 1) { _%>: タイトル一覧（<%= page.query.page %>ページ目）<%_ } _%></title>
-
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 
 		<link rel="alternate" href="/feed" type="application/atom+xml" title="「富永日記帳」の新着フィード" />
-		<%_ if (page.query.page > 2) { _%>
-		<link rel="prev" href="/list/<%= page.query.page - 1 %>" title="新しい記事" />
-		<%_ } else if (page.query.page === 2) { _%>
+		<%_ if (requestQuery.page > 2) { _%>
+		<link rel="prev" href="/list/<%= requestQuery.page - 1 %>" title="新しい記事" />
+		<%_ } else if (requestQuery.page === 2) { _%>
 		<link rel="prev" href="/" title="新しい記事" />
-		<%_ } _%> <%_ if (page.query.page < totalPage) { _%>
-		<link rel="next" href="/list/<%= page.query.page + 1 %>" title="古い記事" />
+		<%_ } _%> <%_ if (requestQuery.page < totalPage) { _%>
+		<link rel="next" href="/list/<%= requestQuery.page + 1 %>" title="古い記事" />
 		<%_ } _%>
 		<link rel="stylesheet" href="/style/blog.css" />
 		<link rel="stylesheet" href="/style/layout_full.css" title="通常表示" />
@@ -22,22 +20,24 @@
 		<script src="/script/blog.mjs" type="module"></script>
 		<script src="https://analytics.w0s.jp/matomo/matomo.js" async=""></script>
 		<script src="/script/analytics.js" defer=""></script>
+
+		<title>富永日記帳<%_ if (requestQuery.page !== 1) { _%>: タイトル一覧（<%= requestQuery.page %>ページ目）<%_ } _%></title>
 	</head>
 	<body>
 		<div class="l-page">
-			<%- include('./_include/_header', { heading: true } ) -%>
+			<%- include('./_include/header', { heading: true } ) -%>
 
 			<div id="content" class="l-content">
 				<div class="l-content__header">
 					<nav aria-label="前後記事">
 						<ul class="p-page-nav">
-							<%_ if (page.query.page > 2) { _%>
+							<%_ if (requestQuery.page > 2) { _%>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
-							<li><a href="/list/<%= page.query.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<%_ } else if (page.query.page === 2) { _%>
+							<li><a href="/list/<%= requestQuery.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
+							<%_ } else if (requestQuery.page === 2) { _%>
 							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<%_ } _%><%_ if (page.query.page < totalPage) { _%>
-							<li><a href="/list/<%= page.query.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
+							<%_ } _%><%_ if (requestQuery.page < totalPage) { _%>
+							<li><a href="/list/<%= requestQuery.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
 							<%_ } _%>
 						</ul>
 					</nav>
@@ -85,20 +85,20 @@
 				<div class="l-content__footer">
 					<nav aria-label="前後記事">
 						<ul class="p-page-nav">
-							<%_ if (page.query.page > 2) { _%>
+							<%_ if (requestQuery.page > 2) { _%>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
-							<li><a href="/list/<%= page.query.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<%_ } else if (page.query.page === 2) { _%>
+							<li><a href="/list/<%= requestQuery.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
+							<%_ } else if (requestQuery.page === 2) { _%>
 							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<%_ } _%><%_ if (page.query.page < totalPage) { _%>
-							<li><a href="/list/<%= page.query.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
+							<%_ } _%><%_ if (requestQuery.page < totalPage) { _%>
+							<li><a href="/list/<%= requestQuery.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
 							<%_ } _%>
 						</ul>
 					</nav>
 				</div>
 			</div>
 
-			<%- include('./_include/_sidebar') -%><%- include('./_include/_footer') -%>
+			<%- include('./_include/sidebar') -%><%- include('./_include/footer') -%>
 		</div>
 	</body>
 </html>
