@@ -50,7 +50,7 @@
 			<%- include('./_include/header', { heading: false } ) -%>
 
 			<div id="content" class="l-content">
-				<div class="l-content__main">
+				<main class="l-content__main">
 					<article class="p-entry">
 						<header class="p-entry__header">
 							<div class="p-entry-header-title">
@@ -71,7 +71,7 @@
 							</dl>
 						</header>
 
-						<main class="p-entry__body"><%- message %></main>
+						<div class="p-entry__body"><%- message %></div>
 
 						<footer class="p-entry__footer">
 							<%_ if (categoryNames.length >= 1) { _%>
@@ -141,7 +141,7 @@
 							<%_ } _%>
 						</footer>
 					</article>
-				</div>
+				</main>
 
 				<%_ if (categoryFileNames === 'railway') { _%>
 				<div class="l-content__footer">
