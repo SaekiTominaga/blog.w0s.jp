@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Trusted Types
  */
@@ -6,7 +8,6 @@ if (window.trustedTypes !== undefined) {
 		createHTML: (inputText: string): string => inputText,
 		createURL: (inputUrl: string): string => {
 			if (new URL(inputUrl).origin !== new URL(location.href).origin) {
-				console.error(`[Trusted URL] URL with different origin are not allowed: ${inputUrl}`);
 				throw new TypeError(`URL with different origin are not allowed: ${inputUrl}`);
 			}
 
@@ -18,7 +19,6 @@ if (window.trustedTypes !== undefined) {
 			const ALLOW_REGEXPS: RegExp[] = [];
 
 			if (!ALLOW_URLS.includes(inputUrl) && !ALLOW_ORIGINS.includes(new URL(inputUrl).origin) && !ALLOW_REGEXPS.some((allow) => allow.test(inputUrl))) {
-				console.error(`[Trusted ScriptURL] URL not accepted: ${inputUrl}`);
 				throw new TypeError(`URL not accepted: ${inputUrl}`);
 			}
 

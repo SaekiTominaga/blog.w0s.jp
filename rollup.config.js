@@ -9,6 +9,7 @@ const outputDir = `${baseDir}`;
 
 const moduleFiles = ['blog.ts', 'error.ts', 'admin.ts'];
 const jsFiles = ['trusted-types.ts', 'analytics.ts'];
+const legacyFiles = ['analytics.ts'];
 
 const pluginCommonjs = commonjs();
 const pluginTypeScript = typescript({
@@ -32,7 +33,16 @@ const jsConfigurations = jsFiles.map((file) => ({
 	output: {
 		dir: outputDir,
 		sourcemap: 'hidden',
+		format: 'iife',
+	},
+}));
+const legacyConfigurations = legacyFiles.map((file) => ({
+	input: `${inputDir}/${file}`,
+	plugins: [pluginTypeScript, pluginTerser],
+	output: {
+		dir: outputDir,
+		sourcemap: 'hidden',
 	},
 }));
 
-export default moduleConfigurations.concat(jsConfigurations);
+export default moduleConfigurations.concat(jsConfigurations).concat(legacyConfigurations);
