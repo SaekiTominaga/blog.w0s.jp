@@ -8,7 +8,7 @@ const inputDir = `${baseDir}/_src`;
 const outputDir = `${baseDir}`;
 
 const moduleFiles = ['blog.ts', 'error.ts', 'admin.ts'];
-const jsFiles = ['trusted-types.ts', 'analytics.ts'];
+const jsFiles = ['trusted-types.ts'];
 const legacyFiles = ['analytics.ts'];
 
 const pluginCommonjs = commonjs();
