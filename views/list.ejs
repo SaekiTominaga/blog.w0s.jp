@@ -21,7 +21,7 @@
 		<script src="https://analytics.w0s.jp/matomo/matomo.js" async=""></script>
 		<script src="/script/analytics.js" defer=""></script>
 
-		<title>富永日記帳<%_ if (requestQuery.page !== 1) { _%>: タイトル一覧（<%= requestQuery.page %>ページ目）<%_ } _%></title>
+		<title>富永日記帳<%_ if (requestQuery.page !== 1) { _%>: <%= entries.at(-1).created.format('YYYY年M月D日') %>～<%= entries.at(0).created.format('YYYY年M月D日') %>の記事一覧<%_ } _%></title>
 	</head>
 	<body>
 		<div class="l-page">
