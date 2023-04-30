@@ -4,7 +4,7 @@
 	"exclude": ["__tests__/*.test.js"],
 	"compilerOptions": {
 		/* Modules */
-		"moduleResolution": "Node", // "Node16" だと `node_modules/highlight.js/es/core.d.ts:1:18 - error TS7016` でコンパイル不能
+		"moduleResolution": "Node", // "Node16" だと `error TS2307: Cannot find module 'twitter-api-v2/dist/v2/client.v2.write' or its corresponding type declarations.` でコンパイル不能
 
 		/* Emit */
 		"outDir": "dist",
