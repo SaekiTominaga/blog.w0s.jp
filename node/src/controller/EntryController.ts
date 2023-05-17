@@ -1,6 +1,6 @@
+import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
-import fs from 'fs';
 import { Request, Response } from 'express';
 import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Controller from '../Controller.js';

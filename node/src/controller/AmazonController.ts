@@ -1,5 +1,5 @@
+import fs from 'node:fs';
 import dayjs from 'dayjs';
-import fs from 'fs';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import { Request, Response } from 'express';
 import BlogAmazonDao from '../dao/BlogAmazonDao.js';
