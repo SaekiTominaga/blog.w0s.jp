@@ -1,6 +1,6 @@
+import fs from 'node:fs';
 // @ts-expect-error: ts(7016)
 import amazonPaapi from 'amazon-paapi';
-import fs from 'fs';
 import { GetItemsResponse } from 'paapi5-typescript-sdk';
 import { Request, Response } from 'express';
 import BlogAmazonDao from '../../dao/BlogAmazonDao.js';

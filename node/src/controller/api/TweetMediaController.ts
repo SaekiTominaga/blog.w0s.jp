@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import { Request, Response } from 'express';
 import { TwitterApi } from 'twitter-api-v2';
 import BlogTweetDao from '../../dao/BlogTweetDao.js';

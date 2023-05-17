@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 

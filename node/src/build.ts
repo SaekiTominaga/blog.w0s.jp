@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import Log4js from 'log4js';
 import Component from './BuildComponentInterface.js';
 import { NoName as Configure } from '../configure/type/common.js';

@@ -1,9 +1,9 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import compression from 'compression';
 import express, { NextFunction, Request, Response } from 'express';
-import fs from 'fs';
 import Log4js from 'log4js';
 import multer from 'multer';
-import path from 'path';
 import AmazonController from './controller/AmazonController.js';
 import AmazonImageController from './controller/api/AmazonImageController.js';
 import CategoryController from './controller/CategoryController.js';
