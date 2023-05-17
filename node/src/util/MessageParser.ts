@@ -754,7 +754,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText, { anchor: true })); // リンクを設定
+		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText, { anchor: true, code: true })); // リンクを設定
 		this.#linksElement.appendChild(liElement);
 	}
 
