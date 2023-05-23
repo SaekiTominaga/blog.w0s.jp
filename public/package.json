@@ -1,5 +1,6 @@
 {
 	"name": "blog.w0s.jp-public",
+	"private": true,
 	"type": "module",
 	"dependencies": {
 		"@saekitominaga/customelements-button-clipboard": "^1.1.4",
