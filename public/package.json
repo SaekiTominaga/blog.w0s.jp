@@ -1,5 +1,5 @@
 {
-	"name": "blog.w0s.jp-public",
+	"name": "@blog.w0s.jp/public",
 	"private": true,
 	"type": "module",
 	"dependencies": {
