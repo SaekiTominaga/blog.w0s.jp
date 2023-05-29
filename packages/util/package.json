@@ -9,8 +9,5 @@
 	},
 	"dependencies": {
 		"prettier": "^2.8.8"
-	},
-	"devDependencies": {
-		"typescript": "^5.0.4"
 	}
 }

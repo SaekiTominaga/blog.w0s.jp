@@ -14,7 +14,6 @@
 /packages/frontend/configure/*.json
 /packages/frontend/node/dist/
 /packages/frontend/node/log4js*.json
-/packages/frontend/node_modules/
 /packages/frontend/public/**/*.atom
 /packages/frontend/public/**/*.br
 /packages/frontend/public/**/*.map
@@ -28,6 +27,3 @@
 /packages/frontend/public/style/*.css
 
 /packages/util/dist/
-/packages/util/node_modules/
-
-
