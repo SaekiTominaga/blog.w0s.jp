@@ -1,0 +1,26 @@
+name: frontend@js-lint
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'packages/frontend/public/script/_src/**/*.ts'
+      - 'packages/frontend/.eslintrc.json'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/frontend/public/script/_src/**/*.ts'
+      - 'packages/frontend/.eslintrc.json'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run js-lint -w '@blog.w0s.jp/frontend'

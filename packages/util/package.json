@@ -1,0 +1,16 @@
+{
+	"name": "@blog.w0s.jp/util",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"watch": "tsc --project tsconfig.json -w",
+		"build": "tsc --project tsconfig.json",
+		"lint": "eslint src/*.ts"
+	},
+	"dependencies": {
+		"prettier": "^2.8.8"
+	},
+	"devDependencies": {
+		"typescript": "^5.0.4"
+	}
+}

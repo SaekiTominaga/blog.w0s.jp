@@ -1,0 +1,8 @@
+{
+	"extends": "@w0s/tsconfig",
+	"include": ["src/**/*.ts"],
+	"compilerOptions": {
+		/* Emit */
+		"outDir": "dist"
+	}
+}

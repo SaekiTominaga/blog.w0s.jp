@@ -1,0 +1,64 @@
+{
+	"root": true,
+	"env": {
+		"es2022": true
+	},
+	"extends": ["@w0s/eslint-config"],
+	"parserOptions": {
+		"ecmaVersion": 2022,
+		"sourceType": "module"
+	},
+	"ignorePatterns": ["node/dist/**/*.js", "public/script/*.js", "public/script/*.mjs"],
+	"overrides": [
+		{
+			"files": ["node/src/**/*.ts"],
+			"rules": {
+				"no-console": "off"
+			}
+		},
+		{
+			"files": ["node/src/build.ts"],
+			"rules": {
+				"new-cap": "off"
+			}
+		},
+		{
+			"files": ["node/src/*Interface.ts"],
+			"rules": {
+				"semi": "off"
+			}
+		},
+		{
+			"files": ["public/script/_src/**/*.ts"],
+			"env": {
+				"browser": true
+			},
+			"rules": {
+				"no-console": [
+					"warn",
+					{
+						"allow": ["info", "error"]
+					}
+				]
+			}
+		},
+		{
+			"files": ["public/script/_src/trusted-types.ts"],
+			"parserOptions": {
+				"sourceType": "script"
+			}
+		},
+		{
+			"files": ["public/script/_src/analytics.ts"],
+			"parserOptions": {
+				"sourceType": "script"
+			},
+			"rules": {
+				"no-multi-assign": "off",
+				"no-underscore-dangle": "off",
+				"no-var": "off",
+				"strict": "off"
+			}
+		}
+	]
+}
