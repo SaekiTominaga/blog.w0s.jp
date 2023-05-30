@@ -10,7 +10,7 @@
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^1.0.3",
-		"@markuplint/ejs-parser": "^3.6.1",
+		"@markuplint/ejs-parser": "^3.7.0",
 		"@rollup/plugin-node-resolve": "^15.0.2",
 		"@rollup/plugin-terser": "^0.4.3",
 		"@rollup/plugin-typescript": "^11.1.1",
