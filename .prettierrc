@@ -8,12 +8,14 @@
 		{
 			"files": ["*.html", "*.ejs"],
 			"options": {
+				"parser": "html",
 				"printWidth": 9999
 			}
 		},
 		{
 			"files": "*.css",
 			"options": {
+				"parser": "css",
 				"printWidth": 9999,
 				"singleQuote": false
 			}

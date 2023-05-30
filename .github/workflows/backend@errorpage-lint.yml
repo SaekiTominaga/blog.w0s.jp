@@ -1,0 +1,26 @@
+name: backend@errorpage-lint
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'packages/backend/errorpage/*.html'
+      - '.markuplintrc'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/backend/errorpage/*.html'
+      - '.markuplintrc'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run errorpage-lint -w '@blog.w0s.jp/backend'

@@ -1,0 +1,28 @@
+name: html-lint-ejs
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'views/*.ejs'
+      - 'views/_include/*.ejs'
+      - '.markuplintrc'
+  push:
+    branches:
+      - main
+    paths:
+      - 'views/*.ejs'
+      - 'views/_include/*.ejs'
+      - '.markuplintrc'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run html-lint-ejs

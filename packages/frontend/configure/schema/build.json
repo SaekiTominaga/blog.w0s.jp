@@ -1,0 +1,45 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://blog.w0s.jp/build.json",
+	"type": "object",
+	"title": "ビルド",
+	"required": ["static", "prettier", "image"],
+	"properties": {
+		"static": {
+			"type": "object",
+			"title": "静的ファイル",
+			"required": ["root"],
+			"properties": {
+				"root": {
+					"type": "string",
+					"title": "ルートディレクトリ"
+				}
+			},
+			"additionalProperties": false
+		},
+		"prettier": {
+			"type": "object",
+			"title": "Prettier",
+			"required": ["config"],
+			"properties": {
+				"config": {
+					"type": "string",
+					"title": "構成ファイルパス"
+				}
+			},
+			"additionalProperties": false
+		},
+		"image": {
+			"type": "object",
+			"required": ["directory"],
+			"properties": {
+				"directory": {
+					"type": "string",
+					"title": "画像ファイル格納ディレクトリ"
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false
+}

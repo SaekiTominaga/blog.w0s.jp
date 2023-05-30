@@ -1,0 +1,41 @@
+{
+	"root": true,
+	"env": {
+		"es2022": true
+	},
+	"extends": ["@w0s/eslint-config"],
+	"parserOptions": {
+		"ecmaVersion": 2022,
+		"sourceType": "module"
+	},
+	"ignorePatterns": ["node/dist/**/*.js"],
+	"overrides": [
+		{
+			"files": ["node/src/*Interface.ts"],
+			"rules": {
+				"semi": "off"
+			}
+		},
+		{
+			"files": ["node/src/shell/*.ts"],
+			"rules": {
+				"no-console": "off"
+			}
+		},
+		{
+			"files": ["node/src/util/@message/Inline.ts"],
+			"rules": {
+				"camelcase": "off",
+				"class-methods-use-this": "off"
+			}
+		},
+		{
+			"files": ["node/src/util/MessageParser.ts"],
+			"rules": {
+				"lines-between-class-members": "off",
+				"no-await-in-loop": "off",
+				"no-continue": "off"
+			}
+		}
+	]
+}
