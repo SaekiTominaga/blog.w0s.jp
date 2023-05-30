@@ -29,7 +29,13 @@
 					"properties": {
 						"message": {
 							"type": "object",
-							"title": "カテゴリー"
+							"title": "カテゴリー",
+							"required": ["unique_constraint"],
+							"properties": {
+								"unique_constraint": {
+									"type": "string"
+								}
+							}
 						}
 					},
 					"additionalProperties": false
