@@ -12,16 +12,14 @@ import BlogPostDao from '../dao/BlogPostDao.js';
 import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
+import Markdown from '../markdown/Markdown.js';
+import MarkdownInline from '../markdown/Inline.js';
 import HttpBasicAuth, { Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
-import MessageParser from '../util/MessageParser.js';
 import PostValidator from '../validator/PostValidator.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Tweet from '../util/Tweet.js';
-import MessageParserInline from '../util/@message/Inline.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
-import { NoName as ConfigureMessage } from '../../../configure/type/message.js';
-import { PAAPI as ConfigurePaapi } from '../../../configure/type/paapi.js';
 import { NoName as Configure } from '../../../configure/type/post.js';
 import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
 
@@ -47,10 +45,6 @@ interface MediaUploadResults {
 export default class PostController extends Controller implements ControllerInterface {
 	#config: Configure;
 
-	#configPaapi: ConfigurePaapi;
-
-	#configureMessage: ConfigureMessage;
-
 	#configTwitter: ConfigureTwitter;
 
 	#env: Express.Env;
@@ -63,8 +57,6 @@ export default class PostController extends Controller implements ControllerInte
 		super(configCommon);
 
 		this.#config = JSON.parse(fs.readFileSync('configure/post.json', 'utf8'));
-		this.#configureMessage = JSON.parse(fs.readFileSync('configure/message.json', 'utf8'));
-		this.#configPaapi = JSON.parse(fs.readFileSync('configure/paapi.json', 'utf8'));
 		this.#configTwitter = JSON.parse(fs.readFileSync('configure/twitter.json', 'utf8'));
 
 		this.#env = env;
@@ -292,11 +284,9 @@ export default class PostController extends Controller implements ControllerInte
 					entriesView.add({
 						id: entry.id,
 						title: entry.title,
-						message: await new MessageParser(this.configCommon, {
-							entry_id: entry.id,
+						message: await new Markdown({
+							config: this.configCommon,
 							dbh: dbh,
-							anchor_host_icons: this.#configureMessage.anchor_host_icon,
-							amazon_tracking_id: this.#configPaapi.partner_tag,
 						}).toXml(entry.message),
 						updated_at: dayjs(entry.updated_at ?? entry.created_at),
 						update: Boolean(entry.updated_at),
@@ -408,7 +398,7 @@ export default class PostController extends Controller implements ControllerInte
 					const newlyJson = JSON.stringify(
 						datas.map((data) => ({
 							id: data.id,
-							title: new MessageParserInline(this.configCommon).mark(data.title, { code: true }),
+							title: new MarkdownInline().mark(data.title),
 						}))
 					);
 

@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { describe, expect, test } from '@jest/globals';
 import BlogDao from '../dist/dao/BlogDao.js';
-import MessageParser from '../dist/util/MessageParser.js';
+import Markdown from '../dist/markdown/Markdown.js';
 
 const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8'));
 const dbh = await new BlogDao(config).getDbh();
@@ -9,7 +9,7 @@ const dbh = await new BlogDao(config).getDbh();
 describe('block', () => {
 	test('p', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 text1
 text2
 `)
@@ -18,7 +18,7 @@ text2
 
 	test('ul', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 - list1
 - list2
 `)
@@ -27,7 +27,7 @@ text2
 
 	test('link list', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 -- list1
 -- list2
 `)
@@ -36,7 +36,7 @@ text2
 
 	test('-', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 -text
 `)
 		).toBe('<p>-text</p>');
@@ -44,7 +44,7 @@ text2
 
 	test('ol', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 1. list1
 1. list2
 `)
@@ -53,7 +53,7 @@ text2
 
 	test('1', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 1text
 `)
 		).toBe('<p>1text</p>');
@@ -61,16 +61,18 @@ text2
 
 	test('dl', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 : dt1 | dd1
 : \`dt2\` | [dd2](http://example.com)
 `)
-		).toBe('<dl class="p-list-description"><dt>dt1</dt><dd>dd1</dd><dt><code>dt2</code></dt><dd><a href="http://example.com">dd2</a><b class="c-domain">(example.com)</b></dd></dl>');
+		).toBe(
+			'<dl class="p-list-description"><dt>dt1</dt><dd>dd1</dd><dt><code>dt2</code></dt><dd><a href="http://example.com">dd2</a><b class="c-domain">(example.com)</b></dd></dl>'
+		);
 	});
 
 	test(':', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 :text
 `)
 		).toBe('<p>:text</p>');
@@ -78,7 +80,7 @@ text2
 
 	test('note', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 * note1
 * note2
 `)
@@ -87,7 +89,7 @@ text2
 
 	test('insert', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 *2022-01-01: insert1
 *2022-01-01: insert2
 `)
@@ -98,7 +100,7 @@ text2
 
 	test('*', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 *text
 `)
 		).toBe('<p>*text</p>');
@@ -106,7 +108,7 @@ text2
 
 	test('blockquote', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 > text1
 >
 > text2
@@ -116,7 +118,7 @@ text2
 
 	test('blockquote - cite', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 > text1
 > text2
 ?cite
@@ -128,7 +130,7 @@ text2
 
 	test('blockquote - cite - URL', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 > text1
 > text2
 ?en
@@ -136,13 +138,13 @@ text2
 ?https://example.com/foo.pdf
 `)
 		).toBe(
-			'<figure><blockquote class="p-quote" lang="en" cite="https://example.com/foo.pdf"><p>text1</p><p>text2</p></blockquote><figcaption class="c-caption -meta"><span class="c-caption__title"><a href="https://example.com/foo.pdf" type="application/pdf">cite</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"><b class="c-domain">(example.com)</b></span></figcaption></figure>'
+			'<figure><blockquote class="p-quote" lang="en" cite="https://example.com/foo.pdf"><p>text1</p><p>text2</p></blockquote><figcaption class="c-caption -meta"><span class="c-caption__title"><a href="https://example.com/foo.pdf">cite</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon"><b class="c-domain">(example.com)</b></span></figcaption></figure>'
 		);
 	});
 
 	test('blockquote - cite - ISBN', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 > text1
 > text2
 ?en
@@ -156,7 +158,7 @@ text2
 
 	test('blockquote - cite - ISBN - invalid check digit', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 > text1
 > text2
 ?en
@@ -170,7 +172,7 @@ text2
 
 	test('>', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 >text
 `)
 		).toBe('<p>&gt;text</p>');
@@ -178,7 +180,7 @@ text2
 
 	test('?', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 ?text
 `)
 		).toBe('<p>?text</p>');
@@ -186,7 +188,7 @@ text2
 
 	test('code', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 \`\`\`
 code1
 code2
@@ -199,7 +201,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - html', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 \`\`\`html
 code1
 code2
@@ -212,7 +214,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - css', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 \`\`\`css
 code1
 code2
@@ -225,7 +227,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - javascript', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 \`\`\`javascript
 code1
 code2
@@ -238,7 +240,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - typescript', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 \`\`\`typescript
 code1
 code2
@@ -251,7 +253,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - json', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 \`\`\`json
 code1
 code2
@@ -264,7 +266,7 @@ code2</code></pre></div>`);
 
 	test('code - lang - invalid', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 \`\`\`xxx
 code1
 code2
@@ -277,7 +279,7 @@ code2</code></pre></div>`);
 
 	test('code - no close', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 \`\`\`
 code
 `)
@@ -288,7 +290,7 @@ code
 
 	test('`', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 \`text
 `)
 		).toBe('<p>`text</p>');
@@ -296,7 +298,7 @@ code
 
 	test('table', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 | th1 | th2 |
 | - | - |
 |~ th1-1 | td1-2 |
@@ -309,7 +311,7 @@ code
 
 	test('|', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 |text
 `)
 		).toBe('<p>|text</p>');
@@ -317,7 +319,7 @@ code
 
 	test('box', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 / text1
 / text2
 `)
@@ -326,7 +328,7 @@ code
 
 	test('/', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 /text
 `)
 		).toBe('<p>/text</p>');
@@ -334,19 +336,19 @@ code
 
 	test('media', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 !foo.jpg caption1\`code\`
 !bar.svg caption2\`code\`
 !baz.mp4 caption3\`code\`
 `)
 		).toBe(
-			'<div class="c-flex"><figure class="c-flex__item"><div class="p-embed"><a href="https://media.w0s.jp/image/blog/foo.jpg" type="image/jpeg"><picture><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/foo.jpg?type=avif;w=720;h=720;quality=30 2x"><source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/foo.jpg?type=webp;w=720;h=720;quality=30 2x"><img src="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=jpeg;w=360;h=360;quality=60" alt="オリジナル画像" class="p-embed__image"></picture></a></div><figcaption class="c-caption"><span class="c-caption__no">画像1</span><span class="c-caption__title">caption1<code>code</code></span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><img src="https://media.w0s.jp/image/blog/bar.svg" alt="" class="p-embed__image"></div><figcaption class="c-caption"><span class="c-caption__no">画像2</span><span class="c-caption__title">caption2<code>code</code></span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><video src="https://media.w0s.jp/video/blog/baz.mp4" controls="" class="p-embed__video"></video></div><figcaption class="c-caption"><span class="c-caption__no">動画1</span><span class="c-caption__title">caption3<code>code</code></span></figcaption></figure></div>'
+			'<div class="c-flex"><figure class="c-flex__item"><div class="p-embed"><a href="https://media.w0s.jp/image/blog/foo.jpg"><picture><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/foo.jpg?type=avif;w=720;h=720;quality=30 2x"><source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/foo.jpg?type=webp;w=720;h=720;quality=30 2x"><img src="https://media.w0s.jp/thumbimage/blog/foo.jpg?type=jpeg;w=360;h=360;quality=60" alt="オリジナル画像" class="p-embed__image"></picture></a></div><figcaption class="c-caption"><span class="c-caption__no">画像1</span><span class="c-caption__title">caption1<code>code</code></span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><img src="https://media.w0s.jp/image/blog/bar.svg" alt="" class="p-embed__image"></div><figcaption class="c-caption"><span class="c-caption__no">画像2</span><span class="c-caption__title">caption2<code>code</code></span></figcaption></figure><figure class="c-flex__item"><div class="p-embed"><video src="https://media.w0s.jp/video/blog/baz.mp4" controls="" class="p-embed__video"></video></div><figcaption class="c-caption"><span class="c-caption__no">動画1</span><span class="c-caption__title">caption3<code>code</code></span></figcaption></figure></div>'
 		);
 	});
 
 	test('YouTube', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 !youtube:HJxspEKHqCs caption
 `)
 		).toBe(
@@ -356,7 +358,7 @@ code
 
 	test('YouTube - meta', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 !youtube:HJxspEKHqCs caption <640x480 10>
 `)
 		).toBe(
@@ -366,7 +368,7 @@ code
 
 	test('!', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 !text
 `)
 		).toBe('<p>!text</p>');
@@ -374,7 +376,7 @@ code
 
 	test('Tweet', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 text1
 $tweet: 1511319225541210113 1530514683383672832
 text2
@@ -386,7 +388,7 @@ text2
 
 	test('Amazon', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 text1
 $amazon: B01GRDKGZW 4091220754
 text2
@@ -398,7 +400,7 @@ text2
 
 	test('Amazon - <h3>', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 text1
 # heading
 $amazon: B01GRDKGZW
@@ -411,7 +413,7 @@ text2
 
 	test('Amazon - <h4>', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 text1
 # heading
 ## heading
@@ -425,7 +427,7 @@ text2
 
 	test('$', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 $text
 `)
 		).toBe('<p>$text</p>');
@@ -434,25 +436,16 @@ $text
 
 describe('inline', () => {
 	test('empty', async () => {
-		expect(await new MessageParser(config, { dbh: dbh }).toHtml('- ')).toBe('<ul class="p-list"><li></li></ul>');
+		expect(await new Markdown({ config: config, dbh: dbh }).toHtml('- ')).toBe('<ul class="p-list"><li></li></ul>');
 	});
 
 	test('all', async () => {
 		expect(
-			await new MessageParser(config, {
-				entry_id: 99,
-				dbh: dbh,
-				anchor_host_icons: [
-					{
-						host: 'icon.example.com',
-						name: 'Example',
-						src: '/example.svg',
-					},
-				],
-				amazon_tracking_id: 'xxx-22',
-			}).toHtml('<s>text</s>[link<s>link</s>](https://example.com/)**em<s>em</s>**`code<s>code</s>`{{quote<s>quote</s>}}((footnote<s>footnote</s>))<s>text</s>')
+			await new Markdown(config).toHtml(
+				'<s>text</s>[link<s>link</s>](https://example.com/)**em<s>em</s>**`code<s>code</s>`{{quote<s>quote</s>}}((footnote<s>footnote</s>))<s>text</s>'
+			)
 		).toBe(
-			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b><em>em&lt;s&gt;em&lt;/s&gt;</em><code>code&lt;s&gt;code&lt;/s&gt;</code><q>quote&lt;s&gt;quote&lt;/s&gt;</q><span class="c-annotate"><a href="#fn99-1" id="nt99-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>&lt;s&gt;text&lt;/s&gt;</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt99-1">[1]</a></span><span class="p-footnotes__text" id="fn99-1">footnote&lt;s&gt;footnote&lt;/s&gt;</span></li></ul>'
+			'<p>&lt;s&gt;text&lt;/s&gt;<a href="https://example.com/">link&lt;s&gt;link&lt;/s&gt;</a><b class="c-domain">(example.com)</b><em>em&lt;s&gt;em&lt;/s&gt;</em><code>code&lt;s&gt;code&lt;/s&gt;</code><q>quote&lt;s&gt;quote&lt;/s&gt;</q><span class="c-annotate"><a href="#fn1" id="nt1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>&lt;s&gt;text&lt;/s&gt;</p><ul class="p-footnotes"><li><span class="p-footnotes__no"><a href="#nt1">[1]</a></span><span class="p-footnotes__text" id="fn1">footnote&lt;s&gt;footnote&lt;/s&gt;</span></li></ul>'
 		);
 	});
 });
@@ -460,7 +453,7 @@ describe('inline', () => {
 describe('section', () => {
 	test('section1', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 # heading1
 text1
 `)
@@ -471,7 +464,7 @@ text1
 
 	test('section1 - hr', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 # heading1
 text1
 #
@@ -484,7 +477,7 @@ text2
 
 	test('section2', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 # heading1
 text1
 ## heading2
@@ -497,7 +490,7 @@ text2
 
 	test('section2 - hr2', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 # heading1
 text1
 ## heading2
@@ -512,7 +505,7 @@ text3
 
 	test('section2 - hr1', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 # heading1
 text1
 ## heading2
@@ -527,7 +520,7 @@ text3
 
 	test('toc', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 # heading1
 text1
 # heading2
@@ -540,7 +533,7 @@ text2
 
 	test('#', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toHtml(`
+			await new Markdown({ config: config, dbh: dbh }).toHtml(`
 #text
 `)
 		).toBe('<p>#text</p>');
@@ -550,7 +543,7 @@ text2
 describe('toXml()', () => {
 	test('hr', async () => {
 		expect(
-			await new MessageParser(config, { dbh: dbh }).toXml(`
+			await new Markdown({ config: config, dbh: dbh }).toXml(`
 # heading1
 #
 `)
@@ -562,14 +555,14 @@ describe('toXml()', () => {
 
 describe('isTweetExit()', () => {
 	test('false', async () => {
-		const messageParser = new MessageParser(config, { dbh: dbh });
-		await messageParser.toHtml('');
-		expect(messageParser.isTweetExit()).toBeFalsy();
+		const markdown = new Markdown({ config: config, dbh: dbh });
+		await markdown.toHtml('');
+		expect(markdown.isTweetExit()).toBeFalsy();
 	});
 
 	test('true', async () => {
-		const messageParser = new MessageParser(config, { dbh: dbh });
-		await messageParser.toHtml('$tweet: 1511319225541210113');
-		expect(messageParser.isTweetExit()).toBeTruthy();
+		const markdown = new Markdown({ config: config, dbh: dbh });
+		await markdown.toHtml('$tweet: 1511319225541210113');
+		expect(markdown.isTweetExit()).toBeTruthy();
 	});
 });

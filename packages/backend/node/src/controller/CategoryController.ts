@@ -10,7 +10,7 @@ import ControllerInterface from '../ControllerInterface.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
-import MessageParserInline from '../util/@message/Inline.js';
+import MarkdownInline from '../markdown/Inline.js';
 import { NoName as Configure } from '../../../configure/type/category.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 
@@ -67,9 +67,9 @@ export default class CategoryController extends Controller implements Controller
 			return;
 		}
 
-		const messageParserInline = new MessageParserInline(this.configCommon);
+		const markdownInline = new MarkdownInline();
 
-		const sidebar = new Sidebar(dao, messageParserInline);
+		const sidebar = new Sidebar(dao, markdownInline);
 
 		const [entryCountOfCategoryList, newlyEntries] = await Promise.all([
 			sidebar.getEntryCountOfCategory(),
@@ -107,7 +107,7 @@ export default class CategoryController extends Controller implements Controller
 
 			entries.push({
 				id: entryDto.id,
-				title: messageParserInline.mark(entryDto.title, { code: true }),
+				title: markdownInline.mark(entryDto.title),
 				image_internal: entryDto.image_internal,
 				image_external: imageExternal,
 				created: dayjs(entryDto.created),
