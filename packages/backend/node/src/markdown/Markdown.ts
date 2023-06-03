@@ -8,7 +8,6 @@ import hljsJavaScript from 'highlight.js/lib/languages/javascript';
 import hljsJson from 'highlight.js/lib/languages/json';
 import hljsTypeScript from 'highlight.js/lib/languages/typescript';
 import hljsXml from 'highlight.js/lib/languages/xml';
-import IsbnVerify from '@saekitominaga/isbn-verify';
 import Log4js from 'log4js';
 import md5 from 'md5';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
@@ -16,33 +15,23 @@ import serialize from 'w3c-xmlserializer';
 import { JSDOM } from 'jsdom';
 import { LanguageFn } from 'highlight.js';
 import BlogMessageDao from '../dao/BlogMessageDao.js';
-import Inline from './@message/Inline.js';
-import Util from './@message/Util.js';
+import MarkdownInline from './Inline.js';
+import Footnote from './lib/Footnote.js';
+import Quote from './lib/Quote.js';
+import { config, regexp } from './config.js';
 import { NoName as Configure } from '../../../configure/type/common.js';
 
 interface Option {
-	entry_id: number; // 記事 ID
-	dbh: sqlite.Database; // DB 接続情報
-	anchor_host_icons: {
-		host: string;
-		name: string;
-		src: string;
-	}[]; // リンクのサイトアイコン
-	amazon_tracking_id: string; // Amazon トラッキング ID
+	config: Configure; // 共通設定ファイルの内容
+	dbh?: sqlite.Database; // DB 接続情報
 }
 
 /**
- * 記事メッセージのパーサー
+ * 記事メッセージの Markdown 変換
  */
-export default class MessageParser {
+export default class Markdown {
 	/* Logger */
 	readonly #logger: Log4js.Logger;
-
-	/* 設定ファイル */
-	readonly #config: Configure;
-
-	/* 記事 ID */
-	readonly #entryId: number = 0;
 
 	/* Slugger */
 	readonly #slugger: GithubSlugger;
@@ -61,10 +50,9 @@ export default class MessageParser {
 	readonly #ROOT_ELEMENT_NAME = 'x-x'; // ルート要素名（仮で設定するものなのでなんでも良い）
 
 	/* インライン */
-	readonly #inline: Inline;
+	readonly #inline: MarkdownInline;
 
 	/* section */
-	readonly #SECTION_ID_PREFIX = 'section-';
 	#section1 = false;
 	readonly #section1Elements: HTMLElement[] = [];
 	readonly #section1Headings: Map<string, string> = new Map();
@@ -117,20 +105,11 @@ export default class MessageParser {
 	/**
 	 * コンストラクタ
 	 *
-	 * @param {Configure} config - 共通設定ファイル
 	 * @param {object} options - パースで必要な様々な情報
 	 */
-	constructor(config: Configure, options?: Partial<Option>) {
+	constructor(options: Option) {
 		/* Logger */
-		this.#logger = Log4js.getLogger(options?.entry_id !== undefined ? `${this.constructor.name} (ID: ${options.entry_id})` : this.constructor.name);
-
-		/* 設定ファイル */
-		this.#config = config;
-
-		/* 記事 ID */
-		if (options?.entry_id !== undefined) {
-			this.#entryId = options.entry_id;
-		}
+		this.#logger = Log4js.getLogger(this.constructor.name);
 
 		/* Slugger */
 		this.#slugger = new GithubSlugger();
@@ -139,22 +118,13 @@ export default class MessageParser {
 		this.#document = new JSDOM().window.document;
 
 		/* Dao */
-		this.#dao = new BlogMessageDao(config, options?.dbh);
+		this.#dao = new BlogMessageDao(options.config, options.dbh);
 
 		/* ルート要素 */
 		this.#rootElement = this.#document.createElement(this.#ROOT_ELEMENT_NAME);
 
 		/* インライン */
-		const inlineOptions: Map<string, unknown> = new Map();
-		inlineOptions.set('entry_id', this.#entryId);
-		if (options?.anchor_host_icons !== undefined) {
-			inlineOptions.set('anchor_host_icons', options.anchor_host_icons);
-		}
-		if (options?.amazon_tracking_id !== undefined) {
-			inlineOptions.set('amazon_tracking_id', options.amazon_tracking_id);
-		}
-		inlineOptions.set('section_id_prefix', this.#SECTION_ID_PREFIX);
-		this.#inline = new Inline(this.#config, Object.fromEntries(inlineOptions));
+		this.#inline = new MarkdownInline();
 	}
 
 	/**
@@ -349,7 +319,7 @@ export default class MessageParser {
 						this.#notes = true;
 
 						continue;
-					} else if (/^\*\d{4}-[0-1]\d-[0-3]\d: /.test(line)) {
+					} else if (/^\*[0-9]{4}-[0-1][0-9]-[0-3][0-9]: /.test(line)) {
 						/* 先頭が *YYYY-MM-DD: な場合は追記 */
 						const insertDate = dayjs(new Date(Number(line.substring(1, 5)), Number(line.substring(6, 8)) - 1, Number(line.substring(9, 11))));
 						const insertText = line.substring(13); // 先頭の「*YYYY-MM-DD: 」を削除
@@ -389,20 +359,20 @@ export default class MessageParser {
 						/* ブロックレベル引用の直後行かつ先頭が ? な場合は引用の出典 */
 						const metaText = line.substring(1); // 先頭記号を削除
 
-						if (new RegExp(`^${this.#config.regexp['absolute_url']}$`).test(metaText)) {
-							/* URL */
-							this.#quoteElement.setAttribute('cite', metaText);
-							this.#quoteUrl = new URL(metaText);
-						} else if (new RegExp(`^${this.#config.regexp['isbn']}$`).test(metaText)) {
-							/* ISBN */
-							if (new IsbnVerify(metaText, { strict: true }).isValid()) {
-								this.#quoteElement.setAttribute('cite', `urn:ISBN:${metaText}`);
-							} else {
-								this.#logger.warn(`ISBN のチェックデジット不正: ${metaText}`);
-							}
-						} else if (new RegExp(`^${this.#config.regexp['lang']}$`).test(metaText)) {
+						const meta = Quote.classifyMeta(metaText);
+
+						if (meta.lang !== undefined) {
 							/* 言語 */
-							this.#quoteElement.setAttribute('lang', metaText);
+							this.#quoteElement.setAttribute('lang', meta.lang);
+						} else if (meta.url !== undefined) {
+							/* URL */
+							this.#quoteElement.setAttribute('cite', meta.url);
+							this.#quoteUrl = new URL(meta.url);
+						} else if (meta.isbn !== undefined) {
+							/* ISBN */
+							if (meta.isbn.valid) {
+								this.#quoteElement.setAttribute('cite', `urn:ISBN:${meta.isbn.value}`);
+							}
 						} else {
 							this.#quoteTitle = metaText;
 						}
@@ -475,7 +445,7 @@ export default class MessageParser {
 						/* 先頭が !youtube: な場合は YouTube 動画 */
 						const mediaMeta = line.substring(9); // 先頭記号を削除
 
-						const metaMatchGroups = mediaMeta.match(/^(?<id>[-_a-zA-Z0-9]+) (?<caption>[^<>]+)( <(?<metas>.+)>)?$/)?.groups;
+						const metaMatchGroups = mediaMeta.match(new RegExp(`^(?<id>${regexp.youtubeId}) (?<caption>[^<>]+)( <(?<metas>.+)>)?$`))?.groups;
 						if (metaMatchGroups !== undefined && metaMatchGroups['id'] !== undefined && metaMatchGroups['caption'] !== undefined) {
 							const { id, caption, metas } = metaMatchGroups;
 
@@ -559,7 +529,6 @@ export default class MessageParser {
 		this.#appendQuoteCite();
 		if (this.#codeBody !== undefined) {
 			/* コードブロックが閉じていない場合は強制的に閉じる */
-			this.#logger.warn('コードブロックが閉じていない', this.#codeBody);
 			this.#appendCode();
 		}
 		this.#appendTableSection();
@@ -627,7 +596,7 @@ export default class MessageParser {
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h2');
-		headingElement.insertAdjacentHTML('beforeend', this.#inline.mark(headingText, { code: true }));
+		headingElement.insertAdjacentHTML('beforeend', this.#inline.mark(headingText, { footnote: false }));
 		headingWrapElement.appendChild(headingElement);
 
 		const selfLinkWrapElement = this.#document.createElement('p');
@@ -662,7 +631,7 @@ export default class MessageParser {
 		sectionElement.appendChild(headingWrapElement);
 
 		const headingElement = this.#document.createElement('h3');
-		headingElement.insertAdjacentHTML('beforeend', this.#inline.mark(headingText, { code: true }));
+		headingElement.insertAdjacentHTML('beforeend', this.#inline.mark(headingText, { footnote: false }));
 		headingWrapElement.appendChild(headingElement);
 
 		const selfLinkWrapElement = this.#document.createElement('p');
@@ -703,7 +672,7 @@ export default class MessageParser {
 
 				const aElement = this.#document.createElement('a');
 				aElement.href = `#${encodeURIComponent(id)}`;
-				aElement.insertAdjacentHTML('beforeend', this.#inline.mark(headingText, { code: true }));
+				aElement.insertAdjacentHTML('beforeend', this.#inline.mark(headingText, { footnote: false }));
 				liElement.appendChild(aElement);
 			}
 		}
@@ -716,7 +685,7 @@ export default class MessageParser {
 	 */
 	#appendParagraph(paragraphText: string): void {
 		const pElement = this.#document.createElement('p');
-		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(paragraphText)); // インライン要素を設定
+		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(paragraphText));
 		this.#appendChild(pElement);
 	}
 
@@ -735,7 +704,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText)); // インライン要素を設定
+		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText));
 		this.#ulElement.appendChild(liElement);
 	}
 
@@ -754,7 +723,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText, { anchor: true, code: true })); // リンクを設定
+		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText)); // リンクを設定
 		this.#linksElement.appendChild(liElement);
 	}
 
@@ -773,7 +742,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText)); // インライン要素を設定
+		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(listText));
 		this.#olElement.appendChild(liElement);
 	}
 
@@ -793,12 +762,12 @@ export default class MessageParser {
 		}
 
 		const dtElement = this.#document.createElement('dt');
-		dtElement.insertAdjacentHTML('beforeend', this.#inline.mark(dtText, { code: true })); // インライン要素を設定
+		dtElement.insertAdjacentHTML('beforeend', this.#inline.mark(dtText));
 		this.#dlElement.appendChild(dtElement);
 
 		for (const ddText of ddTextList) {
 			const ddElement = this.#document.createElement('dd');
-			ddElement.insertAdjacentHTML('beforeend', this.#inline.mark(ddText)); // インライン要素を設定
+			ddElement.insertAdjacentHTML('beforeend', this.#inline.mark(ddText));
 			this.#dlElement.appendChild(ddElement);
 		}
 	}
@@ -818,7 +787,7 @@ export default class MessageParser {
 		}
 
 		const liElement = this.#document.createElement('li');
-		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(noteText)); // インライン要素を設定
+		liElement.insertAdjacentHTML('beforeend', this.#inline.mark(noteText));
 		this.#notesElement.appendChild(liElement);
 	}
 
@@ -841,7 +810,7 @@ export default class MessageParser {
 		const insElement = this.#document.createElement('ins');
 		insElement.setAttribute('datetime', insertDate.format('YYYY-MM-DD'));
 		insElement.className = 'p-insert__text';
-		insElement.insertAdjacentHTML('beforeend', this.#inline.mark(insertText)); // インライン要素を設定
+		insElement.insertAdjacentHTML('beforeend', this.#inline.mark(insertText));
 		wrapElement.appendChild(insElement);
 	}
 
@@ -864,7 +833,7 @@ export default class MessageParser {
 		}
 
 		const pElement = this.#document.createElement('p');
-		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(quoteText, { emphasis: true, code: true })); // インライン要素を設定
+		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(quoteText));
 		this.#quoteElement.appendChild(pElement);
 	}
 
@@ -904,7 +873,8 @@ export default class MessageParser {
 		if (this.#quoteUrl === undefined) {
 			captionTitleElement.textContent = this.#quoteTitle;
 		} else {
-			captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.anchor(this.#quoteTitle, this.#quoteUrl.toString()));
+			const markdownText = `[${this.#quoteTitle}](${this.#quoteUrl.toString()})`;
+			captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(markdownText, { footnote: false }));
 		}
 	}
 
@@ -1030,11 +1000,11 @@ export default class MessageParser {
 					if (index === 0 && data.substring(0, 1) === '~') {
 						const cellElement = this.#document.createElement('th');
 						cellElement.setAttribute('scope', 'row');
-						cellElement.insertAdjacentHTML('beforeend', this.#inline.mark(data.substring(1).trim())); // インライン要素を設定
+						cellElement.insertAdjacentHTML('beforeend', this.#inline.mark(data.substring(1).trim()));
 						rowElement.appendChild(cellElement);
 					} else {
 						const cellElement = this.#document.createElement('td');
-						cellElement.insertAdjacentHTML('beforeend', this.#inline.mark(data.trim())); // インライン要素を設定
+						cellElement.insertAdjacentHTML('beforeend', this.#inline.mark(data.trim()));
 						rowElement.appendChild(cellElement);
 					}
 				});
@@ -1061,7 +1031,7 @@ export default class MessageParser {
 		}
 
 		const pElement = this.#document.createElement('p');
-		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(boxText)); // インライン要素を設定
+		pElement.insertAdjacentHTML('beforeend', this.#inline.mark(boxText));
 		this.#boxElement.appendChild(pElement);
 	}
 
@@ -1094,15 +1064,8 @@ export default class MessageParser {
 			case '.jpg':
 			case '.jpeg':
 			case '.png': {
-				const mimeType = Object.entries(this.#config.static.headers.mime.extension).find(([, extensions]) =>
-					extensions.includes(fileExtension.substring(1))
-				)?.[0];
-
 				const aElement = this.#document.createElement('a');
 				aElement.href = `https://media.w0s.jp/image/blog/${fileName}`;
-				if (mimeType !== undefined) {
-					aElement.type = mimeType;
-				}
 				embeddElement.appendChild(aElement);
 
 				const pictureElement = this.#document.createElement('picture');
@@ -1136,7 +1099,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { anchor: true, code: true })); // インライン要素を設定
+				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption));
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#imageNum += 1;
@@ -1161,7 +1124,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { anchor: true, code: true })); // インライン要素を設定
+				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption));
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#imageNum += 1;
@@ -1187,7 +1150,7 @@ export default class MessageParser {
 
 				const captionTitleElement = this.#document.createElement('span');
 				captionTitleElement.className = 'c-caption__title';
-				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption, { anchor: true, code: true })); // インライン要素を設定
+				captionTitleElement.insertAdjacentHTML('beforeend', this.#inline.mark(caption));
 				figcaptionElement.appendChild(captionTitleElement);
 
 				this.#videoNum += 1;
@@ -1485,7 +1448,7 @@ export default class MessageParser {
 		footnotes.forEach((footnote, index) => {
 			const no = index + 1;
 
-			const href = Util.getFootnoteId(this.#entryId, no);
+			const href = Footnote.getId(no);
 
 			const liElement = this.#document.createElement('li');
 			footnoteElement.appendChild(liElement);
@@ -1515,7 +1478,7 @@ export default class MessageParser {
 	 * @returns {string} セクションの ID 文字列
 	 */
 	#generateSectionId(headingText: string): string {
-		return `${this.#SECTION_ID_PREFIX}${this.#slugger.slug(headingText)}`;
+		return `${config.sectionIdPrefix}${this.#slugger.slug(headingText)}`;
 	}
 
 	/**
@@ -1559,9 +1522,7 @@ export default class MessageParser {
 				registLanguage = hljsJson;
 				break;
 			}
-			default: {
-				this.#logger.warn(`無効な言語名が指定: \`${languageName}\``);
-			}
+			default:
 		}
 
 		if (registLanguageName !== undefined && registLanguage !== undefined && !this.#highLightJsLanguageRegisted.has(registLanguageName)) {

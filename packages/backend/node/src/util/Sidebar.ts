@@ -1,5 +1,5 @@
 import BlogDao from '../dao/BlogDao.js';
-import MessageParserInline from '../util/@message/Inline.js';
+import MarkdownInline from '../markdown/Inline.js';
 
 interface NewlyEntry {
 	id: number;
@@ -15,18 +15,18 @@ interface EntryCountOfCategory {
  * サイドバー
  */
 export default class Sidebar {
-	#messageParserInline: MessageParserInline;
+	#markdownInline: MarkdownInline;
 
 	#dao: BlogDao;
 
 	/**
 	 * @param {BlogDao} dao - 日記共通 Dao
-	 * @param {MessageParserInline} messageParserInline - 記事メッセージのインライン処理
+	 * @param {MarkdownInline} markdownInline - 記事メッセージのインライン処理
 	 */
-	constructor(dao: BlogDao, messageParserInline: MessageParserInline) {
+	constructor(dao: BlogDao, markdownInline: MarkdownInline) {
 		this.#dao = dao;
 
-		this.#messageParserInline = messageParserInline;
+		this.#markdownInline = markdownInline;
 	}
 
 	/**
@@ -64,7 +64,7 @@ export default class Sidebar {
 		for (const entryDto of entriesDto) {
 			entries.push({
 				id: entryDto.id,
-				title: this.#messageParserInline.mark(entryDto.title, { code: true }),
+				title: this.#markdownInline.mark(entryDto.title),
 			});
 		}
 

@@ -13,7 +13,6 @@
 		"errorpage",
 		"logger",
 		"mail",
-		"regexp",
 		"sqlite",
 		"prettier",
 		"markuplint",
@@ -362,14 +361,6 @@
 				}
 			},
 			"additionalProperties": false
-		},
-		"regexp": {
-			"type": "object",
-			"title": "正規表現",
-			"additionalProperties": {
-				"type": "string",
-				"title": "正規表現の値"
-			}
 		},
 		"sqlite": {
 			"type": "object",

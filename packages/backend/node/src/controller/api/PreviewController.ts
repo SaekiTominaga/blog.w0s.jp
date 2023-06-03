@@ -1,27 +1,13 @@
-import fs from 'node:fs';
 import { Request, Response } from 'express';
 import Controller from '../../Controller.js';
 import ControllerInterface from '../../ControllerInterface.js';
-import MessageParser from '../../util/MessageParser.js';
-import { NoName as ConfigureCommon } from '../../../../configure/type/common.js';
-import { NoName as ConfigureMessage } from '../../../../configure/type/message.js';
+import Markdown from '../../markdown/Markdown.js';
 import RequestUtil from '../../util/RequestUtil.js';
 
 /**
  * 本文プレビュー
  */
 export default class PreviewController extends Controller implements ControllerInterface {
-	#configureMessage: ConfigureMessage;
-
-	/**
-	 * @param {ConfigureCommon} configCommon - 共通設定
-	 */
-	constructor(configCommon: ConfigureCommon) {
-		super(configCommon);
-
-		this.#configureMessage = JSON.parse(fs.readFileSync('configure/message.json', 'utf8'));
-	}
-
 	/**
 	 * @param {Request} req - Request
 	 * @param {Response} res - Response
@@ -37,12 +23,12 @@ export default class PreviewController extends Controller implements ControllerI
 			return;
 		}
 
-		const messageParser = new MessageParser(this.configCommon, {
-			anchor_host_icons: this.#configureMessage.anchor_host_icon,
+		const markdown = new Markdown({
+			config: this.configCommon,
 		});
 
 		const responseJson: BlogApi.Preview = {
-			html: await messageParser.toHtml(requestQuery.markdown),
+			html: await markdown.toHtml(requestQuery.markdown),
 		};
 
 		res.status(200).json(responseJson);

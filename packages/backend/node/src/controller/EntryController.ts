@@ -5,25 +5,19 @@ import { Request, Response } from 'express';
 import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
+import Markdown from '../markdown/Markdown.js';
+import MarkdownInline from '../markdown/Inline.js';
 import HttpResponse from '../util/HttpResponse.js';
-import MessageParser from '../util/MessageParser.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
-import MessageParserInline from '../util/@message/Inline.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import { NoName as Configure } from '../../../configure/type/entry.js';
-import { NoName as ConfigureMessage } from '../../../configure/type/message.js';
-import { PAAPI as ConfigurePaapi } from '../../../configure/type/paapi.js';
 
 /**
  * 記事
  */
 export default class EntryController extends Controller implements ControllerInterface {
 	#config: Configure;
-
-	#configureMessage: ConfigureMessage;
-
-	#configPaapi: ConfigurePaapi;
 
 	/**
 	 * @param {ConfigureCommon} configCommon - 共通設定
@@ -32,8 +26,6 @@ export default class EntryController extends Controller implements ControllerInt
 		super(configCommon);
 
 		this.#config = JSON.parse(fs.readFileSync('configure/entry.json', 'utf8'));
-		this.#configureMessage = JSON.parse(fs.readFileSync('configure/message.json', 'utf8'));
-		this.#configPaapi = JSON.parse(fs.readFileSync('configure/paapi.json', 'utf8'));
 	}
 
 	/**
@@ -72,19 +64,17 @@ export default class EntryController extends Controller implements ControllerInt
 			return;
 		}
 
-		const messageParser = new MessageParser(this.configCommon, {
-			entry_id: requestQuery.entry_id,
+		const markdown = new Markdown({
+			config: this.configCommon,
 			dbh: await dao.getDbh(),
-			anchor_host_icons: this.#configureMessage.anchor_host_icon,
-			amazon_tracking_id: this.#configPaapi.partner_tag,
 		});
 
-		const messageParserInline = new MessageParserInline(this.configCommon);
+		const markdownInline = new MarkdownInline();
 
-		const sidebar = new Sidebar(dao, messageParserInline);
+		const sidebar = new Sidebar(dao, markdownInline);
 
 		const [message, categoriesDto, relationDataListDto, entryCountOfCategoryList, newlyEntries] = await Promise.all([
-			messageParser.toHtml(entryDto.message),
+			markdown.toHtml(entryDto.message),
 			dao.getCategories(requestQuery.entry_id),
 			dao.getRelations(requestQuery.entry_id),
 			sidebar.getEntryCountOfCategory(),
@@ -102,7 +92,7 @@ export default class EntryController extends Controller implements ControllerInt
 		for (const relationData of relationDataListDto) {
 			relations.push({
 				id: relationData.id,
-				title: messageParserInline.mark(relationData.title, { code: true }),
+				title: markdownInline.mark(relationData.title),
 				image_internal: relationData.image_internal,
 				image_external: relationData.image_external,
 				created: dayjs(relationData.created),
@@ -111,7 +101,7 @@ export default class EntryController extends Controller implements ControllerInt
 
 		const structuredData = {
 			title: entryDto.title,
-			title_marked: messageParserInline.mark(entryDto.title, { code: true }),
+			title_marked: markdownInline.mark(entryDto.title),
 			datePublished: dayjs(entryDto.created_at),
 			dateModified: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : undefined,
 			description: entryDto.description ?? undefined,
@@ -142,7 +132,7 @@ export default class EntryController extends Controller implements ControllerInt
 			jsonLd: Object.fromEntries(jsonLd),
 
 			message: message,
-			tweet: messageParser.isTweetExit(),
+			tweet: markdown.isTweetExit(),
 
 			categoryNames: categoriesDto.map((category) => category.name),
 			categoryFileNames: categoriesDto
