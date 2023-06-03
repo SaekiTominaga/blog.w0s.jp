@@ -7,7 +7,6 @@ import Footnote from './lib/Footnote.js';
 import Code from './inline/Code.js';
 import Link from './inline/Link.js';
 import Quote from './inline/Quote.js';
-import Strong from './inline/Strong.js';
 
 interface MarkOption {
 	footnote?: boolean; // 注釈
@@ -34,7 +33,6 @@ export default class MarkdownInline {
 			handlers: {
 				inlineCode: Code.toHast,
 				link: Link.toHast,
-				strong: Strong.toHast,
 				quote: Quote.toHast,
 			},
 		}); // mdast → hast
