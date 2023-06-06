@@ -13,7 +13,7 @@ import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import Markdown from '../markdown/Markdown.js';
-import MarkdownInline from '../markdown/Inline.js';
+import MarkdownTitle from '../markdown/Title.js';
 import HttpBasicAuth, { Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
 import PostValidator from '../validator/PostValidator.js';
@@ -398,7 +398,7 @@ export default class PostController extends Controller implements ControllerInte
 					const newlyJson = JSON.stringify(
 						datas.map((data) => ({
 							id: data.id,
-							title: new MarkdownInline().mark(data.title),
+							title: new MarkdownTitle(data.title).mark(),
 						}))
 					);
 
