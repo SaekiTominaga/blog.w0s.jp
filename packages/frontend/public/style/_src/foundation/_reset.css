@@ -56,7 +56,9 @@ th {
 em,
 cite,
 dfn {
-	font-style: normal;
+	&:lang(ja) {
+		font-style: normal;
+	}
 }
 
 mark {

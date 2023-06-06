@@ -50,17 +50,12 @@ w0s-tooltip:focus {
 	color: var(--color-black);
 }
 
-h1,
-h2,
-h3,
-h4,
 em,
-strong,
 cite,
-dfn,
-b,
-th {
-	font-weight: var(--font-weight-bold);
+dfn {
+	&:lang(ja) {
+		font-weight: var(--font-weight-bold);
+	}
 }
 
 pre {
