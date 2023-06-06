@@ -37,6 +37,9 @@ export default class MarkdownInline {
 			},
 		}); // mdast → hast
 		processor.use(rehypeStringify, {
+			entities: {
+				useNamedReferences: true,
+			},
 			closeSelfClosing: true,
 			tightSelfClosing: true,
 		}); // hast → HTML
