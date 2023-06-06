@@ -16,7 +16,7 @@ interface MarkOption {
  * 記事メッセージのインライン処理
  */
 export default class MarkdownInline {
-	/*  */
+	/* unified Processor */
 	readonly #processor: Processor;
 
 	/* 注釈 */
@@ -71,11 +71,12 @@ export default class MarkdownInline {
 
 		const htmlBlock = this.#processor.processSync(inputEscaped).value.toString();
 
-		let html = htmlBlock.replace('<p>', '').replace('</p>', ''); // 外枠の <p></p> を削除
+		let html = htmlBlock.replace(/^<[a-z][a-z0-9-]*>/, '').replace(/<\/[a-z][a-z0-9-]*>$/, ''); // 外枠のタグを削除
 
 		if (options.footnote) {
 			html = this.#footnote(html);
 		}
+
 		return html;
 	}
 
