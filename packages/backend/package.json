@@ -7,7 +7,7 @@
 		"watch": "tsc --project node/tsconfig.json -w",
 		"build": "tsc --project node/tsconfig.json",
 		"lint": "eslint node/src/**/*.ts node/@types/*.d.ts",
-		"test": "npm run build && cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+		"test": "npm run config-convert && npm run build && cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
 		"config-convert": "json2ts -i configure/schema -o configure/type",
 		"config-validate": "run-p _config-validate:*",
 		"errorpage-lint": "markuplint errorpage/*.html",
