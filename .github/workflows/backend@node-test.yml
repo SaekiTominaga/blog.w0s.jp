@@ -1,0 +1,29 @@
+name: backend@node-test
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'packages/backend/node/__tests__/MarkdownInline.test.js'
+      - 'packages/backend/node/__tests__/MarkdownTitle.test.js'
+      - 'packages/backend/node/src/**/*.ts'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/backend/node/__tests__/MarkdownInline.test.js'
+      - 'packages/backend/node/__tests__/MarkdownTitle.test.js'
+      - 'packages/backend/node/src/**/*.ts'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: cd packages/backend/node/__tests__
+      - run: npx cross-env NODE_OPTIONS=--experimental-vm-modules jest MarkdownInline.test.js MarkdownTitle.test.js # Markdown.test.js は GitHub Actions 上でテスト不可なので、それ以外のファイルを個別に実行する
