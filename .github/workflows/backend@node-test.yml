@@ -25,4 +25,8 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npm run config-convert -w '@blog.w0s.jp/backend' && npm run build -w '@blog.w0s.jp/util' && npm run build -w '@blog.w0s.jp/backend' && npx cross-env NODE_OPTIONS=--experimental-vm-modules jest packages/backend/node/__tests__/MarkdownInline.test.js packages/backend/node/__tests__/MarkdownTitle.test.js # Markdown.test.js は GitHub Actions 上でテスト不可なので、それ以外のファイルを個別に実行する
+      - run: npm run build -w '@blog.w0s.jp/util'
+      - run: npm run config-convert -w '@blog.w0s.jp/backend'
+      - run: npm run build -w '@blog.w0s.jp/backend'
+      - run: cd packages/backend/node/__tests__
+      - run: npx cross-env NODE_OPTIONS=--experimental-vm-modules jest MarkdownInline.test.js MarkdownTitle.test.js # Markdown.test.js は GitHub Actions 上でテスト不可なので、それ以外のファイルを個別に実行する
