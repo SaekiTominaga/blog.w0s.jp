@@ -4,7 +4,6 @@ import ReportJsError from '@saekitominaga/report-js-error';
 import Tab from '@saekitominaga/customelements-tab';
 import TooltipTrigger from '@saekitominaga/customelements-tooltip-trigger';
 import GoogleAdsense from './unique/GoogleAdsense.js';
-import SidebarAmazonAd from './unique/SidebarAmazonAd.js';
 
 /* JS エラーレポート */
 new ReportJsError('https://report.w0s.jp/js', {
@@ -46,12 +45,6 @@ if (window.customElements !== undefined) {
 			extends: 'button',
 		});
 	}
-}
-
-/* Amazon 商品広告 */
-const sidebarAmazonAdTemplateElement = <HTMLTemplateElement | null>document.getElementById('sidebar-amazon-ad-template');
-if (sidebarAmazonAdTemplateElement !== null) {
-	new SidebarAmazonAd(sidebarAmazonAdTemplateElement).init();
 }
 
 /* Google AdSense */
