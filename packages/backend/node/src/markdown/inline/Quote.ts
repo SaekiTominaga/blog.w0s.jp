@@ -10,7 +10,7 @@ export const name = 'quote';
 
 interface QuoteNode extends ParentNode {
 	type: typeof name;
-	meta: Meta;
+	quotemeta: Meta;
 	children: PhrasingContent[];
 }
 
@@ -72,8 +72,7 @@ export default class {
 							{
 								// @ts-expect-error: ts(2322)
 								type: name,
-								// @ts-expect-error: ts(2322)
-								meta: meta,
+								quotemeta: meta,
 								children: [
 									{
 										type: 'text',
@@ -86,7 +85,7 @@ export default class {
 				} else {
 					quoteNode = {
 						type: name,
-						meta: meta,
+						quotemeta: meta,
 						children: [
 							{
 								type: 'text',
@@ -107,7 +106,7 @@ export default class {
 	}
 
 	static toHast(state: H, node: QuoteNode): HastElementContent | HastElementContent[] {
-		const { meta } = node;
+		const meta = node.quotemeta;
 
 		const attributes: { lang?: string; cite?: string } = {};
 		if (meta.lang !== undefined) {
