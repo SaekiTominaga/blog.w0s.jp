@@ -19,9 +19,7 @@
 
 		<title><%= structuredData.title %></title>
 
-		<%_ if (categoryFileNames !== undefined) { _%>
-		<meta name="w0s:amazon" content="<%= categoryFileNames %>" />
-		<%_ } _%> <%_ if (structuredData.description !== undefined) { _%>
+		<%_ if (structuredData.description !== undefined) { _%>
 		<meta name="description" content="<%= structuredData.description %>" />
 		<%_ } _%> <%_ if (structuredData.image !== undefined) { _%>
 		<meta property="og:title" content="<%= structuredData.title %>" />
