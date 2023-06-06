@@ -9,7 +9,7 @@ import ControllerInterface from '../ControllerInterface.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
-import MarkdownInline from '../markdown/Inline.js';
+import MarkdownTitle from '../markdown/Title.js';
 import { NoName as Configure } from '../../../configure/type/list.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 
@@ -65,9 +65,7 @@ export default class ListController extends Controller implements ControllerInte
 			return;
 		}
 
-		const markdownInline = new MarkdownInline();
-
-		const sidebar = new Sidebar(dao, markdownInline);
+		const sidebar = new Sidebar(dao);
 
 		const [entryCount, entryCountOfCategoryList, newlyEntries] = await Promise.all([
 			dao.getEntryCount(),
@@ -106,7 +104,7 @@ export default class ListController extends Controller implements ControllerInte
 
 			entries.push({
 				id: entryDto.id,
-				title: markdownInline.mark(entryDto.title),
+				title: new MarkdownTitle(entryDto.title).mark(),
 				image_internal: entryDto.image_internal,
 				image_external: imageExternal,
 				created: dayjs(entryDto.created),

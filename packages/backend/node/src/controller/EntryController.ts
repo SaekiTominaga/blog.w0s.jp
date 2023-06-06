@@ -6,7 +6,7 @@ import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
 import Markdown from '../markdown/Markdown.js';
-import MarkdownInline from '../markdown/Inline.js';
+import MarkdownTitle from '../markdown/Title.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
@@ -69,9 +69,7 @@ export default class EntryController extends Controller implements ControllerInt
 			dbh: await dao.getDbh(),
 		});
 
-		const markdownInline = new MarkdownInline();
-
-		const sidebar = new Sidebar(dao, markdownInline);
+		const sidebar = new Sidebar(dao);
 
 		const [message, categoriesDto, relationDataListDto, entryCountOfCategoryList, newlyEntries] = await Promise.all([
 			markdown.toHtml(entryDto.message),
@@ -92,7 +90,7 @@ export default class EntryController extends Controller implements ControllerInt
 		for (const relationData of relationDataListDto) {
 			relations.push({
 				id: relationData.id,
-				title: markdownInline.mark(relationData.title),
+				title: new MarkdownTitle(relationData.title).mark(),
 				image_internal: relationData.image_internal,
 				image_external: relationData.image_external,
 				created: dayjs(relationData.created),
@@ -101,7 +99,7 @@ export default class EntryController extends Controller implements ControllerInt
 
 		const structuredData = {
 			title: entryDto.title,
-			title_marked: markdownInline.mark(entryDto.title),
+			title_marked: new MarkdownTitle(entryDto.title).mark(),
 			datePublished: dayjs(entryDto.created_at),
 			dateModified: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : undefined,
 			description: entryDto.description ?? undefined,

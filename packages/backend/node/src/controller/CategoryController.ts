@@ -7,10 +7,10 @@ import { Request, Response } from 'express';
 import BlogCategoryDao from '../dao/BlogCategoryDao.js';
 import Controller from '../Controller.js';
 import ControllerInterface from '../ControllerInterface.js';
+import MarkdownTitle from '../markdown/Title.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
-import MarkdownInline from '../markdown/Inline.js';
 import { NoName as Configure } from '../../../configure/type/category.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 
@@ -67,9 +67,7 @@ export default class CategoryController extends Controller implements Controller
 			return;
 		}
 
-		const markdownInline = new MarkdownInline();
-
-		const sidebar = new Sidebar(dao, markdownInline);
+		const sidebar = new Sidebar(dao);
 
 		const [entryCountOfCategoryList, newlyEntries] = await Promise.all([
 			sidebar.getEntryCountOfCategory(),
@@ -107,7 +105,7 @@ export default class CategoryController extends Controller implements Controller
 
 			entries.push({
 				id: entryDto.id,
-				title: markdownInline.mark(entryDto.title),
+				title: new MarkdownTitle(entryDto.title).mark(),
 				image_internal: entryDto.image_internal,
 				image_external: imageExternal,
 				created: dayjs(entryDto.created),
