@@ -1480,7 +1480,7 @@ export default class Markdown {
 			const textElement = this.#document.createElement('span');
 			textElement.className = 'p-footnotes__text';
 			textElement.id = Footnote.getId(id);
-			textElement.insertAdjacentHTML('beforeend', footnote);
+			textElement.insertAdjacentHTML('beforeend', this.#inline.mark(footnote, { footnote: false }));
 			liElement.appendChild(textElement);
 
 			index += 1;
