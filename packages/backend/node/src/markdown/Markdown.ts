@@ -516,6 +516,24 @@ export default class Markdown {
 					}
 					break;
 				}
+				case '[': {
+					if (line.startsWith('[^')) {
+						const footnoteDefinitionCloseIndex = line.indexOf(']: ', 2);
+						if (footnoteDefinitionCloseIndex !== -1) {
+							/* 先頭が [^ID]: な場合は脚注定義 */
+							const id = line.substring(2, footnoteDefinitionCloseIndex);
+							if (id.match(new RegExp(`^${regexp.footnoteId}$`))) {
+								if (this.#inline.footnotes.has(id)) {
+									const value = line.substring(footnoteDefinitionCloseIndex + 3);
+									this.#inline.setFootnote(id, value);
+
+									continue;
+								}
+							}
+						}
+					}
+					break;
+				}
 				default:
 			}
 
@@ -1437,7 +1455,7 @@ export default class Markdown {
 	 */
 	#appendFootnote(): void {
 		const { footnotes } = this.#inline;
-		if (footnotes.length === 0) {
+		if (footnotes.size === 0) {
 			return;
 		}
 
@@ -1445,11 +1463,8 @@ export default class Markdown {
 		footnoteElement.setAttribute('class', 'p-footnotes');
 		this.#rootElement.appendChild(footnoteElement);
 
-		footnotes.forEach((footnote, index) => {
-			const no = index + 1;
-
-			const href = Footnote.getId(no);
-
+		let index = 1;
+		footnotes.forEach((footnote, id) => {
 			const liElement = this.#document.createElement('li');
 			footnoteElement.appendChild(liElement);
 
@@ -1458,15 +1473,17 @@ export default class Markdown {
 			liElement.appendChild(noElement);
 
 			const aElement = this.#document.createElement('a');
-			aElement.href = `#nt${href}`;
-			aElement.textContent = `[${no}]`;
+			aElement.href = `#${Footnote.getReferenceId(id)}`;
+			aElement.textContent = `[${index}]`;
 			noElement.appendChild(aElement);
 
 			const textElement = this.#document.createElement('span');
 			textElement.className = 'p-footnotes__text';
-			textElement.id = `fn${href}`;
+			textElement.id = Footnote.getId(id);
 			textElement.insertAdjacentHTML('beforeend', footnote);
 			liElement.appendChild(textElement);
+
+			index += 1;
 		});
 	}
 

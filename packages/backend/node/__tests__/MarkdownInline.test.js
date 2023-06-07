@@ -124,23 +124,23 @@ describe('quote - meta', () => {
 describe('footnote', () => {
 	test('single', () => {
 		const footnote = new MarkdownInline();
-		expect(footnote.mark('text1((footnote1))text2')).toBe(
-			'text1<span class="c-annotate"><a href="#fn1" id="nt1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text2'
+		expect(footnote.mark('text1[^f1]text2')).toBe(
+			'text1<span class="c-annotate"><a href="#footnote-f1" id="footnote-ref-f1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text2'
 		);
-		expect(footnote.footnotes.length).toBe(1);
+		expect(footnote.footnotes.size).toBe(1);
 	});
 
 	test('multiple', () => {
 		const footnote = new MarkdownInline();
-		expect(footnote.mark('text1((footnote1))text2((footnote2))')).toBe(
-			'text1<span class="c-annotate"><a href="#fn1" id="nt1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text2<span class="c-annotate"><a href="#fn2" id="nt2" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[2]</a></span>'
+		expect(footnote.mark('text1[^f1]text2[^f2]')).toBe(
+			'text1<span class="c-annotate"><a href="#footnote-f1" id="footnote-ref-f1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span>text2<span class="c-annotate"><a href="#footnote-f2" id="footnote-ref-f2" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[2]</a></span>'
 		);
-		expect(footnote.footnotes.length).toBe(2);
+		expect(footnote.footnotes.size).toBe(2);
 	});
 
 	test('open only', () => {
 		const footnote = new MarkdownInline();
-		expect(footnote.mark('text1((text2')).toBe('text1((text2');
-		expect(footnote.footnotes.length).toBe(0);
+		expect(footnote.mark('text1[^text2')).toBe('text1[^text2');
+		expect(footnote.footnotes.size).toBe(0);
 	});
 });

@@ -1,12 +1,23 @@
 export default class Footnote {
 	/**
-	 * 注釈要素の ID を生成する
+	 * 脚注要素の ID を生成する
 	 *
-	 * @param {number} no - 注釈連番
+	 * @param {string} id - 脚注 ID
 	 *
-	 * @returns {string} 注釈要素の ID
+	 * @returns {string} 脚注要素の ID
 	 */
-	static getId(no: number): string {
-		return String(no);
+	static getId(id: string): string {
+		return `footnote-${id}`;
+	}
+
+	/**
+	 * 脚注参照要素の ID を生成する
+	 *
+	 * @param {string} id - 脚注 ID
+	 *
+	 * @returns {string} 脚注参照要素の ID
+	 */
+	static getReferenceId(id: string): string {
+		return `footnote-ref-${id}`;
 	}
 }

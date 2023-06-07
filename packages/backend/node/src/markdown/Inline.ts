@@ -7,9 +7,10 @@ import Footnote from './lib/Footnote.js';
 import Code from './inline/Code.js';
 import Link from './inline/Link.js';
 import Quote from './inline/Quote.js';
+import { regexp } from './config.js';
 
 interface MarkOption {
-	footnote?: boolean; // 注釈
+	footnote?: boolean; // 脚注
 }
 
 /**
@@ -20,7 +21,7 @@ export default class MarkdownInline {
 	readonly #processor: Processor;
 
 	/* 注釈 */
-	readonly #footnotes: string[] = [];
+	readonly #footnotes = new Map<string, string>();
 
 	/**
 	 * コンストラクタ
@@ -51,10 +52,20 @@ export default class MarkdownInline {
 	/**
 	 * 脚注データを取得する
 	 *
-	 * @returns {string[]} - 脚注データ
+	 * @returns {Map<string, string>} - 脚注データ
 	 */
-	get footnotes(): string[] {
+	get footnotes(): Map<string, string> {
 		return this.#footnotes;
+	}
+
+	/**
+	 * 脚注データをセットする
+	 *
+	 * @param {string} id - 脚注の ID
+	 * @param {string} value - 脚注の内容
+	 */
+	setFootnote(id: string, value = ''): void {
+		this.#footnotes.set(id, value);
 	}
 
 	/**
@@ -77,22 +88,22 @@ export default class MarkdownInline {
 		let html = htmlBlock.replace(/^<[a-z][a-z0-9-]*>/, '').replace(/<\/[a-z][a-z0-9-]*>$/, ''); // 外枠のタグを削除
 
 		if (options.footnote) {
-			html = this.#footnote(html);
+			html = this.#footnoteReference(html);
 		}
 
 		return html;
 	}
 
 	/**
-	 * 注釈
+	 * 脚注
 	 *
 	 * @param {string} input - 処理対象の HTML 文字列
 	 *
 	 * @returns {string} 変換後の HTML 文字列
 	 */
-	#footnote(input: string): string {
-		const FOOTNOTE_OPEN = '((';
-		const FOOTNOTE_CLOSE = '))';
+	#footnoteReference(input: string): string {
+		const FOOTNOTE_OPEN = '[^';
+		const FOOTNOTE_CLOSE = ']';
 
 		/**
 		 * 変換実行
@@ -116,11 +127,18 @@ export default class MarkdownInline {
 			const footnoteValue = value.substring(footnoteOpenIndex + FOOTNOTE_OPEN.length, footnoteCloseIndex);
 			const afterFootenoteValue = value.substring(footnoteCloseIndex + FOOTNOTE_CLOSE.length);
 
-			this.#footnotes.push(footnoteValue); // 注釈文
-			const no = this.#footnotes.length;
-			const href = Footnote.getId(no);
+			if (!footnoteValue.match(new RegExp(`^${regexp.footnoteId}$`))) {
+				return { value: value, unconvertedIndex: undefined };
+			}
 
-			const converted = `${beforeFootenoteValue}<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${no}]</a></span>`;
+			this.setFootnote(footnoteValue);
+			const no = this.#footnotes.size;
+
+			const converted = `${beforeFootenoteValue}<span class="c-annotate"><a href="#${StringEscapeHtml.escape(
+				Footnote.getId(footnoteValue)
+			)}" id="${StringEscapeHtml.escape(
+				Footnote.getReferenceId(footnoteValue)
+			)}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${no}]</a></span>`;
 			const unconvertedIndex = converted.length;
 
 			return { value: `${converted}${afterFootenoteValue}`, unconvertedIndex: unconvertedIndex };
