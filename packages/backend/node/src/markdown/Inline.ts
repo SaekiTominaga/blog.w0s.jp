@@ -91,13 +91,49 @@ export default class MarkdownInline {
 	 * @returns {string} 変換後の HTML 文字列
 	 */
 	#footnote(input: string): string {
-		return input.replace(/\(\((?<footnote>.+?)\)\)/g, (_match, footnote_htmlescaped: string) => {
-			this.#footnotes.push(footnote_htmlescaped); // 注釈文
+		const FOOTNOTE_OPEN = '((';
+		const FOOTNOTE_CLOSE = '))';
 
+		/**
+		 * 変換実行
+		 *
+		 * @param {string} value - 変換対象の文字列
+		 * @param {number} fromIndex - 検索を始める位置
+		 *
+		 * @returns {number} 未処理文字列の開始位置（これ以上処理が不要なときは undefined）
+		 */
+		const convert = (value: string, fromIndex = 0): { value: string; unconvertedIndex: number | undefined } => {
+			const footnoteOpenIndex = value.indexOf(FOOTNOTE_OPEN, fromIndex);
+			if (footnoteOpenIndex === -1) {
+				return { value: value, unconvertedIndex: undefined };
+			}
+			const footnoteCloseIndex = value.indexOf(FOOTNOTE_CLOSE, footnoteOpenIndex + FOOTNOTE_OPEN.length);
+			if (footnoteCloseIndex === -1) {
+				return { value: value, unconvertedIndex: undefined };
+			}
+
+			const beforeFootenoteValue = value.substring(0, footnoteOpenIndex);
+			const footnoteValue = value.substring(footnoteOpenIndex + FOOTNOTE_OPEN.length, footnoteCloseIndex);
+			const afterFootenoteValue = value.substring(footnoteCloseIndex + FOOTNOTE_CLOSE.length);
+
+			this.#footnotes.push(footnoteValue); // 注釈文
 			const no = this.#footnotes.length;
 			const href = Footnote.getId(no);
 
-			return StringEscapeHtml.template`<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${no}]</a></span>`;
-		});
+			const converted = `${beforeFootenoteValue}<span class="c-annotate"><a href="#fn${href}" id="nt${href}" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[${no}]</a></span>`;
+			const unconvertedIndex = converted.length;
+
+			return { value: `${converted}${afterFootenoteValue}`, unconvertedIndex: unconvertedIndex };
+		};
+
+		let { value, unconvertedIndex } = convert(input);
+		while (unconvertedIndex !== undefined) {
+			const converted = convert(value, unconvertedIndex);
+
+			value = converted.value;
+			unconvertedIndex = converted.unconvertedIndex;
+		}
+
+		return value;
 	}
 }
