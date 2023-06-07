@@ -55,6 +55,14 @@
 			}
 		},
 		{
+			"selector": "table",
+			"rules": {
+				"required-element": [
+					"thead"
+				]
+			}
+		},
+		{
 			"selector": "#image-preview",
 			"rules": {
 				"wai-aria": false
