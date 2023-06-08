@@ -5,26 +5,46 @@ import BlogDao from './BlogDao.js';
  */
 export default class BlogEntryMessageConvertDao extends BlogDao {
 	/**
-	 * 全記事の本文を取得する
+	 * 記事の本文を取得する
+	 *
+	 * @param {number} entryId - 記事 ID（未指定時は全記事を取得）
 	 *
 	 * @returns {Map} 全記事の本文
 	 */
-	async getAllEntriesMessage(): Promise<Map<number, string>> {
+	async getEntriesMessage(entryId?: number): Promise<Map<number, string>> {
 		const dbh = await this.getDbh();
 
-		const sth = await dbh.prepare(`
-			SELECT
-				id,
-				message
-			FROM
-				d_topic
-		`);
-		const rows = await sth.all();
-		await sth.finalize();
-
 		const messages: Map<number, string> = new Map();
-		for (const row of rows) {
-			messages.set(row.id, row.message);
+		if (entryId === undefined) {
+			const sth = await dbh.prepare(`
+				SELECT
+					id,
+					message
+				FROM
+					d_topic
+			`);
+			const rows = await sth.all();
+			await sth.finalize();
+
+			for (const row of rows) {
+				messages.set(row.id, row.message);
+			}
+		} else {
+			const sth = await dbh.prepare(`
+				SELECT
+					message
+				FROM
+					d_topic
+				WHERE
+					id = :id
+			`);
+			await sth.bind({
+				':id': entryId,
+			});
+			const row = await sth.get();
+			await sth.finalize();
+
+			messages.set(entryId, row.message);
 		}
 
 		return messages;

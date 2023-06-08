@@ -8,6 +8,9 @@ import { NoName as Configure } from '../../../configure/type/common.js';
  */
 const argsParsedValues = parseArgs({
 	options: {
+		id: {
+			type: 'string',
+		},
 		dbupdate: {
 			type: 'boolean',
 			default: false,
@@ -29,7 +32,7 @@ const convert = (id: number, message: string): string => {
 		.replaceAll(CRLF, LF)
 		.split(LF)
 		.forEach((line, index) => {
-			const convertedLine = line.replaceAll(/(.+?)/g, (match, text) => {
+			const convertedLine = line.replaceAll(/(.+)/g, (match, text) => {
 				console.info(`${id}: ${match}`);
 				return `${text}`;
 			}); // TODO: ここに変換処理を書く
@@ -43,13 +46,14 @@ const convert = (id: number, message: string): string => {
 	return convertedMessage;
 };
 
-/* DB からデータ取得 */
-const allEntryiesMessageDto = await dao.getAllEntriesMessage();
-
+const entryId = argsParsedValues['id'] !== undefined ? Number(argsParsedValues['id']) : undefined;
 const dbUpdate = argsParsedValues['dbupdate'];
 
+/* DB からデータ取得 */
+const entryiesMessageDto = await dao.getEntriesMessage(entryId);
+
 await Promise.all(
-	[...allEntryiesMessageDto].map(async ([id, message]) => {
+	[...entryiesMessageDto].map(async ([id, message]) => {
 		const messageConverted = convert(id, message);
 		if (dbUpdate !== undefined && dbUpdate) {
 			if (message !== messageConverted) {
