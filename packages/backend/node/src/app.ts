@@ -4,7 +4,6 @@ import compression from 'compression';
 import express, { NextFunction, Request, Response } from 'express';
 import Log4js from 'log4js';
 import multer from 'multer';
-import AmazonController from './controller/AmazonController.js';
 import AmazonImageController from './controller/api/AmazonImageController.js';
 import CategoryController from './controller/CategoryController.js';
 import EntryController from './controller/EntryController.js';
@@ -207,26 +206,6 @@ app
 	.post(upload.array('media'), async (req, res, next) => {
 		try {
 			await new PostController(config, env).execute(req, res);
-		} catch (e) {
-			next(e);
-		}
-	});
-
-/**
- * Amazon 商品管理
- */
-app
-	.route('/admin/amazon')
-	.get(async (req, res, next) => {
-		try {
-			await new AmazonController(config).execute(req, res);
-		} catch (e) {
-			next(e);
-		}
-	})
-	.post(async (req, res, next) => {
-		try {
-			await new AmazonController(config).execute(req, res);
 		} catch (e) {
 			next(e);
 		}
