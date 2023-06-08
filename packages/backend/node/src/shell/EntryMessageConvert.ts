@@ -1,10 +1,24 @@
 import fs from 'node:fs';
+import { parseArgs } from 'node:util';
 import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.js';
 import { NoName as Configure } from '../../../configure/type/common.js';
 
 /**
  * 記事本文の構文書き換え
  */
+const argsParsedValues = parseArgs({
+	options: {
+		dbupdate: {
+			type: 'boolean',
+			default: false,
+		},
+	},
+}).values;
+
+/* 設定ファイル読み込み */
+const config = <Configure>JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8'));
+
+const dao = new BlogEntryMessageConvertDao(config);
 
 const convert = (id: number, message: string): string => {
 	const CRLF = '\r\n';
@@ -29,20 +43,19 @@ const convert = (id: number, message: string): string => {
 	return convertedMessage;
 };
 
-/* 設定ファイル読み込み */
-const config = <Configure>JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8'));
-
-const dao = new BlogEntryMessageConvertDao(config);
-
 /* DB からデータ取得 */
 const allEntryiesMessageDto = await dao.getAllEntriesMessage();
+
+const dbUpdate = argsParsedValues['dbupdate'];
 
 await Promise.all(
 	[...allEntryiesMessageDto].map(async ([id, message]) => {
 		const messageConverted = convert(id, message);
-		if (message !== messageConverted) {
-			console.info(`記事 ${id} を更新`);
-			await dao.update(id, messageConverted);
+		if (dbUpdate !== undefined && dbUpdate) {
+			if (message !== messageConverted) {
+				console.info(`記事 ${id} を更新`);
+				await dao.update(id, messageConverted);
+			}
 		}
 	})
 );
