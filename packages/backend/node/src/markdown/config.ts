@@ -52,4 +52,5 @@ export const regexp = {
 	entryId: '[1-9][0-9]*',
 	asin: '[0-9A-Z]{10}',
 	youtubeId: '[-_a-zA-Z0-9]+',
+	footnoteId: '[-_a-zA-Z0-9]+',
 };
