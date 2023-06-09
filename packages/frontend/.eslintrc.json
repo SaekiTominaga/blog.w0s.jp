@@ -59,6 +59,12 @@
 				"no-var": "off",
 				"strict": "off"
 			}
+		},
+		{
+			"files": ["rollup.config.js"],
+			"rules": {
+				"import/no-extraneous-dependencies": "off"
+			}
 		}
 	]
 }
