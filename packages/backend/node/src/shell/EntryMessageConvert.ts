@@ -52,14 +52,12 @@ const dbUpdate = argsParsedValues['dbupdate'];
 /* DB からデータ取得 */
 const entryiesMessageDto = await dao.getEntriesMessage(entryId);
 
-await Promise.all(
-	[...entryiesMessageDto].map(async ([id, message]) => {
-		const messageConverted = convert(id, message);
-		if (dbUpdate !== undefined && dbUpdate) {
-			if (message !== messageConverted) {
-				console.info(`記事 ${id} を更新`);
-				await dao.update(id, messageConverted);
-			}
+for (const [id, message] of [...entryiesMessageDto]) {
+	const messageConverted = convert(id, message);
+	if (dbUpdate !== undefined && dbUpdate) {
+		if (message !== messageConverted) {
+			console.info(`記事 ${id} を更新`);
+			await dao.update(id, messageConverted);
 		}
-	})
-);
+	}
+}

@@ -36,6 +36,12 @@
 				"camelcase": "off",
 				"class-methods-use-this": "off"
 			}
+		},
+		{
+			"files": ["node/src/shell/*.ts"],
+			"rules": {
+				"no-await-in-loop": "off"
+			}
 		}
 	]
 }
