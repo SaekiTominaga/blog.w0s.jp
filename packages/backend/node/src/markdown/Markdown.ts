@@ -1437,7 +1437,7 @@ export default class Markdown {
 				dpImageElement.setAttribute('height', String(image.height));
 			}
 		} else {
-			dpImageElement.setAttribute('src', '/image/amazon_noimage.svg');
+			dpImageElement.setAttribute('src', '/image/entry/amazon-noimage.svg');
 			dpImageElement.setAttribute('width', '113');
 			dpImageElement.setAttribute('height', '160');
 		}
