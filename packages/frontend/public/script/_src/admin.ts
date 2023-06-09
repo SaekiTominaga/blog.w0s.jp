@@ -50,18 +50,14 @@ const messagePreviewElement = document.getElementById('message-preview'); // 本
 const selectImageElement = <HTMLTemplateElement | null>document.getElementById('select-image');
 const selectImageErrorElement = <HTMLTemplateElement | null>document.getElementById('select-image-error');
 if (messageCtrlElement !== null && selectImageElement !== null && selectImageErrorElement !== null && messagePreviewElement !== null) {
-	const messageImage = new MessageImage(messageCtrlElement, selectImageElement, selectImageErrorElement);
 	const preview = new Preview(messageCtrlElement, messagePreviewElement);
+	const messageImage = new MessageImage(messageCtrlElement, selectImageElement, selectImageErrorElement);
 
-	await messageImage.exec();
-	await preview.exec();
+	const exec = async (): Promise<void> => {
+		await Promise.all([preview.exec(), messageImage.exec()]);
+	};
 
-	messageCtrlElement.addEventListener(
-		'change',
-		async () => {
-			await messageImage.exec();
-			await preview.exec();
-		},
-		{ passive: true }
-	);
+	exec();
+
+	messageCtrlElement.addEventListener('change', exec, { passive: true });
 }
