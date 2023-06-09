@@ -518,7 +518,7 @@ export default class Markdown {
 							let imageWidth: number | undefined;
 							let imageHeight: number | undefined;
 							metas?.split(' ').forEach((meta) => {
-								if (/^[1-9][0-9]{2,3}x[1-9][0-9]{2,3}$/.test(meta)) {
+								if (/^[1-9][0-9]{1,2}x[1-9][0-9]{1,2}$/.test(meta)) {
 									/* 画像サイズ */
 									const sizes = meta.split('x');
 									imageWidth = Number(sizes.at(0));
