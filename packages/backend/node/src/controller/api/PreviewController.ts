@@ -29,6 +29,7 @@ export default class PreviewController extends Controller implements ControllerI
 
 		const responseJson: BlogApi.Preview = {
 			html: await markdown.toHtml(requestQuery.markdown),
+			tweetExist: markdown.isTweetExit(),
 		};
 
 		res.status(200).json(responseJson);

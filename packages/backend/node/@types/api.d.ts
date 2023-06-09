@@ -3,6 +3,7 @@ declare namespace BlogApi {
 	/* 本文プレビュー */
 	interface Preview {
 		html: string;
+		tweetExist: boolean;
 	}
 
 	/* ツイート情報取得 */

@@ -50,7 +50,8 @@ export const regexp = {
 	absoluteUrl: "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+",
 	isbn: '(978|979)-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]|[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]',
 	entryId: '[1-9][0-9]*',
+	footnoteId: '[-_a-zA-Z0-9]+',
 	asin: '[0-9A-Z]{10}',
 	youtubeId: '[-_a-zA-Z0-9]+',
-	footnoteId: '[-_a-zA-Z0-9]+',
+	tweetId: '[1-9][0-9]*',
 };
