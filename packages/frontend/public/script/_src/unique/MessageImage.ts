@@ -48,7 +48,7 @@ export default class MessageImage {
 
 		const tweetIds: Set<string> = new Set(); // Tweet ID
 		const youtubeIds: Set<string> = new Set(); // YouTube ID
-		const asins: Set<string> = new Set(); // ASIN
+		const amazonImageIds: Set<string> = new Set(); // Amazon 画像 ID
 
 		/* 本文内のテキストから画像パスと ASIN を抜き出す */
 		this.#ctrlElement.value.split('\n').forEach((line: string): void => {
@@ -56,17 +56,17 @@ export default class MessageImage {
 			switch (firstCharactor) {
 				case '!': {
 					if (line.startsWith('!youtube:')) {
-						const youtubeMatchGroups = line.match(/^!youtube:(?<id>[-_a-zA-Z0-9]+) [^<>]+( <.+>)?$/)?.groups;
-						if (youtubeMatchGroups !== undefined) {
-							if (youtubeMatchGroups['id'] !== undefined) {
-								youtubeIds.add(youtubeMatchGroups['id']);
+						const matchGroups = line.match(/^!youtube:(?<id>[-_a-zA-Z0-9]+) [^<>]+( <.+>)?$/)?.groups;
+						if (matchGroups !== undefined) {
+							if (matchGroups['id'] !== undefined) {
+								youtubeIds.add(matchGroups['id']);
 							}
 						}
 					} else {
-						const imageMatchGroups = line.match(/^!(?<filename>[^ ]+)/)?.groups;
-						if (imageMatchGroups !== undefined) {
-							if (imageMatchGroups['filename'] !== undefined) {
-								imageNames.add(imageMatchGroups['filename']);
+						const matchGroups = line.match(/^!(?<filename>[^ ]+)/)?.groups;
+						if (matchGroups !== undefined) {
+							if (matchGroups['filename'] !== undefined) {
+								imageNames.add(matchGroups['filename']);
 							}
 						}
 					}
@@ -75,17 +75,22 @@ export default class MessageImage {
 				}
 				case '$': {
 					if (line.startsWith('$tweet: ')) {
-						const twitterMatchGroups = line.match(/^\$tweet: (?<ids>[0-9][ 0-9]*)$/)?.groups;
-						if (twitterMatchGroups !== undefined) {
-							twitterMatchGroups['ids']?.split(' ').forEach((tweetId) => {
+						const matchGroups = line.match(/^\$tweet: (?<ids>[0-9][ 0-9]*)$/)?.groups;
+						if (matchGroups !== undefined) {
+							matchGroups['ids']?.split(' ').forEach((tweetId) => {
 								tweetIds.add(tweetId);
 							});
 						}
 					} else if (line.startsWith('$amazon: ')) {
-						const asinMatchGroups = line.match(/^\$amazon: (?<asins>[0-9A-Z][ 0-9A-Z]*)$/)?.groups;
-						if (asinMatchGroups !== undefined) {
-							asinMatchGroups['asins']?.split(' ').forEach((asin) => {
-								asins.add(asin);
+						const matchGroups = line.match(/^\$amazon: (?<asin>[0-9A-Z]{10}) (?<title>[^<>]+)( <(?<metas>.+)>)?$/)?.groups;
+						if (matchGroups !== undefined) {
+							matchGroups['metas']?.split(' ').forEach((meta) => {
+								if (/^[1-9][0-9]{2,3}x[1-9][0-9]{2,3}$/.test(meta)) {
+									/* 画像サイズ */
+								} else if (/^[a-zA-Z0-9\-_+%]+$/.test(meta)) {
+									/* 画像ID */
+									amazonImageIds.add(meta);
+								}
 							});
 						}
 					}
@@ -127,33 +132,12 @@ export default class MessageImage {
 		}
 
 		/* Amazon */
-		if (asins.size >= 1) {
-			const formData = new FormData();
-			for (const asin of asins) {
-				formData.append('asin[]', asin);
-			}
-
-			const response = await fetch('/api/amazon-image', {
-				method: 'POST',
-				body: new URLSearchParams(<string[][]>[...formData]),
+		if (amazonImageIds.size >= 1) {
+			amazonImageIds.forEach((imageId) => {
+				const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(`https://m.media-amazon.com/images/I/${imageId}.jpg`));
+				paapiItemImageUrlParser.removeSize();
+				imageNames.add(paapiItemImageUrlParser.toString());
 			});
-			try {
-				if (!response.ok) {
-					throw new Error(`"${response.url}" is ${response.status} ${response.statusText}`);
-				}
-				const responseJson: BlogApi.AmazonImage = await response.json();
-
-				for (const imageUrl of responseJson.image_urls) {
-					const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageUrl));
-					paapiItemImageUrlParser.removeSize();
-					imageNames.add(paapiItemImageUrlParser.toString());
-				}
-				for (const error of responseJson.errors) {
-					errorMessages.add(error);
-				}
-			} catch (e) {
-				errorMessages.add(e instanceof Error ? e.message : 'Amazon API Error');
-			}
 		}
 
 		this.#displayRadioButtons(imageNames, selectedImageName);
