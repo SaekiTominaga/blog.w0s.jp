@@ -26,15 +26,20 @@ export default class Preview {
 			method: 'POST',
 			body: new URLSearchParams(<string[][]>[...formData]),
 		});
-		try {
-			if (!response.ok) {
-				throw new Error(`"${response.url}" is ${response.status} ${response.statusText}`);
-			}
-			const responseJson = await response.json();
 
-			this.#previewElement.innerHTML = responseJson.html;
-		} catch (e) {
-			this.#previewElement.textContent = e instanceof Error ? e.message : 'Error';
+		if (!response.ok) {
+			this.#previewElement.textContent = `"${response.url}" is ${response.status} ${response.statusText}`;
+		}
+		const responseJson: {
+			html: string;
+			tweetExist: boolean;
+		} = await response.json();
+
+		this.#previewElement.innerHTML = responseJson.html;
+
+		if (responseJson.tweetExist) {
+			// @ts-expect-error: ts(2339)
+			window.twttr.widgets.load(this.#previewElement); // https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/scripting-loading-and-initialization
 		}
 	}
 }
