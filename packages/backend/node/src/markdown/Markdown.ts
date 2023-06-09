@@ -1414,16 +1414,27 @@ export default class Markdown {
 
 		const dpImageElement = this.#document.createElement('img');
 		if (image.id !== undefined) {
+			const size = 160;
+
 			const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(`https://m.media-amazon.com/images/I/${image.id}.jpg`));
-			paapi5ItemImageUrlParser.setSize(160);
+			paapi5ItemImageUrlParser.setSize(size);
 
 			dpImageElement.setAttribute('src', paapi5ItemImageUrlParser.toString());
 			paapi5ItemImageUrlParser.setSizeMultiply(2);
 			dpImageElement.setAttribute('srcset', `${paapi5ItemImageUrlParser.toString()} 2x`);
 
 			if (image.width !== undefined && image.height !== undefined) {
-				dpImageElement.setAttribute('width', String(image.width));
-				dpImageElement.setAttribute('height', String(image.height));
+				let width: number;
+				let height: number;
+				if (image.width > image.height) {
+					width = size;
+					height = Math.round((image.height * size) / image.width);
+				} else {
+					width = Math.round((image.width * size) / image.height);
+					height = size;
+				}
+				dpImageElement.setAttribute('width', String(width));
+				dpImageElement.setAttribute('height', String(height));
 			}
 		} else {
 			dpImageElement.setAttribute('src', '/image/entry/amazon-noimage.svg');
