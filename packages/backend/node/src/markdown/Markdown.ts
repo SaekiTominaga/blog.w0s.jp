@@ -518,14 +518,14 @@ export default class Markdown {
 							let imageWidth: number | undefined;
 							let imageHeight: number | undefined;
 							metas?.split(' ').forEach((meta) => {
-								if (/^[a-zA-Z0-9\-_+%]+$/.test(meta)) {
-									/* 画像ID */
-									imageId = meta;
-								} else if (/^[1-9][0-9]{2,3}x[1-9][0-9]{2,3}$/.test(meta)) {
+								if (/^[1-9][0-9]{2,3}x[1-9][0-9]{2,3}$/.test(meta)) {
 									/* 画像サイズ */
 									const sizes = meta.split('x');
 									imageWidth = Number(sizes.at(0));
 									imageHeight = Number(sizes.at(1));
+								} else if (/^[a-zA-Z0-9\-_+%]+$/.test(meta)) {
+									/* 画像ID */
+									imageId = meta;
 								}
 							});
 
