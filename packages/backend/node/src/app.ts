@@ -4,8 +4,6 @@ import compression from 'compression';
 import express, { NextFunction, Request, Response } from 'express';
 import Log4js from 'log4js';
 import multer from 'multer';
-import AmazonController from './controller/AmazonController.js';
-import AmazonImageController from './controller/api/AmazonImageController.js';
 import CategoryController from './controller/CategoryController.js';
 import EntryController from './controller/EntryController.js';
 import HttpBasicAuth from './util/HttpBasicAuth.js';
@@ -213,26 +211,6 @@ app
 	});
 
 /**
- * Amazon 商品管理
- */
-app
-	.route('/admin/amazon')
-	.get(async (req, res, next) => {
-		try {
-			await new AmazonController(config).execute(req, res);
-		} catch (e) {
-			next(e);
-		}
-	})
-	.post(async (req, res, next) => {
-		try {
-			await new AmazonController(config).execute(req, res);
-		} catch (e) {
-			next(e);
-		}
-	});
-
-/**
  * 本文プレビュー
  */
 app.post('/api/preview', async (req, res, next) => {
@@ -249,17 +227,6 @@ app.post('/api/preview', async (req, res, next) => {
 app.post('/api/tweet-media', async (req, res, next) => {
 	try {
 		await new TweetMediaController(config).execute(req, res);
-	} catch (e) {
-		next(e);
-	}
-});
-
-/**
- * Amazon 商品画像取得
- */
-app.post('/api/amazon-image', async (req, res, next) => {
-	try {
-		await new AmazonImageController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
