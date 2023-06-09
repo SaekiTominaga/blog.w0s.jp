@@ -85,7 +85,7 @@ export default class MessageImage {
 						const matchGroups = line.match(/^\$amazon: (?<asin>[0-9A-Z]{10}) (?<title>[^<>]+)( <(?<metas>.+)>)?$/)?.groups;
 						if (matchGroups !== undefined) {
 							matchGroups['metas']?.split(' ').forEach((meta) => {
-								if (/^[1-9][0-9]{2,3}x[1-9][0-9]{2,3}$/.test(meta)) {
+								if (/^[1-9][0-9]{1,2}x[1-9][0-9]{1,2}$/.test(meta)) {
 									/* 画像サイズ */
 								} else if (/^[a-zA-Z0-9\-_+%]+$/.test(meta)) {
 									/* 画像ID */
