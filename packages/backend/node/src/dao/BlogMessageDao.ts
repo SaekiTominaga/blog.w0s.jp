@@ -6,56 +6,6 @@ import DbUtil from '../util/DbUtil.js';
  */
 export default class BlogMessageDao extends BlogDao {
 	/**
-	 * Amazon 商品情報を取得する
-	 *
-	 * @param {string} asin - ASIN
-	 *
-	 * @returns {object} Amazon 商品情報
-	 */
-	async getAmazon(asin: string): Promise<BlogDb.AmazonData | null> {
-		const dbh = await this.getDbh();
-
-		const sth = await dbh.prepare(`
-			SELECT
-				url,
-				title,
-				binding,
-				product_group,
-				date AS publication_date,
-				image_url,
-				image_width,
-				image_height,
-				last_updated AS updated_at
-			FROM
-				d_amazon
-			WHERE
-				asin = :asin
-		`);
-		await sth.bind({
-			':asin': asin,
-		});
-		const row = await sth.get();
-		await sth.finalize();
-
-		if (row === undefined) {
-			return null;
-		}
-
-		return {
-			asin: asin,
-			url: row.url,
-			title: row.title,
-			binding: row.binding,
-			product_group: row.product_group,
-			publication_date: DbUtil.unixToDate(row.publication_date),
-			image_url: row.image_url,
-			image_width: Number(row.image_width),
-			image_height: Number(row.image_height),
-			updated_at: <Date>DbUtil.unixToDate(row.updated_at),
-		};
-	}
-
-	/**
 	 * ツイート情報を取得する
 	 *
 	 * @param {string} id - ツイート ID

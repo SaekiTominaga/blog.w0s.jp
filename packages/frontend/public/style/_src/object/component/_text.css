@@ -175,24 +175,6 @@
 	font-size: calc(100% / var(--font-ratio-1));
 }
 
-/* ===== Amazon 商品カテゴリ ===== */
-.c-amazon-binding {
-	display: inline-block;
-	vertical-align: middle;
-	border: 1px solid var(--color-gray);
-	border-radius: var(--border-radius-large);
-	background: var(--color-white);
-	padding: 0.125em 0.5em;
-	color: var(--color-gray);
-	font-weight: var(--font-weight-bold);
-	font-size: calc(100% / var(--font-ratio-1));
-	line-height: var(--line-height-narrow);
-
-	.p-amazon & {
-		margin-inline-start: 0.5em;
-	}
-}
-
 /* ===== 記事メタデータ ===== */
 .c-entry-meta {
 	display: table;

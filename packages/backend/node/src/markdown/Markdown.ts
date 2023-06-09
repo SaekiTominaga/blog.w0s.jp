@@ -102,6 +102,10 @@ export default class Markdown {
 	#imageNum = 1; /* 画像の番号 */
 	#videoNum = 1; /* 動画の番号 */
 
+	/* Amazon */
+	#amazon = false;
+	#amazonWrapElement: HTMLElement | undefined;
+
 	/**
 	 * コンストラクタ
 	 *
@@ -504,15 +508,34 @@ export default class Markdown {
 						continue;
 					} else if (line.startsWith('$amazon: ')) {
 						/* 先頭が $amazon: な場合は Amazon リンク */
-						const asinMeta = line.substring(9); // 先頭記号を削除
+						const amazonMeta = line.substring(9); // 先頭記号を削除
 
-						const asins = asinMeta.split(' ');
+						const metaMatchGroups = amazonMeta.match(new RegExp(`^(?<asin>${regexp.asin}) (?<title>[^<>]+)( <(?<metas>.+)>)?$`))?.groups;
+						if (metaMatchGroups !== undefined && metaMatchGroups['asin'] !== undefined && metaMatchGroups['title'] !== undefined) {
+							const { asin, title, metas } = metaMatchGroups;
 
-						await this.#appendAmazon(asins);
+							let imageId: string | undefined;
+							let imageWidth: number | undefined;
+							let imageHeight: number | undefined;
+							metas?.split(' ').forEach((meta) => {
+								if (/^[a-zA-Z0-9\-_+%]+$/.test(meta)) {
+									/* 画像ID */
+									imageId = meta;
+								} else if (/^[1-9][0-9]{2,3}x[1-9][0-9]{2,3}$/.test(meta)) {
+									/* 画像サイズ */
+									const sizes = meta.split('x');
+									imageWidth = Number(sizes.at(0));
+									imageHeight = Number(sizes.at(1));
+								}
+							});
 
-						this.#resetStackFlag();
+							this.#appendAmazon(asin, title, { id: imageId, width: imageWidth, height: imageHeight });
 
-						continue;
+							this.#resetStackFlag();
+							this.#amazon = true;
+
+							continue;
+						}
 					}
 					break;
 				}
@@ -579,6 +602,8 @@ export default class Markdown {
 		this.#box = false;
 
 		this.#media = false;
+
+		this.#amazon = false;
 	}
 
 	/**
@@ -1338,116 +1363,96 @@ export default class Markdown {
 	/**
 	 * Amazon 商品を設定
 	 *
-	 * @param {string[]} asins - ASIN
+	 * @param {string} asin - ASIN
+	 * @param {string} title - 商品タイトル
+	 * @param {object} image - 商品画像
+	 * @param {string} image.id - 画像 ID
+	 * @param {number} image.width - 画像幅
+	 * @param {number} image.height - 画像高さ
 	 */
-	async #appendAmazon(asins: string[]): Promise<void> {
-		if (asins.length === 0) {
-			return;
+	#appendAmazon(
+		asin: string,
+		title: string,
+		image: {
+			id: string | undefined;
+			width: number | undefined;
+			height: number | undefined;
 		}
+	): void {
+		if (!this.#amazon || this.#amazonWrapElement === undefined) {
+			const amazonElement = this.#document.createElement('aside');
+			amazonElement.className = 'p-amazon';
+			this.#appendChild(amazonElement);
 
-		const amazonDatas: Map<string, BlogDb.AmazonData | undefined> = new Map();
-		asins.forEach((asin) => {
-			amazonDatas.set(asin, undefined);
-		});
-
-		await Promise.all(
-			asins.map(async (asin) => {
-				const amazonData = await this.#dao.getAmazon(asin);
-
-				if (amazonData === null) {
-					this.#logger.error(`d_amazon テーブルに存在しない ASIN が指定: ${asin}`);
-					return;
-				}
-
-				amazonDatas.set(asin, amazonData);
-			})
-		);
-
-		const amazonElement = this.#document.createElement('aside');
-		amazonElement.className = 'p-amazon';
-		this.#appendChild(amazonElement);
-
-		let headingElementName: string;
-		if (this.#section2) {
-			headingElementName = 'h4';
-		} else if (this.#section1) {
-			headingElementName = 'h3';
-		} else {
-			headingElementName = 'h2';
-		}
-		const headingElement = this.#document.createElement(headingElementName);
-		headingElement.className = 'p-amazon__hdg';
-		amazonElement.appendChild(headingElement);
-
-		const headingImageElement = this.#document.createElement('img');
-		headingImageElement.src = '/image/entry/amazon-buy.png';
-		headingImageElement.srcset = '/image/entry/amazon-buy@2x.png 2x';
-		headingImageElement.alt = 'Amazon で買う';
-		headingImageElement.width = 127;
-		headingImageElement.height = 26;
-		headingElement.appendChild(headingImageElement);
-
-		const ulElement = this.#document.createElement('ul');
-		ulElement.className = 'p-amazon__list';
-		amazonElement.appendChild(ulElement);
-
-		amazonDatas.forEach((amazonData) => {
-			if (amazonData === undefined) {
-				return;
-			}
-
-			const liElement = this.#document.createElement('li');
-			ulElement.appendChild(liElement);
-
-			const dpAreaElement = this.#document.createElement('a');
-			dpAreaElement.className = 'p-amazon__link';
-			dpAreaElement.setAttribute('href', amazonData.url);
-			liElement.appendChild(dpAreaElement);
-
-			const dpImageAreaElement = this.#document.createElement('div');
-			dpImageAreaElement.className = 'p-amazon__thumb';
-			dpAreaElement.appendChild(dpImageAreaElement);
-
-			const dpImageElement = this.#document.createElement('img');
-			if (amazonData.image_url !== null) {
-				const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(amazonData.image_url));
-				paapi5ItemImageUrlParser.setSize(160);
-
-				dpImageElement.setAttribute('src', paapi5ItemImageUrlParser.toString());
-				paapi5ItemImageUrlParser.setSizeMultiply(2);
-				dpImageElement.setAttribute('srcset', `${paapi5ItemImageUrlParser.toString()} 2x`);
+			let headingElementName: string;
+			if (this.#section2) {
+				headingElementName = 'h4';
+			} else if (this.#section1) {
+				headingElementName = 'h3';
 			} else {
-				dpImageElement.setAttribute('src', '/image/amazon_noimage.svg');
-				dpImageElement.setAttribute('width', '113');
-				dpImageElement.setAttribute('height', '160');
+				headingElementName = 'h2';
 			}
-			dpImageElement.setAttribute('alt', '');
-			dpImageElement.className = 'p-amazon__image';
-			dpImageAreaElement.appendChild(dpImageElement);
+			const headingElement = this.#document.createElement(headingElementName);
+			headingElement.className = 'p-amazon__hdg';
+			amazonElement.appendChild(headingElement);
 
-			const dpTextAreaElement = this.#document.createElement('div');
-			dpTextAreaElement.className = 'p-amazon__text';
-			dpAreaElement.appendChild(dpTextAreaElement);
+			const headingImageElement = this.#document.createElement('img');
+			headingImageElement.src = '/image/entry/amazon-buy.png';
+			headingImageElement.srcset = '/image/entry/amazon-buy@2x.png 2x';
+			headingImageElement.alt = 'Amazon で買う';
+			headingImageElement.width = 127;
+			headingImageElement.height = 26;
+			headingElement.appendChild(headingImageElement);
 
-			const dpTitleElement = this.#document.createElement('p');
-			dpTitleElement.className = 'p-amazon__title';
-			dpTitleElement.textContent = amazonData.title;
-			dpTextAreaElement.appendChild(dpTitleElement);
+			const ulElement = this.#document.createElement('ul');
+			ulElement.className = 'p-amazon__list';
+			amazonElement.appendChild(ulElement);
 
-			if (amazonData.binding !== null) {
-				const bindingElement = this.#document.createElement('b');
-				bindingElement.className = 'c-amazon-binding';
-				bindingElement.textContent = amazonData.binding;
-				dpTitleElement.appendChild(bindingElement);
+			this.#amazonWrapElement = ulElement;
+		}
+
+		const liElement = this.#document.createElement('li');
+		this.#amazonWrapElement.appendChild(liElement);
+
+		const dpAreaElement = this.#document.createElement('a');
+		dpAreaElement.className = 'p-amazon__link';
+		dpAreaElement.setAttribute('href', `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${config.amazonTrackingId}`); // https://affiliate-program.amazon.com/help/node/topic/GP38PJ6EUR6PFBEC
+		liElement.appendChild(dpAreaElement);
+
+		const dpImageAreaElement = this.#document.createElement('div');
+		dpImageAreaElement.className = 'p-amazon__thumb';
+		dpAreaElement.appendChild(dpImageAreaElement);
+
+		const dpImageElement = this.#document.createElement('img');
+		if (image.id !== undefined) {
+			const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(`https://m.media-amazon.com/images/I/${image.id}.jpg`));
+			paapi5ItemImageUrlParser.setSize(160);
+
+			dpImageElement.setAttribute('src', paapi5ItemImageUrlParser.toString());
+			paapi5ItemImageUrlParser.setSizeMultiply(2);
+			dpImageElement.setAttribute('srcset', `${paapi5ItemImageUrlParser.toString()} 2x`);
+
+			if (image.width !== undefined && image.height !== undefined) {
+				dpImageElement.setAttribute('width', String(image.width));
+				dpImageElement.setAttribute('height', String(image.height));
 			}
+		} else {
+			dpImageElement.setAttribute('src', '/image/amazon_noimage.svg');
+			dpImageElement.setAttribute('width', '113');
+			dpImageElement.setAttribute('height', '160');
+		}
+		dpImageElement.setAttribute('alt', '');
+		dpImageElement.className = 'p-amazon__image';
+		dpImageAreaElement.appendChild(dpImageElement);
 
-			if (amazonData.publication_date !== null) {
-				const dpTimeElement = this.#document.createElement('p');
-				dpTimeElement.className = 'p-amazon__date';
-				dpTimeElement.textContent = `${dayjs(amazonData.publication_date).format('YYYY年M月D日')} 発売`;
-				dpTextAreaElement.appendChild(dpTimeElement);
-			}
-		});
+		const dpTextAreaElement = this.#document.createElement('div');
+		dpTextAreaElement.className = 'p-amazon__text';
+		dpAreaElement.appendChild(dpTextAreaElement);
+
+		const dpTitleElement = this.#document.createElement('p');
+		dpTitleElement.className = 'p-amazon__title';
+		dpTitleElement.textContent = title;
+		dpTextAreaElement.appendChild(dpTitleElement);
 	}
 
 	/**

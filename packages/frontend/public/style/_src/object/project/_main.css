@@ -160,11 +160,6 @@
 	}
 }
 
-/* 発売日 */
-.p-amazon__date {
-	margin-block-start: 0.5em;
-}
-
 /* ===== ブロックコード ===== */
 .p-code {
 	display: flow-root; /* for Safari */
