@@ -75,11 +75,9 @@ export default class MessageImage {
 				}
 				case '$': {
 					if (line.startsWith('$tweet: ')) {
-						const matchGroups = line.match(/^\$tweet: (?<ids>[0-9][ 0-9]*)$/)?.groups;
-						if (matchGroups !== undefined) {
-							matchGroups['ids']?.split(' ').forEach((tweetId) => {
-								tweetIds.add(tweetId);
-							});
+						const matchGroups = line.match(/^\$tweet: (?<id>[1-9][0-9]*)$/)?.groups;
+						if (matchGroups !== undefined && matchGroups['id'] !== undefined) {
+							tweetIds.add(matchGroups['id']);
 						}
 					} else if (line.startsWith('$amazon: ')) {
 						const matchGroups = line.match(/^\$amazon: (?<asin>[0-9A-Z]{10}) (?<title>[^<>]+)( <(?<metas>.+)>)?$/)?.groups;

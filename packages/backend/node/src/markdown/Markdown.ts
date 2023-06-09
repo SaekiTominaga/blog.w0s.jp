@@ -102,6 +102,10 @@ export default class Markdown {
 	#imageNum = 1; /* 画像の番号 */
 	#videoNum = 1; /* 動画の番号 */
 
+	/* Tweet */
+	#tweet = false;
+	#tweetWrapElement: HTMLElement | undefined;
+
 	/* Amazon */
 	#amazon = false;
 	#amazonWrapElement: HTMLElement | undefined;
@@ -499,13 +503,17 @@ export default class Markdown {
 						/* 先頭が $tweet: な場合は埋め込みツイート */
 						const tweetMeta = line.substring(8); // 先頭記号を削除
 
-						const ids = tweetMeta.split(' ');
+						const metaMatchGroups = tweetMeta.match(new RegExp(`^(?<id>${regexp.tweetId})$`))?.groups;
+						if (metaMatchGroups !== undefined && metaMatchGroups['id'] !== undefined) {
+							const { id } = metaMatchGroups;
 
-						await this.#appendTweet(ids);
+							await this.#appendTweet(id);
 
-						this.#resetStackFlag();
+							this.#resetStackFlag();
+							this.#tweet = true;
 
-						continue;
+							continue;
+						}
 					} else if (line.startsWith('$amazon: ')) {
 						/* 先頭が $amazon: な場合は Amazon リンク */
 						const amazonMeta = line.substring(9); // 先頭記号を削除
@@ -602,6 +610,8 @@ export default class Markdown {
 		this.#box = false;
 
 		this.#media = false;
+
+		this.#tweet = false;
 
 		this.#amazon = false;
 	}
@@ -1276,88 +1286,67 @@ export default class Markdown {
 	/**
 	 * ツイートを設定
 	 *
-	 * @param {string[]} ids - ツイート ID
+	 * @param {string} id - ツイート ID
 	 */
-	async #appendTweet(ids: string[]): Promise<void> {
-		if (ids.length === 0) {
+	async #appendTweet(id: string): Promise<void> {
+		if (!this.#tweet || this.#tweetWrapElement === undefined) {
+			const gridElement = this.#document.createElement('div');
+			gridElement.className = 'c-flex';
+			this.#appendChild(gridElement);
+
+			this.#tweetWrapElement = gridElement;
+		}
+
+		const tweetData = await this.#dao.getTweet(id);
+		if (tweetData === null) {
+			this.#logger.error(`d_tweet テーブルに存在しないツイート ID が指定: ${id}`);
 			return;
 		}
 
-		const tweetDatas: Map<string, BlogDb.TweetData | undefined> = new Map();
-		ids.forEach((id) => {
-			tweetDatas.set(id, undefined);
-		});
+		const figureElement = this.#document.createElement('figure');
+		figureElement.className = 'c-flex__item';
+		this.#tweetWrapElement.appendChild(figureElement);
 
-		await Promise.all(
-			ids.map(async (id) => {
-				const tweetData = await this.#dao.getTweet(id);
+		const embeddElement = this.#document.createElement('div');
+		embeddElement.className = 'p-embed';
+		figureElement.appendChild(embeddElement);
 
-				if (tweetData === null) {
-					this.#logger.error(`d_tweet テーブルに存在しないツイート ID が指定: ${id}`);
-					return;
-				}
+		const tweetElement = this.#document.createElement('blockquote');
+		tweetElement.className = 'p-embed__tweet twitter-tweet';
+		tweetElement.dataset['dnt'] = 'true';
+		embeddElement.appendChild(tweetElement);
 
-				tweetDatas.set(id, tweetData);
-			})
-		);
+		const tweetTextElement = this.#document.createElement('p');
+		tweetTextElement.textContent = tweetData.text;
+		tweetElement.appendChild(tweetTextElement);
 
-		const gridElement = this.#document.createElement('div');
-		gridElement.className = 'c-flex';
+		const tweetLinkElement = this.#document.createElement('a');
+		tweetLinkElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
+		tweetLinkElement.textContent = `— ${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
+		tweetElement.appendChild(tweetLinkElement);
 
-		tweetDatas.forEach((tweetData, id) => {
-			if (tweetData === undefined) {
-				return;
-			}
+		const figcaptionElement = this.#document.createElement('figcaption');
+		figcaptionElement.className = 'c-caption';
+		figureElement.appendChild(figcaptionElement);
 
-			const figureElement = this.#document.createElement('figure');
-			figureElement.className = 'c-flex__item';
-			gridElement.appendChild(figureElement);
+		const captionTitleElement = this.#document.createElement('span');
+		captionTitleElement.className = 'c-caption__title';
+		figcaptionElement.appendChild(captionTitleElement);
 
-			const embeddElement = this.#document.createElement('div');
-			embeddElement.className = 'p-embed';
-			figureElement.appendChild(embeddElement);
+		const aElement = this.#document.createElement('a');
+		aElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
+		aElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
+		captionTitleElement.appendChild(aElement);
 
-			const tweetElement = this.#document.createElement('blockquote');
-			tweetElement.className = 'p-embed__tweet twitter-tweet';
-			tweetElement.dataset['dnt'] = 'true';
-			embeddElement.appendChild(tweetElement);
+		const iconElement = this.#document.createElement('img');
+		iconElement.src = '/image/icon/twitter.svg';
+		iconElement.alt = '(Twitter)';
+		iconElement.width = 16;
+		iconElement.height = 16;
+		iconElement.className = 'c-link-icon';
+		captionTitleElement.appendChild(iconElement);
 
-			const tweetTextElement = this.#document.createElement('p');
-			tweetTextElement.textContent = tweetData.text;
-			tweetElement.appendChild(tweetTextElement);
-
-			const tweetLinkElement = this.#document.createElement('a');
-			tweetLinkElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
-			tweetLinkElement.textContent = `— ${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
-			tweetElement.appendChild(tweetLinkElement);
-
-			const figcaptionElement = this.#document.createElement('figcaption');
-			figcaptionElement.className = 'c-caption';
-			figureElement.appendChild(figcaptionElement);
-
-			const captionTitleElement = this.#document.createElement('span');
-			captionTitleElement.className = 'c-caption__title';
-			figcaptionElement.appendChild(captionTitleElement);
-
-			const aElement = this.#document.createElement('a');
-			aElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
-			aElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
-			captionTitleElement.appendChild(aElement);
-
-			const iconElement = this.#document.createElement('img');
-			iconElement.src = '/image/icon/twitter.svg';
-			iconElement.alt = '(Twitter)';
-			iconElement.width = 16;
-			iconElement.height = 16;
-			iconElement.className = 'c-link-icon';
-			captionTitleElement.appendChild(iconElement);
-
-			this.#tweetExist = true;
-		});
-
-		if (this.#tweetExist) {
-			this.#appendChild(gridElement);
-		}
+		this.#tweetExist = true;
 	}
 
 	/**
