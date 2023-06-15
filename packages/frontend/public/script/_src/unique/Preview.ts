@@ -32,14 +32,8 @@ export default class Preview {
 		}
 		const responseJson: {
 			html: string;
-			tweetExist: boolean;
 		} = await response.json();
 
 		this.#previewElement.innerHTML = responseJson.html;
-
-		if (responseJson.tweetExist) {
-			// @ts-expect-error: ts(2339)
-			window.twttr.widgets.load(this.#previewElement); // https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/scripting-loading-and-initialization
-		}
 	}
 }

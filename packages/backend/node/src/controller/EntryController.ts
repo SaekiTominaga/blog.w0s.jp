@@ -64,10 +64,7 @@ export default class EntryController extends Controller implements ControllerInt
 			return;
 		}
 
-		const markdown = new Markdown({
-			config: this.configCommon,
-			dbh: await dao.getDbh(),
-		});
+		const markdown = new Markdown();
 
 		const sidebar = new Sidebar(dao);
 
@@ -130,7 +127,6 @@ export default class EntryController extends Controller implements ControllerInt
 			jsonLd: Object.fromEntries(jsonLd),
 
 			message: message,
-			tweet: markdown.isTweetExit(),
 
 			categoryNames: categoriesDto.map((category) => category.name),
 			categoryFileNames: categoriesDto
