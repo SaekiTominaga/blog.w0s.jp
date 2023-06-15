@@ -11,7 +11,6 @@ import HttpResponse from './util/HttpResponse.js';
 import ListController from './controller/ListController.js';
 import PostController from './controller/PostController.js';
 import PreviewController from './controller/api/PreviewController.js';
-import TweetMediaController from './controller/api/TweetMediaController.js';
 import { NoName as Configure } from '../../configure/type/common.js';
 
 /* 設定ファイル読み込み */
@@ -216,17 +215,6 @@ app
 app.post('/api/preview', async (req, res, next) => {
 	try {
 		await new PreviewController(config).execute(req, res);
-	} catch (e) {
-		next(e);
-	}
-});
-
-/**
- * ツイートメディア取得
- */
-app.post('/api/tweet-media', async (req, res, next) => {
-	try {
-		await new TweetMediaController(config).execute(req, res);
 	} catch (e) {
 		next(e);
 	}
