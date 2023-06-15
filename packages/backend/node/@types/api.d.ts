@@ -3,18 +3,6 @@ declare namespace BlogApi {
 	/* 本文プレビュー */
 	interface Preview {
 		html: string;
-		tweetExist: boolean;
-	}
-
-	/* ツイート情報取得 */
-	type TweetMedia = {
-		media_urls: string[];
-	};
-
-	/* Amazon 商品画像取得 */
-	interface AmazonImage {
-		image_urls: string[];
-		errors: string[];
 	}
 }
 

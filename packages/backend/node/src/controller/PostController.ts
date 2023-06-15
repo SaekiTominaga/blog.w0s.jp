@@ -276,18 +276,13 @@ export default class PostController extends Controller implements ControllerInte
 				return { success: true, message: this.#config.feed_create.response.message_none };
 			}
 
-			const dbh = await dao.getDbh();
-
 			const entriesView: Set<BlogView.FeedEntry> = new Set();
 			await Promise.all(
 				entriesDto.map(async (entry) => {
 					entriesView.add({
 						id: entry.id,
 						title: entry.title,
-						message: await new Markdown({
-							config: this.configCommon,
-							dbh: dbh,
-						}).toXml(entry.message),
+						message: await new Markdown().toXml(entry.message),
 						updated_at: dayjs(entry.updated_at ?? entry.created_at),
 						update: Boolean(entry.updated_at),
 					});

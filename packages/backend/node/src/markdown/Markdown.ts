@@ -1,5 +1,4 @@
 import path from 'node:path';
-import * as sqlite from 'sqlite';
 import dayjs from 'dayjs';
 import GithubSlugger from 'github-slugger';
 import hljs from 'highlight.js/lib/core';
@@ -8,42 +7,25 @@ import hljsJavaScript from 'highlight.js/lib/languages/javascript';
 import hljsJson from 'highlight.js/lib/languages/json';
 import hljsTypeScript from 'highlight.js/lib/languages/typescript';
 import hljsXml from 'highlight.js/lib/languages/xml';
-import Log4js from 'log4js';
 import md5 from 'md5';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 import serialize from 'w3c-xmlserializer';
 import { JSDOM } from 'jsdom';
 import { LanguageFn } from 'highlight.js';
-import BlogMessageDao from '../dao/BlogMessageDao.js';
 import MarkdownInline from './Inline.js';
 import Footnote from './lib/Footnote.js';
 import Quote from './lib/Quote.js';
 import { config, regexp } from './config.js';
-import { NoName as Configure } from '../../../configure/type/common.js';
-
-interface Option {
-	config: Configure; // 共通設定ファイルの内容
-	dbh?: sqlite.Database; // DB 接続情報
-}
 
 /**
  * 記事メッセージの Markdown 変換
  */
 export default class Markdown {
-	/* Logger */
-	readonly #logger: Log4js.Logger;
-
 	/* Slugger */
 	readonly #slugger: GithubSlugger;
 
 	/* jsdom */
 	readonly #document: Document;
-
-	/* Dao */
-	readonly #dao: BlogMessageDao;
-
-	/* 記事内に埋め込みツイートが存在するか */
-	#tweetExist = false;
 
 	/* （記事メッセージ内の）ルート要素 */
 	readonly #rootElement: HTMLElement;
@@ -102,31 +84,19 @@ export default class Markdown {
 	#imageNum = 1; /* 画像の番号 */
 	#videoNum = 1; /* 動画の番号 */
 
-	/* Tweet */
-	#tweet = false;
-	#tweetWrapElement: HTMLElement | undefined;
-
 	/* Amazon */
 	#amazon = false;
 	#amazonWrapElement: HTMLElement | undefined;
 
 	/**
 	 * コンストラクタ
-	 *
-	 * @param {object} options - パースで必要な様々な情報
 	 */
-	constructor(options: Option) {
-		/* Logger */
-		this.#logger = Log4js.getLogger(this.constructor.name);
-
+	constructor() {
 		/* Slugger */
 		this.#slugger = new GithubSlugger();
 
 		/* jsdom */
 		this.#document = new JSDOM().window.document;
-
-		/* Dao */
-		this.#dao = new BlogMessageDao(options.config, options.dbh);
 
 		/* ルート要素 */
 		this.#rootElement = this.#document.createElement(this.#ROOT_ELEMENT_NAME);
@@ -160,15 +130,6 @@ export default class Markdown {
 
 		const xml = serialize(this.#rootElement);
 		return xml.substring(39 + this.#ROOT_ELEMENT_NAME.length, xml.length - 3 - this.#ROOT_ELEMENT_NAME.length); // 外枠の <x xmlns="http://www.w3.org/1999/xhtml"></x> を削除
-	}
-
-	/**
-	 * 記事に埋め込みツイートが含まれているか
-	 *
-	 * @returns {boolean} 1つ以上ツイートがあれば true
-	 */
-	isTweetExit(): boolean {
-		return this.#tweetExist;
 	}
 
 	/**
@@ -499,22 +460,7 @@ export default class Markdown {
 					break;
 				}
 				case '$': {
-					if (line.startsWith('$tweet: ')) {
-						/* 先頭が $tweet: な場合は埋め込みツイート */
-						const tweetMeta = line.substring(8); // 先頭記号を削除
-
-						const metaMatchGroups = tweetMeta.match(new RegExp(`^(?<id>${regexp.tweetId})$`))?.groups;
-						if (metaMatchGroups !== undefined && metaMatchGroups['id'] !== undefined) {
-							const { id } = metaMatchGroups;
-
-							await this.#appendTweet(id);
-
-							this.#resetStackFlag();
-							this.#tweet = true;
-
-							continue;
-						}
-					} else if (line.startsWith('$amazon: ')) {
+					if (line.startsWith('$amazon: ')) {
 						/* 先頭が $amazon: な場合は Amazon リンク */
 						const amazonMeta = line.substring(9); // 先頭記号を削除
 
@@ -610,8 +556,6 @@ export default class Markdown {
 		this.#box = false;
 
 		this.#media = false;
-
-		this.#tweet = false;
 
 		this.#amazon = false;
 	}
@@ -1281,72 +1225,6 @@ export default class Markdown {
 		captionTitleElement.appendChild(iconElement);
 
 		this.#videoNum += 1;
-	}
-
-	/**
-	 * ツイートを設定
-	 *
-	 * @param {string} id - ツイート ID
-	 */
-	async #appendTweet(id: string): Promise<void> {
-		if (!this.#tweet || this.#tweetWrapElement === undefined) {
-			const gridElement = this.#document.createElement('div');
-			gridElement.className = 'c-flex';
-			this.#appendChild(gridElement);
-
-			this.#tweetWrapElement = gridElement;
-		}
-
-		const tweetData = await this.#dao.getTweet(id);
-		if (tweetData === null) {
-			this.#logger.error(`d_tweet テーブルに存在しないツイート ID が指定: ${id}`);
-			return;
-		}
-
-		const figureElement = this.#document.createElement('figure');
-		figureElement.className = 'c-flex__item';
-		this.#tweetWrapElement.appendChild(figureElement);
-
-		const embeddElement = this.#document.createElement('div');
-		embeddElement.className = 'p-embed';
-		figureElement.appendChild(embeddElement);
-
-		const tweetElement = this.#document.createElement('blockquote');
-		tweetElement.className = 'p-embed__tweet twitter-tweet';
-		tweetElement.dataset['dnt'] = 'true';
-		embeddElement.appendChild(tweetElement);
-
-		const tweetTextElement = this.#document.createElement('p');
-		tweetTextElement.textContent = tweetData.text;
-		tweetElement.appendChild(tweetTextElement);
-
-		const tweetLinkElement = this.#document.createElement('a');
-		tweetLinkElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
-		tweetLinkElement.textContent = `— ${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
-		tweetElement.appendChild(tweetLinkElement);
-
-		const figcaptionElement = this.#document.createElement('figcaption');
-		figcaptionElement.className = 'c-caption';
-		figureElement.appendChild(figcaptionElement);
-
-		const captionTitleElement = this.#document.createElement('span');
-		captionTitleElement.className = 'c-caption__title';
-		figcaptionElement.appendChild(captionTitleElement);
-
-		const aElement = this.#document.createElement('a');
-		aElement.href = `https://twitter.com/${tweetData.username}/status/${id}`;
-		aElement.textContent = `${tweetData.name} (@${tweetData.username}) ${dayjs(tweetData.created_at).format('YYYY年M月D日 HH:mm')}`;
-		captionTitleElement.appendChild(aElement);
-
-		const iconElement = this.#document.createElement('img');
-		iconElement.src = '/image/icon/twitter.svg';
-		iconElement.alt = '(Twitter)';
-		iconElement.width = 16;
-		iconElement.height = 16;
-		iconElement.className = 'c-link-icon';
-		captionTitleElement.appendChild(iconElement);
-
-		this.#tweetExist = true;
 	}
 
 	/**
