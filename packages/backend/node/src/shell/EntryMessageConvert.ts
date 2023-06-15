@@ -32,7 +32,7 @@ const convert = (id: number, message: string): string => {
 		.replaceAll(CRLF, LF)
 		.split(LF)
 		.forEach((line, index) => {
-			const convertedLine = line.replaceAll(/(.+)/g, (match, text) => {
+			const convertedLine = line.replaceAll(/^\$tweet: (.+)/g, (match, text) => {
 				console.info(`${id}: ${match}`);
 				return `${text}`;
 			}); // TODO: ここに変換処理を書く

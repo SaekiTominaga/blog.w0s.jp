@@ -46,7 +46,6 @@ export default class MessageImage {
 		const imageNames: Set<string> = new Set(); // 画像ファイル名 or 外部サービス URL
 		const errorMessages: Set<string> = new Set(); // エラーメッセージ
 
-		const tweetIds: Set<string> = new Set(); // Tweet ID
 		const youtubeIds: Set<string> = new Set(); // YouTube ID
 		const amazonImageIds: Set<string> = new Set(); // Amazon 画像 ID
 
@@ -74,12 +73,7 @@ export default class MessageImage {
 					break;
 				}
 				case '$': {
-					if (line.startsWith('$tweet: ')) {
-						const matchGroups = line.match(/^\$tweet: (?<id>[1-9][0-9]*)$/)?.groups;
-						if (matchGroups !== undefined && matchGroups['id'] !== undefined) {
-							tweetIds.add(matchGroups['id']);
-						}
-					} else if (line.startsWith('$amazon: ')) {
+					if (line.startsWith('$amazon: ')) {
 						const matchGroups = line.match(/^\$amazon: (?<asin>[0-9A-Z]{10}) (?<title>[^<>]+)( <(?<metas>.+)>)?$/)?.groups;
 						if (matchGroups !== undefined) {
 							matchGroups['metas']?.split(' ').forEach((meta) => {
@@ -102,31 +96,6 @@ export default class MessageImage {
 		/* YouTube */
 		for (const youtubeId of youtubeIds) {
 			imageNames.add(`https://i1.ytimg.com/vi/${youtubeId}/hqdefault.jpg`);
-		}
-
-		/* Tweet */
-		if (tweetIds.size >= 1) {
-			const formData = new FormData();
-			for (const tweetId of tweetIds) {
-				formData.append('id[]', tweetId);
-			}
-
-			const response = await fetch('/api/tweet-media', {
-				method: 'POST',
-				body: new URLSearchParams(<string[][]>[...formData]),
-			});
-			try {
-				if (!response.ok) {
-					throw new Error(`"${response.url}" is ${response.status} ${response.statusText}`);
-				}
-				const responseJson: BlogApi.TweetMedia = await response.json();
-
-				for (const mediaUrl of responseJson.media_urls) {
-					imageNames.add(mediaUrl);
-				}
-			} catch (e) {
-				errorMessages.add(e instanceof Error ? e.message : 'Tweet API Error');
-			}
 		}
 
 		/* Amazon */
