@@ -30,7 +30,9 @@ const convert = (id: number, message: string): string => {
 	let convertedMessage = '';
 	const lines = message.replaceAll(CRLF, LF).split(LF);
 	lines.forEach((line, index) => {
+		// @ts-expect-error: ts(6133)
 		const beforeLine = lines.at(index - 1);
+		// @ts-expect-error: ts(6133)
 		const afterLine = lines.at(index + 1);
 		const convertedLine = line.replaceAll(/(.+)/g, (match) => {
 			console.info(`${id}: ${match}`);
