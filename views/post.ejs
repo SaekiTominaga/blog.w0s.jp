@@ -78,7 +78,9 @@
 											<label for="fc-title" class="c-label">題名 <strong class="c-label-icon -required">必須</strong></label>
 										</legend>
 										<div class="p-form-grid__contents">
-											<input class="c-input -full js-convert-trim" name="title" value="<%= requestQuery.title %>" id="fc-title" required="" />
+											<div class="c-form-controls">
+												<input class="c-input -full js-convert-trim" name="title" value="<%= requestQuery.title %>" id="fc-title" required="" />
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -86,7 +88,9 @@
 									<fieldset>
 										<legend class="p-form-grid__legend"><label for="fc-description" class="c-label">概要</label></legend>
 										<div class="p-form-grid__contents">
-											<input class="c-input -full js-convert-trim" name="description" value="<%= requestQuery.description %>" id="fc-description" />
+											<div class="c-form-controls">
+												<input class="c-input -full js-convert-trim" name="description" value="<%= requestQuery.description %>" id="fc-description" />
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -96,13 +100,28 @@
 											<label for="fc-message" class="c-label">本文 <strong class="c-label-icon -required">必須</strong></label>
 										</legend>
 										<div class="p-form-grid__contents">
-											<p>
+											<div class="c-form-controls">
 												<textarea class="c-textarea js-convert-trim" name="message" id="fc-message" required="" style="--block-size: 15em"><%= requestQuery.message %></textarea>
-											</p>
+											</div>
 											<div class="p-post-preview">
-												<article aria-label="本文プレビュー" class="p-entry">
-													<div id="message-preview" class="p-entry__body"></div>
-												</article>
+												<table class="p-post-preview__messages" lang="en">
+													<tbody>
+														<template id="markdown-messages">
+															<tr>
+																<td><span class="js-line"></span>:<span class="js-column"></span></td>
+																<td><span class="js-reason"></span></td>
+																<td><a href="" class="js-rule" target="_blank"></a></td>
+															</tr>
+														</template>
+													</tbody>
+												</table>
+												<div class="p-post-preview__preview">
+													<article aria-label="本文プレビュー" class="p-entry">
+														<template id="message-preview">
+															<div class="p-entry__body"></div>
+														</template>
+													</article>
+												</div>
 											</div>
 										</div>
 									</fieldset>
@@ -156,8 +175,10 @@
 									<fieldset>
 										<legend class="p-form-grid__legend"><label for="fc-relation" class="c-label">関連記事</label></legend>
 										<div class="p-form-grid__contents">
-											<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= requestQuery.relation %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" style="--inline-size: 15em" />
-											<small>（カンマ区切り）</small>
+											<div class="c-form-controls">
+												<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= requestQuery.relation %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" style="--inline-size: 15em" />
+												<small>（カンマ区切り）</small>
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -165,14 +186,16 @@
 									<fieldset>
 										<legend class="p-form-grid__legend">公開</legend>
 										<div class="p-form-grid__contents">
-											<label class="c-label -check">
-												<%_ if (requestQuery.public) { _%>
-												<input type="checkbox" name="public" value="1" checked="" />
-												<%_ } else { _%>
-												<input type="checkbox" name="public" value="1" />
-												<%_ } _%>
-												<span class="c-label__text">公開状態</span>
-											</label>
+											<div class="c-form-controls">
+												<label class="c-label -check">
+													<%_ if (requestQuery.public) { _%>
+													<input type="checkbox" name="public" value="1" checked="" />
+													<%_ } else { _%>
+													<input type="checkbox" name="public" value="1" />
+													<%_ } _%>
+													<span class="c-label__text">公開状態</span>
+												</label>
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -181,14 +204,16 @@
 									<fieldset>
 										<legend class="p-form-grid__legend">更新時の処理</legend>
 										<div class="p-form-grid__contents">
-											<label class="c-label -check">
-												<%_ if (requestQuery.timestamp) { _%>
-												<input type="checkbox" name="timestamp" value="1" checked="" />
-												<%_ } else { _%>
-												<input type="checkbox" name="timestamp" value="1" />
-												<%_ } _%>
-												<span class="c-label__text">更新日時を変更</span>
-											</label>
+											<div class="c-form-controls">
+												<label class="c-label -check">
+													<%_ if (requestQuery.timestamp) { _%>
+													<input type="checkbox" name="timestamp" value="1" checked="" />
+													<%_ } else { _%>
+													<input type="checkbox" name="timestamp" value="1" />
+													<%_ } _%>
+													<span class="c-label__text">更新日時を変更</span>
+												</label>
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -197,7 +222,7 @@
 									<fieldset>
 										<legend class="p-form-grid__legend">外部サービス</legend>
 										<div class="p-form-grid__contents">
-											<p>
+											<div class="c-form-controls">
 												<label class="c-label -check">
 													<%_ if (requestQuery.social === 1) { _%>
 													<input type="checkbox" name="social" value="1" checked="" />
@@ -206,11 +231,11 @@
 													<%_ } _%>
 													<span class="c-label__text">ソーシャルサービスへ投稿する</span>
 												</label>
-											</p>
-											<p>
+											</div>
+											<div class="c-form-controls">
 												<label class="c-label -input"><span class="c-label__text">ハッシュタグ</span><input class="c-input js-convert-trim" name="socialtag" value="<%= requestQuery.socialtag %>" pattern="[^,]+" style="--inline-size: 12em" /></label>
 												<small>（スペース区切り）</small>
-											</p>
+											</div>
 										</div>
 									</fieldset>
 								</div>

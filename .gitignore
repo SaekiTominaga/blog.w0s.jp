@@ -14,6 +14,7 @@
 /packages/frontend/configure/*.json
 /packages/frontend/node/dist/
 /packages/frontend/node/log4js*.json
+/packages/frontend/node_modules/
 /packages/frontend/public/**/*.atom
 /packages/frontend/public/**/*.br
 /packages/frontend/public/**/*.map

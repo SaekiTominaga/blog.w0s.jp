@@ -3,6 +3,7 @@ declare namespace BlogApi {
 	/* 本文プレビュー */
 	interface Preview {
 		html: string;
+		messages: VFileMessages[];
 	}
 }
 
