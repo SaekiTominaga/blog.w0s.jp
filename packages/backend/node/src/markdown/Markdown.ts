@@ -34,12 +34,12 @@ import remarkLintNoEmptySections from './lint/noEmptySection.js';
 import remarkLintNoLinkTitle from './lint/noLinkTitle.js';
 import remarkLintNoLooseList from './lint/noLooseList.js';
 import remarkLintNoTypes from './lint/noTypes.js';
+import { xBlankToHast } from './toHast/block/blank.js';
 import { xBlockquoteToHast } from './toHast/block/blockquote.js';
 import { xBoxToHast } from './toHast/block/box.js';
 import { codeToHast } from './toHast/block/code.js';
 import { defListToHast } from './toHast/block/definitionList.js';
 import { xEmbeddedMediaToHast, xEmbeddedAmazonToHast, xEmbeddedYouTubeToHast } from './toHast/block/embedded.js';
-import { xEmptyToHast } from './toHast/block/empty.js';
 import { headingToHast, xHeadingToHast } from './toHast/block/heading.js';
 import { htmlToHast } from './toHast/block/html.js';
 import { listToHast } from './toHast/block/list.js';
@@ -49,11 +49,11 @@ import { xTocToHast } from './toHast/block/toc.js';
 import { footnoteReferenceToHast } from './toHast/phrasing/footnote.js';
 import { linkToHast } from './toHast/phrasing/link.js';
 import { xQuoteToHast } from './toHast/phrasing/quote.js';
+import blankToMdast from './toMdast/block/blank.js';
 import blockquoteToMdast from './toMdast/block/blockquote.js';
 import boxToMdast from './toMdast/block/box.js';
 import defListToMdast from './toMdast/block/definitionList.js';
 import embeddedToMdast from './toMdast/block/embedded.js';
-import emptyToMdast from './toMdast/block/empty.js';
 import headingToMdast from './toMdast/block/heading.js';
 import sectionToMdast from './toMdast/block/section.js';
 import tableToMdast from './toMdast/block/table.js';
@@ -116,11 +116,11 @@ export default class Markdown {
 
 		processor.use(headingToMdast, { maxDepth: <Remark.HeadingDepth>config.headingDepthLimit }); // toc 処理より前に実行する必要がある
 		processor.use(tocToMdast); // section 処理より前に実行する必要がある
+		processor.use(blankToMdast);
 		processor.use(blockquoteToMdast);
 		processor.use(boxToMdast);
 		processor.use(defListToMdast);
 		processor.use(embeddedToMdast);
-		processor.use(emptyToMdast);
 		processor.use(footnoteToMdast);
 		processor.use(sectionToMdast, { maxDepth: <Remark.HeadingDepth>config.headingDepthLimit });
 		processor.use(tableToMdast);
@@ -141,12 +141,12 @@ export default class Markdown {
 				html: htmlToHast,
 				link: linkToHast,
 				list: listToHast,
+				'x-blank': xBlankToHast,
 				'x-blockquote': xBlockquoteToHast,
 				'x-box': xBoxToHast,
 				'x-embedded-media': xEmbeddedMediaToHast,
 				'x-embedded-amazon': xEmbeddedAmazonToHast,
 				'x-embedded-youtube': xEmbeddedYouTubeToHast,
-				'x-empty': xEmptyToHast,
 				'x-heading': xHeadingToHast,
 				'x-section': xSectionToHast,
 				'x-table': tableToHast,

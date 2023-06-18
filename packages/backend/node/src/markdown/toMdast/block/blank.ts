@@ -4,17 +4,17 @@ import type { Node, Parent } from 'unist';
 import { visit, CONTINUE } from 'unist-util-visit';
 
 /**
- * Empty paragraph
+ * Blank paragraph
  */
 
-export const name = 'x-empty';
+export const name = 'x-blank';
 
-interface XEmpty extends Node {
+interface XBlank extends Node {
 	type: typeof name;
 }
 
 const toMdast = (): Plugin => {
-	const EMPTY_SIGN = '␣';
+	const BLANK_SIGN = '␣';
 
 	return (tree: Parent): void => {
 		visit(tree, 'paragraph', (node: Paragraph, index: number | null, parent: Parent | null): boolean => {
@@ -25,12 +25,12 @@ const toMdast = (): Plugin => {
 			const { children } = node;
 			if (children.length === 1) {
 				const child = children.at(0);
-				if (child?.type === 'text' && child.value === EMPTY_SIGN) {
-					const empty: XEmpty = {
+				if (child?.type === 'text' && child.value === BLANK_SIGN) {
+					const blank: XBlank = {
 						type: name,
 					};
 
-					parent.children.splice(index, 1, empty);
+					parent.children.splice(index, 1, blank);
 				}
 			}
 
