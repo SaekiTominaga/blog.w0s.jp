@@ -136,6 +136,11 @@ describe('paragraph', () => {
 		const markdown = new Markdown();
 		expect(format(await markdown.toHtml('text'))).toBe('<p>text</p>'.trim());
 	});
+
+	test('blank', async () => {
+		const markdown = new Markdown();
+		expect(format(await markdown.toHtml('␣'))).toBe(''.trim());
+	});
 });
 
 describe('unordered list', () => {
