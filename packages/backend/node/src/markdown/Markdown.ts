@@ -15,7 +15,6 @@ import remarkLintListItemContentIndent from 'remark-lint-list-item-content-inden
 import remarkLintListItemIndent from 'remark-lint-list-item-indent';
 import remarkLintNoBlockquoteWithoutMarker from 'remark-lint-no-blockquote-without-marker';
 import remarkLintNoConsecutiveBlankLines from 'remark-lint-no-consecutive-blank-lines';
-import remarkLintNoDuplicateHeadingsInSection from 'remark-lint-no-duplicate-headings-in-section';
 import remarkLintNoHeadingContentIndent from 'remark-lint-no-heading-content-indent';
 import remarkLintNoInlinePadding from 'remark-lint-no-inline-padding';
 import remarkLintNoMissingBlankLines from 'remark-lint-no-missing-blank-lines';
@@ -89,7 +88,6 @@ export default class Markdown {
 			processor.use(remarkLintHeadingIncrement); // [markdown-style-guide] 見出しの数字飛ばし
 			processor.use(remarkLintHeadingDepthLimit, <Remark.HeadingDepth>config.headingDepthLimit); // 見出しレベルの最大値
 			processor.use(remarkLintHeadingStyle, 'atx'); // [markdown-style-guide] 見出し構文
-			processor.use(remarkLintNoDuplicateHeadingsInSection); // セクション毎の見出し文字列重複
 			processor.use(remarkLintNoEmptySections); // セクション内にコンテンツが存在すること
 			processor.use(remarkLintListItemBulletIndent); // [recommended] リスト項目のインデント禁止
 			processor.use(remarkLintListItemContentIndent); // [markdown-style-guide] リスト項目のインデント統一
