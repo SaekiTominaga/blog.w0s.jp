@@ -19,7 +19,8 @@
 		{
 			"files": ["node/src/shell/*.ts"],
 			"rules": {
-				"no-console": "off"
+				"no-console": "off",
+				"@typescript-eslint/no-unused-vars": "off"
 			}
 		},
 		{
