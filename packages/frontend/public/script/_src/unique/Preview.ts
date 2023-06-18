@@ -80,11 +80,14 @@ export default class Preview {
 				reason.textContent = message.reason;
 			}
 
-			if (message.ruleId !== undefined && message.url !== undefined) {
+			if (message.ruleId !== undefined) {
 				const rule = clone.querySelector<HTMLAnchorElement>('.js-rule');
 				if (rule !== null) {
-					rule.href = message.url;
 					rule.textContent = message.ruleId;
+
+					if (message.url !== undefined) {
+						rule.href = message.url;
+					}
 				}
 			}
 
