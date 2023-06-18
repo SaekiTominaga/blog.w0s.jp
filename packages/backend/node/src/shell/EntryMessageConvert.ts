@@ -28,20 +28,22 @@ const convert = (id: number, message: string): string => {
 	const LF = '\n';
 
 	let convertedMessage = '';
-	message
-		.replaceAll(CRLF, LF)
-		.split(LF)
-		.forEach((line, index) => {
-			const convertedLine = line.replaceAll(/^\$tweet: (.+)/g, (match, text) => {
-				console.info(`${id}: ${match}`);
-				return `${text}`;
-			}); // TODO: ここに変換処理を書く
+	const lines = message.replaceAll(CRLF, LF).split(LF);
+	lines.forEach((line, index) => {
+		// @ts-expect-error: ts(6133)
+		const beforeLine = lines.at(index - 1);
+		// @ts-expect-error: ts(6133)
+		const afterLine = lines.at(index + 1);
+		const convertedLine = line.replaceAll(/(.+)/g, (match) => {
+			console.info(`${id}: ${match}`);
+			return match;
+		}); // TODO: ここに変換処理を書く
 
-			if (index > 0) {
-				convertedMessage += LF;
-			}
-			convertedMessage += convertedLine;
-		});
+		if (index > 0) {
+			convertedMessage += LF;
+		}
+		convertedMessage += convertedLine;
+	});
 
 	return convertedMessage;
 };
