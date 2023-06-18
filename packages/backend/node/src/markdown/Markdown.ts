@@ -41,6 +41,7 @@ import { xBoxToHast } from './toHast/block/box.js';
 import { codeToHast } from './toHast/block/code.js';
 import { defListToHast } from './toHast/block/definitionList.js';
 import { xEmbeddedMediaToHast, xEmbeddedAmazonToHast, xEmbeddedYouTubeToHast } from './toHast/block/embedded.js';
+import { xEmptyToHast } from './toHast/block/empty.js';
 import { headingToHast, xHeadingToHast } from './toHast/block/heading.js';
 import { htmlToHast } from './toHast/block/html.js';
 import { listToHast } from './toHast/block/list.js';
@@ -54,6 +55,7 @@ import blockquoteToMdast from './toMdast/block/blockquote.js';
 import boxToMdast from './toMdast/block/box.js';
 import defListToMdast from './toMdast/block/definitionList.js';
 import embeddedToMdast from './toMdast/block/embedded.js';
+import emptyToMdast from './toMdast/block/empty.js';
 import headingToMdast from './toMdast/block/heading.js';
 import sectionToMdast from './toMdast/block/section.js';
 import tableToMdast from './toMdast/block/table.js';
@@ -122,6 +124,7 @@ export default class Markdown {
 		processor.use(boxToMdast);
 		processor.use(defListToMdast);
 		processor.use(embeddedToMdast);
+		processor.use(emptyToMdast);
 		processor.use(footnoteToMdast);
 		processor.use(sectionToMdast, { maxDepth: <Remark.HeadingDepth>config.headingDepthLimit });
 		processor.use(tableToMdast);
@@ -147,6 +150,7 @@ export default class Markdown {
 				'x-embedded-media': xEmbeddedMediaToHast,
 				'x-embedded-amazon': xEmbeddedAmazonToHast,
 				'x-embedded-youtube': xEmbeddedYouTubeToHast,
+				'x-empty': xEmptyToHast,
 				'x-heading': xHeadingToHast,
 				'x-section': xSectionToHast,
 				'x-table': tableToHast,
