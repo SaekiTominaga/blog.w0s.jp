@@ -91,7 +91,7 @@ export default class MessageImage {
 				switch (name) {
 					case SERVICE_AMAZON: {
 						option?.split(META_SEPARATOR).forEach((fragment) => {
-							if (/^[a-zA-Z0-9-_+%]+$/.test(fragment)) {
+							if (!/^[1-9][0-9]{1,2}x[1-9][0-9]{1,2}$/.test(fragment) && /^[a-zA-Z0-9-_+%]+$/.test(fragment)) {
 								/* 画像ID */
 								amazonImageIds.add(fragment);
 							}
