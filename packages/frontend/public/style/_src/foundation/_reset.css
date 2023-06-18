@@ -70,7 +70,8 @@ mark {
 	font: inherit;
 }
 
-input {
+input,
+textarea {
 	margin: 0;
 }
 
