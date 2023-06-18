@@ -14,7 +14,6 @@ import remarkLintListItemBulletIndent from 'remark-lint-list-item-bullet-indent'
 import remarkLintListItemContentIndent from 'remark-lint-list-item-content-indent';
 import remarkLintListItemIndent from 'remark-lint-list-item-indent';
 import remarkLintNoBlockquoteWithoutMarker from 'remark-lint-no-blockquote-without-marker';
-import remarkLintNoConsecutiveBlankLines from 'remark-lint-no-consecutive-blank-lines';
 import remarkLintNoHeadingContentIndent from 'remark-lint-no-heading-content-indent';
 import remarkLintNoInlinePadding from 'remark-lint-no-inline-padding';
 import remarkLintNoMissingBlankLines from 'remark-lint-no-missing-blank-lines';
@@ -82,7 +81,6 @@ export default class Markdown {
 		if (lint) {
 			processor.use(remarkLintNoTypes, ['break', 'definition', 'image', 'thematicBreak']); // 使用禁止要素
 			processor.use(remarkLintNoMissingBlankLines); // ブロック間の空行必須
-			processor.use(remarkLintNoConsecutiveBlankLines); // [markdown-style-guide] ブロック間の空行は1行のみ
 			processor.use(remarkLintNoHeadingContentIndent); // [recommended] 見出し記号と内容の間のスペースは1つのみ
 			processor.use(remarkLintFirstHeadingLevel, 1); // 最初の見出しは 1
 			processor.use(remarkLintHeadingIncrement); // [markdown-style-guide] 見出しの数字飛ばし
