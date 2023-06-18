@@ -217,25 +217,25 @@ export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastEle
 									properties: imageElementProperties,
 									children: [],
 								},
+							],
+						},
+						{
+							type: 'element',
+							tagName: 'div',
+							properties: {
+								className: ['p-amazon__text'],
+							},
+							children: [
 								{
 									type: 'element',
-									tagName: 'div',
+									tagName: 'p',
 									properties: {
-										className: ['p-amazon__text'],
+										className: ['p-amazon__title'],
 									},
 									children: [
 										{
-											type: 'element',
-											tagName: 'p',
-											properties: {
-												className: ['p-amazon__title'],
-											},
-											children: [
-												{
-													type: 'text',
-													value: title,
-												},
-											],
+											type: 'text',
+											value: title,
 										},
 									],
 								},
