@@ -2,8 +2,8 @@ import type { VFileMessage } from 'vfile-message';
 
 interface Option {
 	ctrl: HTMLTextAreaElement;
-	preview: HTMLTemplateElement;
 	messages: HTMLTemplateElement;
+	preview: HTMLTemplateElement;
 }
 
 /**
@@ -17,7 +17,7 @@ export default class Preview {
 	readonly #previewElement: HTMLTemplateElement; // 本文プレビューを表示する要素
 
 	/**
-	 * @param {object} options -
+	 * @param {object} options - Option
 	 */
 	constructor(options: Option) {
 		this.#ctrlElement = options.ctrl;
