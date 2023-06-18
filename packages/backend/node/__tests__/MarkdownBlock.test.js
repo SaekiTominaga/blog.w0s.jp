@@ -1024,10 +1024,8 @@ describe('Amazon', () => {
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
-				><div class="p-amazon__thumb">
-					<img src="/image/entry/amazon-noimage.svg" alt="" width="113" height="160" class="p-amazon__image" />
-					<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div>
-				</div></a
+				><div class="p-amazon__thumb"><img src="/image/entry/amazon-noimage.svg" alt="" width="113" height="160" class="p-amazon__image" /></div>
+				<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div></a
 			>
 		</li>
 	</ul>
@@ -1053,10 +1051,8 @@ describe('Amazon', () => {
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
-				><div class="p-amazon__thumb">
-					<img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" class="p-amazon__image" />
-					<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div>
-				</div></a
+				><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" class="p-amazon__image" /></div>
+				<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div></a
 			>
 		</li>
 	</ul>
@@ -1082,10 +1078,8 @@ describe('Amazon', () => {
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
-				><div class="p-amazon__thumb">
-					<img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" width="106" height="160" class="p-amazon__image" />
-					<div class="p-amazon__text"><p class="p-amazon__title">title</p></div>
-				</div></a
+				><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" width="106" height="160" class="p-amazon__image" /></div>
+				<div class="p-amazon__text"><p class="p-amazon__title">title</p></div></a
 			>
 		</li>
 	</ul>
