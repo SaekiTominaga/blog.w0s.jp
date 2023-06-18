@@ -1,6 +1,6 @@
 import { config, regexp } from '../config.js';
 
-interface Icon {
+export interface Icon {
 	fileName: string; // アイコンのファイル名
 	altText: string; // アイコンの代替テキスト
 }
@@ -25,25 +25,25 @@ export default class Link {
 	/**
 	 * リンクに付随する情報を取得する
 	 *
-	 * @param {string} content - リンクテキスト
-	 * @param {string} href - `href` 属性値
+	 * @param {string} mdContent - Markdown に書かれたリンクテキスト
+	 * @param {string} mdUrl - Markdown に書かれた URL
 	 *
 	 * @returns {Info} リンクに付随する情報
 	 */
-	static getInfo(content: string, href: string): Info {
+	static getInfo(mdContent: string, mdUrl: string): Info {
 		/* 絶対 URL */
-		const absoluteUrlMatchGroups = href.match(new RegExp(`^(?<absoluteUrl>${regexp.absoluteUrl})$`))?.groups;
+		const absoluteUrlMatchGroups = mdUrl.match(new RegExp(`^(?<absoluteUrl>${regexp.absoluteUrl})$`))?.groups;
 		if (absoluteUrlMatchGroups !== undefined) {
 			const { absoluteUrl } = absoluteUrlMatchGroups;
 
 			if (absoluteUrl !== undefined) {
-				const url = new URL(href);
+				const url = new URL(mdUrl);
 
 				const { typeIcon } = this.#getTypeInfo(url);
-				const { hostIcon, hostText } = this.#getHostInfo(content, url);
+				const { hostIcon, hostText } = this.#getHostInfo(mdContent, url);
 
 				return {
-					href: href,
+					href: mdUrl,
 					typeIcon: typeIcon,
 					hostIcon: hostIcon,
 					hostText: hostText,
@@ -52,19 +52,19 @@ export default class Link {
 		}
 
 		/* 別記事へのリンク */
-		const entryMatchGroups = href.match(new RegExp(`^(?<id>${regexp.entryId})$`))?.groups;
+		const entryMatchGroups = mdUrl.match(new RegExp(`^(?<id>${regexp.entryId})$`))?.groups;
 		if (entryMatchGroups !== undefined) {
 			const { id } = entryMatchGroups;
 
 			if (id !== undefined) {
 				return {
-					href: `/${href}`,
+					href: `/${mdUrl}`,
 				};
 			}
 		}
 
 		/* Amazon 商品ページへのリンク */
-		const amazonMatchGroups = href.match(new RegExp(`^amazon:(?<asin>${regexp.asin})$`))?.groups;
+		const amazonMatchGroups = mdUrl.match(new RegExp(`^amazon:(?<asin>${regexp.asin})$`))?.groups;
 		if (amazonMatchGroups !== undefined) {
 			const { asin } = amazonMatchGroups;
 
@@ -80,13 +80,13 @@ export default class Link {
 		}
 
 		/* ページ内リンク */
-		const pageLinkMatchGroups = href.match(new RegExp(`^#(?<id>${config.sectionIdPrefix}.+)`))?.groups;
+		const pageLinkMatchGroups = mdUrl.match(new RegExp(`^#(?<id>${config.sectionIdPrefix}.+)`))?.groups;
 		if (pageLinkMatchGroups !== undefined) {
 			const { id } = pageLinkMatchGroups;
 
 			if (id !== undefined) {
 				return {
-					href: href,
+					href: mdUrl,
 				};
 			}
 		}

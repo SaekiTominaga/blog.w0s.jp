@@ -31,10 +31,21 @@
 			}
 		},
 		{
-			"files": ["node/src/markdown/Inline.ts"],
+			"files": ["node/src/markdown/**/*.ts"],
 			"rules": {
-				"camelcase": "off",
-				"class-methods-use-this": "off"
+				"arrow-body-style": "off"
+			}
+		},
+		{
+			"files": ["node/src/markdown/toHast/**/*.ts"],
+			"rules": {
+				"import/prefer-default-export": "off"
+			}
+		},
+		{
+			"files": ["node/src/markdown/toMdast/**/*.ts"],
+			"rules": {
+				"no-invalid-this": "off"
 			}
 		},
 		{

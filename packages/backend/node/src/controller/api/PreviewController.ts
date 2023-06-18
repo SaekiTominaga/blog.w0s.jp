@@ -26,7 +26,7 @@ export default class PreviewController extends Controller implements ControllerI
 		const markdown = new Markdown();
 
 		const responseJson: BlogApi.Preview = {
-			html: await markdown.toHtml(requestQuery.markdown),
+			html: (await markdown.toHtml(requestQuery.markdown)).value.toString(),
 		};
 
 		res.status(200).json(responseJson);

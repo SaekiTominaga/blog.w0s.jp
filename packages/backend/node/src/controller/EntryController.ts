@@ -69,7 +69,7 @@ export default class EntryController extends Controller implements ControllerInt
 		const sidebar = new Sidebar(dao);
 
 		const [message, categoriesDto, relationDataListDto, entryCountOfCategoryList, newlyEntries] = await Promise.all([
-			markdown.toHtml(entryDto.message),
+			(await markdown.toHtml(entryDto.message)).value.toString(),
 			dao.getCategories(requestQuery.entry_id),
 			dao.getRelations(requestQuery.entry_id),
 			sidebar.getEntryCountOfCategory(),
