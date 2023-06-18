@@ -62,7 +62,11 @@ if (
 		messages: markdownMessagesElement,
 		preview: messagePreviewElement,
 	});
-	const messageImage = new MessageImage(messageCtrlElement, selectImageElement, selectImageErrorElement);
+	const messageImage = new MessageImage({
+		ctrl: messageCtrlElement,
+		image: selectImageElement,
+		error: selectImageErrorElement,
+	});
 
 	const exec = async (): Promise<void> => {
 		await Promise.all([preview.exec(), messageImage.exec()]);
