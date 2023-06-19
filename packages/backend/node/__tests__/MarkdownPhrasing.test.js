@@ -82,17 +82,17 @@ describe('link', () => {
 describe('quote', () => {
 	test('single', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text1{{quote1}}text2'))).toBe('<p>text1<q>quote1</q>text2</p>'.trim());
+		expect(format(await markdown.toHtml('text1{quote1}text2'))).toBe('<p>text1<q>quote1</q>text2</p>'.trim());
 	});
 
 	test('multiple', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text1{{quote1}}text2{{quote2}}'))).toBe('<p>text1<q>quote1</q>text2<q>quote2</q></p>'.trim());
+		expect(format(await markdown.toHtml('text1{quote1}text2{quote2}'))).toBe('<p>text1<q>quote1</q>text2<q>quote2</q></p>'.trim());
 	});
 
 	test('meta URL', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text1{{quote1}}(https://example.com/)text2'))).toBe(
+		expect(format(await markdown.toHtml('text1{quote1}(https://example.com/)text2'))).toBe(
 			`
 <p>
 	text1<a href="https://example.com/"><q cite="https://example.com/">quote1</q></a
@@ -104,24 +104,24 @@ describe('quote', () => {
 
 	test('meta ISBN', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text1{{quote1}}(978-4-06-519981-7)text2'))).toBe(
+		expect(format(await markdown.toHtml('text1{quote1}(978-4-06-519981-7)text2'))).toBe(
 			'<p>text1<q cite="urn:ISBN:978-4-06-519981-7">quote1</q>text2</p>'.trim()
 		);
 	});
 
 	test('meta ISBN - invalid check digit', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text1{{quote1}}(978-4-06-519981-0)text2'))).toBe('<p>text1<q>quote1</q>text2</p>'.trim());
+		expect(format(await markdown.toHtml('text1{quote1}(978-4-06-519981-0)text2'))).toBe('<p>text1<q>quote1</q>text2</p>'.trim());
 	});
 
 	test('meta lang', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text1{{quote1}}(en)text2'))).toBe('<p>text1<q lang="en">quote1</q>text2</p>'.trim());
+		expect(format(await markdown.toHtml('text1{quote1}(en)text2'))).toBe('<p>text1<q lang="en">quote1</q>text2</p>'.trim());
 	});
 
 	test('meta all', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text1{{quote1}}(https://example.com/ 978-4-06-519981-7 en)text2'))).toBe(
+		expect(format(await markdown.toHtml('text1{quote1}(https://example.com/ 978-4-06-519981-7 en)text2'))).toBe(
 			`
 <p>
 	text1<a href="https://example.com/"><q lang="en" cite="https://example.com/">quote1</q></a
@@ -133,12 +133,17 @@ describe('quote', () => {
 
 	test('meta empty', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text1{{quote1}}()text2'))).toBe('<p>text1<q>quote1</q>()text2</p>'.trim());
+		expect(format(await markdown.toHtml('text1{quote1}()text2'))).toBe('<p>text1<q>quote1</q>()text2</p>'.trim());
 	});
 
 	test('open only', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text1{{text2'))).toBe('<p>text1{{text2</p>'.trim());
+		expect(format(await markdown.toHtml('text1{text2'))).toBe('<p>text1{text2</p>'.trim());
+	});
+
+	test('in <code>', async () => {
+		const markdown = new Markdown();
+		expect(format(await markdown.toHtml('text1`{code}`text2'))).toBe('<p>text1<code>{code}</code>text2</p>'.trim());
 	});
 });
 

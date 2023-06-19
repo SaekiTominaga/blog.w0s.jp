@@ -17,8 +17,8 @@ interface XQuote extends Parent {
 }
 
 const toMdast = (): Plugin => {
-	const QUOTE_OPEN = '{{';
-	const QUOTE_CLOSE = '}}';
+	const QUOTE_OPEN = '{';
+	const QUOTE_CLOSE = '}';
 
 	const META_OPEN = '(';
 	const META_CLOSE = ')';
