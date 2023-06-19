@@ -45,7 +45,6 @@ export default class Preview {
 			html: string;
 			messages: VFileMessage[];
 		} = await response.json();
-		console.debug(responseJson.messages);
 
 		this.#messages(responseJson.messages);
 		this.#preview(responseJson.html);
