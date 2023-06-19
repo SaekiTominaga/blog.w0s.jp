@@ -37,3 +37,4 @@
 
 /* Object - Utility */
 @import url("object/utility/_text.css") layer(utility);
+@import url("object/utility/_tabular.css") layer(utility);

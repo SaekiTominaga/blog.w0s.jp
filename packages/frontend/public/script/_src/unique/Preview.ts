@@ -61,28 +61,52 @@ export default class Preview {
 			const clone = this.#messagesElement.content.cloneNode(true) as HTMLElement;
 
 			if (message.line !== undefined) {
-				const line = clone.querySelector('.js-line');
+				const line = clone.querySelector<HTMLElement>('.js-line');
 				if (line !== null) {
 					line.textContent = String(message.line);
 				}
 			}
 
 			if (message.column !== undefined) {
-				const column = clone.querySelector('.js-column');
+				const column = clone.querySelector<HTMLElement>('.js-column');
 				if (column !== null) {
 					column.textContent = String(message.column);
 				}
 			}
 
-			const reason = clone.querySelector('.js-reason');
+			const reason = clone.querySelector<HTMLElement>('.js-reason');
 			if (reason !== null) {
 				reason.textContent = message.reason;
 			}
 
 			if (message.ruleId !== undefined) {
+				const { ruleId } = message;
+
+				const info = ruleId.startsWith('no-recommended-');
+				const tr = clone.querySelector('tr');
+				if (info) {
+					if (tr !== null) {
+						tr.dataset['level'] = 'info';
+					}
+
+					const icon = clone.querySelector<HTMLElement>('.js-icon-info');
+					if (icon !== null) {
+						icon.hidden = false;
+					}
+				} else {
+					if (tr !== null) {
+						tr.dataset['level'] = 'warning';
+					}
+
+					const icon = clone.querySelector<HTMLElement>('.js-icon-warning');
+					if (icon !== null) {
+						icon.hidden = false;
+					}
+				}
+
 				const rule = clone.querySelector<HTMLAnchorElement>('.js-rule');
 				if (rule !== null) {
-					rule.textContent = message.ruleId;
+					rule.textContent = ruleId;
 
 					if (message.url !== undefined) {
 						rule.href = message.url;

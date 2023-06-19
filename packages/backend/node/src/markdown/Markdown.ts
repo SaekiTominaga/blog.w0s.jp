@@ -33,6 +33,7 @@ import remarkLintHeadingDepthLimit from './lint/headingDepthLimit.js';
 import remarkLintNoEmptySections from './lint/noEmptySection.js';
 import remarkLintNoLinkTitle from './lint/noLinkTitle.js';
 import remarkLintNoLooseList from './lint/noLooseList.js';
+import remarkLintNoRecommendedHtml from './lint/noRecommendedHtml.js';
 import remarkLintNoTypes from './lint/noTypes.js';
 import { xBlankToHast } from './toHast/block/blank.js';
 import { xBlockquoteToHast } from './toHast/block/blockquote.js';
@@ -110,6 +111,7 @@ export default class Markdown {
 			processor.use(remarkLintNoShortcutReferenceLink); // [markdown-style-guide][recommended] 参照リンクでは末尾の [] が必須
 			processor.use(remarkLintEmphasisMarker, '*'); // [markdown-style-guide] <em> 構文
 			processor.use(remarkLintStrongMarker, '*'); // [markdown-style-guide] <strong> 構文
+			processor.use(remarkLintNoRecommendedHtml); // HTML 直書きは非推奨
 		}
 
 		processor.use(remarkParse); // Markdown → mdast
