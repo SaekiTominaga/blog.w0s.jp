@@ -71,6 +71,10 @@ const hast = (): Plugin => {
 					},
 					children: content.children,
 				});
+				contentChildren.push({
+					type: 'text',
+					value: ' ',
+				});
 
 				const backref = select(':scope > [data-footnote-backref]', content);
 				if (backref !== null) {
@@ -92,6 +96,7 @@ const hast = (): Plugin => {
 					});
 
 					content.children.splice(content.children.indexOf(backref), 1);
+					content.children.splice(content.children.length - 1, 1); // content.children の末尾の [data-footnote-backref] の前にある空白文字を削除する
 				}
 
 				content.children = contentChildren;
