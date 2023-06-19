@@ -128,9 +128,6 @@ export default class Markdown {
 
 		processor.use(remarkRehype, {
 			clobberPrefix: '',
-			footnoteLabel: '脚注',
-			footnoteLabelProperties: {},
-			footnoteLabelTagName: 'h2',
 			handlers: {
 				code: codeToHast,
 				defList: defListToHast,

@@ -156,14 +156,11 @@
 }
 
 /* ===== 脚注リスト ===== */
-.p-footnotes {
-	display: table;
-	box-sizing: border-box;
+.p-footnote {
 	border: 1px solid var(--color-bg-light);
 	border-radius: var(--border-radius-large);
 	background: var(--color-bg-light);
 	padding: 1em;
-	inline-size: 100%;
 	font-size: calc(100% / var(--font-ratio-1));
 
 	.p-entry & {
@@ -173,27 +170,25 @@
 			margin-block-start: calc(var(--stack-margin-base) * 6);
 		}
 	}
+}
+
+.p-footnote__list {
+	display: table;
+	margin-block-start: 0.25em;
 
 	& > li {
 		display: table-row;
-
-		&:not(:first-child) {
-			& > :is(.p-footnotes__no, .p-footnotes__text) {
-				border-block-start: 0.5em solid transparent;
-			}
-		}
 	}
 }
 
-.p-footnotes__no,
-.p-footnotes__text {
+.p-footnote__no,
+.p-footnote__content {
 	display: table-cell;
 	vertical-align: top;
 }
 
-.p-footnotes__no {
-	padding-inline-end: 0.25em;
-	font-weight: var(--font-weight-bold);
+.p-footnote__no {
+	padding-block-start: 0.5em;
 	text-align: end;
 	white-space: nowrap;
 
@@ -204,7 +199,8 @@
 	}
 }
 
-.p-footnotes__text {
-	padding: 0.25em;
+.p-footnote__content {
+	padding-inline-start: 0.5em;
+	padding-block-start: 0.5em;
 	inline-size: 100%;
 }

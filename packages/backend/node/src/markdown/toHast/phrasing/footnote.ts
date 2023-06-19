@@ -36,7 +36,7 @@ export const footnoteReferenceToHast = (state: H, node: FootnoteReference): Hast
 				tagName: 'a',
 				properties: {
 					href: `#${state.clobberPrefix}fn-${safeId}`,
-					id: `${state.clobberPrefix}ref-${safeId}${reuseCounter > 1 ? `-${reuseCounter}` : ''}`,
+					id: `${state.clobberPrefix}fnref-${safeId}${reuseCounter > 1 ? `-${reuseCounter}` : ''}`,
 					is: 'w0s-tooltip-trigger',
 					'data-tooltip-label': '脚注',
 					'data-tooltip-class': 'p-tooltip',

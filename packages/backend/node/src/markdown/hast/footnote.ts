@@ -1,5 +1,6 @@
 import { select, selectAll } from 'hast-util-select';
 import type { Node } from 'hast-util-select/lib/types.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state';
 import type { Plugin } from 'unified';
 
 /**
@@ -11,32 +12,90 @@ const hast = (): Plugin => {
 		if (footnote === null) {
 			return;
 		}
-
 		footnote.properties = {
-			className: ['p-footnotes'],
+			className: ['p-footnote'],
 		};
+
+		const heading = select('#footnote-label', footnote);
+		if (heading !== null) {
+			heading.properties = {
+				className: ['p-footnote__hdg'],
+			};
+			heading.children = [
+				{
+					type: 'text',
+					value: '脚注',
+				},
+			];
+		}
 
 		const list = select(':scope > ol', footnote);
 		if (list === null) {
 			return;
 		}
 		list.tagName = 'ul';
+		list.properties = {
+			className: ['p-footnote__list'],
+		};
 
-		selectAll(':scope > li', list).forEach((listItem) => {
-			const pElement = select(':scope > p', listItem);
-			if (pElement !== null) {
-				listItem.children = pElement?.children; // <li> の子要素に <p> があるのを削除する
+		selectAll(':scope > li', list).forEach((listItem, index) => {
+			const id = listItem.properties?.['id'];
+			listItem.properties = {};
+
+			listItem.children.splice(1, 0, {
+				type: 'element',
+				tagName: 'span',
+				properties: {
+					className: ['p-footnote__no'],
+				},
+				children: [
+					{
+						type: 'text',
+						value: `${index + 1}.`,
+					},
+				],
+			});
+
+			const content = select(':scope > p', listItem);
+			if (content !== null) {
+				content.properties = {
+					className: ['p-footnote__content'],
+				};
+
+				const contentChildren: HastElementContent[] = [];
+				contentChildren.push({
+					type: 'element',
+					tagName: 'span',
+					properties: {
+						id: id,
+					},
+					children: content.children,
+				});
+
+				const backref = select(':scope > [data-footnote-backref]', content);
+				if (backref !== null) {
+					const href = backref.properties?.['href'];
+
+					contentChildren.push({
+						type: 'element',
+						tagName: 'a',
+						properties: {
+							href: href,
+							className: ['c-footnote-backref'],
+						},
+						children: [
+							{
+								type: 'text',
+								value: '↩ 戻る',
+							},
+						],
+					});
+
+					content.children.splice(content.children.indexOf(backref), 1);
+				}
+
+				content.children = contentChildren;
 			}
-
-			const backref = select('[data-footnote-backref]', listItem);
-			if (backref === null) {
-				return;
-			}
-
-			const href = backref.properties?.['href'];
-			backref.properties = {
-				href: href,
-			};
 		});
 	};
 };
