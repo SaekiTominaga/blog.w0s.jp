@@ -50,6 +50,7 @@
 		"svgo": "^3.0.2"
 	},
 	"devDependencies": {
-		"@types/trusted-types": "^2.0.3"
+		"@types/trusted-types": "^2.0.3",
+		"vfile-message": "^4.0.1"
 	}
 }

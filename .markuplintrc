@@ -62,6 +62,19 @@
 			}
 		},
 		{
+			"selector": ".p-post-preview__messages",
+			"rules": {
+				"required-element": false,
+				"wai-aria": false
+			}
+		},
+		{
+			"selector": ".p-post-preview__messages > tbody",
+			"rules": {
+				"permitted-contents": false
+			}
+		},
+		{
 			"selector": "#image-preview",
 			"rules": {
 				"wai-aria": false

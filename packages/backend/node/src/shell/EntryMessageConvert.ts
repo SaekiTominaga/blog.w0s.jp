@@ -6,6 +6,7 @@ import { NoName as Configure } from '../../../configure/type/common.js';
 /**
  * 記事本文の構文書き換え
  */
+
 const argsParsedValues = parseArgs({
 	options: {
 		id: {
@@ -34,9 +35,9 @@ const convert = (id: number, message: string): string => {
 		const beforeLine = lines.at(index - 1);
 		// @ts-expect-error: ts(6133)
 		const afterLine = lines.at(index + 1);
-		const convertedLine = line.replaceAll(/(.+)/g, (match) => {
-			console.info(`${id}: ${match}`);
-			return match;
+		const convertedLine = line.replaceAll(/{{(.+?)}}/g, (_match, quote) => {
+			console.info(`${id}: ${quote}`);
+			return `{${quote}}`;
 		}); // TODO: ここに変換処理を書く
 
 		if (index > 0) {

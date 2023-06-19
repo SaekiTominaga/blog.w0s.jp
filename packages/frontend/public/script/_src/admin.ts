@@ -46,12 +46,27 @@ for (const formElement of document.querySelectorAll<HTMLFormElement>('.js-submit
 
 /* 本文プレビュー */
 const messageCtrlElement = <HTMLTextAreaElement | null>document.getElementById('fc-message'); // 本文の入力コントロール
-const messagePreviewElement = document.getElementById('message-preview'); // 本文プレビューを表示する要素
+const markdownMessagesElement = <HTMLTemplateElement | null>document.getElementById('markdown-messages'); // Markdown 変換結果のメッセージを表示する要素
+const messagePreviewElement = <HTMLTemplateElement | null>document.getElementById('message-preview'); // 本文プレビューを表示する要素
 const selectImageElement = <HTMLTemplateElement | null>document.getElementById('select-image');
 const selectImageErrorElement = <HTMLTemplateElement | null>document.getElementById('select-image-error');
-if (messageCtrlElement !== null && selectImageElement !== null && selectImageErrorElement !== null && messagePreviewElement !== null) {
-	const preview = new Preview(messageCtrlElement, messagePreviewElement);
-	const messageImage = new MessageImage(messageCtrlElement, selectImageElement, selectImageErrorElement);
+if (
+	messageCtrlElement !== null &&
+	markdownMessagesElement !== null &&
+	messagePreviewElement !== null &&
+	selectImageElement !== null &&
+	selectImageErrorElement !== null
+) {
+	const preview = new Preview({
+		ctrl: messageCtrlElement,
+		messages: markdownMessagesElement,
+		preview: messagePreviewElement,
+	});
+	const messageImage = new MessageImage({
+		ctrl: messageCtrlElement,
+		image: selectImageElement,
+		error: selectImageErrorElement,
+	});
 
 	const exec = async (): Promise<void> => {
 		await Promise.all([preview.exec(), messageImage.exec()]);

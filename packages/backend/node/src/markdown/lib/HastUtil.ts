@@ -1,0 +1,93 @@
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
+import type { Icon as LinkIcon } from '../lib/Link.js';
+
+export default class MdastUtil {
+	/**
+	 * Generating heading element (<h1>, <h2>...)
+	 *
+	 * @param {number} depth - Heading depth
+	 * @param {object[]} children - Child Elements of Heading Element
+	 *
+	 * @returns {object} Heading element
+	 */
+	static hn(depth: Remark.HeadingDepth, children: HastElementContent[]): HastElementContent {
+		const START_LEVEL = 2;
+
+		const level = depth + (START_LEVEL - 1);
+
+		const heading: HastElementContent = {
+			type: 'element',
+			tagName: `h${level}`,
+			children: children,
+		};
+		if (level > 6) {
+			heading.tagName = 'p';
+			heading.properties = {
+				role: 'heading',
+				'aria-level': level,
+			};
+		}
+
+		return heading;
+	}
+
+	/**
+	 * Generating an element representing the host information of the link
+	 *
+	 * @param {object} typeInfo - Type info
+	 * @param {object | string} hostInfo - Host info
+	 *
+	 * @returns {object} Element representing the host information of the link
+	 */
+	static linkInfo(typeInfo: LinkIcon | undefined, hostInfo: LinkIcon | string | undefined): HastElementContent[] {
+		const info: HastElementContent[] = [];
+
+		if (typeInfo !== undefined) {
+			info.push({
+				type: 'element',
+				tagName: 'img',
+				properties: {
+					src: `/image/icon/${typeInfo.fileName}`,
+					alt: `(${typeInfo.altText})`,
+					width: '16',
+					height: '16',
+					className: 'c-link-icon',
+				},
+				children: [],
+			});
+		}
+
+		if (hostInfo !== undefined) {
+			if (typeof hostInfo === 'string') {
+				info.push({
+					type: 'element',
+					tagName: 'b',
+					properties: {
+						className: 'c-domain',
+					},
+					children: [
+						{
+							type: 'text',
+							value: `(${hostInfo})`,
+						},
+					],
+				});
+			} else {
+				info.push({
+					type: 'element',
+					tagName: 'img',
+					properties: {
+						src: `/image/icon/${hostInfo.fileName}`,
+						alt: `(${hostInfo.altText})`,
+						width: '16',
+						height: '16',
+						className: 'c-link-icon',
+					},
+					children: [],
+				});
+			}
+		}
+
+		return info;
+	}
+}

@@ -23,10 +23,12 @@ export default class PreviewController extends Controller implements ControllerI
 			return;
 		}
 
-		const markdown = new Markdown();
+		const markdown = new Markdown({ lint: true });
+		const { value, messages } = await markdown.toHtml(requestQuery.markdown);
 
 		const responseJson: BlogApi.Preview = {
-			html: await markdown.toHtml(requestQuery.markdown),
+			html: value.toString(),
+			messages: messages,
 		};
 
 		res.status(200).json(responseJson);

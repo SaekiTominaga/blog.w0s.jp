@@ -4,6 +4,29 @@
 
 /* ===== プレビュー ===== */
 .p-post-preview {
+	& > * {
+		margin-block-start: 0.5em;
+	}
+}
+
+.p-post-preview__messages {
+	& th,
+	& td {
+		border: 1px solid var(--color-border-light);
+		background: var(--_bgcolor);
+		padding: 0.25em 0.5em;
+	}
+
+	& [data-level="info"] {
+		--_bgcolor: var(--color-bg-ultralight);
+	}
+
+	& [data-level="warning"] {
+		--_bgcolor: var(--color-verylightred);
+	}
+}
+
+.p-post-preview__preview {
 	border: 1px solid var(--color-lightgray);
 	max-block-size: 75vh;
 	overflow-y: scroll;

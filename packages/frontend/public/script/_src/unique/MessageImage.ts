@@ -1,5 +1,11 @@
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
 
+interface Option {
+	ctrl: HTMLTextAreaElement;
+	image: HTMLTemplateElement;
+	error: HTMLTemplateElement;
+}
+
 /**
  * 記事を解析して画像情報を抜粋する
  */
@@ -13,16 +19,14 @@ export default class MessageImage {
 	readonly #imageName: string | undefined; // 既存記事でもともと指定されていた画像（ファイル名 or 外部サービス URL）
 
 	/**
-	 * @param {object} ctrlElement - 本文入力欄
-	 * @param {object} selectImageElement - 選択画像を表示する要素
-	 * @param {object} selectImageErrorElement - エラー情報を表示する要素
+	 * @param {object} options - Option
 	 */
-	constructor(ctrlElement: HTMLTextAreaElement, selectImageElement: HTMLTemplateElement, selectImageErrorElement: HTMLTemplateElement) {
-		this.#ctrlElement = ctrlElement;
-		this.#selectImageElement = selectImageElement;
-		this.#selectImageErrorElement = selectImageErrorElement;
+	constructor(options: Option) {
+		this.#ctrlElement = options.ctrl;
+		this.#selectImageElement = options.image;
+		this.#selectImageErrorElement = options.error;
 
-		this.#imageName = selectImageElement.dataset['selected'];
+		this.#imageName = options.image.dataset['selected'];
 	}
 
 	/**
@@ -51,45 +55,58 @@ export default class MessageImage {
 
 		/* 本文内のテキストから画像パスと ASIN を抜き出す */
 		this.#ctrlElement.value.split('\n').forEach((line: string): void => {
-			const firstCharactor = line.substring(0, 1); // 先頭文字
-			switch (firstCharactor) {
-				case '!': {
-					if (line.startsWith('!youtube:')) {
-						const matchGroups = line.match(/^!youtube:(?<id>[-_a-zA-Z0-9]+) [^<>]+( <.+>)?$/)?.groups;
-						if (matchGroups !== undefined) {
-							if (matchGroups['id'] !== undefined) {
-								youtubeIds.add(matchGroups['id']);
-							}
-						}
-					} else {
-						const matchGroups = line.match(/^!(?<filename>[^ ]+)/)?.groups;
-						if (matchGroups !== undefined) {
-							if (matchGroups['filename'] !== undefined) {
-								imageNames.add(matchGroups['filename']);
-							}
-						}
-					}
+			const EMBEDDED_START = '@';
+			const SERVICE_AMAZON = 'amazon';
+			const SERVICE_YOUTUBE = 'youtube';
+			const NAME_META_SEPARATOR = ': ';
+			const META_SEPARATOR = ' ';
+			const OPTION_OPEN = ' <';
+			const OPTION_CLOSE = '>';
 
-					break;
-				}
-				case '$': {
-					if (line.startsWith('$amazon: ')) {
-						const matchGroups = line.match(/^\$amazon: (?<asin>[0-9A-Z]{10}) (?<title>[^<>]+)( <(?<metas>.+)>)?$/)?.groups;
-						if (matchGroups !== undefined) {
-							matchGroups['metas']?.split(' ').forEach((meta) => {
-								if (/^[1-9][0-9]{1,2}x[1-9][0-9]{1,2}$/.test(meta)) {
-									/* 画像サイズ */
-								} else if (/^[a-zA-Z0-9\-_+%]+$/.test(meta)) {
-									/* 画像ID */
-									amazonImageIds.add(meta);
-								}
-							});
-						}
-					}
+			if (!line.startsWith(EMBEDDED_START)) {
+				return;
+			}
 
-					break;
+			const nameMetaSeparatorIndex = line.indexOf(NAME_META_SEPARATOR);
+			if (nameMetaSeparatorIndex === -1) {
+				return;
+			}
+
+			const name = line.substring(EMBEDDED_START.length, nameMetaSeparatorIndex);
+			const meta = line.substring(nameMetaSeparatorIndex + NAME_META_SEPARATOR.length);
+
+			const optionOpenIndex = meta.lastIndexOf(OPTION_OPEN);
+			const optionCloseIndex = meta.lastIndexOf(OPTION_CLOSE);
+
+			let require = meta;
+			let option: string | undefined;
+			if (optionOpenIndex !== -1 && optionCloseIndex === meta.length - OPTION_CLOSE.length) {
+				require = meta.substring(0, optionOpenIndex);
+				option = meta.substring(optionOpenIndex + OPTION_OPEN.length, meta.length - OPTION_CLOSE.length);
+			}
+
+			if (name.includes('.')) {
+				imageNames.add(name);
+			} else {
+				switch (name) {
+					case SERVICE_AMAZON: {
+						option?.split(META_SEPARATOR).forEach((fragment) => {
+							if (!/^[1-9][0-9]{1,2}x[1-9][0-9]{1,2}$/.test(fragment) && /^[a-zA-Z0-9-_+%]+$/.test(fragment)) {
+								/* 画像ID */
+								amazonImageIds.add(fragment);
+							}
+						});
+						break;
+					}
+					case SERVICE_YOUTUBE: {
+						const requireSeparator1Index = require.indexOf(META_SEPARATOR);
+						const id = require.substring(0, requireSeparator1Index);
+
+						youtubeIds.add(id);
+						break;
+					}
+					default:
 				}
-				default:
 			}
 		});
 

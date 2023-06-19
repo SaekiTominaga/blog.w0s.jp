@@ -78,7 +78,9 @@
 											<label for="fc-title" class="c-label">題名 <strong class="c-label-icon -required">必須</strong></label>
 										</legend>
 										<div class="p-form-grid__contents">
-											<input class="c-input -full js-convert-trim" name="title" value="<%= requestQuery.title %>" id="fc-title" required="" />
+											<div class="c-form-controls">
+												<input class="c-input -full js-convert-trim" name="title" value="<%= requestQuery.title %>" id="fc-title" required="" />
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -86,7 +88,9 @@
 									<fieldset>
 										<legend class="p-form-grid__legend"><label for="fc-description" class="c-label">概要</label></legend>
 										<div class="p-form-grid__contents">
-											<input class="c-input -full js-convert-trim" name="description" value="<%= requestQuery.description %>" id="fc-description" />
+											<div class="c-form-controls">
+												<input class="c-input -full js-convert-trim" name="description" value="<%= requestQuery.description %>" id="fc-description" />
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -96,13 +100,32 @@
 											<label for="fc-message" class="c-label">本文 <strong class="c-label-icon -required">必須</strong></label>
 										</legend>
 										<div class="p-form-grid__contents">
-											<p>
+											<div class="c-form-controls">
 												<textarea class="c-textarea js-convert-trim" name="message" id="fc-message" required="" style="--block-size: 15em"><%= requestQuery.message %></textarea>
-											</p>
+											</div>
 											<div class="p-post-preview">
-												<article aria-label="本文プレビュー" class="p-entry">
-													<div id="message-preview" class="p-entry__body"></div>
-												</article>
+												<table class="p-post-preview__messages" lang="en">
+													<tbody>
+														<template id="markdown-messages">
+															<tr>
+																<td class="u-cell -center">
+																	<span class="js-icon-info" hidden="">⚠</span>
+																	<span class="js-icon-warning" hidden="">❌</span>
+																</td>
+																<td><span class="js-line"></span>:<span class="js-column"></span></td>
+																<td><span class="js-reason"></span></td>
+																<td><a class="js-rule"></a></td>
+															</tr>
+														</template>
+													</tbody>
+												</table>
+												<div class="p-post-preview__preview">
+													<article aria-label="本文プレビュー" class="p-entry">
+														<template id="message-preview">
+															<div class="p-entry__body"></div>
+														</template>
+													</article>
+												</div>
 											</div>
 										</div>
 									</fieldset>
@@ -156,8 +179,10 @@
 									<fieldset>
 										<legend class="p-form-grid__legend"><label for="fc-relation" class="c-label">関連記事</label></legend>
 										<div class="p-form-grid__contents">
-											<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= requestQuery.relation %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" style="--inline-size: 15em" />
-											<small>（カンマ区切り）</small>
+											<div class="c-form-controls">
+												<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= requestQuery.relation %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" style="--inline-size: 15em" />
+												<small>（カンマ区切り）</small>
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -165,14 +190,16 @@
 									<fieldset>
 										<legend class="p-form-grid__legend">公開</legend>
 										<div class="p-form-grid__contents">
-											<label class="c-label -check">
-												<%_ if (requestQuery.public) { _%>
-												<input type="checkbox" name="public" value="1" checked="" />
-												<%_ } else { _%>
-												<input type="checkbox" name="public" value="1" />
-												<%_ } _%>
-												<span class="c-label__text">公開状態</span>
-											</label>
+											<div class="c-form-controls">
+												<label class="c-label -check">
+													<%_ if (requestQuery.public) { _%>
+													<input type="checkbox" name="public" value="1" checked="" />
+													<%_ } else { _%>
+													<input type="checkbox" name="public" value="1" />
+													<%_ } _%>
+													<span class="c-label__text">公開状態</span>
+												</label>
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -181,14 +208,16 @@
 									<fieldset>
 										<legend class="p-form-grid__legend">更新時の処理</legend>
 										<div class="p-form-grid__contents">
-											<label class="c-label -check">
-												<%_ if (requestQuery.timestamp) { _%>
-												<input type="checkbox" name="timestamp" value="1" checked="" />
-												<%_ } else { _%>
-												<input type="checkbox" name="timestamp" value="1" />
-												<%_ } _%>
-												<span class="c-label__text">更新日時を変更</span>
-											</label>
+											<div class="c-form-controls">
+												<label class="c-label -check">
+													<%_ if (requestQuery.timestamp) { _%>
+													<input type="checkbox" name="timestamp" value="1" checked="" />
+													<%_ } else { _%>
+													<input type="checkbox" name="timestamp" value="1" />
+													<%_ } _%>
+													<span class="c-label__text">更新日時を変更</span>
+												</label>
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -197,7 +226,7 @@
 									<fieldset>
 										<legend class="p-form-grid__legend">外部サービス</legend>
 										<div class="p-form-grid__contents">
-											<p>
+											<div class="c-form-controls">
 												<label class="c-label -check">
 													<%_ if (requestQuery.social === 1) { _%>
 													<input type="checkbox" name="social" value="1" checked="" />
@@ -206,11 +235,11 @@
 													<%_ } _%>
 													<span class="c-label__text">ソーシャルサービスへ投稿する</span>
 												</label>
-											</p>
-											<p>
+											</div>
+											<div class="c-form-controls">
 												<label class="c-label -input"><span class="c-label__text">ハッシュタグ</span><input class="c-input js-convert-trim" name="socialtag" value="<%= requestQuery.socialtag %>" pattern="[^,]+" style="--inline-size: 12em" /></label>
 												<small>（スペース区切り）</small>
-											</p>
+											</div>
 										</div>
 									</fieldset>
 								</div>
@@ -318,39 +347,35 @@
 									<td>順不同リスト（<code>ul</code>）</td>
 								</tr>
 								<tr>
-									<th scope="row">--<b class="u-red">␣</b></th>
-									<td>リンクリスト（<code>ul</code>）</td>
+									<th scope="row">-<b class="u-red">␣</b>note:<b class="u-red">␣</b></th>
+									<td>注釈</td>
+								</tr>
+								<tr>
+									<th scope="row">-<b class="u-red">␣</b>YYYY-MM-DD:<b class="u-red">␣</b></th>
+									<td>追記</td>
 								</tr>
 								<tr>
 									<th scope="row">1.<b class="u-red">␣</b></th>
 									<td>順序つきリスト（<code>ol</code>）</td>
 								</tr>
 								<tr>
-									<th scope="row">:<b class="u-red">␣</b>定義語<b class="u-red">␣</b>|<b class="u-red">␣</b>説明文</th>
+									<th scope="row">定義語<br />:<b class="u-red">␣</b>説明文</th>
 									<td>記述リスト（<code>dl</code>）</td>
-								</tr>
-								<tr>
-									<th scope="row">*<b class="u-red">␣</b></th>
-									<td>注釈</td>
-								</tr>
-								<tr>
-									<th scope="row">*YYYY-MM-DD:<b class="u-red">␣</b></th>
-									<td>追記</td>
 								</tr>
 								<tr>
 									<th scope="row">&gt;<b class="u-red">␣</b></th>
 									<td>ブロックレベルの引用（<code>blockquote</code>）</td>
 								</tr>
 								<tr>
-									<th scope="row">&gt;</th>
+									<th scope="row">&gt;~</th>
 									<td>引用の「中略」</td>
 								</tr>
 								<tr>
-									<th scope="row">?</th>
+									<th scope="row">&gt;-<b class="u-red">␣</b>?</th>
 									<td>出典のURI、言語、タイトル</td>
 								</tr>
 								<tr>
-									<th scope="row">```</th>
+									<th scope="row">```<br />```</th>
 									<td>コード表示（<code>pre &gt; code</code>）</td>
 								</tr>
 								<tr>
@@ -366,19 +391,19 @@
 									<td>表ヘッダ（<code>thead</code>）と表本体（<code>tbody</code>）の区切り</td>
 								</tr>
 								<tr>
-									<th scope="row">/<b class="u-red">␣</b></th>
+									<th scope="row">:::normal<br />:::</th>
 									<td>汎用ボックス</td>
 								</tr>
 								<tr>
-									<th scope="row">!ファイル名<b class="u-red">␣</b>キャプション</th>
+									<th scope="row">@ファイル名:<b class="u-red">␣</b>キャプション</th>
 									<td>画像、動画</td>
 								</tr>
 								<tr>
-									<th scope="row">!youtube:ID<b class="u-red">␣</b>キャプション<b class="u-red">␣</b>&lt;幅x高さ<b class="u-red">?</b><b class="u-red">␣</b>開始秒<b class="u-red">?</b>&gt;</th>
+									<th scope="row">@youtube:<b class="u-red">␣</b>ID<b class="u-red">␣</b>キャプション<b class="u-red">␣</b>&lt;幅x高さ<b class="u-red">?</b><b class="u-red">␣</b>開始秒<b class="u-red">?</b>&gt;</th>
 									<td>YouTube 動画</td>
 								</tr>
 								<tr>
-									<th scope="row">$amazon:<b class="u-red">␣</b>ASIN<b class="u-red">␣</b>商品タイトル<b class="u-red">␣</b>&lt;画像ID<b class="u-red">?</b><b class="u-red">␣</b>幅x高さ<b class="u-red">?</b>&gt;</th>
+									<th scope="row">@amazon:<b class="u-red">␣</b>ASIN<b class="u-red">␣</b>商品タイトル<b class="u-red">␣</b>&lt;画像ID<b class="u-red">?</b><b class="u-red">␣</b>幅x高さ<b class="u-red">?</b>&gt;</th>
 									<td>Amazon 商品</td>
 								</tr>
 								<tr>
@@ -408,11 +433,15 @@
 									<td>強調（<code>em</code>）</td>
 								</tr>
 								<tr>
+									<th scope="row">**重要**</th>
+									<td>重要（<code>strong</code>）</td>
+								</tr>
+								<tr>
 									<th scope="row">`コード`</th>
 									<td>コード（<code>code</code>）</td>
 								</tr>
 								<tr>
-									<th scope="row">{{引用文}}(URL<b class="u-red">?␣</b>ISBN<b class="u-red">?␣</b>言語<b class="u-red">?</b>)</th>
+									<th scope="row">{引用文}(URL<b class="u-red">?␣</b>ISBN<b class="u-red">?␣</b>言語<b class="u-red">?</b>)</th>
 									<td>インラインレベルの引用（<code>q</code>）</td>
 								</tr>
 								<tr>
