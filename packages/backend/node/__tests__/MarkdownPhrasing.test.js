@@ -158,13 +158,16 @@ text[^1]text
 		).toBe(
 			`
 <p>
-	text<span class="c-annotate"><a href="#fn-1" id="ref-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span
+	text<span class="c-annotate"><a href="#fn-1" id="fnref-1" is="w0s-tooltip-trigger" data-tooltip-label="脚注" data-tooltip-class="p-tooltip" data-tooltip-close-text="閉じる" data-tooltip-close-image-src="/image/tooltip-close.svg">[1]</a></span
 	>text
 </p>
-<section class="p-footnotes">
-	<h2 id="footnote-label">脚注</h2>
-	<ul>
-		<li id="fn-1">ref1 <a href="#fnref-1">↩</a></li>
+<section class="p-footnote">
+	<h2 class="p-footnote__hdg">脚注</h2>
+	<ul class="p-footnote__list">
+		<li>
+			<span class="p-footnote__no">1.</span>
+			<p class="p-footnote__content"><span id="fn-1">ref1 </span> <a href="#fnref-1" class="c-footnote-backref">↩ 戻る</a></p>
+		</li>
 	</ul>
 </section>
 `.trim()
