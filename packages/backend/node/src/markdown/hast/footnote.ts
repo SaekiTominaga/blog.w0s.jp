@@ -96,7 +96,11 @@ const hast = (): Plugin => {
 					});
 
 					content.children.splice(content.children.indexOf(backref), 1);
-					content.children.splice(content.children.length - 1, 1); // content.children の末尾の [data-footnote-backref] の前にある空白文字を削除する
+
+					const lastChild = content.children.at(-1);
+					if (lastChild?.type === 'text') {
+						lastChild.value = lastChild.value.trim(); // content.children の末尾の [data-footnote-backref] の前にある空白文字を削除する
+					}
 				}
 
 				content.children = contentChildren;
