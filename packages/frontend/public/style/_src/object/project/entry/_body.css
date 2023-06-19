@@ -25,7 +25,6 @@
 		background-color: var(--color-ultralightgreen);
 		padding-block: 0.25em;
 		color: var(--color-green);
-		font-weight: var(--font-weight-bold);
 	}
 
 	& :where(a, pre, hgroup) code {
