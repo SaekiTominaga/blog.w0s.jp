@@ -1,9 +1,9 @@
-import type { PhrasingContent } from 'mdast';
+import type { PhrasingContent, Root } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
 import { type Meta } from '../../lib/Quote.js';
 
-interface XQuote {
+interface XQuote extends Root {
 	quotemeta: Meta;
 	children: PhrasingContent[];
 }
@@ -29,6 +29,6 @@ export const xQuoteToHast = (state: H, node: XQuote): HastElementContent | HastE
 		type: 'element',
 		tagName: 'q',
 		properties: attributes,
-		children: state.all({ type: 'root', children: node.children }),
+		children: state.all(node),
 	};
 };

@@ -1,9 +1,8 @@
-import type { Heading, Parent } from 'mdast';
+import type { Heading, Root } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.js';
 import { select } from 'unist-util-select';
 import { name as nameXHeading } from '../../toMdast/block/heading.js';
-import type { name } from '../../toMdast/block/toc.js';
 
 /**
  * Table of contents
@@ -13,8 +12,7 @@ interface XHeading extends Heading {
 	id: string;
 }
 
-interface XToc extends Parent {
-	type: typeof name;
+interface XToc extends Root {
 	children: XHeading[];
 }
 
@@ -50,10 +48,7 @@ export const xTocToHast = (state: H, node: XToc): HastElementContent | HastEleme
 						properties: {
 							href: `#${encodeURIComponent(childNode.id)}`,
 						},
-						children: state.all({
-							type: 'root',
-							children: (<XHeading>heading).children,
-						}),
+						children: state.all(<XHeading>heading),
 					},
 				],
 			};

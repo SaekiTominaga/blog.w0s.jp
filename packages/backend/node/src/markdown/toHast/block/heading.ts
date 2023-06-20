@@ -12,21 +12,15 @@ interface XHeading extends Heading {
 }
 
 export const headingToHast = (state: H, node: Heading): HastElementContent | HastElementContent[] | null | undefined => {
-	const { children, depth } = node;
+	const { depth } = node;
 
-	const heading = HastUtil.hn(
-		depth,
-		state.all({
-			type: 'root',
-			children: children,
-		})
-	);
+	const heading = HastUtil.hn(depth, state.all(node));
 
 	return heading;
 };
 
 export const xHeadingToHast = (state: H, node: XHeading): HastElementContent | HastElementContent[] | null | undefined => {
-	const { children, depth, id } = node;
+	const { depth, id } = node;
 
 	if (id === undefined) {
 		return {
@@ -39,13 +33,7 @@ export const xHeadingToHast = (state: H, node: XHeading): HastElementContent | H
 		};
 	}
 
-	const heading = HastUtil.hn(
-		depth,
-		state.all({
-			type: 'root',
-			children: children,
-		})
-	);
+	const heading = HastUtil.hn(depth, state.all(node));
 
 	return {
 		type: 'element',
