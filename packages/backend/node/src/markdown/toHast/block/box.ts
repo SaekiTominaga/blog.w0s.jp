@@ -1,4 +1,4 @@
-import type { BlockContent, Parent } from 'mdast';
+import type { BlockContent, Root } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
 
@@ -6,7 +6,7 @@ import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
  * Box
  */
 
-interface XBox extends Parent {
+interface XBox extends Root {
 	name: string;
 	children: BlockContent[];
 }
@@ -18,9 +18,6 @@ export const xBoxToHast = (state: H, node: XBox): HastElementContent | HastEleme
 		properties: {
 			className: ['p-box', `-${node.name}`],
 		},
-		children: state.all({
-			type: 'root',
-			children: node.children,
-		}),
+		children: state.all(node),
 	};
 };

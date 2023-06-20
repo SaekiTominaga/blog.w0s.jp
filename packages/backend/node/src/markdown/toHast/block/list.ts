@@ -24,10 +24,7 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 			type: 'element',
 			tagName: 'ol',
 			properties: attributes,
-			children: state.all({
-				type: 'root',
-				children: listItems,
-			}),
+			children: state.all(node),
 		};
 	}
 
@@ -43,10 +40,7 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 			properties: {
 				className: ['p-links'],
 			},
-			children: state.all({
-				type: 'root',
-				children: listItems,
-			}),
+			children: state.all(node),
 		};
 	}
 
@@ -69,10 +63,7 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 			properties: {
 				className: ['p-notes'],
 			},
-			children: state.all({
-				type: 'root',
-				children: listItems,
-			}),
+			children: state.all(node),
 		};
 	}
 
@@ -139,9 +130,6 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 		properties: {
 			className: ['p-list'],
 		},
-		children: state.all({
-			type: 'root',
-			children: listItems,
-		}),
+		children: state.all(node),
 	};
 };
