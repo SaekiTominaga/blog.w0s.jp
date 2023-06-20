@@ -1,4 +1,4 @@
 {
 	"extends": "@w0s/tsconfig",
-	"include": ["_src/**/*.ts"]
+	"include": ["**/*.ts"]
 }

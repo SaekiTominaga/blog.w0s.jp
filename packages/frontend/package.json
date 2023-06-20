@@ -13,7 +13,7 @@
 		"css-lint": "stylelint public/style/_src/**/*.css",
 		"js-build-watch": "run-p _js-build-watch:*",
 		"js-build-all": "run-s _js-build-all:*",
-		"js-lint": "eslint public/script/_src/**/*.ts",
+		"js-lint": "eslint script/**/*.ts",
 		"svg-build-watch": "run-p _svg-build-watch:*",
 		"_config-validate:build": "ajv --spec=draft7 -s configure/schema/build.json -d configure/build.json",
 		"_css-build-watch:build": "postcss public/style/_src/*.css --base public/style/_src -d public/style/_temp -w",
