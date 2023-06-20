@@ -20,7 +20,7 @@ const moduleConfigurations = moduleFiles.map((file) => ({
 	plugins: [pluginTypeScript, pluginResolve, pluginTerser],
 	output: {
 		dir: outputDir,
-		sourcemap: 'hidden',
+		sourcemap: true,
 		entryFileNames: '[name].mjs',
 	},
 }));
@@ -29,7 +29,7 @@ const jsConfigurations = jsFiles.map((file) => ({
 	plugins: [pluginTypeScript, pluginTerser],
 	output: {
 		dir: outputDir,
-		sourcemap: 'hidden',
+		sourcemap: true,
 		format: 'iife',
 	},
 }));
@@ -38,7 +38,7 @@ const legacyConfigurations = legacyFiles.map((file) => ({
 	plugins: [pluginTypeScript, pluginTerser],
 	output: {
 		dir: outputDir,
-		sourcemap: 'hidden',
+		sourcemap: true,
 	},
 }));
 
