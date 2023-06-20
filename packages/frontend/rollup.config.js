@@ -2,16 +2,15 @@ import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 
-const baseDir = 'public/script';
-const inputDir = `${baseDir}/_src`;
-const outputDir = `${baseDir}`;
+const inputDir = 'script';
+const outputDir = 'public/script';
 
 const moduleFiles = ['blog.ts', 'error.ts', 'admin.ts'];
 const jsFiles = ['trusted-types.ts'];
 const legacyFiles = ['analytics.ts'];
 
 const pluginTypeScript = typescript({
-	tsconfig: `${baseDir}/tsconfig.json`,
+	tsconfig: `${inputDir}/tsconfig.json`,
 });
 const pluginResolve = resolve();
 const pluginTerser = terser();
@@ -21,7 +20,7 @@ const moduleConfigurations = moduleFiles.map((file) => ({
 	plugins: [pluginTypeScript, pluginResolve, pluginTerser],
 	output: {
 		dir: outputDir,
-		sourcemap: 'hidden',
+		sourcemap: true,
 		entryFileNames: '[name].mjs',
 	},
 }));
@@ -30,7 +29,7 @@ const jsConfigurations = jsFiles.map((file) => ({
 	plugins: [pluginTypeScript, pluginTerser],
 	output: {
 		dir: outputDir,
-		sourcemap: 'hidden',
+		sourcemap: true,
 		format: 'iife',
 	},
 }));
@@ -39,7 +38,7 @@ const legacyConfigurations = legacyFiles.map((file) => ({
 	plugins: [pluginTypeScript, pluginTerser],
 	output: {
 		dir: outputDir,
-		sourcemap: 'hidden',
+		sourcemap: true,
 	},
 }));
 

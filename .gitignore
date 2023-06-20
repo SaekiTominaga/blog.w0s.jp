@@ -24,7 +24,7 @@
 /packages/frontend/public/json/
 /packages/frontend/public/script/*.js
 /packages/frontend/public/script/*.mjs
-/packages/frontend/public/script/tsconfig.tsbuildinfo
 /packages/frontend/public/style/*.css
+/packages/frontend/script/tsconfig.tsbuildinfo
 
 /packages/util/dist/
