@@ -2,7 +2,7 @@
 	"plugins": {
 		"@csstools/postcss-global-data": {
 			"files": [
-				"public/style/_src/foundation/_@custom-media.css"
+				"style/foundation/_@custom-media.css"
 			]
 		},
 		"postcss-media-minmax": {},
