@@ -1,6 +1,6 @@
 <div id="sidebar" class="l-sidebar">
-	<section class="p-sidebar-profile" aria-labelledby="sidebar-profile-heading">
-		<h2 class="p-sidebar-profile__hdg" id="sidebar-profile-heading">プロフィール</h2>
+	<section class="p-sidebar-profile">
+		<h2 class="p-sidebar-profile__hdg">プロフィール</h2>
 
 		<div class="p-sidebar-profile__info">
 			<address class="p-sidebar-profile__address">
@@ -43,8 +43,8 @@
 		</ul>
 	</section>
 
-	<section class="p-sidebar-categories" aria-label="記事カテゴリ一覧">
-		<w0s-tab tablist-label="カテゴリ" storage-key="sidebar-category-tab">
+	<section class="p-sidebar-categories">
+		<w0s-tab tablist-label="記事カテゴリー" storage-key="sidebar-category-tab">
 			<%_ for (const [group_name, ] of entryCountOfCategoryList) { _%>
 			<a href="#<%= group_name %>" slot="tab" class="p-sidebar-categories__item"><%= group_name %></a>
 			<%_ } _%><%_ for (const [group_name, countDataList] of entryCountOfCategoryList) { _%>
@@ -84,8 +84,8 @@
 		</w0s-tab>
 	</section>
 
-	<section class="p-sidebar-entries" aria-labelledby="sidebar-newly-entries-heading">
-		<h2 class="p-sidebar-entries__hdg" id="sidebar-newly-entries-heading">最近の記事</h2>
+	<section class="p-sidebar-entries">
+		<h2 class="p-sidebar-entries__hdg">最近の記事</h2>
 
 		<%_ if (typeof(requestQuery.entry_id) !== 'undefined') { _%>
 		<ul class="c-sidebar-link -entry">
