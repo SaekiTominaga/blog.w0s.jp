@@ -75,7 +75,7 @@
 		--_inline-size: 100%;
 	}
 
-	.p-entry-footer-social & {
+	.p-entry-footer-action & {
 		font-size: calc(100% * var(--font-ratio-1));
 	}
 
@@ -130,7 +130,7 @@
 }
 
 .c-button__text {
-	.p-entry-footer-social & {
+	.p-entry-footer-action & {
 		white-space: nowrap; /* for iPad Safari */
 	}
 }
