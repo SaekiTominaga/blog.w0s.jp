@@ -50,12 +50,6 @@ w0s-tooltip:focus {
 	color: var(--color-black);
 }
 
-pre {
-	font: inherit;
-	white-space: pre-wrap;
-	tab-size: 2;
-}
-
 :where(em, cite, dfn) {
 	&:lang(ja) {
 		font-style: normal;
