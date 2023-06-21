@@ -68,11 +68,11 @@
 	font-size: calc(100% / var(--font-ratio-1));
 }
 
-/* ===== カテゴリータブ ===== */
-.p-sidebar-category-tab {
+/* ===== カテゴリー ===== */
+.p-sidebar-categories {
 }
 
-.p-sidebar-category-tab__item {
+.p-sidebar-categories__item {
 	--_padding-block: 0.6em;
 	--_border-color: var(--color-border-dark);
 	--_border-radius-top: 0px;
@@ -122,20 +122,20 @@
 	}
 }
 
-.p-sidebar-category-tab__panel {
+.p-sidebar-categories__panel {
 	border: solid var(--color-border-dark);
 	border-width: 0 1px 1px;
 }
 
-/* ===== 最近の記事 ===== */
-.p-sidebar-newly-entry {
+/* ===== 記事一覧 ===== */
+.p-sidebar-entries {
 	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
 
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
 }
 
-.p-sidebar-newly-entry__hdg {
+.p-sidebar-entries__hdg {
 	display: inline-block;
 	position: relative;
 	margin-inline: 10px;
@@ -144,7 +144,7 @@
 	padding: 0 0.5em;
 }
 
-.p-sidebar-newly-entry__link {
+.p-sidebar-entries__link {
 	margin-block-start: var(--_heading-offset);
 }
 
