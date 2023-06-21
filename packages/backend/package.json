@@ -15,8 +15,7 @@
 		"_config-validate:common": "ajv --spec=draft7 -s configure/schema/common.json -d configure/common.json",
 		"_config-validate:entry": "ajv --spec=draft7 -s configure/schema/entry.json -d configure/entry.json",
 		"_config-validate:list": "ajv --spec=draft7 -s configure/schema/list.json -d configure/list.json",
-		"_config-validate:post": "ajv --spec=draft7 -s configure/schema/post.json -d configure/post.json",
-		"_config-validate:twitter": "ajv --spec=draft7 -s configure/schema/twitter.json -d configure/twitter.json"
+		"_config-validate:post": "ajv --spec=draft7 -s configure/schema/post.json -d configure/post.json"
 	},
 	"dependencies": {
 		"@blog.w0s.jp/util": "*",
@@ -30,7 +29,6 @@
 		"ejs": "^3.1.9",
 		"express": "^4.18.2",
 		"express-validator": "^7.0.1",
-		"file-type": "^18.4.0",
 		"filenamify": "^6.0.0",
 		"github-slugger": "^2.0.0",
 		"hast-util-select": "^5.0.5",
@@ -81,8 +79,6 @@
 		"remark-rehype": "^10.1.0",
 		"sqlite": "^4.2.1",
 		"sqlite3": "^5.1.6",
-		"twitter-api-v2": "^1.12.10",
-		"twitter-text": "^3.1.0",
 		"unified": "^10.1.2",
 		"unified-lint-rule": "^2.1.2",
 		"unist-util-find-after": "^4.0.1",
@@ -104,7 +100,6 @@
 		"@types/md5": "^2.3.2",
 		"@types/multer": "^1.4.7",
 		"@types/nodemailer": "^6.4.8",
-		"@types/twitter-text": "^3.1.5",
 		"@types/w3c-xmlserializer": "^2.0.2"
 	}
 }

@@ -221,28 +221,6 @@
 										</div>
 									</fieldset>
 								</div>
-								<%_ } else { _%>
-								<div class="p-form-grid__group">
-									<fieldset>
-										<legend class="p-form-grid__legend">外部サービス</legend>
-										<div class="p-form-grid__contents">
-											<div class="c-form-controls">
-												<label class="c-label -check">
-													<%_ if (requestQuery.social === 1) { _%>
-													<input type="checkbox" name="social" value="1" checked="" />
-													<%_ } else { _%>
-													<input type="checkbox" name="social" value="1" />
-													<%_ } _%>
-													<span class="c-label__text">ソーシャルサービスへ投稿する</span>
-												</label>
-											</div>
-											<div class="c-form-controls">
-												<label class="c-label -input"><span class="c-label__text">ハッシュタグ</span><input class="c-input js-convert-trim" name="socialtag" value="<%= requestQuery.socialtag %>" pattern="[^,]+" style="--inline-size: 12em" /></label>
-												<small>（スペース区切り）</small>
-											</div>
-										</div>
-									</fieldset>
-								</div>
 								<%_ } _%>
 							</div>
 
