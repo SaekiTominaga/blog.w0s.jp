@@ -3,7 +3,7 @@
 	"plugins": ["stylelint-order"],
 	"ignoreFiles": ["public/style/*.css"],
 	"rules": {
-		"selector-class-pattern": "^([lcpu])-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$|^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$|^twitter-tweet-rendered$|^adsbygoogle$",
+		"selector-class-pattern": "^([lcpu])-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$|^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$|^adsbygoogle$",
 
 		"order/order": [["custom-properties", "declarations", "at-rules", "rules"], { "unspecified": "bottom" }],
 		"order/properties-order": [
