@@ -162,16 +162,19 @@
 
 /* ===== ブロックコード ===== */
 .p-code {
-	display: flow-root; /* for Safari */
+	position: relative;
 	contain: content;
-	border: 1px solid var(--color-border-light);
-	background: var(--color-white);
-	color: var(--color-black);
 }
 
 .p-code__clipboard {
-	float: right;
-	margin: 0.5em 0.5em 1em 1em;
+	display: none;
+	position: absolute;
+	inset-block-start: 0.5em;
+	inset-inline-end: 0.5em;
+
+	.p-code:hover > & {
+		display: block;
+	}
 }
 
 .p-code__clipboard-button {
@@ -180,6 +183,7 @@
 	--_ripple-opacity: 0.25;
 	--_ripple-transition-duration: 0.5s;
 
+	display: block;
 	contain: layout; /* ripple effect */
 	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
@@ -216,15 +220,23 @@
 
 	& > img {
 		display: block;
-		inline-size: 1.5em;
-		block-size: 1.5em;
+		inline-size: 1em;
+		block-size: 1em;
 	}
 }
 
 .p-code__code {
+	border: 1px solid var(--color-border-light);
+	background: var(--color-white);
 	padding: 1em;
+	overflow-x: auto;
+	color: var(--color-black);
 	line-height: var(--line-height-narrow);
-	font-family: var(--font-monospace);
+	tab-size: 2;
+
+	&:focus {
+		border-color: var(--outline-color); /* 横スクロールバーが表示される場合はブラウザによってフォーカス可能 */
+	}
 
 	.p-entry & {
 		font-size: calc(100% / var(--font-ratio-1));
