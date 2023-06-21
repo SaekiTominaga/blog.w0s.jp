@@ -6,7 +6,6 @@ import prettier from 'prettier';
 import xmlFormatter from 'xml-formatter';
 import { Request, Response } from 'express';
 import { Result as ValidationResult, ValidationError } from 'express-validator';
-import { TwitterApi } from 'twitter-api-v2';
 import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
 import Compress from '../util/Compress.js';
@@ -18,10 +17,8 @@ import HttpBasicAuth, { Credentials as HttpBasicAuthCredentials } from '../util/
 import HttpResponse from '../util/HttpResponse.js';
 import PostValidator from '../validator/PostValidator.js';
 import RequestUtil from '../util/RequestUtil.js';
-import Tweet from '../util/Tweet.js';
 import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import { NoName as Configure } from '../../../configure/type/post.js';
-import { TwitterAPI as ConfigureTwitter } from '../../../configure/type/twitter.js';
 
 interface PostResults {
 	success: boolean;
@@ -45,8 +42,6 @@ interface MediaUploadResults {
 export default class PostController extends Controller implements ControllerInterface {
 	#config: Configure;
 
-	#configTwitter: ConfigureTwitter;
-
 	#env: Express.Env;
 
 	/**
@@ -57,7 +52,6 @@ export default class PostController extends Controller implements ControllerInte
 		super(configCommon);
 
 		this.#config = JSON.parse(fs.readFileSync('configure/post.json', 'utf8'));
-		this.#configTwitter = JSON.parse(fs.readFileSync('configure/twitter.json', 'utf8'));
 
 		this.#env = env;
 	}
@@ -87,8 +81,6 @@ export default class PostController extends Controller implements ControllerInte
 			relation: RequestUtil.string(req.body['relation']),
 			public: RequestUtil.boolean(req.body['public']),
 			timestamp: RequestUtil.boolean(req.body['timestamp']),
-			social: RequestUtil.boolean(req.body['social']),
-			social_tag: RequestUtil.string(req.body['socialtag']),
 			media_overwrite: RequestUtil.boolean(req.body['mediaoverwrite']),
 			action_add: RequestUtil.boolean(req.body['actionadd']),
 			action_revise: RequestUtil.boolean(req.body['actionrev']),
@@ -132,9 +124,6 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson(dao));
-				if (requestQuery.social) {
-					topicPostResults.add(await this.#postSocial(requestQuery, topicId));
-				}
 			}
 		} else if (requestQuery.action_revise) {
 			/* 修正実行 */
@@ -421,46 +410,6 @@ export default class PostController extends Controller implements ControllerInte
 		}
 
 		return { success: true, message: this.#config.newly_json_create.response.message_success };
-	}
-
-	/**
-	 * ソーシャルサービスに投稿する
-	 *
-	 * @param {object} requestQuery - URL クエリー情報
-	 * @param {number} topicId - 記事 ID
-	 *
-	 * @returns {PostResults} 処理結果のメッセージ
-	 */
-	async #postSocial(requestQuery: BlogRequest.Post, topicId: number): Promise<PostResults> {
-		try {
-			/* Twitter */
-			const configTwitter = this.#env === 'development' ? this.#configTwitter.development : this.#configTwitter.production;
-
-			const twitterApi = new TwitterApi({
-				appKey: configTwitter.consumer_key,
-				appSecret: configTwitter.consumer_secret,
-				accessToken: configTwitter.access_token,
-				accessSecret: configTwitter.access_token_secret,
-			});
-			const tweet = new Tweet(twitterApi);
-
-			const hashtags = requestQuery.social_tag?.split(' '); // ハッシュタグ
-
-			const topicUrl = `${this.#config.twitter.url_prefix}${topicId}`;
-			let message = `${this.#config.twitter.message_prefix}\n\n${requestQuery.title}\n${topicUrl}`;
-			if (requestQuery.description !== '') {
-				message += `\n\n${requestQuery.description}`;
-			}
-			const response = await tweet.postMessage(message, '', hashtags);
-
-			this.logger.info('Twitter post success', response);
-		} catch (e) {
-			this.logger.error('Twitter post failed', e);
-
-			return { success: false, message: this.#config.twitter.api_response.message_failure };
-		}
-
-		return { success: true, message: this.#config.twitter.api_response.message_success };
 	}
 
 	/**

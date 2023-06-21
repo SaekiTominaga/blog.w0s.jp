@@ -21,8 +21,6 @@ declare namespace BlogRequest {
 		relation: string | null;
 		public: boolean;
 		timestamp: boolean;
-		social: boolean;
-		social_tag: string | null;
 		media_overwrite: boolean;
 		action_add: boolean;
 		action_revise: boolean;
