@@ -50,30 +50,30 @@
 			<%_ } _%><%_ for (const [group_name, countDataList] of entryCountOfCategoryList) { _%>
 			<div slot="tabpanel" class="p-sidebar-categories__panel" id="<%= group_name %>">
 				<%_ if (typeof(requestQuery.category_name) !== 'undefined') { _%>
-				<ul class="p-sidebar-links -category">
+				<ul class="c-sidebar-link -category">
 					<%_ for (const countData of countDataList) { _%>
 					<li>
 						<%_ if (requestQuery.category_name === countData.category_name) { _%>
 						<a aria-current="page">
 							<%= countData.category_name %>
-							<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+							<span class="c-sidebar-link__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
 						</a>
 						<%_ } else { _%>
 						<a href="/category/<%= encodeURI(countData.category_name) %>">
 							<%= countData.category_name %>
-							<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+							<span class="c-sidebar-link__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
 						</a>
 						<%_ } _%>
 					</li>
 					<%_ } _%>
 				</ul>
 				<%_ } else { _%>
-				<ul class="p-sidebar-links -category">
+				<ul class="c-sidebar-link -category">
 					<%_ for (const countData of countDataList) { _%>
 					<li>
 						<a href="/category/<%= encodeURI(countData.category_name) %>">
 							<%= countData.category_name %>
-							<span class="p-sidebar-links__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+							<span class="c-sidebar-link__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
 						</a>
 					</li>
 					<%_ } _%>
@@ -87,28 +87,26 @@
 	<section class="p-sidebar-entries" aria-labelledby="sidebar-newly-entries-heading">
 		<h2 class="p-sidebar-entries__hdg" id="sidebar-newly-entries-heading">最近の記事</h2>
 
-		<div class="p-sidebar-entries__link">
-			<%_ if (typeof(requestQuery.entry_id) !== 'undefined') { _%>
-			<ul class="p-sidebar-links -entry">
-				<%_ for (const newlyEntry of newlyEntries) { _%>
-				<li>
-					<%_ if (requestQuery.entry_id === newlyEntry.id) { _%>
-					<a aria-current="page"><%- newlyEntry.title %></a>
-					<%_ } else { _%>
-					<a href="/<%= newlyEntry.id %>"><%- newlyEntry.title %></a>
-					<%_ } _%>
-				</li>
+		<%_ if (typeof(requestQuery.entry_id) !== 'undefined') { _%>
+		<ul class="c-sidebar-link -entry">
+			<%_ for (const newlyEntry of newlyEntries) { _%>
+			<li>
+				<%_ if (requestQuery.entry_id === newlyEntry.id) { _%>
+				<a aria-current="page"><%- newlyEntry.title %></a>
+				<%_ } else { _%>
+				<a href="/<%= newlyEntry.id %>"><%- newlyEntry.title %></a>
 				<%_ } _%>
-			</ul>
-			<%_ } else { _%>
-			<ul class="p-sidebar-links -entry">
-				<%_ for (const newlyEntry of newlyEntries) { _%>
-				<li>
-					<a href="/<%= newlyEntry.id %>"><%- newlyEntry.title %></a>
-				</li>
-				<%_ } _%>
-			</ul>
+			</li>
 			<%_ } _%>
-		</div>
+		</ul>
+		<%_ } else { _%>
+		<ul class="c-sidebar-link -entry">
+			<%_ for (const newlyEntry of newlyEntries) { _%>
+			<li>
+				<a href="/<%= newlyEntry.id %>"><%- newlyEntry.title %></a>
+			</li>
+			<%_ } _%>
+		</ul>
+		<%_ } _%>
 	</section>
 </div>
