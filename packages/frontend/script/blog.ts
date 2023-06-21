@@ -1,5 +1,4 @@
 import ButtonClipboard from '@saekitominaga/customelements-button-clipboard';
-import ButtonShare from '@saekitominaga/customelements-button-share';
 import ReportJsError from '@saekitominaga/report-js-error';
 import Tab from '@saekitominaga/customelements-tab';
 import TooltipTrigger from '@saekitominaga/customelements-tooltip-trigger';
@@ -35,13 +34,6 @@ if (window.customElements !== undefined) {
 	/* クリップボード書き込みボタン */
 	if (document.querySelector('button[is="w0s-clipboard"]') !== null) {
 		customElements.define('w0s-clipboard', ButtonClipboard, {
-			extends: 'button',
-		});
-	}
-
-	/* シェアボタン */
-	if (document.querySelector('button[is="w0s-share-button"]') !== null) {
-		customElements.define('w0s-share-button', ButtonShare, {
 			extends: 'button',
 		});
 	}
