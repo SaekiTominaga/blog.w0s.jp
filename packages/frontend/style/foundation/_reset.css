@@ -53,19 +53,6 @@ th {
 	text-align: start;
 }
 
-em,
-cite,
-dfn {
-	&:lang(ja) {
-		font-style: normal;
-	}
-}
-
-mark {
-	background: transparent;
-	color: inherit;
-}
-
 :where(input, select, button, textarea, ::file-selector-button) {
 	font: inherit;
 }

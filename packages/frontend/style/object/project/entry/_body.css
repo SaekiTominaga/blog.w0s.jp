@@ -18,38 +18,6 @@
 
 .p-entry__body {
 	padding: 30px var(--_entry-padding-block);
-
-	/* <code> */
-	& code {
-		border-radius: var(--border-radius-normal);
-		background-color: var(--color-ultralightgreen);
-		padding-block: 0.25em;
-		color: var(--color-green);
-	}
-
-	& :where(a, pre, hgroup) code {
-		border-radius: 0;
-		background-color: transparent;
-		padding-block: 0;
-		color: inherit;
-		font-weight: inherit;
-	}
-
-	/* <q> */
-	& q {
-		background: linear-gradient(transparent, transparent 75%, var(--color-yellow) 75%);
-		quotes: "\201C""\201D""\2018""\2019";
-
-		&::before {
-			padding-inline-start: 0.25em;
-			content: open-quote;
-		}
-
-		&::after {
-			padding-inline-end: 0.25em;
-			content: close-quote;
-		}
-	}
 }
 
 .p-entry-section {

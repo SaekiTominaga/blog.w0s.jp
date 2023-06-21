@@ -50,18 +50,17 @@ w0s-tooltip:focus {
 	color: var(--color-black);
 }
 
-em,
-cite,
-dfn {
-	&:lang(ja) {
-		font-weight: var(--font-weight-bold);
-	}
-}
-
 pre {
 	font: inherit;
 	white-space: pre-wrap;
 	tab-size: 2;
+}
+
+:where(em, cite, dfn) {
+	&:lang(ja) {
+		font-style: normal;
+		font-weight: var(--font-weight-bold);
+	}
 }
 
 small {
@@ -70,9 +69,35 @@ small {
 }
 
 code {
+	border-radius: var(--border-radius-normal);
+	background-color: var(--color-ultralightgreen);
+	padding-block: 0.25em;
+	color: var(--color-green);
 	font-family: var(--font-monospace);
 }
 
-input {
+:where(hgroup, pre, a) code {
+	border-radius: 0;
+	background-color: transparent;
+	padding-block: 0;
+	color: inherit;
+}
+
+q {
+	background: linear-gradient(transparent, transparent 75%, var(--color-yellow) 75%);
+	quotes: "\201C""\201D""\2018""\2019";
+
+	&::before {
+		padding-inline-start: 0.25em;
+		content: open-quote;
+	}
+
+	&::after {
+		padding-inline-end: 0.25em;
+		content: close-quote;
+	}
+}
+
+input/* [type=checkbox], [type=radio], [type=range] */ {
 	accent-color: var(--color-skyblue);
 }
