@@ -4,13 +4,13 @@ on:
     branches:
       - main
     paths:
-      - 'packages/frontend/public/style/_src/**/*.css'
+      - 'packages/frontend/style/**/*.css'
       - 'packages/frontend/.stylelintrc.json'
   push:
     branches:
       - main
     paths:
-      - 'packages/frontend/public/style/_src/**/*.css'
+      - 'packages/frontend/style/**/*.css'
       - 'packages/frontend/.stylelintrc.json'
   workflow_dispatch:
 
