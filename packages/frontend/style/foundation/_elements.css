@@ -67,14 +67,13 @@ code {
 	background-color: var(--color-ultralightgreen);
 	padding-block: 0.25em;
 	color: var(--color-green);
-	font-family: var(--font-monospace);
-}
 
-:where(hgroup, pre, a) code {
-	border-radius: 0;
-	background-color: transparent;
-	padding-block: 0;
-	color: inherit;
+	:where(h1, h2, h3, h4, h5, h6, hgroup, pre, a) & {
+		border-radius: 0;
+		background-color: transparent;
+		padding-block: 0;
+		color: inherit;
+	}
 }
 
 q {
