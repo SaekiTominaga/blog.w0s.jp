@@ -271,6 +271,7 @@ export default class PostController extends Controller implements ControllerInte
 					entriesView.add({
 						id: entry.id,
 						title: entry.title,
+						description: entry.description,
 						message: (await new Markdown().toHtml(entry.message)).value.toString(),
 						updated_at: dayjs(entry.updated_at ?? entry.created_at),
 						update: Boolean(entry.updated_at),

@@ -18,6 +18,7 @@ declare namespace BlogView {
 	interface FeedEntry {
 		id: number;
 		title: string;
+		description: string | null;
 		message: string;
 		updated_at: import('dayjs').Dayjs;
 		update: boolean;
