@@ -1,18 +1,21 @@
 <header id="header" class="l-header">
 	<div class="l-header__main">
 		<div class="l-header__site">
-			<div class="p-header-site">
-				<%_ if (heading) { _%>
-					<%_ if (pagePathAbsoluteUrl === '/') { _%>
-					<h1 class="p-header-site__name"><a aria-current="page">富永日記帳</a></h1>
-					<%_ } else { _%>
-					<h1 class="p-header-site__name"><a href="/">富永日記帳</a></h1>
-					<%_ } _%>
+			<%_ if (heading) { _%>
+			<hgroup class="p-header-site">
+				<%_ if (pagePathAbsoluteUrl === '/') { _%>
+				<h1 class="p-header-site__name"><a aria-current="page">富永日記帳</a></h1>
 				<%_ } else { _%>
-				<div class="p-header-site__name"><a href="/">富永日記帳</a></div>
+				<h1 class="p-header-site__name"><a href="/">富永日記帳</a></h1>
 				<%_ } _%>
 				<p class="p-header-site__summary">ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ</p>
+			</hgroup>
+			<%_ } else { _%>
+			<div class="p-header-site">
+				<div class="p-header-site__name"><a href="/">富永日記帳</a></div>
+				<p class="p-header-site__summary">ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ</p>
 			</div>
+			<%_ } _%>
 		</div>
 		<div class="l-header__nav">
 			<div class="p-header-nav">

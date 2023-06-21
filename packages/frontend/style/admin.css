@@ -15,6 +15,7 @@
 @import url("object/component/_form.css") layer(component);
 @import url("object/component/_form-search.css") layer(component);
 @import url("object/component/_layout.css") layer(component);
+@import url("object/component/_sidebar.css") layer(component);
 
 /* Object - Project */
 @import url("object/project/_header.css") layer(project);
