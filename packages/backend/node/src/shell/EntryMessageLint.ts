@@ -23,7 +23,7 @@ const argsParsedValues = parseArgs({
 /* 設定ファイル読み込み */
 const config = <Configure>JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8'));
 
-const dao = new BlogEntryMessageConvertDao(config);
+const dao = new BlogEntryMessageConvertDao(config.sqlite.db.blog);
 
 const entryId = argsParsedValues['id'] !== undefined ? Number(argsParsedValues['id']) : undefined;
 
