@@ -172,12 +172,21 @@
 	}
 }
 
+.p-footnote__hdg {
+}
+
 .p-footnote__list {
 	display: table;
 	margin-block-start: 0.25em;
 
 	& > li {
 		display: table-row;
+
+		&:not(:first-child) {
+			& > * {
+				border-block-start: 0.5em solid transparent;
+			}
+		}
 	}
 }
 
@@ -191,12 +200,6 @@
 	padding-block-start: 0.5em;
 	text-align: end;
 	white-space: nowrap;
-
-	& > a {
-		display: inline-block;
-		padding: 0.25em;
-		text-decoration-skip-ink: none;
-	}
 }
 
 .p-footnote__content {
