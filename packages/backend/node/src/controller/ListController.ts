@@ -39,7 +39,7 @@ export default class ListController extends Controller implements ControllerInte
 			page: RequestUtil.number(req.params['page']) ?? 1,
 		};
 
-		const dao = new BlogListDao(this.configCommon);
+		const dao = new BlogListDao(this.configCommon.sqlite.db.blog);
 
 		const lastModified = await dao.getLastModified();
 

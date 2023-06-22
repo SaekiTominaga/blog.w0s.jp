@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs';
-import * as sqlite from 'sqlite';
+import type * as sqlite from 'sqlite';
 import BlogDao from './BlogDao.js';
 import DbUtil from '../util/DbUtil.js';
 

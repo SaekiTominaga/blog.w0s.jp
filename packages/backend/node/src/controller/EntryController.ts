@@ -39,7 +39,7 @@ export default class EntryController extends Controller implements ControllerInt
 			entry_id: <number>RequestUtil.number(req.params['entry_id']),
 		};
 
-		const dao = new BlogEntryDao(this.configCommon);
+		const dao = new BlogEntryDao(this.configCommon.sqlite.db.blog);
 
 		const lastModified = await dao.getLastModified();
 

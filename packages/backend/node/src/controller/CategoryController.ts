@@ -40,7 +40,7 @@ export default class CategoryController extends Controller implements Controller
 			category_name: <string>RequestUtil.string(req.params['category_name']),
 		};
 
-		const dao = new BlogCategoryDao(this.configCommon);
+		const dao = new BlogCategoryDao(this.configCommon.sqlite.db.blog);
 
 		const lastModified = await dao.getLastModified();
 

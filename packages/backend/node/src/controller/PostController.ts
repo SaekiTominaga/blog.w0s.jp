@@ -95,7 +95,7 @@ export default class PostController extends Controller implements ControllerInte
 		const viewUpdateResults: Set<ViewUpdateResults> = new Set();
 		const mediaUploadResults: Set<MediaUploadResults> = new Set();
 
-		const dao = new BlogPostDao(this.configCommon);
+		const dao = new BlogPostDao(this.configCommon.sqlite.db.blog);
 
 		if (requestQuery.action_add) {
 			/* 登録 */
