@@ -19,9 +19,9 @@ export default class HttpResponse {
 	readonly #MIME_HTML = 'text/html; charset=utf-8';
 
 	/**
-	 * @param {Request} req - Request
-	 * @param {Response} res - Request
-	 * @param {Configure} config - 共通設定ファイル
+	 * @param req - Request
+	 * @param res - Request
+	 * @param config - 共通設定ファイル
 	 */
 	constructor(req: Request, res: Response, config: Configure) {
 		this.#req = req;
@@ -32,9 +32,9 @@ export default class HttpResponse {
 	/**
 	 * 最終更新日時を確認する（ドキュメントに変更がなければ 304 を返して終了、変更があれば Last-Modified ヘッダをセットする）
 	 *
-	 * @param {Date} lastModified - 今回のアクセスに対して発行する最終更新日時
+	 * @param lastModified - 今回のアクセスに対して発行する最終更新日時
 	 *
-	 * @returns {boolean} ドキュメントに変更がなければ true
+	 * @returns ドキュメントに変更がなければ true
 	 */
 	checkLastModified(lastModified: Date): boolean {
 		const ifModifiedSince = this.#req.get('If-Modified-Since');
@@ -50,11 +50,11 @@ export default class HttpResponse {
 	/**
 	 * 200 OK
 	 *
-	 * @param {object} data - 圧縮レスポンスボディ
-	 * @param {string | object} data.body - レスポンスボディ
-	 * @param {string | object} data.brotliBody - レスポンスボディ（Brotli 圧縮）
-	 * @param {string} data.filePath - ファイルパス
-	 * @param {string} data.brotliFilePath - Brotli ファイルパス
+	 * @param data - 圧縮レスポンスボディ
+	 * @param data.body - レスポンスボディ
+	 * @param data.brotliBody - レスポンスボディ（Brotli 圧縮）
+	 * @param data.filePath - ファイルパス
+	 * @param data.brotliFilePath - Brotli ファイルパス
 	 */
 	async send200(data: { body?: string | Buffer; brotliBody?: string | Buffer; filePath?: string; brotliFilePath?: string }): Promise<void> {
 		/* Brotli 圧縮 */
@@ -103,7 +103,7 @@ export default class HttpResponse {
 	/**
 	 * 301 Moved Permanently
 	 *
-	 * @param {string} locationUrl - 遷移先 URL
+	 * @param locationUrl - 遷移先 URL
 	 */
 	send301(locationUrl: string): void {
 		this.#res.status(301).setHeader('Content-Type', this.#MIME_HTML).location(locationUrl).send(StringEscapeHtml.template`<!DOCTYPE html>
@@ -116,7 +116,7 @@ export default class HttpResponse {
 	/**
 	 * 303 See Other
 	 *
-	 * @param {string} url - 遷移先 URL
+	 * @param url - 遷移先 URL
 	 */
 	send303(url?: string): void {
 		if (url === undefined && this.#req.method === 'GET') {
@@ -136,8 +136,8 @@ export default class HttpResponse {
 	/**
 	 * 401 Unauthorized
 	 *
-	 * @param {string} type - Authentication type <https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml>
-	 * @param {string} realm - A description of the protected area.
+	 * @param type - Authentication type <https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml>
+	 * @param realm - A description of the protected area.
 	 */
 	send401(type: HttpAuthType, realm: string): void {
 		this.#res

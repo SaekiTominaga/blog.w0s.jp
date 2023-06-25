@@ -16,9 +16,9 @@ export default class BlogCategoryDao extends BlogDao {
 	/**
 	 * 記事データを取得する
 	 *
-	 * @param {string} categoryName - カテゴリ名
+	 * @param categoryName - カテゴリ名
 	 *
-	 * @returns {Array} 記事データ（該当する記事が存在しない場合は空配列）
+	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
 	async getEntries(categoryName: string): Promise<Entry[]> {
 		const dbh = await this.getDbh();

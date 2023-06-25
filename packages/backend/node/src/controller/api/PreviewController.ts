@@ -9,8 +9,8 @@ import RequestUtil from '../../util/RequestUtil.js';
  */
 export default class PreviewController extends Controller implements ControllerInterface {
 	/**
-	 * @param {Request} req - Request
-	 * @param {Response} res - Response
+	 * @param req - Request
+	 * @param res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
 		const requestQuery: BlogRequest.ApiPreview = {

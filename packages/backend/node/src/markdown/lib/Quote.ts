@@ -16,9 +16,9 @@ export default class Quote {
 	/**
 	 * 引用のメタ情報を分類する
 	 *
-	 * @param {string} meta - メタ情報
+	 * @param meta - メタ情報
 	 *
-	 * @returns {Meta} 分類されたメタ情報
+	 * @returns 分類されたメタ情報
 	 */
 	static classifyMeta(meta: string): Meta {
 		/* 言語 */

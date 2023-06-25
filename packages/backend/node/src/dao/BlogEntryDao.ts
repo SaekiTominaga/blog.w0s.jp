@@ -22,9 +22,9 @@ export default class BlogEntryDao extends BlogDao {
 	/**
 	 * 記事データを取得する
 	 *
-	 * @param {number} entryId - 記事 ID
+	 * @param entryId - 記事 ID
 	 *
-	 * @returns {object} 記事データ
+	 * @returns 記事データ
 	 */
 	async getEntry(entryId: number): Promise<BlogDb.Entry | null> {
 		const dbh = await this.getDbh();
@@ -71,9 +71,9 @@ export default class BlogEntryDao extends BlogDao {
 	/**
 	 * 記事のカテゴリー情報を取得
 	 *
-	 * @param {number} entryId - 記事 ID
+	 * @param entryId - 記事 ID
 	 *
-	 * @returns {object[]} カテゴリー情報
+	 * @returns カテゴリー情報
 	 */
 	async getCategories(entryId: number): Promise<Category[]> {
 		const dbh = await this.getDbh();
@@ -116,9 +116,9 @@ export default class BlogEntryDao extends BlogDao {
 	/**
 	 * 関連記事を取得
 	 *
-	 * @param {number} entryId - 記事 ID
+	 * @param entryId - 記事 ID
 	 *
-	 * @returns {Array} 関連記事データ
+	 * @returns 関連記事データ
 	 */
 	async getRelations(entryId: number): Promise<Relation[]> {
 		const dbh = await this.getDbh();

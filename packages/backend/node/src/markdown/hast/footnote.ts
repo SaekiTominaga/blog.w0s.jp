@@ -6,6 +6,7 @@ import type { Plugin } from 'unified';
 /**
  * 脚注
  */
+
 const hast = (): Plugin => {
 	return (tree: Node): void => {
 		const footnote = select('[data-footnotes]', tree);

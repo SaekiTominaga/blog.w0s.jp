@@ -45,8 +45,8 @@ export default class PostController extends Controller implements ControllerInte
 	#env: Express.Env;
 
 	/**
-	 * @param {ConfigureCommon} configCommon - 共通設定
-	 * @param {string} env - 共通設定
+	 * @param configCommon - 共通設定
+	 * @param env - 共通設定
 	 */
 	constructor(configCommon: ConfigureCommon, env: Express.Env) {
 		super(configCommon);
@@ -57,8 +57,8 @@ export default class PostController extends Controller implements ControllerInte
 	}
 
 	/**
-	 * @param {Request} req - Request
-	 * @param {Response} res - Response
+	 * @param req - Request
+	 * @param res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
 		const httpResponse = new HttpResponse(req, res, this.configCommon);
@@ -231,9 +231,9 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * DB の最終更新日時を更新する
 	 *
-	 * @param {BlogPostDao} dao - Dao
+	 * @param dao - Dao
 	 *
-	 * @returns {PostResults} 処理結果のメッセージ
+	 * @returns 処理結果のメッセージ
 	 */
 	async #updateModified(dao: BlogPostDao): Promise<PostResults> {
 		try {
@@ -251,9 +251,9 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * フィードファイルを生成する
 	 *
-	 * @param {BlogPostDao} dao - Dao
+	 * @param dao - Dao
 	 *
-	 * @returns {PostResults} 処理結果のメッセージ
+	 * @returns 処理結果のメッセージ
 	 */
 	async #createFeed(dao: BlogPostDao): Promise<PostResults> {
 		try {
@@ -318,9 +318,9 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * サイトマップファイルを生成する
 	 *
-	 * @param {BlogPostDao} dao - Dao
+	 * @param dao - Dao
 	 *
-	 * @returns {PostResults} 処理結果のメッセージ
+	 * @returns 処理結果のメッセージ
 	 */
 	async #createSitemap(dao: BlogPostDao): Promise<PostResults> {
 		try {
@@ -361,9 +361,9 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * 新着 JSON ファイルを生成する
 	 *
-	 * @param {BlogPostDao} dao - Dao
+	 * @param dao - Dao
 	 *
-	 * @returns {PostResults} 処理結果のメッセージ
+	 * @returns 処理結果のメッセージ
 	 */
 	async #createNewlyJson(dao: BlogPostDao): Promise<PostResults> {
 		try {
@@ -416,9 +416,11 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * メディアファイルをアップロードする
 	 *
-	 * @param {Request} req - Request
-	 * @param {object} requestQuery - URL クエリー情報
-	 * @param {HttpBasicAuthCredentials | null} httpBasicCredentials - Basic 認証の資格情報
+	 * @param req - Request
+	 * @param requestQuery - URL クエリー情報
+	 * @param httpBasicCredentials - Basic 認証の資格情報
+	 *
+	 * @returns 処理結果のメッセージ
 	 */
 	async #mediaUpload(req: Request, requestQuery: BlogRequest.Post, httpBasicCredentials: HttpBasicAuthCredentials | null): Promise<Set<MediaUploadResults>> {
 		if (req.files === undefined) {

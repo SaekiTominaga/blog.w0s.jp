@@ -13,7 +13,7 @@ export default class GoogleAdsense {
 	#SCRIPT_ID = 'script-adsbygoogle'; // 埋め込む <script> 要素の ID
 
 	/**
-	 * @param {object} thisElement - 広告を表示する要素
+	 * @param thisElement - 広告を表示する要素
 	 */
 	constructor(thisElement: Element) {
 		this.#thisElement = thisElement;
@@ -22,7 +22,7 @@ export default class GoogleAdsense {
 	/**
 	 * 初期処理
 	 *
-	 * @param {string} rootMargin - ルート周りのマージン
+	 * @param rootMargin - ルート周りのマージン
 	 */
 	init(rootMargin = '0px'): void {
 		if (window.IntersectionObserver === undefined) {

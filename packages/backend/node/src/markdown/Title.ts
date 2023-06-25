@@ -7,7 +7,7 @@ export default class MarkdownTitle {
 	#value: string;
 
 	/**
-	 * @param {string} input - 処理対象のテキスト
+	 * @param input - 処理対象のテキスト
 	 */
 	constructor(input: string) {
 		this.#value = StringEscapeHtml.escape(input);
@@ -16,7 +16,7 @@ export default class MarkdownTitle {
 	/**
 	 * 変換実行
 	 *
-	 * @returns {string} - 変換後の HTML 文字列
+	 * @returns 変換後の HTML 文字列
 	 */
 	mark(): string {
 		this.#code();
@@ -34,9 +34,9 @@ export default class MarkdownTitle {
 		/**
 		 * 変換実行
 		 *
-		 * @param {number} fromIndex - 検索を始める位置
+		 * @param fromIndex - 検索を始める位置
 		 *
-		 * @returns {number} 未処理文字列の開始位置（これ以上処理が不要なときは undefined）
+		 * @returns 未処理文字列の開始位置（これ以上処理が不要なときは undefined）
 		 */
 		const convert = (fromIndex = 0): number | undefined => {
 			const codeOpenIndex = this.#value.indexOf(CODE_OPEN, fromIndex);

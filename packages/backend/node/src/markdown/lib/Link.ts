@@ -25,10 +25,10 @@ export default class Link {
 	/**
 	 * リンクに付随する情報を取得する
 	 *
-	 * @param {string} mdContent - Markdown に書かれたリンクテキスト
-	 * @param {string} mdUrl - Markdown に書かれた URL
+	 * @param mdContent - Markdown に書かれたリンクテキスト
+	 * @param mdUrl - Markdown に書かれた URL
 	 *
-	 * @returns {Info} リンクに付随する情報
+	 * @returns リンクに付随する情報
 	 */
 	static getInfo(mdContent: string, mdUrl: string): Info {
 		/* 絶対 URL */
@@ -97,9 +97,9 @@ export default class Link {
 	/**
 	 * リソースタイプによるアイコン情報を取得する
 	 *
-	 * @param {URL} url - リンク URL
+	 * @param url - リンク URL
 	 *
-	 * @returns {TypeInfo} リソースタイプによるアイコン情報
+	 * @returns リソースタイプによるアイコン情報
 	 */
 	static #getTypeInfo(url: URL): TypeInfo {
 		let typeIcon: Icon | undefined;
@@ -118,10 +118,10 @@ export default class Link {
 	/**
 	 * ホスト名によるアイコン情報を取得する
 	 *
-	 * @param {string} content - リンクテキスト
-	 * @param {URL} url - リンク URL
+	 * @param content - リンクテキスト
+	 * @param url - リンク URL
 	 *
-	 * @returns {HostInfo} ホスト名によるアイコン情報
+	 * @returns ホスト名によるアイコン情報
 	 */
 	static #getHostInfo(content: string, url: URL): HostInfo {
 		let hostIcon: Icon | undefined;

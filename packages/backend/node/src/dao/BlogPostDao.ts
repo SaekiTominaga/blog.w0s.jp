@@ -28,7 +28,7 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * 最新記事 ID を取得
 	 *
-	 * @returns {number} 最新記事 ID （記事が1件も登録されていない場合は 0 ）
+	 * @returns 最新記事 ID （記事が1件も登録されていない場合は 0 ）
 	 */
 	async getLatestId(): Promise<number> {
 		const dbh = await this.getDbh();
@@ -89,7 +89,7 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * カテゴリー情報を取得
 	 *
-	 * @returns {CategoryMaster[]} カテゴリー情報
+	 * @returns カテゴリー情報
 	 */
 	async getCategoryMaster(): Promise<CategoryMaster[]> {
 		const dbh = await this.getDbh();
@@ -127,7 +127,7 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * カテゴリーグループに紐付けられたファイル名リストを取得
 	 *
-	 * @returns {string[]} ファイル名
+	 * @returns ファイル名
 	 */
 	async getCategoryGroupMasterFileName(): Promise<string[]> {
 		const dbh = await this.getDbh();
@@ -155,10 +155,10 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * 記事タイトル重複チェック
 	 *
-	 * @param {string} title - 記事タイトル
-	 * @param {number} topicId - 記事 ID（記事修正時、自記事をチェック対象から除外するのに使用）
+	 * @param title - 記事タイトル
+	 * @param topicId - 記事 ID（記事修正時、自記事をチェック対象から除外するのに使用）
 	 *
-	 * @returns {boolean} 同一の記事タイトルがあれば true
+	 * @returns 同一の記事タイトルがあれば true
 	 */
 	async isExistsTitle(title: string, topicId: number | null): Promise<boolean> {
 		const dbh = await this.getDbh();
@@ -206,15 +206,15 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * 記事データを登録する
 	 *
-	 * @param {string} title - タイトル
-	 * @param {string | null} description - 概要
-	 * @param {string} message - 本文
-	 * @param {string[]} categoryIds - カテゴリー ID
-	 * @param {string | null} imagePath - 画像パス
-	 * @param {number[]} relationIds - 関連記事 ID
-	 * @param {boolean} publicFlag - 公開フラグ
+	 * @param title - タイトル
+	 * @param description - 概要
+	 * @param message - 本文
+	 * @param categoryIds - カテゴリー ID
+	 * @param imagePath - 画像パス
+	 * @param relationIds - 関連記事 ID
+	 * @param publicFlag - 公開フラグ
 	 *
-	 * @returns {number | null} 登録した記事 ID
+	 * @returns 登録した記事 ID
 	 */
 	async insert(
 		title: string,
@@ -310,15 +310,15 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * 記事データを修正する
 	 *
-	 * @param {number} topicId - 記事 ID
-	 * @param {string} title - タイトル
-	 * @param {string | null} description - 概要
-	 * @param {string} message - 本文
-	 * @param {string[]} categoryIds - カテゴリー ID
-	 * @param {string | null} imagePath - 画像パス
-	 * @param {number[] | null} relationIds - 関連記事 ID
-	 * @param {boolean} publicFlag - 公開フラグ
-	 * @param {boolean} timestampUpdate - 更新日時を変更する
+	 * @param topicId - 記事 ID
+	 * @param title - タイトル
+	 * @param description - 概要
+	 * @param message - 本文
+	 * @param categoryIds - カテゴリー ID
+	 * @param imagePath - 画像パス
+	 * @param relationIds - 関連記事 ID
+	 * @param publicFlag - 公開フラグ
+	 * @param timestampUpdate - 更新日時を変更する
 	 */
 	async update(
 		topicId: number,
@@ -466,9 +466,9 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * 修正する記事データを取得する
 	 *
-	 * @param {number} id - 記事 ID
+	 * @param id - 記事 ID
 	 *
-	 * @returns {ReviseData} 記事データ
+	 * @returns 記事データ
 	 */
 	async getReviseData(id: number): Promise<ReviseData | null> {
 		const dbh = await this.getDbh();
@@ -515,9 +515,9 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * フィード用の記事データを取得する
 	 *
-	 * @param {number} limit - 最大取得件数
+	 * @param limit - 最大取得件数
 	 *
-	 * @returns {Array} 記事データ（該当する記事が存在しない場合は空配列）
+	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
 	async getEntriesFeed(limit: number): Promise<BlogDb.Entry[]> {
 		const dbh = await this.getDbh();
@@ -572,9 +572,9 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * 新着記事データを取得する
 	 *
-	 * @param {number} limit - 最大取得件数
+	 * @param limit - 最大取得件数
 	 *
-	 * @returns {object[]} 記事データ（該当する記事が存在しない場合は空配列）
+	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
 	async getEntriesSitemap(limit: number): Promise<BlogView.SitemapEntry[]> {
 		const dbh = await this.getDbh();
@@ -614,10 +614,10 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * 新着記事データを取得する
 	 *
-	 * @param {number} limit - 最大取得件数
-	 * @param {string} catgroupId - カテゴリグループの ID
+	 * @param limit - 最大取得件数
+	 * @param catgroupId - カテゴリグループの ID
 	 *
-	 * @returns {object[]} 記事データ（該当する記事が存在しない場合は空配列）
+	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
 	async getEntriesNewly(limit: number, catgroupId?: string): Promise<BlogView.NewlyEntry[]> {
 		const dbh = await this.getDbh();

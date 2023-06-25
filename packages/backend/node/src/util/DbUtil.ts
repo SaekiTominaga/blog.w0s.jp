@@ -7,9 +7,9 @@ export default class DbUtil {
 	/**
 	 * Converting an empty string to null
 	 *
-	 * @param {string | null} string - character string
+	 * @param string - character string
 	 *
-	 * @returns {string | null} character string
+	 * @returns character string
 	 */
 	static emptyToNull(string: string | null): string | null {
 		return string !== '' ? string : null;
@@ -18,9 +18,9 @@ export default class DbUtil {
 	/**
 	 * Convert `Date` to UNIX time
 	 *
-	 * @param {Date | null | undefined} date - Date (If not specified, returns the current time)
+	 * @param date - Date (If not specified, returns the current time)
 	 *
-	 * @returns {number | null} UNIX time
+	 * @returns UNIX time
 	 */
 	static dateToUnix(date?: Date | null): number | null {
 		if (date === null) {
@@ -32,9 +32,9 @@ export default class DbUtil {
 	/**
 	 * Convert `Dayjs` to UNIX time
 	 *
-	 * @param {Dayjs | null | undefined} date - Dayjs (If not specified, returns the current time)
+	 * @param date - Dayjs (If not specified, returns the current time)
 	 *
-	 * @returns {number | null} UNIX time
+	 * @returns UNIX time
 	 */
 	static dayjsToUnix(date?: Dayjs | null): number | null {
 		if (date === null) {
@@ -49,9 +49,9 @@ export default class DbUtil {
 	/**
 	 * Convert UNIX time to `Date`
 	 *
-	 * @param {number | null} unix - UNIX time
+	 * @param unix - UNIX time
 	 *
-	 * @returns {Date | null} Date
+	 * @returns  Date
 	 */
 	static unixToDate(unix: number | null): Date | null {
 		if (unix === null) {
@@ -63,9 +63,9 @@ export default class DbUtil {
 	/**
 	 * Convert UNIX time to `Dayjs`
 	 *
-	 * @param {number | null} unix - UNIX time
+	 * @param unix - UNIX time
 	 *
-	 * @returns {Dayjs | null} Dayjs
+	 * @returns Dayjs
 	 */
 	static unixToDayjs(unix: number | null): Dayjs | null {
 		if (unix === null) {

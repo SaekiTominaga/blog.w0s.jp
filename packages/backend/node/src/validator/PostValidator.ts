@@ -12,8 +12,8 @@ export default class PostValidator {
 	#config: Configure;
 
 	/**
-	 * @param {Request} req - Request
-	 * @param {Configure} config - 設定ファイル
+	 * @param req - Request
+	 * @param config - 設定ファイル
 	 */
 	constructor(req: Request, config: Configure) {
 		this.#req = req;
@@ -23,10 +23,10 @@ export default class PostValidator {
 	/**
 	 * 記事投稿
 	 *
-	 * @param {BlogPostDao} dao - Dao
-	 * @param {number} topicId - 記事 ID
+	 * @param dao - Dao
+	 * @param topicId - 記事 ID
 	 *
-	 * @returns {Result<ValidationError>} 検証エラー
+	 * @returns 検証エラー
 	 */
 	async topic(dao: BlogPostDao, topicId: number | null = null): Promise<Result<ValidationError>> {
 		await body('title')

@@ -19,7 +19,7 @@ export default class MessageImage {
 	readonly #imageName: string | undefined; // 既存記事でもともと指定されていた画像（ファイル名 or 外部サービス URL）
 
 	/**
-	 * @param {object} options - Option
+	 * @param options - Option
 	 */
 	constructor(options: Option) {
 		this.#ctrlElement = options.ctrl;
@@ -131,8 +131,8 @@ export default class MessageImage {
 	/**
 	 * 画像を選択するラジオボタンを表示する
 	 *
-	 * @param {Set} imageNames - 画像ファイル名 or 外部サービス URL
-	 * @param {string} selectedImageName - ラジオボタンで選択された値（画像ファイル名 or 外部サービス URL）
+	 * @param imageNames - 画像ファイル名 or 外部サービス URL
+	 * @param selectedImageName - ラジオボタンで選択された値（画像ファイル名 or 外部サービス URL）
 	 */
 	#displayRadioButtons(imageNames: Set<string>, selectedImageName?: string): void {
 		const fragment = document.createDocumentFragment();
@@ -166,7 +166,7 @@ export default class MessageImage {
 	/**
 	 * エラーメッセージを表示する
 	 *
-	 * @param {Set} messages - エラーメッセージ
+	 * @param messages - エラーメッセージ
 	 */
 	#displayErrorMessages(messages: Set<string>): void {
 		const fragment = document.createDocumentFragment();

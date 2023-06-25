@@ -72,7 +72,7 @@ export default class Markdown {
 	readonly #remark: Processor;
 
 	/**
-	 * @param {object} options - Option
+	 * @param options - Option
 	 */
 	constructor(options?: Options) {
 		const lint = options?.lint ?? false;
@@ -175,9 +175,9 @@ export default class Markdown {
 	/**
 	 * Processes Markdown strings
 	 *
-	 * @param {string} markdown - Markdown strings
+	 * @param markdown - Markdown strings
 	 *
-	 * @returns {VFile} HTML
+	 * @returns HTML
 	 */
 	async toHtml(markdown: string): Promise<VFile> {
 		return this.#remark.process(markdown);

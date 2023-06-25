@@ -46,7 +46,8 @@
 		{
 			"files": ["node/src/markdown/toMdast/**/*.ts"],
 			"rules": {
-				"no-invalid-this": "off"
+				"no-invalid-this": "off",
+				"jsdoc/require-jsdoc": "off"
 			}
 		},
 		{

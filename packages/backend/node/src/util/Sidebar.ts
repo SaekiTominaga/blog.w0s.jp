@@ -18,7 +18,7 @@ export default class Sidebar {
 	#dao: BlogDao;
 
 	/**
-	 * @param {BlogDao} dao - 日記共通 Dao
+	 * @param dao - 日記共通 Dao
 	 */
 	constructor(dao: BlogDao) {
 		this.#dao = dao;
@@ -27,7 +27,7 @@ export default class Sidebar {
 	/**
 	 * カテゴリ毎の記事件数を取得する
 	 *
-	 * @returns {Map} カテゴリ毎の記事件数
+	 * @returns カテゴリ毎の記事件数
 	 */
 	async getEntryCountOfCategory(): Promise<Map<string, EntryCountOfCategory[]>> {
 		const dto = await this.#dao.getEntryCountOfCategory();
@@ -48,9 +48,9 @@ export default class Sidebar {
 	/**
 	 * 新着記事情報を取得する
 	 *
-	 * @param {number} limit - 最大取得件数
+	 * @param limit - 最大取得件数
 	 *
-	 * @returns {Array} 新着記事
+	 * @returns 新着記事
 	 */
 	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
 		const entriesDto = await this.#dao.getNewlyEntries(limit);

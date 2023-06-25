@@ -21,8 +21,8 @@ export default class BlogDao {
 	readonly #filepath: string;
 
 	/**
-	 * @param {string} filepath - DB ファイルパス
-	 * @param {sqlite.Database} dbh - DB 接続情報
+	 * @param filepath - DB ファイルパス
+	 * @param dbh - DB 接続情報
 	 */
 	constructor(filepath: string, dbh?: sqlite.Database<sqlite3.Database, sqlite3.Statement>) {
 		this.#filepath = filepath;
@@ -35,7 +35,7 @@ export default class BlogDao {
 	/**
 	 * DB 接続情報を取得する
 	 *
-	 * @returns {sqlite.Database} DB 接続情報
+	 * @returns DB 接続情報
 	 */
 	async getDbh(): Promise<sqlite.Database<sqlite3.Database, sqlite3.Statement>> {
 		if (this.#dbh !== null) {
@@ -55,7 +55,7 @@ export default class BlogDao {
 	/**
 	 * 記事件数（非表示記事を除く）を取得
 	 *
-	 * @returns {number} 記事件数
+	 * @returns 記事件数
 	 */
 	async getEntryCount(): Promise<number> {
 		const dbh = await this.getDbh();
@@ -84,7 +84,7 @@ export default class BlogDao {
 	/**
 	 * 最終更新日時を取得する
 	 *
-	 * @returns {Date} 最終更新日時
+	 * @returns 最終更新日時
 	 */
 	async getLastModified(): Promise<Date> {
 		const dbh = await this.getDbh();
@@ -111,9 +111,9 @@ export default class BlogDao {
 	/**
 	 * サイドバー: 新着記事を取得
 	 *
-	 * @param {number} limit - 最大取得件数
+	 * @param limit - 最大取得件数
 	 *
-	 * @returns {Array} 新着記事
+	 * @returns 新着記事
 	 */
 	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
 		const dbh = await this.getDbh();
@@ -151,7 +151,7 @@ export default class BlogDao {
 	/**
 	 * サイドバー: カテゴリー毎の記事件数を取得
 	 *
-	 * @returns {Array} カテゴリー毎の記事件数
+	 * @returns カテゴリー毎の記事件数
 	 */
 	async getEntryCountOfCategory(): Promise<EntryCountOfCategory[]> {
 		const dbh = await this.getDbh();
