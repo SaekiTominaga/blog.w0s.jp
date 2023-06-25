@@ -15,7 +15,7 @@ export default class HttpBasicAuth {
 	#credentials: Credentials | null = null;
 
 	/**
-	 * @param {Request} req - Request
+	 * @param req - Request
 	 */
 	constructor(req: Request) {
 		const credentials = basicAuth(req);
@@ -30,9 +30,9 @@ export default class HttpBasicAuth {
 	/**
 	 * Basic authentication
 	 *
-	 * @param {string} filePath - htpasswd file path
+	 * @param filePath - htpasswd file path
 	 *
-	 * @returns {boolean} true if the authentication passes
+	 * @returns true if the authentication passes
 	 */
 	async htpasswd(filePath: string): Promise<boolean> {
 		const result = await htpasswd.authenticate({
@@ -46,7 +46,7 @@ export default class HttpBasicAuth {
 	/**
 	 * Get credentials
 	 *
-	 * @returns {Credentials} Credentials
+	 * @returns Credentials
 	 */
 	getCredentials(): Credentials | null {
 		return this.#credentials;

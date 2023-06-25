@@ -7,9 +7,9 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 	/**
 	 * 記事の本文を取得する
 	 *
-	 * @param {number} entryId - 記事 ID（未指定時は全記事を取得）
+	 * @param entryId - 記事 ID（未指定時は全記事を取得）
 	 *
-	 * @returns {Map} 全記事の本文
+	 * @returns 全記事の本文
 	 */
 	async getEntriesMessage(entryId?: number): Promise<Map<number, string>> {
 		const dbh = await this.getDbh();
@@ -53,8 +53,8 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 	/**
 	 * 記事データを修正する
 	 *
-	 * @param {number} topicId - 記事 ID
-	 * @param {string} message - 本文
+	 * @param topicId - 記事 ID
+	 * @param message - 本文
 	 */
 	public async update(topicId: number, message: string): Promise<void> {
 		const dbh = await this.getDbh();

@@ -16,10 +16,10 @@ export default class BlogListDao extends BlogDao {
 	/**
 	 * 記事データを取得する
 	 *
-	 * @param {number} page - ページ番号
-	 * @param {number} limit - 1ページあたりの最大表示件数
+	 * @param page - ページ番号
+	 * @param limit - 1ページあたりの最大表示件数
 	 *
-	 * @returns {Array} 記事データ（該当する記事が存在しない場合は空配列）
+	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
 	async getEntries(page: number, limit: number): Promise<Entry[]> {
 		const dbh = await this.getDbh();

@@ -5,10 +5,10 @@ export default class MdastUtil {
 	/**
 	 * Generating heading element (<h1>, <h2>...)
 	 *
-	 * @param {number} depth - Heading depth
-	 * @param {object[]} children - Child Elements of Heading Element
+	 * @param depth - Heading depth
+	 * @param children - Child Elements of Heading Element
 	 *
-	 * @returns {object} Heading element
+	 * @returns Heading element
 	 */
 	static hn(depth: Remark.HeadingDepth, children: HastElementContent[]): HastElementContent {
 		const START_LEVEL = 2;
@@ -34,10 +34,10 @@ export default class MdastUtil {
 	/**
 	 * Generating an element representing the host information of the link
 	 *
-	 * @param {object} typeInfo - Type info
-	 * @param {object | string} hostInfo - Host info
+	 * @param typeInfo - Type info
+	 * @param hostInfo - Host info
 	 *
-	 * @returns {object} Element representing the host information of the link
+	 * @returns Element representing the host information of the link
 	 */
 	static linkInfo(typeInfo: LinkIcon | undefined, hostInfo: LinkIcon | string | undefined): HastElementContent[] {
 		const info: HastElementContent[] = [];

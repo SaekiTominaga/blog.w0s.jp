@@ -7,9 +7,9 @@ export default class RequestUtil {
 	/**
 	 * Convert to string type
 	 *
-	 * @param {any} request - Request string
+	 * @param request - Request string
 	 *
-	 * @returns {string} Converted
+	 * @returns Converted
 	 */
 	static string(request: unknown): string | null {
 		return typeof request === 'string' ? String(request) : null;
@@ -18,9 +18,9 @@ export default class RequestUtil {
 	/**
 	 * Convert to string[] type
 	 *
-	 * @param {any} request - Request string
+	 * @param request - Request string
 	 *
-	 * @returns {string[]} Converted
+	 * @returns Converted
 	 */
 	static strings(request: unknown): string[] {
 		return Array.isArray(request) ? request : [];
@@ -29,9 +29,9 @@ export default class RequestUtil {
 	/**
 	 * Convert to number type
 	 *
-	 * @param {any} request - Request string
+	 * @param request - Request string
 	 *
-	 * @returns {number} Converted
+	 * @returns Converted
 	 */
 	static number(request: unknown): number | null {
 		return typeof request === 'string' ? Number(request) : null;
@@ -40,9 +40,9 @@ export default class RequestUtil {
 	/**
 	 * Convert to boolean type
 	 *
-	 * @param {any} request - Request string
+	 * @param request - Request string
 	 *
-	 * @returns {boolean} Converted
+	 * @returns Converted
 	 */
 	static boolean(request: unknown): boolean {
 		return Boolean(request);
@@ -51,9 +51,9 @@ export default class RequestUtil {
 	/**
 	 * Convert to Dayjs type (YYYY-MM)
 	 *
-	 * @param {any} request - Request string
+	 * @param request - Request string
 	 *
-	 * @returns {Dayjs} Converted
+	 * @returns Converted
 	 */
 	static dateYYYYMM(request: unknown): Dayjs | null {
 		return typeof request === 'string' ? dayjs(new Date(Number(request.substring(0, 4)), Number(request.substring(5, 7)) - 1)) : null;

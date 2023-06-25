@@ -20,7 +20,7 @@ export default class EntryController extends Controller implements ControllerInt
 	#config: Configure;
 
 	/**
-	 * @param {ConfigureCommon} configCommon - 共通設定
+	 * @param configCommon - 共通設定
 	 */
 	constructor(configCommon: ConfigureCommon) {
 		super(configCommon);
@@ -29,8 +29,8 @@ export default class EntryController extends Controller implements ControllerInt
 	}
 
 	/**
-	 * @param {Request} req - Request
-	 * @param {Response} res - Response
+	 * @param req - Request
+	 * @param res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
 		const httpResponse = new HttpResponse(req, res, this.configCommon);

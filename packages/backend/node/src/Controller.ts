@@ -12,7 +12,7 @@ export default class Controller {
 	protected readonly configCommon: Configure; // 共通設定
 
 	/**
-	 * @param {Configure} configCommon - 共通設定
+	 * @param configCommon - 共通設定
 	 */
 	constructor(configCommon: Configure) {
 		/* Logger */
@@ -25,12 +25,12 @@ export default class Controller {
 	/**
 	 * 画面レンダリングを行い、同時に次回レスポンス時のために HTML ファイルを生成する
 	 *
-	 * @param {string} html - HTML データ
-	 * @param {object} options - オプション
-	 * @param {string} options.filePath - HTML ファイルパス
-	 * @param {string} options.brotliFilePath - HTML Brotli 圧縮ファイルパス
-	 * @param {string} options.prettierConfig - Pritter 構成ファイルパス
-	 * @param {string} options.httpResponse - HttpResponse
+	 * @param html - HTML データ
+	 * @param options - オプション
+	 * @param options.filePath - HTML ファイルパス
+	 * @param options.brotliFilePath - HTML Brotli 圧縮ファイルパス
+	 * @param options.prettierConfig - Pritter 構成ファイルパス
+	 * @param options.httpResponse - HttpResponse
 	 */
 	async response(html: string, options: { filePath: string; brotliFilePath: string; prettierConfig: string; httpResponse: HttpResponse }): Promise<void> {
 		const prettierOptions = PrettierUtil.configOverrideAssign(await PrettierUtil.loadConfig(options.prettierConfig), '*.html');
@@ -52,8 +52,8 @@ export default class Controller {
 	/**
 	 * HTML ファイルへの書き込みを行う
 	 *
-	 * @param {string} filePath - ファイルパス
-	 * @param {string | Buffer} data - データ
+	 * @param filePath - ファイルパス
+	 * @param data - データ
 	 */
 	async #fileWrite(filePath: string, data: string | Buffer): Promise<void> {
 		await fs.promises.writeFile(filePath, data);
@@ -63,8 +63,8 @@ export default class Controller {
 	/**
 	 * HTML Brotli ファイルへの書き込みを行う
 	 *
-	 * @param {string} filePath - ファイルパス
-	 * @param {string | Buffer} data - データ
+	 * @param filePath - ファイルパス
+	 * @param data - データ
 	 */
 	async #brotliFileWrite(filePath: string, data: string | Buffer): Promise<void> {
 		await fs.promises.writeFile(filePath, data);

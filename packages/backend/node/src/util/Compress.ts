@@ -7,9 +7,9 @@ export default class Compress {
 	/**
 	 * Compress a UTF-8 text with BrotliCompress.
 	 *
-	 * @param {string} string - Text data to be compressed
+	 * @param string - Text data to be compressed
 	 *
-	 * @returns {object} Compressed data
+	 * @returns Compressed data
 	 */
 	static brotliText(string: string): Buffer {
 		return zlib.brotliCompressSync(string, {

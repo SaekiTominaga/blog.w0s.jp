@@ -6,11 +6,11 @@ export default class UnistUtil {
 	 * Searches for a node at or after the specified position.
 	 * This is similar to `unist-util-find-after`<https://github.com/syntax-tree/unist-util-find-after>, except that the position specified by index itself is also searched.
 	 *
-	 * @param {object} parent - Parent node
-	 * @param {number} index - Index of child in parent
-	 * @param {Function} test - `unist-util-is-compatible` test <https://github.com/syntax-tree/unist-util-is#test>
+	 * @param parent - Parent node
+	 * @param index - Index of child in parent
+	 * @param test - `unist-util-is-compatible` test <https://github.com/syntax-tree/unist-util-is#test>
 	 *
-	 * @returns {object} Node hit by the `test` function
+	 * @returns Node hit by the `test` function
 	 */
 	static findAfter(parent: Parent, index: number, test: Test): Node | null {
 		const is = convert(test);

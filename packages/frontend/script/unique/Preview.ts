@@ -17,7 +17,7 @@ export default class Preview {
 	readonly #previewElement: HTMLTemplateElement; // 本文プレビューを表示する要素
 
 	/**
-	 * @param {object} options - Option
+	 * @param options - Option
 	 */
 	constructor(options: Option) {
 		this.#ctrlElement = options.ctrl;
@@ -50,6 +50,11 @@ export default class Preview {
 		this.#preview(responseJson.html);
 	}
 
+	/**
+	 * MArkdown 変換に際してのメッセージを表示
+	 *
+	 * @param messages - メッセージ
+	 */
 	#messages(messages: VFileMessage[]) {
 		/* いったんクリア */
 		while (this.#messagesElement.nextElementSibling !== null) {
@@ -119,6 +124,11 @@ export default class Preview {
 		this.#messagesElement.parentNode?.appendChild(fragment);
 	}
 
+	/**
+	 * 本文のプレビューを実施
+	 *
+	 * @param html - 本文の HTML
+	 */
 	#preview(html: string): void {
 		/* いったんクリア */
 		if (this.#previewElement.nextElementSibling !== null) {

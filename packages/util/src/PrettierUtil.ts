@@ -8,9 +8,9 @@ export default class PrettierUtil {
 	/**
 	 * 構成ファイルの内容を取得する
 	 *
-	 * @param {string} configPath - 構成ファイルのパス
+	 * @param configPath - 構成ファイルのパス
 	 *
-	 * @returns {object} 構成内容
+	 * @returns 構成内容
 	 */
 	static async loadConfig(configPath: string): Promise<prettier.Config> {
 		return JSON.parse((await fs.promises.readFile(configPath)).toString());
@@ -37,10 +37,10 @@ export default class PrettierUtil {
 	 *   "printWidth": 200
 	 * }
 	 *
-	 * @param {object} config - 構成内容
-	 * @param {string} overrideFilesPattern - `overrides` の `files` に指定されたパターン
+	 * @param config - 構成内容
+	 * @param overrideFilesPattern - `overrides` の `files` に指定されたパターン
 	 *
-	 * @returns {object} 構成内容
+	 * @returns 構成内容
 	 */
 	static configOverrideAssign(config: prettier.Config, overrideFilesPattern: string): prettier.Options {
 		if (config.overrides === undefined) {
