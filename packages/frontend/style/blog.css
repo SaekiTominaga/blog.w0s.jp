@@ -31,6 +31,3 @@
 @import url("object/project/entry/_footer.css") layer(project);
 @import url("object/project/_sidebar.css") layer(project);
 @import url("object/project/_footer.css") layer(project);
-
-/* Object - Utility */
-@import url("object/utility/_text.css") layer(utility);
