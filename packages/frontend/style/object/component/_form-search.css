@@ -5,7 +5,6 @@
 /* ===== サイト内検索 ===== */
 .c-search {
 	--_border-color: var(--color-lightgray);
-	--_block-size: 2em;
 
 	display: flex;
 	align-items: center;
@@ -34,10 +33,10 @@
 
 	& > input {
 		all: initial;
+		display: block;
 		box-sizing: border-box;
 		padding: 0.25em;
 		inline-size: 100%;
-		block-size: var(--_block-size);
 		font: inherit;
 	}
 }
@@ -48,12 +47,12 @@
 		--_color: hsl(220deg 70% 45%);
 
 		all: initial;
-		display: flex;
+		display: block;
 		box-sizing: border-box;
 		margin: var(--outline-width-bold);
 		padding: 0.25em;
-		inline-size: var(--_block-size);
-		block-size: var(--_block-size);
+		inline-size: 2em;
+		block-size: 2em;
 		color: var(--_color);
 		font: inherit;
 		fill: currentColor; /* SVG */
