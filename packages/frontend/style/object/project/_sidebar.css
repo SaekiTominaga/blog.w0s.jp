@@ -16,11 +16,11 @@
 }
 
 .p-sidebar-profile__hdg {
-	display: inline-block;
 	position: relative;
 	inset-block-start: var(--_heading-offset);
-	background: var(--page-bg-color);
+	background-color: var(--page-bg-color);
 	padding: 0 0.5em;
+	inline-size: fit-content;
 
 	& + * {
 		margin-block-start: calc(10px + var(--_heading-offset));
@@ -139,12 +139,12 @@
 }
 
 .p-sidebar-entries__hdg {
-	display: inline-block;
 	position: relative;
 	margin-inline: 10px;
 	inset-block-start: var(--_heading-offset);
-	background: var(--page-bg-color);
+	background-color: var(--page-bg-color);
 	padding: 0 0.5em;
+	inline-size: fit-content;
 
 	& + * {
 		margin-block-start: var(--_heading-offset);
