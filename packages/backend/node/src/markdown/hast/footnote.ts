@@ -86,7 +86,7 @@ const hast = (): Plugin => {
 						tagName: 'a',
 						properties: {
 							href: href,
-							className: ['c-footnote-backref'],
+							className: ['p-footnote__backref'],
 						},
 						children: [
 							{
