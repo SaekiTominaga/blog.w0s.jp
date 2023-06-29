@@ -919,19 +919,17 @@ describe('Image', () => {
 			)
 		).toBe(
 			`
-<div class="c-flex">
-	<figure class="c-flex__item">
-		<div class="p-embed">
-			<a href="https://media.w0s.jp/image/blog/file.jpg"
-				><picture
-					><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=720;h=720;quality=30 2x" />
-					<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=720;h=720;quality=30 2x" />
-					<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=360;h=360;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
-			></a>
-		</div>
-		<figcaption class="c-caption">title&lt;title> title</figcaption>
-	</figure>
-</div>
+<figure>
+	<div class="p-embed">
+		<a href="https://media.w0s.jp/image/blog/file.jpg"
+			><picture
+				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
+		></a>
+	</div>
+	<figcaption class="c-caption">title&lt;title> title</figcaption>
+</figure>
 `.trim()
 		);
 	});
@@ -950,27 +948,25 @@ describe('Image', () => {
 			)
 		).toBe(
 			`
-<div class="c-flex">
-	<figure class="c-flex__item">
-		<div class="p-embed">
-			<a href="https://media.w0s.jp/image/blog/file1.jpg"
-				><picture
-					><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file1.jpg?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/file1.jpg?type=avif;w=720;h=720;quality=30 2x" />
-					<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file1.jpg?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/file1.jpg?type=webp;w=720;h=720;quality=30 2x" />
-					<img src="https://media.w0s.jp/thumbimage/blog/file1.jpg?type=jpeg;w=360;h=360;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
-			></a>
-		</div>
-		<figcaption class="c-caption">image1</figcaption>
-	</figure>
-	<figure class="c-flex__item">
-		<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file2.svg" alt="" class="p-embed__image" /></div>
-		<figcaption class="c-caption">image2</figcaption>
-	</figure>
-	<figure class="c-flex__item">
-		<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file3.mp4" controls class="p-embed__video"></video></div>
-		<figcaption class="c-caption">video1</figcaption>
-	</figure>
-</div>
+<figure>
+	<div class="p-embed">
+		<a href="https://media.w0s.jp/image/blog/file1.jpg"
+			><picture
+				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file1.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file1.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file1.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file1.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+				<img src="https://media.w0s.jp/thumbimage/blog/file1.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
+		></a>
+	</div>
+	<figcaption class="c-caption">image1</figcaption>
+</figure>
+<figure>
+	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file2.svg" alt="" class="p-embed__image" /></div>
+	<figcaption class="c-caption">image2</figcaption>
+</figure>
+<figure>
+	<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file3.mp4" controls class="p-embed__video"></video></div>
+	<figcaption class="c-caption">video1</figcaption>
+</figure>
 `.trim()
 		);
 	});
@@ -1143,10 +1139,8 @@ describe('YouTube', () => {
 		).toBe(
 			`
 <figure>
-	<div class="p-embed">
-		<iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="560" height="315" class="p-embed__frame" style="--aspect-ratio: 560/315"></iframe>
-		<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
-	</div>
+	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
+	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
 </figure>
 `.trim()
 		);
@@ -1165,10 +1159,8 @@ describe('YouTube', () => {
 		).toBe(
 			`
 <figure>
-	<div class="p-embed">
-		<iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe>
-		<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
-	</div>
+	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe></div>
+	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
 </figure>
 `.trim()
 		);
@@ -1187,10 +1179,8 @@ describe('YouTube', () => {
 		).toBe(
 			`
 <figure>
-	<div class="p-embed">
-		<iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="560" height="315" class="p-embed__frame" style="--aspect-ratio: 560/315"></iframe>
-		<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
-	</div>
+	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
+	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
 </figure>
 `.trim()
 		);
@@ -1209,10 +1199,8 @@ describe('YouTube', () => {
 		).toBe(
 			`
 <figure>
-	<div class="p-embed">
-		<iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe>
-		<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
-	</div>
+	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe></div>
+	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
 </figure>
 `.trim()
 		);

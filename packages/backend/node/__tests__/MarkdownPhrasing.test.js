@@ -171,7 +171,7 @@ text[^1]text
 	<ul class="p-footnote__list">
 		<li>
 			<span class="p-footnote__no">1.</span>
-			<p class="p-footnote__content"><span id="fn-1">ref1</span> <a href="#fnref-1" class="c-footnote-backref">↩ 戻る</a></p>
+			<p class="p-footnote__content"><span id="fn-1">ref1</span> <a href="#fnref-1" class="p-footnote__backref">↩ 戻る</a></p>
 		</li>
 	</ul>
 </section>
