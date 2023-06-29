@@ -336,39 +336,39 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 								},
 							],
 						},
+					],
+				},
+				{
+					type: 'element',
+					tagName: 'figcaption',
+					properties: {
+						className: ['c-caption'],
+					},
+					children: [
 						{
 							type: 'element',
-							tagName: 'figcaption',
+							tagName: 'a',
 							properties: {
-								className: ['c-caption'],
+								href: `https://www.youtube.com/watch?${linkSearchParams.toString()}`,
 							},
 							children: [
 								{
-									type: 'element',
-									tagName: 'a',
-									properties: {
-										href: `https://www.youtube.com/watch?${linkSearchParams.toString()}`,
-									},
-									children: [
-										{
-											type: 'text',
-											value: title,
-										},
-									],
-								},
-								{
-									type: 'element',
-									tagName: 'img',
-									properties: {
-										src: '/image/icon/youtube.svg',
-										alt: '(YouTube)',
-										width: '16',
-										height: '16',
-										className: ['c-link-icon'],
-									},
-									children: [],
+									type: 'text',
+									value: title,
 								},
 							],
+						},
+						{
+							type: 'element',
+							tagName: 'img',
+							properties: {
+								src: '/image/icon/youtube.svg',
+								alt: '(YouTube)',
+								width: '16',
+								height: '16',
+								className: ['c-link-icon'],
+							},
+							children: [],
 						},
 					],
 				},
