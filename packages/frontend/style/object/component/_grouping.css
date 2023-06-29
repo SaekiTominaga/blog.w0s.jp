@@ -112,6 +112,7 @@
 /* ===== キャプション ===== */
 .c-caption {
 	inline-size: fit-content;
+	color: var(--color-gray);
 	font-weight: var(--font-weight-bold);
 	font-size: calc(100% / var(--font-ratio-1));
 	line-height: var(--line-height-narrow);
@@ -124,8 +125,8 @@
 		margin-block-start: 0.5em;
 	}
 
-	.p-entry & {
-		color: var(--color-gray);
+	.p-embed + & {
+		max-inline-size: calc(var(--entry-image-width) + var(--entry-embed-border-width) * 2);
 	}
 
 	/* メタデータ */

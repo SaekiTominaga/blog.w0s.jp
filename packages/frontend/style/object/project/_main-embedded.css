@@ -4,13 +4,7 @@
 
 /* ===== 埋め込みコンテンツ（画像、動画、 <iframe> など） ===== */
 .p-embed {
-	--_border-width: 0px;
-
 	contain: layout;
-
-	.p-entry & {
-		--_border-width: 1px;
-	}
 
 	& > :any-link {
 		--_expand-icon-padding: 4px;
@@ -41,13 +35,9 @@
 .p-embed__video {
 	display: inline-block;
 	vertical-align: top;
-	border: var(--_border-width) solid var(--color-black);
-	max-inline-size: calc(100% - var(--_border-width) * 2);
+	border: var(--entry-embed-border-width) solid var(--color-black);
+	max-inline-size: calc(100% - var(--entry-embed-border-width) * 2);
 	block-size: auto;
-}
-
-.p-embed__image {
-	min-inline-size: calc(360px / 1.5 + var(--_border-width) * 2);
 }
 
 .p-embed__video {
@@ -57,8 +47,7 @@
 
 .p-embed__frame {
 	display: block;
-	box-sizing: border-box;
-	border: var(--_border-width) solid var(--color-black);
+	border: var(--entry-embed-border-width) solid var(--color-black);
 	aspect-ratio: var(--aspect-ratio, auto);
 	max-inline-size: 100%;
 	block-size: auto;
