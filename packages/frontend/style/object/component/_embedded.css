@@ -4,8 +4,8 @@
 
 /* リンクアイコン */
 .c-link-icon {
-	vertical-align: -0.25em;
+	vertical-align: -0.25ex;
 	margin-inline: 0.25em;
 	inline-size: auto;
-	block-size: 1.15em;
+	block-size: 2ex;
 }

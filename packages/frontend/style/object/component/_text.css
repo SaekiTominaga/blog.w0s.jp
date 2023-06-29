@@ -203,12 +203,6 @@
 	}
 }
 
-/* ===== 脚注の戻るリンク ===== */
-.c-footnote-backref {
-	padding: 0.25em;
-	font-size: calc(100% / var(--font-ratio-2));
-}
-
 /* ===== 記事件数 ===== */
 .c-entry-count {
 	display: inline-block;
@@ -224,7 +218,6 @@
 
 /* 件数の数字部分 */
 .c-entry-count__num {
-	font-weight: var(--font-weight-bold);
 	font-size: calc(100% * var(--font-ratio-3));
 }
 

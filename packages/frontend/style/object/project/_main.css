@@ -232,7 +232,6 @@
 	overflow-x: auto;
 	color: var(--color-black);
 	line-height: var(--line-height-narrow);
-	tab-size: 2;
 
 	&:focus {
 		border-color: var(--outline-color); /* 横スクロールバーが表示される場合はブラウザによってフォーカス可能 */

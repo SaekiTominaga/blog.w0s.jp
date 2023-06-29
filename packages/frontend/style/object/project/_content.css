@@ -27,8 +27,11 @@
 
 .p-page-nav__link {
 	--_bg-color: var(--color-white);
+	--_icon-size: 0.75em;
+	--_gap: 0.75em;
 
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
 	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
 	border: 1px solid var(--color-border-light);
@@ -45,24 +48,24 @@
 	&.-prev::before,
 	&.-next::after {
 		display: inline-block;
-		vertical-align: 0.3em;
-		transform: scaleY(2.2);
-		font: var(--font-weight-bold) 50% YuGothic, sans-serif;
-		letter-spacing: -0.1em;
+		background: currentColor;
+		inline-size: var(--_icon-size);
+		block-size: var(--_icon-size);
+		content: "";
 	}
 
 	&.-start::before {
-		margin-inline-end: 1em;
-		content: "≪≪";
+		clip-path: polygon(50% 0, 0 50%, 50% 100%, 60% 90%, 20% 50%, 60% 10%, 50% 0, 90% 0, 40% 50%, 90% 100%, 100% 90%, 60% 50%, 100% 10%, 90% 0);
+		margin-inline-end: var(--_gap);
 	}
 
 	&.-prev::before {
-		margin-inline-end: 1em;
-		content: "≪";
+		clip-path: polygon(50% 0, 0 50%, 50% 100%, 60% 90%, 20% 50%, 60% 10%);
+		margin-inline-end: calc(var(--_gap) - var(--_icon-size) * 0.4);
 	}
 
 	&.-next::after {
-		margin-inline-start: 1em;
-		content: "≫";
+		clip-path: polygon(50% 0, 100% 50%, 50% 100%, 40% 90%, 80% 50%, 40% 10%);
+		margin-inline-start: calc(var(--_gap) - var(--_icon-size) * 0.4);
 	}
 }

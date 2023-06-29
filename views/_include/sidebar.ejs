@@ -50,30 +50,30 @@
 			<%_ } _%><%_ for (const [group_name, countDataList] of entryCountOfCategoryList) { _%>
 			<div slot="tabpanel" class="p-sidebar-categories__panel" id="<%= group_name %>">
 				<%_ if (typeof(requestQuery.category_name) !== 'undefined') { _%>
-				<ul class="c-sidebar-link -category">
+				<ul class="p-sidebar-link -category">
 					<%_ for (const countData of countDataList) { _%>
 					<li>
 						<%_ if (requestQuery.category_name === countData.category_name) { _%>
 						<a aria-current="page">
 							<%= countData.category_name %>
-							<span class="c-sidebar-link__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+							<span class="p-sidebar-link__icon c-entry-count"><span class="c-entry-count__num"><%= countData.count %></span>件</span>
 						</a>
 						<%_ } else { _%>
 						<a href="/category/<%= encodeURI(countData.category_name) %>">
 							<%= countData.category_name %>
-							<span class="c-sidebar-link__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+							<span class="p-sidebar-link__icon c-entry-count"><span class="c-entry-count__num"><%= countData.count %></span>件</span>
 						</a>
 						<%_ } _%>
 					</li>
 					<%_ } _%>
 				</ul>
 				<%_ } else { _%>
-				<ul class="c-sidebar-link -category">
+				<ul class="p-sidebar-link -category">
 					<%_ for (const countData of countDataList) { _%>
 					<li>
 						<a href="/category/<%= encodeURI(countData.category_name) %>">
 							<%= countData.category_name %>
-							<span class="c-sidebar-link__icon c-entry-count"><b class="c-entry-count__num"><%= countData.count %></b>件</span>
+							<span class="p-sidebar-link__icon c-entry-count"><span class="c-entry-count__num"><%= countData.count %></span>件</span>
 						</a>
 					</li>
 					<%_ } _%>
@@ -88,7 +88,7 @@
 		<h2 class="p-sidebar-entries__hdg">最近の記事</h2>
 
 		<%_ if (typeof(requestQuery.entry_id) !== 'undefined') { _%>
-		<ul class="c-sidebar-link -entry">
+		<ul class="p-sidebar-link -entry">
 			<%_ for (const newlyEntry of newlyEntries) { _%>
 			<li>
 				<%_ if (requestQuery.entry_id === newlyEntry.id) { _%>
@@ -100,7 +100,7 @@
 			<%_ } _%>
 		</ul>
 		<%_ } else { _%>
-		<ul class="c-sidebar-link -entry">
+		<ul class="p-sidebar-link -entry">
 			<%_ for (const newlyEntry of newlyEntries) { _%>
 			<li>
 				<a href="/<%= newlyEntry.id %>"><%- newlyEntry.title %></a>

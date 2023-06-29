@@ -2,7 +2,7 @@
 	--_color: var(--page-color);
 	--_bg-color: var(--page-bg-color);
 
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	color: var(--_color);
 	font: var(--font-weight-normal) var(--page-font-size) / var(--line-height-wide) sans-serif;
 
@@ -50,9 +50,12 @@ w0s-tooltip:focus {
 	color: var(--color-black);
 }
 
-:where(em, cite, dfn) {
+pre {
+	tab-size: 2;
+}
+
+:is(cite, em) {
 	&:lang(ja) {
-		font-style: normal;
 		font-weight: var(--font-weight-bold);
 	}
 }
@@ -68,7 +71,7 @@ code {
 	padding-block: 0.25em;
 	color: var(--color-green);
 
-	:where(h1, h2, h3, h4, h5, h6, hgroup, pre, a) & {
+	:is(h1, h2, h3, h4, h5, h6, hgroup, pre, a) & {
 		border-radius: 0;
 		background-color: transparent;
 		padding-block: 0;
@@ -91,6 +94,6 @@ q {
 	}
 }
 
-input/* [type=checkbox], [type=radio], [type=range] */ {
+input:is([type="radio" i], [type="checkbox" i]) {
 	accent-color: var(--color-skyblue);
 }

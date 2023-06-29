@@ -93,4 +93,8 @@
 	--page-color: #000; /* ページ文字色 */
 	--page-bg-color: #fffff9; /* ページ背景色 */
 	--page-font-size: 100%; /* デフォルトのフォントサイズ 12px=75%, 13px=81.3%, 14px=87.5%, 15px=93.8%, 16px=100%, 17px=106.3%, 18px=112.5% */
+
+	/* ===== 記事 ===== */
+	--entry-embed-border-width: 1px;
+	--entry-image-width: 640px;
 }

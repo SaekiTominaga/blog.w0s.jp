@@ -14,13 +14,17 @@ interface XEmbeddedMedia {
 	children: XMediaItem[];
 }
 
+interface XEmbeddedYouTube {
+	children: XYouTubeItem[];
+}
+
 interface XEmbeddedAmazon {
 	children: XAmazonItem[];
 }
 
-interface XEmbeddedYouTube {
-	children: XYouTubeItem[];
-}
+const IMAGE_MAX_SIZE = { width: 640, height: 480 };
+const YOUTUBE_BASE_SIZE = { width: 640, height: 360 };
+const AMAZON_IMAGE_SIZE = 160;
 
 export const xEmbeddedMediaToHast = (_state: H, node: XEmbeddedMedia): HastElementContent | HastElementContent[] | null | undefined => {
 	const items = node.children.map((item): HastElement => {
@@ -47,7 +51,11 @@ export const xEmbeddedMediaToHast = (_state: H, node: XEmbeddedMedia): HastEleme
 									tagName: 'source',
 									properties: {
 										type: 'image/avif',
-										srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=720;h=720;quality=30 2x`,
+										srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${IMAGE_MAX_SIZE.width};h=${
+											IMAGE_MAX_SIZE.height
+										};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${IMAGE_MAX_SIZE.width * 2};h=${
+											IMAGE_MAX_SIZE.height * 2
+										};quality=30 2x`,
 									},
 									children: [],
 								},
@@ -56,7 +64,11 @@ export const xEmbeddedMediaToHast = (_state: H, node: XEmbeddedMedia): HastEleme
 									tagName: 'source',
 									properties: {
 										type: 'image/webp',
-										srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=360;h=360;quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=720;h=720;quality=30 2x`,
+										srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${IMAGE_MAX_SIZE.width};h=${
+											IMAGE_MAX_SIZE.height
+										};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${IMAGE_MAX_SIZE.width * 2};h=${
+											IMAGE_MAX_SIZE.height * 2
+										};quality=30 2x`,
 									},
 									children: [],
 								},
@@ -64,7 +76,7 @@ export const xEmbeddedMediaToHast = (_state: H, node: XEmbeddedMedia): HastEleme
 									type: 'element',
 									tagName: 'img',
 									properties: {
-										src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=360;h=360;quality=60`,
+										src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${IMAGE_MAX_SIZE.width};h=${IMAGE_MAX_SIZE.height};quality=60`,
 										alt: 'オリジナル画像',
 										className: ['p-embed__image'],
 									},
@@ -112,9 +124,6 @@ export const xEmbeddedMediaToHast = (_state: H, node: XEmbeddedMedia): HastEleme
 		return {
 			type: 'element',
 			tagName: 'figure',
-			properties: {
-				className: ['c-flex__item'],
-			},
 			children: [
 				{
 					type: 'element',
@@ -141,14 +150,99 @@ export const xEmbeddedMediaToHast = (_state: H, node: XEmbeddedMedia): HastEleme
 		};
 	});
 
-	return {
-		type: 'element',
-		tagName: 'div',
-		properties: {
-			className: ['c-flex'],
-		},
-		children: items,
-	};
+	return items;
+};
+
+export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastElementContent | HastElementContent[] | null | undefined => {
+	const items = node.children.map((item): HastElement => {
+		const { id, title, size, start } = item;
+
+		const width = size?.width ?? YOUTUBE_BASE_SIZE.width;
+		const height = size?.height ?? YOUTUBE_BASE_SIZE.height;
+
+		const embeddedSearchParams = new URLSearchParams();
+		embeddedSearchParams.set('cc_load_policy', '1');
+		if (start !== undefined && start > 1) {
+			embeddedSearchParams.set('start', String(start));
+		}
+
+		const linkSearchParams = new URLSearchParams();
+		linkSearchParams.set('v', id);
+		if (start !== undefined && start > 1) {
+			linkSearchParams.set('t', `${start}s`);
+		}
+
+		return {
+			type: 'element',
+			tagName: 'figure',
+			children: [
+				{
+					type: 'element',
+					tagName: 'div',
+					properties: {
+						className: ['p-embed'],
+					},
+					children: [
+						{
+							type: 'element',
+							tagName: 'iframe',
+							properties: {
+								src: `https://www.youtube-nocookie.com/embed/${id}?${embeddedSearchParams.toString()}`, // https://support.google.com/youtube/answer/171780
+								allow: 'encrypted-media;fullscreen;gyroscope;picture-in-picture',
+								title: 'YouTube 動画',
+								width: String(width),
+								height: String(height),
+								className: ['p-embed__frame'],
+								style: `--aspect-ratio:${width}/${height}`,
+							},
+							children: [
+								{
+									type: 'text',
+									value: '',
+								},
+							],
+						},
+					],
+				},
+				{
+					type: 'element',
+					tagName: 'figcaption',
+					properties: {
+						className: ['c-caption'],
+					},
+					children: [
+						{
+							type: 'element',
+							tagName: 'a',
+							properties: {
+								href: `https://www.youtube.com/watch?${linkSearchParams.toString()}`,
+							},
+							children: [
+								{
+									type: 'text',
+									value: title,
+								},
+							],
+						},
+						{
+							type: 'element',
+							tagName: 'img',
+							properties: {
+								src: '/image/icon/youtube.svg',
+								alt: '(YouTube)',
+								width: '16',
+								height: '16',
+								className: ['c-link-icon'],
+							},
+							children: [],
+						},
+					],
+				},
+			],
+		};
+	});
+
+	return items;
 };
 
 export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastElementContent | HastElementContent[] | null | undefined => {
@@ -157,10 +251,8 @@ export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastEle
 
 		const imageElementProperties: Properties = {};
 		if (image !== undefined) {
-			const size = 160;
-
 			const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(`https://m.media-amazon.com/images/I/${image.id}.jpg`));
-			paapi5ItemImageUrlParser.setSize(size);
+			paapi5ItemImageUrlParser.setSize(AMAZON_IMAGE_SIZE);
 
 			const url = paapi5ItemImageUrlParser.toString();
 			paapi5ItemImageUrlParser.setSizeMultiply(2);
@@ -174,11 +266,11 @@ export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastEle
 				let width: number;
 				let height: number;
 				if (image.size.width > image.size.height) {
-					width = size;
-					height = Math.round((image.size.height * size) / image.size.width);
+					width = AMAZON_IMAGE_SIZE;
+					height = Math.round((image.size.height * AMAZON_IMAGE_SIZE) / image.size.width);
 				} else {
-					width = Math.round((image.size.width * size) / image.size.height);
-					height = size;
+					width = Math.round((image.size.width * AMAZON_IMAGE_SIZE) / image.size.height);
+					height = AMAZON_IMAGE_SIZE;
 				}
 
 				imageElementProperties['width'] = String(width);
@@ -285,96 +377,4 @@ export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastEle
 			},
 		],
 	};
-};
-
-export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastElementContent | HastElementContent[] | null | undefined => {
-	const items = node.children.map((item): HastElement => {
-		const { id, title, size, start } = item;
-
-		const width = size?.width ?? 560;
-		const height = size?.height ?? 315;
-
-		const embeddedSearchParams = new URLSearchParams();
-		embeddedSearchParams.set('cc_load_policy', '1');
-		if (start !== undefined && start > 1) {
-			embeddedSearchParams.set('start', String(start));
-		}
-
-		const linkSearchParams = new URLSearchParams();
-		linkSearchParams.set('v', id);
-		if (start !== undefined && start > 1) {
-			linkSearchParams.set('t', `${start}s`);
-		}
-
-		return {
-			type: 'element',
-			tagName: 'figure',
-			children: [
-				{
-					type: 'element',
-					tagName: 'div',
-					properties: {
-						className: ['p-embed'],
-					},
-					children: [
-						{
-							type: 'element',
-							tagName: 'iframe',
-							properties: {
-								src: `https://www.youtube-nocookie.com/embed/${id}?${embeddedSearchParams.toString()}`, // https://support.google.com/youtube/answer/171780
-								allow: 'encrypted-media;fullscreen;gyroscope;picture-in-picture',
-								title: 'YouTube 動画',
-								width: String(width),
-								height: String(height),
-								className: ['p-embed__frame'],
-								style: `--aspect-ratio:${width}/${height}`,
-							},
-							children: [
-								{
-									type: 'text',
-									value: '',
-								},
-							],
-						},
-						{
-							type: 'element',
-							tagName: 'figcaption',
-							properties: {
-								className: ['c-caption'],
-							},
-							children: [
-								{
-									type: 'element',
-									tagName: 'a',
-									properties: {
-										href: `https://www.youtube.com/watch?${linkSearchParams.toString()}`,
-									},
-									children: [
-										{
-											type: 'text',
-											value: title,
-										},
-									],
-								},
-								{
-									type: 'element',
-									tagName: 'img',
-									properties: {
-										src: '/image/icon/youtube.svg',
-										alt: '(YouTube)',
-										width: '16',
-										height: '16',
-										className: ['c-link-icon'],
-									},
-									children: [],
-								},
-							],
-						},
-					],
-				},
-			],
-		};
-	});
-
-	return items;
 };

@@ -207,3 +207,8 @@
 	padding-block-start: 0.5em;
 	inline-size: 100%;
 }
+
+.p-footnote__backref {
+	margin-inline-start: 0.5em;
+	font-size: calc(100% / var(--font-ratio-2));
+}
