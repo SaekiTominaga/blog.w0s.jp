@@ -218,7 +218,6 @@
 
 /* 件数の数字部分 */
 .c-entry-count__num {
-	font-weight: var(--font-weight-bold);
 	font-size: calc(100% * var(--font-ratio-3));
 }
 
