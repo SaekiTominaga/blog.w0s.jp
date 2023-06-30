@@ -66,13 +66,8 @@
 	line-height: var(--line-height-narrow);
 	text-decoration: none;
 
-	:where(button[type="button"]&):focus:not(:focus-visible) {
+	:is(button[type="button"]&):focus:not(:focus-visible) {
 		outline: none;
-	}
-
-	.p-sidebar-profile__banners & {
-		--_padding-inline: 1px;
-		--_inline-size: 100%;
 	}
 
 	.p-entry-footer-action & {
@@ -95,32 +90,10 @@
 		--_background: hsl(41deg 100% 93%);
 	}
 
-	/* Twitter */
-	&.-twitter {
-		--_border-color: hsl(204deg 88% 43%);
-		--_color: var(--color-white);
-		--_background: hsl(204deg 88% 53%);
-
-		outline-color: hsl(204deg 88% 73%);
-	}
-
 	/* GitHub */
 	&.-github {
 		--_border-color: var(--color-black);
 		--_background: var(--color-white);
-	}
-
-	/* Amazon */
-	&.-amazon {
-		--_border-color: #c2a24e;
-		--_background: linear-gradient(var(--color-amazon), hsl(44deg 90% 62%));
-	}
-
-	/* YouTube */
-	&.-youtube {
-		--_border-color: var(--color-red);
-		--_color: var(--color-darkred);
-		--_background: linear-gradient(var(--color-white), var(--color-verylightred));
 	}
 }
 

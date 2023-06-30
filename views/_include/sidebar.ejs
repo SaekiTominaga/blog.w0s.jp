@@ -1,48 +1,4 @@
 <div id="sidebar" class="l-sidebar">
-	<section class="p-sidebar-profile">
-		<h2 class="p-sidebar-profile__hdg">プロフィール</h2>
-
-		<div class="p-sidebar-profile__info">
-			<address class="p-sidebar-profile__address">
-				<a href="https://w0s.jp/info">
-					<picture>
-						<source type="image/webp" srcset="/image/sidebar/profile.webp, /image/sidebar/profile@2x.webp 2x" />
-						<img src="/image/sidebar/profile.jpg" alt="" width="72" height="72" class="p-sidebar-profile__avatar" />
-					</picture>
-					富永冴樹
-				</a>
-			</address>
-			<p class="p-sidebar-profile__bio">都内でウェブ制作の仕事をしていたりいなかったり。フロントエンド技術者のつもりです。</p>
-		</div>
-
-		<ul class="p-sidebar-profile__banners">
-			<li>
-				<a href="https://twitter.com/SaekiTominaga" class="c-button -twitter">
-					<img src="/image/icon/twitter-white.svg" alt="" class="c-button__icon" />
-					<span class="c-button__text">Twitter</span>
-				</a>
-			</li>
-			<li>
-				<a href="https://github.com/SaekiTominaga" class="c-button -github">
-					<img src="/image/icon/github.svg" alt="" class="c-button__icon" />
-					<span class="c-button__text">GitHub</span>
-				</a>
-			</li>
-			<li>
-				<a href="https://www.amazon.co.jp/-/e/B07FBRDDJN/?_encoding=UTF8&amp;camp=1207&amp;creative=8415&amp;linkCode=shr&amp;tag=w0s.jp-22" class="c-button -amazon">
-					<img src="/image/icon/amazon.png" alt="" class="c-button__icon" />
-					<span class="c-button__text">Amazon</span>
-				</a>
-			</li>
-			<li>
-				<a href="https://www.youtube.com/@SaekiTominaga" class="c-button -youtube">
-					<img src="/image/icon/youtube.svg" alt="" class="c-button__icon" />
-					<span class="c-button__text">YouTube</span>
-				</a>
-			</li>
-		</ul>
-	</section>
-
 	<section class="p-sidebar-categories">
 		<w0s-tab tablist-label="記事カテゴリー" storage-key="sidebar-category-tab">
 			<%_ for (const [group_name, ] of entryCountOfCategoryList) { _%>
