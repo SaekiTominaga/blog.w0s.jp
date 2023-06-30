@@ -28,7 +28,7 @@ export const footnoteReferenceToHast = (state: H, node: FootnoteReference): Hast
 		type: 'element',
 		tagName: 'span',
 		properties: {
-			className: ['c-annotate'],
+			className: ['c-footnote-ref'],
 		},
 		children: [
 			{

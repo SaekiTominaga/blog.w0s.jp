@@ -108,8 +108,8 @@
 	}
 }
 
-/* ===== 注釈リンク ===== */
-.c-annotate {
+/* ===== 脚注リンク ===== */
+.c-footnote-ref {
 	vertical-align: super;
 	font-size: calc(100% / var(--font-ratio-2));
 
