@@ -1,6 +1,8 @@
 <div id="sidebar" class="l-sidebar">
 	<section class="p-sidebar-categories">
-		<w0s-tab tablist-label="記事カテゴリー" storage-key="sidebar-category-tab">
+		<h2 class="p-sidebar-categories__hdg">記事カテゴリー</h2>
+
+		<w0s-tab storage-key="sidebar-category-tab">
 			<%_ for (const [group_name, ] of entryCountOfCategoryList) { _%>
 			<a href="#<%= group_name %>" slot="tab" class="p-sidebar-categories__item"><%= group_name %></a>
 			<%_ } _%><%_ for (const [group_name, countDataList] of entryCountOfCategoryList) { _%>

@@ -6,6 +6,12 @@
 .p-sidebar-categories {
 }
 
+.p-sidebar-categories__hdg {
+	& + * {
+		margin-block-start: 0.25em;
+	}
+}
+
 .p-sidebar-categories__item {
 	--_padding-block: 0.6em;
 	--_border-color: var(--color-border-dark);
