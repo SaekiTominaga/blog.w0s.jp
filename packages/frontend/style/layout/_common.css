@@ -101,7 +101,7 @@
 
 	& > [class^="p-sidebar-"]:not([hidden]) {
 		& + [class^="p-sidebar-"] {
-			margin-block-start: 2em;
+			margin-block-start: 3em;
 		}
 	}
 }

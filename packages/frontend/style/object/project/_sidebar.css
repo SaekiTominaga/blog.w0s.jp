@@ -2,77 +2,14 @@
  *   サイドバー
  * ============================== */
 
-/* ===== プロフィール ===== */
-.p-sidebar-profile {
-	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
-
-	border: 1px solid var(--color-border-dark);
-	border-radius: var(--border-radius-normal);
-	padding: 0 10px 10px;
-
-	&:first-child {
-		margin-block-start: calc(0px - var(--_heading-offset));
-	}
-}
-
-.p-sidebar-profile__hdg {
-	position: relative;
-	inset-block-start: var(--_heading-offset);
-	background-color: var(--page-bg-color);
-	padding: 0 0.5em;
-	inline-size: fit-content;
-
-	& + * {
-		margin-block-start: calc(10px + var(--_heading-offset));
-	}
-}
-
-.p-sidebar-profile__info {
-	display: flow-root; /* for Safari */
-	contain: layout;
-}
-
-.p-sidebar-profile__address {
-	font-weight: var(--font-weight-bold);
-
-	& > :any-link {
-		outline-offset: var(--outline-offset-linkonly);
-	}
-}
-
-/* アバター */
-.p-sidebar-profile__avatar {
-	float: left;
-	margin-inline-end: 10px;
-
-	:focus & {
-		outline: var(--outline-width-bold) solid var(--outline-color);
-	}
-
-	:any-link:hover & {
-		box-shadow: 0 0 5px var(--color-lightgray);
-	}
-}
-
-/* BIO */
-.p-sidebar-profile__bio {
-	margin-block-start: 0.5em;
-	overflow: hidden;
-	font-size: calc(100% / var(--font-ratio-1));
-	text-align: justify;
-}
-
-/* バナー */
-.p-sidebar-profile__banners {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 5px;
-	margin-block-start: 1em;
-	font-size: calc(100% / var(--font-ratio-1));
-}
-
 /* ===== カテゴリー ===== */
 .p-sidebar-categories {
+}
+
+.p-sidebar-categories__hdg {
+	& + * {
+		margin-block-start: 0.25em;
+	}
 }
 
 .p-sidebar-categories__item {
