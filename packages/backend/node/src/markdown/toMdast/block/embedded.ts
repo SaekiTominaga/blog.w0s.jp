@@ -1,7 +1,7 @@
-import type { Paragraph } from 'mdast';
+import type { List, Paragraph, PhrasingContent } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
-import type { Parent } from 'unist';
+import type { Node, Parent } from 'unist';
 import { visit, CONTINUE } from 'unist-util-visit';
 import { regexp } from '../../config.js';
 
@@ -10,46 +10,39 @@ import { regexp } from '../../config.js';
  */
 
 export const nameMedia = 'x-embedded-media';
-export const nameMediaItem = 'x-embedded-media-item';
+export const nameYouTube = 'x-embedded-youtube';
 export const nameAmazon = 'x-embedded-amazon';
 export const nameAmazonItem = 'x-embedded-amazon-item';
-export const nameYouTube = 'x-embedded-youtube';
-export const nameYouTubeItem = 'x-embedded-youtube-item';
 
-interface Size {
+export interface Size {
 	width: number;
 	height: number;
 }
 
-interface AmazonImage {
+export interface AmazonImage {
 	id: string;
 	size?: Size;
 }
 
-export interface XMediaItem {
-	type: typeof nameMediaItem;
+interface XEmbeddedMedia extends Parent {
+	type: typeof nameMedia;
 	filename: string;
-	title: string;
+	children: PhrasingContent[];
 }
 
-export interface XAmazonItem {
-	type: typeof nameAmazonItem;
-	asin: string;
-	title: string;
-	image?: AmazonImage;
-}
-
-export interface XYouTubeItem {
-	type: typeof nameYouTubeItem;
+interface XEmbeddedYouTube extends Node {
+	type: typeof nameYouTube;
 	id: string;
 	title: string;
 	size?: Size;
 	start?: number;
 }
 
-interface XEmbeddedMedia extends Parent {
-	type: typeof nameMedia;
-	children: XMediaItem[];
+interface XAmazonItem extends Node {
+	type: typeof nameAmazonItem;
+	asin: string;
+	title: string;
+	image?: AmazonImage;
 }
 
 interface XEmbeddedAmazon extends Parent {
@@ -57,112 +50,196 @@ interface XEmbeddedAmazon extends Parent {
 	children: XAmazonItem[];
 }
 
-interface XEmbeddedYouTube extends Parent {
-	type: typeof nameYouTube;
-	children: XYouTubeItem[];
-}
-
 interface Structured {
 	name: string;
 	meta: {
-		require: string;
+		require: PhrasingContent[];
 		option: string | undefined;
 	};
 }
 
 const toMdast = (): Plugin => {
 	const EMBEDDED_START = '@';
-	const SERVICE_AMAZON = 'amazon';
 	const SERVICE_YOUTUBE = 'youtube';
+	const SERVICE_AMAZON = 'amazon';
 	const NAME_META_SEPARATOR = ': ';
 	const META_SEPARATOR = ' ';
 	const OPTION_OPEN = ' <';
 	const OPTION_CLOSE = '>';
 
-	const parse = (value: string): Structured[] | null => {
-		if (!value.startsWith(EMBEDDED_START)) {
+	const metaParse = (node: PhrasingContent): { require: PhrasingContent; option?: string | undefined } => {
+		if (node.type !== 'text') {
+			return {
+				require: node,
+			};
+		}
+
+		const { value } = node;
+
+		let require = value;
+		let option: string | undefined;
+
+		if (value !== undefined) {
+			const optionOpenIndex = value.lastIndexOf(OPTION_OPEN);
+			const optionCloseIndex = value.lastIndexOf(OPTION_CLOSE);
+
+			if (optionOpenIndex !== -1 && optionCloseIndex === value.length - OPTION_CLOSE.length) {
+				require = value.substring(0, optionOpenIndex);
+				option = value.substring(optionOpenIndex + OPTION_OPEN.length, value.length - OPTION_CLOSE.length);
+			}
+		}
+
+		return {
+			require: {
+				type: 'text',
+				value: require,
+			},
+			option: option,
+		};
+	};
+
+	const parse = (node: Paragraph): Structured | null => {
+		const firstChild = node.children.at(0);
+		if (firstChild?.type !== 'text') {
 			return null;
 		}
 
-		const structuredList: Structured[] = [];
-		for (const line of value.split('\n')) {
-			if (!line.startsWith(EMBEDDED_START)) {
-				return null;
-			}
-
-			const nameMetaSeparatorIndex = line.indexOf(NAME_META_SEPARATOR);
-			if (nameMetaSeparatorIndex === -1) {
-				return null;
-			}
-
-			const name = line.substring(EMBEDDED_START.length, nameMetaSeparatorIndex);
-			const meta = line.substring(nameMetaSeparatorIndex + NAME_META_SEPARATOR.length);
-
-			const optionOpenIndex = meta.lastIndexOf(OPTION_OPEN);
-			const optionCloseIndex = meta.lastIndexOf(OPTION_CLOSE);
-
-			let require = meta;
-			let option: string | undefined;
-			if (optionOpenIndex !== -1 && optionCloseIndex === meta.length - OPTION_CLOSE.length) {
-				require = meta.substring(0, optionOpenIndex);
-				option = meta.substring(optionOpenIndex + OPTION_OPEN.length, meta.length - OPTION_CLOSE.length);
-			}
-
-			structuredList.push({
-				name: name,
-				meta: {
-					require: require,
-					option: option,
-				},
-			});
+		const firstChildValue = firstChild.value;
+		if (!firstChildValue.startsWith(EMBEDDED_START)) {
+			return null;
 		}
 
-		return structuredList;
+		const nameMetaSeparatorIndex = firstChildValue.indexOf(NAME_META_SEPARATOR);
+		if (nameMetaSeparatorIndex === -1) {
+			return null;
+		}
+
+		const name = firstChildValue.substring(EMBEDDED_START.length, nameMetaSeparatorIndex);
+
+		const metaRequire = node.children;
+		let metaOption: string | undefined;
+		metaRequire[0] = {
+			type: 'text',
+			value: firstChildValue.substring(nameMetaSeparatorIndex + NAME_META_SEPARATOR.length),
+		};
+
+		if (metaRequire.length === 1) {
+			const { require, option } = metaParse(metaRequire[0]);
+			metaRequire[0] = require;
+			metaOption = option;
+		} else {
+			const lastChild = metaRequire.at(-1);
+			if (lastChild?.type === 'text') {
+				const { require, option } = metaParse(lastChild);
+				metaRequire[metaRequire.length - 1] = require;
+				metaOption = option;
+			}
+		}
+
+		return {
+			name: name,
+			meta: {
+				require: metaRequire,
+				option: metaOption,
+			},
+		};
 	};
 
 	return (tree: Parent): void => {
 		visit(tree, 'paragraph', (node: Paragraph, index: number | null, parent: Parent | null): boolean => {
+			if (index === null || parent === null || parent.type === 'listItem') {
+				return CONTINUE;
+			}
+
+			const structured = parse(node);
+			if (structured === null) {
+				return CONTINUE;
+			}
+
+			if (structured.name.includes('.')) {
+				const { require: metaRequire } = structured.meta;
+
+				const embedded: XEmbeddedMedia = {
+					type: nameMedia,
+					filename: structured.name,
+					children: metaRequire,
+				};
+				parent.children.splice(index, 1, embedded);
+			} else if (structured.name === SERVICE_YOUTUBE) {
+				const { require: metaRequire, option: metaOption } = structured.meta;
+
+				const metaRequireString = toString(metaRequire);
+
+				const requireSeparator1Index = metaRequireString.indexOf(META_SEPARATOR);
+				const id = metaRequireString.substring(0, requireSeparator1Index);
+				const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
+
+				if (!new RegExp(`^${regexp.youtubeId}$`).test(id)) {
+					return CONTINUE;
+				}
+
+				let size: Size | undefined;
+				let start: number | undefined;
+				metaOption?.split(META_SEPARATOR).forEach((meta) => {
+					if (/^[1-9][0-9]{2}x[1-9][0-9]{2}$/.test(meta)) {
+						/* 動画サイズ */
+						const sizes = meta.split('x');
+						size = {
+							width: Number(sizes.at(0)),
+							height: Number(sizes.at(1)),
+						};
+					} else if (/^[1-9][0-9]*$/.test(meta)) {
+						/* 開始位置（秒） */
+						start = Number(meta);
+					}
+				});
+
+				const embedded: XEmbeddedYouTube = {
+					type: nameYouTube,
+					id: id,
+					title: title,
+				};
+				if (size !== undefined) {
+					embedded.size = size;
+				}
+				if (start !== undefined) {
+					embedded.start = start;
+				}
+				parent.children.splice(index, 1, embedded);
+			}
+
+			return CONTINUE;
+		});
+
+		visit(tree, 'list', (node: List, index: number | null, parent: Parent | null): boolean => {
 			if (index === null || parent === null) {
 				return CONTINUE;
 			}
 
-			const structuredList = parse(toString(node));
-			if (structuredList === null || structuredList.length === 0) {
-				return CONTINUE;
-			}
+			const items: XAmazonItem[] = [];
 
-			if (structuredList.every((structured) => structured.name.includes('.'))) {
-				const items: XMediaItem[] = [];
-
-				for (const structured of structuredList) {
-					const { require: metaRequire } = structured.meta;
-
-					const item: XMediaItem = {
-						type: nameMediaItem,
-						filename: structured.name,
-						title: metaRequire,
-					};
-
-					items.push(item);
+			const allClear = node.children.every((listItem): boolean => {
+				const listItemChild = listItem.children.at(0);
+				if (listItemChild?.type !== 'paragraph') {
+					return false;
 				}
 
-				const embedded: XEmbeddedMedia = {
-					type: nameMedia,
-					children: items,
-				};
-				parent.children.splice(index, 1, embedded);
-			} else if (structuredList.every((structured) => structured.name === SERVICE_AMAZON)) {
-				const items: XAmazonItem[] = [];
+				const structured = parse(listItemChild);
+				if (structured === null) {
+					return false;
+				}
 
-				for (const structured of structuredList) {
+				if (structured.name === SERVICE_AMAZON) {
 					const { require: metaRequire, option: metaOption } = structured.meta;
 
-					const requireSeparator1Index = metaRequire.indexOf(META_SEPARATOR);
-					const asin = metaRequire.substring(0, requireSeparator1Index);
-					const title = metaRequire.substring(requireSeparator1Index + META_SEPARATOR.length);
+					const metaRequireString = toString(metaRequire);
+
+					const requireSeparator1Index = metaRequireString.indexOf(META_SEPARATOR);
+					const asin = metaRequireString.substring(0, requireSeparator1Index);
+					const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
 
 					if (!new RegExp(`^${regexp.asin}$`).test(asin)) {
-						return CONTINUE;
+						return false;
 					}
 
 					let imageId: string | undefined;
@@ -196,62 +273,20 @@ const toMdast = (): Plugin => {
 					}
 
 					items.push(item);
+
+					return true;
 				}
 
+				return false;
+			});
+
+			if (allClear) {
+				/* リスト内の全てが Amazon 形式だった場合のみ */
 				const embedded: XEmbeddedAmazon = {
 					type: nameAmazon,
 					children: items,
 				};
-				parent.children.splice(index, 1, embedded);
-			} else if (structuredList.every((structured) => structured.name === SERVICE_YOUTUBE)) {
-				const items: XYouTubeItem[] = [];
 
-				for (const structured of structuredList) {
-					const { require: metaRequire, option: metaOption } = structured.meta;
-
-					const requireSeparator1Index = metaRequire.indexOf(META_SEPARATOR);
-					const id = metaRequire.substring(0, requireSeparator1Index);
-					const title = metaRequire.substring(requireSeparator1Index + META_SEPARATOR.length);
-
-					if (!new RegExp(`^${regexp.youtubeId}$`).test(id)) {
-						return CONTINUE;
-					}
-
-					let size: Size | undefined;
-					let start: number | undefined;
-					metaOption?.split(META_SEPARATOR).forEach((meta) => {
-						if (/^[1-9][0-9]{2}x[1-9][0-9]{2}$/.test(meta)) {
-							/* 動画サイズ */
-							const sizes = meta.split('x');
-							size = {
-								width: Number(sizes.at(0)),
-								height: Number(sizes.at(1)),
-							};
-						} else if (/^[1-9][0-9]*$/.test(meta)) {
-							/* 開始位置（秒） */
-							start = Number(meta);
-						}
-					});
-
-					const item: XYouTubeItem = {
-						type: nameYouTubeItem,
-						id: id,
-						title: title,
-					};
-					if (size !== undefined) {
-						item.size = size;
-					}
-					if (start !== undefined) {
-						item.start = start;
-					}
-
-					items.push(item);
-				}
-
-				const embedded: XEmbeddedYouTube = {
-					type: nameYouTube,
-					children: items,
-				};
 				parent.children.splice(index, 1, embedded);
 			}
 

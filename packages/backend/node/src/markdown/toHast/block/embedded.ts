@@ -1,21 +1,31 @@
 import path from 'node:path';
 import type { Properties } from 'hast-util-select/lib/types.js';
+import type { Root } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.js';
 import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
-import type { XMediaItem, XAmazonItem, XYouTubeItem } from '../../toMdast/block/embedded.js';
+import type { AmazonImage, Size } from '../../toMdast/block/embedded.js';
 import { config } from '../../config.js';
 
 /**
  * Embedded content
  */
 
-interface XEmbeddedMedia {
-	children: XMediaItem[];
+interface XEmbeddedMedia extends Root {
+	filename: string;
 }
 
 interface XEmbeddedYouTube {
-	children: XYouTubeItem[];
+	id: string;
+	title: string;
+	size?: Size;
+	start?: number;
+}
+
+interface XAmazonItem {
+	asin: string;
+	title: string;
+	image?: AmazonImage;
 }
 
 interface XEmbeddedAmazon {
@@ -26,223 +36,210 @@ const IMAGE_MAX_SIZE = { width: 640, height: 480 };
 const YOUTUBE_BASE_SIZE = { width: 640, height: 360 };
 const AMAZON_IMAGE_SIZE = 160;
 
-export const xEmbeddedMediaToHast = (_state: H, node: XEmbeddedMedia): HastElementContent | HastElementContent[] | null | undefined => {
-	const items = node.children.map((item): HastElement => {
-		const { filename, title } = item;
+export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElementContent | HastElementContent[] | null | undefined => {
+	const { filename } = node;
 
-		let media: HastElementContent;
-		switch (path.extname(filename)) {
-			case '.jpg':
-			case '.jpeg':
-			case '.png': {
-				media = {
-					type: 'element',
-					tagName: 'a',
-					properties: {
-						href: `https://media.w0s.jp/image/blog/${filename}`,
-					},
-					children: [
-						{
-							type: 'element',
-							tagName: 'picture',
-							children: [
-								{
-									type: 'element',
-									tagName: 'source',
-									properties: {
-										type: 'image/avif',
-										srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${IMAGE_MAX_SIZE.width};h=${
-											IMAGE_MAX_SIZE.height
-										};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${IMAGE_MAX_SIZE.width * 2};h=${
-											IMAGE_MAX_SIZE.height * 2
-										};quality=30 2x`,
-									},
-									children: [],
+	let media: HastElementContent;
+	switch (path.extname(filename)) {
+		case '.jpg':
+		case '.jpeg':
+		case '.png': {
+			media = {
+				type: 'element',
+				tagName: 'a',
+				properties: {
+					href: `https://media.w0s.jp/image/blog/${filename}`,
+				},
+				children: [
+					{
+						type: 'element',
+						tagName: 'picture',
+						children: [
+							{
+								type: 'element',
+								tagName: 'source',
+								properties: {
+									type: 'image/avif',
+									srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${IMAGE_MAX_SIZE.width};h=${
+										IMAGE_MAX_SIZE.height
+									};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${IMAGE_MAX_SIZE.width * 2};h=${
+										IMAGE_MAX_SIZE.height * 2
+									};quality=30 2x`,
 								},
-								{
-									type: 'element',
-									tagName: 'source',
-									properties: {
-										type: 'image/webp',
-										srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${IMAGE_MAX_SIZE.width};h=${
-											IMAGE_MAX_SIZE.height
-										};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${IMAGE_MAX_SIZE.width * 2};h=${
-											IMAGE_MAX_SIZE.height * 2
-										};quality=30 2x`,
-									},
-									children: [],
+								children: [],
+							},
+							{
+								type: 'element',
+								tagName: 'source',
+								properties: {
+									type: 'image/webp',
+									srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${IMAGE_MAX_SIZE.width};h=${
+										IMAGE_MAX_SIZE.height
+									};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${IMAGE_MAX_SIZE.width * 2};h=${
+										IMAGE_MAX_SIZE.height * 2
+									};quality=30 2x`,
 								},
-								{
-									type: 'element',
-									tagName: 'img',
-									properties: {
-										src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${IMAGE_MAX_SIZE.width};h=${IMAGE_MAX_SIZE.height};quality=60`,
-										alt: 'オリジナル画像',
-										className: ['p-embed__image'],
-									},
-									children: [],
+								children: [],
+							},
+							{
+								type: 'element',
+								tagName: 'img',
+								properties: {
+									src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${IMAGE_MAX_SIZE.width};h=${IMAGE_MAX_SIZE.height};quality=60`,
+									alt: 'オリジナル画像',
+									className: ['p-embed__image'],
 								},
-							],
-						},
-					],
-				};
-				break;
-			}
-			case '.svg': {
-				media = {
-					type: 'element',
-					tagName: 'img',
-					properties: {
-						src: `https://media.w0s.jp/image/blog/${filename}`,
-						alt: '',
-						className: ['p-embed__image'],
+								children: [],
+							},
+						],
 					},
-					children: [],
-				};
-				break;
-			}
-			case '.mp4': {
-				media = {
-					type: 'element',
-					tagName: 'video',
-					properties: {
-						src: `https://media.w0s.jp/video/blog/${filename}`,
-						controls: true,
-						className: ['p-embed__video'],
-					},
-					children: [],
-				};
-				break;
-			}
-			default:
-				media = {
-					type: 'text',
-					value: '',
-				};
+				],
+			};
+			break;
 		}
-
-		return {
-			type: 'element',
-			tagName: 'figure',
-			children: [
-				{
-					type: 'element',
-					tagName: 'div',
-					properties: {
-						className: ['p-embed'],
-					},
-					children: [media],
+		case '.svg': {
+			media = {
+				type: 'element',
+				tagName: 'img',
+				properties: {
+					src: `https://media.w0s.jp/image/blog/${filename}`,
+					alt: '',
+					className: ['p-embed__image'],
 				},
-				{
-					type: 'element',
-					tagName: 'figcaption',
-					properties: {
-						className: ['c-caption'],
-					},
-					children: [
-						{
-							type: 'text',
-							value: title,
-						},
-					],
+				children: [],
+			};
+			break;
+		}
+		case '.mp4': {
+			media = {
+				type: 'element',
+				tagName: 'video',
+				properties: {
+					src: `https://media.w0s.jp/video/blog/${filename}`,
+					controls: true,
+					className: ['p-embed__video'],
 				},
-			],
-		};
-	});
+				children: [],
+			};
+			break;
+		}
+		default:
+			media = {
+				type: 'text',
+				value: '',
+			};
+	}
 
-	return items;
+	return {
+		type: 'element',
+		tagName: 'figure',
+		children: [
+			{
+				type: 'element',
+				tagName: 'div',
+				properties: {
+					className: ['p-embed'],
+				},
+				children: [media],
+			},
+			{
+				type: 'element',
+				tagName: 'figcaption',
+				properties: {
+					className: ['c-caption'],
+				},
+				children: state.all(node),
+			},
+		],
+	};
 };
 
 export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastElementContent | HastElementContent[] | null | undefined => {
-	const items = node.children.map((item): HastElement => {
-		const { id, title, size, start } = item;
+	const { id, title, size, start } = node;
 
-		const width = size?.width ?? YOUTUBE_BASE_SIZE.width;
-		const height = size?.height ?? YOUTUBE_BASE_SIZE.height;
+	const width = size?.width ?? YOUTUBE_BASE_SIZE.width;
+	const height = size?.height ?? YOUTUBE_BASE_SIZE.height;
 
-		const embeddedSearchParams = new URLSearchParams();
-		embeddedSearchParams.set('cc_load_policy', '1');
-		if (start !== undefined && start > 1) {
-			embeddedSearchParams.set('start', String(start));
-		}
+	const embeddedSearchParams = new URLSearchParams();
+	embeddedSearchParams.set('cc_load_policy', '1');
+	if (start !== undefined && start > 1) {
+		embeddedSearchParams.set('start', String(start));
+	}
 
-		const linkSearchParams = new URLSearchParams();
-		linkSearchParams.set('v', id);
-		if (start !== undefined && start > 1) {
-			linkSearchParams.set('t', `${start}s`);
-		}
+	const linkSearchParams = new URLSearchParams();
+	linkSearchParams.set('v', id);
+	if (start !== undefined && start > 1) {
+		linkSearchParams.set('t', `${start}s`);
+	}
 
-		return {
-			type: 'element',
-			tagName: 'figure',
-			children: [
-				{
-					type: 'element',
-					tagName: 'div',
-					properties: {
-						className: ['p-embed'],
-					},
-					children: [
-						{
-							type: 'element',
-							tagName: 'iframe',
-							properties: {
-								src: `https://www.youtube-nocookie.com/embed/${id}?${embeddedSearchParams.toString()}`, // https://support.google.com/youtube/answer/171780
-								allow: 'encrypted-media;fullscreen;gyroscope;picture-in-picture',
-								title: 'YouTube 動画',
-								width: String(width),
-								height: String(height),
-								className: ['p-embed__frame'],
-								style: `--aspect-ratio:${width}/${height}`,
-							},
-							children: [
-								{
-									type: 'text',
-									value: '',
-								},
-							],
-						},
-					],
+	return {
+		type: 'element',
+		tagName: 'figure',
+		children: [
+			{
+				type: 'element',
+				tagName: 'div',
+				properties: {
+					className: ['p-embed'],
 				},
-				{
-					type: 'element',
-					tagName: 'figcaption',
-					properties: {
-						className: ['c-caption'],
+				children: [
+					{
+						type: 'element',
+						tagName: 'iframe',
+						properties: {
+							src: `https://www.youtube-nocookie.com/embed/${id}?${embeddedSearchParams.toString()}`, // https://support.google.com/youtube/answer/171780
+							allow: 'encrypted-media;fullscreen;gyroscope;picture-in-picture',
+							title: 'YouTube 動画',
+							width: String(width),
+							height: String(height),
+							className: ['p-embed__frame'],
+							style: `--aspect-ratio:${width}/${height}`,
+						},
+						children: [
+							{
+								type: 'text',
+								value: '',
+							},
+						],
 					},
-					children: [
-						{
-							type: 'element',
-							tagName: 'a',
-							properties: {
-								href: `https://www.youtube.com/watch?${linkSearchParams.toString()}`,
-							},
-							children: [
-								{
-									type: 'text',
-									value: title,
-								},
-							],
-						},
-						{
-							type: 'element',
-							tagName: 'img',
-							properties: {
-								src: '/image/icon/youtube.svg',
-								alt: '(YouTube)',
-								width: '16',
-								height: '16',
-								className: ['c-link-icon'],
-							},
-							children: [],
-						},
-					],
+				],
+			},
+			{
+				type: 'element',
+				tagName: 'figcaption',
+				properties: {
+					className: ['c-caption'],
 				},
-			],
-		};
-	});
-
-	return items;
+				children: [
+					{
+						type: 'element',
+						tagName: 'a',
+						properties: {
+							href: `https://www.youtube.com/watch?${linkSearchParams.toString()}`,
+						},
+						children: [
+							{
+								type: 'text',
+								value: title,
+							},
+						],
+					},
+					{
+						type: 'element',
+						tagName: 'img',
+						properties: {
+							src: '/image/icon/youtube.svg',
+							alt: '(YouTube)',
+							width: '16',
+							height: '16',
+							className: ['c-link-icon'],
+						},
+						children: [],
+					},
+				],
+			},
+		],
+	};
 };
 
 export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastElementContent | HastElementContent[] | null | undefined => {
