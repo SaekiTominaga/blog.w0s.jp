@@ -49,27 +49,22 @@ const messageCtrlElement = <HTMLTextAreaElement | null>document.getElementById('
 const markdownMessagesElement = <HTMLTemplateElement | null>document.getElementById('markdown-messages'); // Markdown 変換結果のメッセージを表示する要素
 const messagePreviewElement = <HTMLTemplateElement | null>document.getElementById('message-preview'); // 本文プレビューを表示する要素
 const selectImageElement = <HTMLTemplateElement | null>document.getElementById('select-image');
-const selectImageErrorElement = <HTMLTemplateElement | null>document.getElementById('select-image-error');
-if (
-	messageCtrlElement !== null &&
-	markdownMessagesElement !== null &&
-	messagePreviewElement !== null &&
-	selectImageElement !== null &&
-	selectImageErrorElement !== null
-) {
+
+if (messageCtrlElement !== null && markdownMessagesElement !== null && messagePreviewElement !== null && selectImageElement !== null) {
 	const preview = new Preview({
 		ctrl: messageCtrlElement,
 		messages: markdownMessagesElement,
 		preview: messagePreviewElement,
 	});
+
 	const messageImage = new MessageImage({
-		ctrl: messageCtrlElement,
+		preview: messagePreviewElement,
 		image: selectImageElement,
-		error: selectImageErrorElement,
 	});
 
 	const exec = async (): Promise<void> => {
-		await Promise.all([preview.exec(), messageImage.exec()]);
+		await preview.exec();
+		await messageImage.exec();
 	};
 
 	exec();
