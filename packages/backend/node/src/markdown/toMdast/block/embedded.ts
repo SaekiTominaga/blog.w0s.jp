@@ -64,11 +64,11 @@ const toMdast = (): Plugin => {
 	const SERVICE_AMAZON = 'amazon';
 	const NAME_META_SEPARATOR = ': ';
 	const META_SEPARATOR = ' ';
-	const OPTION_OPEN = ' <';
+	const OPTION_OPEN = '<';
 	const OPTION_CLOSE = '>';
 
 	const metaParse = (node: PhrasingContent): { require: PhrasingContent; option?: string | undefined } => {
-		if (node.type !== 'text') {
+		if (node.type !== 'text' && node.type !== 'html') {
 			return {
 				require: node,
 			};
@@ -84,14 +84,14 @@ const toMdast = (): Plugin => {
 			const optionCloseIndex = value.lastIndexOf(OPTION_CLOSE);
 
 			if (optionOpenIndex !== -1 && optionCloseIndex === value.length - OPTION_CLOSE.length) {
-				require = value.substring(0, optionOpenIndex);
+				require = value.substring(0, optionOpenIndex).trimEnd();
 				option = value.substring(optionOpenIndex + OPTION_OPEN.length, value.length - OPTION_CLOSE.length);
 			}
 		}
 
 		return {
 			require: {
-				type: 'text',
+				type: node.type,
 				value: require,
 			},
 			option: option,
@@ -116,7 +116,7 @@ const toMdast = (): Plugin => {
 
 		const name = firstChildValue.substring(EMBEDDED_START.length, nameMetaSeparatorIndex);
 
-		const metaRequire = node.children;
+		const metaRequire = node.children.slice();
 		let metaOption: string | undefined;
 		metaRequire[0] = {
 			type: 'text',
@@ -129,10 +129,17 @@ const toMdast = (): Plugin => {
 			metaOption = option;
 		} else {
 			const lastChild = metaRequire.at(-1);
-			if (lastChild?.type === 'text') {
+			if (lastChild !== undefined) {
 				const { require, option } = metaParse(lastChild);
 				metaRequire[metaRequire.length - 1] = require;
 				metaOption = option;
+
+				if (lastChild.type === 'html') {
+					const lastChildBefore = metaRequire.at(-2);
+					if (lastChildBefore?.type === 'text') {
+						lastChildBefore.value = lastChildBefore.value.trimEnd();
+					}
+				}
 			}
 		}
 
