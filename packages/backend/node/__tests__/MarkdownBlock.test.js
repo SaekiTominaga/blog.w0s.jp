@@ -907,7 +907,7 @@ text1
 });
 
 describe('Image', () => {
-	test('normal', async () => {
+	test('JPEG', async () => {
 		const markdown = new Markdown();
 		expect(
 			format(
@@ -934,15 +934,73 @@ describe('Image', () => {
 		);
 	});
 
-	test('multi line', async () => {
+	test('SVG', async () => {
 		const markdown = new Markdown();
 		expect(
 			format(
 				await markdown.toHtml(
 					`
-@file1.jpg: image1
-@file2.svg: image2
-@file3.mp4: video1
+@file.svg: title<title> title
+`
+				)
+			)
+		).toBe(
+			`
+<figure>
+	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="" class="p-embed__image" /></div>
+	<figcaption class="c-caption">title&lt;title> title</figcaption>
+</figure>
+`.trim()
+		);
+	});
+
+	test('MP4', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+@file.mp4: title<title> title
+`
+				)
+			)
+		).toBe(
+			`
+<figure>
+	<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file.mp4" controls class="p-embed__video"></video></div>
+	<figcaption class="c-caption">title&lt;title> title</figcaption>
+</figure>
+`.trim()
+		);
+	});
+
+	test('invalid extension', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+@file.xxx: title<title> title
+`
+				)
+			)
+		).toBe(
+			`
+<figure>
+	<div class="p-embed"></div>
+	<figcaption class="c-caption">title&lt;title> title</figcaption>
+</figure>
+`.trim()
+		);
+	});
+
+	test('meta - last non Text', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+@file.jpg: title<title> \`code\`
 `
 				)
 			)
@@ -950,22 +1008,68 @@ describe('Image', () => {
 			`
 <figure>
 	<div class="p-embed">
-		<a href="https://media.w0s.jp/image/blog/file1.jpg"
+		<a href="https://media.w0s.jp/image/blog/file.jpg"
 			><picture
-				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file1.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file1.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file1.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file1.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-				<img src="https://media.w0s.jp/thumbimage/blog/file1.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
+				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
 		></a>
 	</div>
-	<figcaption class="c-caption">image1</figcaption>
+	<figcaption class="c-caption">title&lt;title> <code>code</code></figcaption>
 </figure>
+`.trim()
+		);
+	});
+
+	test('meta - HTML', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+@file.jpg: title<title> title <meta>
+`
+				)
+			)
+		).toBe(
+			`
 <figure>
-	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file2.svg" alt="" class="p-embed__image" /></div>
-	<figcaption class="c-caption">image2</figcaption>
+	<div class="p-embed">
+		<a href="https://media.w0s.jp/image/blog/file.jpg"
+			><picture
+				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
+		></a>
+	</div>
+	<figcaption class="c-caption">title&lt;title> title</figcaption>
 </figure>
+`.trim()
+		);
+	});
+
+	test('meta - Text', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+@file.jpg: title<title> title <10 10>
+`
+				)
+			)
+		).toBe(
+			`
 <figure>
-	<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file3.mp4" controls class="p-embed__video"></video></div>
-	<figcaption class="c-caption">video1</figcaption>
+	<div class="p-embed">
+		<a href="https://media.w0s.jp/image/blog/file.jpg"
+			><picture
+				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
+		></a>
+	</div>
+	<figcaption class="c-caption">title&lt;title> title</figcaption>
 </figure>
 `.trim()
 		);
@@ -984,142 +1088,6 @@ describe('Image', () => {
 		).toBe(
 			`
 <p>@file.jpg title</p>
-`.trim()
-		);
-	});
-
-	test('row2 invalid', async () => {
-		const markdown = new Markdown();
-		expect(
-			format(
-				await markdown.toHtml(
-					`
-@file.jpg: title
-file.jpg
-`
-				)
-			)
-		).toBe(
-			`
-<p>@file.jpg: title file.jpg</p>
-`.trim()
-		);
-	});
-});
-
-describe('Amazon', () => {
-	test('normal', async () => {
-		const markdown = new Markdown();
-		expect(
-			format(
-				await markdown.toHtml(
-					`
-@amazon: 1234567890 title<title> title
-`
-				)
-			)
-		).toBe(
-			`
-<aside class="p-amazon">
-	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
-	<ul class="p-amazon__list">
-		<li>
-			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
-				><div class="p-amazon__thumb"><img src="/image/entry/amazon-noimage.svg" alt="" width="113" height="160" class="p-amazon__image" /></div>
-				<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div></a
-			>
-		</li>
-	</ul>
-</aside>
-`.trim()
-		);
-	});
-
-	test('image', async () => {
-		const markdown = new Markdown();
-		expect(
-			format(
-				await markdown.toHtml(
-					`
-@amazon: 1234567890 title<title> title <abcdef>
-`
-				)
-			)
-		).toBe(
-			`
-<aside class="p-amazon">
-	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
-	<ul class="p-amazon__list">
-		<li>
-			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
-				><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" class="p-amazon__image" /></div>
-				<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div></a
-			>
-		</li>
-	</ul>
-</aside>
-`.trim()
-		);
-	});
-
-	test('image size', async () => {
-		const markdown = new Markdown();
-		expect(
-			format(
-				await markdown.toHtml(
-					`
-@amazon: 1234567890 title <abcdef 99x150>
-`
-				)
-			)
-		).toBe(
-			`
-<aside class="p-amazon">
-	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
-	<ul class="p-amazon__list">
-		<li>
-			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
-				><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" width="106" height="160" class="p-amazon__image" /></div>
-				<div class="p-amazon__text"><p class="p-amazon__title">title</p></div></a
-			>
-		</li>
-	</ul>
-</aside>
-`.trim()
-		);
-	});
-
-	test('asin invalid', async () => {
-		const markdown = new Markdown();
-		expect(
-			format(
-				await markdown.toHtml(
-					`
-@amazon: 1234 title
-`
-				)
-			)
-		).toBe(
-			`
-<p>@amazon: 1234 title</p>
-`.trim()
-		);
-	});
-
-	test('multi invalid', async () => {
-		const markdown = new Markdown();
-		expect(
-			format(
-				await markdown.toHtml(
-					`
-@amazon: 1234567890 title
-@youtube: 1234567890 title
-`
-				)
-			)
-		).toBe(
-			`
-<p>@amazon: 1234567890 title @youtube: 1234567890 title</p>
 `.trim()
 		);
 	});
@@ -1219,6 +1187,156 @@ describe('YouTube', () => {
 		).toBe(
 			`
 <p>@youtube: aaa@</p>
+`.trim()
+		);
+	});
+});
+
+describe('Amazon', () => {
+	test('normal', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+- @amazon: 1234567890 title<title> title
+`
+				)
+			)
+		).toBe(
+			`
+<aside class="p-amazon">
+	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
+	<ul class="p-amazon__list">
+		<li>
+			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
+				><div class="p-amazon__thumb"><img src="/image/entry/amazon-noimage.svg" alt="" width="113" height="160" class="p-amazon__image" /></div>
+				<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div></a
+			>
+		</li>
+	</ul>
+</aside>
+`.trim()
+		);
+	});
+
+	test('image', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+- @amazon: 1234567890 title<title> title <abcdef>
+`
+				)
+			)
+		).toBe(
+			`
+<aside class="p-amazon">
+	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
+	<ul class="p-amazon__list">
+		<li>
+			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
+				><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" class="p-amazon__image" /></div>
+				<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div></a
+			>
+		</li>
+	</ul>
+</aside>
+`.trim()
+		);
+	});
+
+	test('image size (width > height)', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+- @amazon: 1234567890 title <abcdef 150x99>
+`
+				)
+			)
+		).toBe(
+			`
+<aside class="p-amazon">
+	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
+	<ul class="p-amazon__list">
+		<li>
+			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
+				><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" width="160" height="106" class="p-amazon__image" /></div>
+				<div class="p-amazon__text"><p class="p-amazon__title">title</p></div></a
+			>
+		</li>
+	</ul>
+</aside>
+`.trim()
+		);
+	});
+
+	test('image size (width < height)', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+- @amazon: 1234567890 title <abcdef 99x150>
+`
+				)
+			)
+		).toBe(
+			`
+<aside class="p-amazon">
+	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
+	<ul class="p-amazon__list">
+		<li>
+			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
+				><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" width="106" height="160" class="p-amazon__image" /></div>
+				<div class="p-amazon__text"><p class="p-amazon__title">title</p></div></a
+			>
+		</li>
+	</ul>
+</aside>
+`.trim()
+		);
+	});
+
+	test('asin invalid', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+- @amazon: 1234 title
+`
+				)
+			)
+		).toBe(
+			`
+<ul class="p-list">
+	<li>@amazon: 1234 title</li>
+</ul>
+`.trim()
+		);
+	});
+
+	test('multi invalid', async () => {
+		const markdown = new Markdown();
+		expect(
+			format(
+				await markdown.toHtml(
+					`
+- @amazon: 1234567890 title
+- @youtube: 1234567890 title
+`
+				)
+			)
+		).toBe(
+			`
+<ul class="p-list">
+	<li>@amazon: 1234567890 title</li>
+	<li>@youtube: 1234567890 title</li>
+</ul>
 `.trim()
 		);
 	});
