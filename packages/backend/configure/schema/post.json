@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/post.json",
 	"type": "object",
 	"title": "記事投稿",
-	"required": ["view", "validator", "insert", "update", "update_modified", "feed_create", "sitemap_create", "newly_json_create", "media_upload"],
+	"required": ["view", "validator", "insert", "update", "update_modified", "feed_create", "sitemap_create", "newly_json_create", "social", "media_upload"],
 	"properties": {
 		"view": {
 			"type": "object",
@@ -209,6 +209,82 @@
 						"message_failure": {
 							"type": "string",
 							"title": "失敗時のメッセージ"
+						}
+					},
+					"additionalProperties": false
+				}
+			},
+			"additionalProperties": false
+		},
+		"social": {
+			"type": "object",
+			"title": "ソーシャルサービス投稿",
+			"required": ["mastodon"],
+			"properties": {
+				"mastodon": {
+					"type": "object",
+					"title": "Mastodon",
+					"required": ["api", "message_prefix", "url_prefix", "api_response"],
+					"properties": {
+						"api": {
+							"type": "object",
+							"title": "API 情報",
+							"required": ["development", "production"],
+							"properties": {
+								"development": {
+									"type": "object",
+									"title": "開発用",
+									"$ref": "#/properties/social/properties/mastodon/properties/api/definitions/api"
+								},
+								"production": {
+									"type": "object",
+									"title": "本番用",
+									"$ref": "#/properties/social/properties/mastodon/properties/api/definitions/api"
+								}
+							},
+							"additionalProperties": false,
+							"definitions": {
+								"api": {
+									"type": "object",
+									"required": ["instance_origin", "access_token"],
+									"title": "API 情報",
+									"properties": {
+										"instance_origin": {
+											"type": "string",
+											"title": "インスタンスのオリジン"
+										},
+										"access_token": {
+											"type": "string",
+											"title": "アクセストークン"
+										}
+									},
+									"additionalProperties": false
+								}
+							}
+						},
+						"message_prefix": {
+							"type": "string",
+							"title": "ツイート本文の冒頭"
+						},
+						"url_prefix": {
+							"type": "string",
+							"title": "記事 URL の冒頭"
+						},
+						"api_response": {
+							"type": "object",
+							"title": "API のレスポンス",
+							"required": ["message_success", "message_failure"],
+							"properties": {
+								"message_success": {
+									"type": "string",
+									"title": "成功時のメッセージ"
+								},
+								"message_failure": {
+									"type": "string",
+									"title": "失敗時のメッセージ"
+								}
+							},
+							"additionalProperties": false
 						}
 					},
 					"additionalProperties": false

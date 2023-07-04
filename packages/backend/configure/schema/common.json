@@ -5,6 +5,7 @@
 	"title": "富永日記帳",
 	"required": [
 		"port",
+		"origin",
 		"request",
 		"response",
 		"static",
@@ -24,6 +25,10 @@
 			"minimum": 1,
 			"maximum": 65535,
 			"title": "HTTP サーバーのポート番号"
+		},
+		"origin": {
+			"type": "string",
+			"title": "オリジン"
 		},
 		"request": {
 			"type": "object",

@@ -213,6 +213,24 @@
 										</div>
 									</fieldset>
 								</div>
+								<%_ } else { _%>
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend">外部サービス</legend>
+										<div class="p-form-grid__contents">
+											<div class="c-form-controls">
+												<label class="c-label -check">
+													<%_ if (requestQuery.social === 1) { _%>
+													<input type="checkbox" name="social" value="1" checked="" />
+													<%_ } else { _%>
+													<input type="checkbox" name="social" value="1" />
+													<%_ } _%>
+													<span class="c-label__text">ソーシャルサービスへ投稿</span>
+												</label>
+											</div>
+										</div>
+									</fieldset>
+								</div>
 								<%_ } _%>
 							</div>
 
