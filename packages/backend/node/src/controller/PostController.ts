@@ -2,10 +2,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
-import prettier from 'prettier';
-import xmlFormatter from 'xml-formatter';
 import { Request, Response } from 'express';
 import { Result as ValidationResult, ValidationError } from 'express-validator';
+import { login as mastodonLogin } from 'masto';
+import prettier from 'prettier';
+import xmlFormatter from 'xml-formatter';
 import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
 import Compress from '../util/Compress.js';
@@ -81,6 +82,7 @@ export default class PostController extends Controller implements ControllerInte
 			relation: RequestUtil.string(req.body['relation']),
 			public: RequestUtil.boolean(req.body['public']),
 			timestamp: RequestUtil.boolean(req.body['timestamp']),
+			social: RequestUtil.boolean(req.body['social']),
 			media_overwrite: RequestUtil.boolean(req.body['mediaoverwrite']),
 			action_add: RequestUtil.boolean(req.body['actionadd']),
 			action_revise: RequestUtil.boolean(req.body['actionrev']),
@@ -107,7 +109,7 @@ export default class PostController extends Controller implements ControllerInte
 					return;
 				}
 
-				const topicId = await dao.insert(
+				const entryId = await dao.insert(
 					requestQuery.title,
 					requestQuery.description,
 					requestQuery.message,
@@ -116,14 +118,19 @@ export default class PostController extends Controller implements ControllerInte
 					requestQuery.relation?.split(',') ?? null,
 					requestQuery.public
 				);
-				this.logger.info('データ登録', topicId);
-				topicPostResults.add({ success: true, message: this.#config.insert.message_success });
+				this.logger.info('データ登録', entryId);
+
+				const entryUrl = this.#getEntryUrl(entryId);
+				topicPostResults.add({ success: true, message: `${this.#config.insert.message_success} ${entryUrl}` });
 
 				topicPostResults.add(await this.#updateModified(dao));
 				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao)]);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson(dao));
+				if (requestQuery.social) {
+					topicPostResults.add(await this.#postSocial(requestQuery, entryUrl));
+				}
 			}
 		} else if (requestQuery.action_revise) {
 			/* 修正実行 */
@@ -147,7 +154,9 @@ export default class PostController extends Controller implements ControllerInte
 					requestQuery.timestamp
 				);
 				this.logger.info('データ更新', requestQuery.id);
-				topicPostResults.add({ success: true, message: this.#config.update.message_success });
+
+				const entryUrl = this.#getEntryUrl(requestQuery.id);
+				topicPostResults.add({ success: true, message: `${this.#config.update.message_success} ${entryUrl}` });
 
 				topicPostResults.add(await this.#updateModified(dao));
 				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao)]);
@@ -226,6 +235,17 @@ export default class PostController extends Controller implements ControllerInte
 			targetId: requestQuery.id ?? latestId + 1, // 編集対象の記事 ID
 			categoryMaster: categoryMasterView, // カテゴリー情報
 		});
+	}
+
+	/**
+	 * 記事 URL を取得する
+	 *
+	 * @param id - 記事 ID
+	 *
+	 * @returns 記事 URL
+	 */
+	#getEntryUrl(id: number) {
+		return `${this.configCommon.origin}/${id}`;
 	}
 
 	/**
@@ -411,6 +431,45 @@ export default class PostController extends Controller implements ControllerInte
 		}
 
 		return { success: true, message: this.#config.newly_json_create.response.message_success };
+	}
+
+	/**
+	 * ソーシャルサービスに投稿する
+	 *
+	 * @param requestQuery - URL クエリー情報
+	 * @param entryUrl - 記事 URL
+	 *
+	 * @returns 処理結果のメッセージ
+	 */
+	async #postSocial(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResults> {
+		/* Mastodon */
+		const api = this.#env === 'development' ? this.#config.social.mastodon.api.development : this.#config.social.mastodon.api.production;
+
+		try {
+			const mastodon = await mastodonLogin({
+				url: api.instance_origin,
+				accessToken: api.access_token,
+			});
+
+			let message = `${this.#config.social.mastodon.message_prefix}\n\n${requestQuery.title}\n${entryUrl}`;
+			if (requestQuery.description !== '') {
+				message += `\n\n${requestQuery.description}`;
+			}
+
+			const status = await mastodon.v1.statuses.create({
+				status: message,
+				visibility: 'private',
+				language: 'ja',
+			});
+
+			this.logger.info('Mastodon post success', status.url);
+
+			return { success: true, message: `${this.#config.social.mastodon.api_response.message_success} ${status.url}` };
+		} catch (e) {
+			this.logger.error('Mastodon post failed', e);
+
+			return { success: false, message: this.#config.social.mastodon.api_response.message_failure };
+		}
 	}
 
 	/**
