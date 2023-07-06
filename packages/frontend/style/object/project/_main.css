@@ -95,7 +95,9 @@
 	display: grid;
 	grid-template-columns: min(40%, 160px) 15px 1fr;
 	grid-template-areas: "image gap text";
-	transition: border-color var(--link-hover-transition-duration), background-color var(--link-hover-transition-duration);
+	transition:
+		border-color var(--link-hover-transition-duration),
+		background-color var(--link-hover-transition-duration);
 	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
 	border: 1px solid var(--_bg-color);
