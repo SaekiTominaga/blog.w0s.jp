@@ -50,7 +50,7 @@
 		"micromark-util-sanitize-uri": "^1.2.0",
 		"multer": "^1.4.4",
 		"nodemailer": "^6.9.3",
-		"prettier": "^2.8.8",
+		"prettier": "^3.0.0",
 		"rehype-highlight": "^6.0.0",
 		"rehype-stringify": "^9.0.3",
 		"remark-lint-blockquote-indentation": "^3.1.2",

@@ -28,3 +28,4 @@
 /packages/frontend/script/tsconfig.tsbuildinfo
 
 /packages/util/dist/
+/packages/util/node_modules/

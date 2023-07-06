@@ -223,7 +223,7 @@ export default class BlogPostDao extends BlogDao {
 		categoryIds: string[],
 		imagePath: string | null,
 		relationIds: string[] | null,
-		publicFlag: boolean
+		publicFlag: boolean,
 	): Promise<number> {
 		const dbh = await this.getDbh();
 
@@ -275,7 +275,7 @@ export default class BlogPostDao extends BlogDao {
 							':topic_id': topicId,
 							':category_id': categoryId,
 						});
-					})
+					}),
 				);
 				await categoryInsertSth.finalize();
 			}
@@ -293,7 +293,7 @@ export default class BlogPostDao extends BlogDao {
 							':topic_id': topicId,
 							':relation_id': relationId,
 						});
-					})
+					}),
 				);
 				await relationInsertSth.finalize();
 			}
@@ -329,7 +329,7 @@ export default class BlogPostDao extends BlogDao {
 		imagePath: string | null,
 		relationIds: string[] | null,
 		publicFlag: boolean,
-		timestampUpdate: boolean
+		timestampUpdate: boolean,
 	): Promise<void> {
 		const dbh = await this.getDbh();
 
@@ -422,7 +422,7 @@ export default class BlogPostDao extends BlogDao {
 							':topic_id': topicId,
 							':category_id': categoryId,
 						});
-					})
+					}),
 				);
 				await categoryInsertSth.finalize();
 			}
@@ -451,7 +451,7 @@ export default class BlogPostDao extends BlogDao {
 							':topic_id': topicId,
 							':relation_id': relationId,
 						});
-					})
+					}),
 				);
 				await relationInsertSth.finalize();
 			}

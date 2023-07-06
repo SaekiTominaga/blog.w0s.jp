@@ -30,14 +30,12 @@ export default class PostValidator {
 	 */
 	async topic(dao: BlogPostDao, topicId: number | null = null): Promise<Result<ValidationError>> {
 		await body('title')
-			.custom(
-				async (value: string): Promise<boolean> => {
-					if (await dao.isExistsTitle(value, topicId)) {
-						return Promise.reject();
-					}
-					return true;
+			.custom(async (value: string): Promise<boolean> => {
+				if (await dao.isExistsTitle(value, topicId)) {
+					return Promise.reject();
 				}
-			)
+				return true;
+			})
 			.withMessage(this.#config.validator.title.message.unique_constraint)
 			.run(this.#req);
 
