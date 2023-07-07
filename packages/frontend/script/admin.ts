@@ -29,7 +29,7 @@ for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLT
 				trim: true,
 			});
 		},
-		{ passive: true }
+		{ passive: true },
 	);
 }
 

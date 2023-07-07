@@ -47,7 +47,7 @@ export default class GoogleAdsense {
 			},
 			{
 				rootMargin: rootMargin,
-			}
+			},
 		);
 
 		observer.observe(this.#thisElement);

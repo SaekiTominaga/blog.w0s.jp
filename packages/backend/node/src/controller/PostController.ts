@@ -116,7 +116,7 @@ export default class PostController extends Controller implements ControllerInte
 					requestQuery.category,
 					requestQuery.image,
 					requestQuery.relation?.split(',') ?? null,
-					requestQuery.public
+					requestQuery.public,
 				);
 				this.logger.info('データ登録', entryId);
 
@@ -151,7 +151,7 @@ export default class PostController extends Controller implements ControllerInte
 					requestQuery.image,
 					requestQuery.relation?.split(',') ?? null,
 					requestQuery.public,
-					requestQuery.timestamp
+					requestQuery.timestamp,
 				);
 				this.logger.info('データ更新', requestQuery.id);
 
@@ -296,7 +296,7 @@ export default class PostController extends Controller implements ControllerInte
 						updated_at: dayjs(entry.updated_at ?? entry.created_at),
 						update: Boolean(entry.updated_at),
 					});
-				})
+				}),
 			);
 
 			const feedXml = await ejs.renderFile(`${this.configCommon.views}/${this.#config.feed_create.view_path}`, {
@@ -308,10 +308,7 @@ export default class PostController extends Controller implements ControllerInte
 
 			let feedXmlFormatted = '';
 			try {
-				feedXmlFormatted = prettier
-					.format(feedXml, prettierOptions)
-					.replaceAll(/\t*<!-- prettier-ignore -->\t*\n/g, '')
-					.trim();
+				feedXmlFormatted = (await prettier.format(feedXml, prettierOptions)).replaceAll(/\t*<!-- prettier-ignore -->\t*\n/g, '').trim();
 			} catch (e) {
 				this.logger.error('Prettier failed', e);
 				feedXmlFormatted = feedXml;
@@ -348,7 +345,7 @@ export default class PostController extends Controller implements ControllerInte
 				dao.getLastModified(),
 				dao.getEntriesSitemap(
 					this.#config.sitemap_create
-						.url_limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要があるが、超充分に猶予があるのでとりあえずこれで */
+						.url_limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要があるが、超充分に猶予があるのでとりあえずこれで */,
 				),
 			]);
 
@@ -391,11 +388,9 @@ export default class PostController extends Controller implements ControllerInte
 			datasCatgroup.set('', await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number));
 
 			await Promise.all(
-				(
-					await dao.getCategoryGroupMasterFileName()
-				).map(async (fileNameType) => {
+				(await dao.getCategoryGroupMasterFileName()).map(async (fileNameType) => {
 					datasCatgroup.set(fileNameType, await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number, fileNameType));
-				})
+				}),
 			);
 
 			await Promise.all(
@@ -404,7 +399,7 @@ export default class PostController extends Controller implements ControllerInte
 						datas.map((data) => ({
 							id: data.id,
 							title: new MarkdownTitle(data.title).mark(),
-						}))
+						})),
 					);
 
 					const newlyJsonBrotli = Compress.brotliText(newlyJson);
@@ -422,7 +417,7 @@ export default class PostController extends Controller implements ControllerInte
 					await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
 					this.logger.info('JSON file created', filePath);
 					this.logger.info('JSON Brotli file created', brotliFilePath);
-				})
+				}),
 			);
 		} catch (e) {
 			this.logger.error('新着 JSON 生成失敗', e);
@@ -584,7 +579,7 @@ export default class PostController extends Controller implements ControllerInte
 							filename: file.originalname,
 						});
 					}
-				})
+				}),
 			);
 		} finally {
 			/* アップロードされた一時ファイルを削除する */

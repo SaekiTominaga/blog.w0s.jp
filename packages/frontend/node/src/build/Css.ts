@@ -31,7 +31,7 @@ export default class Css extends BuildComponent implements BuildComponentInterfa
 			/* 整形 */
 			let cssFormatted = fileData;
 			try {
-				cssFormatted = prettier.format(fileData, prettierOptions);
+				cssFormatted = await prettier.format(fileData, prettierOptions);
 			} catch (e) {
 				console.error(`Prettier error: ${filePath}`, e);
 			}

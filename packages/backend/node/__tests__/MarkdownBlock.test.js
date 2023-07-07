@@ -2,9 +2,9 @@ import { describe, expect, test } from '@jest/globals';
 import prettier from 'prettier';
 import Markdown from '../dist/markdown/Markdown.js';
 
-const format = (vFile) => {
+const format = async (vFile) => {
 	const value = vFile.value.toString();
-	const formatted = prettier.format(value, {
+	const formatted = await prettier.format(value, {
 		endOfLine: 'lf',
 		printWidth: 9999,
 		useTabs: true,
@@ -17,7 +17,7 @@ describe('heaging', () => {
 	test('h1', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 text
@@ -25,9 +25,9 @@ text
 # 見出し1
 
 text
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <p>text</p>
@@ -38,14 +38,14 @@ text
 	</hgroup>
 	<p>text</p>
 </section>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('h2', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 text
@@ -61,9 +61,9 @@ text
 # 見出し*1*
 
 text
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <p>text</p>
@@ -94,14 +94,14 @@ text
 	</hgroup>
 	<p>text</p>
 </section>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('h3 or higher', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 ### 見出し3
@@ -115,9 +115,9 @@ text
 ####### 見出し7
 
 text
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <h4>見出し3</h4>
@@ -126,7 +126,7 @@ text
 <p role="heading" aria-level="7">見出し6</p>
 <p>####### 見出し7</p>
 <p>text</p>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -134,12 +134,12 @@ text
 describe('paragraph', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('text'))).toBe('<p>text</p>'.trim());
+		expect(await format(await markdown.toHtml('text'))).toBe('<p>text</p>'.trim());
 	});
 
 	test('blank', async () => {
 		const markdown = new Markdown();
-		expect(format(await markdown.toHtml('␣'))).toBe(''.trim());
+		expect(await format(await markdown.toHtml('␣'))).toBe(''.trim());
 	});
 });
 
@@ -147,36 +147,36 @@ describe('unordered list', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - list1
 - list2
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ul class="p-list">
 	<li>list1</li>
 	<li>list2</li>
 </ul>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('nest', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - list1
 - list2
   - list3
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ul class="p-list">
@@ -188,7 +188,7 @@ describe('unordered list', () => {
 		</ul>
 	</li>
 </ul>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -197,42 +197,42 @@ describe('ordered list', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 1. list1
 1. list2
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ol class="p-list-num">
 	<li>list1</li>
 	<li>list2</li>
 </ol>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('start', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 2. list1
 3. list2
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ol class="p-list-num" start="2">
 	<li>list1</li>
 	<li>list2</li>
 </ol>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -241,36 +241,36 @@ describe('link list', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - [list1](http://example.com) text
 - [list2](http://example.com) text
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ul class="p-links">
 	<li><a href="http://example.com">list1</a><b class="c-domain">(example.com)</b> text</li>
 	<li><a href="http://example.com">list2</a><b class="c-domain">(example.com)</b> text</li>
 </ul>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('mix', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - [list1](http://example.com) text
 - [list2](http://example.com) text
 - list3
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ul class="p-list">
@@ -278,7 +278,7 @@ describe('link list', () => {
 	<li><a href="http://example.com">list2</a><b class="c-domain">(example.com)</b> text</li>
 	<li>list3</li>
 </ul>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -287,36 +287,36 @@ describe('note', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - note: note1
 - note: note*2*
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ul class="p-notes">
 	<li>note1</li>
 	<li>note<em>2</em></li>
 </ul>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('mix', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - note: note1
 - note: note*2*
 - note3
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ul class="p-list">
@@ -324,7 +324,7 @@ describe('note', () => {
 	<li>note: note<em>2</em></li>
 	<li>note3</li>
 </ul>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -333,21 +333,21 @@ describe('ins', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - 2023-01-01: ins1
 - 2023-01-02: ins*2*
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <p class="p-insert"><span class="p-insert__date">2023年1月1日追記</span><ins datetime="2023-01-01" class="p-insert__text">ins1</ins></p>
 <p class="p-insert">
 	<span class="p-insert__date">2023年1月2日追記</span><ins datetime="2023-01-02" class="p-insert__text">ins<em>2</em></ins>
 </p>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -356,7 +356,7 @@ describe('definition list', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 dt1
@@ -365,9 +365,9 @@ dt1
 dt*2*
 : dd2-1
 : dd*2-2*
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <dl class="p-list-description">
@@ -377,7 +377,7 @@ dt*2*
 	<dd>dd2-1</dd>
 	<dd>dd<em>2-2</em></dd>
 </dl>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -386,15 +386,15 @@ describe('blockquote', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 > quote1
 >
 > quote*2*
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
@@ -403,14 +403,14 @@ describe('blockquote', () => {
 		<p>quote<em>2</em></p>
 	</blockquote>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('omit', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 > quote1
@@ -418,9 +418,9 @@ describe('blockquote', () => {
 >~
 >
 > quote2
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
@@ -430,14 +430,14 @@ describe('blockquote', () => {
 		<p>quote2</p>
 	</blockquote>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('omit (non japanese)', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 > quote1
@@ -446,9 +446,9 @@ describe('blockquote', () => {
 >
 > quote2
 >- ?en
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
@@ -458,120 +458,120 @@ describe('blockquote', () => {
 		<p>quote2</p>
 	</blockquote>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('meta text', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 > quote
 >
 >- ?引用元
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<blockquote class="p-quote"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta">引用元</figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('meta lang', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 > quote
 >
 >- ?en
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<blockquote class="p-quote" lang="en"><p>quote</p></blockquote>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('meta url', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 > quote
 >
 >- ?http://example.com
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<blockquote class="p-quote" cite="http://example.com"><p>quote</p></blockquote>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('meta isbn', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 > quote
 >
 >- ?978-4-06-519981-7
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<blockquote class="p-quote" cite="urn:ISBN:978-4-06-519981-7"><p>quote</p></blockquote>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('meta isbn (invalid)', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 > quote
 >
 >- ?978-4-06-519981-0
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<blockquote class="p-quote"><p>quote</p></blockquote>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('meta all', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 > quote
@@ -580,16 +580,16 @@ describe('blockquote', () => {
 >- ?978-4-06-519981-7
 >- ?http://example.com
 >- ?*引用*元
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<blockquote class="p-quote" lang="en" cite="http://example.com"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta"><a href="http://example.com">引用元</a><b class="c-domain">(example.com)</b></figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -598,37 +598,37 @@ describe('code', () => {
 	test('single line', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 \`\`\`
 code1
 \`\`\`
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <div class="p-code">
 	<pre class="p-code__code"><code id="code-608b37cf873ae12ce9d2169eeb9f1359">code1</code></pre>
 </div>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('multi line', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 \`\`\`
 code1
 code*2*
 \`\`\`
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <div class="p-code">
@@ -638,23 +638,23 @@ code*2*
 	<pre class="p-code__code"><code id="code-3247df396b0e96d79af9ae67b7500fea">code1
 code*2*</code></pre>
 </div>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('lang', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 \`\`\`html
 <p>code1</p>
 <p>code*2*</p>
 \`\`\`
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <div class="p-code">
@@ -664,7 +664,7 @@ code*2*</code></pre>
 	<pre class="p-code__code"><code id="code-e29e42be83cd7ab3e69a92ec404915c8" class="hljs lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>></span>code1<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>></span>
 <span class="hljs-tag">&lt;<span class="hljs-name">p</span>></span>code*2*<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>></span></code></pre>
 </div>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -673,16 +673,16 @@ describe('table', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 | th | *th* | th | th |
 | - | :- | -: | :-: |
 | td | *td* | td | td |
 | td | td | td | td |
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <table class="p-table">
@@ -709,23 +709,23 @@ describe('table', () => {
 		</tr>
 	</tbody>
 </table>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('first row header', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 | ~th | th |
 | - | - |
 | th | td |
 | th | td |
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <table class="p-table">
@@ -746,25 +746,25 @@ describe('table', () => {
 		</tr>
 	</tbody>
 </table>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('no thead', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 | td | td |
 | td | td |
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <p>| td | td | | td | td |</p>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -773,26 +773,26 @@ describe('box', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 :::normal
 text1
 :::
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <div class="p-box -normal"><p>text1</p></div>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('multi line', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 :::normal
@@ -800,23 +800,23 @@ text1
 
 text*2*
 :::
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <div class="p-box -normal">
 	<p>text1</p>
 	<p>text<em>2</em></p>
 </div>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('last child no text', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 :::normal
@@ -825,23 +825,23 @@ text1
 text*2*
 
 :::
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <div class="p-box -normal">
 	<p>text1</p>
 	<p>text<em>2</em></p>
 </div>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('& > :not(p)', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 :::normal
@@ -850,9 +850,9 @@ text1
 - list
 
 :::
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <div class="p-box -normal">
@@ -861,14 +861,14 @@ text1
 		<li>list</li>
 	</ul>
 </div>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('no name', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 :::
@@ -876,32 +876,32 @@ text1
 
 text*2*
 :::
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <p>::: text1</p>
 <p>text<em>2</em> :::</p>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('no close', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 :::normal
 text1
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <p>:::normal text1</p>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -910,13 +910,13 @@ describe('Image', () => {
 	test('JPEG', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @file.jpg: title<title> title
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
@@ -930,80 +930,80 @@ describe('Image', () => {
 	</div>
 	<figcaption class="c-caption">title&lt;title> title</figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('SVG', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @file.svg: title<title> title
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="" class="p-embed__image" /></div>
 	<figcaption class="c-caption">title&lt;title> title</figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('MP4', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @file.mp4: title<title> title
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file.mp4" controls class="p-embed__video"></video></div>
 	<figcaption class="c-caption">title&lt;title> title</figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('invalid extension', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @file.xxx: title<title> title
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<div class="p-embed"></div>
 	<figcaption class="c-caption">title&lt;title> title</figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('meta - last non Text', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @file.jpg: title<title> \`code\`
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
@@ -1017,20 +1017,20 @@ describe('Image', () => {
 	</div>
 	<figcaption class="c-caption">title&lt;title> <code>code</code></figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('meta - HTML', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @file.jpg: title<title> title <meta>
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
@@ -1044,20 +1044,20 @@ describe('Image', () => {
 	</div>
 	<figcaption class="c-caption">title&lt;title> title</figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('meta - Text', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @file.jpg: title<title> title <10 10>
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
@@ -1071,24 +1071,24 @@ describe('Image', () => {
 	</div>
 	<figcaption class="c-caption">title&lt;title> title</figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('no separator', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @file.jpg title
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <p>@file.jpg title</p>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -1097,97 +1097,97 @@ describe('YouTube', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @youtube: 1234567890 title<title> title
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
 	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('size', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @youtube: 1234567890 title<title> title <100x150>
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe></div>
 	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('start', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @youtube: 1234567890 title <10>
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
 	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('size & start', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @youtube: 1234567890 title <100x150 10>
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <figure>
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe></div>
 	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
 </figure>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('id invalid', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 @youtube: aaa@
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <p>@youtube: aaa@</p>
-`.trim()
+`.trim(),
 		);
 	});
 });
@@ -1196,13 +1196,13 @@ describe('Amazon', () => {
 	test('normal', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - @amazon: 1234567890 title<title> title
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <aside class="p-amazon">
@@ -1216,20 +1216,20 @@ describe('Amazon', () => {
 		</li>
 	</ul>
 </aside>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('image', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - @amazon: 1234567890 title<title> title <abcdef>
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <aside class="p-amazon">
@@ -1243,20 +1243,20 @@ describe('Amazon', () => {
 		</li>
 	</ul>
 </aside>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('image size (width > height)', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - @amazon: 1234567890 title <abcdef 150x99>
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <aside class="p-amazon">
@@ -1270,20 +1270,20 @@ describe('Amazon', () => {
 		</li>
 	</ul>
 </aside>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('image size (width < height)', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - @amazon: 1234567890 title <abcdef 99x150>
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <aside class="p-amazon">
@@ -1297,47 +1297,47 @@ describe('Amazon', () => {
 		</li>
 	</ul>
 </aside>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('asin invalid', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - @amazon: 1234 title
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ul class="p-list">
 	<li>@amazon: 1234 title</li>
 </ul>
-`.trim()
+`.trim(),
 		);
 	});
 
 	test('multi invalid', async () => {
 		const markdown = new Markdown();
 		expect(
-			format(
+			await format(
 				await markdown.toHtml(
 					`
 - @amazon: 1234567890 title
 - @youtube: 1234567890 title
-`
-				)
-			)
+`,
+				),
+			),
 		).toBe(
 			`
 <ul class="p-list">
 	<li>@amazon: 1234567890 title</li>
 	<li>@youtube: 1234567890 title</li>
 </ul>
-`.trim()
+`.trim(),
 		);
 	});
 });

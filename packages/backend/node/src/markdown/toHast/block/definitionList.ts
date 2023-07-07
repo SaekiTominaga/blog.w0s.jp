@@ -13,6 +13,6 @@ export const defListToHast = (state: H, node: DefListNode): HastElementContent |
 		{
 			className: ['p-list-description'],
 		},
-		all(state, node)
+		all(state, node),
 	);
 };

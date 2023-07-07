@@ -7,9 +7,7 @@ describe('code', () => {
 	});
 
 	test('multiple', () => {
-		expect(new MarkdownTitle('text1`code1``code2`').mark()).toBe(
-			'text1<code>code1</code><code>code2</code>'
-		);
+		expect(new MarkdownTitle('text1`code1``code2`').mark()).toBe('text1<code>code1</code><code>code2</code>');
 	});
 
 	test('open only', () => {
@@ -17,6 +15,8 @@ describe('code', () => {
 	});
 
 	test('HTML escape', () => {
-		expect(new MarkdownTitle('<s>text1</s>`<s>code1</s>`<s>text2</s>').mark()).toBe('&lt;s&gt;text1&lt;/s&gt;<code>&lt;s&gt;code1&lt;/s&gt;</code>&lt;s&gt;text2&lt;/s&gt;');
+		expect(new MarkdownTitle('<s>text1</s>`<s>code1</s>`<s>text2</s>').mark()).toBe(
+			'&lt;s&gt;text1&lt;/s&gt;<code>&lt;s&gt;code1&lt;/s&gt;</code>&lt;s&gt;text2&lt;/s&gt;',
+		);
 	});
 });

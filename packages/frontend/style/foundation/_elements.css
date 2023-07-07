@@ -81,7 +81,7 @@ code {
 
 q {
 	background: linear-gradient(transparent, transparent 75%, var(--color-yellow) 75%);
-	quotes: "\201C""\201D""\2018""\2019";
+	quotes: "\201C" "\201D" "\2018" "\2019";
 
 	&::before {
 		padding-inline-start: 0.25em;

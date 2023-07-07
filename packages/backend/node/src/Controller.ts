@@ -35,7 +35,7 @@ export default class Controller {
 	async response(html: string, options: { filePath: string; brotliFilePath: string; prettierConfig: string; httpResponse: HttpResponse }): Promise<void> {
 		const prettierOptions = PrettierUtil.configOverrideAssign(await PrettierUtil.loadConfig(options.prettierConfig), '*.html');
 
-		const formattedData = prettier.format(html, prettierOptions).trim();
+		const formattedData = (await prettier.format(html, prettierOptions)).trim();
 
 		const brotliData = Compress.brotliText(formattedData);
 
