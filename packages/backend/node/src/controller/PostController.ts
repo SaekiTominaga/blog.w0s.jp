@@ -453,7 +453,6 @@ export default class PostController extends Controller implements ControllerInte
 
 			const status = await mastodon.v1.statuses.create({
 				status: message,
-				visibility: 'private',
 				language: 'ja',
 			});
 
