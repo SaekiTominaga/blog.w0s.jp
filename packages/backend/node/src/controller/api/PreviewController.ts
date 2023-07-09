@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import Controller from '../../Controller.js';
-import ControllerInterface from '../../ControllerInterface.js';
+import type ControllerInterface from '../../ControllerInterface.js';
 import Markdown from '../../markdown/Markdown.js';
 import RequestUtil from '../../util/RequestUtil.js';
 

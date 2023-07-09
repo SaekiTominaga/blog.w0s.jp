@@ -2,7 +2,7 @@ import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { findAfter } from 'unist-util-find-after';
 import { visit, CONTINUE } from 'unist-util-visit';
-import { XHeading } from './heading.js';
+import type { XHeading } from './heading.js';
 
 /**
  * <section>

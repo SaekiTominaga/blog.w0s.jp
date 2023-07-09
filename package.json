@@ -17,7 +17,7 @@
 		"@w0s/eslint-config": "^3.0.0",
 		"@w0s/markuplint-config": "^2.5.0",
 		"@w0s/stylelint-config": "^1.2.0",
-		"@w0s/tsconfig": "^1.0.1",
+		"@w0s/tsconfig": "^1.2.0",
 		"ajv-cli": "^5.0.0",
 		"brotlin": "^1.1.0",
 		"cross-env": "^7.0.3",

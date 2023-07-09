@@ -1,7 +1,7 @@
-import { body, Result, ValidationError, validationResult } from 'express-validator';
-import { Request } from 'express';
+import { body, type Result, type ValidationError, validationResult } from 'express-validator';
+import type { Request } from 'express';
 import BlogPostDao from '../dao/BlogPostDao.js';
-import { NoName as Configure } from '../../../configure/type/post.js';
+import type { NoName as Configure } from '../../../configure/type/post.js';
 
 /**
  * 記事投稿

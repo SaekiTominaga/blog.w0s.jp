@@ -1,7 +1,7 @@
 import basicAuth from 'basic-auth';
 // @ts-expect-error: ts(7016)
 import htpasswd from 'htpasswd-js';
-import { Request } from 'express';
+import type { Request } from 'express';
 
 export interface Credentials {
 	username: string;

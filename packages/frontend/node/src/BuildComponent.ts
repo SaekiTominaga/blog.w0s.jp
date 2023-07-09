@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { NoName as Configure } from '../../configure/type/build.js';
+import type { NoName as Configure } from '../../configure/type/build.js';
 
 export default class BuildComponent {
 	protected readonly config: Configure; // Configure
