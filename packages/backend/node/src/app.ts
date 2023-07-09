@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import compression from 'compression';
-import express, { NextFunction, Request, Response } from 'express';
+import express, { type NextFunction, type Request, type Response } from 'express';
 import Log4js from 'log4js';
 import multer from 'multer';
 import CategoryController from './controller/CategoryController.js';
@@ -11,7 +11,7 @@ import HttpResponse from './util/HttpResponse.js';
 import ListController from './controller/ListController.js';
 import PostController from './controller/PostController.js';
 import PreviewController from './controller/api/PreviewController.js';
-import { NoName as Configure } from '../../configure/type/common.js';
+import type { NoName as Configure } from '../../configure/type/common.js';
 
 /* 設定ファイル読み込み */
 const config = <Configure>JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8'));

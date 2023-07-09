@@ -4,7 +4,7 @@ import prettier from 'prettier';
 import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import Compress from './util/Compress.js';
 import HttpResponse from './util/HttpResponse.js';
-import { NoName as Configure } from '../../configure/type/common.js';
+import type { NoName as Configure } from '../../configure/type/common.js';
 
 export default class Controller {
 	protected readonly logger: Log4js.Logger; // Logger

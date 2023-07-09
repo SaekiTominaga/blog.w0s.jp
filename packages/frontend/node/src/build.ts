@@ -1,4 +1,4 @@
-import Component from './BuildComponentInterface.js';
+import type Component from './BuildComponentInterface.js';
 
 /* コンポーネント */
 const COMPONENT_DIR = './build'; // 格納ディレクトリ

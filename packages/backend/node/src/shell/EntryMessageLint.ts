@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import { parseArgs } from 'node:util';
 import Markdown from '../markdown/Markdown.js';
 import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.js';
-import { NoName as Configure } from '../../../configure/type/common.js';
+import type { NoName as Configure } from '../../../configure/type/common.js';
 
 /**
  * 記事本文の構文チェック

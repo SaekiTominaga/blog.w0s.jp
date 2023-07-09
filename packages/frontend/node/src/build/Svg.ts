@@ -3,7 +3,7 @@ import path from 'node:path';
 import slash from 'slash';
 import { loadConfig, optimize } from 'svgo';
 import BuildComponent from '../BuildComponent.js';
-import BuildComponentInterface from '../BuildComponentInterface.js';
+import type BuildComponentInterface from '../BuildComponentInterface.js';
 
 /**
  * SVG ビルド

@@ -1,17 +1,17 @@
 import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Controller from '../Controller.js';
-import ControllerInterface from '../ControllerInterface.js';
+import type ControllerInterface from '../ControllerInterface.js';
 import Markdown from '../markdown/Markdown.js';
 import MarkdownTitle from '../markdown/Title.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
-import { NoName as ConfigureCommon } from '../../../configure/type/common.js';
-import { NoName as Configure } from '../../../configure/type/entry.js';
+import type { NoName as ConfigureCommon } from '../../../configure/type/common.js';
+import type { NoName as Configure } from '../../../configure/type/entry.js';
 
 /**
  * 記事

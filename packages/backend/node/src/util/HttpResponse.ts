@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import StringEscapeHtml from '@saekitominaga/string-escape-html';
-import { Request, Response } from 'express';
-import { NoName as Configure } from '../../../configure/type/common.js';
+import type { Request, Response } from 'express';
+import type { NoName as Configure } from '../../../configure/type/common.js';
 
 type HttpAuthType = 'Basic' | 'Bearer' | 'Digest' | 'HOBA' | 'Mutual' | 'Negotiate' | 'OAuth' | 'SCRAM-SHA-1' | 'SCRAM-SHA-256' | 'vapid';
 

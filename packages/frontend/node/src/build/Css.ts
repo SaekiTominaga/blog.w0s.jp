@@ -5,7 +5,7 @@ import slash from 'slash';
 import { globby } from 'globby';
 import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import BuildComponent from '../BuildComponent.js';
-import BuildComponentInterface from '../BuildComponentInterface.js';
+import type BuildComponentInterface from '../BuildComponentInterface.js';
 
 /**
  * CSS 整形
