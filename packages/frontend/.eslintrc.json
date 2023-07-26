@@ -4,10 +4,6 @@
 		"es2022": true
 	},
 	"extends": ["@w0s/eslint-config"],
-	"parserOptions": {
-		"ecmaVersion": 2022,
-		"sourceType": "module"
-	},
 	"ignorePatterns": ["node/dist/**/*.js", "public/script/*.js", "public/script/*.mjs"],
 	"overrides": [
 		{
@@ -39,7 +35,9 @@
 					{
 						"allow": ["info", "error"]
 					}
-				]
+				],
+				"@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
+				"@typescript-eslint/no-unnecessary-condition": "off"
 			}
 		},
 		{

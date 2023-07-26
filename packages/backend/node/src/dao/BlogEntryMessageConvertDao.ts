@@ -14,7 +14,7 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 	async getEntriesMessage(entryId?: number): Promise<Map<number, string>> {
 		const dbh = await this.getDbh();
 
-		const messages: Map<number, string> = new Map();
+		const messages = new Map<number, string>();
 		if (entryId === undefined) {
 			const sth = await dbh.prepare(`
 				SELECT

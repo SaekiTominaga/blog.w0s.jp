@@ -35,11 +35,11 @@ export default class HttpBasicAuth {
 	 * @returns true if the authentication passes
 	 */
 	async htpasswd(filePath: string): Promise<boolean> {
-		const result = await htpasswd.authenticate({
+		const result = await (htpasswd.authenticate({
 			username: this.#credentials?.username,
 			password: this.#credentials?.password,
 			file: filePath,
-		});
+		}) as Promise<boolean>);
 		return result;
 	}
 

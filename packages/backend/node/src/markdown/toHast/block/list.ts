@@ -30,7 +30,7 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 
 	/* Link list */
 	const linkList = listItems.every((listItem) => {
-		const childFirstNode = (<Paragraph[]>listItem.children).at(0)?.children?.at(0);
+		const childFirstNode = (listItem.children as Paragraph[]).at(0)?.children.at(0);
 		return childFirstNode?.type === 'link';
 	}); // 順不同リストの先頭がすべてリンク形式（`[text](URL)`）だった場合
 	if (linkList) {
@@ -48,12 +48,12 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 	const NOTE_START = 'note: ';
 
 	const noteList = listItems.every((listItem) => {
-		const childFirstNode = (<Paragraph[]>listItem.children).at(0)?.children?.at(0);
+		const childFirstNode = (listItem.children as Paragraph[]).at(0)?.children.at(0);
 		return childFirstNode?.type === 'text' && childFirstNode.value.startsWith(NOTE_START);
 	}); // 順不同リストの先頭がすべて `note: ` で始まる場合
 	if (noteList) {
 		listItems.forEach((listItem) => {
-			const childFirstTextNode = <Literal>(<Paragraph>listItem.children.at(0)).children.at(0);
+			const childFirstTextNode = (listItem.children.at(0) as Paragraph).children.at(0) as Literal;
 			childFirstTextNode.value = childFirstTextNode.value.substring(NOTE_START.length);
 		});
 
@@ -71,14 +71,14 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 	const INSERT_PATTERN = /^[0-9]{4}-[0-9]{2}-[0-9]{2}: /;
 
 	const insertList = listItems.every((listItem) => {
-		const childFirstNode = (<Paragraph[]>listItem.children).at(0)?.children?.at(0);
+		const childFirstNode = (listItem.children as Paragraph[]).at(0)?.children.at(0);
 		return childFirstNode?.type === 'text' && INSERT_PATTERN.test(childFirstNode.value);
 	}); // 順不同リストの先頭がすべて `YYYY-MM-DD: ` で始まる場合
 	if (insertList) {
 		const insertElements: HastElementContent[] = [];
 		listItems.forEach((listItem) => {
-			const childNodes = (<Paragraph>listItem.children.at(0)).children;
-			const childFirstTextNode = <Literal>childNodes.at(0);
+			const childNodes = (listItem.children.at(0) as Paragraph).children;
+			const childFirstTextNode = childNodes.at(0) as Literal;
 
 			const date = dayjs(childFirstTextNode.value.substring(0, 10));
 

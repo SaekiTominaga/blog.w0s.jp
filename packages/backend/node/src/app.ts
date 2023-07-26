@@ -14,7 +14,7 @@ import PreviewController from './controller/api/PreviewController.js';
 import type { NoName as Configure } from '../../configure/type/common.js';
 
 /* 設定ファイル読み込み */
-const config = <Configure>JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8'));
+const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8')) as Configure;
 
 /* Logger 設定 */
 Log4js.configure(config.logger.path);
@@ -131,7 +131,7 @@ app.use(
 			/* CORS */
 			if (config.static.headers.cors?.directory.find((urlPath) => requestUrl.startsWith(urlPath))) {
 				const origin = res.req.get('Origin');
-				if (origin !== undefined && config.static.headers.cors?.origin.includes(origin)) {
+				if (origin !== undefined && config.static.headers.cors.origin.includes(origin)) {
 					res.setHeader('Access-Control-Allow-Origin', origin);
 					res.vary('Origin');
 				}

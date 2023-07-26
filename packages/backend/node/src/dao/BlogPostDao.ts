@@ -1,4 +1,3 @@
-import { Dayjs } from 'dayjs';
 import type * as sqlite from 'sqlite';
 import BlogDao from './BlogDao.js';
 import DbUtil from '../util/DbUtil.js';
@@ -560,7 +559,7 @@ export default class BlogPostDao extends BlogDao {
 				message: row.message,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				created_at: <Date>DbUtil.unixToDate(row.created_at),
+				created_at: DbUtil.unixToDate(row.created_at)!,
 				updated_at: DbUtil.unixToDate(row.updated_at),
 				public: Boolean(row.public),
 			});
@@ -604,7 +603,7 @@ export default class BlogPostDao extends BlogDao {
 		for (const row of rows) {
 			entries.push({
 				id: row.id,
-				updated_at: <Dayjs>DbUtil.unixToDayjs(row.updated_at ?? row.created_at),
+				updated_at: DbUtil.unixToDayjs(row.updated_at ?? row.created_at)!,
 			});
 		}
 

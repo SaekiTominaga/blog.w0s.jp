@@ -85,7 +85,7 @@ export default class Markdown {
 			processor.use(remarkLintNoHeadingContentIndent); // [recommended] 見出し記号と内容の間のスペースは1つのみ
 			processor.use(remarkLintFirstHeadingLevel, 1); // 最初の見出しは 1
 			processor.use(remarkLintHeadingIncrement); // [markdown-style-guide] 見出しの数字飛ばし
-			processor.use(remarkLintHeadingDepthLimit, <Remark.HeadingDepth>config.headingDepthLimit); // 見出しレベルの最大値
+			processor.use(remarkLintHeadingDepthLimit, config.headingDepthLimit as Remark.HeadingDepth); // 見出しレベルの最大値
 			processor.use(remarkLintHeadingStyle, 'atx'); // [markdown-style-guide] 見出し構文
 			processor.use(remarkLintNoEmptySections); // セクション内にコンテンツが存在すること
 			processor.use(remarkLintListItemBulletIndent); // [recommended] リスト項目のインデント禁止
@@ -116,7 +116,7 @@ export default class Markdown {
 
 		processor.use(remarkParse); // Markdown → mdast
 
-		processor.use(headingToMdast, { maxDepth: <Remark.HeadingDepth>config.headingDepthLimit }); // toc 処理より前に実行する必要がある
+		processor.use(headingToMdast, { maxDepth: config.headingDepthLimit as Remark.HeadingDepth }); // toc 処理より前に実行する必要がある
 		processor.use(tocToMdast); // section 処理より前に実行する必要がある
 		processor.use(blankToMdast);
 		processor.use(blockquoteToMdast);
@@ -124,7 +124,7 @@ export default class Markdown {
 		processor.use(defListToMdast);
 		processor.use(embeddedToMdast);
 		processor.use(footnoteToMdast);
-		processor.use(sectionToMdast, { maxDepth: <Remark.HeadingDepth>config.headingDepthLimit });
+		processor.use(sectionToMdast, { maxDepth: config.headingDepthLimit as Remark.HeadingDepth });
 		processor.use(tableToMdast);
 		processor.use(quoteMdast);
 

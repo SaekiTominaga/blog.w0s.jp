@@ -34,7 +34,7 @@ export default class Preview {
 
 		const response = await fetch('/api/preview', {
 			method: 'POST',
-			body: new URLSearchParams(<string[][]>[...formData]),
+			body: new URLSearchParams([...formData] as string[][]),
 		});
 
 		if (!response.ok) {

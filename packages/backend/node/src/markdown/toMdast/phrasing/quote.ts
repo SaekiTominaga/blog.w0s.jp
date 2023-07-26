@@ -29,7 +29,7 @@ const toMdast = (): Plugin => {
 				return CONTINUE;
 			}
 
-			const value = node.value as string;
+			const { value } = node;
 
 			const quoteOpenIndex = value.indexOf(QUOTE_OPEN);
 			if (quoteOpenIndex === -1) {

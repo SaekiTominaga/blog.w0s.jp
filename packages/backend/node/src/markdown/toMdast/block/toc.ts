@@ -16,7 +16,7 @@ interface XToc extends Parent {
 
 const toMdast = (): Plugin => {
 	return (tree: Parent): void => {
-		const heading1s = (<XHeading[]>selectAll(nameHeading, tree)).filter((node) => node.depth === 1 && node.id !== undefined);
+		const heading1s = (selectAll(nameHeading, tree) as XHeading[]).filter((node) => node.depth === 1 && node.id !== undefined);
 
 		const firstHeading = heading1s.at(0);
 		if (firstHeading === undefined) {
