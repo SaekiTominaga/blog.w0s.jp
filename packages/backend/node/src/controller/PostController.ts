@@ -93,9 +93,9 @@ export default class PostController extends Controller implements ControllerInte
 
 		const validator = new PostValidator(req, this.#config);
 		let topicValidationResult: ValidationResult<ValidationError> | null = null;
-		const topicPostResults: Set<PostResults> = new Set();
-		const viewUpdateResults: Set<ViewUpdateResults> = new Set();
-		const mediaUploadResults: Set<MediaUploadResults> = new Set();
+		const topicPostResults = new Set<PostResults>();
+		const viewUpdateResults = new Set<ViewUpdateResults>();
+		const mediaUploadResults = new Set<MediaUploadResults>();
 
 		const dao = new BlogPostDao(this.configCommon.sqlite.db.blog);
 
@@ -206,7 +206,7 @@ export default class PostController extends Controller implements ControllerInte
 			dao.getCategoryMaster(), // カテゴリー情報
 		]);
 
-		const categoryMasterView: Map<string, BlogView.Category[]> = new Map();
+		const categoryMasterView = new Map<string, BlogView.Category[]>();
 		for (const category of categoryMaster) {
 			const groupName = category.group_name;
 
@@ -226,7 +226,7 @@ export default class PostController extends Controller implements ControllerInte
 		res.render(this.#config.view.init, {
 			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 			requestQuery: requestQuery,
-			updateMode: (requestQuery.action_add && topicValidationResult?.isEmpty()) || requestQuery.action_revise_preview || requestQuery.action_revise,
+			updateMode: (requestQuery.action_add && topicValidationResult?.isEmpty() === true) || requestQuery.action_revise_preview || requestQuery.action_revise,
 			topicValidateErrors: topicValidationResult?.array({ onlyFirstError: true }) ?? [],
 			topicPostResults: topicPostResults,
 			mediaUploadResults: mediaUploadResults,
@@ -285,7 +285,7 @@ export default class PostController extends Controller implements ControllerInte
 				return { success: true, message: this.#config.feed_create.response.message_none };
 			}
 
-			const entriesView: Set<BlogView.FeedEntry> = new Set();
+			const entriesView = new Set<BlogView.FeedEntry>();
 			await Promise.all(
 				entriesDto.map(async (entry) => {
 					entriesView.add({
@@ -384,7 +384,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createNewlyJson(dao: BlogPostDao): Promise<PostResults> {
 		try {
-			const datasCatgroup: Map<string, BlogView.NewlyEntry[]> = new Map();
+			const datasCatgroup = new Map<string, BlogView.NewlyEntry[]>();
 			datasCatgroup.set('', await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number));
 
 			await Promise.all(
@@ -482,11 +482,11 @@ export default class PostController extends Controller implements ControllerInte
 
 		const url = this.#env === 'development' ? this.#config.media_upload.url_dev : this.#config.media_upload.url;
 
-		const result: Set<MediaUploadResults> = new Set();
+		const result = new Set<MediaUploadResults>();
 
 		try {
 			await Promise.all(
-				(<Express.Multer.File[]>req.files).map(async (file) => {
+				(req.files as Express.Multer.File[]).map(async (file) => {
 					const urlSearchParams = new URLSearchParams();
 					urlSearchParams.append('name', file.originalname);
 					urlSearchParams.append('type', file.mimetype);
@@ -582,7 +582,7 @@ export default class PostController extends Controller implements ControllerInte
 			);
 		} finally {
 			/* アップロードされた一時ファイルを削除する */
-			(<Express.Multer.File[]>req.files).forEach((file) => {
+			(req.files as Express.Multer.File[]).forEach((file) => {
 				const filePath = file.path;
 				fs.unlink(file.path, (error) => {
 					if (error === null) {

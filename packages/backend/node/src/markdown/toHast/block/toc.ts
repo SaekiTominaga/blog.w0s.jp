@@ -48,7 +48,7 @@ export const xTocToHast = (state: H, node: XToc): HastElementContent | HastEleme
 						properties: {
 							href: `#${encodeURIComponent(childNode.id)}`,
 						},
-						children: state.all(<XHeading>heading),
+						children: state.all(heading as XHeading),
 					},
 				],
 			};

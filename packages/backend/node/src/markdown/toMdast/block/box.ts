@@ -46,26 +46,26 @@ const toMdast = (): Plugin => {
 				return CONTINUE;
 			}
 
-			const endNode = <Paragraph | null>UnistUtil.findAfter(parent, parent.children.indexOf(startNode), (node): boolean => {
+			const endNode = UnistUtil.findAfter(parent, parent.children.indexOf(startNode), (node): boolean => {
 				if (node.type !== 'paragraph') {
 					return false;
 				}
 
-				const lastChild = (<Paragraph>node).children.at(-1);
+				const lastChild = (node as Paragraph).children.at(-1);
 				if (lastChild?.type !== 'text') {
 					return false;
 				}
 
 				const lastChildValue = lastChild.value;
 				return lastChildValue === BOX_CLOSE || lastChildValue.endsWith(`\n${BOX_CLOSE}`);
-			});
+			}) as Paragraph | null;
 			if (endNode === null) {
 				return CONTINUE;
 			}
 
 			startNodefirstChild.value = startNodefirstChildValue.substring(BOX_OPEN.length + boxName.length).trimStart();
 
-			const endNodelastChild = <Text>(<Paragraph>endNode).children.at(-1);
+			const endNodelastChild = endNode.children.at(-1) as Text;
 			const endNodelastChildValue = endNodelastChild.value;
 			const endNodelastChildLastLfIndex = endNodelastChildValue.lastIndexOf('\n');
 			endNodelastChild.value = endNodelastChildValue.substring(0, endNodelastChildLastLfIndex).trimEnd();

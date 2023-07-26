@@ -62,7 +62,7 @@ export default class BlogEntryDao extends BlogDao {
 			message: row.message,
 			image_internal: row.image_internal,
 			image_external: row.image_external,
-			created_at: <Date>DbUtil.unixToDate(row.created_at),
+			created_at: DbUtil.unixToDate(row.created_at)!,
 			updated_at: DbUtil.unixToDate(row.updated_at),
 			public: true,
 		};
@@ -154,7 +154,7 @@ export default class BlogEntryDao extends BlogDao {
 				title: row.title,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				created: <Date>DbUtil.unixToDate(row.created),
+				created: DbUtil.unixToDate(row.created)!,
 			});
 		}
 

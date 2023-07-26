@@ -4,12 +4,14 @@
 		"es2022": true
 	},
 	"extends": ["@w0s/eslint-config"],
-	"parserOptions": {
-		"ecmaVersion": 2022,
-		"sourceType": "module"
-	},
 	"ignorePatterns": ["node/dist/**/*.js"],
 	"overrides": [
+		{
+			"files": ["node/src/app.ts"],
+			"rules": {
+				"@typescript-eslint/no-misused-promises": "off"
+			}
+		},
 		{
 			"files": ["node/src/*Interface.ts"],
 			"rules": {

@@ -28,7 +28,7 @@ export default class MessageImage {
 	/**
 	 * 処理実行
 	 */
-	async exec(): Promise<void> {
+	exec(): void {
 		let selectedImageName: string | undefined;
 
 		/* いったんクリア */
@@ -58,7 +58,7 @@ export default class MessageImage {
 			return paapiItemImageUrlParser.toString();
 		});
 
-		const images: Set<string> = new Set([...imageFileNames, ...youtubeImageUrls, ...amazonImageUrls]);
+		const images = new Set<string>([...imageFileNames, ...youtubeImageUrls, ...amazonImageUrls]);
 
 		this.#displayRadioButtons(images, selectedImageName);
 	}
@@ -74,24 +74,28 @@ export default class MessageImage {
 		for (const imageName of imageNames) {
 			const templateElementClone = this.#selectImageElement.content.cloneNode(true) as HTMLElement;
 
-			const radioElement = <HTMLInputElement>templateElementClone.querySelector('input[type="radio"]');
-			radioElement.value = imageName;
-			if (selectedImageName !== undefined) {
-				if (imageName === selectedImageName) {
+			const radioElement = templateElementClone.querySelector<HTMLInputElement>('input[type="radio"]');
+			if (radioElement !== null) {
+				radioElement.value = imageName;
+				if (selectedImageName !== undefined) {
+					if (imageName === selectedImageName) {
+						radioElement.checked = true;
+					}
+				} else if (imageName === this.#imageName) {
 					radioElement.checked = true;
 				}
-			} else if (imageName === this.#imageName) {
-				radioElement.checked = true;
 			}
 
-			const imgElement = <HTMLImageElement>templateElementClone.querySelector('img');
-			if (imageName.search('https?://') === 0) {
-				imgElement.src = imageName;
-			} else {
-				imgElement.src = `https://media.w0s.jp/thumbimage/blog/${imageName}?type=webp;w=360;h=360;quality=30`;
+			const imgElement = templateElementClone.querySelector('img');
+			if (imgElement !== null) {
+				if (imageName.search('https?://') === 0) {
+					imgElement.src = imageName;
+				} else {
+					imgElement.src = `https://media.w0s.jp/thumbimage/blog/${imageName}?type=webp;w=360;h=360;quality=30`;
+				}
+				imgElement.alt = imageName;
+				imgElement.title = imageName;
 			}
-			imgElement.alt = imageName;
-			imgElement.title = imageName;
 
 			fragment.appendChild(templateElementClone);
 		}

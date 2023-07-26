@@ -1,7 +1,7 @@
 declare namespace BlogApi {
-	export type TweetMedia = {
+	export interface TweetMedia {
 		media_urls: string[];
-	};
+	}
 
 	export interface AmazonImage {
 		image_urls: string[];

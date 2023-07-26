@@ -15,7 +15,7 @@ const noEmptySection = lintRule('remark-lint:no-empty-section', (tree: Parent, f
 		}
 
 		const nextSibling = parent.children.at(index + 1);
-		if ((nextSibling?.type === 'heading' && (<Heading>nextSibling).depth === node.depth) || index === parent.children.length - 1) {
+		if ((nextSibling?.type === 'heading' && (nextSibling as Heading).depth === node.depth) || index === parent.children.length - 1) {
 			file.message('Section contents are empty except for the heading', node);
 			return CONTINUE;
 		}

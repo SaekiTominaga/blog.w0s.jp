@@ -70,10 +70,7 @@ export default class Link {
 
 			if (asin !== undefined) {
 				return {
-					href:
-						config.amazonTrackingId === undefined
-							? `https://www.amazon.co.jp/dp/${asin}/`
-							: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+					href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
 					hostIcon: { fileName: 'amazon.png', altText: 'Amazon' },
 				};
 			}

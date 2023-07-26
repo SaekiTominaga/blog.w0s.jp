@@ -39,7 +39,7 @@ const toMdast = (options?: Options): Plugin => {
 				const afterSectionNode = findAfter(parent, node, (testNode: Node): boolean => {
 					switch (testNode.type) {
 						case 'x-heading': {
-							return (<XHeading>testNode).depth <= node.depth;
+							return (testNode as XHeading).depth <= node.depth;
 						}
 						default:
 							return false;

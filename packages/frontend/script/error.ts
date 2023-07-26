@@ -33,7 +33,7 @@ if (portalHost === null || portalHost === undefined /* <potal> 未対応ブラ�
 
 	/* トップページの埋め込み */
 	if (window.HTMLPortalElement !== undefined /* <potal> 要素をサポートしているか */ && window.customElements !== undefined) {
-		const portalElement = <HTMLPortalElement | null>document.getElementById('top-portal');
+		const portalElement = document.getElementById('top-portal') as HTMLPortalElement | null;
 
 		if (portalElement !== null) {
 			portalElement.src = '/';

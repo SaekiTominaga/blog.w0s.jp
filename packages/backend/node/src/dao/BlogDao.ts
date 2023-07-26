@@ -16,7 +16,7 @@ interface EntryCountOfCategory {
  * 日記共通
  */
 export default class BlogDao {
-	#dbh: sqlite.Database<sqlite3.Database, sqlite3.Statement> | null = null;
+	#dbh: sqlite.Database | null = null;
 
 	readonly #filepath: string;
 
@@ -24,7 +24,7 @@ export default class BlogDao {
 	 * @param filepath - DB ファイルパス
 	 * @param dbh - DB 接続情報
 	 */
-	constructor(filepath: string, dbh?: sqlite.Database<sqlite3.Database, sqlite3.Statement>) {
+	constructor(filepath: string, dbh?: sqlite.Database) {
 		this.#filepath = filepath;
 
 		if (dbh !== undefined) {
@@ -37,7 +37,7 @@ export default class BlogDao {
 	 *
 	 * @returns DB 接続情報
 	 */
-	async getDbh(): Promise<sqlite.Database<sqlite3.Database, sqlite3.Statement>> {
+	async getDbh(): Promise<sqlite.Database> {
 		if (this.#dbh !== null) {
 			return this.#dbh;
 		}

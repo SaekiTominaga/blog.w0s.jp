@@ -79,14 +79,12 @@ const toMdast = (): Plugin => {
 		let require = value;
 		let option: string | undefined;
 
-		if (value !== undefined) {
-			const optionOpenIndex = value.lastIndexOf(OPTION_OPEN);
-			const optionCloseIndex = value.lastIndexOf(OPTION_CLOSE);
+		const optionOpenIndex = value.lastIndexOf(OPTION_OPEN);
+		const optionCloseIndex = value.lastIndexOf(OPTION_CLOSE);
 
-			if (optionOpenIndex !== -1 && optionCloseIndex === value.length - OPTION_CLOSE.length) {
-				require = value.substring(0, optionOpenIndex).trimEnd();
-				option = value.substring(optionOpenIndex + OPTION_OPEN.length, value.length - OPTION_CLOSE.length);
-			}
+		if (optionOpenIndex !== -1 && optionCloseIndex === value.length - OPTION_CLOSE.length) {
+			require = value.substring(0, optionOpenIndex).trimEnd();
+			option = value.substring(optionOpenIndex + OPTION_OPEN.length, value.length - OPTION_CLOSE.length);
 		}
 
 		return {

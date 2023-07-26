@@ -24,28 +24,30 @@ export default class Css extends BuildComponent implements BuildComponentInterfa
 
 		const prettierOptions = PrettierUtil.configOverrideAssign(await PrettierUtil.loadConfig(this.config.prettier.config), '*.css');
 
-		fileList.forEach(async (filePath) => {
-			/* ファイル読み込み */
-			const fileData = (await fs.promises.readFile(filePath)).toString();
+		await Promise.all(
+			fileList.map(async (filePath) => {
+				/* ファイル読み込み */
+				const fileData = (await fs.promises.readFile(filePath)).toString();
 
-			/* 整形 */
-			let cssFormatted = fileData;
-			try {
-				cssFormatted = await prettier.format(fileData, prettierOptions);
-			} catch (e) {
-				console.error(`Prettier error: ${filePath}`, e);
-			}
+				/* 整形 */
+				let cssFormatted = fileData;
+				try {
+					cssFormatted = await prettier.format(fileData, prettierOptions);
+				} catch (e) {
+					console.error(`Prettier error: ${filePath}`, e);
+				}
 
-			/* 一時ファイル削除 */
-			if (distDirectory !== undefined) {
-				await fs.promises.unlink(filePath);
-				console.info(`[Prettier] Temp file deleted: ${filePath}`);
-			}
+				/* 一時ファイル削除 */
+				if (distDirectory !== undefined) {
+					await fs.promises.unlink(filePath);
+					console.info(`[Prettier] Temp file deleted: ${filePath}`);
+				}
 
-			/* 出力 */
-			const distPath = distDirectory !== undefined ? `${distDirectory}/${path.basename(filePath)}` : filePath;
-			await fs.promises.writeFile(distPath, cssFormatted);
-			console.info(`[Prettier] File created: ${distPath}`);
-		});
+				/* 出力 */
+				const distPath = distDirectory !== undefined ? `${distDirectory}/${path.basename(filePath)}` : filePath;
+				await fs.promises.writeFile(distPath, cssFormatted);
+				console.info(`[Prettier] File created: ${distPath}`);
+			}),
+		);
 	}
 }
