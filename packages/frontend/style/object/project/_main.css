@@ -29,7 +29,7 @@
 	font-size: calc(100% / var(--font-ratio-1));
 
 	&::before {
-		display: block;
+		display: block flow;
 		float: right;
 		inline-size: calc(var(--_close-button-image-size) + var(--_close-button-padding) * 2);
 		block-size: calc(var(--_close-button-image-size) + var(--_close-button-padding) * 2);
@@ -56,7 +56,7 @@
 			}
 
 			& > img {
-				display: block;
+				display: block flow;
 				inline-size: var(--_close-button-image-size);
 				block-size: var(--_close-button-image-size);
 			}
@@ -78,12 +78,12 @@
 	margin-block-start: -16px;
 
 	& > img {
-		display: block;
+		display: block flow;
 	}
 }
 
 .p-amazon__list {
-	display: grid;
+	display: block grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(22em, 100%), 1fr));
 	gap: 12px;
 	margin-block-start: 15px;
@@ -92,7 +92,7 @@
 .p-amazon__link {
 	--_bg-color: var(--color-amazon);
 
-	display: grid;
+	display: block grid;
 	grid-template-columns: min(40%, 160px) 15px 1fr;
 	grid-template-areas: "image gap text";
 	transition:
@@ -123,7 +123,7 @@
 
 /* 商品画像 */
 .p-amazon__image {
-	display: block;
+	display: block flow;
 	transition: box-shadow var(--link-hover-transition-duration);
 	margin: auto;
 	max-inline-size: 100%;
@@ -147,13 +147,13 @@
 
 /* 商品タイトル */
 .p-amazon__title {
-	display: inline;
+	display: inline flow;
 	margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
 	font-weight: var(--font-weight-bold);
 	text-decoration-line: underline;
 
 	&::before {
-		display: inline-block;
+		display: inline flow-root;
 		clip-path: var(--shape-link-triangle);
 		margin-inline-end: var(--_bullet-gap);
 		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
@@ -175,7 +175,7 @@
 	inset-inline-end: 0.5em;
 
 	.p-code:hover > & {
-		display: block;
+		display: block flow;
 	}
 }
 
@@ -185,7 +185,7 @@
 	--_ripple-opacity: 0.25;
 	--_ripple-transition-duration: 0.5s;
 
-	display: block;
+	display: block flow;
 	contain: layout; /* ripple effect */
 	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
@@ -221,7 +221,7 @@
 	}
 
 	& > img {
-		display: block;
+		display: block flow;
 		inline-size: 1em;
 		block-size: 1em;
 	}
@@ -283,7 +283,7 @@
 	font-size: 1.2rem;
 
 	&[open] {
-		display: flex;
+		display: block flex;
 	}
 
 	&::backdrop {

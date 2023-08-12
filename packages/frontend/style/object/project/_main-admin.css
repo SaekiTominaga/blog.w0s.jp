@@ -40,7 +40,7 @@
 	block-size: 240px;
 
 	& img {
-		display: block;
+		display: block flow;
 		position: absolute;
 		inset: 0;
 		border: 1px solid var(--color-black);

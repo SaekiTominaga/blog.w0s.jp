@@ -4,7 +4,7 @@
 
 /* ===== サイトロゴ ===== */
 .p-header-site {
-	display: flex;
+	display: block flex;
 	flex-flow: wrap;
 	align-items: baseline;
 	gap: 0.25em 1em;
@@ -20,7 +20,7 @@
 		--_padding: 0.05em;
 		--_text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
 
-		display: inline-block;
+		display: inline flow-root;
 		margin: calc(0px - var(--_padding));
 		outline-width: var(--outline-width-bold);
 		outline-offset: 0;
@@ -47,13 +47,13 @@
 
 /* ===== ナビゲーション ===== */
 .p-header-nav {
-	display: flex;
+	display: block flex;
 	gap: 0.5em;
 }
 
 /* ===== サイト内検索 ===== */
 .p-header-search {
-	display: grid;
+	display: block grid;
 	grid-template-areas:
 		"legend"
 		"ctrl";

@@ -7,7 +7,7 @@
 	--_flex-direction: column;
 	--_justify-content: flex-start;
 
-	display: flex;
+	display: block flex;
 	flex-flow: var(--_flex-direction) wrap;
 	justify-content: var(--_justify-content);
 	gap: 0.5em 0;
@@ -18,7 +18,7 @@
 		--_justify-content: center;
 
 		& > li {
-			display: flex;
+			display: block flex;
 			align-items: center;
 
 			&:not(:last-child)::after {
@@ -43,7 +43,7 @@
 	inline-size: min(100%, 960px);
 
 	& .adsbygoogle {
-		display: block;
+		display: block flow;
 	}
 }
 

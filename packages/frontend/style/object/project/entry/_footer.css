@@ -12,7 +12,7 @@
 	--_tag-pading-col: 0.5em;
 	--_tag-border-width: 1px;
 
-	display: flex;
+	display: block flex;
 	justify-content: flex-end;
 	gap: 0 0.5em;
 }
@@ -25,12 +25,12 @@
 }
 
 .p-entry-footer-category__list {
-	display: flex;
+	display: block flex;
 	flex-flow: wrap;
 	gap: 8px;
 
 	& a {
-		display: inline-block;
+		display: inline flow-root;
 		outline-width: var(--outline-width-bold);
 		outline-offset: -1px;
 		border: var(--_tag-border-width) solid var(--color-border-light);

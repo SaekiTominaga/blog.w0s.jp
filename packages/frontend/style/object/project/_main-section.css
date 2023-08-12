@@ -47,7 +47,7 @@
 }
 
 .p-section__hdg {
-	display: flex;
+	display: block flex;
 	gap: 0.5em;
 	line-height: var(--line-height-narrow);
 

@@ -7,14 +7,14 @@
 	--_gap-block: 1em;
 	--_gap-inline: 1em;
 
-	display: grid;
+	display: block grid;
 	grid-template-columns: auto 1fr;
 	grid-template-areas: "legend contents";
 	gap: var(--_gap-block) var(--_gap-inline);
 }
 
 .p-form-grid__group {
-	display: grid;
+	display: block grid;
 	grid-template-columns: subgrid;
 	grid-column: legend / contents;
 
@@ -79,7 +79,7 @@
 }
 
 .p-form-results__item {
-	display: flex;
+	display: block flex;
 	gap: 0.5em;
 	color: var(--color);
 
@@ -103,7 +103,7 @@
 
 /* ===== 投稿画像プレビュー ===== */
 .p-image-preview {
-	display: flex;
+	display: block flex;
 	flex-flow: wrap;
 	gap: 10px;
 	font-size: calc(100% / var(--font-ratio-1));
@@ -121,7 +121,7 @@
 
 	/* stylelint-disable selector-class-pattern */
 	& .error {
-		display: block;
+		display: block flow;
 		border: 1px solid var(--color-border-dark);
 		padding: 10px;
 		font-weight: var(--font-weight-normal);

@@ -10,7 +10,7 @@
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
-	display: flow-root; /* for Safari */
+	display: block flow-root; /* for Safari */
 	contain: layout;
 	font-size: calc(100% * var(--font-ratio-2));
 	line-height: var(--line-height-narrow);
@@ -50,7 +50,7 @@
 	}
 
 	&::before {
-		display: inline-block;
+		display: inline flow-root;
 		clip-path: var(--shape-link-triangle);
 		margin-inline-end: var(--_bullet-gap);
 		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);

@@ -9,7 +9,7 @@
 	--_icon-color: var(--color-gray);
 
 	&::before {
-		display: inline-block;
+		display: inline flow-root;
 		clip-path: var(--shape-link-triangle);
 		margin-inline-end: 0.5em;
 		border-block-start: var(--_icon-block-size) solid var(--_icon-color);
@@ -28,7 +28,7 @@
 
 /* ===== セルフリンク <a href="#foo">§</a> ===== */
 .c-self-link {
-	display: inline-flex;
+	display: inline flex;
 	justify-content: center;
 	align-items: center;
 	outline-width: var(--outline-width-bold);
@@ -49,7 +49,7 @@
 	--_background: var(--color-white);
 	--_icon-size: 1.25em;
 
-	display: inline-flex;
+	display: inline flex;
 	justify-content: center;
 	align-items: center;
 	gap: 0.5em;
@@ -150,7 +150,7 @@
 
 /* ===== 記事メタデータ ===== */
 .c-entry-meta {
-	display: table;
+	display: block table;
 	line-height: var(--line-height-narrow);
 }
 
@@ -178,7 +178,7 @@
 
 /* ===== 記事件数 ===== */
 .c-entry-count {
-	display: inline-block;
+	display: inline flow-root;
 	border: 1px solid var(--color-powderblue);
 	border-radius: var(--border-radius-large);
 	background: var(--color-powderblue);

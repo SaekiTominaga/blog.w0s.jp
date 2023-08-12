@@ -11,7 +11,7 @@
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 
-	display: flow-root; /* for Safari */
+	display: block flow-root; /* for Safari */
 	contain: layout;
 	font-size: calc(100% * var(--_title-font-expand-ratio));
 	line-height: var(--line-height-narrow);
@@ -37,7 +37,7 @@
 	--_image-min-inline-size-px: 120px;
 	--_image-min-inline-size-vw: 30vw;
 
-	display: flex;
+	display: block flex;
 	justify-content: center;
 	float: var(--_float);
 	margin-inline: var(--_margin-inline-start) var(--_margin-inline-end);
@@ -63,7 +63,7 @@
 }
 
 .c-entry-link__image {
-	display: block;
+	display: block flow;
 	border: var(--_image-border-width) solid;
 	background: var(--color-white);
 	max-inline-size: var(--_image-inline-size);
@@ -94,7 +94,7 @@
 	}
 
 	&::before {
-		display: inline-block;
+		display: inline flow-root;
 		clip-path: var(--shape-link-triangle);
 		margin-inline-end: var(--_bullet-gap);
 		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
