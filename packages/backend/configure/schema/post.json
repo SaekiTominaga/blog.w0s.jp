@@ -224,47 +224,33 @@
 				"mastodon": {
 					"type": "object",
 					"title": "Mastodon",
-					"required": ["api", "message_prefix", "url_prefix", "api_response"],
+					"required": ["api", "visibility", "message_prefix", "url_prefix", "api_response"],
 					"properties": {
 						"api": {
 							"type": "object",
 							"title": "API 情報",
-							"required": ["development", "production"],
+							"required": ["instance_origin", "access_token"],
 							"properties": {
-								"development": {
-									"type": "object",
-									"title": "開発用",
-									"$ref": "#/properties/social/properties/mastodon/properties/api/definitions/api"
+								"instance_origin": {
+									"type": "string",
+									"title": "インスタンスのオリジン"
 								},
-								"production": {
-									"type": "object",
-									"title": "本番用",
-									"$ref": "#/properties/social/properties/mastodon/properties/api/definitions/api"
+								"access_token": {
+									"type": "string",
+									"title": "アクセストークン"
 								}
 							},
-							"additionalProperties": false,
-							"definitions": {
-								"api": {
-									"type": "object",
-									"required": ["instance_origin", "access_token"],
-									"title": "API 情報",
-									"properties": {
-										"instance_origin": {
-											"type": "string",
-											"title": "インスタンスのオリジン"
-										},
-										"access_token": {
-											"type": "string",
-											"title": "アクセストークン"
-										}
-									},
-									"additionalProperties": false
-								}
-							}
+							"additionalProperties": false
+						},
+						"visibility": {
+							"type": "string",
+							"title": "トゥートの可視性",
+							"enum": ["public", "unlisted", "private", "direct"],
+							"description": "https://docs.joinmastodon.org/entities/Status/#visibility"
 						},
 						"message_prefix": {
 							"type": "string",
-							"title": "ツイート本文の冒頭"
+							"title": "トゥート本文の冒頭テキスト"
 						},
 						"url_prefix": {
 							"type": "string",

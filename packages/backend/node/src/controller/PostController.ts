@@ -47,7 +47,7 @@ export default class PostController extends Controller implements ControllerInte
 
 	/**
 	 * @param configCommon - 共通設定
-	 * @param env - 共通設定
+	 * @param env - NODE_ENV
 	 */
 	constructor(configCommon: ConfigureCommon, env: Express.Env) {
 		super(configCommon);
@@ -438,12 +438,10 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #postSocial(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResults> {
 		/* Mastodon */
-		const api = this.#env === 'development' ? this.#config.social.mastodon.api.development : this.#config.social.mastodon.api.production;
-
 		try {
 			const mastodon = await mastodonLogin({
-				url: api.instance_origin,
-				accessToken: api.access_token,
+				url: this.#config.social.mastodon.api.instance_origin,
+				accessToken: this.#config.social.mastodon.api.access_token,
 			});
 
 			let message = `${this.#config.social.mastodon.message_prefix}\n\n${requestQuery.title}\n${entryUrl}`;
@@ -453,6 +451,7 @@ export default class PostController extends Controller implements ControllerInte
 
 			const status = await mastodon.v1.statuses.create({
 				status: message,
+				visibility: this.#env === 'development' ? 'direct' : this.#config.social.mastodon.visibility, // https://docs.joinmastodon.org/entities/Status/#visibility
 				language: 'ja',
 			});
 
