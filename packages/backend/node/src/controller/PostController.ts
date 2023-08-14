@@ -83,6 +83,7 @@ export default class PostController extends Controller implements ControllerInte
 			public: RequestUtil.boolean(req.body['public']),
 			timestamp: RequestUtil.boolean(req.body['timestamp']),
 			social: RequestUtil.boolean(req.body['social']),
+			social_tag: RequestUtil.string(req.body['social_tag']),
 			media_overwrite: RequestUtil.boolean(req.body['mediaoverwrite']),
 			action_add: RequestUtil.boolean(req.body['actionadd']),
 			action_revise: RequestUtil.boolean(req.body['actionrev']),
@@ -445,7 +446,21 @@ export default class PostController extends Controller implements ControllerInte
 			});
 
 			let message = `${this.#config.social.mastodon.message_prefix}\n\n${requestQuery.title}\n${entryUrl}`;
-			if (requestQuery.description !== '') {
+			if (requestQuery.social_tag !== null && requestQuery.social_tag !== '') {
+				/* ハッシュタグ */
+				message += `\n\n${requestQuery.social_tag
+					.split(',')
+					.map((tag) => {
+						const tagTrimmed = tag.trim();
+						if (tagTrimmed === '') {
+							return '';
+						}
+						return `#${tagTrimmed}`;
+					})
+					.join(' ')}`;
+			}
+			if (requestQuery.description !== null && requestQuery.description !== '') {
+				/* 概要 */
 				message += `\n\n${requestQuery.description}`;
 			}
 
