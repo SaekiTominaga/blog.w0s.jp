@@ -129,7 +129,7 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson(dao));
-				if (requestQuery.social) {
+				if (requestQuery.public && requestQuery.social) {
 					topicPostResults.add(await this.#postSocial(requestQuery, entryUrl));
 				}
 			}
