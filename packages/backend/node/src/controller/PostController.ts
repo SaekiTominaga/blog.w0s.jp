@@ -47,7 +47,7 @@ export default class PostController extends Controller implements ControllerInte
 
 	/**
 	 * @param configCommon - 共通設定
-	 * @param env - 共通設定
+	 * @param env - NODE_ENV
 	 */
 	constructor(configCommon: ConfigureCommon, env: Express.Env) {
 		super(configCommon);
@@ -83,6 +83,7 @@ export default class PostController extends Controller implements ControllerInte
 			public: RequestUtil.boolean(req.body['public']),
 			timestamp: RequestUtil.boolean(req.body['timestamp']),
 			social: RequestUtil.boolean(req.body['social']),
+			social_tag: RequestUtil.string(req.body['social_tag']),
 			media_overwrite: RequestUtil.boolean(req.body['mediaoverwrite']),
 			action_add: RequestUtil.boolean(req.body['actionadd']),
 			action_revise: RequestUtil.boolean(req.body['actionrev']),
@@ -128,7 +129,7 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson(dao));
-				if (requestQuery.social) {
+				if (requestQuery.public && requestQuery.social) {
 					topicPostResults.add(await this.#postSocial(requestQuery, entryUrl));
 				}
 			}
@@ -438,21 +439,34 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #postSocial(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResults> {
 		/* Mastodon */
-		const api = this.#env === 'development' ? this.#config.social.mastodon.api.development : this.#config.social.mastodon.api.production;
-
 		try {
 			const mastodon = await mastodonLogin({
-				url: api.instance_origin,
-				accessToken: api.access_token,
+				url: this.#config.social.mastodon.api.instance_origin,
+				accessToken: this.#config.social.mastodon.api.access_token,
 			});
 
 			let message = `${this.#config.social.mastodon.message_prefix}\n\n${requestQuery.title}\n${entryUrl}`;
-			if (requestQuery.description !== '') {
+			if (requestQuery.social_tag !== null && requestQuery.social_tag !== '') {
+				/* ハッシュタグ */
+				message += `\n\n${requestQuery.social_tag
+					.split(',')
+					.map((tag) => {
+						const tagTrimmed = tag.trim();
+						if (tagTrimmed === '') {
+							return '';
+						}
+						return `#${tagTrimmed}`;
+					})
+					.join(' ')}`;
+			}
+			if (requestQuery.description !== null && requestQuery.description !== '') {
+				/* 概要 */
 				message += `\n\n${requestQuery.description}`;
 			}
 
 			const status = await mastodon.v1.statuses.create({
 				status: message,
+				visibility: this.#env === 'development' ? 'direct' : this.#config.social.mastodon.visibility, // https://docs.joinmastodon.org/entities/Status/#visibility
 				language: 'ja',
 			});
 
