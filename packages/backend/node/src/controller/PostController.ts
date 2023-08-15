@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import ejs from 'ejs';
 import type { Request, Response } from 'express';
 import type { Result as ValidationResult, ValidationError } from 'express-validator';
-import { login as mastodonLogin } from 'masto';
+import { createRestAPIClient as mastodonRest } from 'masto';
 import prettier from 'prettier';
 import xmlFormatter from 'xml-formatter';
 import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
@@ -440,7 +440,7 @@ export default class PostController extends Controller implements ControllerInte
 	async #postSocial(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResults> {
 		/* Mastodon */
 		try {
-			const mastodon = await mastodonLogin({
+			const mastodon = mastodonRest({
 				url: this.#config.social.mastodon.api.instance_origin,
 				accessToken: this.#config.social.mastodon.api.access_token,
 			});
