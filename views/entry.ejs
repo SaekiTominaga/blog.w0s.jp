@@ -23,19 +23,11 @@
 		<meta property="og:type" content="article" />
 		<meta property="og:image" content="<%= structuredData.image %>" />
 		<meta property="og:url" content="https://blog.w0s.jp/<%= requestQuery.entry_id %>" />
-		<%_ if (structuredData.description !== undefined) { _%>
-		<meta property="og:description" content="<%= structuredData.description %>" />
-		<%_ } _%>
 		<meta property="og:locale" content="ja_JP" />
 		<meta property="og:site_name" content="富永日記帳" />
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:site" content="@SaekiTominaga" />
-		<%_ } else if (structuredData.description !== undefined) { _%>
-		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:site" content="@SaekiTominaga" />
-		<meta name="twitter:title" content="<%= structuredData.title %>" />
-		<meta name="twitter:description" content="<%= structuredData.description %>" />
-		<%_ } _%>
+		<%_ if (structuredData.description !== undefined) { _%>
+		<meta property="og:description" content="<%= structuredData.description %>" />
+		<%_ } _%> <%_ } _%>
 		<script type="application/ld+json">
 			<%- JSON.stringify(jsonLd, undefined, '\t') %>
 		</script>
