@@ -11,6 +11,7 @@
 		"static",
 		"views",
 		"temp",
+		"cache_control",
 		"errorpage",
 		"logger",
 		"mail",
@@ -303,6 +304,10 @@
 		"temp": {
 			"type": "string",
 			"title": "一時ディレクトリ"
+		},
+		"cache_control": {
+			"type": "string",
+			"title": "Cache-Control ヘッダーフィールド値"
 		},
 		"errorpage": {
 			"type": "object",
