@@ -9,12 +9,12 @@
 	& > :any-link {
 		--_expand-icon-padding: 4px;
 
-		display: inline-block;
+		display: inline flow-root;
 		outline-width: var(--outline-width-bold);
 		outline-offset: -1px;
 
 		&::before {
-			display: block;
+			display: block flow;
 			position: absolute;
 			box-sizing: border-box;
 			inset: 1px;
@@ -33,7 +33,7 @@
 
 .p-embed__image,
 .p-embed__video {
-	display: inline-block;
+	display: inline flow-root;
 	vertical-align: top;
 	border: var(--entry-embed-border-width) solid var(--color-black);
 	max-inline-size: calc(100% - var(--entry-embed-border-width) * 2);
@@ -46,7 +46,7 @@
 }
 
 .p-embed__frame {
-	display: block;
+	display: block flow;
 	border: var(--entry-embed-border-width) solid var(--color-black);
 	aspect-ratio: var(--aspect-ratio, auto);
 	max-inline-size: 100%;

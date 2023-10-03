@@ -4,7 +4,7 @@
 
 /* ===== 追記 ===== */
 .p-insert {
-	display: flex;
+	display: block flex;
 	flex-wrap: wrap;
 	line-height: var(--line-height-normal);
 

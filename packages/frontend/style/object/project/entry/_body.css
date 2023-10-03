@@ -50,7 +50,7 @@
 	}
 
 	& > hgroup {
-		display: flex;
+		display: block flex;
 		gap: 0.5em;
 		line-height: var(--line-height-narrow);
 
@@ -76,7 +76,7 @@
 }
 
 .p-entry-section__self-link {
-	display: flex;
+	display: block flex;
 	align-items: center;
 }
 

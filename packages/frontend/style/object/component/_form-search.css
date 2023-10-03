@@ -6,7 +6,7 @@
 .c-search {
 	--_border-color: var(--color-lightgray);
 
-	display: flex;
+	display: block flex;
 	align-items: center;
 	outline-offset: -1px;
 	border: 1px solid var(--_border-color);
@@ -33,7 +33,7 @@
 
 	& > input {
 		all: initial;
-		display: block;
+		display: block flow;
 		box-sizing: border-box;
 		padding: 0.25em;
 		inline-size: 100%;
@@ -47,7 +47,7 @@
 		--_color: hsl(220deg 70% 45%);
 
 		all: initial;
-		display: block;
+		display: block flow;
 		box-sizing: border-box;
 		margin: var(--outline-width-bold);
 		padding: 0.25em;

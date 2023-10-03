@@ -2,7 +2,7 @@
  *   エラーページ
  * ============================== */
 .l-page {
-	display: grid;
+	display: block grid;
 	grid-template-columns: var(--page-margin-inline) var(--page-padding-inline) 1fr var(--page-padding-inline) var(--page-margin-inline);
 	grid-template-areas:
 		"header-margin-left  header-padding-left  header  header-padding-right  header-margin-right "

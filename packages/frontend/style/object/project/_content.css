@@ -18,7 +18,7 @@
 
 /* ===== ページ送り ===== */
 .p-page-nav {
-	display: flex;
+	display: block flex;
 	flex-flow: wrap;
 	justify-content: center;
 	gap: 0.5em 5%;
@@ -30,7 +30,7 @@
 	--_icon-size: 0.75em;
 	--_gap: 0.75em;
 
-	display: inline-flex;
+	display: inline flex;
 	align-items: center;
 	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
@@ -47,7 +47,7 @@
 	&.-start::before,
 	&.-prev::before,
 	&.-next::after {
-		display: inline-block;
+		display: inline flow-root;
 		background: currentColor;
 		inline-size: var(--_icon-size);
 		block-size: var(--_icon-size);

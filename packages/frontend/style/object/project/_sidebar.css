@@ -20,7 +20,7 @@
 	--_bg-color: var(--color-bg-superlight);
 	--_font-weight: inherit;
 
-	display: inline-block; /* JS 無効環境向け */
+	display: inline flow-root; /* JS 無効環境向け */
 	flex: auto;
 	border: 1px solid var(--_border-color);
 	border-radius: var(--_border-radius-top) var(--_border-radius-top) 0 0;
@@ -96,7 +96,7 @@
 	--_bg-color: var(--color-verylightblue);
 
 	& a {
-		display: block;
+		display: block flow;
 		contain: content;
 		outline-width: var(--outline-width-bold);
 		outline-offset: -1px;

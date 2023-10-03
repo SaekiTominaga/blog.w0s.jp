@@ -148,7 +148,7 @@
 	--_ripple-opacity: 0.25;
 	--_ripple-transition-duration: 0.5s;
 
-	display: inline-block;
+	display: inline flow-root;
 	vertical-align: middle;
 	contain: layout; /* ripple effect */
 	outline-width: var(--outline-width-bold);
@@ -216,7 +216,7 @@
 
 /* ===== ラベル ===== */
 .c-label {
-	display: inline-flex;
+	display: inline flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 0.5em;
@@ -274,7 +274,7 @@
 	--color: var(--color-white);
 	--bg-color: var(--color-gray);
 
-	display: inline-block;
+	display: inline flow-root;
 	border: 1px solid var(--bg-color);
 	border-radius: var(--border-radius-large);
 	background: var(--bg-color);
@@ -317,7 +317,7 @@
 	--_gap-row: 1em;
 	--_gap-col: 1em;
 
-	display: flex;
+	display: block flex;
 	flex-flow: wrap;
 	align-items: center;
 	gap: var(--_gap-row) var(--_gap-col);

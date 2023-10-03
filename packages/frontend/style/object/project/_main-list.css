@@ -83,7 +83,7 @@
 			font-size: calc(100% * var(--font-ratio-2));
 
 			&::before {
-				display: inline-block;
+				display: inline flow-root;
 				clip-path: var(--_icon-clip-path);
 				margin-inline-end: var(--_icon-gap);
 				border-block-start: var(--_icon-block-size) solid var(--_icon-color);
@@ -140,7 +140,7 @@
 			outline-offset: var(--outline-offset-linkonly);
 
 			&::before {
-				display: inline-block;
+				display: inline flow-root;
 				clip-path: var(--shape-pagelink-triangle);
 				margin-inline-end: var(--_icon-gap);
 				border-block-start: var(--_icon-block-size) solid var(--_icon-color);
@@ -176,7 +176,7 @@
 }
 
 .p-footnote__list {
-	display: table;
+	display: block table;
 	margin-block-start: 0.25em;
 
 	& > li {
