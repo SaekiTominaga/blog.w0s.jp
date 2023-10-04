@@ -16,7 +16,7 @@ export default class HttpResponse {
 
 	readonly #config: Configure;
 
-	readonly #MIME_HTML = 'text/html; charset=utf-8';
+	readonly #MIME_TYPE_HTML = 'text/html; charset=utf-8';
 
 	/**
 	 * @param req - Request
@@ -55,8 +55,21 @@ export default class HttpResponse {
 	 * @param data.brotliBody - レスポンスボディ（Brotli 圧縮）
 	 * @param data.filePath - ファイルパス
 	 * @param data.brotliFilePath - Brotli ファイルパス
+	 * @param data.cacheControl - Cache-Control ヘッダーフィールド値
 	 */
-	async send200(data: { body?: string | Buffer; brotliBody?: string | Buffer; filePath?: string; brotliFilePath?: string }): Promise<void> {
+	async send200(data: {
+		body?: string | Buffer;
+		brotliBody?: string | Buffer;
+		filePath?: string;
+		brotliFilePath?: string;
+		cacheControl?: string;
+	}): Promise<void> {
+		this.#res
+			.set('Content-Type', this.#MIME_TYPE_HTML)
+			.set('Cache-Control', data.cacheControl ?? 'no-cache')
+			.set('Content-Security-Policy', this.#config.response.header.csp_html)
+			.set('Content-Security-Policy-Report-Only', this.#config.response.header.cspro_html);
+
 		/* Brotli 圧縮 */
 		if (this.#req.acceptsEncodings('br') === 'br') {
 			let responseBody = data.brotliBody;
@@ -65,12 +78,7 @@ export default class HttpResponse {
 			}
 
 			if (responseBody !== undefined) {
-				this.#res
-					.setHeader('Content-Type', this.#MIME_HTML)
-					.setHeader('Content-Encoding', 'br')
-					.setHeader('Content-Security-Policy', this.#config.response.header.csp_html)
-					.setHeader('Content-Security-Policy-Report-Only', this.#config.response.header.cspro_html)
-					.send(responseBody);
+				this.#res.set('Content-Encoding', 'br').send(responseBody);
 				return;
 			}
 		}
@@ -82,15 +90,11 @@ export default class HttpResponse {
 		}
 
 		if (responseBody !== undefined) {
-			this.#res
-				.setHeader('Content-Type', this.#MIME_HTML)
-				.setHeader('Content-Security-Policy', this.#config.response.header.csp_html)
-				.setHeader('Content-Security-Policy-Report-Only', this.#config.response.header.cspro_html)
-				.send(responseBody);
+			this.#res.send(responseBody);
 			return;
 		}
 
-		throw new Error('');
+		throw new Error('Neither the response data body nor the file path is specified.');
 	}
 
 	/**
@@ -106,7 +110,7 @@ export default class HttpResponse {
 	 * @param locationUrl - 遷移先 URL
 	 */
 	send301(locationUrl: string): void {
-		this.#res.status(301).setHeader('Content-Type', this.#MIME_HTML).location(locationUrl).send(StringEscapeHtml.template`<!DOCTYPE html>
+		this.#res.status(301).set('Content-Type', this.#MIME_TYPE_HTML).location(locationUrl).send(StringEscapeHtml.template`<!DOCTYPE html>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Moved Permanently</title>
 <h1>301 Moved Permanently</h1>
@@ -126,7 +130,7 @@ export default class HttpResponse {
 
 		const locationUrl = url ?? this.#req.path;
 
-		this.#res.status(303).setHeader('Content-Type', this.#MIME_HTML).location(locationUrl).send(StringEscapeHtml.template`<!DOCTYPE html>
+		this.#res.status(303).set('Content-Type', this.#MIME_TYPE_HTML).location(locationUrl).send(StringEscapeHtml.template`<!DOCTYPE html>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>See Other</title>
 <h1>303 See Other</h1>
@@ -143,7 +147,7 @@ export default class HttpResponse {
 		this.#res
 			.set('WWW-Authenticate', `${type} realm="${realm}"`)
 			.status(401)
-			.setHeader('Content-Type', this.#MIME_HTML)
+			.set('Content-Type', this.#MIME_TYPE_HTML)
 			.sendFile(path.resolve(this.#config.errorpage.path_401));
 	}
 
@@ -151,20 +155,20 @@ export default class HttpResponse {
 	 * 403 Forbidden
 	 */
 	send403(): void {
-		this.#res.status(403).setHeader('Content-Type', this.#MIME_HTML).sendFile(path.resolve(this.#config.errorpage.path_403));
+		this.#res.status(403).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(this.#config.errorpage.path_403));
 	}
 
 	/**
 	 * 404 Not Found
 	 */
 	send404(): void {
-		this.#res.status(404).setHeader('Content-Type', this.#MIME_HTML).sendFile(path.resolve(this.#config.errorpage.path_404));
+		this.#res.status(404).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(this.#config.errorpage.path_404));
 	}
 
 	/**
 	 * 500 Internal Server Error
 	 */
 	send500(): void {
-		this.#res.status(500).setHeader('Content-Type', this.#MIME_HTML).sendFile(path.resolve(this.#config.errorpage.path_500));
+		this.#res.status(500).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(this.#config.errorpage.path_500));
 	}
 }
