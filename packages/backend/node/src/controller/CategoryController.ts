@@ -89,16 +89,6 @@ export default class CategoryController extends Controller implements Controller
 						imageExternal = paapi5ItemImageUrlParser.toString();
 						break;
 					}
-					case this.#config.image_external.twitter.origin: {
-						/* Twitter */
-						const { searchParams } = url;
-						for (const [name, value] of Object.entries(this.#config.image_external.twitter.params)) {
-							searchParams.set(name, value);
-						}
-						url.search = searchParams.toString();
-						imageExternal = url.toString();
-						break;
-					}
 					default:
 				}
 			}
