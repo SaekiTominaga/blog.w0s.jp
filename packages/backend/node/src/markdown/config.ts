@@ -10,11 +10,6 @@ export const config = {
 			fileName: 'github.svg',
 		},
 		{
-			host: 'twitter.com',
-			alt: 'Twitter',
-			fileName: 'twitter.svg',
-		},
-		{
 			host: 'www.youtube.com',
 			alt: 'YouTube',
 			fileName: 'youtube.svg',
@@ -23,6 +18,16 @@ export const config = {
 			host: 'www.amazon.co.jp',
 			alt: 'Amazon',
 			fileName: 'amazon.png',
+		},
+		{
+			host: 'x.com',
+			alt: 'X',
+			fileName: 'x.png',
+		},
+		{
+			host: 'twitter.com',
+			alt: 'X',
+			fileName: 'x.png',
 		},
 		{
 			host: 'ja.wikipedia.org',
