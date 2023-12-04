@@ -44,6 +44,10 @@ const toMdast = (): Plugin => {
 			const quoteValue = value.substring(quoteOpenIndex + QUOTE_OPEN.length, quoteCloseIndex);
 			const afterQuoteValue = value.substring(quoteCloseIndex + QUOTE_CLOSE.length);
 
+			if (quoteValue === '') {
+				return CONTINUE;
+			}
+
 			/* 引用のメタ情報を取得 */
 			const meta: Meta = {};
 
