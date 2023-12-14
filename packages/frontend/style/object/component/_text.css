@@ -142,10 +142,15 @@
 
 /* ===== ドメイン表記 ===== */
 .c-domain {
+	--_font-size: calc(100% / var(--font-ratio-1));
+
 	margin-inline: 0.25em;
 	color: var(--color-gray);
-	font-weight: var(--font-weight-normal);
-	font-size: calc(100% / var(--font-ratio-1));
+	font-size: var(--_font-size);
+
+	&:has(.c-link-icon) {
+		--_font-size: inherit;
+	}
 }
 
 /* ===== 記事メタデータ ===== */
