@@ -252,8 +252,8 @@ describe('link list', () => {
 		).toBe(
 			`
 <ul class="p-links">
-	<li><a href="http://example.com">list1</a><b class="c-domain">(example.com)</b> text</li>
-	<li><a href="http://example.com">list2</a><b class="c-domain">(example.com)</b> text</li>
+	<li><a href="http://example.com">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
+	<li><a href="http://example.com">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
 </ul>
 `.trim(),
 		);
@@ -274,8 +274,8 @@ describe('link list', () => {
 		).toBe(
 			`
 <ul class="p-list">
-	<li><a href="http://example.com">list1</a><b class="c-domain">(example.com)</b> text</li>
-	<li><a href="http://example.com">list2</a><b class="c-domain">(example.com)</b> text</li>
+	<li><a href="http://example.com">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
+	<li><a href="http://example.com">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
 	<li>list3</li>
 </ul>
 `.trim(),
@@ -587,7 +587,7 @@ describe('blockquote', () => {
 			`
 <figure>
 	<blockquote class="p-quote" lang="en" cite="http://example.com"><p>quote</p></blockquote>
-	<figcaption class="c-caption -meta"><a href="http://example.com">引用元</a><b class="c-domain">(example.com)</b></figcaption>
+	<figcaption class="c-caption -meta"><a href="http://example.com">引用元</a><small class="c-domain">(<code>example.com</code>)</small></figcaption>
 </figure>
 `.trim(),
 		);
@@ -1108,7 +1108,9 @@ describe('YouTube', () => {
 			`
 <figure>
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
-	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
+	<figcaption class="c-caption">
+		<a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></small>
+	</figcaption>
 </figure>
 `.trim(),
 		);
@@ -1128,7 +1130,9 @@ describe('YouTube', () => {
 			`
 <figure>
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe></div>
-	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
+	<figcaption class="c-caption">
+		<a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></small>
+	</figcaption>
 </figure>
 `.trim(),
 		);
@@ -1148,7 +1152,9 @@ describe('YouTube', () => {
 			`
 <figure>
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
-	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
+	<figcaption class="c-caption">
+		<a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></small>
+	</figcaption>
 </figure>
 `.trim(),
 		);
@@ -1168,7 +1174,9 @@ describe('YouTube', () => {
 			`
 <figure>
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe></div>
-	<figcaption class="c-caption"><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></figcaption>
+	<figcaption class="c-caption">
+		<a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" class="c-link-icon" /></small>
+	</figcaption>
 </figure>
 `.trim(),
 		);
