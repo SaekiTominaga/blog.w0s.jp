@@ -102,13 +102,17 @@ export default class MdastUtil {
 								alt: `(${hostInfo.altText})`,
 								width: '16',
 								height: '16',
-								className: 'c-link-icon',
 							},
 							children: [],
 						},
 					],
 				});
 			}
+
+			info.push({
+				type: 'text',
+				value: ' ',
+			});
 		}
 
 		return info;

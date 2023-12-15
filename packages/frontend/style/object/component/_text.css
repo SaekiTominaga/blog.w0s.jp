@@ -144,12 +144,22 @@
 .c-domain {
 	--_font-size: calc(100% / var(--font-ratio-1));
 
-	margin-inline: 0.25em;
 	color: var(--color-gray);
 	font-size: var(--_font-size);
+	word-break: break-all;
 
-	&:has(.c-link-icon) {
+	&:has(img) {
 		--_font-size: inherit;
+	}
+
+	a + & {
+		margin-inline-start: 0.25em;
+	}
+
+	& > img {
+		vertical-align: -0.05lh;
+		inline-size: auto;
+		block-size: 1em;
 	}
 }
 

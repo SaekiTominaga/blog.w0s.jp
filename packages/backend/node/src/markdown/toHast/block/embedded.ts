@@ -239,7 +239,6 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 									alt: '(YouTube)',
 									width: '16',
 									height: '16',
-									className: ['c-link-icon'],
 								},
 								children: [],
 							},
