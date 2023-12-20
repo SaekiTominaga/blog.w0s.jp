@@ -226,15 +226,23 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 					},
 					{
 						type: 'element',
-						tagName: 'img',
+						tagName: 'small',
 						properties: {
-							src: '/image/icon/youtube.svg',
-							alt: '(YouTube)',
-							width: '16',
-							height: '16',
-							className: ['c-link-icon'],
+							className: 'c-domain',
 						},
-						children: [],
+						children: [
+							{
+								type: 'element',
+								tagName: 'img',
+								properties: {
+									src: '/image/icon/youtube.svg',
+									alt: '(YouTube)',
+									width: '16',
+									height: '16',
+								},
+								children: [],
+							},
+						],
 					},
 				],
 			},

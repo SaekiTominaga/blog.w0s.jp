@@ -61,31 +61,58 @@ export default class MdastUtil {
 			if (typeof hostInfo === 'string') {
 				info.push({
 					type: 'element',
-					tagName: 'b',
+					tagName: 'small',
 					properties: {
 						className: 'c-domain',
 					},
 					children: [
 						{
 							type: 'text',
-							value: `(${hostInfo})`,
+							value: '(',
+						},
+						{
+							type: 'element',
+							tagName: 'code',
+							children: [
+								{
+									type: 'text',
+									value: hostInfo,
+								},
+							],
+						},
+						{
+							type: 'text',
+							value: ')',
 						},
 					],
 				});
 			} else {
 				info.push({
 					type: 'element',
-					tagName: 'img',
+					tagName: 'small',
 					properties: {
-						src: `/image/icon/${hostInfo.fileName}`,
-						alt: `(${hostInfo.altText})`,
-						width: '16',
-						height: '16',
-						className: 'c-link-icon',
+						className: 'c-domain',
 					},
-					children: [],
+					children: [
+						{
+							type: 'element',
+							tagName: 'img',
+							properties: {
+								src: `/image/icon/${hostInfo.fileName}`,
+								alt: `(${hostInfo.altText})`,
+								width: '16',
+								height: '16',
+							},
+							children: [],
+						},
+					],
 				});
 			}
+
+			info.push({
+				type: 'text',
+				value: ' ',
+			});
 		}
 
 		return info;

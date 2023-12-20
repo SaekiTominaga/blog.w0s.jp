@@ -142,10 +142,25 @@
 
 /* ===== ドメイン表記 ===== */
 .c-domain {
-	margin-inline: 0.25em;
+	--_font-size: calc(100% / var(--font-ratio-1));
+
 	color: var(--color-gray);
-	font-weight: var(--font-weight-normal);
-	font-size: calc(100% / var(--font-ratio-1));
+	font-size: var(--_font-size);
+	word-break: break-all;
+
+	&:has(img) {
+		--_font-size: inherit;
+	}
+
+	a + & {
+		margin-inline-start: 0.25em;
+	}
+
+	& > img {
+		vertical-align: -0.05lh;
+		inline-size: auto;
+		block-size: 1em;
+	}
 }
 
 /* ===== 記事メタデータ ===== */

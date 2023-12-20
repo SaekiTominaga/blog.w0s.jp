@@ -71,11 +71,15 @@ code {
 	padding-block: 0.25em;
 	color: var(--color-green);
 
-	:is(h1, h2, h3, h4, h5, h6, hgroup, pre, a) & {
-		border-radius: 0;
-		background-color: transparent;
-		padding-block: 0;
+	:is(h1, h2, h3, h4, h5, h6, hgroup, pre, a, .c-domain) & {
+		border-radius: initial;
+		background-color: initial;
+		padding-block: initial;
 		color: inherit;
+	}
+
+	.c-domain & {
+		font-family: inherit;
 	}
 }
 

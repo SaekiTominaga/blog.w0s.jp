@@ -31,7 +31,7 @@ describe('link', () => {
 	test('URL &', async () => {
 		const markdown = new Markdown();
 		expect(await format(await markdown.toHtml('text1[link1](https://example.com/?foo=hoge&bar=piyo)text2'))).toBe(
-			'<p>text1<a href="https://example.com/?foo=hoge&amp;bar=piyo">link1</a><b class="c-domain">(example.com)</b>text2</p>'.trim(),
+			'<p>text1<a href="https://example.com/?foo=hoge&amp;bar=piyo">link1</a><small class="c-domain">(<code>example.com</code>)</small> text2</p>'.trim(),
 		);
 	});
 
@@ -45,14 +45,16 @@ describe('link', () => {
 	test('icon', async () => {
 		const markdown = new Markdown();
 		expect(await format(await markdown.toHtml('text1[link1](https://github.com/)text2'))).toBe(
-			'<p>text1<a href="https://github.com/">link1</a><img src="/image/icon/github.svg" alt="(GitHub)" width="16" height="16" class="c-link-icon" />text2</p>'.trim(),
+			`<p>
+	text1<a href="https://github.com/">link1</a><small class="c-domain"><img src="/image/icon/github.svg" alt="(GitHub)" width="16" height="16" /></small> text2
+</p>`.trim(),
 		);
 	});
 
 	test('PDF', async () => {
 		const markdown = new Markdown();
 		expect(await format(await markdown.toHtml('text1[link1](https://example.com/foo.pdf)text2'))).toBe(
-			'<p>text1<a href="https://example.com/foo.pdf">link1</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon" /><b class="c-domain">(example.com)</b>text2</p>'.trim(),
+			'<p>text1<a href="https://example.com/foo.pdf">link1</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon" /><small class="c-domain">(<code>example.com</code>)</small> text2</p>'.trim(),
 		);
 	});
 
@@ -64,7 +66,9 @@ describe('link', () => {
 	test('amazon', async () => {
 		const markdown = new Markdown();
 		expect(await format(await markdown.toHtml('text1[link1](amazon:4065199816)text2'))).toBe(
-			'<p>text1<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=w0s.jp-22">link1</a><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" class="c-link-icon" />text2</p>'.trim(),
+			`<p>
+	text1<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=w0s.jp-22">link1</a><small class="c-domain"><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" /></small> text2
+</p>`.trim(),
 		);
 	});
 
@@ -96,7 +100,7 @@ describe('quote', () => {
 			`
 <p>
 	text1<a href="https://example.com/"><q cite="https://example.com/">quote1</q></a
-	><b class="c-domain">(example.com)</b>text2
+	><small class="c-domain">(<code>example.com</code>)</small> text2
 </p>
 `.trim(),
 		);
@@ -125,7 +129,7 @@ describe('quote', () => {
 			`
 <p>
 	text1<a href="https://example.com/"><q lang="en" cite="https://example.com/">quote1</q></a
-	><b class="c-domain">(example.com)</b>text2
+	><small class="c-domain">(<code>example.com</code>)</small> text2
 </p>
 `.trim(),
 		);
