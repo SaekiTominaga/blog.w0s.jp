@@ -157,7 +157,7 @@
 	}
 
 	& > img {
-		vertical-align: -0.05lh;
+		vertical-align: -0.1lh;
 		inline-size: auto;
 		block-size: 1em;
 	}
