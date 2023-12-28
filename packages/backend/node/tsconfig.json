@@ -1,15 +1,8 @@
 {
 	"extends": "@w0s/tsconfig",
 	"include": ["@types/*.d.ts", "src/**/*.ts"],
-	"exclude": ["__tests__/*.test.js"],
 	"compilerOptions": {
-		/* Modules */
-		"moduleResolution": "Node", // "Node16" だと `error TS2307: Cannot find module 'twitter-api-v2/dist/v2/client.v2.write' or its corresponding type declarations.` でコンパイル不能
-
 		/* Emit */
-		"outDir": "dist",
-
-		/* Completeness */
-		"skipLibCheck": true // `node_modules/twitter-api-v2/dist/paginators/user.paginator.v1.d.ts:8:15 - error TS2416` 対策
+		"outDir": "dist"
 	}
 }
