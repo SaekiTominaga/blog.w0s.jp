@@ -41,6 +41,12 @@
 			}
 		},
 		{
+			"files": ["script/*.ts"],
+			"rules": {
+				"no-new": "off"
+			}
+		},
+		{
 			"files": ["script/trusted-types.ts"],
 			"parserOptions": {
 				"sourceType": "script"

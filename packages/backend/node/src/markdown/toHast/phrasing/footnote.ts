@@ -37,11 +37,11 @@ export const footnoteReferenceToHast = (state: H, node: FootnoteReference): Hast
 				properties: {
 					href: `#${state.clobberPrefix}fn-${safeId}`,
 					id: `${state.clobberPrefix}fnref-${safeId}${reuseCounter > 1 ? `-${reuseCounter}` : ''}`,
-					is: 'w0s-tooltip-trigger',
-					'data-tooltip-label': '脚注',
-					'data-tooltip-class': 'p-tooltip',
-					'data-tooltip-close-text': '閉じる',
-					'data-tooltip-close-image-src': '/image/tooltip-close.svg',
+					className: ['js-footnote-reference-popover'],
+					'data-popover-label': '脚注',
+					'data-popover-class': 'p-tooltip',
+					'data-popover-close-text': '閉じる',
+					'data-popover-close-image-src': '/image/tooltip-close.svg',
 				},
 				children: [
 					{
