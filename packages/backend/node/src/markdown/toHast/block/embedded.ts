@@ -3,7 +3,7 @@ import type { Properties } from 'hast-util-select/lib/types.js';
 import type { Root } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.js';
-import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
+import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 import type { AmazonImage, Size } from '../../toMdast/block/embedded.js';
 import { config } from '../../config.js';
 

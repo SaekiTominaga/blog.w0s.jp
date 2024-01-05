@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import StringEscapeHtml from '@saekitominaga/string-escape-html';
+import StringEscapeHtml from '@w0s/html-escape';
 import type { Request, Response } from 'express';
 import type { NoName as Configure } from '../../../configure/type/common.js';
 

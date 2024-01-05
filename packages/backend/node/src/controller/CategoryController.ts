@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import filenamify from 'filenamify';
-import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
+import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 import type { Request, Response } from 'express';
 import BlogCategoryDao from '../dao/BlogCategoryDao.js';
 import Controller from '../Controller.js';
