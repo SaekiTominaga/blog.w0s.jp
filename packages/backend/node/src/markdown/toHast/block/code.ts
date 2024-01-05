@@ -43,9 +43,8 @@ export const codeToHast = (_state: H, node: Code): HastElementContent | HastElem
 					tagName: 'button',
 					properties: {
 						type: 'button',
-						is: 'w0s-clipboard',
-						className: ['p-code__clipboard-button'],
-						'data-target-for': id,
+						className: ['p-code__clipboard-button', 'js-button-clipboard'],
+						'data-target': id,
 					},
 					children: [
 						{

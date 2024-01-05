@@ -1,4 +1,4 @@
-import PaapiItemImageUrlParser from '@saekitominaga/paapi-item-image-url-parser';
+import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 
 interface Option {
 	preview: HTMLTemplateElement;

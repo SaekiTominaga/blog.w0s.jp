@@ -1,7 +1,7 @@
-import ButtonClipboard from '@saekitominaga/customelements-button-clipboard';
-import ReportJsError from '@saekitominaga/report-js-error';
-import Tab from '@saekitominaga/customelements-tab';
-import TooltipTrigger from '@saekitominaga/customelements-tooltip-trigger';
+import ButtonClipboard from '@w0s/button-clipboard';
+import ReportJsError from '@w0s/report-js-error';
+import Tab from '@w0s/tab';
+import FootnoteReferencePopover from '@w0s/footnote-reference-popover';
 import GoogleAdsense from './unique/GoogleAdsense.js';
 
 /* JS エラーレポート */
@@ -16,7 +16,7 @@ new ReportJsError('https://report.w0s.jp/js', {
 	fetchContentType: 'application/json',
 	allowFilenames: [/^https:\/\/blog\.w0s\.jp\/script\/.+\.js$/],
 	denyUAs: [/Googlebot\/2.1;/],
-}).init();
+});
 
 if (window.customElements !== undefined) {
 	/* タブ */
@@ -25,17 +25,13 @@ if (window.customElements !== undefined) {
 	}
 
 	/* ツールチップ */
-	if (document.querySelector('a[is="w0s-tooltip-trigger"]') !== null) {
-		customElements.define('w0s-tooltip-trigger', TooltipTrigger, {
-			extends: 'a',
-		});
+	for (const targetElement of document.querySelectorAll<HTMLAnchorElement>('.js-footnote-reference-popover')) {
+		new FootnoteReferencePopover(targetElement);
 	}
 
 	/* クリップボード書き込みボタン */
-	if (document.querySelector('button[is="w0s-clipboard"]') !== null) {
-		customElements.define('w0s-clipboard', ButtonClipboard, {
-			extends: 'button',
-		});
+	for (const targetElement of document.querySelectorAll<HTMLButtonElement>('.js-button-clipboard')) {
+		new ButtonClipboard(targetElement);
 	}
 }
 

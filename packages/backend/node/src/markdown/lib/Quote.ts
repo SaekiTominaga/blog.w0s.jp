@@ -1,4 +1,4 @@
-import IsbnVerify from '@saekitominaga/isbn-verify';
+import IsbnVerify from '@w0s/isbn-verify';
 import { regexp } from '../config.js';
 
 interface MetaIsbn {

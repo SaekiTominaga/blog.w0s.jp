@@ -1,17 +1,9 @@
-import ButtonConfirm from '@saekitominaga/customelements-button-confirm';
-import FormBeforeUnloadConfirm from '@saekitominaga/htmlformelement-before-unload-confirm';
-import FormSubmitOverlay from '@saekitominaga/htmlformelement-submit-overlay';
+import FormBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
+import FormSubmitOverlay from '@w0s/form-submit-overlay';
 import InputFilePreview from '@saekitominaga/customelements-input-file-preview';
-import StringConvert from '@saekitominaga/string-convert';
+import StringConvert from '@w0s/string-convert';
 import Preview from './unique/Preview.js';
 import MessageImage from './unique/MessageImage.js';
-
-if (document.querySelector('button[is="w0s-confirm-button"]') !== null) {
-	/* ボタン押下時に確認メッセージを表示 */
-	customElements.define('w0s-confirm-button', ButtonConfirm, {
-		extends: 'button',
-	});
-}
 
 if (document.querySelector('input[is="w0s-input-file-preview"]') !== null) {
 	/* ファイルアップロードでプレビュー画像を表示 */
@@ -35,13 +27,12 @@ for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLT
 
 /* フォーム入力中にページが閉じられようとしたら確認メッセージを表示 */
 for (const beforeunloadConfirmElement of document.querySelectorAll<HTMLFormElement>('.js-form-beforeunload-confirm')) {
-	const formBeforeUnloadConfirm = new FormBeforeUnloadConfirm(beforeunloadConfirmElement);
-	formBeforeUnloadConfirm.init();
+	new FormBeforeUnloadConfirm(beforeunloadConfirmElement);
 }
 
 /* 送信ボタン2度押し防止 */
 for (const formElement of document.querySelectorAll<HTMLFormElement>('.js-submit-overlay')) {
-	new FormSubmitOverlay(formElement).init();
+	new FormSubmitOverlay(formElement);
 }
 
 /* 本文プレビュー */

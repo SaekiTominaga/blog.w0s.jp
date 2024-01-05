@@ -1,4 +1,4 @@
-import StringEscapeHtml from '@saekitominaga/string-escape-html';
+import StringEscapeHtml from '@w0s/html-escape';
 
 /**
  * 記事タイトルの処理
