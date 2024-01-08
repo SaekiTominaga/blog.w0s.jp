@@ -31,7 +31,6 @@
 	},
 	"dependencies": {
 		"@blog.w0s.jp/util": "*",
-		"@saekitominaga/customelements-input-file-preview": "^1.1.6",
 		"@w0s/button-clipboard": "^2.0.0",
 		"@w0s/footnote-reference-popover": "^3.0.0",
 		"@w0s/form-before-unload-confirm": "^2.0.0",

@@ -1,16 +1,9 @@
 import FormBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
 import FormSubmitOverlay from '@w0s/form-submit-overlay';
-import InputFilePreview from '@saekitominaga/customelements-input-file-preview';
+import InputFilePreview from '@w0s/input-file-preview';
 import StringConvert from '@w0s/string-convert';
 import Preview from './unique/Preview.js';
 import MessageImage from './unique/MessageImage.js';
-
-if (document.querySelector('input[is="w0s-input-file-preview"]') !== null) {
-	/* ファイルアップロードでプレビュー画像を表示 */
-	customElements.define('w0s-input-file-preview', InputFilePreview, {
-		extends: 'input',
-	});
-}
 
 /* 入力値の変換 */
 for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim')) {
@@ -23,6 +16,11 @@ for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLT
 		},
 		{ passive: true },
 	);
+}
+
+/* ファイルアップロードでプレビュー画像を表示 */
+for (const targetElement of document.querySelectorAll<HTMLInputElement>('.js-input-file-preview')) {
+	new InputFilePreview(targetElement);
 }
 
 /* フォーム入力中にページが閉じられようとしたら確認メッセージを表示 */

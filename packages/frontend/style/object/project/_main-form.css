@@ -106,30 +106,30 @@
 	display: block flex;
 	flex-flow: wrap;
 	gap: 10px;
-	font-size: calc(100% / var(--font-ratio-1));
 
 	& > li {
 		inline-size: 120px;
 	}
 
-	& img {
-		inline-size: 100%;
-		block-size: 100%;
-		object-fit: contain;
-		object-position: 0 0;
-	}
-
-	/* stylelint-disable selector-class-pattern */
-	& .error {
+	& output {
 		display: block flow;
-		border: 1px solid var(--color-border-dark);
-		padding: 10px;
-		font-weight: var(--font-weight-normal);
-	}
+		font-size: calc(100% / var(--font-ratio-1));
 
-	& .filename {
-		font-weight: var(--font-weight-bold);
-		overflow-wrap: break-word;
+		&:not(:has(> img)) {
+			border: 1px solid var(--color-border-dark);
+			padding: 10px;
+		}
+
+		& > img {
+			display: block flow;
+			inline-size: 100%;
+			block-size: 100%;
+			object-fit: contain;
+			object-position: 0 0;
+		}
+
+		& code {
+			overflow-wrap: break-word;
+		}
 	}
-	/* stylelint-enable selector-class-pattern */
 }
