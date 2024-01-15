@@ -20,6 +20,11 @@ export const config = {
 			fileName: 'amazon.png',
 		},
 		{
+			host: 'www.instagram.com',
+			alt: 'Instagram',
+			fileName: 'instagram.png',
+		},
+		{
 			host: 'x.com',
 			alt: 'X',
 			fileName: 'x.png',
