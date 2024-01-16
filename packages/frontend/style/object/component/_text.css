@@ -130,6 +130,7 @@
 		&[role="button"] {
 			/* JS 有効時のみ */
 			cursor: default;
+			outline-offset: calc(0px - var(--outline-width));
 			color: var(--link-color);
 			text-decoration: none;
 
