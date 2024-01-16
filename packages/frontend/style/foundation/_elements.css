@@ -20,10 +20,6 @@
 	outline: var(--outline-width) solid var(--outline-color);
 }
 
-w0s-tooltip:focus {
-	outline: none; /* for Firefox */
-}
-
 :any-link {
 	outline-offset: var(--outline-offset);
 	text-decoration-thickness: from-font;
