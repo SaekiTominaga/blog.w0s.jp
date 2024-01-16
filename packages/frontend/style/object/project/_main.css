@@ -14,8 +14,8 @@
 	line-height: var(--line-height-narrow);
 }
 
-/* ===== ツールチップ ===== */
-.p-tooltip {
+/* ===== 脚注ポップオーバー ===== */
+.p-footnote-popover {
 	--_border-color: var(--color-border-light);
 	--_close-button-padding: 6px;
 	--_close-button-image-size: 24px;
