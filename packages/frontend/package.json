@@ -32,7 +32,7 @@
 	"dependencies": {
 		"@blog.w0s.jp/util": "*",
 		"@w0s/button-clipboard": "^2.0.0",
-		"@w0s/footnote-reference-popover": "^3.0.0",
+		"@w0s/footnote-reference-popover": "^4.1.0",
 		"@w0s/form-before-unload-confirm": "^2.0.0",
 		"@w0s/form-submit-overlay": "^3.0.0",
 		"@w0s/input-file-preview": "^2.0.0",

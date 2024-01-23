@@ -40,8 +40,10 @@ export const footnoteReferenceToHast = (state: H, node: FootnoteReference): Hast
 					className: ['js-footnote-reference-popover'],
 					'data-popover-label': '脚注',
 					'data-popover-class': 'p-footnote-popover',
-					'data-popover-close-text': '閉じる',
-					'data-popover-close-image-src': '/image/footnote-popover-close.svg',
+					'data-popover-hide-text': '閉じる',
+					'data-popover-hide-image-src': '/image/footnote-popover-close.svg',
+					'data-popover-hide-image-width': '24',
+					'data-popover-hide-image-height': '24',
 				},
 				children: [
 					{
