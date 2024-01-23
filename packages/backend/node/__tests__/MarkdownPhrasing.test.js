@@ -167,7 +167,7 @@ text[^1]text
 		).toBe(
 			`
 <p>
-	text<span class="c-footnote-ref"><a href="#fn-1" id="fnref-1" class="js-footnote-reference-popover" data-popover-label="脚注" data-popover-class="p-footnote-popover" data-popover-close-text="閉じる" data-popover-close-image-src="/image/footnote-popover-close.svg">[1]</a></span
+	text<span class="c-footnote-ref"><a href="#fn-1" id="fnref-1" class="js-footnote-reference-popover" data-popover-label="脚注" data-popover-class="p-footnote-popover" data-popover-hide-text="閉じる" data-popover-hide-image-src="/image/footnote-popover-close.svg" data-popover-hide-image-width="24" data-popover-hide-image-height="24">[1]</a></span
 	>text
 </p>
 <section class="p-footnote">

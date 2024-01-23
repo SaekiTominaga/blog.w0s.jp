@@ -17,55 +17,58 @@
 /* ===== 脚注ポップオーバー ===== */
 .p-footnote-popover {
 	--_border-color: var(--color-border-light);
-	--_close-button-padding: 6px;
-	--_close-button-image-size: 24px;
+	--_hide-button-padding: 6px;
+	--_hide-button-image-size: 24px;
 
 	outline: none;
-	box-shadow: 0 0 0.5em var(--_border-color);
-	border: 1px solid var(--_border-color);
-	border-radius: var(--border-radius-normal);
-	background: var(--color-white);
-	padding: 15px;
-	max-inline-size: min(30em, 100%);
-	color: var(--color-black);
-	font-size: calc(100% / var(--font-ratio-1));
 
-	&:focus {
-		--_border-color: var(--outline-color);
+	&::part(popover) {
+		outline-offset: -1px;
+		border: 1px solid var(--_border-color);
+		border-radius: var(--border-radius-normal);
+		background: var(--color-white);
+		padding: 15px;
+		max-inline-size: min(30em, 100%);
+		color: var(--color-black);
+		font-size: calc(100% / var(--font-ratio-1));
+
+		&:focus {
+			outline: var(--outline-width-bold) solid var(--outline-color);
+		}
+
+		&:hover {
+			box-shadow: 0 0 0.5em var(--_border-color);
+		}
+
+		&::before {
+			display: block flow;
+			float: right;
+			inline-size: calc(var(--_hide-button-image-size) + var(--_hide-button-padding) * 2);
+			block-size: calc(var(--_hide-button-image-size) + var(--_hide-button-padding) * 2);
+			content: "";
+		}
 	}
 
-	&::before {
-		display: block flow;
-		float: right;
-		inline-size: calc(var(--_close-button-image-size) + var(--_close-button-padding) * 2);
-		block-size: calc(var(--_close-button-image-size) + var(--_close-button-padding) * 2);
-		content: "";
-	}
+	&::part(hide-button) {
+		--_border-color: var(--color-white);
+		--_background-color: transparent;
 
-	& > form[method="dialog"] {
 		position: absolute;
-		inset-block-start: 1px;
-		inset-inline-end: 1px;
+		inset-block-start: 0;
+		inset-inline-end: 0;
+		outline-offset: -1px;
+		border: 1px solid var(--_border-color);
+		border-radius: var(--border-radius-normal);
+		background: var(--_background-color);
+		padding: var(--_hide-button-padding);
 
-		& > button {
-			--_border-color: var(--color-white);
-			--_background-color: transparent;
+		&:focus {
+			outline: var(--outline-width-bold) solid var(--outline-color);
+		}
 
-			border: 1px solid var(--_border-color);
-			border-radius: var(--border-radius-normal);
-			background: var(--_background-color);
-			padding: var(--_close-button-padding);
-
-			&:hover {
-				--_border-color: var(--color-bg-light);
-				--_background-color: var(--color-bg-superlight);
-			}
-
-			& > img {
-				display: block flow;
-				inline-size: var(--_close-button-image-size);
-				block-size: var(--_close-button-image-size);
-			}
+		&:hover {
+			--_border-color: var(--color-bg-light);
+			--_background-color: var(--color-bg-superlight);
 		}
 	}
 }
