@@ -30,10 +30,8 @@
 	font-weight: var(--_font-weight);
 	font-size: calc(100% / var(--font-ratio-2));
 	text-align: center;
-	white-space: nowrap; /* JS 無効環境向け */
 
 	&[role="tab"] {
-		cursor: default;
 		outline-width: 2px;
 		outline-offset: -2px;
 	}
