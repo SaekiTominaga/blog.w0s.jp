@@ -41,7 +41,7 @@
 		"@w0s/report-js-error": "^2.0.0",
 		"@w0s/report-same-referrer": "^3.0.0",
 		"@w0s/string-convert": "^2.0.0",
-		"@w0s/tab": "^2.0.0",
+		"@w0s/tab": "^3.0.0",
 		"globby": "^13.1.4",
 		"prettier": "^3.0.0",
 		"slash": "^5.1.0",
