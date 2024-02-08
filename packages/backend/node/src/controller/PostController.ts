@@ -409,7 +409,7 @@ export default class PostController extends Controller implements ControllerInte
 					/* ファイル出力 */
 					const fileName =
 						fileNameType === ''
-							? `${this.#config.newly_json_create.filename_prefix}`
+							? this.#config.newly_json_create.filename_prefix
 							: `${this.#config.newly_json_create.filename_prefix}${this.#config.newly_json_create.filename_separator}${fileNameType}`;
 					const filePath = `${this.configCommon.static.root}/${this.#config.newly_json_create.directory}/${fileName}.${
 						this.#config.newly_json_create.extension

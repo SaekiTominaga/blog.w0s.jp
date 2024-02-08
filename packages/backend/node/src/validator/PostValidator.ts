@@ -32,7 +32,7 @@ export default class PostValidator {
 		await body('title')
 			.custom(async (value: string): Promise<boolean> => {
 				if (await dao.isExistsTitle(value, topicId)) {
-					return Promise.reject();
+					return Promise.reject(new Error());
 				}
 				return true;
 			})

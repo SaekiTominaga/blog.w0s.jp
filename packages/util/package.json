@@ -8,6 +8,6 @@
 		"lint": "eslint src/*.ts"
 	},
 	"dependencies": {
-		"prettier": "^3.0.0"
+		"prettier": "^3.2.5"
 	}
 }
