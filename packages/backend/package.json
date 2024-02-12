@@ -7,7 +7,7 @@
 		"watch": "tsc --project node/tsconfig.json -w",
 		"build": "tsc --project node/tsconfig.json",
 		"lint": "eslint node/src/**/*.ts node/@types/*.d.ts node/__tests__/**/*.test.js",
-		"test": "npm run config-convert && npm run build && cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+		"test": "npm run _config:convert && npm run build && cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
 		"config": "run-p _config:*",
 		"errorpage-lint": "markuplint errorpage/*.html",
 		"_config:convert": "json2ts -i configure/schema -o configure/type",
@@ -15,7 +15,11 @@
 		"_config:validate-common": "ajv --spec=draft7 -s configure/schema/common.json -d configure/common.json",
 		"_config:validate-entry": "ajv --spec=draft7 -s configure/schema/entry.json -d configure/entry.json",
 		"_config:validate-list": "ajv --spec=draft7 -s configure/schema/list.json -d configure/list.json",
-		"_config:validate-post": "ajv --spec=draft7 -s configure/schema/post.json -d configure/post.json"
+		"_config:validate-post": "ajv --spec=draft7 -s configure/schema/post.json -d configure/post.json",
+		"_config:validate-feed": "ajv --spec=draft7 -s configure/schema/feed.json -d configure/feed.json",
+		"_config:validate-mastodon": "ajv --spec=draft7 -s configure/schema/mastodon.json -d configure/mastodon.json",
+		"_config:validate-newly-json": "ajv --spec=draft7 -s configure/schema/newly-json.json -d configure/newly-json.json",
+		"_config:validate-sitemap": "ajv --spec=draft7 -s configure/schema/sitemap.json -d configure/sitemap.json"
 	},
 	"dependencies": {
 		"@blog.w0s.jp/util": "*",
