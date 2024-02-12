@@ -1,0 +1,31 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://blog.w0s.jp/newly-json.json",
+	"type": "object",
+	"title": "新着 JSON ファイル生成",
+	"required": ["directory", "filename_prefix", "filename_separator", "extension", "max"],
+	"properties": {
+		"directory": {
+			"type": "string",
+			"title": "ディレクトリ"
+		},
+		"filename_prefix": {
+			"type": "string",
+			"title": "ファイル名接頭辞"
+		},
+		"filename_separator": {
+			"type": "string",
+			"title": "ファイル名の接頭辞との区切り文字"
+		},
+		"extension": {
+			"type": "string",
+			"title": "拡張子"
+		},
+		"max": {
+			"type": "integer",
+			"minimum": 1,
+			"title": "最大表示件数"
+		}
+	},
+	"additionalProperties": false
+}

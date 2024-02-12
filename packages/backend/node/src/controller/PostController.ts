@@ -8,30 +8,30 @@ import { createRestAPIClient as mastodonRest } from 'masto';
 import prettier from 'prettier';
 import xmlFormatter from 'xml-formatter';
 import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
-import BlogPostDao from '../dao/BlogPostDao.js';
-import Compress from '../util/Compress.js';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
+import BlogPostDao from '../dao/BlogPostDao.js';
 import Markdown from '../markdown/Markdown.js';
-import MarkdownTitle from '../markdown/Title.js';
+import CreateNewlyJson from '../proccess/CreateNewlyJson.js';
+import Compress from '../util/Compress.js';
 import HttpBasicAuth, { type Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
-import PostValidator from '../validator/PostValidator.js';
 import RequestUtil from '../util/RequestUtil.js';
+import PostValidator from '../validator/PostValidator.js';
 import type { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import type { NoName as Configure } from '../../../configure/type/post.js';
 
-interface PostResults {
+interface PostResult {
 	success: boolean;
 	message: string;
 }
 
-interface ViewUpdateResults {
+interface ViewUpdateResult {
 	success: boolean;
 	message: string;
 }
 
-interface MediaUploadResults {
+interface MediaUploadResult {
 	success: boolean;
 	message: string;
 	filename: string;
@@ -94,9 +94,9 @@ export default class PostController extends Controller implements ControllerInte
 
 		const validator = new PostValidator(req, this.#config);
 		let topicValidationResult: ValidationResult<ValidationError> | null = null;
-		const topicPostResults = new Set<PostResults>();
-		const viewUpdateResults = new Set<ViewUpdateResults>();
-		const mediaUploadResults = new Set<MediaUploadResults>();
+		const topicPostResults = new Set<PostResult>();
+		const viewUpdateResults = new Set<ViewUpdateResult>();
+		const mediaUploadResults = new Set<MediaUploadResult>();
 
 		const dao = new BlogPostDao(this.configCommon.sqlite.db.blog);
 
@@ -122,13 +122,13 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('データ登録', entryId);
 
 				const entryUrl = this.#getEntryUrl(entryId);
-				topicPostResults.add({ success: true, message: `${this.#config.insert.message_success} ${entryUrl}` });
+				topicPostResults.add({ success: true, message: `${this.#config.process_message.insert.success} ${entryUrl}` });
 
 				topicPostResults.add(await this.#updateModified(dao));
 				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao)]);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
-				topicPostResults.add(await this.#createNewlyJson(dao));
+				topicPostResults.add(await this.#createNewlyJson());
 				if (requestQuery.public && requestQuery.social) {
 					topicPostResults.add(await this.#postSocial(requestQuery, entryUrl));
 				}
@@ -157,13 +157,13 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('データ更新', requestQuery.id);
 
 				const entryUrl = this.#getEntryUrl(requestQuery.id);
-				topicPostResults.add({ success: true, message: `${this.#config.update.message_success} ${entryUrl}` });
+				topicPostResults.add({ success: true, message: `${this.#config.process_message.update.success} ${entryUrl}` });
 
 				topicPostResults.add(await this.#updateModified(dao));
 				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao)]);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
-				topicPostResults.add(await this.#createNewlyJson(dao));
+				topicPostResults.add(await this.#createNewlyJson());
 			}
 		} else if (requestQuery.action_revise_preview) {
 			/* 修正データ選択 */
@@ -257,17 +257,17 @@ export default class PostController extends Controller implements ControllerInte
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #updateModified(dao: BlogPostDao): Promise<PostResults> {
+	async #updateModified(dao: BlogPostDao): Promise<PostResult> {
 		try {
 			await dao.updateModified();
 			this.logger.info('`d_info` table update success');
 		} catch (e) {
 			this.logger.error('`d_info` table update failed', e);
 
-			return { success: false, message: this.#config.update_modified.response.message_failure };
+			return { success: false, message: this.#config.process_message.db_modified.failure };
 		}
 
-		return { success: true, message: this.#config.update_modified.response.message_success };
+		return { success: true, message: this.#config.process_message.db_modified.success };
 	}
 
 	/**
@@ -277,14 +277,14 @@ export default class PostController extends Controller implements ControllerInte
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #createFeed(dao: BlogPostDao): Promise<PostResults> {
+	async #createFeed(dao: BlogPostDao): Promise<PostResult> {
 		try {
 			const entriesDto = await dao.getEntriesFeed(this.#config.feed_create.maximum_number);
 
 			if (entriesDto.length === 0) {
 				this.logger.info('Feed file was not created because there were zero data.');
 
-				return { success: true, message: this.#config.feed_create.response.message_none };
+				return { success: true, message: this.#config.process_message.feed.none };
 			}
 
 			const entriesView = new Set<BlogView.FeedEntry>();
@@ -328,10 +328,10 @@ export default class PostController extends Controller implements ControllerInte
 		} catch (e) {
 			this.logger.error('Feed file create failed', e);
 
-			return { success: false, message: this.#config.feed_create.response.message_failure };
+			return { success: false, message: this.#config.process_message.feed.failure };
 		}
 
-		return { success: true, message: this.#config.feed_create.response.message_success };
+		return { success: true, message: this.#config.process_message.feed.success };
 	}
 
 	/**
@@ -341,7 +341,7 @@ export default class PostController extends Controller implements ControllerInte
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #createSitemap(dao: BlogPostDao): Promise<PostResults> {
+	async #createSitemap(dao: BlogPostDao): Promise<PostResult> {
 		try {
 			const [lastModifiedDto, entries] = await Promise.all([
 				dao.getLastModified(),
@@ -371,63 +371,34 @@ export default class PostController extends Controller implements ControllerInte
 		} catch (e) {
 			this.logger.error('Sitemap file create failed', e);
 
-			return { success: false, message: this.#config.sitemap_create.response.message_failure };
+			return { success: false, message: this.#config.process_message.sitemap.failure };
 		}
 
-		return { success: true, message: this.#config.sitemap_create.response.message_success };
+		return { success: true, message: this.#config.process_message.sitemap.success };
 	}
 
 	/**
 	 * 新着 JSON ファイルを生成する
 	 *
-	 * @param dao - Dao
-	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #createNewlyJson(dao: BlogPostDao): Promise<PostResults> {
+	async #createNewlyJson(): Promise<PostResult> {
 		try {
-			const datasCatgroup = new Map<string, BlogView.NewlyEntry[]>();
-			datasCatgroup.set('', await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number));
+			const result = await new CreateNewlyJson().execute({
+				dbFilePath: this.configCommon.sqlite.db.blog,
+				root: this.configCommon.static.root,
+			});
 
-			await Promise.all(
-				(await dao.getCategoryGroupMasterFileName()).map(async (fileNameType) => {
-					datasCatgroup.set(fileNameType, await dao.getEntriesNewly(this.#config.newly_json_create.maximum_number, fileNameType));
-				}),
-			);
-
-			await Promise.all(
-				[...datasCatgroup].map(async ([fileNameType, datas]) => {
-					const newlyJson = JSON.stringify(
-						datas.map((data) => ({
-							id: data.id,
-							title: new MarkdownTitle(data.title).mark(),
-						})),
-					);
-
-					const newlyJsonBrotli = Compress.brotliText(newlyJson);
-
-					/* ファイル出力 */
-					const fileName =
-						fileNameType === ''
-							? this.#config.newly_json_create.filename_prefix
-							: `${this.#config.newly_json_create.filename_prefix}${this.#config.newly_json_create.filename_separator}${fileNameType}`;
-					const filePath = `${this.configCommon.static.root}/${this.#config.newly_json_create.directory}/${fileName}.${
-						this.#config.newly_json_create.extension
-					}`;
-					const brotliFilePath = `${filePath}.br`;
-
-					await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
-					this.logger.info('JSON file created', filePath);
-					this.logger.info('JSON Brotli file created', brotliFilePath);
-				}),
-			);
+			result.created.forEach((filePath): void => {
+				this.logger.info('JSON file created', filePath);
+			});
 		} catch (e) {
-			this.logger.error('新着 JSON 生成失敗', e);
+			this.logger.error(e);
 
-			return { success: false, message: this.#config.newly_json_create.response.message_failure };
+			return { success: false, message: this.#config.process_message.newly_json.failure };
 		}
 
-		return { success: true, message: this.#config.newly_json_create.response.message_success };
+		return { success: true, message: this.#config.process_message.newly_json.success };
 	}
 
 	/**
@@ -438,7 +409,7 @@ export default class PostController extends Controller implements ControllerInte
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #postSocial(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResults> {
+	async #postSocial(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResult> {
 		/* Mastodon */
 		try {
 			const mastodon = mastodonRest({
@@ -473,11 +444,11 @@ export default class PostController extends Controller implements ControllerInte
 
 			this.logger.info('Mastodon post success', status.url);
 
-			return { success: true, message: `${this.#config.social.mastodon.api_response.message_success} ${status.url}` };
+			return { success: true, message: `${this.#config.process_message.mastodon.success} ${status.url}` };
 		} catch (e) {
 			this.logger.error('Mastodon post failed', e);
 
-			return { success: false, message: this.#config.social.mastodon.api_response.message_failure };
+			return { success: false, message: this.#config.process_message.mastodon.failure };
 		}
 	}
 
@@ -490,14 +461,14 @@ export default class PostController extends Controller implements ControllerInte
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #mediaUpload(req: Request, requestQuery: BlogRequest.Post, httpBasicCredentials: HttpBasicAuthCredentials | null): Promise<Set<MediaUploadResults>> {
+	async #mediaUpload(req: Request, requestQuery: BlogRequest.Post, httpBasicCredentials: HttpBasicAuthCredentials | null): Promise<Set<MediaUploadResult>> {
 		if (req.files === undefined) {
 			throw new Error('メディアアップロード時にファイルが指定されていない');
 		}
 
 		const url = this.#env === 'development' ? this.#config.media_upload.url_dev : this.#config.media_upload.url;
 
-		const result = new Set<MediaUploadResults>();
+		const result = new Set<MediaUploadResult>();
 
 		try {
 			await Promise.all(

@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/post.json",
 	"type": "object",
 	"title": "記事投稿",
-	"required": ["view", "validator", "insert", "update", "update_modified", "feed_create", "sitemap_create", "newly_json_create", "social", "media_upload"],
+	"required": ["view", "validator", "process_message", "feed_create", "sitemap_create", "social", "media_upload"],
 	"properties": {
 		"view": {
 			"type": "object",
@@ -43,47 +43,115 @@
 			},
 			"additionalProperties": false
 		},
-		"insert": {
+		"process_message": {
 			"type": "object",
-			"title": "記事投稿",
-			"required": ["message_success"],
+			"title": "処理ごとのメッセージ",
+			"required": ["insert", "update", "db_modified", "feed", "sitemap", "newly_json", "mastodon"],
 			"properties": {
-				"message_success": {
-					"type": "string",
-					"title": "成功時のメッセージ"
-				}
-			},
-			"additionalProperties": false
-		},
-		"update": {
-			"type": "object",
-			"title": "記事更新",
-			"required": ["message_success"],
-			"properties": {
-				"message_success": {
-					"type": "string",
-					"title": "成功時のメッセージ"
-				}
-			},
-			"additionalProperties": false
-		},
-		"update_modified": {
-			"type": "object",
-			"title": "最終更新日時記録",
-			"required": ["response"],
-			"properties": {
-				"response": {
+				"insert": {
 					"type": "object",
-					"title": "レスポンス",
-					"required": ["message_success", "message_failure"],
+					"title": "記事投稿",
+					"required": ["success"],
 					"properties": {
-						"message_success": {
+						"success": {
+							"type": "string",
+							"title": "成功時"
+						}
+					},
+					"additionalProperties": false
+				},
+				"update": {
+					"type": "object",
+					"title": "記事更新",
+					"required": ["success"],
+					"properties": {
+						"success": {
+							"type": "string",
+							"title": "成功時"
+						}
+					},
+					"additionalProperties": false
+				},
+				"db_modified": {
+					"type": "object",
+					"title": "最終更新日時記録",
+					"required": ["success", "failure"],
+					"properties": {
+						"success": {
+							"type": "string",
+							"title": "成功時"
+						},
+						"failure": {
+							"type": "string",
+							"title": "失敗時"
+						}
+					},
+					"additionalProperties": false
+				},
+				"feed": {
+					"type": "object",
+					"title": "Feed ファイル生成",
+					"required": ["none", "success", "failure"],
+					"properties": {
+						"none": {
+							"type": "string",
+							"title": "生成不要時"
+						},
+						"success": {
+							"type": "string",
+							"title": "成功時"
+						},
+						"failure": {
+							"type": "string",
+							"title": "失敗時"
+						}
+					},
+					"additionalProperties": false
+				},
+				"sitemap": {
+					"type": "object",
+					"title": "サイトマップファイル生成",
+					"required": ["success", "failure"],
+					"properties": {
+						"success": {
+							"type": "string",
+							"title": "成功時"
+						},
+						"failure": {
+							"type": "string",
+							"title": "失敗時"
+						}
+					},
+					"additionalProperties": false
+				},
+				"newly_json": {
+					"type": "object",
+					"title": "API のレスポンス",
+					"required": ["success", "failure"],
+					"properties": {
+						"success": {
 							"type": "string",
 							"title": "成功時のメッセージ"
 						},
-						"message_failure": {
+						"failure": {
 							"type": "string",
 							"title": "失敗時のメッセージ"
+						}
+					},
+					"additionalProperties": false
+				},
+				"mastodon": {
+					"type": "object",
+					"title": "Mastodon",
+					"required": ["success", "failure"],
+					"properties": {
+						"success": {
+							"type": "string",
+							"title": "成功時"
+						},
+						"failure": {
+							"type": "string",
+							"title": "失敗時"
 						}
 					},
 					"additionalProperties": false
@@ -94,7 +162,7 @@
 		"feed_create": {
 			"type": "object",
 			"title": "Feed ファイル生成",
-			"required": ["path", "view_path", "maximum_number", "response"],
+			"required": ["path", "view_path", "maximum_number"],
 			"properties": {
 				"path": {
 					"type": "string",
@@ -108,26 +176,6 @@
 					"type": "integer",
 					"minimum": 1,
 					"title": "最大表示件数"
-				},
-				"response": {
-					"type": "object",
-					"title": "レスポンス",
-					"required": ["message_none", "message_success", "message_failure"],
-					"properties": {
-						"message_none": {
-							"type": "string",
-							"title": "生成不要時のメッセージ"
-						},
-						"message_success": {
-							"type": "string",
-							"title": "成功時のメッセージ"
-						},
-						"message_failure": {
-							"type": "string",
-							"title": "失敗時のメッセージ"
-						}
-					},
-					"additionalProperties": false
 				}
 			},
 			"additionalProperties": false
@@ -135,7 +183,7 @@
 		"sitemap_create": {
 			"type": "object",
 			"title": "サイトマップファイル生成",
-			"required": ["path", "view_path", "url_limit", "response"],
+			"required": ["path", "view_path", "url_limit"],
 			"properties": {
 				"path": {
 					"type": "string",
@@ -151,67 +199,6 @@
 					"maximum": 50000,
 					"title": "URL の最大表示件数",
 					"description": "https://www.sitemaps.org/protocol.html"
-				},
-				"response": {
-					"type": "object",
-					"title": "レスポンス",
-					"required": ["message_success", "message_failure"],
-					"properties": {
-						"message_success": {
-							"type": "string",
-							"title": "成功時のメッセージ"
-						},
-						"message_failure": {
-							"type": "string",
-							"title": "失敗時のメッセージ"
-						}
-					},
-					"additionalProperties": false
-				}
-			},
-			"additionalProperties": false
-		},
-		"newly_json_create": {
-			"type": "object",
-			"title": "新着 JSON ファイル生成",
-			"required": ["directory", "filename_prefix", "filename_separator", "extension", "maximum_number", "response"],
-			"properties": {
-				"directory": {
-					"type": "string",
-					"title": "ディレクトリ"
-				},
-				"filename_prefix": {
-					"type": "string",
-					"title": "ファイル名接頭辞"
-				},
-				"filename_separator": {
-					"type": "string",
-					"title": "ファイル名の接頭辞との区切り文字"
-				},
-				"extension": {
-					"type": "string",
-					"title": "拡張子"
-				},
-				"maximum_number": {
-					"type": "integer",
-					"minimum": 1,
-					"title": "最大表示件数"
-				},
-				"response": {
-					"type": "object",
-					"title": "API のレスポンス",
-					"required": ["message_success", "message_failure"],
-					"properties": {
-						"message_success": {
-							"type": "string",
-							"title": "成功時のメッセージ"
-						},
-						"message_failure": {
-							"type": "string",
-							"title": "失敗時のメッセージ"
-						}
-					},
-					"additionalProperties": false
 				}
 			},
 			"additionalProperties": false
@@ -224,7 +211,7 @@
 				"mastodon": {
 					"type": "object",
 					"title": "Mastodon",
-					"required": ["api", "visibility", "message_prefix", "url_prefix", "api_response"],
+					"required": ["api", "visibility", "message_prefix", "url_prefix"],
 					"properties": {
 						"api": {
 							"type": "object",
@@ -255,22 +242,6 @@
 						"url_prefix": {
 							"type": "string",
 							"title": "記事 URL の冒頭"
-						},
-						"api_response": {
-							"type": "object",
-							"title": "API のレスポンス",
-							"required": ["message_success", "message_failure"],
-							"properties": {
-								"message_success": {
-									"type": "string",
-									"title": "成功時のメッセージ"
-								},
-								"message_failure": {
-									"type": "string",
-									"title": "失敗時のメッセージ"
-								}
-							},
-							"additionalProperties": false
 						}
 					},
 					"additionalProperties": false
@@ -366,7 +337,7 @@
 						},
 						"other_message_failure": {
 							"type": "string",
-							"title": "その他の失敗時のメッセージ"
+							"title": "その他の失敗時"
 						}
 					},
 					"additionalProperties": false
