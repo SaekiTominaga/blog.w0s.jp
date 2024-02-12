@@ -6,13 +6,13 @@ import type { Request, Response } from 'express';
 import type { Result as ValidationResult, ValidationError } from 'express-validator';
 import { createRestAPIClient as mastodonRest } from 'masto';
 import prettier from 'prettier';
-import xmlFormatter from 'xml-formatter';
 import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
 import Markdown from '../markdown/Markdown.js';
 import CreateNewlyJson from '../proccess/CreateNewlyJson.js';
+import CreateSitemap from '../proccess/CreateSitemap.js';
 import Compress from '../util/Compress.js';
 import HttpBasicAuth, { type Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
@@ -125,7 +125,7 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.insert.success} ${entryUrl}` });
 
 				topicPostResults.add(await this.#updateModified(dao));
-				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao)]);
+				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap()]);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson());
@@ -160,7 +160,7 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.update.success} ${entryUrl}` });
 
 				topicPostResults.add(await this.#updateModified(dao));
-				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap(dao)]);
+				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap()]);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson());
@@ -337,39 +337,19 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * サイトマップファイルを生成する
 	 *
-	 * @param dao - Dao
-	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #createSitemap(dao: BlogPostDao): Promise<PostResult> {
+	async #createSitemap(): Promise<PostResult> {
 		try {
-			const [lastModifiedDto, entries] = await Promise.all([
-				dao.getLastModified(),
-				dao.getEntriesSitemap(
-					this.#config.sitemap_create
-						.url_limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要があるが、超充分に猶予があるのでとりあえずこれで */,
-				),
-			]);
-
-			const sitemapXml = await ejs.renderFile(`${this.configCommon.views}/${this.#config.sitemap_create.view_path}`, {
-				updated_at: dayjs(lastModifiedDto),
-				entries: entries,
+			const result = await new CreateSitemap().execute({
+				dbFilePath: this.configCommon.sqlite.db.blog,
+				views: this.configCommon.views,
+				root: this.configCommon.static.root,
 			});
 
-			const sitemapXmlFormated = xmlFormatter(sitemapXml, {
-				/* https://github.com/chrisbottin/xml-formatter#options */
-				indentation: '\t',
-				collapseContent: true,
-				lineSeparator: '\n',
-			});
-
-			/* ファイル出力 */
-			const filePath = `${this.configCommon.static.root}${this.#config.sitemap_create.path}`;
-
-			await fs.promises.writeFile(filePath, sitemapXmlFormated);
-			this.logger.info('Sitemap file created', filePath);
+			this.logger.info('Sitemap file created', result.createdFilePath);
 		} catch (e) {
-			this.logger.error('Sitemap file create failed', e);
+			this.logger.error(e);
 
 			return { success: false, message: this.#config.process_message.sitemap.failure };
 		}
@@ -389,7 +369,7 @@ export default class PostController extends Controller implements ControllerInte
 				root: this.configCommon.static.root,
 			});
 
-			result.created.forEach((filePath): void => {
+			result.createdFilesPath.forEach((filePath): void => {
 				this.logger.info('JSON file created', filePath);
 			});
 		} catch (e) {

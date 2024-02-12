@@ -7,7 +7,7 @@
 	"properties": {
 		"directory": {
 			"type": "string",
-			"title": "ディレクトリ"
+			"title": "保存ディレクトリ（ルートディレクトリ基準）"
 		},
 		"filename_prefix": {
 			"type": "string",

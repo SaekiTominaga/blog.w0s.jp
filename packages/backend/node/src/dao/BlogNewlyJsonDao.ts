@@ -2,9 +2,9 @@ import type * as sqlite from 'sqlite';
 import BlogDao from './BlogDao.js';
 
 /**
- * 新着 JSON ファイル生成
+ * 新着 JSON ファイル
  */
-export default class BlogCreateNewlyJsonDao extends BlogDao {
+export default class BlogNewlyJsonDao extends BlogDao {
 	/**
 	 * カテゴリーグループに紐付けられたファイル名リストを取得
 	 *
@@ -41,7 +41,7 @@ export default class BlogCreateNewlyJsonDao extends BlogDao {
 	 *
 	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
-	async getEntriesNewly(limit: number, catgroupId?: string): Promise<BlogView.NewlyEntry[]> {
+	async getEntries(limit: number, catgroupId?: string): Promise<BlogView.NewlyEntry[]> {
 		const dbh = await this.getDbh();
 
 		let sth: sqlite.Statement;

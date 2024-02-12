@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/post.json",
 	"type": "object",
 	"title": "記事投稿",
-	"required": ["view", "validator", "process_message", "feed_create", "sitemap_create", "social", "media_upload"],
+	"required": ["view", "validator", "process_message", "feed_create", "social", "media_upload"],
 	"properties": {
 		"view": {
 			"type": "object",
@@ -176,29 +176,6 @@
 					"type": "integer",
 					"minimum": 1,
 					"title": "最大表示件数"
-				}
-			},
-			"additionalProperties": false
-		},
-		"sitemap_create": {
-			"type": "object",
-			"title": "サイトマップファイル生成",
-			"required": ["path", "view_path", "url_limit"],
-			"properties": {
-				"path": {
-					"type": "string",
-					"title": "ファイルパス"
-				},
-				"view_path": {
-					"type": "string",
-					"title": "View ファイルのパス"
-				},
-				"url_limit": {
-					"type": "integer",
-					"minimum": 1,
-					"maximum": 50000,
-					"title": "URL の最大表示件数",
-					"description": "https://www.sitemaps.org/protocol.html"
 				}
 			},
 			"additionalProperties": false

@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import BlogCreateNewlyJsonDao from '../dao/BlogCreateNewlyJsonDao.js';
+import BlogNewlyJsonDao from '../dao/BlogNewlyJsonDao.js';
 import MarkdownTitle from '../markdown/Title.js';
 import Compress from '../util/Compress.js';
 import type { JSON as Configure } from '../../../configure/type/newly-json.js';
@@ -19,24 +19,24 @@ export default class CreateNewlyJson {
 	 * @param configCommon.dbFilePath DB ファイルパス
 	 * @param configCommon.root ルートディレクトリ
 	 *
-	 * @returns ファイル生成が成功したかどうか
+	 * @returns ファイル生成情報
 	 */
 	async execute(configCommon: { dbFilePath: string; root: string }): Promise<{
-		created: string[];
+		createdFilesPath: string[]; // 生成したファイルパス
 	}> {
-		const dao = new BlogCreateNewlyJsonDao(configCommon.dbFilePath);
+		const dao = new BlogNewlyJsonDao(configCommon.dbFilePath);
 
 		const datasCatgroup = new Map<string, BlogView.NewlyEntry[]>();
 
-		datasCatgroup.set('', await dao.getEntriesNewly(this.#config.max));
+		datasCatgroup.set('', await dao.getEntries(this.#config.max));
 
 		await Promise.all(
 			(await dao.getCategoryGroupMasterFileName()).map(async (fileName) => {
-				datasCatgroup.set(fileName, await dao.getEntriesNewly(this.#config.max, fileName));
+				datasCatgroup.set(fileName, await dao.getEntries(this.#config.max, fileName));
 			}),
 		);
 
-		const created: string[] = [];
+		const createdFilesPath: string[] = [];
 
 		await Promise.all(
 			[...datasCatgroup].map(async ([fileNameType, datas]) => {
@@ -56,13 +56,13 @@ export default class CreateNewlyJson {
 				const brotliFilePath = `${filePath}.br`;
 
 				await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
-				created.push(filePath);
-				created.push(brotliFilePath);
+				createdFilesPath.push(filePath);
+				createdFilesPath.push(brotliFilePath);
 			}),
 		);
 
 		return {
-			created: created,
+			createdFilesPath: createdFilesPath,
 		};
 	}
 }
