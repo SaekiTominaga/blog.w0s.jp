@@ -119,11 +119,16 @@ export default class PostController extends Controller implements ControllerInte
 				const entryUrl = this.#getEntryUrl(entryId);
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.insert.success} ${entryUrl}` });
 
-				topicPostResults.add(await this.#updateModified(dao));
-				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(), this.#createSitemap()]);
+				const [updateModified, createFeedResult, createSitemapResult, createNewlyJson] = await Promise.all([
+					this.#updateModified(dao),
+					this.#createFeed(),
+					this.#createSitemap(),
+					this.#createNewlyJson(),
+				]);
+				topicPostResults.add(updateModified);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
-				topicPostResults.add(await this.#createNewlyJson());
+				topicPostResults.add(createNewlyJson);
 				if (requestQuery.public && requestQuery.social) {
 					topicPostResults.add(await this.#postMastodon(requestQuery, entryUrl));
 				}
@@ -154,11 +159,16 @@ export default class PostController extends Controller implements ControllerInte
 				const entryUrl = this.#getEntryUrl(requestQuery.id);
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.update.success} ${entryUrl}` });
 
-				topicPostResults.add(await this.#updateModified(dao));
-				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(), this.#createSitemap()]);
+				const [updateModified, createFeedResult, createSitemapResult, createNewlyJson] = await Promise.all([
+					this.#updateModified(dao),
+					this.#createFeed(),
+					this.#createSitemap(),
+					this.#createNewlyJson(),
+				]);
+				topicPostResults.add(updateModified);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
-				topicPostResults.add(await this.#createNewlyJson());
+				topicPostResults.add(createNewlyJson);
 			}
 		} else if (requestQuery.action_revise_preview) {
 			/* 修正データ選択 */
@@ -256,7 +266,7 @@ export default class PostController extends Controller implements ControllerInte
 		try {
 			await dao.updateModified();
 
-			this.logger.info('`d_info` table update success');
+			this.logger.info('Modified date of DB was recorded');
 		} catch (e) {
 			this.logger.error(e);
 
@@ -281,7 +291,7 @@ export default class PostController extends Controller implements ControllerInte
 			});
 
 			result.createdFilesPath.forEach((filePath): void => {
-				this.logger.info('Feed file created', filePath);
+				this.logger.info('Feed file was created', filePath);
 			});
 
 			if (result.createdFilesPath.length === 0) {
@@ -309,7 +319,7 @@ export default class PostController extends Controller implements ControllerInte
 				root: this.configCommon.static.root,
 			});
 
-			this.logger.info('Sitemap file created', result.createdFilePath);
+			this.logger.info('Sitemap file was created', result.createdFilePath);
 		} catch (e) {
 			this.logger.error(e);
 
@@ -332,7 +342,7 @@ export default class PostController extends Controller implements ControllerInte
 			});
 
 			result.createdFilesPath.forEach((filePath): void => {
-				this.logger.info('JSON file created', filePath);
+				this.logger.info('JSON file was created', filePath);
 			});
 		} catch (e) {
 			this.logger.error(e);
@@ -355,7 +365,7 @@ export default class PostController extends Controller implements ControllerInte
 		try {
 			const result = await new PostMastodon(this.#env).execute({ views: this.configCommon.views }, requestQuery, entryUrl);
 
-			this.logger.info('Mastodon post success', result.url);
+			this.logger.info('Mastodon was posted', result.url);
 
 			return { success: true, message: `${this.#config.process_message.mastodon.success} ${result.url}` };
 		} catch (e) {
