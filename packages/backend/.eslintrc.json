@@ -19,6 +19,12 @@
 			}
 		},
 		{
+			"files": ["node/src/process/__tests__/*.test.ts"],
+			"rules": {
+				"no-console": "off"
+			}
+		},
+		{
 			"files": ["node/src/shell/*.ts"],
 			"rules": {
 				"no-console": "off",

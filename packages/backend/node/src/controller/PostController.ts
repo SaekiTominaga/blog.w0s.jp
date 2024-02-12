@@ -2,13 +2,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Request, Response } from 'express';
 import type { Result as ValidationResult, ValidationError } from 'express-validator';
-import { createRestAPIClient as mastodonRest } from 'masto';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
-import CreateFeed from '../proccess/CreateFeed.js';
-import CreateNewlyJson from '../proccess/CreateNewlyJson.js';
-import CreateSitemap from '../proccess/CreateSitemap.js';
+import CreateFeed from '../process/CreateFeed.js';
+import CreateNewlyJson from '../process/CreateNewlyJson.js';
+import CreateSitemap from '../process/CreateSitemap.js';
+import PostMastodon from '../process/PostMastodon.js';
 import HttpBasicAuth, { type Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
@@ -125,7 +125,7 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson());
 				if (requestQuery.public && requestQuery.social) {
-					topicPostResults.add(await this.#postSocial(requestQuery, entryUrl));
+					topicPostResults.add(await this.#postMastodon(requestQuery, entryUrl));
 				}
 			}
 		} else if (requestQuery.action_revise) {
@@ -344,51 +344,22 @@ export default class PostController extends Controller implements ControllerInte
 	}
 
 	/**
-	 * ソーシャルサービスに投稿する
+	 * Mastodon 投稿
 	 *
 	 * @param requestQuery - URL クエリー情報
 	 * @param entryUrl - 記事 URL
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #postSocial(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResult> {
-		/* Mastodon */
+	async #postMastodon(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResult> {
 		try {
-			const mastodon = mastodonRest({
-				url: this.#config.social.mastodon.api.instance_origin,
-				accessToken: this.#config.social.mastodon.api.access_token,
-			});
+			const result = await new PostMastodon(this.#env).execute({ views: this.configCommon.views }, requestQuery, entryUrl);
 
-			let message = `${this.#config.social.mastodon.message_prefix}\n\n${requestQuery.title}\n${entryUrl}`;
-			if (requestQuery.social_tag !== null && requestQuery.social_tag !== '') {
-				/* ハッシュタグ */
-				message += `\n\n${requestQuery.social_tag
-					.split(',')
-					.map((tag) => {
-						const tagTrimmed = tag.trim();
-						if (tagTrimmed === '') {
-							return '';
-						}
-						return `#${tagTrimmed}`;
-					})
-					.join(' ')}`;
-			}
-			if (requestQuery.description !== null && requestQuery.description !== '') {
-				/* 概要 */
-				message += `\n\n${requestQuery.description}`;
-			}
+			this.logger.info('Mastodon post success', result.url);
 
-			const status = await mastodon.v1.statuses.create({
-				status: message,
-				visibility: this.#env === 'development' ? 'direct' : this.#config.social.mastodon.visibility, // https://docs.joinmastodon.org/entities/Status/#visibility
-				language: 'ja',
-			});
-
-			this.logger.info('Mastodon post success', status.url);
-
-			return { success: true, message: `${this.#config.process_message.mastodon.success} ${status.url}` };
+			return { success: true, message: `${this.#config.process_message.mastodon.success} ${result.url}` };
 		} catch (e) {
-			this.logger.error('Mastodon post failed', e);
+			this.logger.error(e);
 
 			return { success: false, message: this.#config.process_message.mastodon.failure };
 		}

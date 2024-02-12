@@ -1,0 +1,36 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://blog.w0s.jp/mastodon.json",
+	"type": "object",
+	"title": "Mastodon",
+	"required": ["api", "view_path", "visibility"],
+	"properties": {
+		"api": {
+			"type": "object",
+			"title": "API 情報",
+			"required": ["instance_origin", "access_token"],
+			"properties": {
+				"instance_origin": {
+					"type": "string",
+					"title": "インスタンスのオリジン"
+				},
+				"access_token": {
+					"type": "string",
+					"title": "アクセストークン"
+				}
+			},
+			"additionalProperties": false
+		},
+		"view_path": {
+			"type": "string",
+			"title": "View ファイルのパス（テンプレートディレクトリ基準）"
+		},
+		"visibility": {
+			"type": "string",
+			"title": "トゥートの可視性",
+			"enum": ["public", "unlisted", "private", "direct"],
+			"description": "https://docs.joinmastodon.org/entities/Status/#visibility"
+		}
+	},
+	"additionalProperties": false
+}

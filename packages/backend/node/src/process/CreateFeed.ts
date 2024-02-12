@@ -7,7 +7,7 @@ import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import BlogFeedDao from '../dao/BlogFeedDao.js';
 import Markdown from '../markdown/Markdown.js';
 import Compress from '../util/Compress.js';
-import type { Feed as Configure } from '../../../configure/type/feed.js';
+import type { NoName as Configure } from '../../../configure/type/feed.js';
 
 /**
  * フィード生成
