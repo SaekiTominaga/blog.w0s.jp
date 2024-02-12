@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/post.json",
 	"type": "object",
 	"title": "記事投稿",
-	"required": ["view", "validator", "process_message", "feed_create", "social", "media_upload"],
+	"required": ["view", "validator", "process_message", "social", "media_upload"],
 	"properties": {
 		"view": {
 			"type": "object",
@@ -155,27 +155,6 @@
 						}
 					},
 					"additionalProperties": false
-				}
-			},
-			"additionalProperties": false
-		},
-		"feed_create": {
-			"type": "object",
-			"title": "Feed ファイル生成",
-			"required": ["path", "view_path", "maximum_number"],
-			"properties": {
-				"path": {
-					"type": "string",
-					"title": "ファイルパス"
-				},
-				"view_path": {
-					"type": "string",
-					"title": "View ファイルのパス"
-				},
-				"maximum_number": {
-					"type": "integer",
-					"minimum": 1,
-					"title": "最大表示件数"
 				}
 			},
 			"additionalProperties": false

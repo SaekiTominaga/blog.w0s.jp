@@ -6,7 +6,7 @@ import BlogSitemapDao from '../dao/BlogSitemapDao.js';
 import type { NoName as Configure } from '../../../configure/type/sitemap.js';
 
 /**
- * サイトマップファイル生成
+ * サイトマップ生成
  */
 export default class CreateSitemap {
 	#config: Configure;
@@ -31,7 +31,7 @@ export default class CreateSitemap {
 		const [updated, entries] = await Promise.all([
 			dao.getLastModified(),
 			dao.getEntries(
-				this.#config.url_limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要がある */,
+				this.#config.limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要がある */,
 			),
 		]);
 

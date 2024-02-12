@@ -28,11 +28,11 @@ export default class CreateNewlyJson {
 
 		const datasCatgroup = new Map<string, BlogView.NewlyEntry[]>();
 
-		datasCatgroup.set('', await dao.getEntries(this.#config.max));
+		datasCatgroup.set('', await dao.getEntries(this.#config.limit));
 
 		await Promise.all(
 			(await dao.getCategoryGroupMasterFileName()).map(async (fileName) => {
-				datasCatgroup.set(fileName, await dao.getEntries(this.#config.max, fileName));
+				datasCatgroup.set(fileName, await dao.getEntries(this.#config.limit, fileName));
 			}),
 		);
 

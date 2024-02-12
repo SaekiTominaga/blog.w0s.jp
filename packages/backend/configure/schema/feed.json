@@ -1,8 +1,8 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://blog.w0s.jp/sitemap.json",
+	"$id": "https://blog.w0s.jp/post.json",
 	"type": "object",
-	"title": "サイトマップ",
+	"title": "フィード",
 	"required": ["path", "view_path", "limit"],
 	"properties": {
 		"path": {
@@ -16,9 +16,7 @@
 		"limit": {
 			"type": "integer",
 			"minimum": 1,
-			"maximum": 50000,
-			"title": "URL の最大表示件数",
-			"description": "https://www.sitemaps.org/protocol.html"
+			"title": "最大表示件数"
 		}
 	},
 	"additionalProperties": false

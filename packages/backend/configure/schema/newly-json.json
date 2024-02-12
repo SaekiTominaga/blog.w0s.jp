@@ -2,8 +2,8 @@
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "https://blog.w0s.jp/newly-json.json",
 	"type": "object",
-	"title": "新着 JSON ファイル生成",
-	"required": ["directory", "filename_prefix", "filename_separator", "extension", "max"],
+	"title": "新着 JSON ファイル",
+	"required": ["directory", "filename_prefix", "filename_separator", "extension", "limit"],
 	"properties": {
 		"directory": {
 			"type": "string",
@@ -21,7 +21,7 @@
 			"type": "string",
 			"title": "拡張子"
 		},
-		"max": {
+		"limit": {
 			"type": "integer",
 			"minimum": 1,
 			"title": "最大表示件数"

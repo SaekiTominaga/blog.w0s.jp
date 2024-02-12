@@ -1,19 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import dayjs from 'dayjs';
-import ejs from 'ejs';
 import type { Request, Response } from 'express';
 import type { Result as ValidationResult, ValidationError } from 'express-validator';
 import { createRestAPIClient as mastodonRest } from 'masto';
-import prettier from 'prettier';
-import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
-import Markdown from '../markdown/Markdown.js';
+import CreateFeed from '../proccess/CreateFeed.js';
 import CreateNewlyJson from '../proccess/CreateNewlyJson.js';
 import CreateSitemap from '../proccess/CreateSitemap.js';
-import Compress from '../util/Compress.js';
 import HttpBasicAuth, { type Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
@@ -125,7 +120,7 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.insert.success} ${entryUrl}` });
 
 				topicPostResults.add(await this.#updateModified(dao));
-				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap()]);
+				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(), this.#createSitemap()]);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson());
@@ -160,7 +155,7 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.update.success} ${entryUrl}` });
 
 				topicPostResults.add(await this.#updateModified(dao));
-				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(dao), this.#createSitemap()]);
+				const [createFeedResult, createSitemapResult] = await Promise.all([this.#createFeed(), this.#createSitemap()]);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(await this.#createNewlyJson());
@@ -194,7 +189,7 @@ export default class PostController extends Controller implements ControllerInte
 			}
 		} else if (requestQuery.action_view) {
 			/* View アップデート反映 */
-			const [updateModifiedResult, createFeedResult] = await Promise.all([this.#updateModified(dao), this.#createFeed(dao)]);
+			const [updateModifiedResult, createFeedResult] = await Promise.all([this.#updateModified(dao), this.#createFeed()]);
 			viewUpdateResults.add(updateModifiedResult);
 			viewUpdateResults.add(createFeedResult);
 		} else {
@@ -260,9 +255,10 @@ export default class PostController extends Controller implements ControllerInte
 	async #updateModified(dao: BlogPostDao): Promise<PostResult> {
 		try {
 			await dao.updateModified();
+
 			this.logger.info('`d_info` table update success');
 		} catch (e) {
-			this.logger.error('`d_info` table update failed', e);
+			this.logger.error(e);
 
 			return { success: false, message: this.#config.process_message.db_modified.failure };
 		}
@@ -271,62 +267,28 @@ export default class PostController extends Controller implements ControllerInte
 	}
 
 	/**
-	 * フィードファイルを生成する
-	 *
-	 * @param dao - Dao
+	 * フィード生成
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #createFeed(dao: BlogPostDao): Promise<PostResult> {
+	async #createFeed(): Promise<PostResult> {
 		try {
-			const entriesDto = await dao.getEntriesFeed(this.#config.feed_create.maximum_number);
-
-			if (entriesDto.length === 0) {
-				this.logger.info('Feed file was not created because there were zero data.');
-
-				return { success: true, message: this.#config.process_message.feed.none };
-			}
-
-			const entriesView = new Set<BlogView.FeedEntry>();
-			await Promise.all(
-				entriesDto.map(async (entry) => {
-					entriesView.add({
-						id: entry.id,
-						title: entry.title,
-						description: entry.description,
-						message: (await new Markdown().toHtml(entry.message)).value.toString(),
-						updated_at: dayjs(entry.updated_at ?? entry.created_at),
-						update: Boolean(entry.updated_at),
-					});
-				}),
-			);
-
-			const feedXml = await ejs.renderFile(`${this.configCommon.views}/${this.#config.feed_create.view_path}`, {
-				updated_at: [...entriesView].at(0)?.updated_at,
-				entries: entriesView,
+			const result = await new CreateFeed().execute({
+				dbFilePath: this.configCommon.sqlite.db.blog,
+				views: this.configCommon.views,
+				prettierConfig: this.configCommon.prettier.config,
+				root: this.configCommon.static.root,
 			});
 
-			const prettierOptions = PrettierUtil.configOverrideAssign(await PrettierUtil.loadConfig(this.configCommon.prettier.config), '*.html');
+			result.createdFilesPath.forEach((filePath): void => {
+				this.logger.info('Feed file created', filePath);
+			});
 
-			let feedXmlFormatted = '';
-			try {
-				feedXmlFormatted = (await prettier.format(feedXml, prettierOptions)).replaceAll(/\t*<!-- prettier-ignore -->\t*\n/g, '').trim();
-			} catch (e) {
-				this.logger.error('Prettier failed', e);
-				feedXmlFormatted = feedXml;
+			if (result.createdFilesPath.length === 0) {
+				return { success: true, message: this.#config.process_message.feed.none };
 			}
-
-			const feedXmlBrotli = Compress.brotliText(feedXmlFormatted);
-
-			/* ファイル出力 */
-			const filePath = `${this.configCommon.static.root}${this.#config.feed_create.path}`;
-			const brotliFilePath = `${filePath}.br`;
-
-			await Promise.all([fs.promises.writeFile(filePath, feedXmlFormatted), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
-			this.logger.info('Feed file created', filePath);
-			this.logger.info('Feed Brotli file created', brotliFilePath);
 		} catch (e) {
-			this.logger.error('Feed file create failed', e);
+			this.logger.error(e);
 
 			return { success: false, message: this.#config.process_message.feed.failure };
 		}
@@ -335,7 +297,7 @@ export default class PostController extends Controller implements ControllerInte
 	}
 
 	/**
-	 * サイトマップファイルを生成する
+	 * サイトマップ生成
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
@@ -358,7 +320,7 @@ export default class PostController extends Controller implements ControllerInte
 	}
 
 	/**
-	 * 新着 JSON ファイルを生成する
+	 * 新着 JSON ファイル生成
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
