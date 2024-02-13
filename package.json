@@ -16,7 +16,7 @@
 		"@rollup/plugin-terser": "^0.4.4",
 		"@rollup/plugin-typescript": "^11.1.6",
 		"@w0s/eslint-config": "^5.1.0",
-		"@w0s/markuplint-config": "^3.0.1",
+		"@w0s/markuplint-config": "^2.5.1",
 		"@w0s/stylelint-config": "^2.0.1",
 		"@w0s/tsconfig": "^1.4.1",
 		"ajv-cli": "^5.0.0",
