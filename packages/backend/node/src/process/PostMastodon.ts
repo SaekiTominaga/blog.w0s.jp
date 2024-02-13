@@ -33,7 +33,7 @@ export default class CreateNewlyJson {
 		requestQuery: BlogRequest.Post,
 		entryUrl: string,
 	): Promise<{
-		url: string | null; // A link to the status's HTML representation
+		url: string;
 	}> {
 		const mastodon = mastodonRest({
 			url: this.#config.api.instance_origin,
@@ -62,7 +62,7 @@ export default class CreateNewlyJson {
 		});
 
 		return {
-			url: status.url ?? null,
+			url: status.url ?? status.uri,
 		};
 	}
 }
