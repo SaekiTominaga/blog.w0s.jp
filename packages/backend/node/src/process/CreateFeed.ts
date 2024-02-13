@@ -12,7 +12,7 @@ import type { NoName as Configure } from '../../../configure/type/feed.js';
 /**
  * フィード生成
  */
-export default class CreateNewlyJson {
+export default class CreateFeed {
 	#config: Configure;
 
 	constructor() {

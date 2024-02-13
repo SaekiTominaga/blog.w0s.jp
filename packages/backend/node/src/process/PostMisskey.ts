@@ -1,12 +1,11 @@
 import fs from 'node:fs';
 import ejs from 'ejs';
-import { createRestAPIClient as mastodonRest } from 'masto';
-import type { Mastodon as Configure } from '../../../configure/type/mastodon.js';
+import type { Misskey as Configure } from '../../../configure/type/misskey.js';
 
 /**
- * Mastodon 投稿
+ * Misskey 投稿
  */
-export default class PostMastodon {
+export default class PostMisskey {
 	#config: Configure;
 
 	#env: Express.Env;
@@ -15,7 +14,7 @@ export default class PostMastodon {
 	 * @param env - NODE_ENV
 	 */
 	constructor(env: Express.Env) {
-		this.#config = JSON.parse(fs.readFileSync('configure/mastodon.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/misskey.json', 'utf8'));
 
 		this.#env = env;
 	}
@@ -35,11 +34,6 @@ export default class PostMastodon {
 	): Promise<{
 		url: string;
 	}> {
-		const mastodon = mastodonRest({
-			url: this.#config.api.instance_origin,
-			accessToken: this.#config.api.access_token,
-		});
-
 		const message = (
 			await ejs.renderFile(`${configCommon.views}/${this.#config.view_path}`, {
 				title: requestQuery.title,
@@ -55,14 +49,24 @@ export default class PostMastodon {
 			})
 		).trim();
 
-		const status = await mastodon.v1.statuses.create({
-			status: message,
-			visibility: this.#env === 'development' ? 'direct' : this.#config.visibility, // https://docs.joinmastodon.org/entities/Status/#visibility
-			language: 'ja',
+		const response = await fetch(`${this.#config.api.instance_origin}/api/notes/create`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				i: this.#config.api.access_token,
+				text: message,
+				visibility: this.#env === 'development' ? 'specified' : this.#config.visibility,
+			}), // https://misskey.io/api-doc#tag/notes
 		});
+		const responseJson = JSON.parse(await response.text());
+		if (!response.ok) {
+			throw new Error(responseJson.error.message);
+		}
 
 		return {
-			url: status.url ?? status.uri,
+			url: `${this.#config.api.instance_origin}/notes/${responseJson.createdNote.id}`,
 		};
 	}
 }
