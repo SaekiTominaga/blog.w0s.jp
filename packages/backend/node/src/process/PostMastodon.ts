@@ -6,7 +6,7 @@ import type { Mastodon as Configure } from '../../../configure/type/mastodon.js'
 /**
  * Mastodon 投稿
  */
-export default class CreateNewlyJson {
+export default class PostMastodon {
 	#config: Configure;
 
 	#env: Express.Env;
