@@ -15,6 +15,7 @@ import RequestUtil from '../util/RequestUtil.js';
 import PostValidator from '../validator/PostValidator.js';
 import type { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import type { NoName as Configure } from '../../../configure/type/post.js';
+import PostMisskey from '../process/PostMisskey.js';
 
 interface PostResult {
 	success: boolean;
@@ -119,18 +120,23 @@ export default class PostController extends Controller implements ControllerInte
 				const entryUrl = this.#getEntryUrl(entryId);
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.insert.success} ${entryUrl}` });
 
-				const [updateModified, createFeedResult, createSitemapResult, createNewlyJson] = await Promise.all([
+				const [updateModifiedResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
 					this.#updateModified(dao),
 					this.#createFeed(),
 					this.#createSitemap(),
 					this.#createNewlyJson(),
 				]);
-				topicPostResults.add(updateModified);
+				topicPostResults.add(updateModifiedResult);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
-				topicPostResults.add(createNewlyJson);
+				topicPostResults.add(createNewlyJsonResult);
 				if (requestQuery.public && requestQuery.social) {
-					topicPostResults.add(await this.#postMastodon(requestQuery, entryUrl));
+					const [postMastodonResult, postMisskeyResult] = await Promise.all([
+						this.#postMastodon(requestQuery, entryUrl),
+						this.#postMisskey(requestQuery, entryUrl),
+					]);
+					topicPostResults.add(postMastodonResult);
+					topicPostResults.add(postMisskeyResult);
 				}
 			}
 		} else if (requestQuery.action_revise) {
@@ -372,6 +378,28 @@ export default class PostController extends Controller implements ControllerInte
 			this.logger.error(e);
 
 			return { success: false, message: this.#config.process_message.mastodon.failure };
+		}
+	}
+
+	/**
+	 * Misskey 投稿
+	 *
+	 * @param requestQuery - URL クエリー情報
+	 * @param entryUrl - 記事 URL
+	 *
+	 * @returns 処理結果のメッセージ
+	 */
+	async #postMisskey(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResult> {
+		try {
+			const result = await new PostMisskey(this.#env).execute({ views: this.configCommon.views }, requestQuery, entryUrl);
+
+			this.logger.info('Misskey was posted', result.url);
+
+			return { success: true, message: `${this.#config.process_message.misskey.success} ${result.url}` };
+		} catch (e) {
+			this.logger.error(e);
+
+			return { success: false, message: this.#config.process_message.misskey.failure };
 		}
 	}
 

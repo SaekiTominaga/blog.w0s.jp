@@ -46,7 +46,7 @@
 		"process_message": {
 			"type": "object",
 			"title": "処理ごとのメッセージ",
-			"required": ["insert", "update", "db_modified", "feed", "sitemap", "newly_json", "mastodon"],
+			"required": ["insert", "update", "db_modified", "feed", "sitemap", "newly_json", "mastodon", "misskey"],
 			"properties": {
 				"insert": {
 					"type": "object",
@@ -141,6 +141,22 @@
 					"additionalProperties": false
 				},
 				"mastodon": {
+					"type": "object",
+					"title": "Mastodon",
+					"required": ["success", "failure"],
+					"properties": {
+						"success": {
+							"type": "string",
+							"title": "成功時"
+						},
+						"failure": {
+							"type": "string",
+							"title": "失敗時"
+						}
+					},
+					"additionalProperties": false
+				},
+				"misskey": {
 					"type": "object",
 					"title": "Mastodon",
 					"required": ["success", "failure"],
