@@ -4,15 +4,18 @@ import MarkdownTitle from '../markdown/Title.js';
 import Compress from '../util/Compress.js';
 import type { JSON as Configure } from '../../../configure/type/newly-json.js';
 
+interface ConfigCommon {
+	dbFilePath: string;
+	root: string;
+}
+
 /**
  * 新着 JSON ファイル生成
  */
 export default class CreateNewlyJson {
-	#config: Configure;
+	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
 
-	constructor() {
-		this.#config = JSON.parse(fs.readFileSync('configure/newly-json.json', 'utf8'));
-	}
+	readonly #config: Configure; // 機能設定
 
 	/**
 	 * @param configCommon 共通設定ファイル
@@ -21,10 +24,19 @@ export default class CreateNewlyJson {
 	 *
 	 * @returns ファイル生成情報
 	 */
-	async execute(configCommon: { dbFilePath: string; root: string }): Promise<{
+	constructor(configCommon: ConfigCommon) {
+		this.#configCommon = configCommon;
+
+		this.#config = JSON.parse(fs.readFileSync('configure/newly-json.json', 'utf8'));
+	}
+
+	/**
+	 * @returns ファイル生成情報
+	 */
+	async execute(): Promise<{
 		createdFilesPath: string[]; // 生成したファイルパス
 	}> {
-		const dao = new BlogNewlyJsonDao(configCommon.dbFilePath);
+		const dao = new BlogNewlyJsonDao(this.#configCommon.dbFilePath);
 
 		const datasCatgroup = new Map<string, BlogView.NewlyEntry[]>();
 
@@ -52,7 +64,7 @@ export default class CreateNewlyJson {
 				/* ファイル出力 */
 				const fileName =
 					fileNameType === '' ? this.#config.filename_prefix : `${this.#config.filename_prefix}${this.#config.filename_separator}${fileNameType}`;
-				const filePath = `${configCommon.root}/${this.#config.directory}/${fileName}.${this.#config.extension}`;
+				const filePath = `${this.#configCommon.root}/${this.#config.directory}/${fileName}.${this.#config.extension}`;
 				const brotliFilePath = `${filePath}.br`;
 
 				await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);

@@ -131,10 +131,14 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add(createSitemapResult);
 				topicPostResults.add(createNewlyJsonResult);
 				if (requestQuery.public && requestQuery.social) {
-					const [postMastodonResult, postMisskeyResult] = await Promise.all([
-						this.#postMastodon(requestQuery, entryUrl),
-						this.#postMisskey(requestQuery, entryUrl),
-					]);
+					const entryData: BlogSocial.EntryData = {
+						url: entryUrl,
+						title: requestQuery.title,
+						description: requestQuery.description,
+						tags: requestQuery.social_tag?.split(',') ?? null,
+					};
+
+					const [postMastodonResult, postMisskeyResult] = await Promise.all([this.#postMastodon(entryData), this.#postMisskey(entryData)]);
 					topicPostResults.add(postMastodonResult);
 					topicPostResults.add(postMisskeyResult);
 				}
@@ -289,12 +293,12 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createFeed(): Promise<PostResult> {
 		try {
-			const result = await new CreateFeed().execute({
+			const result = await new CreateFeed({
 				dbFilePath: this.configCommon.sqlite.db.blog,
 				views: this.configCommon.views,
 				prettierConfig: this.configCommon.prettier.config,
 				root: this.configCommon.static.root,
-			});
+			}).execute();
 
 			result.createdFilesPath.forEach((filePath): void => {
 				this.logger.info('Feed file was created', filePath);
@@ -319,11 +323,11 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createSitemap(): Promise<PostResult> {
 		try {
-			const result = await new CreateSitemap().execute({
+			const result = await new CreateSitemap({
 				dbFilePath: this.configCommon.sqlite.db.blog,
 				views: this.configCommon.views,
 				root: this.configCommon.static.root,
-			});
+			}).execute();
 
 			this.logger.info('Sitemap file was created', result.createdFilePath);
 		} catch (e) {
@@ -342,10 +346,10 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createNewlyJson(): Promise<PostResult> {
 		try {
-			const result = await new CreateNewlyJson().execute({
+			const result = await new CreateNewlyJson({
 				dbFilePath: this.configCommon.sqlite.db.blog,
 				root: this.configCommon.static.root,
-			});
+			}).execute();
 
 			result.createdFilesPath.forEach((filePath): void => {
 				this.logger.info('JSON file was created', filePath);
@@ -362,14 +366,13 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * Mastodon 投稿
 	 *
-	 * @param requestQuery - URL クエリー情報
-	 * @param entryUrl - 記事 URL
+	 * @param entryData - 記事データ
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #postMastodon(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResult> {
+	async #postMastodon(entryData: BlogSocial.EntryData): Promise<PostResult> {
 		try {
-			const result = await new PostMastodon(this.#env).execute({ views: this.configCommon.views }, requestQuery, entryUrl);
+			const result = await new PostMastodon({ views: this.configCommon.views }, this.#env).execute(entryData);
 
 			this.logger.info('Mastodon was posted', result.url);
 
@@ -384,14 +387,13 @@ export default class PostController extends Controller implements ControllerInte
 	/**
 	 * Misskey 投稿
 	 *
-	 * @param requestQuery - URL クエリー情報
-	 * @param entryUrl - 記事 URL
+	 * @param entryData - 記事データ
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #postMisskey(requestQuery: BlogRequest.Post, entryUrl: string): Promise<PostResult> {
+	async #postMisskey(entryData: BlogSocial.EntryData): Promise<PostResult> {
 		try {
-			const result = await new PostMisskey(this.#env).execute({ views: this.configCommon.views }, requestQuery, entryUrl);
+			const result = await new PostMisskey({ views: this.configCommon.views }, this.#env).execute(entryData);
 
 			this.logger.info('Misskey was posted', result.url);
 

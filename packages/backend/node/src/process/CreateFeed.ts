@@ -9,15 +9,20 @@ import Markdown from '../markdown/Markdown.js';
 import Compress from '../util/Compress.js';
 import type { NoName as Configure } from '../../../configure/type/feed.js';
 
+interface ConfigCommon {
+	dbFilePath: string;
+	views: string;
+	prettierConfig: string;
+	root: string;
+}
+
 /**
  * フィード生成
  */
 export default class CreateFeed {
-	#config: Configure;
+	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
 
-	constructor() {
-		this.#config = JSON.parse(fs.readFileSync('configure/feed.json', 'utf8'));
-	}
+	readonly #config: Configure; // 機能設定
 
 	/**
 	 * @param configCommon 共通設定ファイル
@@ -25,13 +30,20 @@ export default class CreateFeed {
 	 * @param configCommon.views テンプレートディレクトリ
 	 * @param configCommon.prettierConfig Prettier 構成ファイルパス
 	 * @param configCommon.root ルートディレクトリ
-	 *
+	 */
+	constructor(configCommon: ConfigCommon) {
+		this.#configCommon = configCommon;
+
+		this.#config = JSON.parse(fs.readFileSync('configure/feed.json', 'utf8'));
+	}
+
+	/**
 	 * @returns ファイル生成情報
 	 */
-	async execute(configCommon: { dbFilePath: string; views: string; prettierConfig: string; root: string }): Promise<{
+	async execute(): Promise<{
 		createdFilesPath: string[]; // 生成したファイルパス
 	}> {
-		const dao = new BlogFeedDao(configCommon.dbFilePath);
+		const dao = new BlogFeedDao(this.#configCommon.dbFilePath);
 
 		const entriesDto = await dao.getEntries(this.#config.limit);
 
@@ -49,14 +61,14 @@ export default class CreateFeed {
 			}),
 		);
 
-		const feedXml = await ejs.renderFile(`${configCommon.views}/${this.#config.view_path}`, {
+		const feedXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view_path}`, {
 			updated_at: [...entriesView].at(0)?.updated_at,
 			entries: entriesView,
 		});
 
-		const prettierOptions = PrettierUtil.configOverrideAssign(await PrettierUtil.loadConfig(configCommon.prettierConfig), '*.html');
+		const prettierOptions = PrettierUtil.configOverrideAssign(await PrettierUtil.loadConfig(this.#configCommon.prettierConfig), '*.html');
 
-		const feedXmlFormatted = xmlFormatter((await prettier.format(feedXml, prettierOptions)), {
+		const feedXmlFormatted = xmlFormatter(await prettier.format(feedXml, prettierOptions), {
 			/* https://github.com/chrisbottin/xml-formatter#options */
 			indentation: '\t',
 			collapseContent: true,
@@ -66,7 +78,7 @@ export default class CreateFeed {
 		const feedXmlBrotli = Compress.brotliText(feedXmlFormatted);
 
 		/* ファイル出力 */
-		const filePath = `${configCommon.root}/${this.#config.path}`;
+		const filePath = `${this.#configCommon.root}/${this.#config.path}`;
 		const brotliFilePath = `${filePath}.br`;
 
 		await Promise.all([fs.promises.writeFile(filePath, feedXmlFormatted), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
