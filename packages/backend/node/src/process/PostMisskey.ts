@@ -2,53 +2,41 @@ import fs from 'node:fs';
 import ejs from 'ejs';
 import type { Misskey as Configure } from '../../../configure/type/misskey.js';
 
+interface ConfigCommon {
+	views: string;
+}
+
 /**
  * Misskey 投稿
  */
 export default class PostMisskey {
-	#config: Configure;
+	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
 
-	#env: Express.Env;
+	readonly #config: Configure; // 機能設定
+
+	readonly #env: Express.Env;
 
 	/**
+	 * @param configCommon 共通設定ファイル
+	 * @param configCommon.views テンプレートディレクトリ
 	 * @param env - NODE_ENV
 	 */
-	constructor(env: Express.Env) {
+	constructor(configCommon: ConfigCommon, env: Express.Env) {
+		this.#configCommon = configCommon;
+
 		this.#config = JSON.parse(fs.readFileSync('configure/misskey.json', 'utf8'));
 
 		this.#env = env;
 	}
 
 	/**
-	 * @param configCommon 共通設定ファイル
-	 * @param configCommon.views テンプレートディレクトリ
-	 * @param requestQuery - URL クエリー情報
-	 * @param entryUrl - 記事 URL
+	 * @param entryData - 記事データ
 	 *
 	 * @returns ファイル生成情報
 	 */
-	async execute(
-		configCommon: { views: string },
-		requestQuery: BlogRequest.Post,
-		entryUrl: string,
-	): Promise<{
+	async execute(entryData: BlogSocial.EntryData): Promise<{
 		url: string;
 	}> {
-		const message = (
-			await ejs.renderFile(`${configCommon.views}/${this.#config.view_path}`, {
-				title: requestQuery.title,
-				url: entryUrl,
-				tags: requestQuery.social_tag?.split(',').map((tag) => {
-					const tagTrimmed = tag.trim();
-					if (tagTrimmed === '') {
-						return '';
-					}
-					return `#${tagTrimmed}`;
-				}),
-				description: requestQuery.description,
-			})
-		).trim();
-
 		const response = await fetch(`${this.#config.api.instance_origin}/api/notes/create`, {
 			method: 'POST',
 			headers: {
@@ -56,7 +44,7 @@ export default class PostMisskey {
 			},
 			body: JSON.stringify({
 				i: this.#config.api.access_token,
-				text: message,
+				text: await PostMisskey.#getMessage(`${this.#configCommon.views}/${this.#config.view_path}`, entryData),
 				visibility: this.#env === 'development' ? 'specified' : this.#config.visibility,
 			}), // https://misskey.io/api-doc#tag/notes
 		});
@@ -68,5 +56,30 @@ export default class PostMisskey {
 		return {
 			url: `${this.#config.api.instance_origin}/notes/${responseJson.createdNote.id}`,
 		};
+	}
+
+	/**
+	 * 投稿本文を組み立てる
+	 *
+	 * @param templatePath - テンプレートファイルのパス
+	 * @param entryData - 記事データ
+	 *
+	 * @returns 投稿本文
+	 */
+	static async #getMessage(templatePath: string, entryData: BlogSocial.EntryData): Promise<string> {
+		return (
+			await ejs.renderFile(templatePath, {
+				title: entryData.title,
+				url: entryData.url,
+				tags: entryData.tags?.map((tag) => {
+					const tagTrimmed = tag.trim();
+					if (tagTrimmed === '') {
+						return '';
+					}
+					return `#${tagTrimmed}`;
+				}),
+				description: entryData.description,
+			})
+		).trim();
 	}
 }

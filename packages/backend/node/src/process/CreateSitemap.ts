@@ -5,37 +5,46 @@ import xmlFormatter from 'xml-formatter';
 import BlogSitemapDao from '../dao/BlogSitemapDao.js';
 import type { NoName as Configure } from '../../../configure/type/sitemap.js';
 
+interface ConfigCommon {
+	dbFilePath: string;
+	views: string;
+	root: string;
+}
+
 /**
  * サイトマップ生成
  */
 export default class CreateSitemap {
-	#config: Configure;
+	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
 
-	constructor() {
-		this.#config = JSON.parse(fs.readFileSync('configure/sitemap.json', 'utf8'));
-	}
+	readonly #config: Configure; // 機能設定
 
 	/**
 	 * @param configCommon 共通設定ファイル
 	 * @param configCommon.dbFilePath DB ファイルパス
 	 * @param configCommon.views テンプレートディレクトリ
 	 * @param configCommon.root ルートディレクトリ
-	 *
+	 */
+	constructor(configCommon: ConfigCommon) {
+		this.#configCommon = configCommon;
+
+		this.#config = JSON.parse(fs.readFileSync('configure/sitemap.json', 'utf8'));
+	}
+
+	/**
 	 * @returns ファイル生成情報
 	 */
-	async execute(configCommon: { dbFilePath: string; views: string; root: string }): Promise<{
+	async execute(): Promise<{
 		createdFilePath: string; // 生成したファイルパス
 	}> {
-		const dao = new BlogSitemapDao(configCommon.dbFilePath);
+		const dao = new BlogSitemapDao(this.#configCommon.dbFilePath);
 
 		const [updated, entries] = await Promise.all([
 			dao.getLastModified(),
-			dao.getEntries(
-				this.#config.limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要がある */,
-			),
+			dao.getEntries(this.#config.limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要がある */),
 		]);
 
-		const sitemapXml = await ejs.renderFile(`${configCommon.views}/${this.#config.view_path}`, {
+		const sitemapXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view_path}`, {
 			updated_at: dayjs(updated),
 			entries: entries,
 		});
@@ -48,7 +57,7 @@ export default class CreateSitemap {
 		});
 
 		/* ファイル出力 */
-		const filePath = `${configCommon.root}/${this.#config.path}`;
+		const filePath = `${this.#configCommon.root}/${this.#config.path}`;
 
 		await fs.promises.writeFile(filePath, sitemapXmlFormated);
 

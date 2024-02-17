@@ -4,8 +4,8 @@ import type { NoName as Configure } from '../../../../configure/type/common.js';
 
 const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8')) as Configure;
 
-const result = await new CreateNewlyJson().execute({
+const result = await new CreateNewlyJson({
 	dbFilePath: config.sqlite.db.blog,
 	root: config.static.root,
-});
+}).execute();
 console.debug(result);
