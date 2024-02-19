@@ -7,6 +7,7 @@
 	},
 	"excludeFiles": [
 		"views/feed/*.ejs",
+		"views/social/*.ejs",
 		"views/xml/*.ejs"
 	],
 	"rules": {
@@ -18,7 +19,6 @@
 			"s",
 			"i",
 			"u",
-			"br",
 			"wbr",
 			"area"
 		],
