@@ -19,6 +19,10 @@
 .p-section {
 	--_margin-block: 1rem;
 
+	&:target {
+		animation: section-target 1s;
+	}
+
 	&:not(:first-child) {
 		:not(.p-section__hdg) + & {
 			margin-block-start: var(--_margin-block);
@@ -39,10 +43,6 @@
 
 	&.-hdg-c {
 		--_margin-block: 3rem;
-	}
-
-	&:target {
-		animation: section-target 1s;
 	}
 }
 

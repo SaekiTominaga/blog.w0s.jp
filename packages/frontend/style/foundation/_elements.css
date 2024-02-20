@@ -74,6 +74,10 @@ code {
 		color: inherit;
 	}
 
+	.c-domain & {
+		font-family: inherit;
+	}
+
 	/* for Chrome, Safari */
 	:visited & {
 		color: var(--link-color-visited);
@@ -82,10 +86,6 @@ code {
 	/* for Chrome, Safari */
 	:visited:hover & {
 		color: var(--link-color-hover);
-	}
-
-	.c-domain & {
-		font-family: inherit;
 	}
 }
 

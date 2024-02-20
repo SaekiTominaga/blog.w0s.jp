@@ -42,7 +42,7 @@
 
 		&::before {
 			display: block flow;
-			float: right;
+			float: inline-end;
 			inline-size: calc(var(--_hide-button-image-size) + var(--_hide-button-padding) * 2);
 			block-size: calc(var(--_hide-button-image-size) + var(--_hide-button-padding) * 2);
 			content: "";
@@ -240,7 +240,7 @@
 	border: 1px solid var(--color-border-light);
 	background: var(--color-white);
 	padding: 1em;
-	overflow-x: auto;
+	overflow-inline: auto;
 	color: var(--color-black);
 	line-height: var(--line-height-narrow);
 

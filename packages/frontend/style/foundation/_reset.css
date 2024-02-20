@@ -142,6 +142,13 @@ iframe {
 /**
   * etc
   */
+input,
+select,
+button,
+textarea {
+	font: inherit;
+}
+
 input:is([type="radio" i], [type="checkbox" i]) {
 	margin: 0;
 }
@@ -151,13 +158,6 @@ button {
 		border: none; /* for Firefox */
 		padding: 0; /* for Firefox */
 	}
-}
-
-input,
-select,
-button,
-textarea {
-	font: inherit;
 }
 
 ::file-selector-button {

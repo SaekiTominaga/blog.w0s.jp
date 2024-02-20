@@ -29,8 +29,8 @@
 .p-post-preview__preview {
 	border: 1px solid var(--color-lightgray);
 	max-block-size: 75vh;
-	overflow-y: scroll;
-	resize: vertical;
+	overflow-block: scroll;
+	resize: block;
 }
 
 /* ===== 画像選択 ===== */
