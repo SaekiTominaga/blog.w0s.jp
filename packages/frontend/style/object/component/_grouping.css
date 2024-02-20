@@ -71,26 +71,26 @@
 	pointer-events: auto;
 	color: var(--color-black);
 
-	:any-link:hover & {
-		box-shadow: 0 0 5px var(--color-border-dark);
-	}
-
 	:focus & {
 		outline: var(--outline-width-bold) solid var(--outline-color);
 		outline-offset: -1px;
+	}
+
+	:any-link:hover & {
+		box-shadow: 0 0 5px var(--color-border-dark);
 	}
 }
 
 .c-entry-link__title {
 	margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
 
-	:any-link:hover & {
-		--_bullet-color: var(--link-color-hover);
-	}
-
 	:focus & {
 		outline: var(--outline-width) solid var(--outline-color);
 		outline-offset: var(--outline-offset-linkonly);
+	}
+
+	:any-link:hover & {
+		--_bullet-color: var(--link-color-hover);
 	}
 
 	&::before {
@@ -117,16 +117,16 @@
 	font-size: calc(100% / var(--font-ratio-1));
 	line-height: var(--line-height-narrow);
 
+	.p-embed + & {
+		max-inline-size: calc(var(--entry-image-width) + var(--entry-embed-border-width) * 2);
+	}
+
 	:is(figure)/* is() は PostCSS のビルドの都合 */ > &:first-child {
 		margin-block-end: 0.5em;
 	}
 
 	:is(figure)/* is() は PostCSS のビルドの都合 */ > &:last-child {
 		margin-block-start: 0.5em;
-	}
-
-	.p-embed + & {
-		max-inline-size: calc(var(--entry-image-width) + var(--entry-embed-border-width) * 2);
 	}
 
 	/* メタデータ */

@@ -57,16 +57,16 @@
 		font: inherit;
 		fill: currentColor; /* SVG */
 
-		&:focus:not(:focus-visible) {
-			--_color: hsl(220deg 70% 35%);
-		}
-
 		&:focus-visible {
 			outline: var(--outline-width-bold) dotted var(--color-black);
 		}
 
 		&:hover {
 			--_color: hsl(220deg 70% 55%);
+		}
+
+		&:focus:not(:focus-visible) {
+			--_color: hsl(220deg 70% 35%);
 		}
 
 		& > svg {

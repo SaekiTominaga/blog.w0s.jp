@@ -23,6 +23,10 @@
 .p-entry-section {
 	--_margin-block: var(--stack-margin-base);
 
+	&:target {
+		animation: entry-section-target 1s;
+	}
+
 	.p-entry & {
 		&:not(:first-child) {
 			margin-block-start: var(--_margin-block);
@@ -43,10 +47,6 @@
 
 	&.-hdg2 {
 		--_margin-block: calc(var(--stack-margin-base) * 2);
-	}
-
-	&:target {
-		animation: entry-section-target 1s;
 	}
 
 	& > hgroup {
