@@ -26,14 +26,14 @@
 	border-radius: var(--_border-radius-top) var(--_border-radius-top) 0 0;
 	background: var(--_bg-color);
 	padding: var(--_padding-block) 0.2em;
-	color: var(--_color);
-	font-weight: var(--_font-weight);
-	font-size: calc(100% / var(--font-ratio-2));
 	text-align: center;
+	color: var(--_color);
+	font-size: calc(100% / var(--font-ratio-2));
+	font-weight: var(--_font-weight);
 
 	&[role="tab"] {
-		outline-width: 2px;
 		outline-offset: -2px;
+		outline-width: 2px;
 	}
 
 	&:not(:first-child) {
@@ -75,8 +75,8 @@
 
 .p-sidebar-entries__hdg {
 	position: relative;
-	margin-inline: 10px;
 	inset-block-start: var(--_heading-offset);
+	margin-inline: 10px;
 	background-color: var(--page-bg-color);
 	padding: 0 0.5em;
 	inline-size: fit-content;
@@ -96,8 +96,8 @@
 	& a {
 		display: block flow;
 		contain: content;
-		outline-width: var(--outline-width-bold);
 		outline-offset: -1px;
+		outline-width: var(--outline-width-bold);
 		background: var(--_bg-color);
 		padding: var(--_padding-block) var(--_padding-inline);
 		min-block-size: var(--_min-block-size);

@@ -18,17 +18,17 @@
 /* ヘッダーメイン */
 .l-header__main {
 	display: block grid;
-	grid-template-columns: 50% 1fr;
 	grid-template-areas: "site nav";
+	grid-template-columns: 50% 1fr;
 	grid-column: content;
 	gap: 20px;
 	container: header-main / inline-size;
 
 	@container header (inline-size <= 60em) {
-		grid-template-columns: auto;
 		grid-template-areas:
 			"site"
 			"nav";
+		grid-template-columns: auto;
 	}
 }
 
@@ -43,11 +43,11 @@
 	--_justify-content: flex-end;
 
 	display: block flex;
-	grid-column: nav;
 	flex-wrap: wrap;
+	grid-column: nav;
+	gap: 10px 20px;
 	place-content: flex-start var(--_justify-content);
 	align-items: flex-end;
-	gap: 10px 20px;
 
 	@container header-main (inline-size <= 32em) {
 		--_justify-content: flex-start;

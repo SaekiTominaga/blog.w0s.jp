@@ -13,8 +13,8 @@
 
 	display: block flow-root; /* for Safari */
 	contain: layout;
-	font-size: calc(100% * var(--_title-font-expand-ratio));
 	line-height: var(--line-height-narrow);
+	font-size: calc(100% * var(--_title-font-expand-ratio));
 
 	.p-title-list & {
 		--_gap: 25px;
@@ -38,12 +38,12 @@
 	--_image-min-inline-size-vw: 30vw;
 
 	display: block flex;
-	justify-content: center;
 	float: var(--_float);
-	margin-inline: var(--_margin-inline-start) var(--_margin-inline-end);
+	justify-content: center;
 	margin-block-end: var(--_margin-block-end);
-	inline-size: calc(var(--_image-inline-size) + var(--_image-border-width) * 2);
+	margin-inline: var(--_margin-inline-start) var(--_margin-inline-end);
 	block-size: calc(var(--_image-inline-size) / var(--_image-aspect-ratio) + var(--_image-border-width) * 2);
+	inline-size: calc(var(--_image-inline-size) + var(--_image-border-width) * 2);
 	pointer-events: none;
 }
 
@@ -66,10 +66,10 @@
 	display: block flow;
 	border: var(--_image-border-width) solid;
 	background: var(--color-white);
-	max-inline-size: var(--_image-inline-size);
 	max-block-size: calc(var(--_image-inline-size) / var(--_image-aspect-ratio));
-	pointer-events: auto;
+	max-inline-size: var(--_image-inline-size);
 	color: var(--color-black);
+	pointer-events: auto;
 
 	:focus & {
 		outline: var(--outline-width-bold) solid var(--outline-color);
@@ -112,10 +112,10 @@
 /* ===== キャプション ===== */
 .c-caption {
 	inline-size: fit-content;
-	color: var(--color-gray);
-	font-weight: var(--font-weight-bold);
-	font-size: calc(100% / var(--font-ratio-1));
 	line-height: var(--line-height-narrow);
+	color: var(--color-gray);
+	font-size: calc(100% / var(--font-ratio-1));
+	font-weight: var(--font-weight-bold);
 
 	.p-embed + & {
 		max-inline-size: calc(var(--entry-image-width) + var(--entry-embed-border-width) * 2);

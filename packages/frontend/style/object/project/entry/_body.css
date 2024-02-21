@@ -85,8 +85,8 @@
 	margin-inline: auto;
 	border-block-start: 2px solid;
 	border-image: linear-gradient(to right, transparent 0%, var(--color-lightgray) 50%, transparent 100%) 1 / 1px;
-	inline-size: min(30em, 100%);
 	block-size: 0;
+	inline-size: min(30em, 100%);
 
 	.p-entry & {
 		&:not(:first-child) {

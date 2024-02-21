@@ -15,8 +15,8 @@
 }
 
 .p-insert__date {
-	font-weight: var(--font-weight-bold);
 	font-size: calc(100% / var(--font-ratio-1));
+	font-weight: var(--font-weight-bold);
 
 	&::after {
 		margin-inline: 0.25em;
@@ -25,16 +25,16 @@
 }
 
 .p-insert__text {
-	font-size: calc(100% / var(--font-ratio-1));
 	text-decoration: none;
+	font-size: calc(100% / var(--font-ratio-1));
 }
 
 /* ===== ブロック引用 ===== */
 .p-quote {
 	border-width: 1px 5px;
 	border-style: solid;
-	border-color: var(--color-green);
 	border-radius: var(--border-radius-large);
+	border-color: var(--color-green);
 	background: var(--color-white);
 	padding: 1em min(1vw, 1em);
 

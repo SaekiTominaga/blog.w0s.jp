@@ -33,8 +33,8 @@
 
 	& > input {
 		all: initial;
-		display: block flow;
 		box-sizing: border-box;
+		display: block flow;
 		padding: 0.25em;
 		inline-size: 100%;
 		font: inherit;
@@ -47,12 +47,12 @@
 		--_color: hsl(220deg 70% 45%);
 
 		all: initial;
-		display: block flow;
 		box-sizing: border-box;
+		display: block flow;
 		margin: var(--outline-width-bold);
 		padding: 0.25em;
-		inline-size: 2em;
 		block-size: 2em;
+		inline-size: 2em;
 		color: var(--_color);
 		font: inherit;
 		fill: currentColor; /* SVG */
@@ -70,8 +70,8 @@
 		}
 
 		& > svg {
-			inline-size: 100%;
 			block-size: 100%;
+			inline-size: 100%;
 		} /* for Chrome */
 	}
 }
