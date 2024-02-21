@@ -37,14 +37,6 @@
 	border-color: var(--color-green);
 	background: var(--color-white);
 	padding: 1em min(1vw, 1em);
-
-	.p-entry & {
-		padding-block: 0.5em;
-
-		& > p {
-			margin-block: 0.5em;
-		}
-	}
 }
 
 .p-quote__omit {
