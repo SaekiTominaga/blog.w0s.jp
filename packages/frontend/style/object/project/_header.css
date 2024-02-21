@@ -6,8 +6,8 @@
 .p-header-site {
 	display: block flex;
 	flex-flow: wrap;
-	align-items: baseline;
 	gap: 0.25em 1em;
+	align-items: baseline;
 }
 
 /* サイト名 */
@@ -22,15 +22,15 @@
 
 		display: inline flow-root;
 		margin: calc(0px - var(--_padding));
-		outline-width: var(--outline-width-bold);
 		outline-offset: 0;
+		outline-width: var(--outline-width-bold);
 		border-radius: var(--border-radius-small); /* outline を柔らかくする */
 		padding: var(--_padding);
 		text-shadow: var(--_text-shadow);
 
 		&:any-link {
-			color: inherit;
 			text-decoration: none;
+			color: inherit;
 
 			&:hover {
 				--_text-shadow: 0 0 1em var(--color-border-dark);
@@ -66,8 +66,8 @@
 
 .p-header-search__legend {
 	grid-area: legend;
-	font-weight: var(--font-weight-bold);
 	font-size: calc(100% / var(--font-ratio-1));
+	font-weight: var(--font-weight-bold);
 }
 
 .p-header-search__ctrl {

@@ -6,11 +6,11 @@
 .p-err-title {
 	display: block flex;
 	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
 	gap: 1em;
-	font-weight: var(--font-weight-bold);
+	align-items: center;
+	justify-content: center;
 	line-height: var(--line-height-narrow);
+	font-weight: var(--font-weight-bold);
 
 	/* エラーメッセージ */
 	> h1 {
@@ -50,10 +50,10 @@
 /* ===== サイト内検索 ===== */
 .p-err-search {
 	display: block grid;
-	grid-template-columns: min(30em, 100%);
 	grid-template-areas:
 		"legend"
 		"ctrl";
+	grid-template-columns: min(30em, 100%);
 	justify-content: center;
 	margin-block-start: 10vh;
 

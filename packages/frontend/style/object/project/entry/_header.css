@@ -21,9 +21,9 @@
 	}
 
 	& > h1 {
-		font-size: clamp(calc(100% * var(--font-ratio-3)), 5vw, calc(100% * var(--font-ratio-5)));
-		line-height: var(--line-height-narrow);
 		text-shadow: 0 0 0.05em var(--color-border-light);
+		line-height: var(--line-height-narrow);
+		font-size: clamp(calc(100% * var(--font-ratio-3)), 5vw, calc(100% * var(--font-ratio-5)));
 	}
 }
 

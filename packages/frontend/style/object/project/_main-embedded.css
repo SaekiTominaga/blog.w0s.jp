@@ -10,18 +10,18 @@
 		--_expand-icon-padding: 4px;
 
 		display: inline flow-root;
-		outline-width: var(--outline-width-bold);
 		outline-offset: -1px;
+		outline-width: var(--outline-width-bold);
 
 		&::before {
+			box-sizing: border-box;
 			display: block flow;
 			position: absolute;
-			box-sizing: border-box;
 			inset: 1px;
 			background: rgb(0 0 0 / 70%) url("/image/entry/media-expansion.svg") center/contain no-repeat content-box border-box;
 			padding: var(--_expand-icon-padding);
-			inline-size: 24px;
 			block-size: 24px;
+			inline-size: 24px;
 			content: "";
 		}
 
@@ -34,21 +34,21 @@
 .p-embed__image,
 .p-embed__video {
 	display: inline flow-root;
-	vertical-align: top;
 	border: var(--entry-embed-border-width) solid var(--color-black);
-	max-inline-size: calc(100% - var(--entry-embed-border-width) * 2);
 	block-size: auto;
+	max-inline-size: calc(100% - var(--entry-embed-border-width) * 2);
+	vertical-align: top;
 }
 
 .p-embed__video {
-	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
+	outline-width: var(--outline-width-bold);
 }
 
 .p-embed__frame {
 	display: block flow;
 	border: var(--entry-embed-border-width) solid var(--color-black);
 	aspect-ratio: var(--aspect-ratio, auto);
-	max-inline-size: 100%;
 	block-size: auto;
+	max-inline-size: 100%;
 }

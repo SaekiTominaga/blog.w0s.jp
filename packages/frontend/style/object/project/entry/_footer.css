@@ -13,8 +13,8 @@
 	--_tag-border-width: 1px;
 
 	display: block flex;
-	justify-content: flex-end;
 	gap: 0 0.5em;
+	justify-content: flex-end;
 }
 
 .p-entry-footer-category__hdg {
@@ -31,14 +31,14 @@
 
 	& a {
 		display: inline flow-root;
-		outline-width: var(--outline-width-bold);
 		outline-offset: -1px;
+		outline-width: var(--outline-width-bold);
 		border: var(--_tag-border-width) solid var(--color-border-light);
 		border-radius: var(--border-radius-normal);
 		background: var(--color-white);
 		padding: var(--_tag-pading-row) var(--_tag-pading-col);
-		line-height: var(--line-height-nowrap);
 		text-decoration: none;
+		line-height: var(--line-height-nowrap);
 		white-space: nowrap;
 
 		&:hover {

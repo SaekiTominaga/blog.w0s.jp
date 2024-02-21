@@ -29,14 +29,14 @@
 /* ===== セルフリンク <a href="#foo">§</a> ===== */
 .c-self-link {
 	display: inline flex;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
 	outline-width: var(--outline-width-bold);
-	min-inline-size: var(--self-link-size);
 	min-block-size: var(--self-link-size);
+	min-inline-size: var(--self-link-size);
+	text-decoration: none;
 	color: var(--link-color);
 	font-size: calc(100% / var(--font-ratio-3));
-	text-decoration: none;
 }
 
 /* ===== ボタン ===== */
@@ -49,22 +49,22 @@
 	--_background: var(--color-white);
 	--_icon-size: 1.25em;
 
-	display: inline flex;
-	justify-content: center;
-	align-items: center;
-	gap: 0.5em;
 	box-sizing: border-box;
-	outline-width: var(--outline-width-bold);
+	display: inline flex;
+	gap: 0.5em;
+	align-items: center;
+	justify-content: center;
 	outline-offset: -1px;
+	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
 	background: var(--_background);
 	padding: var(--_padding-block) var(--_padding-inline);
 	inline-size: var(--_inline-size);
+	text-decoration: none;
+	line-height: var(--line-height-narrow);
 	color: var(--_color);
 	font-weight: var(--font-weight-bold);
-	line-height: var(--line-height-narrow);
-	text-decoration: none;
 
 	:is(button[type="button"]&):focus:not(:focus-visible) {
 		outline: none;
@@ -98,8 +98,8 @@
 }
 
 .c-button__icon {
-	inline-size: var(--_icon-size);
 	block-size: var(--_icon-size);
+	inline-size: var(--_icon-size);
 }
 
 .c-button__text {
@@ -129,10 +129,10 @@
 
 		&[role="button"] {
 			/* JS 有効時のみ */
-			cursor: default;
 			outline-offset: calc(0px - var(--outline-width));
-			color: var(--link-color);
+			cursor: default;
 			text-decoration: none;
+			color: var(--link-color);
 
 			&:focus:not(:focus-visible) {
 				outline: none;
@@ -145,9 +145,9 @@
 .c-domain {
 	--_font-size: calc(100% / var(--font-ratio-1));
 
+	word-break: break-all;
 	color: var(--color-gray);
 	font-size: var(--_font-size);
-	word-break: break-all;
 
 	&:has(img) {
 		--_font-size: inherit;
@@ -158,9 +158,9 @@
 	}
 
 	& > img {
-		vertical-align: -0.1lh;
-		inline-size: auto;
 		block-size: 1em;
+		inline-size: auto;
+		vertical-align: -0.1lh;
 	}
 }
 
@@ -199,10 +199,10 @@
 	border-radius: var(--border-radius-large);
 	background: var(--color-powderblue);
 	padding: 0.15em 0.45em;
-	color: var(--color-darkblue);
-	font-size: calc(100% / var(--font-ratio-4));
 	line-height: var(--line-height-nowrap);
 	white-space: nowrap;
+	color: var(--color-darkblue);
+	font-size: calc(100% / var(--font-ratio-4));
 }
 
 /* 件数の数字部分 */

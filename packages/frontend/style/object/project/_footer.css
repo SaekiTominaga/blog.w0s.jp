@@ -9,8 +9,8 @@
 
 	display: block flex;
 	flex-flow: var(--_flex-direction) wrap;
-	justify-content: var(--_justify-content);
 	gap: 0.5em 0;
+	justify-content: var(--_justify-content);
 	font-size: calc(100% * var(--font-ratio-1));
 
 	@container footer-nav (inline-size >= 30em) {
@@ -25,8 +25,8 @@
 				transform: rotate(22.5deg);
 				margin-inline: 2em;
 				background-color: var(--page-color);
-				inline-size: 1px;
 				block-size: 0.8em;
+				inline-size: 1px;
 				content: "";
 			}
 		}

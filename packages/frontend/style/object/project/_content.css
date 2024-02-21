@@ -11,8 +11,8 @@
 		border-radius: var(--border-radius-small);
 		background: linear-gradient(var(--color-white), var(--color-bg-dark));
 		padding: 0.75em 1.5%;
-		font-size: clamp(calc(100% * var(--font-ratio-1)), 7vw, calc(100% * var(--font-ratio-5)));
 		text-shadow: 1px 1px 1px var(--color-lightgray);
+		font-size: clamp(calc(100% * var(--font-ratio-1)), 7vw, calc(100% * var(--font-ratio-5)));
 	}
 }
 
@@ -20,8 +20,8 @@
 .p-page-nav {
 	display: block flex;
 	flex-flow: wrap;
-	justify-content: center;
 	gap: 0.5em 5%;
+	justify-content: center;
 	line-height: var(--line-height-narrow);
 }
 
@@ -32,8 +32,8 @@
 
 	display: inline flex;
 	align-items: center;
-	outline-width: var(--outline-width-bold);
 	outline-offset: -1px;
+	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--color-border-light);
 	border-radius: var(--border-radius-normal);
 	background: var(--_bg-color);
@@ -49,8 +49,8 @@
 	&.-next::after {
 		display: inline flow-root;
 		background: currentColor;
-		inline-size: var(--_icon-size);
 		block-size: var(--_icon-size);
+		inline-size: var(--_icon-size);
 		content: "";
 	}
 

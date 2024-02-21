@@ -8,8 +8,8 @@
 	--_gap-inline: 1em;
 
 	display: block grid;
-	grid-template-columns: auto 1fr;
 	grid-template-areas: "legend contents";
+	grid-template-columns: auto 1fr;
 	gap: var(--_gap-block) var(--_gap-inline);
 }
 
@@ -45,10 +45,10 @@
 
 @container content (inline-size <= 36em) {
 	.p-form-grid {
-		grid-template-columns: auto;
 		grid-template-areas:
 			"legend"
 			"contents";
+		grid-template-columns: auto;
 	}
 
 	.p-form-grid__legend {
@@ -94,8 +94,8 @@
 
 .p-form-results__mark {
 	min-inline-size: 1em;
-	font-weight: var(--font-weight-bold);
 	text-align: center;
+	font-weight: var(--font-weight-bold);
 }
 
 .p-form-results__message {
@@ -122,8 +122,8 @@
 
 		& > img {
 			display: block flow;
-			inline-size: 100%;
 			block-size: 100%;
+			inline-size: 100%;
 			object-fit: contain;
 			object-position: 0 0;
 		}

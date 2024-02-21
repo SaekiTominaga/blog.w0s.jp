@@ -12,8 +12,8 @@
 
 	display: block flow-root; /* for Safari */
 	contain: layout;
-	font-size: calc(100% * var(--font-ratio-2));
 	line-height: var(--line-height-narrow);
+	font-size: calc(100% * var(--font-ratio-2));
 
 	& > :any-link {
 		outline: none;
@@ -24,8 +24,8 @@
 	float: inline-start;
 	margin-inline-end: calc(var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
 	border: 1px solid var(--color-black);
-	max-inline-size: 50%;
 	block-size: auto;
+	max-inline-size: 50%;
 
 	:focus & {
 		outline: var(--outline-width-bold) solid var(--outline-color);
@@ -62,6 +62,6 @@
 .p-item__text {
 	margin-block-start: 0.5em;
 	overflow: hidden;
-	font-size: calc(100% / var(--font-ratio-2));
 	line-height: var(--line-height-normal);
+	font-size: calc(100% / var(--font-ratio-2));
 }

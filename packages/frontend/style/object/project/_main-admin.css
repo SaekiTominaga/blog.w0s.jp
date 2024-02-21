@@ -36,8 +36,8 @@
 /* ===== 画像選択 ===== */
 .p-post-select-image {
 	contain: layout;
-	inline-size: 240px;
 	block-size: 240px;
+	inline-size: 240px;
 
 	& img {
 		display: block flow;

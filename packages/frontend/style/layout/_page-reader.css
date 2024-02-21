@@ -2,8 +2,8 @@
  *   リーダー表示
  * ============================== */
 .l-page {
-	grid-template-columns: 1fr;
 	grid-template-areas: "content";
+	grid-template-columns: 1fr;
 }
 
 .l-header,

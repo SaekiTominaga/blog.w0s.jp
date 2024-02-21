@@ -52,8 +52,8 @@
 
 	& > li {
 		margin-inline-start: 1.25em;
-		font-size: calc(100% / var(--font-ratio-1));
 		list-style-type: "※ ";
+		font-size: calc(100% / var(--font-ratio-1));
 
 		& + li {
 			margin-block-start: 0.75em;
@@ -203,8 +203,8 @@
 }
 
 .p-footnote__content {
-	padding-inline-start: 0.5em;
 	padding-block-start: 0.5em;
+	padding-inline-start: 0.5em;
 	inline-size: 100%;
 }
 
