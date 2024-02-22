@@ -13,7 +13,6 @@
 
 	display: block flow-root; /* for Safari */
 	contain: layout;
-	container-type: inline-size;
 	line-height: var(--line-height-narrow);
 	font-size: calc(100% * var(--_title-font-expand-ratio));
 
@@ -22,16 +21,20 @@
 		--_title-font-expand-ratio: var(--font-ratio-3);
 	}
 
+	*:has(> &) {
+		container-type: inline-size;
+	}
+
 	& > :any-link {
 		outline: none;
 	}
 }
 
 .c-entry-link__thumb {
-	--_margin-inline-end: calc(var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
-	--_margin-inline-start: 0px;
+	--_float: inline-start;
 	--_margin-block-end: 0px;
-	--_float: left;
+	--_margin-inline-start: 0px;
+	--_margin-inline-end: calc(var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
 	--_image-border-width: 1px;
 	--_image-aspect-ratio: 1.5;
 	--_image-inline-size: 180px;
@@ -48,16 +51,16 @@
 	pointer-events: none;
 }
 
-@container (inline-size <= 24em) {
+@container (inline-size <= 40em) {
 	.c-entry-link {
 		margin-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
 	}
 
 	.c-entry-link__thumb {
+		--_float: inline-end;
 		--_margin-block-end: clamp(0px, var(--_image-min-inline-size-px) - var(--_image-min-inline-size-vw), var(--_gap));
-		--_margin-inline-end: 0px;
 		--_margin-inline-start: var(--_gap);
-		--_float: right;
+		--_margin-inline-end: 0px;
 		--_image-inline-size: min(var(--_image-min-inline-size-px), var(--_image-min-inline-size-vw));
 	}
 }
