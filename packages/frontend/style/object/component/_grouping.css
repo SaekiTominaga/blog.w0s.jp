@@ -51,7 +51,7 @@
 	pointer-events: none;
 }
 
-@container (inline-size <= 24em) {
+@container (inline-size <= 40em) {
 	.c-entry-link {
 		margin-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
 	}
