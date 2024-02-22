@@ -13,13 +13,16 @@
 
 	display: block flow-root; /* for Safari */
 	contain: layout;
-	container-type: inline-size;
 	line-height: var(--line-height-narrow);
 	font-size: calc(100% * var(--_title-font-expand-ratio));
 
 	.p-title-list & {
 		--_gap: 25px;
 		--_title-font-expand-ratio: var(--font-ratio-3);
+	}
+
+	*:has(> &) {
+		container-type: inline-size;
 	}
 
 	& > :any-link {
