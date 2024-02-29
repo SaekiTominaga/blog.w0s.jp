@@ -4,7 +4,6 @@ about: 記事内容に関する指摘、質問など
 title: ''
 labels: comment
 assignees: SaekiTominaga
-
 ---
 
 ## 記事タイトルまたは URL
