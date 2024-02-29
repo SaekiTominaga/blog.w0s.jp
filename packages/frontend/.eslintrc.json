@@ -13,6 +13,12 @@
 			}
 		},
 		{
+			"files": ["node/src/build/*.ts"],
+			"rules": {
+				"class-methods-use-this": "off"
+			}
+		},
+		{
 			"files": ["node/src/build.ts"],
 			"rules": {
 				"new-cap": "off"

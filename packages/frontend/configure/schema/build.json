@@ -3,7 +3,7 @@
 	"$id": "https://blog.w0s.jp/build.json",
 	"type": "object",
 	"title": "ビルド",
-	"required": ["static", "prettier", "image"],
+	"required": ["static", "image"],
 	"properties": {
 		"static": {
 			"type": "object",
@@ -13,18 +13,6 @@
 				"root": {
 					"type": "string",
 					"title": "ルートディレクトリ"
-				}
-			},
-			"additionalProperties": false
-		},
-		"prettier": {
-			"type": "object",
-			"title": "Prettier",
-			"required": ["config"],
-			"properties": {
-				"config": {
-					"type": "string",
-					"title": "構成ファイルパス"
 				}
 			},
 			"additionalProperties": false

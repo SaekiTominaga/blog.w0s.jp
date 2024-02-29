@@ -117,7 +117,6 @@ export default class CategoryController extends Controller implements Controller
 		await this.response(html, {
 			filePath: htmlFilePath,
 			brotliFilePath: htmlBrotliFilePath,
-			prettierConfig: this.configCommon.prettier.config,
 			httpResponse: httpResponse,
 		});
 	}

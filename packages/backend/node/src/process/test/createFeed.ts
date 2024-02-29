@@ -7,7 +7,6 @@ const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'u
 const result = await new CreateFeed({
 	dbFilePath: config.sqlite.db.blog,
 	views: config.views,
-	prettierConfig: config.prettier.config,
 	root: config.static.root,
 }).execute();
 console.debug(result);

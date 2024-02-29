@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import Log4js from 'log4js';
 import prettier from 'prettier';
-import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import Compress from './util/Compress.js';
 import HttpResponse from './util/HttpResponse.js';
 import type { NoName as Configure } from '../../configure/type/common.js';
@@ -25,26 +24,35 @@ export default class Controller {
 	/**
 	 * 画面レンダリングを行い、同時に次回レスポンス時のために HTML ファイルを生成する
 	 *
-	 * @param html - HTML データ
+	 * @param htmlUnformat - HTML データ
 	 * @param options - オプション
 	 * @param options.filePath - HTML ファイルパス
 	 * @param options.brotliFilePath - HTML Brotli 圧縮ファイルパス
-	 * @param options.prettierConfig - Pritter 構成ファイルパス
 	 * @param options.httpResponse - HttpResponse
 	 */
-	async response(html: string, options: { filePath: string; brotliFilePath: string; prettierConfig: string; httpResponse: HttpResponse }): Promise<void> {
-		const prettierOptions = PrettierUtil.configOverrideAssign(await PrettierUtil.loadConfig(options.prettierConfig), '*.html');
+	async response(
+		htmlUnformat: string,
+		options: {
+			filePath: string;
+			brotliFilePath: string;
+			httpResponse: HttpResponse;
+		},
+	): Promise<void> {
+		let html = htmlUnformat;
 
-		const formattedData = (await prettier.format(html, prettierOptions)).trim();
+		const prettierOptions = await prettier.resolveConfig(options.filePath, { editorconfig: true });
+		if (prettierOptions !== null) {
+			html = await prettier.format(htmlUnformat, prettierOptions);
+		}
 
-		const brotliData = Compress.brotliText(formattedData);
+		const brotliData = Compress.brotliText(html);
 
 		await Promise.all([
 			/* レンダリング */
-			options.httpResponse.send200({ body: formattedData, brotliBody: brotliData, cacheControl: this.configCommon.cache_control }),
+			options.httpResponse.send200({ body: html, brotliBody: brotliData, cacheControl: this.configCommon.cache_control }),
 
 			/* HTML ファイル出力 */
-			this.#fileWrite(options.filePath, formattedData),
+			this.#fileWrite(options.filePath, html),
 			this.#brotliFileWrite(options.brotliFilePath, brotliData),
 		]);
 	}

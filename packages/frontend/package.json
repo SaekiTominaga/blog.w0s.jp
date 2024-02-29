@@ -30,7 +30,6 @@
 		"_svg-build-watch:compress": "onchange -f add -f change -v public/image/**/*.svg -v public/favicon.ico -- brotlin compress {{file}} -m 1"
 	},
 	"dependencies": {
-		"@blog.w0s.jp/util": "*",
 		"@w0s/button-clipboard": "^2.0.0",
 		"@w0s/footnote-reference-popover": "^4.1.1",
 		"@w0s/form-before-unload-confirm": "^2.0.0",
