@@ -107,7 +107,7 @@
 	transition:
 		border-color var(--link-hover-transition-duration),
 		background-color var(--link-hover-transition-duration);
-		outline-offset: -1px;
+	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_bg-color);
 	border-radius: var(--border-radius-large);

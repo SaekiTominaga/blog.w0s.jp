@@ -4,7 +4,6 @@ about: 不具合報告
 title: ''
 labels: bug
 assignees: SaekiTominaga
-
 ---
 
 **公開の場での報告が相応しくないケース（セキュリティバグなど）は[問い合わせフォーム](https://w0s.jp/contact)をご利用ください。**

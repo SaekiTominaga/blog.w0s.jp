@@ -8,7 +8,9 @@
 /* ===== ページヘッダー ===== */
 .l-header {
 	display: block grid;
-	grid-template-columns: [full-start] var(--page-margin-inline) var(--page-padding-inline) [content-start] 1fr [content-end] var(--page-padding-inline) var(--page-margin-inline) [full-end];
+	grid-template-columns:
+		[full-start] var(--page-margin-inline) var(--page-padding-inline) [content-start] 1fr [content-end] var(--page-padding-inline) var(--page-margin-inline)
+		[full-end];
 	grid-column: header;
 	container: header / inline-size;
 	padding: 10px 0 40px;
@@ -109,7 +111,9 @@
 /* ===== ページフッター ===== */
 .l-footer {
 	display: block grid;
-	grid-template-columns: [full-start] var(--page-margin-inline) var(--page-padding-inline) [content-start] 1fr [content-end] var(--page-padding-inline) var(--page-margin-inline) [full-end];
+	grid-template-columns:
+		[full-start] var(--page-margin-inline) var(--page-padding-inline) [content-start] 1fr [content-end] var(--page-padding-inline) var(--page-margin-inline)
+		[full-end];
 	grid-column: footer;
 	container: footer / inline-size;
 	margin-block-start: 80px;

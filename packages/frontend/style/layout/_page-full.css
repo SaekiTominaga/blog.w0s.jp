@@ -6,7 +6,9 @@
 		"header              header               header  header              header  header                header              "
 		"content-margin-left content-padding-left content gap-content-sidebar sidebar content-padding-right content-margin-right"
 		"footer              footer               footer  footer              footer  footer                footer              ";
-	grid-template-columns: var(--page-margin-inline) var(--page-padding-inline) 1fr var(--page-content-sidebar-gap) var(--page-sidebar-width) var(--page-padding-inline) var(--page-margin-inline);
+	grid-template-columns:
+		var(--page-margin-inline) var(--page-padding-inline) 1fr var(--page-content-sidebar-gap) var(--page-sidebar-width) var(--page-padding-inline)
+		var(--page-margin-inline);
 }
 
 @media (--breakpoint) {
