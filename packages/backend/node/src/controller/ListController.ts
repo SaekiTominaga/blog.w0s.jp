@@ -118,7 +118,6 @@ export default class ListController extends Controller implements ControllerInte
 		await this.response(html, {
 			filePath: htmlFilePath,
 			brotliFilePath: htmlBrotliFilePath,
-			prettierConfig: this.configCommon.prettier.config,
 			httpResponse: httpResponse,
 		});
 	}

@@ -3,7 +3,6 @@ import path from 'node:path';
 import prettier from 'prettier';
 import slash from 'slash';
 import { globby } from 'globby';
-import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import BuildComponent from '../BuildComponent.js';
 import type BuildComponentInterface from '../BuildComponentInterface.js';
 
@@ -22,19 +21,17 @@ export default class Css extends BuildComponent implements BuildComponentInterfa
 
 		const fileList = await globby(filesPath);
 
-		const prettierOptions = PrettierUtil.configOverrideAssign(await PrettierUtil.loadConfig(this.config.prettier.config), '*.css');
-
 		await Promise.all(
 			fileList.map(async (filePath) => {
 				/* ファイル読み込み */
-				const fileData = (await fs.promises.readFile(filePath)).toString();
+				const cssUnformat = (await fs.promises.readFile(filePath)).toString();
 
 				/* 整形 */
-				let cssFormatted = fileData;
-				try {
-					cssFormatted = await prettier.format(fileData, prettierOptions);
-				} catch (e) {
-					console.error(`Prettier error: ${filePath}`, e);
+				let css = cssUnformat;
+
+				const prettierOptions = await prettier.resolveConfig(filePath, { editorconfig: true });
+				if (prettierOptions !== null) {
+					css = await prettier.format(cssUnformat, prettierOptions);
 				}
 
 				/* 一時ファイル削除 */
@@ -45,7 +42,7 @@ export default class Css extends BuildComponent implements BuildComponentInterfa
 
 				/* 出力 */
 				const distPath = distDirectory !== undefined ? `${distDirectory}/${path.basename(filePath)}` : filePath;
-				await fs.promises.writeFile(distPath, cssFormatted);
+				await fs.promises.writeFile(distPath, css);
 				console.info(`[Prettier] File created: ${distPath}`);
 			}),
 		);

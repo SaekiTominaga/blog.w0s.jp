@@ -296,7 +296,6 @@ export default class PostController extends Controller implements ControllerInte
 			const result = await new CreateFeed({
 				dbFilePath: this.configCommon.sqlite.db.blog,
 				views: this.configCommon.views,
-				prettierConfig: this.configCommon.prettier.config,
 				root: this.configCommon.static.root,
 			}).execute();
 

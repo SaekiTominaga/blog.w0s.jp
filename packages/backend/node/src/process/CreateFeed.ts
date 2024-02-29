@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import ejs from 'ejs';
 import prettier from 'prettier';
 import xmlFormatter from 'xml-formatter';
-import PrettierUtil from '@blog.w0s.jp/util/dist/PrettierUtil.js';
 import BlogFeedDao from '../dao/BlogFeedDao.js';
 import Markdown from '../markdown/Markdown.js';
 import Compress from '../util/Compress.js';
@@ -12,7 +11,6 @@ import type { NoName as Configure } from '../../../configure/type/feed.js';
 interface ConfigCommon {
 	dbFilePath: string;
 	views: string;
-	prettierConfig: string;
 	root: string;
 }
 
@@ -28,7 +26,6 @@ export default class CreateFeed {
 	 * @param configCommon 共通設定ファイル
 	 * @param configCommon.dbFilePath DB ファイルパス
 	 * @param configCommon.views テンプレートディレクトリ
-	 * @param configCommon.prettierConfig Prettier 構成ファイルパス
 	 * @param configCommon.root ルートディレクトリ
 	 */
 	constructor(configCommon: ConfigCommon) {
@@ -61,14 +58,18 @@ export default class CreateFeed {
 			}),
 		);
 
-		const feedXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view_path}`, {
+		const feedUnformat = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view_path}`, {
 			updated_at: [...entriesView].at(0)?.updated_at,
 			entries: entriesView,
 		});
+		let feed = feedUnformat;
 
-		const prettierOptions = PrettierUtil.configOverrideAssign(await PrettierUtil.loadConfig(this.#configCommon.prettierConfig), '*.html');
+		const prettierOptions = await prettier.resolveConfig('test.html', { editorconfig: true });
+		if (prettierOptions !== null) {
+			feed = await prettier.format(feedUnformat, prettierOptions);
+		}
 
-		const feedXmlFormatted = xmlFormatter(await prettier.format(feedXml, prettierOptions), {
+		const feedXmlFormatted = xmlFormatter(feed, {
 			/* https://github.com/chrisbottin/xml-formatter#options */
 			indentation: '\t',
 			collapseContent: true,

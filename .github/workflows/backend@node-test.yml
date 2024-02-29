@@ -23,5 +23,4 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm run build -w '@blog.w0s.jp/util'
-      - run: npm run test -w '@blog.w0s.jp/backend'
+      - run: npm test -w '@blog.w0s.jp/backend'

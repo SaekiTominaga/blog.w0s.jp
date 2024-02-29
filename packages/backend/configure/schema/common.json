@@ -16,7 +16,6 @@
 		"logger",
 		"mail",
 		"sqlite",
-		"prettier",
 		"markuplint",
 		"sidebar"
 	],
@@ -388,18 +387,6 @@
 						}
 					},
 					"additionalProperties": false
-				}
-			},
-			"additionalProperties": false
-		},
-		"prettier": {
-			"type": "object",
-			"title": "Prettier",
-			"required": ["config"],
-			"properties": {
-				"config": {
-					"type": "string",
-					"title": "構成ファイルパス"
 				}
 			},
 			"additionalProperties": false
