@@ -1,1 +1,4 @@
-views/social/*.ejs
+/.github/ISSUE_TEMPLATE/*.md
+/views/social/*.ejs
+
+package-lock.json
