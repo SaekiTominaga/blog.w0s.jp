@@ -5,6 +5,7 @@
 		"packages/*"
 	],
 	"scripts": {
+		"format": "prettier -w 'packages/**/*.{html,css,js,ts,json}' views/*.ejs 'views/{_include,feed,xml}/*.ejs'",
 		"html-lint": "markuplint packages/backend/.html/**/*.html",
 		"html-lint-ejs": "markuplint views/**/*.ejs",
 		"github-actions-lint": "yamllint .github/workflows/*.yml"
