@@ -9,6 +9,7 @@
 		"request",
 		"response",
 		"static",
+		"html",
 		"views",
 		"temp",
 		"cache_control",
@@ -295,6 +296,26 @@
 					}
 				}
 			}
+		},
+		"html": {
+			"type": "object",
+			"title": "HTML ファイル生成",
+			"required": ["directory_base", "extension", "extension_brotli"],
+			"properties": {
+				"directory_base": {
+					"type": "string",
+					"title": "格納ディレクトリ"
+				},
+				"extension": {
+					"type": "string",
+					"title": "拡張子（ドットなし）"
+				},
+				"extension_brotli": {
+					"type": "string",
+					"title": "Brotli 圧縮ファイルの拡張子（ドットなし）"
+				}
+			},
+			"additionalProperties": false
 		},
 		"views": {
 			"type": "string",

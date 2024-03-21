@@ -50,19 +50,11 @@
 		"html": {
 			"type": "object",
 			"title": "HTML ファイル生成",
-			"required": ["directory", "extension", "brotli_extension"],
+			"required": ["directory"],
 			"properties": {
 				"directory": {
 					"type": "string",
-					"title": "格納ディレクトリ"
-				},
-				"extension": {
-					"type": "string",
-					"title": "拡張子"
-				},
-				"brotli_extension": {
-					"type": "string",
-					"title": "Brotli 拡張子"
+					"title": "格納ディレクトリ（`common.json` の `html/directory_base` 基準）"
 				}
 			},
 			"additionalProperties": false
