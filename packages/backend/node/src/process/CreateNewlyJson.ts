@@ -7,6 +7,10 @@ import type { JSON as Configure } from '../../../configure/type/newly-json.js';
 interface ConfigCommon {
 	dbFilePath: string;
 	root: string;
+	extentions: {
+		json: string | undefined;
+		brotli: string | undefined;
+	};
 }
 
 /**
@@ -21,6 +25,7 @@ export default class CreateNewlyJson {
 	 * @param configCommon 共通設定ファイル
 	 * @param configCommon.dbFilePath DB ファイルパス
 	 * @param configCommon.root ルートディレクトリ
+	 * @param configCommon.extentions ファイル拡張子
 	 *
 	 * @returns ファイル生成情報
 	 */
@@ -64,8 +69,8 @@ export default class CreateNewlyJson {
 				/* ファイル出力 */
 				const fileName =
 					fileNameType === '' ? this.#config.filename_prefix : `${this.#config.filename_prefix}${this.#config.filename_separator}${fileNameType}`;
-				const filePath = `${this.#configCommon.root}/${this.#config.directory}/${fileName}.${this.#config.extension}`;
-				const brotliFilePath = `${filePath}.br`;
+				const filePath = `${this.#configCommon.root}/${this.#config.directory}/${fileName}${this.#configCommon.extentions.json}`;
+				const brotliFilePath = `${filePath}${this.#configCommon.extentions.brotli}`;
 
 				await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
 				createdFilesPath.push(filePath);
