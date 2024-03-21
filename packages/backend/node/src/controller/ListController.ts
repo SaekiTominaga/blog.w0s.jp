@@ -48,8 +48,8 @@ export default class ListController extends Controller implements ControllerInte
 			return;
 		}
 
-		const htmlFilePath = `${this.configCommon.html.directory_base}/${this.#config.html.directory}/${requestQuery.page}.${this.configCommon.html.extension}`;
-		const htmlBrotliFilePath = `${htmlFilePath}.${this.configCommon.html.extension_brotli}`;
+		const htmlFilePath = `${this.configCommon.html}/${this.#config.html.directory}/${requestQuery.page}.${this.configCommon.extension['html']}`;
+		const htmlBrotliFilePath = `${htmlFilePath}.${this.configCommon.extension['brotli']}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 			/* 生成された HTML をロードする */

@@ -6,6 +6,7 @@
 	"required": [
 		"port",
 		"origin",
+		"extension",
 		"request",
 		"response",
 		"static",
@@ -30,6 +31,14 @@
 		"origin": {
 			"type": "string",
 			"title": "オリジン"
+		},
+		"extension": {
+			"type": "object",
+			"title": "ファイル拡張子",
+			"additionalProperties": {
+				"type": "string",
+				"title": "拡張子（ドットなし）"
+			}
 		},
 		"request": {
 			"type": "object",
@@ -298,28 +307,12 @@
 			}
 		},
 		"html": {
-			"type": "object",
-			"title": "HTML ファイル生成",
-			"required": ["directory_base", "extension", "extension_brotli"],
-			"properties": {
-				"directory_base": {
-					"type": "string",
-					"title": "格納ディレクトリ"
-				},
-				"extension": {
-					"type": "string",
-					"title": "拡張子（ドットなし）"
-				},
-				"extension_brotli": {
-					"type": "string",
-					"title": "Brotli 圧縮ファイルの拡張子（ドットなし）"
-				}
-			},
-			"additionalProperties": false
+			"type": "string",
+			"title": "HTML ファイル生成の基準ディレクトリ"
 		},
 		"views": {
 			"type": "string",
-			"title": "テンプレートディレクトリ"
+			"title": "テンプレートファイルの基準ディレクトリ"
 		},
 		"temp": {
 			"type": "string",
