@@ -37,7 +37,7 @@
 			"title": "ファイル拡張子",
 			"additionalProperties": {
 				"type": "string",
-				"title": "拡張子（ドットなし）"
+				"title": "拡張子"
 			}
 		},
 		"request": {
