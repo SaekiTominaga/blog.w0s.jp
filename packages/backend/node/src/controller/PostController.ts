@@ -348,6 +348,10 @@ export default class PostController extends Controller implements ControllerInte
 			const result = await new CreateNewlyJson({
 				dbFilePath: this.configCommon.sqlite.db.blog,
 				root: this.configCommon.static.root,
+				extentions: {
+					json: this.configCommon.extension['json'],
+					brotli: this.configCommon.extension['brotli'],
+				},
 			}).execute();
 
 			result.createdFilesPath.forEach((filePath): void => {

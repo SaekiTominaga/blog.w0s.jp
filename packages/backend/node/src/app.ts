@@ -28,11 +28,6 @@ app.set('views', config.views);
 app.set('view engine', 'ejs');
 app.set('x-powered-by', false);
 
-const EXTENTIONS = {
-	brotli: '.br',
-	map: '.map',
-}; // 静的ファイル拡張子の定義
-
 app.use(
 	(_req, res, next) => {
 		/* HSTS */
@@ -89,7 +84,7 @@ app.use(
 
 		/* Brotli */
 		if (requestFilePath !== undefined && req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
-			const brotliFilePath = `${requestFilePath}${EXTENTIONS.brotli}`;
+			const brotliFilePath = `${requestFilePath}${config.extension['brotli']}`;
 			if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
 				req.url = brotliFilePath;
 				res.setHeader('Content-Encoding', 'br');
@@ -103,8 +98,14 @@ app.use(
 		index: config.static.indexes,
 		setHeaders: (res, localPath) => {
 			const requestUrl = res.req.url; // リクエストパス e.g. ('/foo.html.br')
-			const requestUrlOrigin = requestUrl.endsWith(EXTENTIONS.brotli) ? requestUrl.substring(0, requestUrl.length - EXTENTIONS.brotli.length) : requestUrl; // 元ファイル（圧縮ファイルではない）のリクエストパス (e.g. '/foo.html')
-			const localPathOrigin = localPath.endsWith(EXTENTIONS.brotli) ? localPath.substring(0, localPath.length - EXTENTIONS.brotli.length) : localPath; // 元ファイルの絶対パス (e.g. '/var/www/public/foo.html')
+			const requestUrlOrigin =
+				config.extension['brotli'] !== undefined && requestUrl.endsWith(config.extension['brotli'])
+					? requestUrl.substring(0, requestUrl.length - config.extension['brotli'].length)
+					: requestUrl; // 元ファイル（圧縮ファイルではない）のリクエストパス (e.g. '/foo.html')
+			const localPathOrigin =
+				config.extension['brotli'] !== undefined && localPath.endsWith(config.extension['brotli'])
+					? localPath.substring(0, localPath.length - config.extension['brotli'].length)
+					: localPath; // 元ファイルの絶対パス (e.g. '/var/www/public/foo.html')
 			const extensionOrigin = path.extname(localPathOrigin); // 元ファイルの拡張子 (e.g. '.html')
 
 			/* Content-Type */
@@ -139,7 +140,7 @@ app.use(
 
 			/* SourceMap */
 			if (config.static.headers.source_map?.extensions?.includes(extensionOrigin)) {
-				const mapFilePath = `${localPathOrigin}${EXTENTIONS.map}`;
+				const mapFilePath = `${localPathOrigin}${config.extension['map']}`;
 				if (fs.existsSync(mapFilePath)) {
 					res.setHeader('SourceMap', path.basename(mapFilePath));
 				}

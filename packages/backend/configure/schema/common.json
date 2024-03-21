@@ -6,9 +6,11 @@
 	"required": [
 		"port",
 		"origin",
+		"extension",
 		"request",
 		"response",
 		"static",
+		"html",
 		"views",
 		"temp",
 		"cache_control",
@@ -29,6 +31,14 @@
 		"origin": {
 			"type": "string",
 			"title": "オリジン"
+		},
+		"extension": {
+			"type": "object",
+			"title": "ファイル拡張子",
+			"additionalProperties": {
+				"type": "string",
+				"title": "拡張子"
+			}
 		},
 		"request": {
 			"type": "object",
@@ -296,9 +306,13 @@
 				}
 			}
 		},
+		"html": {
+			"type": "string",
+			"title": "HTML ファイル生成の基準ディレクトリ"
+		},
 		"views": {
 			"type": "string",
-			"title": "テンプレートディレクトリ"
+			"title": "テンプレートファイルの基準ディレクトリ"
 		},
 		"temp": {
 			"type": "string",

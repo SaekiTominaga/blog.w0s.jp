@@ -49,8 +49,8 @@ export default class CategoryController extends Controller implements Controller
 			return;
 		}
 
-		const htmlFilePath = `${this.#config.html.directory}/${filenamify(requestQuery.category_name)}.${this.#config.html.extension}`;
-		const htmlBrotliFilePath = `${htmlFilePath}.${this.#config.html.brotli_extension}`;
+		const htmlFilePath = `${this.configCommon.html}/${this.#config.html.directory}/${filenamify(requestQuery.category_name)}.${this.configCommon.extension['html']}`;
+		const htmlBrotliFilePath = `${htmlFilePath}.${this.configCommon.extension['brotli']}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 			/* 生成された HTML をロードする */
