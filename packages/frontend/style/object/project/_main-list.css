@@ -80,7 +80,6 @@
 
 		& > a {
 			margin-inline-start: calc(0px - var(--_icon-inline-size) - var(--_icon-gap));
-			font-size: calc(100% * var(--font-ratio-2));
 
 			&::before {
 				display: inline flow-root;
