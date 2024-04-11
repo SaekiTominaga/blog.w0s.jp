@@ -101,12 +101,6 @@
 			}
 		}
 	}
-
-	&.-index {
-		& a {
-			font-size: calc(100% * var(--font-ratio-2));
-		}
-	}
 }
 
 /* ===== 目次 ===== */
