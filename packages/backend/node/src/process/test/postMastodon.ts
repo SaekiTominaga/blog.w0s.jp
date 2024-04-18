@@ -6,8 +6,8 @@ const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'u
 
 const result = await new PostMastodon({ views: config.views }, 'development').execute({
 	url: 'http://exaple.com/entry/1',
-	title: 'タイトル',
-	description: '詳細',
-	tags: ['タグ1', 'タグ2'],
+	title: 'タイトル<>"\'',
+	description: '詳細<>"\'',
+	tags: ['タグ1', 'タグ2<>"\''],
 });
 console.debug(result);
