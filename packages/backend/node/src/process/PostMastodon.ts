@@ -36,7 +36,9 @@ export default class PostMastodon {
 	 * @returns ファイル生成情報
 	 */
 	async execute(entryData: BlogSocial.EntryData): Promise<{
+		createdAt: string;
 		url: string;
+		content: string;
 	}> {
 		const mastodon = mastodonRest({
 			url: this.#config.api.instance_origin,
@@ -50,7 +52,9 @@ export default class PostMastodon {
 		});
 
 		return {
+			createdAt: status.createdAt,
 			url: status.url ?? status.uri,
+			content: status.content,
 		};
 	}
 
