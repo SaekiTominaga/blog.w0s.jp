@@ -377,7 +377,7 @@ export default class PostController extends Controller implements ControllerInte
 		try {
 			const result = await new PostMastodon({ views: this.configCommon.views }, this.#env).execute(entryData);
 
-			this.logger.info('Mastodon was posted', result.url);
+			this.logger.info('Mastodon was posted', result.url, result.content);
 
 			return { success: true, message: `${this.#config.process_message.mastodon.success} ${result.url}` };
 		} catch (e) {
@@ -398,7 +398,7 @@ export default class PostController extends Controller implements ControllerInte
 		try {
 			const result = await new PostMisskey({ views: this.configCommon.views }, this.#env).execute(entryData);
 
-			this.logger.info('Misskey was posted', result.url);
+			this.logger.info('Misskey was posted', result.url, result.content);
 
 			return { success: true, message: `${this.#config.process_message.misskey.success} ${result.url}` };
 		} catch (e) {

@@ -35,7 +35,9 @@ export default class PostMisskey {
 	 * @returns ファイル生成情報
 	 */
 	async execute(entryData: BlogSocial.EntryData): Promise<{
+		createdAt: string;
 		url: string;
+		content: string;
 	}> {
 		const response = await fetch(`${this.#config.api.instance_origin}/api/notes/create`, {
 			method: 'POST',
@@ -53,8 +55,12 @@ export default class PostMisskey {
 			throw new Error(responseJson.error.message);
 		}
 
+		const { createdNote } = responseJson;
+
 		return {
-			url: `${this.#config.api.instance_origin}/notes/${responseJson.createdNote.id}`,
+			createdAt: createdNote.createdAt,
+			url: `${this.#config.api.instance_origin}/notes/${createdNote.id}`,
+			content: createdNote.text,
 		};
 	}
 
