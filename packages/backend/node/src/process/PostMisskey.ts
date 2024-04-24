@@ -59,7 +59,7 @@ export default class PostMisskey {
 
 		return {
 			createdAt: createdNote.createdAt,
-			url: `${this.#config.api.instance_origin}/notes/${createdNote.id}`,
+			url: `${this.#config.api.instance_origin}/notes/${String(createdNote.id)}`,
 			content: createdNote.text,
 		};
 	}

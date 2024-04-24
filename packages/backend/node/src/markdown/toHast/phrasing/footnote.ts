@@ -36,7 +36,7 @@ export const footnoteReferenceToHast = (state: H, node: FootnoteReference): Hast
 				tagName: 'a',
 				properties: {
 					href: `#${state.clobberPrefix}fn-${safeId}`,
-					id: `${state.clobberPrefix}fnref-${safeId}${reuseCounter > 1 ? `-${reuseCounter}` : ''}`,
+					id: `${state.clobberPrefix}fnref-${safeId}${reuseCounter > 1 ? `-${String(reuseCounter)}` : ''}`,
 					className: ['js-footnote-reference-popover'],
 					'data-popover-label': '脚注',
 					'data-popover-class': 'p-footnote-popover',
@@ -48,7 +48,7 @@ export const footnoteReferenceToHast = (state: H, node: FootnoteReference): Hast
 				children: [
 					{
 						type: 'text',
-						value: `[${counter}]`,
+						value: `[${String(counter)}]`,
 					},
 				],
 			},

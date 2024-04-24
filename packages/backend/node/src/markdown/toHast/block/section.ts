@@ -16,7 +16,7 @@ export const xSectionToHast = (state: H, node: XSection): HastElementContent | H
 		type: 'element',
 		tagName: 'section',
 		properties: {
-			className: ['p-entry-section', `-hdg${node.depth}`],
+			className: ['p-entry-section', `-hdg${String(node.depth)}`],
 			id: node.id,
 		},
 		children: state.all(node),

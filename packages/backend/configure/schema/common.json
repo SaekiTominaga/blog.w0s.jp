@@ -35,10 +35,26 @@
 		"extension": {
 			"type": "object",
 			"title": "ファイル拡張子",
-			"additionalProperties": {
-				"type": "string",
-				"title": "拡張子"
-			}
+			"required": ["html", "json", "brotli", "map"],
+			"properties": {
+				"html": {
+					"type": "string",
+					"title": "HTML"
+				},
+				"json": {
+					"type": "string",
+					"title": "JSON"
+				},
+				"brotli": {
+					"type": "string",
+					"title": "Brotli"
+				},
+				"map": {
+					"type": "string",
+					"title": "MAP"
+				}
+			},
+			"additionalProperties": false
 		},
 		"request": {
 			"type": "object",

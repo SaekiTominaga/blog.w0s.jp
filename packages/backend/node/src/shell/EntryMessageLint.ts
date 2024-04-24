@@ -40,7 +40,7 @@ for (const [id, message] of [...entryiesMessageDto]) {
 		vMessages.forEach((vMessage) => {
 			const { reason, line, column, ruleId } = vMessage;
 
-			console.warn(id, `${line}:${column} ${reason} <${ruleId}>`);
+			console.warn(id, `${String(line)}:${String(column)} ${reason} <${String(ruleId)}>`);
 		});
 	}
 }

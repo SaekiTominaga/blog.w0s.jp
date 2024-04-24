@@ -8,8 +8,8 @@ interface ConfigCommon {
 	dbFilePath: string;
 	root: string;
 	extentions: {
-		json: string | undefined;
-		brotli: string | undefined;
+		json: string;
+		brotli: string;
 	};
 }
 

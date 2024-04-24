@@ -21,7 +21,7 @@ export const xQuoteToHast = (state: H, node: XQuote): HastElementContent | HastE
 	}
 	if (meta.url !== undefined) {
 		attributes.cite = meta.url;
-	} else if (meta.isbn !== undefined && meta.isbn.valid) {
+	} else if (meta.isbn?.valid) {
 		attributes.cite = `urn:ISBN:${meta.isbn.value}`;
 	}
 

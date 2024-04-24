@@ -262,7 +262,7 @@ export default class PostController extends Controller implements ControllerInte
 	 * @returns 記事 URL
 	 */
 	#getEntryUrl(id: number) {
-		return `${this.configCommon.origin}/${id}`;
+		return `${this.configCommon.origin}/${String(id)}`;
 	}
 
 	/**
@@ -349,8 +349,8 @@ export default class PostController extends Controller implements ControllerInte
 				dbFilePath: this.configCommon.sqlite.db.blog,
 				root: this.configCommon.static.root,
 				extentions: {
-					json: this.configCommon.extension['json'],
-					brotli: this.configCommon.extension['brotli'],
+					json: this.configCommon.extension.json,
+					brotli: this.configCommon.extension.brotli,
 				},
 			}).execute();
 
@@ -417,7 +417,7 @@ export default class PostController extends Controller implements ControllerInte
 	 *
 	 * @returns 処理結果のメッセージ
 	 */
-	async #mediaUpload(req: Request, requestQuery: BlogRequest.Post, httpBasicCredentials: HttpBasicAuthCredentials | null): Promise<Set<MediaUploadResult>> {
+	async #mediaUpload(req: Request, requestQuery: BlogRequest.Post, httpBasicCredentials: HttpBasicAuthCredentials): Promise<Set<MediaUploadResult>> {
 		if (req.files === undefined) {
 			throw new Error('メディアアップロード時にファイルが指定されていない');
 		}
@@ -445,7 +445,7 @@ export default class PostController extends Controller implements ControllerInte
 						const response = await fetch(url, {
 							method: 'POST',
 							headers: {
-								Authorization: `Basic ${Buffer.from(`${httpBasicCredentials?.username}:${httpBasicCredentials?.password}`).toString('base64')}`,
+								Authorization: `Basic ${Buffer.from(`${httpBasicCredentials.username}:${httpBasicCredentials.password}`).toString('base64')}`,
 							},
 							body: urlSearchParams,
 						});

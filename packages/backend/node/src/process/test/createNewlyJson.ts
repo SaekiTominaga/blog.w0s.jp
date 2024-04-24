@@ -8,8 +8,8 @@ const result = await new CreateNewlyJson({
 	dbFilePath: config.sqlite.db.blog,
 	root: config.static.root,
 	extentions: {
-		json: config.extension['json'],
-		brotli: config.extension['brotli'],
+		json: config.extension.json,
+		brotli: config.extension.brotli,
 	},
 }).execute();
 console.debug(result);
