@@ -48,8 +48,8 @@ export default class ListController extends Controller implements ControllerInte
 			return;
 		}
 
-		const htmlFilePath = `${this.configCommon.html}/${this.#config.html.directory}/${requestQuery.page}${this.configCommon.extension['html']}`;
-		const htmlBrotliFilePath = `${htmlFilePath}${this.configCommon.extension['brotli']}`;
+		const htmlFilePath = `${this.configCommon.html}/${this.#config.html.directory}/${String(requestQuery.page)}${this.configCommon.extension.html}`;
+		const htmlBrotliFilePath = `${htmlFilePath}${this.configCommon.extension.brotli}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 			/* 生成された HTML をロードする */
@@ -60,7 +60,7 @@ export default class ListController extends Controller implements ControllerInte
 		/* DB からデータ取得 */
 		const entriesDto = await dao.getEntries(requestQuery.page, this.#config.maximum_number);
 		if (entriesDto.length === 0) {
-			this.logger.info(`無効なページが指定: ${requestQuery.page}`);
+			this.logger.info(`無効なページが指定: ${String(requestQuery.page)}`);
 			httpResponse.send404();
 			return;
 		}

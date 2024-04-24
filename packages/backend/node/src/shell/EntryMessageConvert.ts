@@ -36,8 +36,8 @@ const convert = (id: number, message: string): string => {
 		// @ts-expect-error: ts(6133)
 		const afterLine = lines.at(index + 1);
 		const convertedLine = line.replaceAll(/{{(.+?)}}/g, (_match, quote) => {
-			console.info(`${id}: ${quote}`);
-			return `{${quote}}`;
+			console.info(`${String(id)}: ${String(quote)}`);
+			return `{${String(quote)}}`;
 		}); // TODO: ここに変換処理を書く
 
 		if (index > 0) {
@@ -59,7 +59,7 @@ for (const [id, message] of [...entryiesMessageDto]) {
 	const messageConverted = convert(id, message);
 	if (dbUpdate !== undefined && dbUpdate) {
 		if (message !== messageConverted) {
-			console.info(`記事 ${id} を更新`);
+			console.info(`記事 ${String(id)} を更新`);
 			await dao.update(id, messageConverted);
 		}
 	}

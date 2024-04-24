@@ -60,11 +60,11 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 								tagName: 'source',
 								properties: {
 									type: 'image/avif',
-									srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${IMAGE_MAX_SIZE.width};h=${
-										IMAGE_MAX_SIZE.height
-									};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${IMAGE_MAX_SIZE.width * 2};h=${
-										IMAGE_MAX_SIZE.height * 2
-									};quality=30 2x`,
+									srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${String(IMAGE_MAX_SIZE.width)};h=${String(
+										IMAGE_MAX_SIZE.height,
+									)};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${String(IMAGE_MAX_SIZE.width * 2)};h=${String(
+										IMAGE_MAX_SIZE.height * 2,
+									)};quality=30 2x`,
 								},
 								children: [],
 							},
@@ -73,11 +73,11 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 								tagName: 'source',
 								properties: {
 									type: 'image/webp',
-									srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${IMAGE_MAX_SIZE.width};h=${
-										IMAGE_MAX_SIZE.height
-									};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${IMAGE_MAX_SIZE.width * 2};h=${
-										IMAGE_MAX_SIZE.height * 2
-									};quality=30 2x`,
+									srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${String(IMAGE_MAX_SIZE.width)};h=${String(
+										IMAGE_MAX_SIZE.height,
+									)};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${String(IMAGE_MAX_SIZE.width * 2)};h=${String(
+										IMAGE_MAX_SIZE.height * 2,
+									)};quality=30 2x`,
 								},
 								children: [],
 							},
@@ -85,7 +85,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 								type: 'element',
 								tagName: 'img',
 								properties: {
-									src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${IMAGE_MAX_SIZE.width};h=${IMAGE_MAX_SIZE.height};quality=60`,
+									src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${String(IMAGE_MAX_SIZE.width)};h=${String(IMAGE_MAX_SIZE.height)};quality=60`,
 									alt: 'オリジナル画像',
 									className: ['p-embed__image'],
 								},
@@ -169,7 +169,7 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 	const linkSearchParams = new URLSearchParams();
 	linkSearchParams.set('v', id);
 	if (start !== undefined && start > 1) {
-		linkSearchParams.set('t', `${start}s`);
+		linkSearchParams.set('t', `${String(start)}s`);
 	}
 
 	return {
@@ -193,7 +193,7 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 							width: String(width),
 							height: String(height),
 							className: ['p-embed__frame'],
-							style: `--aspect-ratio:${width}/${height}`,
+							style: `--aspect-ratio:${String(width)}/${String(height)}`,
 						},
 						children: [
 							{

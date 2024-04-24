@@ -38,7 +38,7 @@ export default class Preview {
 		});
 
 		if (!response.ok) {
-			this.#previewElement.textContent = `"${response.url}" is ${response.status} ${response.statusText}`;
+			this.#previewElement.textContent = `"${response.url}" is ${String(response.status)} ${response.statusText}`;
 		}
 
 		const responseJson: {

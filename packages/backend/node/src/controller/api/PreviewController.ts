@@ -18,7 +18,7 @@ export default class PreviewController extends Controller implements ControllerI
 		};
 
 		if (requestQuery.markdown === null) {
-			this.logger.error(`パラメーター message が未設定: ${req.get('User-Agent')}`);
+			this.logger.error('パラメーター message が未設定');
 			res.status(403).end();
 			return;
 		}

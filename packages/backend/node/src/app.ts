@@ -84,7 +84,7 @@ app.use(
 
 		/* Brotli */
 		if (requestFilePath !== undefined && req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
-			const brotliFilePath = `${requestFilePath}${config.extension['brotli']}`;
+			const brotliFilePath = `${requestFilePath}${config.extension.brotli}`;
 			if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
 				req.url = brotliFilePath;
 				res.setHeader('Content-Encoding', 'br');
@@ -98,14 +98,12 @@ app.use(
 		index: config.static.indexes,
 		setHeaders: (res, localPath) => {
 			const requestUrl = res.req.url; // リクエストパス e.g. ('/foo.html.br')
-			const requestUrlOrigin =
-				config.extension['brotli'] !== undefined && requestUrl.endsWith(config.extension['brotli'])
-					? requestUrl.substring(0, requestUrl.length - config.extension['brotli'].length)
-					: requestUrl; // 元ファイル（圧縮ファイルではない）のリクエストパス (e.g. '/foo.html')
-			const localPathOrigin =
-				config.extension['brotli'] !== undefined && localPath.endsWith(config.extension['brotli'])
-					? localPath.substring(0, localPath.length - config.extension['brotli'].length)
-					: localPath; // 元ファイルの絶対パス (e.g. '/var/www/public/foo.html')
+			const requestUrlOrigin = requestUrl.endsWith(config.extension.brotli)
+				? requestUrl.substring(0, requestUrl.length - config.extension.brotli.length)
+				: requestUrl; // 元ファイル（圧縮ファイルではない）のリクエストパス (e.g. '/foo.html')
+			const localPathOrigin = localPath.endsWith(config.extension.brotli)
+				? localPath.substring(0, localPath.length - config.extension.brotli.length)
+				: localPath; // 元ファイルの絶対パス (e.g. '/var/www/public/foo.html')
 			const extensionOrigin = path.extname(localPathOrigin); // 元ファイルの拡張子 (e.g. '.html')
 
 			/* Content-Type */
@@ -140,7 +138,7 @@ app.use(
 
 			/* SourceMap */
 			if (config.static.headers.source_map?.extensions?.includes(extensionOrigin)) {
-				const mapFilePath = `${localPathOrigin}${config.extension['map']}`;
+				const mapFilePath = `${localPathOrigin}${config.extension.map}`;
 				if (fs.existsSync(mapFilePath)) {
 					res.setHeader('SourceMap', path.basename(mapFilePath));
 				}
@@ -241,5 +239,5 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction /* eslint-
  * HTTP サーバー起動
  */
 app.listen(config.port, () => {
-	logger.info(`Example app listening at http://localhost:${config.port}`);
+	logger.info(`Example app listening at http://localhost:${String(config.port)}`);
 });

@@ -12,7 +12,7 @@ const headingDepthLimit = lintRule('remark-lint:heading-depth-limit', (tree: Par
 		}
 
 		if (node.depth > option) {
-			file.message(`Heading depth must be \`${option}\` or lower`, node);
+			file.message(`Heading depth must be \`${String(option)}\` or lower`, node);
 		}
 
 		return CONTINUE;

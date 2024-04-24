@@ -52,7 +52,7 @@ const hast = (): Plugin => {
 				children: [
 					{
 						type: 'text',
-						value: `${index + 1}.`,
+						value: `${String(index + 1)}.`,
 					},
 				],
 			});

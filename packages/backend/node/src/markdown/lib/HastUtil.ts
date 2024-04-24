@@ -17,7 +17,7 @@ export default class MdastUtil {
 
 		const heading: HastElementContent = {
 			type: 'element',
-			tagName: `h${level}`,
+			tagName: `h${String(level)}`,
 			children: children,
 		};
 		if (level > 6) {

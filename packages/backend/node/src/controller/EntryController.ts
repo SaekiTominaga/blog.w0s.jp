@@ -48,8 +48,8 @@ export default class EntryController extends Controller implements ControllerInt
 			return;
 		}
 
-		const htmlFilePath = `${this.configCommon.html}/${this.#config.html.directory}/${requestQuery.entry_id}${this.configCommon.extension['html']}`;
-		const htmlBrotliFilePath = `${htmlFilePath}${this.configCommon.extension['brotli']}`;
+		const htmlFilePath = `${this.configCommon.html}/${this.#config.html.directory}/${String(requestQuery.entry_id)}${this.configCommon.extension.html}`;
+		const htmlBrotliFilePath = `${htmlFilePath}${this.configCommon.extension.brotli}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 			/* 生成された HTML をロードする */

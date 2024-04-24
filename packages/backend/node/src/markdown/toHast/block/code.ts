@@ -16,7 +16,7 @@ export const codeToHast = (_state: H, node: Code): HastElementContent | HastElem
 	if (position !== undefined) {
 		const { start, end } = position;
 
-		positionString = `${start.line}${start.column}${start.offset}${end.line}${end.column}${end.offset}`;
+		positionString = `${String(start.line)}${String(start.column)}${String(start.offset)}${String(end.line)}${String(end.column)}${String(end.offset)}`;
 	}
 
 	const id = `code-${md5(`${positionString}${value}`)}`; // コード ID（記事内でのユニークさを保つためにコード文字列と位置情報を組み合わせた文字列を元にする）
