@@ -22,7 +22,7 @@
 
 	outline: none;
 
-	&::part(popover) {
+	&::part(content) {
 		outline-offset: -1px;
 		border: 1px solid var(--_border-color);
 		border-radius: var(--border-radius-normal);
@@ -54,8 +54,8 @@
 		--_background-color: transparent;
 
 		position: absolute;
-		inset-block-start: 0;
-		inset-inline-end: 0;
+		inset-block-start: 1px;
+		inset-inline-end: 1px;
 		outline-offset: -1px;
 		border: 1px solid var(--_border-color);
 		border-radius: var(--border-radius-normal);
