@@ -87,6 +87,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 								properties: {
 									src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${String(IMAGE_MAX_SIZE.width)};h=${String(IMAGE_MAX_SIZE.height)};quality=60`,
 									alt: 'オリジナル画像',
+									crossorigin: '',
 									className: ['p-embed__image'],
 								},
 								children: [],

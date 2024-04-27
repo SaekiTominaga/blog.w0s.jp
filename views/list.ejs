@@ -53,7 +53,7 @@
 										<picture>
 											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=360;h=240;quality=30 2x" />
 											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=360;h=240;quality=30 2x" />
-											<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" class="c-entry-link__image" />
+											<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
 										</picture>
 										<%_ } else if (entry.image_external !== null) { _%>
 										<img src="<%= entry.image_external %>" alt="" class="c-entry-link__image" />
