@@ -1,22 +1,30 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://blog.w0s.jp/misskey.json",
+	"$id": "https://blog.w0s.jp/bluesky.json",
 	"type": "object",
-	"title": "Misskey",
-	"required": ["api", "view_path", "visibility"],
+	"title": "Bluesky",
+	"required": ["api", "view_path"],
 	"properties": {
 		"api": {
 			"type": "object",
 			"title": "API 情報",
-			"required": ["instance_origin", "access_token"],
+			"required": ["instance_origin", "id", "password", "handle"],
 			"properties": {
 				"instance_origin": {
 					"type": "string",
 					"title": "インスタンスのオリジン"
 				},
-				"access_token": {
+				"id": {
 					"type": "string",
-					"title": "アクセストークン"
+					"title": "ユーザー ID"
+				},
+				"password": {
+					"type": "string",
+					"title": "パスワード"
+				},
+				"handle": {
+					"type": "string",
+					"title": "ハンドル"
 				}
 			},
 			"additionalProperties": false
@@ -24,12 +32,6 @@
 		"view_path": {
 			"type": "string",
 			"title": "View ファイルのパス（テンプレートディレクトリ基準）"
-		},
-		"visibility": {
-			"type": "string",
-			"title": "投稿の可視性",
-			"enum": ["public", "home", "followers", "specified"],
-			"description": "https://misskey.io/api-doc#tag/notes/operation/notes___create"
 		}
 	},
 	"additionalProperties": false

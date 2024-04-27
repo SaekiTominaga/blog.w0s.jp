@@ -27,7 +27,7 @@
 		},
 		"visibility": {
 			"type": "string",
-			"title": "トゥートの可視性",
+			"title": "投稿の可視性",
 			"enum": ["public", "unlisted", "private", "direct"],
 			"description": "https://docs.joinmastodon.org/entities/Status/#visibility"
 		}
