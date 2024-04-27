@@ -8,14 +8,15 @@ import BlogPostDao from '../dao/BlogPostDao.js';
 import CreateFeed from '../process/CreateFeed.js';
 import CreateNewlyJson from '../process/CreateNewlyJson.js';
 import CreateSitemap from '../process/CreateSitemap.js';
+import PostBluesky from '../process/PostBluesky.js';
 import PostMastodon from '../process/PostMastodon.js';
+import PostMisskey from '../process/PostMisskey.js';
 import HttpBasicAuth, { type Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import PostValidator from '../validator/PostValidator.js';
 import type { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import type { NoName as Configure } from '../../../configure/type/post.js';
-import PostMisskey from '../process/PostMisskey.js';
 
 interface PostResult {
 	success: boolean;
@@ -138,8 +139,9 @@ export default class PostController extends Controller implements ControllerInte
 						tags: requestQuery.social_tag?.split(',') ?? null,
 					};
 
-					const [postMastodonResult, postMisskeyResult] = await Promise.all([this.#postMastodon(entryData), this.#postMisskey(entryData)]);
+					const [postMastodonResult, postBlueskyResult, postMisskeyResult] = await Promise.all([this.#postMastodon(entryData), this.#postBluesky(entryData), this.#postMisskey(entryData)]);
 					topicPostResults.add(postMastodonResult);
+					topicPostResults.add(postBlueskyResult);
 					topicPostResults.add(postMisskeyResult);
 				}
 			}
@@ -384,6 +386,27 @@ export default class PostController extends Controller implements ControllerInte
 			this.logger.error(e);
 
 			return { success: false, message: this.#config.process_message.mastodon.failure };
+		}
+	}
+
+	/**
+	 * Bluesky 投稿
+	 *
+	 * @param entryData - 記事データ
+	 *
+	 * @returns 処理結果のメッセージ
+	 */
+	async #postBluesky(entryData: BlogSocial.EntryData): Promise<PostResult> {
+		try {
+			const result = await new PostBluesky({ views: this.configCommon.views }).execute(entryData);
+
+			this.logger.info('Bluesky was posted');
+
+			return { success: true, message: `${this.#config.process_message.bluesky.success} ${result.profile_url}` };
+		} catch (e) {
+			this.logger.error(e);
+
+			return { success: false, message: this.#config.process_message.bluesky.failure };
 		}
 	}
 

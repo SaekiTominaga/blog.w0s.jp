@@ -3,6 +3,9 @@
 	"include": ["@types/*.d.ts", "src/**/*.ts"],
 	"compilerOptions": {
 		/* Emit */
-		"outDir": "dist"
+		"outDir": "dist",
+
+		/* Completeness */
+		"skipLibCheck": true
 	}
 }

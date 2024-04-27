@@ -1,0 +1,38 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://blog.w0s.jp/bluesky.json",
+	"type": "object",
+	"title": "Bluesky",
+	"required": ["api", "view_path"],
+	"properties": {
+		"api": {
+			"type": "object",
+			"title": "API 情報",
+			"required": ["instance_origin", "id", "password", "handle"],
+			"properties": {
+				"instance_origin": {
+					"type": "string",
+					"title": "インスタンスのオリジン"
+				},
+				"id": {
+					"type": "string",
+					"title": "ユーザー ID"
+				},
+				"password": {
+					"type": "string",
+					"title": "パスワード"
+				},
+				"handle": {
+					"type": "string",
+					"title": "ハンドル"
+				}
+			},
+			"additionalProperties": false
+		},
+		"view_path": {
+			"type": "string",
+			"title": "View ファイルのパス（テンプレートディレクトリ基準）"
+		}
+	},
+	"additionalProperties": false
+}
