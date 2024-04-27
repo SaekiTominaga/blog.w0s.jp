@@ -104,7 +104,7 @@
 													<picture>
 														<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=360;h=240;quality=30 2x" />
 														<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=360;h=240;quality=30 2x" />
-														<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" class="c-entry-link__image" />
+														<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
 													</picture>
 													<%_ } else if (relation.image_external !== null) { _%>
 													<img src="<%= relation.image_external %>" alt="" class="c-entry-link__image" />
@@ -138,7 +138,7 @@
 									<picture>
 										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
 										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
-										<img src="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" loading="lazy" class="p-item__image" />
+										<img src="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" crossorigin="" loading="lazy" class="p-item__image" />
 									</picture>
 									<span class="p-item__title">東急7700系形態分類</span>
 								</a>
