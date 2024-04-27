@@ -925,7 +925,7 @@ describe('Image', () => {
 			><picture
 				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
 				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
+				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" crossorigin="" class="p-embed__image" /></picture
 		></a>
 	</div>
 	<figcaption class="c-caption">title&lt;title> title</figcaption>
@@ -1012,7 +1012,7 @@ describe('Image', () => {
 			><picture
 				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
 				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
+				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" crossorigin="" class="p-embed__image" /></picture
 		></a>
 	</div>
 	<figcaption class="c-caption">title&lt;title> <code>code</code></figcaption>
@@ -1039,7 +1039,7 @@ describe('Image', () => {
 			><picture
 				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
 				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
+				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" crossorigin="" class="p-embed__image" /></picture
 		></a>
 	</div>
 	<figcaption class="c-caption">title&lt;title> title</figcaption>
@@ -1066,7 +1066,7 @@ describe('Image', () => {
 			><picture
 				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
 				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" class="p-embed__image" /></picture
+				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" crossorigin="" class="p-embed__image" /></picture
 		></a>
 	</div>
 	<figcaption class="c-caption">title&lt;title> title</figcaption>
