@@ -27,9 +27,9 @@
 		},
 		"visibility": {
 			"type": "string",
-			"title": "トゥートの可視性",
-			"enum": ["public", "unlisted", "private", "direct"],
-			"description": "https://docs.joinmastodon.org/entities/Status/#visibility"
+			"title": "投稿の可視性",
+			"enum": ["public", "home", "followers", "specified"],
+			"description": "https://misskey.io/api-doc#tag/notes/operation/notes___create"
 		}
 	},
 	"additionalProperties": false
