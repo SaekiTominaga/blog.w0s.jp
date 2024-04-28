@@ -4,18 +4,18 @@ on:
     branches:
       - main
     paths:
-      - 'packages/backend/node/__tests__/**/*.test.js'
-      - 'packages/backend/node/@types/*.d.ts'
-      - 'packages/backend/node/src/**/*.ts'
-      - 'packages/backend/.eslintrc.json'
+      - 'backend/node/__tests__/**/*.test.js'
+      - 'backend/node/@types/*.d.ts'
+      - 'backend/node/src/**/*.ts'
+      - 'backend/.eslintrc.json'
   push:
     branches:
       - main
     paths:
-      - 'packages/backend/node/__tests__/**/*.test.js'
-      - 'packages/backend/node/@types/*.d.ts'
-      - 'packages/backend/node/src/**/*.ts'
-      - 'packages/backend/.eslintrc.json'
+      - 'backend/node/__tests__/**/*.test.js'
+      - 'backend/node/@types/*.d.ts'
+      - 'backend/node/src/**/*.ts'
+      - 'backend/.eslintrc.json'
   workflow_dispatch:
 
 jobs:

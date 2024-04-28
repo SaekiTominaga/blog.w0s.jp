@@ -4,14 +4,14 @@ on:
     branches:
       - main
     paths:
-      - 'packages/frontend/node/src/**/*.ts'
-      - 'packages/frontend/.eslintrc.json'
+      - 'frontend/node/src/**/*.ts'
+      - 'frontend/.eslintrc.json'
   push:
     branches:
       - main
     paths:
-      - 'packages/frontend/node/src/**/*.ts'
-      - 'packages/frontend/.eslintrc.json'
+      - 'frontend/node/src/**/*.ts'
+      - 'frontend/.eslintrc.json'
   workflow_dispatch:
 
 jobs:
