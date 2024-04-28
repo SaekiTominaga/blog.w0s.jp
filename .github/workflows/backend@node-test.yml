@@ -4,14 +4,14 @@ on:
     branches:
       - main
     paths:
-      - 'packages/backend/node/__tests__/*.test.js'
-      - 'packages/backend/node/src/**/*.ts'
+      - 'backend/node/__tests__/*.test.js'
+      - 'backend/node/src/**/*.ts'
   push:
     branches:
       - main
     paths:
-      - 'packages/backend/node/__tests__/*.test.js'
-      - 'packages/backend/node/src/**/*.ts'
+      - 'backend/node/__tests__/*.test.js'
+      - 'backend/node/src/**/*.ts'
   workflow_dispatch:
 
 jobs:

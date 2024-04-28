@@ -4,13 +4,13 @@ on:
     branches:
       - main
     paths:
-      - 'packages/backend/errorpage/*.html'
+      - 'backend/errorpage/*.html'
       - '.markuplintrc'
   push:
     branches:
       - main
     paths:
-      - 'packages/backend/errorpage/*.html'
+      - 'backend/errorpage/*.html'
       - '.markuplintrc'
   workflow_dispatch:
 
