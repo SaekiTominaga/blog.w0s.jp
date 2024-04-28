@@ -1,10 +1,10 @@
+/.coverage/
 /log/
 /node_modules/
 
 /backend/.html/
 /backend/configure/type/
 /backend/configure/*.json
-/backend/coverage/
 /backend/node/dist/
 /backend/node/log4js*.json
 /backend/node_modules/
