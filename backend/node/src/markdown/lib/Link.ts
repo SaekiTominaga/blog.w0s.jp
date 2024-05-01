@@ -52,7 +52,7 @@ export default class Link {
 		}
 
 		/* 別記事へのリンク */
-		const entryMatchGroups = mdUrl.match(new RegExp(`^(?<id>${regexp.entryId})$`))?.groups;
+		const entryMatchGroups = mdUrl.match(new RegExp(`^(?<id>${regexp.entryId}(#.+)?)$`))?.groups;
 		if (entryMatchGroups !== undefined) {
 			const { id } = entryMatchGroups;
 
