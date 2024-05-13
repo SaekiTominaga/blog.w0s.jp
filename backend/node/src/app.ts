@@ -128,7 +128,7 @@ app.use(
 			}
 
 			/* CORS */
-			if (config.static.headers.cors?.directory.find((urlPath) => requestUrl.startsWith(urlPath))) {
+			if (config.static.headers.cors?.directory.find((urlPath) => requestUrl.startsWith(urlPath)) !== undefined) {
 				const origin = res.req.get('Origin');
 				if (origin !== undefined && config.static.headers.cors.origin.includes(origin)) {
 					res.setHeader('Access-Control-Allow-Origin', origin);

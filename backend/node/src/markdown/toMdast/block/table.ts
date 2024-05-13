@@ -27,7 +27,7 @@ export default function toMdast(): Plugin {
 	const data = this.data();
 
 	const add = (field: string, value: Extension | FromMarkdownExtension): void => {
-		const list = data[field] ? data[field] : (data[field] = []);
+		const list: unknown[] = data[field] !== undefined ? data[field] : (data[field] = []);
 
 		list.push(value);
 	};

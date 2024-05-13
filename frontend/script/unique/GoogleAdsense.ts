@@ -42,7 +42,7 @@ export default class GoogleAdsense {
 						scriptElement.id = this.#SCRIPT_ID;
 						document.head.append(scriptElement);
 					}
-					(window.adsbygoogle = window.adsbygoogle || []).push({});
+					(window.adsbygoogle = window.adsbygoogle ?? []).push({});
 				}
 			},
 			{
