@@ -3,6 +3,9 @@
 	"include": ["src/**/*.ts"],
 	"compilerOptions": {
 		/* Emit */
-		"outDir": "dist"
+		"outDir": "dist",
+
+		/* Completeness */
+		"skipLibCheck": true // `../node_modules/@types/glob/index.d.ts:29:42 - error TS2694` 対策
 	}
 }
