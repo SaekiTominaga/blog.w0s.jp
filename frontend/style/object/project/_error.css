@@ -13,7 +13,7 @@
 	font-weight: var(--font-weight-bold);
 
 	/* エラーメッセージ */
-	> h1 {
+	& > h1 {
 		font-size: calc(100% * var(--font-ratio-5));
 	}
 }
