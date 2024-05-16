@@ -36,7 +36,7 @@
 	border-radius: var(--border-radius-large);
 	border-color: var(--color-green);
 	background: var(--color-white);
-	padding: 1em min(1vw, 1em);
+	padding: 1em min(1vi, 1em);
 }
 
 .p-quote__omit {

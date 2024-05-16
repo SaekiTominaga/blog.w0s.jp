@@ -113,7 +113,7 @@
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal);
 	background: var(--color-bg-superlight);
-	padding: 1.25em min(1.25vw, 1.25em);
+	padding: 1.25em min(1.25vi, 1.25em);
 	line-height: var(--line-height-narrow);
 
 	.p-entry & {
