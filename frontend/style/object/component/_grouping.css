@@ -39,7 +39,7 @@
 	--_image-aspect-ratio: 1.5;
 	--_image-inline-size: 180px;
 	--_image-min-inline-size-px: 120px;
-	--_image-min-inline-size-vw: 30vw;
+	--_image-min-inline-size-vw: 30vi;
 
 	display: block flex;
 	float: var(--_float);
