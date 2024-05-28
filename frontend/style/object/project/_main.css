@@ -240,7 +240,7 @@
 	border: 1px solid var(--color-border-light);
 	background: var(--color-white);
 	padding: 1em;
-	overflow-inline: auto;
+	overflow-x: auto;
 	line-height: var(--line-height-narrow);
 	color: var(--color-black);
 
