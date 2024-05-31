@@ -15,6 +15,11 @@ export const config = {
 			fileName: 'youtube.svg',
 		},
 		{
+			host: 'www.nicovideo.jp',
+			alt: 'ニコニコ動画',
+			fileName: 'nicovideo.png',
+		},
+		{
 			host: 'www.amazon.co.jp',
 			alt: 'Amazon',
 			fileName: 'amazon.png',
