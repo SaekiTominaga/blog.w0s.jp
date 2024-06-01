@@ -12,13 +12,13 @@
 
 /* サイト名 */
 .p-header-site__name {
+	text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
 	color: #f00;
 	font: 700 2rem / var(--line-height-narrow) var(--font-mincho);
 	font-feature-settings: "palt";
 
-	& a {
+	& :any-link {
 		--_padding: 0.05em;
-		--_text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
 
 		display: inline flow-root;
 		margin: calc(0px - var(--_padding));
@@ -26,15 +26,11 @@
 		outline-width: var(--outline-width-bold);
 		border-radius: var(--border-radius-small); /* outline を柔らかくする */
 		padding: var(--_padding);
-		text-shadow: var(--_text-shadow);
+		text-decoration: none;
+		color: inherit;
 
-		&:any-link {
-			text-decoration: none;
-			color: inherit;
-
-			&:hover {
-				--_text-shadow: 0 0 1em var(--color-border-dark);
-			}
+		&:hover {
+			text-shadow: 0 0 1em var(--color-border-dark);
 		}
 	}
 }
