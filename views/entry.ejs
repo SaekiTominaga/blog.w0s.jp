@@ -99,6 +99,7 @@
 									<li class="c-grid__item">
 										<div class="c-entry-link">
 											<a href="<%= relation.id %>">
+												<span class="c-entry-link__title"><%- relation.title %></span>
 												<span class="c-entry-link__thumb">
 													<%_ if (relation.image_internal !== null) { _%>
 													<picture>
@@ -112,7 +113,6 @@
 													<img src="/image/noimage.svg" alt="" width="180" height="120" class="c-entry-link__image" />
 													<%_ } _%>
 												</span>
-												<span class="c-entry-link__title"><%- relation.title %></span>
 											</a>
 											<div class="c-entry-link__date">
 												<time datetime="<%= relation.created.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= relation.created.format('YYYY年M月D日') %></time>
