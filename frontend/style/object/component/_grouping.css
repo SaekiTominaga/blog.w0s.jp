@@ -10,9 +10,17 @@
 	--_bullet-block-size: 0.75em;
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
+	--_image-border-width: 1px;
+	/* stylelint-disable-next-line plugin/use-logical-units */
+	--_image-width: min(180px, 30vw);
+	--_image-height: 120px;
+	--_padding-inline-start: calc(var(--_image-width) + var(--_image-border-width) * 2 + var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
+	--_padding-inline-end: 0;
 
-	display: block flow-root; /* for Safari */
 	contain: layout;
+	padding-inline: var(--_padding-inline-start) var(--_padding-inline-end);
+	/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+	min-height: calc(var(--_image-height) + var(--_image-border-width) * 2);
 	line-height: var(--line-height-narrow);
 	font-size: calc(100% * var(--_title-font-expand-ratio));
 
@@ -27,60 +35,6 @@
 
 	& > :any-link {
 		outline: none;
-	}
-}
-
-.c-entry-link__thumb {
-	--_float: inline-start;
-	--_margin-block-end: 0px;
-	--_margin-inline-start: 0px;
-	--_margin-inline-end: calc(var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
-	--_image-border-width: 1px;
-	--_image-aspect-ratio: 1.5;
-	--_image-inline-size: 180px;
-	--_image-min-inline-size-px: 120px;
-	--_image-min-inline-size-vw: 30vi;
-
-	display: block flex;
-	float: var(--_float);
-	justify-content: center;
-	margin-block-end: var(--_margin-block-end);
-	margin-inline: var(--_margin-inline-start) var(--_margin-inline-end);
-	block-size: calc(var(--_image-inline-size) / var(--_image-aspect-ratio) + var(--_image-border-width) * 2);
-	inline-size: calc(var(--_image-inline-size) + var(--_image-border-width) * 2);
-	pointer-events: none;
-}
-
-@container (inline-size <= 40em) {
-	.c-entry-link {
-		margin-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
-	}
-
-	.c-entry-link__thumb {
-		--_float: inline-end;
-		--_margin-block-end: clamp(0px, var(--_image-min-inline-size-px) - var(--_image-min-inline-size-vw), var(--_gap));
-		--_margin-inline-start: var(--_gap);
-		--_margin-inline-end: 0px;
-		--_image-inline-size: min(var(--_image-min-inline-size-px), var(--_image-min-inline-size-vw));
-	}
-}
-
-.c-entry-link__image {
-	display: block flow;
-	border: var(--_image-border-width) solid;
-	background: var(--color-white);
-	max-block-size: calc(var(--_image-inline-size) / var(--_image-aspect-ratio));
-	max-inline-size: var(--_image-inline-size);
-	color: var(--color-black);
-	pointer-events: auto;
-
-	:focus & {
-		outline: var(--outline-width-bold) solid var(--outline-color);
-		outline-offset: -1px;
-	}
-
-	:any-link:hover & {
-		box-shadow: 0 0 5px var(--color-border-dark);
 	}
 }
 
@@ -106,10 +60,79 @@
 	}
 }
 
+.c-entry-link__thumb {
+	--_inset-inline: 0 auto;
+
+	display: inline flex;
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline: var(--_inset-inline);
+	justify-content: center;
+	/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+	width: calc(var(--_image-width) + var(--_image-border-width) * 2);
+	pointer-events: none;
+}
+
+.c-entry-link__image {
+	border: var(--_image-border-width) solid;
+	background: var(--color-white);
+	/* stylelint-disable plugin/use-logical-properties-and-values */
+	max-width: var(--_image-width);
+	height: auto;
+	max-height: var(--_image-height);
+	/* stylelint-enable plugin/use-logical-properties-and-values */
+	vertical-align: top;
+	color: var(--color-black);
+	pointer-events: auto;
+
+	:focus & {
+		outline: var(--outline-width-bold) solid var(--outline-color);
+		outline-offset: -1px;
+	}
+
+	:any-link:hover & {
+		box-shadow: 0 0 5px var(--color-border-dark);
+	}
+}
+
 .c-entry-link__date {
 	margin-block-start: 0.5em;
-	overflow: hidden;
 	font-size: calc(100% / var(--_title-font-expand-ratio));
+}
+
+@container (inline-size <= 40em) {
+	.c-entry-link {
+		--_padding-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
+	}
+}
+
+@container (20em < inline-size <= 40em) {
+	.c-entry-link {
+		--_padding-inline-end: calc(var(--_image-width) + var(--_image-border-width) * 2 + var(--_gap));
+	}
+
+	.c-entry-link__thumb {
+		--_inset-inline: auto 0;
+	}
+}
+
+@container (20em < inline-size <= 22em) {
+	.c-entry-link__date {
+		margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
+	}
+}
+
+@container (inline-size <= 20em) {
+	.c-entry-link__thumb {
+		display: inline flow;
+		position: static;
+
+		&::before {
+			display: block flow;
+			block-size: 0.5em;
+			content: "";
+		}
+	}
 }
 
 /* ===== キャプション ===== */
