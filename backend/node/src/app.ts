@@ -1,7 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import basicAuth from 'basic-auth';
 import compression from 'compression';
 import express, { type NextFunction, type Request, type Response } from 'express';
+// @ts-expect-error: ts(7016)
+import htpasswd from 'htpasswd-js';
 import Log4js from 'log4js';
 import multer from 'multer';
 import CategoryController from './controller/CategoryController.js';
@@ -52,8 +55,15 @@ app.use(
 		/* Basic Authentication */
 		const basic = config.static.auth_basic?.find((auth) => auth.directory.find((urlPath) => req.url.startsWith(urlPath)));
 		if (basic !== undefined) {
-			const httpBasicAuth = new HttpBasicAuth(req);
-			if (!(await httpBasicAuth.htpasswd(basic.htpasswd))) {
+			const credentials = basicAuth(req);
+
+			const result = (await htpasswd.authenticate({
+				username: credentials?.name,
+				password: credentials?.pass,
+				file: basic.htpasswd,
+			})) as boolean;
+
+			if (!result) {
 				new HttpResponse(req, res, config).send401('Basic', basic.realm);
 				return;
 			}
