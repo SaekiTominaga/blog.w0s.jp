@@ -233,14 +233,14 @@
 					"type": "array",
 					"items": {
 						"type": "object",
-						"required": ["directory", "realm", "htpasswd"],
+						"required": ["urls", "realm", "htpasswd"],
 						"properties": {
-							"directory": {
+							"urls": {
 								"type": "array",
 								"items": {
 									"type": "string"
 								},
-								"title": "directory"
+								"title": "対象 URL"
 							},
 							"realm": {
 								"type": "string",
