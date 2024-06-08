@@ -146,33 +146,27 @@
 				"headers": {
 					"type": "object",
 					"title": "レスポンスヘッダー関連",
-					"required": ["mime"],
+					"required": ["mime_type"],
 					"properties": {
-						"mime": {
+						"mime_type": {
 							"type": "object",
 							"required": ["path", "extension"],
-							"title": "MIME 定義",
+							"title": "MIME タイプ定義",
 							"properties": {
 								"path": {
 									"type": "object",
-									"title": "MIME とファイルパスの紐付け",
+									"title": "MIME タイプとファイルパスの紐付け",
 									"additionalProperties": {
-										"type": "array",
-										"items": {
-											"type": "string"
-										},
-										"title": "ファイルパス"
+										"type": "string",
+										"title": "ファイルパス（e.g. index.html）"
 									}
 								},
 								"extension": {
 									"type": "object",
-									"title": "MIME と拡張子の紐付け",
+									"title": "MIME タイプと拡張子の紐付け",
 									"additionalProperties": {
-										"type": "array",
-										"items": {
-											"type": "string"
-										},
-										"title": "拡張子（ドットなし）"
+										"type": "string",
+										"title": "拡張子（e.g. .html）"
 									}
 								}
 							},
@@ -239,14 +233,14 @@
 					"type": "array",
 					"items": {
 						"type": "object",
-						"required": ["directory", "realm", "htpasswd"],
+						"required": ["urls", "realm", "htpasswd"],
 						"properties": {
-							"directory": {
+							"urls": {
 								"type": "array",
 								"items": {
 									"type": "string"
 								},
-								"title": "directory"
+								"title": "対象 URL"
 							},
 							"realm": {
 								"type": "string",
