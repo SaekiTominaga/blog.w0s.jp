@@ -68,17 +68,17 @@ app.use(
 		let requestFilePath: string | undefined; // 実ファイルパス
 		if (requestPath.endsWith('/')) {
 			/* ディレクトリトップ（e.g. /foo/ ） */
-			const fileName = config.static.indexes?.find((name) => fs.existsSync(`${config.static.root}/${requestPath}${name}`));
+			const fileName = config.static.indexes?.find((name) => fs.existsSync(`${config.static.root}${requestPath}${name}`));
 			if (fileName !== undefined) {
 				requestFilePath = `${requestPath}${fileName}`;
 			}
 		} else if (path.extname(requestPath) === '') {
 			/* 拡張子のない URL（e.g. /foo ） */
-			const extension = config.static.extensions?.find((ext) => fs.existsSync(`${config.static.root}/${requestPath}.${ext}`));
+			const extension = config.static.extensions?.find((ext) => fs.existsSync(`${config.static.root}${requestPath}${ext}`));
 			if (extension !== undefined) {
-				requestFilePath = `${requestPath}.${extension}`;
+				requestFilePath = `${requestPath}${extension}`;
 			}
-		} else if (fs.existsSync(`${config.static.root}/${requestPath}`)) {
+		} else if (fs.existsSync(`${config.static.root}${requestPath}`)) {
 			/* 拡張子のある URL（e.g. /foo.txt ） */
 			requestFilePath = requestPath;
 		}
@@ -86,7 +86,7 @@ app.use(
 		/* Brotli */
 		if (requestFilePath !== undefined && req.method === 'GET' && req.acceptsEncodings('br') === 'br') {
 			const brotliFilePath = `${requestFilePath}${config.extension.brotli}`;
-			if (fs.existsSync(`${config.static.root}/${brotliFilePath}`)) {
+			if (fs.existsSync(`${config.static.root}${brotliFilePath}`)) {
 				req.url = brotliFilePath;
 				res.setHeader('Content-Encoding', 'br');
 			}
