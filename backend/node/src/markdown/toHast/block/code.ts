@@ -53,6 +53,8 @@ export const codeToHast = (_state: H, node: Code): HastElementContent | HastElem
 							properties: {
 								src: '/image/entry/copy.svg',
 								alt: 'コピー',
+								width: '16',
+								height: '16',
 							},
 							children: [],
 						},
