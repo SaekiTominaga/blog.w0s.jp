@@ -4,13 +4,13 @@ on:
     branches:
       - main
     paths:
-      - 'frontend/node/src/**/*.ts'
+      - 'frontend/build/*.js'
       - 'frontend/.eslintrc.json'
   push:
     branches:
       - main
     paths:
-      - 'frontend/node/src/**/*.ts'
+      - 'frontend/build/*.js'
       - 'frontend/.eslintrc.json'
   workflow_dispatch:
 
