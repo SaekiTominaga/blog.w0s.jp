@@ -5,6 +5,7 @@
 		"backend",
 		"frontend"
 	],
+	"type": "module",
 	"scripts": {
 		"format": "prettier -w .",
 		"html-lint": "markuplint backend/.html/**/*.html",

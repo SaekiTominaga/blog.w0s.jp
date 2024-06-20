@@ -5,13 +5,13 @@ on:
       - main
     paths:
       - 'backend/errorpage/*.html'
-      - '.markuplintrc'
+      - 'markuplint.config.js'
   push:
     branches:
       - main
     paths:
       - 'backend/errorpage/*.html'
-      - '.markuplintrc'
+      - 'markuplint.config.js'
   workflow_dispatch:
 
 jobs:
