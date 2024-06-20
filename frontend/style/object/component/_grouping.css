@@ -167,11 +167,10 @@
 
 /* 画像拡大アイコン */
 .c-caption__media-expansion {
-	--_image-size: 0.9lh;
+	--_image-size: 0.8lh;
 
-	display: inline flex;
+	display: block flex;
 	column-gap: 0.25em;
-	vertical-align: top;
 
 	& > img {
 		position: relative;
@@ -183,6 +182,6 @@
 	}
 
 	&:hover {
-		--_image-size: 1lh;
+		--_image-size: 0.9lh;
 	}
 }
