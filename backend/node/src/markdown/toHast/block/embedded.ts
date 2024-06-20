@@ -247,34 +247,43 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 				children: [
 					{
 						type: 'element',
-						tagName: 'a',
+						tagName: 'span',
 						properties: {
-							href: `https://www.youtube.com/watch?${linkSearchParams.toString()}`,
-						},
-						children: [
-							{
-								type: 'text',
-								value: title,
-							},
-						],
-					},
-					{
-						type: 'element',
-						tagName: 'small',
-						properties: {
-							className: 'c-domain',
+							class: 'c-caption__text',
 						},
 						children: [
 							{
 								type: 'element',
-								tagName: 'img',
+								tagName: 'a',
 								properties: {
-									src: '/image/icon/youtube.svg',
-									alt: '(YouTube)',
-									width: '16',
-									height: '16',
+									href: `https://www.youtube.com/watch?${linkSearchParams.toString()}`,
 								},
-								children: [],
+								children: [
+									{
+										type: 'text',
+										value: title,
+									},
+								],
+							},
+							{
+								type: 'element',
+								tagName: 'small',
+								properties: {
+									className: 'c-domain',
+								},
+								children: [
+									{
+										type: 'element',
+										tagName: 'img',
+										properties: {
+											src: '/image/icon/youtube.svg',
+											alt: '(YouTube)',
+											width: '16',
+											height: '16',
+										},
+										children: [],
+									},
+								],
 							},
 						],
 					},
