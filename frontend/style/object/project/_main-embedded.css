@@ -4,31 +4,6 @@
 
 /* ===== 埋め込みコンテンツ（画像、動画、 <iframe> など） ===== */
 .p-embed {
-	contain: layout;
-
-	& > :any-link {
-		--_expand-icon-padding: 4px;
-
-		display: inline flow-root;
-		outline-offset: -1px;
-		outline-width: var(--outline-width-bold);
-
-		&::before {
-			box-sizing: border-box;
-			display: block flow;
-			position: absolute;
-			inset: 1px;
-			background: rgb(0 0 0 / 70%) url("/image/entry/media-expansion.svg") center/contain no-repeat content-box border-box;
-			padding: var(--_expand-icon-padding);
-			block-size: 24px;
-			inline-size: 24px;
-			content: "";
-		}
-
-		&:hover {
-			--_expand-icon-padding: 3px;
-		}
-	}
 }
 
 .p-embed__image,

@@ -137,6 +137,9 @@
 
 /* ===== キャプション ===== */
 .c-caption {
+	display: block flex;
+	flex-wrap: wrap;
+	column-gap: 1.5em;
 	inline-size: fit-content;
 	line-height: var(--line-height-narrow);
 	color: var(--color-gray);
@@ -159,5 +162,26 @@
 	&.-meta {
 		margin-inline-start: auto;
 		padding-inline-start: 10%;
+	}
+}
+
+/* 画像拡大アイコン */
+.c-caption__media-expansion {
+	--_image-size: 0.8lh;
+
+	display: block flex;
+	column-gap: 0.25em;
+
+	& > img {
+		position: relative;
+		transition-duration: 0.05s;
+		transition-property: margin, block-size;
+		margin: calc((1lh - var(--_image-size)) / 2);
+		block-size: var(--_image-size);
+		inline-size: auto;
+	}
+
+	&:hover {
+		--_image-size: 0.9lh;
 	}
 }
