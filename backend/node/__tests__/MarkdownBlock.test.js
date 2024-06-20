@@ -928,7 +928,7 @@ describe('Image', () => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		title&lt;title> title<a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title&lt;title> title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -949,7 +949,7 @@ describe('Image', () => {
 			`
 <figure>
 	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="" class="p-embed__image" /></div>
-	<figcaption class="c-caption">title&lt;title> title</figcaption>
+	<figcaption class="c-caption"><span class="c-caption__text">title&lt;title> title</span></figcaption>
 </figure>
 `.trim(),
 		);
@@ -969,7 +969,7 @@ describe('Image', () => {
 			`
 <figure>
 	<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file.mp4" controls class="p-embed__video"></video></div>
-	<figcaption class="c-caption">title&lt;title> title</figcaption>
+	<figcaption class="c-caption"><span class="c-caption__text">title&lt;title> title</span></figcaption>
 </figure>
 `.trim(),
 		);
@@ -989,7 +989,7 @@ describe('Image', () => {
 			`
 <figure>
 	<div class="p-embed"></div>
-	<figcaption class="c-caption">title&lt;title> title</figcaption>
+	<figcaption class="c-caption"><span class="c-caption__text">title&lt;title> title</span></figcaption>
 </figure>
 `.trim(),
 		);
@@ -1016,7 +1016,8 @@ describe('Image', () => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		title&lt;title> <code>code</code><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title&lt;title> <code>code</code></span
+		><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1044,7 +1045,7 @@ describe('Image', () => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		title&lt;title> title<a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title&lt;title> title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1072,7 +1073,7 @@ describe('Image', () => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		title&lt;title> title<a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title&lt;title> title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),

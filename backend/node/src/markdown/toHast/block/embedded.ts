@@ -120,7 +120,16 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 		default:
 	}
 
-	const caption: HastElementContent[] = state.all(node);
+	const caption: HastElementContent[] = [
+		{
+			type: 'element',
+			tagName: 'span',
+			properties: {
+				class: 'c-caption__text',
+			},
+			children: state.all(node),
+		},
+	];
 	switch (extension) {
 		case '.jpg':
 		case '.jpeg':
