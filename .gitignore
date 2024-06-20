@@ -19,8 +19,8 @@
 /frontend/public/**/*.br
 /frontend/public/**/*.map
 /frontend/public/**/*.svg
+/frontend/public/favicon.ico
 /frontend/public/sitemap.xml
-/frontend/public/__test__/
 /frontend/public/json/
 /frontend/public/script/*.js
 /frontend/public/script/*.mjs
