@@ -921,14 +921,15 @@ describe('Image', () => {
 			`
 <figure>
 	<div class="p-embed">
-		<a href="https://media.w0s.jp/image/blog/file.jpg"
-			><picture
-				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" crossorigin="" class="p-embed__image" /></picture
-		></a>
+		<picture
+			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" crossorigin="" class="p-embed__image"
+		/></picture>
 	</div>
-	<figcaption class="c-caption">title&lt;title> title</figcaption>
+	<figcaption class="c-caption">
+		title&lt;title> title<a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+	</figcaption>
 </figure>
 `.trim(),
 		);
@@ -1008,14 +1009,15 @@ describe('Image', () => {
 			`
 <figure>
 	<div class="p-embed">
-		<a href="https://media.w0s.jp/image/blog/file.jpg"
-			><picture
-				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" crossorigin="" class="p-embed__image" /></picture
-		></a>
+		<picture
+			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" crossorigin="" class="p-embed__image"
+		/></picture>
 	</div>
-	<figcaption class="c-caption">title&lt;title> <code>code</code></figcaption>
+	<figcaption class="c-caption">
+		title&lt;title> <code>code</code><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+	</figcaption>
 </figure>
 `.trim(),
 		);
@@ -1035,14 +1037,15 @@ describe('Image', () => {
 			`
 <figure>
 	<div class="p-embed">
-		<a href="https://media.w0s.jp/image/blog/file.jpg"
-			><picture
-				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" crossorigin="" class="p-embed__image" /></picture
-		></a>
+		<picture
+			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" crossorigin="" class="p-embed__image"
+		/></picture>
 	</div>
-	<figcaption class="c-caption">title&lt;title> title</figcaption>
+	<figcaption class="c-caption">
+		title&lt;title> title<a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+	</figcaption>
 </figure>
 `.trim(),
 		);
@@ -1062,14 +1065,15 @@ describe('Image', () => {
 			`
 <figure>
 	<div class="p-embed">
-		<a href="https://media.w0s.jp/image/blog/file.jpg"
-			><picture
-				><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-				<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-				<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="オリジナル画像" crossorigin="" class="p-embed__image" /></picture
-		></a>
+		<picture
+			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" crossorigin="" class="p-embed__image"
+		/></picture>
 	</div>
-	<figcaption class="c-caption">title&lt;title> title</figcaption>
+	<figcaption class="c-caption">
+		title&lt;title> title<a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+	</figcaption>
 </figure>
 `.trim(),
 		);
