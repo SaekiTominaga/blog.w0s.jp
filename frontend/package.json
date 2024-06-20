@@ -37,9 +37,9 @@
 		"@w0s/report-same-referrer": "^3.0.1",
 		"@w0s/string-convert": "^2.0.1",
 		"@w0s/tab": "^3.1.0",
-		"prettier": "^3.2.5",
+		"prettier": "^3.3.2",
 		"slash": "^5.1.0",
-		"svgo": "^3.2.0"
+		"svgo": "^3.3.2"
 	},
 	"devDependencies": {
 		"@types/trusted-types": "^2.0.7",
