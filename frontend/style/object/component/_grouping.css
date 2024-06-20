@@ -139,7 +139,7 @@
 .c-caption {
 	display: block flex;
 	flex-wrap: wrap;
-	column-gap: 1.5em;
+	gap: 0.5em 1.5em;
 	inline-size: fit-content;
 	line-height: var(--line-height-narrow);
 	color: var(--color-gray);
@@ -163,6 +163,10 @@
 		margin-inline-start: auto;
 		padding-inline-start: 10%;
 	}
+}
+
+/* キャプションテキスト */
+.c-caption__text {
 }
 
 /* 画像拡大アイコン */
