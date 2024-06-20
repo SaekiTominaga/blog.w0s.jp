@@ -3,7 +3,6 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"node-lint": "eslint build/*.js",
 		"css-dev": "run-s _css-dev:*",
 		"css-prod": "run-s _css-prod:*",
 		"css-lint": "stylelint style/**/*.css",
@@ -11,6 +10,7 @@
 		"js-prod": "run-s _js-prod:*",
 		"js-lint": "eslint script/**/*.ts",
 		"svg-prod": "run-s _svg-prod:*",
+		"node-lint": "eslint build/*.js",
 		"_css-dev:clean": "node build/delete.js -f public/style/*",
 		"_css-dev:build": "postcss style/*.css --base style -d public/style -w",
 		"_css-prod:lint": "npm run css-lint",
