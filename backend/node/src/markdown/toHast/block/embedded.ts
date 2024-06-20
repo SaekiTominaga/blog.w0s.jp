@@ -39,67 +39,60 @@ const AMAZON_IMAGE_SIZE = 160;
 export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElementContent | HastElementContent[] | null | undefined => {
 	const { filename } = node;
 
-	let media: HastElementContent;
-	switch (path.extname(filename)) {
+	const extension = path.extname(filename);
+
+	const media: HastElementContent[] = [];
+	switch (extension) {
 		case '.jpg':
 		case '.jpeg':
 		case '.png': {
-			media = {
+			media.push({
 				type: 'element',
-				tagName: 'a',
-				properties: {
-					href: `https://media.w0s.jp/image/blog/${filename}`,
-				},
+				tagName: 'picture',
 				children: [
 					{
 						type: 'element',
-						tagName: 'picture',
-						children: [
-							{
-								type: 'element',
-								tagName: 'source',
-								properties: {
-									type: 'image/avif',
-									srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${String(IMAGE_MAX_SIZE.width)};h=${String(
-										IMAGE_MAX_SIZE.height,
-									)};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${String(IMAGE_MAX_SIZE.width * 2)};h=${String(
-										IMAGE_MAX_SIZE.height * 2,
-									)};quality=30 2x`,
-								},
-								children: [],
-							},
-							{
-								type: 'element',
-								tagName: 'source',
-								properties: {
-									type: 'image/webp',
-									srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${String(IMAGE_MAX_SIZE.width)};h=${String(
-										IMAGE_MAX_SIZE.height,
-									)};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${String(IMAGE_MAX_SIZE.width * 2)};h=${String(
-										IMAGE_MAX_SIZE.height * 2,
-									)};quality=30 2x`,
-								},
-								children: [],
-							},
-							{
-								type: 'element',
-								tagName: 'img',
-								properties: {
-									src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${String(IMAGE_MAX_SIZE.width)};h=${String(IMAGE_MAX_SIZE.height)};quality=60`,
-									alt: 'オリジナル画像',
-									crossorigin: '',
-									className: ['p-embed__image'],
-								},
-								children: [],
-							},
-						],
+						tagName: 'source',
+						properties: {
+							type: 'image/avif',
+							srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${String(IMAGE_MAX_SIZE.width)};h=${String(
+								IMAGE_MAX_SIZE.height,
+							)};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${String(IMAGE_MAX_SIZE.width * 2)};h=${String(
+								IMAGE_MAX_SIZE.height * 2,
+							)};quality=30 2x`,
+						},
+						children: [],
+					},
+					{
+						type: 'element',
+						tagName: 'source',
+						properties: {
+							type: 'image/webp',
+							srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${String(IMAGE_MAX_SIZE.width)};h=${String(
+								IMAGE_MAX_SIZE.height,
+							)};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${String(IMAGE_MAX_SIZE.width * 2)};h=${String(
+								IMAGE_MAX_SIZE.height * 2,
+							)};quality=30 2x`,
+						},
+						children: [],
+					},
+					{
+						type: 'element',
+						tagName: 'img',
+						properties: {
+							src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${String(IMAGE_MAX_SIZE.width)};h=${String(IMAGE_MAX_SIZE.height)};quality=60`,
+							alt: '',
+							crossorigin: '',
+							className: ['p-embed__image'],
+						},
+						children: [],
 					},
 				],
-			};
+			});
 			break;
 		}
 		case '.svg': {
-			media = {
+			media.push({
 				type: 'element',
 				tagName: 'img',
 				properties: {
@@ -108,11 +101,11 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 					className: ['p-embed__image'],
 				},
 				children: [],
-			};
+			});
 			break;
 		}
 		case '.mp4': {
-			media = {
+			media.push({
 				type: 'element',
 				tagName: 'video',
 				properties: {
@@ -121,14 +114,45 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 					className: ['p-embed__video'],
 				},
 				children: [],
-			};
+			});
 			break;
 		}
 		default:
-			media = {
-				type: 'text',
-				value: '',
-			};
+	}
+
+	const caption: HastElementContent[] = state.all(node);
+	switch (extension) {
+		case '.jpg':
+		case '.jpeg':
+		case '.png': {
+			caption.push({
+				type: 'element',
+				tagName: 'a',
+				properties: {
+					href: `https://media.w0s.jp/image/blog/${filename}`,
+					class: 'c-caption__media-expansion',
+				},
+				children: [
+					{
+						type: 'element',
+						tagName: 'img',
+						properties: {
+							src: '/image/entry/media-expansion.svg',
+							alt: '',
+							width: '16',
+							height: '16',
+						},
+						children: [],
+					},
+					{
+						type: 'text',
+						value: 'オリジナル画像',
+					},
+				],
+			});
+			break;
+		}
+		default:
 	}
 
 	return {
@@ -141,7 +165,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 				properties: {
 					className: ['p-embed'],
 				},
-				children: [media],
+				children: media,
 			},
 			{
 				type: 'element',
@@ -149,7 +173,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 				properties: {
 					className: ['c-caption'],
 				},
-				children: state.all(node),
+				children: caption,
 			},
 		],
 	};
