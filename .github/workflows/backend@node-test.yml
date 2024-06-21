@@ -4,13 +4,13 @@ on:
     branches:
       - main
     paths:
-      - 'backend/node/__tests__/*.test.js'
+      - 'backend/node/__tests__/*.js'
       - 'backend/node/src/**/*.ts'
   push:
     branches:
       - main
     paths:
-      - 'backend/node/__tests__/*.test.js'
+      - 'backend/node/__tests__/*.js'
       - 'backend/node/src/**/*.ts'
   workflow_dispatch:
 
@@ -21,6 +21,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - run: npm ci
       - run: npm test -w '@blog.w0s.jp/backend'
