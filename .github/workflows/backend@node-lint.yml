@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'backend/node/__tests__/**/*.test.js'
+      - 'backend/node/__tests__/*.js'
       - 'backend/node/@types/*.d.ts'
       - 'backend/node/src/**/*.ts'
       - 'backend/.eslintrc.json'
@@ -12,7 +12,7 @@ on:
     branches:
       - main
     paths:
-      - 'backend/node/__tests__/**/*.test.js'
+      - 'backend/node/__tests__/*.js'
       - 'backend/node/@types/*.d.ts'
       - 'backend/node/src/**/*.ts'
       - 'backend/.eslintrc.json'
