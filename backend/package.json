@@ -9,7 +9,7 @@
 		"prelint": "npm run _config-convert",
 		"lint": "eslint node/src/**/*.ts node/@types/*.d.ts node/__tests__/**/*.test.js",
 		"pretest": "run-s _config-convert build",
-		"test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest -c ../jest.config.mjs --roots backend",
+		"test": "node --test **/*.test.js --experimental-test-coverage",
 		"config": "run-p _config-convert _config-validate:*",
 		"errorpage-lint": "markuplint errorpage/*.html",
 		"_config-convert": "json2ts -i configure/schema -o configure/type",
