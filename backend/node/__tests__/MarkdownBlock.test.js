@@ -451,7 +451,7 @@ test('blockquote', async (t) => {
 			`
 <figure>
 	<blockquote class="p-quote"><p>quote</p></blockquote>
-	<figcaption class="c-caption -meta">引用元</figcaption>
+	<figcaption class="c-caption -meta"><span class="c-caption__text">引用元</span></figcaption>
 </figure>
 `.trim(),
 		);
@@ -555,7 +555,9 @@ test('blockquote', async (t) => {
 			`
 <figure>
 	<blockquote class="p-quote" lang="en" cite="http://example.com"><p>quote</p></blockquote>
-	<figcaption class="c-caption -meta"><a href="http://example.com">引用元</a><small class="c-domain">(<code>example.com</code>)</small></figcaption>
+	<figcaption class="c-caption -meta">
+		<span class="c-caption__text"><a href="http://example.com">引用元</a><small class="c-domain">(<code>example.com</code>)</small> </span>
+	</figcaption>
 </figure>
 `.trim(),
 		);
