@@ -122,7 +122,16 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 			properties: {
 				className: ['c-caption', '-meta'],
 			},
-			children: figcaptionChild,
+			children: [
+				{
+					type: 'element',
+					tagName: 'span',
+					properties: {
+						class: 'c-caption__text',
+					},
+					children: figcaptionChild,
+				},
+			],
 		});
 	}
 
