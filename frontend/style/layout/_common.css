@@ -1,6 +1,7 @@
 /* ==============================
  *   ページレイアウト共通
  * ============================== */
+
 .l-page {
 	display: block grid;
 }
@@ -61,6 +62,11 @@
 	grid-column: content;
 	container: content / inline-size;
 
+	@media screen and (--breakpoint) {
+		/* 印刷時は _page-reader.css にて grid-template-areas を変更しているため、スクリーン時のみ適用されるようにする */
+		grid-column: content-padding-left / content-padding-right;
+	}
+
 	/* サイドバーがない場合は全幅で表示 */
 	&.-nosidebar {
 		grid-column: content / sidebar;
@@ -78,21 +84,6 @@
 
 .l-content__footer {
 	margin-block-start: 120px;
-}
-
-@media (--breakpoint) {
-	.l-content {
-		grid-column: content-padding-left / content-padding-right;
-	}
-
-	.l-content__header,
-	.l-content__footer {
-		grid-column: content;
-	}
-
-	.l-content__main {
-		grid-column: inherit;
-	}
 }
 
 /* ===== サイドバー ===== */
