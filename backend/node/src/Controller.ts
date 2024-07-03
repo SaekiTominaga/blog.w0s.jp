@@ -38,10 +38,13 @@ export default class Controller {
 			httpResponse: HttpResponse;
 		},
 	): Promise<void> {
-		let html = htmlUnformat;
-
 		const prettierOptions = await prettier.resolveConfig(options.filePath, { editorconfig: true });
-		if (prettierOptions !== null) {
+
+		let html: string;
+		if (prettierOptions === null) {
+			this.logger.warn('Failed to resolve prettier config');
+			html = htmlUnformat;
+		} else {
 			html = await prettier.format(htmlUnformat, prettierOptions);
 		}
 
