@@ -5,7 +5,6 @@
 				"style/foundation/_@custom-media.css"
 			]
 		},
-		"postcss-media-minmax": {},
 		"postcss-custom-media": {},
 		"postcss-nesting": {},
 		"postcss-import": {},
