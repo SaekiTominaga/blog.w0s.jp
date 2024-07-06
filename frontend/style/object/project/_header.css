@@ -38,7 +38,7 @@
 /* サイト概要 */
 .p-header-site__summary {
 	color: var(--color-gray);
-	font-size: calc(100% / var(--font-ratio-2));
+	font-size: calc(100% / pow(var(--font-ratio), 2));
 }
 
 /* ===== ナビゲーション ===== */
@@ -62,7 +62,7 @@
 
 .p-header-search__legend {
 	grid-area: legend;
-	font-size: calc(100% / var(--font-ratio-1));
+	font-size: calc(100% / pow(var(--font-ratio), 1));
 	font-weight: var(--font-weight-bold);
 }
 

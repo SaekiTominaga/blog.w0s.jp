@@ -13,7 +13,7 @@
 	display: block flow-root; /* for Safari */
 	contain: layout;
 	line-height: var(--line-height-narrow);
-	font-size: calc(100% * var(--font-ratio-2));
+	font-size: calc(100% * pow(var(--font-ratio), 2));
 
 	& > :any-link {
 		outline: none;
@@ -63,5 +63,5 @@
 	margin-block-start: 0.5em;
 	overflow: hidden;
 	line-height: var(--line-height-normal);
-	font-size: calc(100% / var(--font-ratio-2));
+	font-size: calc(100% / pow(var(--font-ratio), 2));
 }

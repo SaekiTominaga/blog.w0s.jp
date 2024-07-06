@@ -12,7 +12,7 @@
 		background: linear-gradient(var(--color-white), var(--color-bg-dark));
 		padding: 0.75em 1.5%;
 		text-shadow: 1px 1px 1px var(--color-lightgray);
-		font-size: clamp(calc(100% * var(--font-ratio-1)), 7vi, calc(100% * var(--font-ratio-5)));
+		font-size: clamp(calc(100% * pow(var(--font-ratio), 1)), 7vi, calc(100% * pow(var(--font-ratio), 5)));
 	}
 }
 

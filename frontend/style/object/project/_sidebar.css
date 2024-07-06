@@ -28,7 +28,7 @@
 	padding: var(--_padding-block) 0.2em;
 	text-align: center;
 	color: var(--_color);
-	font-size: calc(100% / var(--font-ratio-2));
+	font-size: calc(100% / pow(var(--font-ratio), 2));
 	font-weight: var(--_font-weight);
 
 	&[role="tab"] {
@@ -101,7 +101,7 @@
 		background: var(--_bg-color);
 		padding: var(--_padding-block) var(--_padding-inline);
 		min-block-size: var(--_min-block-size);
-		font-size: calc(100% / var(--font-ratio-1));
+		font-size: calc(100% / pow(var(--font-ratio), 1));
 
 		&:any-link {
 			--_bg-color: var(--color-white);

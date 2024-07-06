@@ -16,7 +16,7 @@
 		padding: 0.75em min(1vi, 10px);
 		text-align: var(--_text-align);
 		color: var(--_color);
-		font-size: clamp(calc(100% / var(--font-ratio-1)), 2vi, 100%);
+		font-size: clamp(calc(100% / pow(var(--font-ratio), 1)), 2vi, 100%);
 	}
 
 	& > thead {

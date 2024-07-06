@@ -61,7 +61,7 @@ pre {
 }
 
 small {
-	font-size: calc(100% / var(--font-ratio-2));
+	font-size: calc(100% / pow(var(--font-ratio), 2));
 	font-weight: var(--font-weight-normal);
 }
 

@@ -53,7 +53,7 @@
 	& > li {
 		margin-inline-start: 1.25em;
 		list-style-type: "※ ";
-		font-size: calc(100% / var(--font-ratio-1));
+		font-size: calc(100% / pow(var(--font-ratio), 1));
 
 		& + li {
 			margin-block-start: 0.75em;
@@ -72,7 +72,7 @@
 	line-height: var(--line-height-normal);
 
 	& > li {
-		margin-inline-start: calc((var(--_icon-inline-size) + var(--_icon-gap)) * var(--font-ratio-2));
+		margin-inline-start: calc((var(--_icon-inline-size) + var(--_icon-gap)) * pow(var(--font-ratio), 2));
 
 		& + li {
 			margin-block-start: 1em;
@@ -128,7 +128,7 @@
 
 	& > li {
 		margin-inline-start: calc(var(--_icon-inline-size) + var(--_icon-gap));
-		font-size: calc(100% * var(--font-ratio-1));
+		font-size: calc(100% * pow(var(--font-ratio), 1));
 
 		& + li {
 			margin-block-start: 0.75em;
@@ -160,7 +160,7 @@
 	border-radius: var(--border-radius-large);
 	background: var(--color-bg-light);
 	padding: 1em;
-	font-size: calc(100% / var(--font-ratio-1));
+	font-size: calc(100% / pow(var(--font-ratio), 1));
 
 	.p-entry & {
 		border-color: var(--color-bg-dark);
@@ -209,5 +209,5 @@
 
 .p-footnote__backref {
 	margin-inline-start: 0.5em;
-	font-size: calc(100% / var(--font-ratio-2));
+	font-size: calc(100% / pow(var(--font-ratio), 2));
 }

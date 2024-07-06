@@ -30,7 +30,7 @@
 		padding: 15px;
 		max-inline-size: min(30em, 100%);
 		color: var(--color-black);
-		font-size: calc(100% / var(--font-ratio-1));
+		font-size: calc(100% / pow(var(--font-ratio), 1));
 
 		&:focus {
 			outline: var(--outline-width-bold) solid var(--outline-color);
@@ -249,7 +249,7 @@
 	}
 
 	.p-entry & {
-		font-size: calc(100% / var(--font-ratio-1));
+		font-size: calc(100% / pow(var(--font-ratio), 1));
 	}
 
 	& > code {
