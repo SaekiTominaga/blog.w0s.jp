@@ -55,7 +55,7 @@
 		border-block-start: 1px solid transparent;
 		border-block-end: 1px solid var(--color-border-dark);
 		padding-block: 0.25em;
-		font-size: calc(100% * var(--font-ratio-6));
+		font-size: calc(100% * pow(var(--font-ratio), 6));
 
 		&::before {
 			transform: scaleY(75%);
@@ -71,7 +71,7 @@
 	}
 
 	.p-section.-hdg-b > & {
-		font-size: calc(100% * var(--font-ratio-4));
+		font-size: calc(100% * pow(var(--font-ratio), 4));
 
 		&::before {
 			transform: scaleY(75%);
@@ -83,6 +83,6 @@
 	}
 
 	.p-section.-hdg-c > & {
-		font-size: calc(100% * var(--font-ratio-2));
+		font-size: calc(100% * pow(var(--font-ratio), 2));
 	}
 }

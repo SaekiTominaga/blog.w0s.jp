@@ -15,7 +15,7 @@
 }
 
 .p-insert__date {
-	font-size: calc(100% / var(--font-ratio-1));
+	font-size: calc(100% / pow(var(--font-ratio), 1));
 	font-weight: var(--font-weight-bold);
 
 	&::after {
@@ -26,7 +26,7 @@
 
 .p-insert__text {
 	text-decoration: none;
-	font-size: calc(100% / var(--font-ratio-1));
+	font-size: calc(100% / pow(var(--font-ratio), 1));
 }
 
 /* ===== ブロック引用 ===== */

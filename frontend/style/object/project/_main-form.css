@@ -113,7 +113,7 @@
 
 	& output {
 		display: block flow;
-		font-size: calc(100% / var(--font-ratio-1));
+		font-size: calc(100% / pow(var(--font-ratio), 1));
 
 		&:not(:has(> img)) {
 			border: 1px solid var(--color-border-dark);

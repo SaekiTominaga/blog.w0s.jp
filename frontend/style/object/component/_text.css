@@ -36,7 +36,7 @@
 	min-inline-size: var(--self-link-size);
 	text-decoration: none;
 	color: var(--link-color);
-	font-size: calc(100% / var(--font-ratio-3));
+	font-size: calc(100% / pow(var(--font-ratio), 3));
 }
 
 /* ===== ボタン ===== */
@@ -71,7 +71,7 @@
 	}
 
 	.p-entry-footer-action & {
-		font-size: calc(100% * var(--font-ratio-1));
+		font-size: calc(100% * pow(var(--font-ratio), 1));
 	}
 
 	&:disabled {
@@ -111,7 +111,7 @@
 /* ===== 脚注リンク ===== */
 .c-footnote-ref {
 	vertical-align: super;
-	font-size: calc(100% / var(--font-ratio-2));
+	font-size: calc(100% / pow(var(--font-ratio), 2));
 
 	& > a {
 		--_border-color: transparent;
@@ -143,7 +143,7 @@
 
 /* ===== ドメイン表記 ===== */
 .c-domain {
-	--_font-size: calc(100% / var(--font-ratio-1));
+	--_font-size: calc(100% / pow(var(--font-ratio), 1));
 
 	word-break: break-all;
 	color: var(--color-gray);
@@ -202,12 +202,12 @@
 	line-height: var(--line-height-nowrap);
 	white-space: nowrap;
 	color: var(--color-darkblue);
-	font-size: calc(100% / var(--font-ratio-4));
+	font-size: calc(100% / pow(var(--font-ratio), 4));
 }
 
 /* 件数の数字部分 */
 .c-entry-count__num {
-	font-size: calc(100% * var(--font-ratio-3));
+	font-size: calc(100% * pow(var(--font-ratio), 3));
 }
 
 /* ===== コードハイライト https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css ===== */

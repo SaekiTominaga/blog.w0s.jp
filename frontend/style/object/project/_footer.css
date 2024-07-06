@@ -11,7 +11,7 @@
 	flex-flow: var(--_flex-direction) wrap;
 	gap: 0.5em 0;
 	justify-content: var(--_justify-content);
-	font-size: calc(100% * var(--font-ratio-1));
+	font-size: calc(100% * pow(var(--font-ratio), 1));
 
 	@container footer-nav (inline-size >= 30em) {
 		--_flex-direction: row;

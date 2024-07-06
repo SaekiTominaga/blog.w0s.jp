@@ -58,11 +58,11 @@
 			border-block-start: 1px solid transparent;
 			border-block-end: 1px solid var(--color-border-dark);
 			padding-block: 0.25em;
-			font-size: calc(100% * var(--font-ratio-5));
+			font-size: calc(100% * pow(var(--font-ratio), 5));
 		}
 
 		.p-entry-section.-hdg2 > & {
-			font-size: calc(100% * var(--font-ratio-3));
+			font-size: calc(100% * pow(var(--font-ratio), 3));
 
 			&::before {
 				transform: scaleY(80%);
