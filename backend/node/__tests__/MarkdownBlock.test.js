@@ -949,6 +949,71 @@ test('Image', async (t) => {
 		);
 	});
 
+	await t.test('meta - img size', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+@file.jpg: title <1920x1280>
+`,
+				),
+			),
+			`
+<figure>
+	<div class="p-embed">
+		<picture
+			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
+			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" width="640" height="427" crossorigin="" class="p-embed__image"
+		/></picture>
+	</div>
+	<figcaption class="c-caption">
+		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+	</figcaption>
+</figure>
+`.trim(),
+		);
+	});
+
+	await t.test('meta - SVG size', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+@file.svg: title <1920x1280>
+`,
+				),
+			),
+			`
+<figure>
+	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="" width="1920" height="1280" class="p-embed__image" /></div>
+	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
+</figure>
+`.trim(),
+		);
+	});
+
+	await t.test('meta - video size', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+@file.mp4: title <1920x1280>
+`,
+				),
+			),
+			`
+<figure>
+	<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file.mp4" controls width="1920" height="1280" class="p-embed__video"></video></div>
+	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
+</figure>
+`.trim(),
+		);
+	});
+
 	await t.test('meta - last non Text', async () => {
 		const markdown = new Markdown();
 		assert.equal(
