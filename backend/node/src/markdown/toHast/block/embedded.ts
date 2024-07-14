@@ -13,6 +13,7 @@ import { config } from '../../config.js';
 
 interface XEmbeddedMedia extends Root {
 	filename: string;
+	size: Size | undefined;
 }
 
 interface XEmbeddedYouTube {
@@ -37,7 +38,7 @@ const YOUTUBE_BASE_SIZE = { width: 640, height: 360 };
 const AMAZON_IMAGE_SIZE = 160;
 
 export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElementContent | HastElementContent[] | null | undefined => {
-	const { filename } = node;
+	const { filename, size } = node;
 
 	const extension = path.extname(filename);
 
@@ -46,6 +47,18 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 		case '.jpg':
 		case '.jpeg':
 		case '.png': {
+			let width = size?.width;
+			let height = size?.height;
+			if (size !== undefined) {
+				/* ThumbImageUtil.getThumbSize() と同一の処理 */
+				if (IMAGE_MAX_SIZE.width < size.width || IMAGE_MAX_SIZE.height < size.height) {
+					const reductionRatio = Math.min(IMAGE_MAX_SIZE.width / size.width, IMAGE_MAX_SIZE.height / size.height);
+
+					width = Math.round(size.width * reductionRatio);
+					height = Math.round(size.height * reductionRatio);
+				}
+			}
+
 			media.push({
 				type: 'element',
 				tagName: 'picture',
@@ -82,6 +95,8 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 						properties: {
 							src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${String(IMAGE_MAX_SIZE.width)};h=${String(IMAGE_MAX_SIZE.height)};quality=60`,
 							alt: '',
+							width: width,
+							height: height,
 							crossorigin: '',
 							className: ['p-embed__image'],
 						},
@@ -98,6 +113,8 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 				properties: {
 					src: `https://media.w0s.jp/image/blog/${filename}`,
 					alt: '',
+					width: size?.width,
+					height: size?.height,
 					className: ['p-embed__image'],
 				},
 				children: [],
@@ -111,6 +128,8 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 				properties: {
 					src: `https://media.w0s.jp/video/blog/${filename}`,
 					controls: true,
+					width: size?.width,
+					height: size?.height,
 					className: ['p-embed__video'],
 				},
 				children: [],

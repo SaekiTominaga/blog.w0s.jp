@@ -27,6 +27,7 @@ export interface AmazonImage {
 interface XEmbeddedMedia extends Parent {
 	type: typeof nameMedia;
 	filename: string;
+	size: Size | undefined;
 	children: PhrasingContent[];
 }
 
@@ -162,11 +163,24 @@ const toMdast = (): Plugin => {
 			}
 
 			if (structured.name.includes('.')) {
-				const { require: metaRequire } = structured.meta;
+				const { require: metaRequire, option: metaOption } = structured.meta;
+
+				let size: Size | undefined;
+				metaOption?.split(META_SEPARATOR).forEach((meta) => {
+					if (/^[1-9][0-9]*x[1-9][0-9]*$/.test(meta)) {
+						/* サイズ */
+						const sizes = meta.split('x');
+						size = {
+							width: Number(sizes.at(0)),
+							height: Number(sizes.at(1)),
+						};
+					}
+				});
 
 				const embedded: XEmbeddedMedia = {
 					type: nameMedia,
 					filename: structured.name,
+					size: size,
 					children: metaRequire,
 				};
 				parent.children.splice(index, 1, embedded);
