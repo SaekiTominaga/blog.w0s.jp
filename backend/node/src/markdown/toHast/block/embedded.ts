@@ -19,14 +19,14 @@ interface XEmbeddedMedia extends Root {
 interface XEmbeddedYouTube {
 	id: string;
 	title: string;
-	size?: Size;
-	start?: number;
+	size: Size | undefined;
+	start: number | undefined;
 }
 
 interface XAmazonItem {
 	asin: string;
 	title: string;
-	image?: AmazonImage;
+	image: AmazonImage | undefined;
 }
 
 interface XEmbeddedAmazon {
@@ -243,8 +243,8 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 							src: `https://www.youtube-nocookie.com/embed/${id}?${embeddedSearchParams.toString()}`, // https://support.google.com/youtube/answer/171780
 							allow: 'encrypted-media;fullscreen;gyroscope;picture-in-picture',
 							title: 'YouTube 動画',
-							width: String(width),
-							height: String(height),
+							width: width,
+							height: height,
 							className: ['p-embed__frame'],
 							style: `--aspect-ratio:${String(width)}/${String(height)}`,
 						},
