@@ -21,7 +21,7 @@ export interface Size {
 
 export interface AmazonImage {
 	id: string;
-	size?: Size;
+	size: Size | undefined;
 }
 
 interface XEmbeddedMedia extends Parent {
@@ -35,15 +35,15 @@ interface XEmbeddedYouTube extends Node {
 	type: typeof nameYouTube;
 	id: string;
 	title: string;
-	size?: Size;
-	start?: number;
+	size: Size | undefined;
+	start: number | undefined;
 }
 
 interface XAmazonItem extends Node {
 	type: typeof nameAmazonItem;
 	asin: string;
 	title: string;
-	image?: AmazonImage;
+	image: AmazonImage | undefined;
 }
 
 interface XEmbeddedAmazon extends Parent {
@@ -169,10 +169,10 @@ const toMdast = (): Plugin => {
 				metaOption?.split(META_SEPARATOR).forEach((meta) => {
 					if (/^[1-9][0-9]*x[1-9][0-9]*$/.test(meta)) {
 						/* サイズ */
-						const sizes = meta.split('x');
+						const [width, height] = meta.split('x');
 						size = {
-							width: Number(sizes.at(0)),
-							height: Number(sizes.at(1)),
+							width: Number(width),
+							height: Number(height),
 						};
 					}
 				});
@@ -202,10 +202,10 @@ const toMdast = (): Plugin => {
 				metaOption?.split(META_SEPARATOR).forEach((meta) => {
 					if (/^[1-9][0-9]{2}x[1-9][0-9]{2}$/.test(meta)) {
 						/* 動画サイズ */
-						const sizes = meta.split('x');
+						const [width, height] = meta.split('x');
 						size = {
-							width: Number(sizes.at(0)),
-							height: Number(sizes.at(1)),
+							width: Number(width),
+							height: Number(height),
 						};
 					} else if (/^[1-9][0-9]*$/.test(meta)) {
 						/* 開始位置（秒） */
@@ -217,13 +217,9 @@ const toMdast = (): Plugin => {
 					type: nameYouTube,
 					id: id,
 					title: title,
+					size: size,
+					start: start,
 				};
-				if (size !== undefined) {
-					embedded.size = size;
-				}
-				if (start !== undefined) {
-					embedded.start = start;
-				}
 				parent.children.splice(index, 1, embedded);
 			}
 
@@ -281,15 +277,14 @@ const toMdast = (): Plugin => {
 						type: nameAmazonItem,
 						asin: asin,
 						title: title,
+						image:
+							imageId !== undefined
+								? {
+										id: imageId,
+										size: imageSize,
+									}
+								: undefined,
 					};
-					if (imageId !== undefined) {
-						item.image = {
-							id: imageId,
-						};
-						if (imageSize !== undefined) {
-							item.image.size = imageSize;
-						}
-					}
 
 					items.push(item);
 
