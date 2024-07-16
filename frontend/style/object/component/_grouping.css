@@ -81,7 +81,6 @@
 	height: auto;
 	max-height: var(--_image-height);
 	/* stylelint-enable plugin/use-logical-properties-and-values */
-	vertical-align: top;
 	color: var(--color-black);
 	pointer-events: auto;
 
