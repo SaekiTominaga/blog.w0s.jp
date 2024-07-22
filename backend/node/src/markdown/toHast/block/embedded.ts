@@ -215,13 +215,12 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 
 	const embeddedSearchParams = new URLSearchParams();
 	embeddedSearchParams.set('cc_load_policy', '1');
-	if (start !== undefined && start > 1) {
-		embeddedSearchParams.set('start', String(start));
-	}
 
 	const linkSearchParams = new URLSearchParams();
 	linkSearchParams.set('v', id);
-	if (start !== undefined && start > 1) {
+
+	if (start !== undefined && start >= 1) {
+		embeddedSearchParams.set('start', String(start));
 		linkSearchParams.set('t', `${String(start)}s`);
 	}
 
