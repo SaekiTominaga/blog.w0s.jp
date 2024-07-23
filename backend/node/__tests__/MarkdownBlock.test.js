@@ -21,10 +21,10 @@ text
 			`
 <p>text</p>
 <section class="p-entry-section -hdg1" id="見出し1">
-	<hgroup>
+	<div class="p-section__hdg">
 		<h2>見出し1</h2>
 		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%971" class="c-self-link">§</a></p>
-	</hgroup>
+	</div>
 	<p>text</p>
 </section>
 `.trim(),
@@ -62,24 +62,24 @@ text
 	</li>
 </ol>
 <section class="p-entry-section -hdg1" id="見出し1">
-	<hgroup>
+	<div class="p-section__hdg">
 		<h2>見出し1</h2>
 		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%971" class="c-self-link">§</a></p>
-	</hgroup>
+	</div>
 	<p>text</p>
 	<section class="p-entry-section -hdg2" id="見出し2">
-		<hgroup>
+		<div class="p-section__hdg">
 			<h3>見出し2</h3>
 			<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%972" class="c-self-link">§</a></p>
-		</hgroup>
+		</div>
 		<p>text</p>
 	</section>
 </section>
 <section class="p-entry-section -hdg1" id="見出し1-1">
-	<hgroup>
+	<div class="p-section__hdg">
 		<h2>見出し<em>1</em></h2>
 		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%971-1" class="c-self-link">§</a></p>
-	</hgroup>
+	</div>
 	<p>text</p>
 </section>
 `.trim(),
