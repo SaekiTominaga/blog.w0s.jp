@@ -37,6 +37,7 @@ interface XEmbeddedYouTube extends Node {
 	title: string;
 	size: Size | undefined;
 	start: number | undefined;
+	end: number | undefined;
 }
 
 interface XAmazonItem extends Node {
@@ -199,17 +200,25 @@ const toMdast = (): Plugin => {
 
 				let size: Size | undefined;
 				let start: number | undefined;
+				let end: number | undefined;
 				metaOption?.split(META_SEPARATOR).forEach((meta) => {
 					if (/^[1-9][0-9]{2}x[1-9][0-9]{2}$/.test(meta)) {
 						/* 動画サイズ */
-						const [width, height] = meta.split('x');
+						const [metaWidth, metaHeight] = meta.split('x');
+
 						size = {
-							width: Number(width),
-							height: Number(height),
+							width: Number(metaWidth),
+							height: Number(metaHeight),
 						};
-					} else if (/^[1-9][0-9]*$/.test(meta)) {
-						/* 開始位置（秒） */
-						start = Number(meta);
+					} else if (/^[1-9][0-9]*(-[1-9][0-9]*)?s$/.test(meta)) {
+						/* 開始・終了位置（秒） */
+						const [metaStart, metaEnd] = meta.substring(0, meta.length - 1).split('-');
+						console.debug(metaStart, metaEnd);
+
+						start = Number(metaStart);
+						if (metaEnd !== undefined) {
+							end = Number(metaEnd);
+						}
 					}
 				});
 
@@ -219,6 +228,7 @@ const toMdast = (): Plugin => {
 					title: title,
 					size: size,
 					start: start,
+					end: end,
 				};
 				parent.children.splice(index, 1, embedded);
 			}

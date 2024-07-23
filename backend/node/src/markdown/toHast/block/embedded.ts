@@ -21,6 +21,7 @@ interface XEmbeddedYouTube {
 	title: string;
 	size: Size | undefined;
 	start: number | undefined;
+	end: number | undefined;
 }
 
 interface XAmazonItem {
@@ -208,12 +209,12 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 };
 
 export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastElementContent | HastElementContent[] | null | undefined => {
-	const { id, title, size, start } = node;
+	const { id, title, size, start, end } = node;
 
 	const width = size?.width ?? YOUTUBE_BASE_SIZE.width;
 	const height = size?.height ?? YOUTUBE_BASE_SIZE.height;
 
-	const embeddedSearchParams = new URLSearchParams();
+	const embeddedSearchParams = new URLSearchParams(); // https://developers.google.com/youtube/player_parameters?hl=ja#Parameters
 	embeddedSearchParams.set('cc_load_policy', '1');
 
 	const linkSearchParams = new URLSearchParams();
@@ -222,6 +223,10 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 	if (start !== undefined && start >= 1) {
 		embeddedSearchParams.set('start', String(start));
 		linkSearchParams.set('t', `${String(start)}s`);
+	}
+
+	if (end !== undefined && end >= 1) {
+		embeddedSearchParams.set('end', String(end));
 	}
 
 	return {
