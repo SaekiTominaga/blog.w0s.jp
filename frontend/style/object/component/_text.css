@@ -29,14 +29,10 @@
 /* ===== セルフリンク <a href="#foo">§</a> ===== */
 .c-self-link {
 	display: inline flex;
-	align-items: center;
 	justify-content: center;
 	outline-width: var(--outline-width-bold);
-	min-block-size: var(--self-link-size);
 	min-inline-size: var(--self-link-size);
 	text-decoration: none;
-	color: var(--link-color);
-	font-size: calc(100% / pow(var(--font-ratio), 3));
 }
 
 /* ===== ボタン ===== */
