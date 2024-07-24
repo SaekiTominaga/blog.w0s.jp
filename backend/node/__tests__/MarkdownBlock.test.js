@@ -556,7 +556,7 @@ test('blockquote', async (t) => {
 <figure>
 	<blockquote class="p-quote" lang="en" cite="http://example.com"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta">
-		<span class="c-caption__text"><a href="http://example.com">引用元</a><small class="c-domain">(<code>example.com</code>)</small> </span>
+		<span class="c-caption__text"><a href="http://example.com">引用元</a><small class="c-domain">(<code>example.com</code>)</small></span>
 	</figcaption>
 </figure>
 `.trim(),
