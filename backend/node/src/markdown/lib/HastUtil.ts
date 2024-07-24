@@ -108,11 +108,6 @@ export default class MdastUtil {
 					],
 				});
 			}
-
-			info.push({
-				type: 'text',
-				value: ' ',
-			});
 		}
 
 		return info;

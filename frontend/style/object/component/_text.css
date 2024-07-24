@@ -139,18 +139,13 @@
 
 /* ===== ドメイン表記 ===== */
 .c-domain {
-	--_font-size: calc(100% / pow(var(--font-ratio), 1));
-
 	word-break: break-all;
 	color: var(--color-gray);
-	font-size: var(--_font-size);
+	font-size: calc(100% / pow(var(--font-ratio), 1));
 
-	&:has(img) {
-		--_font-size: inherit;
-	}
-
-	a + & {
-		margin-inline-start: 0.25em;
+	&::before,
+	&::after {
+		content: " ";
 	}
 
 	& > img {
