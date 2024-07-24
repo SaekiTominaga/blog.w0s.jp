@@ -10,7 +10,6 @@ module.exports = {
 		'removeUselessDefs',
 		'removeEditorsNSData',
 		'removeEmptyAttrs',
-		'removeHiddenElems',
 		'removeEmptyText',
 		'removeEmptyContainers',
 		'cleanupEnableBackground',
