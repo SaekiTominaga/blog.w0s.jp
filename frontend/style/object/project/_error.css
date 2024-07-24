@@ -28,25 +28,6 @@
 	font-size: calc(100% * pow(var(--font-ratio), 2));
 }
 
-/* ===== トップページの埋め込み ===== */
-.p-err-topthumb {
-	margin-block-start: 4vb;
-}
-
-.p-err-topthumb__portal {
-	--portal-width: calc(var(--page-max-width) / 2);
-	--portal-height: calc(var(--portal-width) * 0.5625); /* 16:9 */
-	--portal-scale: 0.5;
-	--portal-animation-duration: 0.5s;
-	--portal-outline-width: 2px;
-	--portal-outline-color: var(--outline-color);
-	--portal-outline-offset: 3px;
-
-	@media (prefers-reduced-motion) {
-		--portal-animation-duration: 0.001s;
-	}
-}
-
 /* ===== サイト内検索 ===== */
 .p-err-search {
 	display: block grid;
