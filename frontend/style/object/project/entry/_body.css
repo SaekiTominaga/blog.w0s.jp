@@ -50,7 +50,7 @@
 	}
 }
 
-.p-section__hdg {
+.p-entry-section__hdg {
 	display: block flex;
 	gap: 0.5em;
 	align-items: center;
