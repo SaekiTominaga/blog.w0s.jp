@@ -39,7 +39,7 @@ export const xHeadingToHast = (state: H, node: XHeading): HastElementContent | H
 		type: 'element',
 		tagName: 'div',
 		properties: {
-			className: ['p-section__hdg'],
+			className: ['p-entry-section__hdg'],
 		},
 		children: [
 			heading,
