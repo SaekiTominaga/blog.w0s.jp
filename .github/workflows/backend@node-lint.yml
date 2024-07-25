@@ -7,7 +7,7 @@ on:
       - 'backend/node/__tests__/*.js'
       - 'backend/node/@types/*.d.ts'
       - 'backend/node/src/**/*.ts'
-      - 'backend/.eslintrc.json'
+      - 'backend/eslint.config.js'
   push:
     branches:
       - main
@@ -15,7 +15,7 @@ on:
       - 'backend/node/__tests__/*.js'
       - 'backend/node/@types/*.d.ts'
       - 'backend/node/src/**/*.ts'
-      - 'backend/.eslintrc.json'
+      - 'backend/eslint.config.js'
   workflow_dispatch:
 
 jobs:

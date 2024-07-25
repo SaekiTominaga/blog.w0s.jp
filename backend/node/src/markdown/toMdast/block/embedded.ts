@@ -213,7 +213,6 @@ const toMdast = (): Plugin => {
 					} else if (/^[1-9][0-9]*(-[1-9][0-9]*)?s$/.test(meta)) {
 						/* 開始・終了位置（秒） */
 						const [metaStart, metaEnd] = meta.substring(0, meta.length - 1).split('-');
-						console.debug(metaStart, metaEnd);
 
 						start = Number(metaStart);
 						if (metaEnd !== undefined) {
@@ -287,13 +286,7 @@ const toMdast = (): Plugin => {
 						type: nameAmazonItem,
 						asin: asin,
 						title: title,
-						image:
-							imageId !== undefined
-								? {
-										id: imageId,
-										size: imageSize,
-									}
-								: undefined,
+						image: imageId !== undefined ? { id: imageId, size: imageSize } : undefined,
 					};
 
 					items.push(item);
