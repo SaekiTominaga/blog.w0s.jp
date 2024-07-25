@@ -5,13 +5,13 @@ on:
       - main
     paths:
       - 'frontend/build/*.js'
-      - 'frontend/.eslintrc.json'
+      - 'frontend/eslint.config.js'
   push:
     branches:
       - main
     paths:
       - 'frontend/build/*.js'
-      - 'frontend/.eslintrc.json'
+      - 'frontend/eslint.config.js'
   workflow_dispatch:
 
 jobs:
