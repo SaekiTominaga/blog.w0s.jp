@@ -161,7 +161,7 @@
 	line-height: var(--line-height-nowrap);
 	white-space: nowrap;
 	color: var(--_color);
-	font-family: var(--font-yu-gothic); /* Chrome で下側の空きが出てしまう対策 */
+	font-family: system-ui, sans-serif; /* Chrome で下側の空きが出てしまう対策 */
 	font-size: var(--_font-size);
 	font-weight: var(--font-weight-bold);
 
