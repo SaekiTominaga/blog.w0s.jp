@@ -37,9 +37,8 @@
 
 	/* ===== フォント ===== */
 	--font-ratio: 1.12;
-	--font-yu-gothic: system-ui, -apple-system, "YuGothic", "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif; /* 遊ゴシック体（'-apple-system' は macOS, iOS の Firefox 向け） */
-	--font-kaku-gothic: system-ui, -apple-system, "Hiragino Sans", "Meiryo", sans-serif; /* 角ゴシック体（'-apple-system' は macOS, iOS の Firefox 向け） */
-	--font-mincho: "YuMincho", "Yu Mincho", serif; /* 明朝体 */
+	--font-yu-gothic: "YuGothic", "Yu Gothic", sans-serif; /* 遊ゴシック */
+	--font-yu-mincho: "YuMincho", "Yu Mincho", serif; /* 遊明朝 */
 	--font-monospace: monospace, serif; /* 等幅（'serif' 指定は Chrome 13px 対策） */
 	--font-weight-normal: 500; /* Windows + 游ゴシック 対策で 400 より大きな値とする */
 	--font-weight-bold: 700;

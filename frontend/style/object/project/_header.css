@@ -14,7 +14,7 @@
 .p-header-site__name {
 	text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
 	color: #f00;
-	font: 700 2rem / var(--line-height-narrow) var(--font-mincho);
+	font: 700 2rem / var(--line-height-narrow) var(--font-yu-mincho);
 	font-feature-settings: "palt";
 
 	& :any-link {
