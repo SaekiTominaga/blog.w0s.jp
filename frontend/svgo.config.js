@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	plugins: [
 		'cleanupAttrs',
 		'mergeStyles',

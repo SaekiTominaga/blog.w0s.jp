@@ -22,7 +22,7 @@
 		"_js-prod:lint": "npm run js-lint",
 		"_js-prod:build": "rollup -c --environment build:production",
 		"_js-prod:compress": "brotli-cli compress -g public/script/*.{js,mjs} -m text",
-		"_svg-prod:build": "node build/svg.js -i image -o public -c svgo.config.cjs",
+		"_svg-prod:build": "node build/svg.js -i image -o public -c svgo.config.js",
 		"_svg-prod:compress": "brotli-cli compress -g public/image/**/*.svg -g public/favicon.ico -m text"
 	},
 	"dependencies": {
