@@ -29,14 +29,6 @@ export default tseslint.config(
 		},
 	},
 	{
-		files: ['script/trusted-types.ts'],
-		languageOptions: {
-			parserOptions: {
-				sourceType: 'script',
-			},
-		},
-	},
-	{
 		files: ['script/analytics.ts'],
 		languageOptions: {
 			parserOptions: {
@@ -44,9 +36,20 @@ export default tseslint.config(
 			},
 		},
 		rules: {
+			'no-implicit-globals': 'off',
 			'no-multi-assign': 'off',
 			'no-underscore-dangle': 'off',
 			'no-var': 'off',
+		},
+	},
+	{
+		files: ['script/trusted-types.ts'],
+		languageOptions: {
+			parserOptions: {
+				sourceType: 'script',
+			},
+		},
+		rules: {
 			strict: 'off',
 		},
 	},
