@@ -5,6 +5,7 @@ import express, { type NextFunction, type Request, type Response } from 'express
 import Log4js from 'log4js';
 import { isMatch } from 'matcher';
 import multer from 'multer';
+import type { NoName as Configure } from '../../configure/type/common.js';
 import CategoryController from './controller/CategoryController.js';
 import EntryController from './controller/EntryController.js';
 import HttpBasicAuth from './util/HttpBasicAuth.js';
@@ -12,7 +13,6 @@ import HttpResponse from './util/HttpResponse.js';
 import ListController from './controller/ListController.js';
 import PostController from './controller/PostController.js';
 import PreviewController from './controller/api/PreviewController.js';
-import type { NoName as Configure } from '../../configure/type/common.js';
 
 /* 設定ファイル読み込み */
 const config = JSON.parse((await fs.promises.readFile('configure/common.json')).toString()) as Configure;
