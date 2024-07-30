@@ -20,7 +20,7 @@
 		"@rollup/plugin-terser": "^0.4.4",
 		"@rollup/plugin-typescript": "^11.1.6",
 		"@types/eslint": "^8.56.11",
-		"@w0s/eslint-config": "^7.0.0-rc.2",
+		"@w0s/eslint-config": "^7.0.0-rc.3",
 		"@w0s/markuplint-config": "^3.7.1",
 		"@w0s/stylelint-config": "^4.7.0",
 		"@w0s/tsconfig": "^1.4.1",
