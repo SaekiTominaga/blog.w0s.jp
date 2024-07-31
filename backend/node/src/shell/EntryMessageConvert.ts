@@ -49,8 +49,8 @@ const convert = (id: number, message: string): string => {
 	return convertedMessage;
 };
 
-const entryId = argsParsedValues['id'] !== undefined ? Number(argsParsedValues['id']) : undefined;
-const dbUpdate = argsParsedValues['dbupdate'];
+const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
+const dbUpdate = argsParsedValues.dbupdate;
 
 /* DB からデータ取得 */
 const entryiesMessageDto = await dao.getEntriesMessage(entryId);

@@ -22,7 +22,7 @@ export default class PostBluesky {
 	constructor(configCommon: ConfigCommon) {
 		this.#configCommon = configCommon;
 
-		this.#config = JSON.parse(fs.readFileSync('configure/bluesky.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/bluesky.json', 'utf8')) as Configure;
 	}
 
 	/**
@@ -50,7 +50,7 @@ export default class PostBluesky {
 
 		const response = await agent.post({
 			text: richText.text,
-			facets: richText.facets!,
+			facets: richText.facets ?? [],
 			langs: ['ja'],
 			createdAt: new Date().toISOString(),
 		});

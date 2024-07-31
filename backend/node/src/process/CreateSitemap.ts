@@ -28,7 +28,7 @@ export default class CreateSitemap {
 	constructor(configCommon: ConfigCommon) {
 		this.#configCommon = configCommon;
 
-		this.#config = JSON.parse(fs.readFileSync('configure/sitemap.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/sitemap.json', 'utf8')) as Configure;
 	}
 
 	/**

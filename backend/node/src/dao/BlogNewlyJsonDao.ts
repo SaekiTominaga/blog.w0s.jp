@@ -11,6 +11,10 @@ export default class BlogNewlyJsonDao extends BlogDao {
 	 * @returns ファイル名
 	 */
 	async getCategoryGroupMasterFileName(): Promise<string[]> {
+		interface Select {
+			file_name: string;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -22,7 +26,7 @@ export default class BlogNewlyJsonDao extends BlogDao {
 				file_name IS NOT NULL
 		`);
 
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const fileNames: string[] = [];
@@ -42,6 +46,11 @@ export default class BlogNewlyJsonDao extends BlogDao {
 	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
 	async getEntries(limit: number, catgroupId?: string): Promise<BlogView.NewlyEntry[]> {
+		interface Select {
+			id: number;
+			title: string;
+		}
+
 		const dbh = await this.getDbh();
 
 		let sth: sqlite.Statement;
@@ -90,7 +99,7 @@ export default class BlogNewlyJsonDao extends BlogDao {
 				':limit': limit,
 			});
 		}
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const entries: BlogView.NewlyEntry[] = [];

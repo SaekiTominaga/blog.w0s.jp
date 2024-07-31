@@ -7,7 +7,6 @@ import BlogListDao from '../dao/BlogListDao.js';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import HttpResponse from '../util/HttpResponse.js';
-import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import MarkdownTitle from '../markdown/Title.js';
 import type { NoName as Configure } from '../../../configure/type/list.js';
@@ -25,7 +24,7 @@ export default class ListController extends Controller implements ControllerInte
 	constructor(configCommon: ConfigureCommon) {
 		super(configCommon);
 
-		this.#config = JSON.parse(fs.readFileSync('configure/list.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/list.json', 'utf8')) as Configure;
 	}
 
 	/**
@@ -36,7 +35,7 @@ export default class ListController extends Controller implements ControllerInte
 		const httpResponse = new HttpResponse(req, res, this.configCommon);
 
 		const requestQuery: BlogRequest.List = {
-			page: RequestUtil.number(req.params['page']) ?? 1,
+			page: req.params['page'] !== undefined ? Number(req.params['page']) : 1,
 		};
 
 		const dao = new BlogListDao(this.configCommon.sqlite.db.blog);

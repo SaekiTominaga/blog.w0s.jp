@@ -49,7 +49,7 @@ export default class PostController extends Controller implements ControllerInte
 	constructor(configCommon: ConfigureCommon, env: Express.Env) {
 		super(configCommon);
 
-		this.#config = JSON.parse(fs.readFileSync('configure/post.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/post.json', 'utf8')) as Configure;
 
 		this.#env = env;
 	}
@@ -71,7 +71,7 @@ export default class PostController extends Controller implements ControllerInte
 
 		const requestQuery: BlogRequest.Post = {
 			id: RequestUtil.number(req.query['id'] ?? req.body['id']),
-			title: RequestUtil.string(req.body['title']),
+			title: RequestUtil.string(req.body['title'] as string | undefined),
 			description: RequestUtil.string(req.body['description']),
 			message: RequestUtil.string(req.body['message']),
 			category: RequestUtil.strings(req.body['category']),
@@ -139,7 +139,11 @@ export default class PostController extends Controller implements ControllerInte
 						tags: requestQuery.social_tag?.split(',') ?? null,
 					};
 
-					const [postMastodonResult, postBlueskyResult, postMisskeyResult] = await Promise.all([this.#postMastodon(entryData), this.#postBluesky(entryData), this.#postMisskey(entryData)]);
+					const [postMastodonResult, postBlueskyResult, postMisskeyResult] = await Promise.all([
+						this.#postMastodon(entryData),
+						this.#postBluesky(entryData),
+						this.#postMisskey(entryData),
+					]);
 					topicPostResults.add(postMastodonResult);
 					topicPostResults.add(postBlueskyResult);
 					topicPostResults.add(postMisskeyResult);

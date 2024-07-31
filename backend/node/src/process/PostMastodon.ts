@@ -25,7 +25,7 @@ export default class PostMastodon {
 	constructor(configCommon: ConfigCommon, env: Express.Env) {
 		this.#configCommon = configCommon;
 
-		this.#config = JSON.parse(fs.readFileSync('configure/mastodon.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/mastodon.json', 'utf8')) as Configure;
 
 		this.#env = env;
 	}

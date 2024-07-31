@@ -16,6 +16,11 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 
 		const messages = new Map<number, string>();
 		if (entryId === undefined) {
+			interface Select {
+				id: number;
+				message: string;
+			}
+
 			const sth = await dbh.prepare(`
 				SELECT
 					id,
@@ -23,13 +28,17 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 				FROM
 					d_topic
 			`);
-			const rows = await sth.all();
+			const rows: Select[] = await sth.all();
 			await sth.finalize();
 
 			for (const row of rows) {
 				messages.set(row.id, row.message);
 			}
 		} else {
+			interface Select {
+				message: string;
+			}
+
 			const sth = await dbh.prepare(`
 				SELECT
 					message
@@ -41,10 +50,12 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 			await sth.bind({
 				':id': entryId,
 			});
-			const row = await sth.get();
+			const row: Select | undefined = await sth.get();
 			await sth.finalize();
 
-			messages.set(entryId, row.message);
+			if (row !== undefined) {
+				messages.set(entryId, row.message);
+			}
 		}
 
 		return messages;

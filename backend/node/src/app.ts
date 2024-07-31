@@ -22,7 +22,7 @@ Log4js.configure(config.logger.path);
 const logger = Log4js.getLogger();
 
 const app = express();
-const env: Express.Env = app.get('env');
+const env = app.get('env') as Express.Env;
 
 app.set('trust proxy', true);
 app.set('views', config.views);

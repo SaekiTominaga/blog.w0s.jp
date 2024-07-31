@@ -25,7 +25,7 @@ const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'u
 
 const dao = new BlogEntryMessageConvertDao(config.sqlite.db.blog);
 
-const entryId = argsParsedValues['id'] !== undefined ? Number(argsParsedValues['id']) : undefined;
+const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
 
 /* DB からデータ取得 */
 const entryiesMessageDto = await dao.getEntriesMessage(entryId);

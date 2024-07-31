@@ -13,6 +13,18 @@ export default class BlogPostDao extends BlogDao {
 	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
 	async getEntries(limit: number): Promise<BlogDb.Entry[]> {
+		interface Select {
+			id: number;
+			title: string;
+			description: string | null;
+			message: string;
+			image_internal: string | null;
+			image_external: string | null;
+			created_at: number;
+			updated_at: number | null;
+			public: number;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -41,7 +53,7 @@ export default class BlogPostDao extends BlogDao {
 			':public': true,
 			':limit': limit,
 		});
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const entries: BlogDb.Entry[] = [];
