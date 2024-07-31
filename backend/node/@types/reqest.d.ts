@@ -31,20 +31,7 @@ declare namespace BlogRequest {
 		action_media: boolean;
 	}
 
-	interface Amazon {
-		asin: string | null;
-		action_delete: boolean;
-	}
-
-	interface ApiAmazonImage {
-		asin: string[];
-	}
-
 	interface ApiPreview {
 		markdown: string | null;
-	}
-
-	interface ApiTweetMedia {
-		id: string[];
 	}
 }
