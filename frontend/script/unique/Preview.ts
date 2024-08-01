@@ -41,10 +41,10 @@ export default class Preview {
 			this.#previewElement.textContent = `"${response.url}" is ${String(response.status)} ${response.statusText}`;
 		}
 
-		const responseJson: {
+		const responseJson = (await response.json()) as {
 			html: string;
 			messages: VFileMessage[];
-		} = await response.json();
+		};
 
 		this.#messages(responseJson.messages);
 		this.#preview(responseJson.html);

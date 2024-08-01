@@ -1,10 +1,9 @@
 // @ts-check
 
-import tseslint from 'typescript-eslint';
 import w0sConfig from '@w0s/eslint-config';
 
 /** @type {import("@typescript-eslint/utils/ts-eslint").FlatConfig.ConfigArray} */
-export default tseslint.config(
+export default [
 	...w0sConfig,
 	{
 		ignores: ['public/script/*.js', 'public/script/*.mjs'],
@@ -29,14 +28,6 @@ export default tseslint.config(
 		},
 	},
 	{
-		files: ['script/trusted-types.ts'],
-		languageOptions: {
-			parserOptions: {
-				sourceType: 'script',
-			},
-		},
-	},
-	{
 		files: ['script/analytics.ts'],
 		languageOptions: {
 			parserOptions: {
@@ -44,16 +35,21 @@ export default tseslint.config(
 			},
 		},
 		rules: {
+			'no-implicit-globals': 'off',
 			'no-multi-assign': 'off',
 			'no-underscore-dangle': 'off',
 			'no-var': 'off',
-			strict: 'off',
 		},
 	},
 	{
-		files: ['rollup.config.js'],
+		files: ['script/trusted-types.ts'],
+		languageOptions: {
+			parserOptions: {
+				sourceType: 'script',
+			},
+		},
 		rules: {
-			'import/no-extraneous-dependencies': 'off',
+			strict: 'off',
 		},
 	},
-);
+];

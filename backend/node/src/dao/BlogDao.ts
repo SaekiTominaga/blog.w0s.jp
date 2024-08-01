@@ -71,7 +71,7 @@ export default class BlogDao {
 		await sth.bind({
 			':public': true,
 		});
-		const row = await sth.get();
+		const row: { count: number } | undefined = await sth.get();
 		await sth.finalize();
 
 		if (row === undefined) {
@@ -87,6 +87,10 @@ export default class BlogDao {
 	 * @returns 最終更新日時
 	 */
 	async getLastModified(): Promise<Date> {
+		interface Select {
+			modified: number;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -98,14 +102,14 @@ export default class BlogDao {
 				modified DESC
 			LIMIT 1
 		`);
-		const row = await sth.get();
+		const row: Select | undefined = await sth.get();
 		await sth.finalize();
 
 		if (row === undefined) {
 			throw new Error('No data is registered in the `d_info` table.');
 		}
 
-		return new Date(Number(row.modified * 1000));
+		return new Date(row.modified * 1000);
 	}
 
 	/**
@@ -116,6 +120,11 @@ export default class BlogDao {
 	 * @returns 新着記事
 	 */
 	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
+		interface Select {
+			id: number;
+			title: string;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -134,13 +143,13 @@ export default class BlogDao {
 			':public': true,
 			':limit': limit,
 		});
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const newlyEntries: NewlyEntry[] = [];
 		for (const row of rows) {
 			newlyEntries.push({
-				id: Number(row.id),
+				id: row.id,
 				title: row.title,
 			});
 		}
@@ -154,6 +163,12 @@ export default class BlogDao {
 	 * @returns カテゴリー毎の記事件数
 	 */
 	async getEntryCountOfCategory(): Promise<EntryCountOfCategory[]> {
+		interface Select {
+			group_name: string;
+			name: string;
+			count: number;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -180,7 +195,7 @@ export default class BlogDao {
 		await sth.bind({
 			':public': true,
 		});
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const entryCountOfCategory: EntryCountOfCategory[] = [];

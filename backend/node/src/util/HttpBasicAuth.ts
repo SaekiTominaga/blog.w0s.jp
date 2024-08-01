@@ -35,6 +35,7 @@ export default class HttpBasicAuth {
 	 * @returns true if the authentication passes
 	 */
 	async htpasswd(filePath: string): Promise<boolean> {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 		const result = await (htpasswd.authenticate({
 			username: this.#credentials?.username,
 			password: this.#credentials?.password,

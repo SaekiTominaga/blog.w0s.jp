@@ -8,7 +8,6 @@ import type ControllerInterface from '../ControllerInterface.js';
 import Markdown from '../markdown/Markdown.js';
 import MarkdownTitle from '../markdown/Title.js';
 import HttpResponse from '../util/HttpResponse.js';
-import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import type { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import type { NoName as Configure } from '../../../configure/type/entry.js';
@@ -25,7 +24,7 @@ export default class EntryController extends Controller implements ControllerInt
 	constructor(configCommon: ConfigureCommon) {
 		super(configCommon);
 
-		this.#config = JSON.parse(fs.readFileSync('configure/entry.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/entry.json', 'utf8')) as Configure;
 	}
 
 	/**
@@ -36,7 +35,7 @@ export default class EntryController extends Controller implements ControllerInt
 		const httpResponse = new HttpResponse(req, res, this.configCommon);
 
 		const requestQuery: BlogRequest.Entry = {
-			entry_id: RequestUtil.number(req.params['entry_id'])!,
+			entry_id: Number(req.params['entry_id']),
 		};
 
 		const dao = new BlogEntryDao(this.configCommon.sqlite.db.blog);

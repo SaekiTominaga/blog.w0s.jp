@@ -27,6 +27,16 @@ export default class BlogEntryDao extends BlogDao {
 	 * @returns 記事データ
 	 */
 	async getEntry(entryId: number): Promise<BlogDb.Entry | null> {
+		interface Select {
+			title: string;
+			description: string | null;
+			message: string;
+			image_internal: string | null;
+			image_external: string | null;
+			created_at: number;
+			updated_at: number | null;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -48,7 +58,7 @@ export default class BlogEntryDao extends BlogDao {
 			':id': entryId,
 			':public': true,
 		});
-		const row = await sth.get();
+		const row: Select | undefined = await sth.get();
 		await sth.finalize();
 
 		if (row === undefined) {
@@ -76,6 +86,12 @@ export default class BlogEntryDao extends BlogDao {
 	 * @returns カテゴリー情報
 	 */
 	async getCategories(entryId: number): Promise<Category[]> {
+		interface Select {
+			id: string;
+			name: string;
+			file_name: string | null;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -98,7 +114,7 @@ export default class BlogEntryDao extends BlogDao {
 		await sth.bind({
 			':id': entryId,
 		});
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const categories: Category[] = [];
@@ -121,6 +137,14 @@ export default class BlogEntryDao extends BlogDao {
 	 * @returns 関連記事データ
 	 */
 	async getRelations(entryId: number): Promise<Relation[]> {
+		interface Select {
+			id: number;
+			title: string;
+			image_internal: string | null;
+			image_external: string | null;
+			created: number;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -144,7 +168,7 @@ export default class BlogEntryDao extends BlogDao {
 			':id': entryId,
 			':public': true,
 		});
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const relations: Relation[] = [];

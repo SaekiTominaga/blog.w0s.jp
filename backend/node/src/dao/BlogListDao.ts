@@ -22,6 +22,15 @@ export default class BlogListDao extends BlogDao {
 	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
 	async getEntries(page: number, limit: number): Promise<Entry[]> {
+		interface Select {
+			id: number;
+			title: string;
+			image_internal: string | null;
+			image_external: string | null;
+			created: number;
+			last_updated: number | null;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -46,7 +55,7 @@ export default class BlogListDao extends BlogDao {
 			':limit': limit,
 			':offset': (page - 1) * limit,
 		});
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const entries: Entry[] = [];
@@ -56,8 +65,8 @@ export default class BlogListDao extends BlogDao {
 				title: row.title,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				created: new Date(Number(row.created) * 1000),
-				last_updated: row.last_updated !== null ? new Date(Number(row.last_updated) * 1000) : null,
+				created: new Date(row.created * 1000),
+				last_updated: row.last_updated !== null ? new Date(row.last_updated * 1000) : null,
 			});
 		}
 

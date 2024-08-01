@@ -77,7 +77,7 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 	if (citeurl !== undefined) {
 		blockquoteAttribute['cite'] = citeurl;
 	} else if (citeisbn !== undefined) {
-		// URL と ISBN が両方指定されていた場合、ISBN は無視される
+		/* URL と ISBN が両方指定されていた場合、ISBN は無視される */
 		blockquoteAttribute['cite'] = `urn:ISBN:${citeisbn}`;
 	}
 

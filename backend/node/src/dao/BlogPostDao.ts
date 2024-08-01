@@ -1,5 +1,5 @@
-import BlogDao from './BlogDao.js';
 import DbUtil from '../util/DbUtil.js';
+import BlogDao from './BlogDao.js';
 
 interface CategoryMaster {
 	group_name: string;
@@ -29,6 +29,10 @@ export default class BlogPostDao extends BlogDao {
 	 * @returns 最新記事 ID （記事が1件も登録されていない場合は 0 ）
 	 */
 	async getLatestId(): Promise<number> {
+		interface Select {
+			id: number;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -41,7 +45,7 @@ export default class BlogPostDao extends BlogDao {
 			LIMIT 1
 		`);
 
-		const row = await sth.get();
+		const row: Select | undefined = await sth.get();
 		await sth.finalize();
 
 		if (row === undefined) {
@@ -90,6 +94,12 @@ export default class BlogPostDao extends BlogDao {
 	 * @returns カテゴリー情報
 	 */
 	async getCategoryMaster(): Promise<CategoryMaster[]> {
+		interface Select {
+			group_name: string;
+			id: string;
+			name: string;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -107,7 +117,7 @@ export default class BlogPostDao extends BlogDao {
 				c.sort
 		`);
 
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const categories: CategoryMaster[] = [];
@@ -131,6 +141,10 @@ export default class BlogPostDao extends BlogDao {
 	 * @returns 同一の記事タイトルがあれば true
 	 */
 	async isExistsTitle(title: string, topicId: number | null): Promise<boolean> {
+		interface Select {
+			count: number;
+		}
+
 		const dbh = await this.getDbh();
 
 		if (topicId !== null) {
@@ -148,26 +162,26 @@ export default class BlogPostDao extends BlogDao {
 				':title': title,
 			});
 
-			const row = await sth.get();
+			const row: Select | undefined = await sth.get();
 			await sth.finalize();
 
 			return row !== undefined && row.count > 0;
 		}
 
 		const sth = await dbh.prepare(`
-				SELECT
-					COUNT() AS count
-				FROM
-					d_topic
-				WHERE
-					title = :title
-				LIMIT 1
-			`);
+			SELECT
+				COUNT() AS count
+			FROM
+				d_topic
+			WHERE
+				title = :title
+			LIMIT 1
+		`);
 		await sth.bind({
 			':title': title,
 		});
 
-		const row = await sth.get();
+		const row: Select | undefined = await sth.get();
 		await sth.finalize();
 
 		return row !== undefined && row.count > 0;
@@ -441,6 +455,17 @@ export default class BlogPostDao extends BlogDao {
 	 * @returns 記事データ
 	 */
 	async getReviseData(id: number): Promise<ReviseData | null> {
+		interface Select {
+			title: string;
+			description: string | null;
+			message: string;
+			category_ids: string | null;
+			image: string | null;
+			image_external: string | null;
+			relation_ids: string | null;
+			public: number;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -462,7 +487,7 @@ export default class BlogPostDao extends BlogDao {
 			':id': id,
 		});
 
-		const row = await sth.get();
+		const row: Select | undefined = await sth.get();
 		await sth.finalize();
 
 		if (row === undefined) {

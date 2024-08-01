@@ -31,7 +31,7 @@ export default class CreateFeed {
 	constructor(configCommon: ConfigCommon) {
 		this.#configCommon = configCommon;
 
-		this.#config = JSON.parse(fs.readFileSync('configure/feed.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/feed.json', 'utf8')) as Configure;
 	}
 
 	/**

@@ -9,7 +9,6 @@ import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import MarkdownTitle from '../markdown/Title.js';
 import HttpResponse from '../util/HttpResponse.js';
-import RequestUtil from '../util/RequestUtil.js';
 import Sidebar from '../util/Sidebar.js';
 import type { NoName as Configure } from '../../../configure/type/category.js';
 import type { NoName as ConfigureCommon } from '../../../configure/type/common.js';
@@ -26,7 +25,7 @@ export default class CategoryController extends Controller implements Controller
 	constructor(configCommon: ConfigureCommon) {
 		super(configCommon);
 
-		this.#config = JSON.parse(fs.readFileSync('configure/category.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/category.json', 'utf8')) as Configure;
 	}
 
 	/**
@@ -37,7 +36,7 @@ export default class CategoryController extends Controller implements Controller
 		const httpResponse = new HttpResponse(req, res, this.configCommon);
 
 		const requestQuery: BlogRequest.Category = {
-			category_name: RequestUtil.string(req.params['category_name'])!,
+			category_name: req.params['category_name']!,
 		};
 
 		const dao = new BlogCategoryDao(this.configCommon.sqlite.db.blog);

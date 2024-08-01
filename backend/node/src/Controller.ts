@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import Log4js from 'log4js';
 import prettier from 'prettier';
+import type { NoName as Configure } from '../../configure/type/common.js';
 import Compress from './util/Compress.js';
 import HttpResponse from './util/HttpResponse.js';
-import type { NoName as Configure } from '../../configure/type/common.js';
 
 export default class Controller {
 	protected readonly logger: Log4js.Logger; // Logger

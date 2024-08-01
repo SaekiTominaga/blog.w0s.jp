@@ -1,5 +1,5 @@
-import BlogDao from './BlogDao.js';
 import DbUtil from '../util/DbUtil.js';
+import BlogDao from './BlogDao.js';
 
 /**
  * サイトマップ
@@ -13,6 +13,12 @@ export default class BlogSitemapDao extends BlogDao {
 	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
 	async getEntries(limit: number): Promise<BlogView.SitemapEntry[]> {
+		interface Select {
+			id: number;
+			created_at: number;
+			updated_at: number | null;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -33,7 +39,7 @@ export default class BlogSitemapDao extends BlogDao {
 			':limit': limit,
 		});
 
-		const rows = await sth.all();
+		const rows: Select[] = await sth.all();
 		await sth.finalize();
 
 		const entries: BlogView.SitemapEntry[] = [];

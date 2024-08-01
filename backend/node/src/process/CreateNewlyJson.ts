@@ -32,7 +32,7 @@ export default class CreateNewlyJson {
 	constructor(configCommon: ConfigCommon) {
 		this.#configCommon = configCommon;
 
-		this.#config = JSON.parse(fs.readFileSync('configure/newly-json.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/newly-json.json', 'utf8')) as Configure;
 	}
 
 	/**

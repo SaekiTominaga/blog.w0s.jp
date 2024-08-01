@@ -2,7 +2,6 @@ import type { Request, Response } from 'express';
 import Controller from '../../Controller.js';
 import type ControllerInterface from '../../ControllerInterface.js';
 import Markdown from '../../markdown/Markdown.js';
-import RequestUtil from '../../util/RequestUtil.js';
 
 /**
  * 本文プレビュー
@@ -14,7 +13,7 @@ export default class PreviewController extends Controller implements ControllerI
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
 		const requestQuery: BlogRequest.ApiPreview = {
-			markdown: RequestUtil.string(req.body['md']),
+			markdown: (req.body['md'] as string | undefined) ?? null,
 		};
 
 		if (requestQuery.markdown === null) {

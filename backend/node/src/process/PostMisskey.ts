@@ -24,7 +24,7 @@ export default class PostMisskey {
 	constructor(configCommon: ConfigCommon, env: Express.Env) {
 		this.#configCommon = configCommon;
 
-		this.#config = JSON.parse(fs.readFileSync('configure/misskey.json', 'utf8'));
+		this.#config = JSON.parse(fs.readFileSync('configure/misskey.json', 'utf8')) as Configure;
 
 		this.#env = env;
 	}
@@ -50,7 +50,7 @@ export default class PostMisskey {
 				visibility: this.#env === 'development' ? 'specified' : this.#config.visibility,
 			}), // https://misskey.io/api-doc#tag/notes
 		});
-		const responseJson = JSON.parse(await response.text());
+		const responseJson = JSON.parse(await response.text()) as MisskryAPIResponse.NotesCreate;
 		if (!response.ok) {
 			throw new Error(responseJson.error.message);
 		}
