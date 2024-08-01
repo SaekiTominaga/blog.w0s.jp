@@ -9,6 +9,12 @@ export default [
 		ignores: ['node/dist/**/*.js'],
 	},
 	{
+		files: ['node/__tests__/**/*.js'],
+		rules: {
+			'import/no-unresolved': 'off', // Github Actions 環境では /dist/ ファイルが存在しないためテスト不可
+		},
+	},
+	{
 		files: ['node/src/markdown/**/*.ts'],
 		rules: {
 			'arrow-body-style': 'off',
