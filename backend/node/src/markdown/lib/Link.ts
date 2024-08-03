@@ -77,7 +77,7 @@ export default class Link {
 		}
 
 		/* ページ内リンク */
-		const pageLinkMatchGroups = mdUrl.match(new RegExp(`^#(?<id>${config.sectionIdPrefix}.+)`))?.groups;
+		const pageLinkMatchGroups = mdUrl.match(/^#(?<id>.+)/)?.groups;
 		if (pageLinkMatchGroups !== undefined) {
 			const { id } = pageLinkMatchGroups;
 

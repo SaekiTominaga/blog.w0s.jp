@@ -1,7 +1,6 @@
 export const config = {
 	lang: 'ja',
 	headingDepthLimit: 2,
-	sectionIdPrefix: 'section-',
 	amazonTrackingId: 'w0s.jp-22',
 	linkHostIcon: [
 		{
