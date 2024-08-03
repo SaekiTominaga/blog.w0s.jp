@@ -1,22 +1,16 @@
 /** @type {import('@markuplint/ml-config').Config} */
 export default {
-	extends: ['./node_modules/@w0s/markuplint-config/.markuplintrc'],
+	extends: ['@w0s/markuplint-config'],
 	parser: {
 		'.ejs$': '@markuplint/ejs-parser',
 	},
-	excludeFiles: ['views/feed/*.ejs', 'views/social/*.ejs', 'views/xml/*.ejs'],
+	excludeFiles: ['views/feed', 'views/social', 'views/xml'],
 	rules: {
 		'disallowed-element': ['base', 'style', 'h5', 'h6', 's', 'i', 'u', 'wbr', 'area'],
-		'permitted-contents': false,
-		'label-has-control': false,
-		'require-accessible-name': false,
-		'required-h1': false,
 		'class-naming': [
 			'/^[lcpu]-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$/',
 			'/^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/',
 			'/^js-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/',
-			'/^hljs-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/',
-			'/^language-[a-z]+$/',
 			'/^adsbygoogle$/',
 		],
 	},
@@ -30,7 +24,7 @@ export default {
 		{
 			selector: 'aside',
 			rules: {
-				'landmark-roles': false,
+				'landmark-roles': false, // <aside class="p-amazon">
 			},
 		},
 		{
@@ -42,36 +36,15 @@ export default {
 		{
 			selector: 'table',
 			rules: {
+				'require-accessible-name': false,
 				'required-element': ['thead'],
 			},
 		},
 		{
-			selector: '.p-post-preview__messages',
+			selector: 'table.p-post-preview__messages',
 			rules: {
 				'required-element': false,
 				'wai-aria': false,
-			},
-		},
-		{
-			selector: '.p-post-preview__messages > tbody',
-			rules: {
-				'permitted-contents': false,
-			},
-		},
-		{
-			selector: '#image-preview',
-			rules: {
-				'wai-aria': false,
-			},
-		},
-		{
-			selector: 'template time',
-			rules: {
-				'invalid-attr': {
-					options: {
-						ignoreAttrNamePrefix: ['datetime'],
-					},
-				},
 			},
 		},
 	],
@@ -87,9 +60,23 @@ export default {
 			selector: '.p-code__code',
 			inheritance: true,
 			rules: {
-				'no-empty-palpable-content': false,
 				'class-naming': false,
+				'no-empty-palpable-content': false,
 			},
 		},
 	],
+	overrideMode: 'merge',
+	overrides: {
+		'**/*.ejs': {
+			rules: {
+				'permitted-contents': false,
+				'label-has-control': false,
+			},
+		},
+		'views/list.ejs': {
+			rules: {
+				'required-h1': false,
+			},
+		},
+	},
 };
