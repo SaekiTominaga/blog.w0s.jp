@@ -4,9 +4,9 @@
 
 		<w0s-tab storage-key="sidebar-category-tab">
 			<%_ for (const [group_name, ] of entryCountOfCategoryList) { _%>
-			<a href="#<%= group_name %>" slot="tab" class="p-sidebar-categories__item"><%= group_name %></a>
+			<a href="#category-tab-<%= group_name %>" slot="tab" class="p-sidebar-categories__item"><%= group_name %></a>
 			<%_ } _%><%_ for (const [group_name, countDataList] of entryCountOfCategoryList) { _%>
-			<div slot="tabpanel" class="p-sidebar-categories__panel" id="<%= group_name %>">
+			<div slot="tabpanel" class="p-sidebar-categories__panel" id="category-tab-<%= group_name %>">
 				<%_ if (typeof(requestQuery.category_name) !== 'undefined') { _%>
 				<ul class="p-sidebar-link -category">
 					<%_ for (const countData of countDataList) { _%>
