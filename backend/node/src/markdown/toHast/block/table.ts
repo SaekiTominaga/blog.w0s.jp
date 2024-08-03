@@ -1,6 +1,7 @@
 import type { Properties } from 'hast-util-select/lib/types.js';
 import type { Table, TableRow } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
+import { toString } from 'mdast-util-to-string';
 import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
 import type { ElementContent } from 'mdast-util-to-hast/lib/handlers/table-row.js';
 
@@ -30,14 +31,16 @@ const tableRowToHast = (state: H, tableRows: TableRow[], table: XTable): HastEle
 				let tagName = 'td';
 				const attributes: Properties = {};
 
-				if (rowIndex === 0) {
-					/* in <thead> */
-					tagName = 'th';
-					attributes['scope'] = 'col';
-				} else if (colIndex === 0 && firstRowHeaderCell) {
-					/* in <tbody> */
-					tagName = 'th';
-					attributes['scope'] = 'row';
+				if (toString(cell) !== '') {
+					if (rowIndex === 0) {
+						/* in <thead> */
+						tagName = 'th';
+						attributes['scope'] = 'col';
+					} else if (colIndex === 0 && firstRowHeaderCell) {
+						/* in <tbody> */
+						tagName = 'th';
+						attributes['scope'] = 'row';
+					}
 				}
 
 				if (alignValue !== null && alignValue !== undefined) {
