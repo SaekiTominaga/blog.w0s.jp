@@ -82,13 +82,10 @@
 	color: var(--color-black);
 }
 
-.p-amazon__hdg {
+.p-amazon__label {
+	display: block flex;
 	margin-block-start: -16px;
 	margin-inline-start: -16px;
-
-	& > img {
-		display: block flow;
-	}
 }
 
 .p-amazon__list {

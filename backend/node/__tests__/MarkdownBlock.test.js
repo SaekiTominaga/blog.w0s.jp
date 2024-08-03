@@ -1330,8 +1330,8 @@ test('Amazon', async (t) => {
 				),
 			),
 			`
-<aside class="p-amazon">
-	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
+<div class="p-amazon">
+	<p class="p-amazon__label"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
@@ -1340,7 +1340,7 @@ test('Amazon', async (t) => {
 			>
 		</li>
 	</ul>
-</aside>
+</div>
 `.trim(),
 		);
 	});
@@ -1356,8 +1356,8 @@ test('Amazon', async (t) => {
 				),
 			),
 			`
-<aside class="p-amazon">
-	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
+<div class="p-amazon">
+	<p class="p-amazon__label"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
@@ -1366,7 +1366,7 @@ test('Amazon', async (t) => {
 			>
 		</li>
 	</ul>
-</aside>
+</div>
 `.trim(),
 		);
 	});
@@ -1382,8 +1382,8 @@ test('Amazon', async (t) => {
 				),
 			),
 			`
-<aside class="p-amazon">
-	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
+<div class="p-amazon">
+	<p class="p-amazon__label"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
@@ -1392,7 +1392,7 @@ test('Amazon', async (t) => {
 			>
 		</li>
 	</ul>
-</aside>
+</div>
 `.trim(),
 		);
 	});
@@ -1408,8 +1408,8 @@ test('Amazon', async (t) => {
 				),
 			),
 			`
-<aside class="p-amazon">
-	<h2 class="p-amazon__hdg"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></h2>
+<div class="p-amazon">
+	<p class="p-amazon__label"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
@@ -1418,7 +1418,7 @@ test('Amazon', async (t) => {
 			>
 		</li>
 	</ul>
-</aside>
+</div>
 `.trim(),
 		);
 	});

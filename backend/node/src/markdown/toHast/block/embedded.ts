@@ -412,16 +412,16 @@ export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastEle
 
 	return {
 		type: 'element',
-		tagName: 'aside',
+		tagName: 'div',
 		properties: {
 			className: ['p-amazon'],
 		},
 		children: [
 			{
 				type: 'element',
-				tagName: 'h2',
+				tagName: 'p',
 				properties: {
-					className: ['p-amazon__hdg'],
+					className: ['p-amazon__label'],
 				},
 				children: [
 					{

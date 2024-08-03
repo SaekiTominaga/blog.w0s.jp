@@ -22,12 +22,6 @@ export default {
 			},
 		},
 		{
-			selector: 'aside',
-			rules: {
-				'landmark-roles': false, // <aside class="p-amazon">
-			},
-		},
-		{
 			selector: 'video',
 			rules: {
 				'no-empty-palpable-content': false,
