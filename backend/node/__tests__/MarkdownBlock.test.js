@@ -715,6 +715,78 @@ test('table', async (t) => {
 		);
 	});
 
+	await t.test('thead th empty', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+| th | |
+| - | - |
+| td | td |
+| td | td |
+`,
+				),
+			),
+			`
+<table class="p-table">
+	<thead>
+		<tr>
+			<th scope="col">th</th>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>td</td>
+			<td>td</td>
+		</tr>
+		<tr>
+			<td>td</td>
+			<td>td</td>
+		</tr>
+	</tbody>
+</table>
+`.trim(),
+		);
+	});
+
+	await t.test('tbody th empty', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+| ~ | th |
+| - | - |
+| | td |
+| th | td |
+`,
+				),
+			),
+			`
+<table class="p-table">
+	<thead>
+		<tr>
+			<td></td>
+			<th scope="col">th</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td></td>
+			<td>td</td>
+		</tr>
+		<tr>
+			<th scope="row">th</th>
+			<td>td</td>
+		</tr>
+	</tbody>
+</table>
+`.trim(),
+		);
+	});
+
 	await t.test('no thead', async () => {
 		const markdown = new Markdown();
 		assert.equal(
