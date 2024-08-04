@@ -1,6 +1,6 @@
 <div id="sidebar" class="l-sidebar">
-	<aside class="p-sidebar-categories" aria-labelledby="sidebar-categories-hdg">
-		<h2 class="p-sidebar-categories__hdg" id="sidebar-categories-hdg">記事カテゴリー</h2>
+	<aside class="p-sidebar-categories" aria-labelledby="sidebar-categories-label">
+		<h2 class="p-sidebar-categories__hdg" id="sidebar-categories-label">記事カテゴリー</h2>
 
 		<w0s-tab storage-key="sidebar-category-tab">
 			<%_ for (const [group_name, ] of entryCountOfCategoryList) { _%>
@@ -42,8 +42,8 @@
 		</w0s-tab>
 	</aside>
 
-	<aside class="p-sidebar-entries" aria-labelledby="sidebar-entries-hdg">
-		<h2 class="p-sidebar-entries__hdg" id="sidebar-entries-hdg">最近の記事</h2>
+	<aside class="p-sidebar-entries" aria-labelledby="sidebar-entries-label">
+		<h2 class="p-sidebar-entries__hdg" id="sidebar-entries-label">最近の記事</h2>
 
 		<%_ if (typeof(requestQuery.entry_id) !== 'undefined') { _%>
 		<ul class="p-sidebar-link -entry">
