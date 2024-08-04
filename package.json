@@ -21,7 +21,7 @@
 		"@rollup/plugin-typescript": "^11.1.6",
 		"@types/eslint": "^8.56.11",
 		"@w0s/eslint-config": "^7.0.0",
-		"@w0s/markuplint-config": "^3.8.0",
+		"@w0s/markuplint-config": "^3.9.0",
 		"@w0s/stylelint-config": "^4.7.0",
 		"@w0s/tsconfig": "^1.4.1",
 		"ajv-cli": "^5.0.0",
