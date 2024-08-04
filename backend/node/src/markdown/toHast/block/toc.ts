@@ -24,35 +24,42 @@ export const xTocToHast = (state: H, node: XToc): HastElementContent | HastEleme
 
 	const element: HastElement = {
 		type: 'element',
-		tagName: 'ol',
+		tagName: 'nav',
 		properties: {
 			'aria-label': '目次',
 			className: ['p-toc'],
 		},
-		children: children.map((childNode): HastElementContent => {
-			const heading = select(nameXHeading, childNode);
-			if (heading === null) {
-				return {
-					type: 'text',
-					value: '',
-				};
-			}
+		children: [
+			{
 
-			return {
 				type: 'element',
-				tagName: 'li',
-				children: [
-					{
+				tagName: 'ol',
+				children: children.map((childNode): HastElementContent => {
+					const heading = select(nameXHeading, childNode);
+					if (heading === null) {
+						return {
+							type: 'text',
+							value: '',
+						};
+					}
+
+					return {
 						type: 'element',
-						tagName: 'a',
-						properties: {
-							href: `#${encodeURIComponent(childNode.id)}`,
-						},
-						children: state.all(heading as XHeading),
-					},
-				],
-			};
-		}),
+						tagName: 'li',
+						children: [
+							{
+								type: 'element',
+								tagName: 'a',
+								properties: {
+									href: `#${encodeURIComponent(childNode.id)}`,
+								},
+								children: state.all(heading as XHeading),
+							},
+						],
+					};
+				}),
+			},
+		],
 	};
 
 	return element;
