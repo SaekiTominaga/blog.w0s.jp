@@ -4,8 +4,8 @@
 .l-page {
 	display: block grid;
 	grid-template-areas:
-		"header-margin-left  header-padding-left  header  header-padding-right  header-margin-right "
-		"content-margin-left content-padding-left content content-padding-right content-margin-right";
+		"margin-left padding-left header  padding-right margin-right"
+		"margin-left padding-left content padding-right margin-right";
 	grid-template-columns: var(--page-margin-inline) var(--page-padding-inline) 1fr var(--page-padding-inline) var(--page-margin-inline);
 }
 
