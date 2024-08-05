@@ -20,13 +20,13 @@
 		<div class="l-page">
 			<%- include('./_include/header', { heading: false } ) -%>
 
-			<div id="content" class="l-content">
+			<main id="content" class="l-content">
 				<div class="l-content__header">
 					<div class="p-title">
 						<h1>「<%= requestQuery.category_name %>」の記事一覧（<%= count %>件）</h1>
 					</div>
 				</div>
-				<main class="l-content__body">
+				<div class="l-content__body">
 					<ul class="p-title-list -category">
 						<%_ for (const entry of entries) { _%>
 						<li>
@@ -65,8 +65,8 @@
 						</li>
 						<%_ } _%>
 					</ul>
-				</main>
-			</div>
+				</div>
+			</main>
 
 			<%- include('./_include/sidebar') -%><%- include('./_include/footer') -%>
 		</div>

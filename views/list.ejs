@@ -27,7 +27,7 @@
 		<div class="l-page">
 			<%- include('./_include/header', { heading: true } ) -%>
 
-			<div id="content" class="l-content">
+			<main id="content" class="l-content">
 				<div class="l-content__header">
 					<nav aria-label="前後記事">
 						<ul class="p-page-nav">
@@ -42,7 +42,7 @@
 						</ul>
 					</nav>
 				</div>
-				<main class="l-content__body">
+				<div class="l-content__body">
 					<ul class="p-title-list -list">
 						<%_ for (const entry of entries) { _%>
 						<li>
@@ -81,7 +81,7 @@
 						</li>
 						<%_ } _%>
 					</ul>
-				</main>
+				</div>
 				<div class="l-content__footer">
 					<nav aria-label="前後記事">
 						<ul class="p-page-nav">
@@ -96,7 +96,7 @@
 						</ul>
 					</nav>
 				</div>
-			</div>
+			</main>
 
 			<%- include('./_include/sidebar') -%><%- include('./_include/footer') -%>
 		</div>

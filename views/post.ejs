@@ -16,7 +16,7 @@
 		<div class="l-page">
 			<%- include('./_include/header', { heading: false } ) -%>
 
-			<div id="content" class="l-content -nosidebar">
+			<main id="content" class="l-content -nosidebar">
 				<div class="l-content__header">
 					<div class="p-title">
 						<h1>記事投稿</h1>
@@ -26,7 +26,7 @@
 						<li><a href="/admin/post">新規記事投稿</a></li>
 					</ul>
 				</div>
-				<main class="l-content__body">
+				<div class="l-content__body">
 					<section class="p-section -hdg-a" id="select">
 						<div class="p-section__hdg">
 							<h2>記事選択</h2>
@@ -458,8 +458,8 @@
 					<dialog class="p-dialog-overlay" id="form-submit-overlay" aria-labelledby="form-submit-overlay-message" aria-describedby="form-submit-overlay-message">
 						<p id="form-submit-overlay-message">送信中</p>
 					</dialog>
-				</main>
-			</div>
+				</div>
+			</main>
 
 			<%- include('./_include/footer') -%>
 		</div>
