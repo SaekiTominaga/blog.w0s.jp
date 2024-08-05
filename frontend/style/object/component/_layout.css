@@ -5,7 +5,7 @@ Styleguide 1.5.
 */
 
 /* ===== Stack ===== */
-:is(.l-content__header, .l-content__main, .l-content__footer, .c-stack, .p-section, .p-quote, .p-box) {
+:is(.l-content__header, .l-content__body, .l-content__footer, .c-stack, .p-section, .p-quote, .p-box) {
 	& > * + * {
 		margin-block-start: var(--stack-margin-base);
 	}
