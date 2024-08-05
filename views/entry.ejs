@@ -126,48 +126,46 @@
 						</footer>
 					</article>
 				</div>
-
-				<%_ if (categoryFileNames === 'railway') { _%>
-				<div class="l-content__footer">
-					<aside class="p-box" aria-labelledby="landmark-bookcm-label">
-						<h2 class="p-box__hdg" id="landmark-bookcm-label">著書の紹介</h2>
-
-						<ul class="c-grid -wide">
-							<li class="c-grid__item p-item">
-								<a href="https://w0s.jp/tokyu/book/7700">
-									<picture>
-										<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
-										<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
-										<img src="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" crossorigin="" loading="lazy" class="p-item__image" />
-									</picture>
-									<span class="p-item__title">東急7700系形態分類</span>
-								</a>
-								<div class="p-item__text">
-									<p>
-										<b>自費出版、<time datetime="2019-08">2019年8月</time>発売</b>
-									</p>
-									<p>池上線、東急多摩川線で活躍した東急7700系の形態バリエーションについて、2010年時点の在籍車36両を徹底解析しました。</p>
-								</div>
-							</li>
-							<li class="c-grid__item p-item">
-								<a href="https://www.amazon.co.jp/dp/480220695X?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1">
-									<img src="https://m.media-amazon.com/images/I/51uD92OAjNL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51uD92OAjNL._SL320_.jpg 2x" width="111" height="160" alt="" loading="lazy" class="p-item__image" />
-									<span class="p-item__title">東急電鉄 1989-2019 <img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon" /></span>
-								</a>
-								<div class="p-item__text">
-									<p>
-										<b>イカロス・ムック、<time datetime="2019-08">2019年8月</time>発売</b>
-									</p>
-									<p>平成時代の東急電車の動向をまとめた本です。「現役車両ガイド」の一部の本文解説を担当しました。</p>
-								</div>
-							</li>
-						</ul>
-					</aside>
-				</div>
-				<%_ } _%>
 			</main>
 
-			<%- include('./_include/sidebar') -%><%- include('./_include/footer') -%>
+			<%- include('./_include/sidebar') -%> <%_ if (categoryFileNames === 'railway') { _%>
+			<div id="cm" class="l-cm">
+				<aside class="p-box" aria-labelledby="landmark-cm-label">
+					<h2 class="p-box__hdg" id="landmark-cm-label">著書の紹介</h2>
+
+					<ul class="c-grid -wide">
+						<li class="c-grid__item p-item">
+							<a href="https://w0s.jp/tokyu/book/7700">
+								<picture>
+									<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
+									<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
+									<img src="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="" width="114" height="160" crossorigin="" loading="lazy" class="p-item__image" />
+								</picture>
+								<span class="p-item__title">東急7700系形態分類</span>
+							</a>
+							<div class="p-item__text">
+								<p>
+									<b>自費出版、<time datetime="2019-08">2019年8月</time>発売</b>
+								</p>
+								<p>池上線、東急多摩川線で活躍した東急7700系の形態バリエーションについて、2010年時点の在籍車36両を徹底解析しました。</p>
+							</div>
+						</li>
+						<li class="c-grid__item p-item">
+							<a href="https://www.amazon.co.jp/dp/480220695X?tag=w0s.jp-22&amp;linkCode=ogi&amp;th=1&amp;psc=1">
+								<img src="https://m.media-amazon.com/images/I/51uD92OAjNL._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/51uD92OAjNL._SL320_.jpg 2x" width="111" height="160" alt="" loading="lazy" class="p-item__image" />
+								<span class="p-item__title">東急電鉄 1989-2019 <img src="/image/icon/amazon.png" alt="(Amazon)" class="c-link-icon" /></span>
+							</a>
+							<div class="p-item__text">
+								<p>
+									<b>イカロス・ムック、<time datetime="2019-08">2019年8月</time>発売</b>
+								</p>
+								<p>平成時代の東急電車の動向をまとめた本です。「現役車両ガイド」の一部の本文解説を担当しました。</p>
+							</div>
+						</li>
+					</ul>
+				</aside>
+			</div>
+			<%_ } _%> <%- include('./_include/footer') -%>
 		</div>
 	</body>
 </html>

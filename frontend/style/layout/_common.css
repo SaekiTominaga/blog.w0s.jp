@@ -64,7 +64,7 @@
 
 	@media screen and (--breakpoint) {
 		/* 印刷時は _page-reader.css にて grid-template-areas を変更しているため、スクリーン時のみ適用されるようにする */
-		grid-column: content-padding-left / content-padding-right;
+		grid-column: padding-left / padding-right;
 	}
 
 	/* サイドバーがない場合は全幅で表示 */
@@ -97,6 +97,13 @@
 			margin-block-start: 3em;
 		}
 	}
+}
+
+/* ===== 宣伝 ===== */
+.l-cm {
+	grid-column: cm;
+	container: cm / inline-size;
+	margin-block-start: 100px;
 }
 
 /* ===== ページフッター ===== */
