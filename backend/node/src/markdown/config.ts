@@ -4,9 +4,24 @@ export const config = {
 	amazonTrackingId: 'w0s.jp-22',
 	linkHostIcon: [
 		{
-			host: 'github.com',
-			alt: 'GitHub',
-			fileName: 'github.svg',
+			host: 'bsky.app',
+			alt: 'Bluesky',
+			fileName: 'bluesky.png',
+		},
+		{
+			host: 'x.com',
+			alt: 'X',
+			fileName: 'x.png',
+		},
+		{
+			host: 'twitter.com',
+			alt: 'X',
+			fileName: 'x.png',
+		},
+		{
+			host: 'www.instagram.com',
+			alt: 'Instagram',
+			fileName: 'instagram.png',
 		},
 		{
 			host: 'www.youtube.com',
@@ -24,24 +39,14 @@ export const config = {
 			fileName: 'amazon.png',
 		},
 		{
-			host: 'www.instagram.com',
-			alt: 'Instagram',
-			fileName: 'instagram.png',
-		},
-		{
-			host: 'x.com',
-			alt: 'X',
-			fileName: 'x.png',
-		},
-		{
-			host: 'twitter.com',
-			alt: 'X',
-			fileName: 'x.png',
-		},
-		{
 			host: 'ja.wikipedia.org',
 			alt: 'Wikipedia',
 			fileName: 'wikipedia.svg',
+		},
+		{
+			host: 'github.com',
+			alt: 'GitHub',
+			fileName: 'github.svg',
 		},
 		{
 			host: 'www.w3.org',
