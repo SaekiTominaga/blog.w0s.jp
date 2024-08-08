@@ -21,40 +21,46 @@
 /* ヘッダーメイン */
 .l-header__main {
 	display: block grid;
-	grid-template-areas: "site nav";
-	grid-template-columns: 50% 1fr;
+	grid-template-areas: "site utility";
 	grid-column: content;
 	gap: 20px;
-	container: header-main / inline-size;
+	align-items: flex-end;
 
-	@container header (inline-size <= 60em) {
+	@container header (inline-size <= 54em) {
 		grid-template-areas:
-			"site"
-			"nav";
-		grid-template-columns: auto;
+			"site   "
+			"utility";
 	}
 }
 
 /* サイトロゴ */
 .l-header__site {
 	grid-column: site;
-	margin-block-start: 10px;
 }
 
-/* ナビゲーション */
-.l-header__nav {
+/* ユーティリティー */
+.l-header__utility {
 	--_justify-content: flex-end;
 
 	display: block flex;
 	flex-wrap: wrap;
-	grid-column: nav;
+	grid-column: utility;
 	gap: 10px 20px;
-	place-content: flex-start var(--_justify-content);
 	align-items: flex-end;
+	justify-content: var(--_justify-content);
 
-	@container header-main (inline-size <= 32em) {
+	@container header (inline-size <= 36em) {
 		--_justify-content: flex-start;
 	}
+}
+
+/* フィードリンク */
+.l-header__feed {
+}
+
+/* サイト内検索 */
+.l-header__search {
+	inline-size: min(16em, 100%);
 }
 
 /* ===== コンテンツエリア ===== */
