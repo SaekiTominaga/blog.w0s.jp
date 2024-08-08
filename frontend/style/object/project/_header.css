@@ -5,9 +5,8 @@
 /* ===== サイトロゴ ===== */
 .p-header-site {
 	display: block flex;
-	flex-flow: wrap;
-	gap: 0.25em 1em;
-	align-items: baseline;
+	flex-direction: column;
+	gap: 0.25em;
 }
 
 /* サイト名 */
@@ -49,24 +48,15 @@
 
 /* ===== サイト内検索 ===== */
 .p-header-search {
-	display: block grid;
-	grid-template-areas:
-		"legend"
-		"ctrl";
-	inline-size: min(18em, 100%);
-
-	& > fieldset {
-		display: contents;
-	}
 }
 
 .p-header-search__legend {
-	grid-area: legend;
 	font-size: calc(100% / pow(var(--font-ratio), 1));
 	font-weight: var(--font-weight-bold);
 }
 
 .p-header-search__ctrl {
-	grid-area: ctrl;
-	margin-block-start: 0.1em;
+	.p-header-search__legend + & {
+		margin-block-start: 0.1em;
+	}
 }
