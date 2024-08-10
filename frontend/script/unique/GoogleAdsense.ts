@@ -8,9 +8,9 @@ declare global {
  * Google AdSense
  */
 export default class GoogleAdsense {
-	#thisElement: Element;
+	readonly #thisElement: Element;
 
-	#SCRIPT_ID = 'script-adsbygoogle'; // 埋め込む <script> 要素の ID
+	readonly #SCRIPT_ID = 'script-adsbygoogle'; // 埋め込む <script> 要素の ID
 
 	/**
 	 * @param thisElement - 広告を表示する要素
