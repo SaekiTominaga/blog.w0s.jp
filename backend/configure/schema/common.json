@@ -84,7 +84,7 @@
 				"header": {
 					"type": "object",
 					"title": "レスポンスヘッダー",
-					"required": ["hsts", "csp", "csp_html", "cspro_html"],
+					"required": ["hsts", "csp", "csp_html", "cspro_html", "reporting_endpoints"],
 					"properties": {
 						"hsts": {
 							"type": "string",
@@ -101,6 +101,14 @@
 						"cspro_html": {
 							"type": "string",
 							"title": "Content-Security-Policy-Report-Only (HTML)"
+						},
+						"reporting_endpoints": {
+							"type": "object",
+							"title": "Reporting-Endpoints",
+							"additionalProperties": {
+								"type": "string",
+								"title": "エンドポイントの URL"
+							}
 						}
 					},
 					"additionalProperties": false
