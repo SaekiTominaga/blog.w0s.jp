@@ -95,7 +95,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 						tagName: 'img',
 						properties: {
 							src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${String(IMAGE_MAX_SIZE.width)};h=${String(IMAGE_MAX_SIZE.height)};quality=60`,
-							alt: '',
+							alt: 'サムネイル画像',
 							width: width,
 							height: height,
 							crossorigin: '',
@@ -113,7 +113,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 				tagName: 'img',
 				properties: {
 					src: `https://media.w0s.jp/image/blog/${filename}`,
-					alt: '',
+					alt: '画像',
 					width: size?.width,
 					height: size?.height,
 					className: ['p-embed__image'],
