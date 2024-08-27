@@ -955,7 +955,7 @@ test('Image', async (t) => {
 		<picture
 			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
 			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" crossorigin="" class="p-embed__image"
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" crossorigin="" class="p-embed__image"
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
@@ -978,7 +978,7 @@ test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="" class="p-embed__image" /></div>
+	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="画像" class="p-embed__image" /></div>
 	<figcaption class="c-caption"><span class="c-caption__text">title&lt;title> title</span></figcaption>
 </figure>
 `.trim(),
@@ -1039,7 +1039,7 @@ test('Image', async (t) => {
 		<picture
 			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
 			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" width="640" height="427" crossorigin="" class="p-embed__image"
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" width="640" height="427" crossorigin="" class="p-embed__image"
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
@@ -1062,7 +1062,7 @@ test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="" width="1920" height="1280" class="p-embed__image" /></div>
+	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="画像" width="1920" height="1280" class="p-embed__image" /></div>
 	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
 </figure>
 `.trim(),
@@ -1104,7 +1104,7 @@ test('Image', async (t) => {
 		<picture
 			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
 			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" crossorigin="" class="p-embed__image"
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" crossorigin="" class="p-embed__image"
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
@@ -1132,7 +1132,7 @@ test('Image', async (t) => {
 		<picture
 			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
 			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" crossorigin="" class="p-embed__image"
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" crossorigin="" class="p-embed__image"
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
@@ -1159,7 +1159,7 @@ test('Image', async (t) => {
 		<picture
 			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
 			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="" crossorigin="" class="p-embed__image"
+			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" crossorigin="" class="p-embed__image"
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
