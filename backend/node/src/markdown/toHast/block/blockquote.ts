@@ -15,10 +15,11 @@ interface XBlockquote extends Blockquote {
 	citetext?: string;
 	citeurl?: string;
 	citeisbn?: string;
+	citeamazon?: string;
 }
 
 export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementContent | HastElementContent[] | null | undefined => {
-	const { lang, citetext, citeurl, citeisbn } = node;
+	const { lang, citetext, citeurl, citeisbn, citeamazon } = node;
 
 	const childElements: HastElementContent[] = [];
 
@@ -83,8 +84,9 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 
 	const figcaptionChild: HastElementContent[] = [];
 	if (citetext !== undefined) {
-		if (citeurl !== undefined) {
-			const { href, typeIcon, hostIcon, hostText } = LinkUtil.getInfo(citetext, citeurl);
+		const url = citeurl ?? citeamazon;
+		if (url !== undefined) {
+			const { href, typeIcon, hostIcon, hostText } = LinkUtil.getInfo(citetext, url);
 
 			figcaptionChild.push({
 				type: 'element',

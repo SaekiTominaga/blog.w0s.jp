@@ -10,6 +10,7 @@ export interface Meta {
 	lang?: string;
 	url?: string;
 	isbn?: MetaIsbn;
+	amazon?: string;
 }
 
 export default class Quote {
@@ -42,6 +43,13 @@ export default class Quote {
 					value: meta,
 					valid: new IsbnVerify(meta, { strict: true }).isValid(),
 				},
+			};
+		}
+
+		/* Amazon 商品ページへのリンク */
+		if (new RegExp(`^amazon:${regexp.asin}$`).test(meta)) {
+			return {
+				amazon: meta,
 			};
 		}
 

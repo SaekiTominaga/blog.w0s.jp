@@ -499,6 +499,32 @@ test('blockquote', async (t) => {
 		);
 	});
 
+	await t.test('meta amazon', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+> quote
+>
+>- ?amazon:1111111111
+>- ?text
+`,
+				),
+			),
+			`
+<figure>
+	<blockquote class="p-quote"><p>quote</p></blockquote>
+	<figcaption class="c-caption -meta">
+		<span class="c-caption__text"
+			><a href="https://www.amazon.co.jp/dp/1111111111/ref=nosim?tag=w0s.jp-22">text</a><small class="c-domain"><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" /></small
+		></span>
+	</figcaption>
+</figure>
+`.trim(),
+		);
+	});
+
 	await t.test('meta isbn', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -549,6 +575,7 @@ test('blockquote', async (t) => {
 >
 >- ?en
 >- ?978-4-06-519981-7
+>- ?amazon:1111111111
 >- ?http://example.com
 >- ?*引用*元
 `,
