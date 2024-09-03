@@ -18,6 +18,7 @@ interface XBlockquote extends Parent {
 	citetext?: string;
 	citeurl?: string;
 	citeisbn?: string;
+	citeamazon?: string;
 	children: (BlockContent | DefinitionContent)[];
 }
 
@@ -66,6 +67,8 @@ const toMdast = (): Plugin => {
 							if (meta.isbn.valid) {
 								blockquote.citeisbn = meta.isbn.value;
 							}
+						} else if (meta.amazon !== undefined) {
+							blockquote.citeamazon = meta.amazon;
 						} else {
 							blockquote.citetext = metaText;
 						}
