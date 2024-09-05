@@ -31,22 +31,22 @@
 		max-inline-size: min(30em, 100%);
 		color: var(--color-black);
 		font-size: calc(100% / pow(var(--font-ratio), 1));
+	}
 
-		&:focus {
-			outline: var(--outline-width-bold) solid var(--outline-color);
-		}
+	&::part(content):focus {
+		outline: var(--outline-width-bold) solid var(--outline-color);
+	}
 
-		&:hover {
-			box-shadow: 0 0 0.5em var(--_border-color);
-		}
+	&::part(content):hover {
+		box-shadow: 0 0 0.5em var(--_border-color);
+	}
 
-		&::before {
-			display: block flow;
-			float: inline-end;
-			block-size: calc(var(--_hide-button-image-size) + var(--_hide-button-padding) * 2);
-			inline-size: calc(var(--_hide-button-image-size) + var(--_hide-button-padding) * 2);
-			content: "";
-		}
+	&::part(content)::before {
+		display: block flow;
+		float: inline-end;
+		block-size: calc(var(--_hide-button-image-size) + var(--_hide-button-padding) * 2);
+		inline-size: calc(var(--_hide-button-image-size) + var(--_hide-button-padding) * 2);
+		content: "";
 	}
 
 	&::part(hide-button) {
@@ -61,15 +61,15 @@
 		border-radius: var(--border-radius-normal);
 		background: var(--_background-color);
 		padding: var(--_hide-button-padding);
+	}
 
-		&:focus {
-			outline: var(--outline-width-bold) solid var(--outline-color);
-		}
+	&::part(hide-button):focus {
+		outline: var(--outline-width-bold) solid var(--outline-color);
+	}
 
-		&:hover {
-			--_border-color: var(--color-bg-light);
-			--_background-color: var(--color-bg-superlight);
-		}
+	&::part(hide-button):hover {
+		--_border-color: var(--color-bg-light);
+		--_background-color: var(--color-bg-superlight);
 	}
 }
 
