@@ -35,7 +35,7 @@
 		"@w0s/report-js-error": "^2.0.1",
 		"@w0s/report-same-referrer": "^3.0.1",
 		"@w0s/string-convert": "^2.0.1",
-		"@w0s/tab": "^4.0.0",
+		"@w0s/tab": "^4.2.0",
 		"prettier": "^3.3.2",
 		"slash": "^5.1.0",
 		"svgo": "^3.3.2"
