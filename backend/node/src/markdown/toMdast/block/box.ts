@@ -10,7 +10,7 @@ import UnistUtil from '../../lib/UnistUtil.js';
  * Box
  */
 
-export const name = 'x-box';
+const name = 'x-box';
 
 interface XBox extends Parent {
 	type: typeof name;

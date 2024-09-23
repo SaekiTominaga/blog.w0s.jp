@@ -8,7 +8,7 @@ import type { XHeading } from './heading.js';
  * <section>
  */
 
-export const name = 'x-section';
+const name = 'x-section';
 
 interface XSection extends Parent {
 	type: typeof name;

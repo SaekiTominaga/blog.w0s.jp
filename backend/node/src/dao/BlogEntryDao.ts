@@ -1,13 +1,13 @@
 import DbUtil from '../util/DbUtil.js';
 import BlogDao from './BlogDao.js';
 
-export interface Category {
+interface Category {
 	id: string;
 	name: string;
 	file_name: string | null;
 }
 
-export interface Relation {
+interface Relation {
 	id: number;
 	title: string;
 	image_internal: string | null;

@@ -11,7 +11,7 @@ import { visit, CONTINUE } from 'unist-util-visit';
  * <table>
  */
 
-export const name = 'x-table';
+const name = 'x-table';
 
 interface XTable extends Parent {
 	type: typeof name;
