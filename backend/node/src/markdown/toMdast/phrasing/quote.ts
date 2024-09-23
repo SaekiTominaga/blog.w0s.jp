@@ -8,7 +8,7 @@ import Quote, { type Meta } from '../../lib/Quote.js';
  * <q>
  */
 
-export const name = 'x-quote';
+const name = 'x-quote';
 
 interface XQuote extends Parent {
 	type: typeof name;

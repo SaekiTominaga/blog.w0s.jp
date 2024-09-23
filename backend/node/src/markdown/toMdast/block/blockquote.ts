@@ -10,7 +10,7 @@ import Quote from '../../lib/Quote.js';
  * <blockquote>
  */
 
-export const name = 'x-blockquote';
+const name = 'x-blockquote';
 
 interface XBlockquote extends Parent {
 	type: typeof name;

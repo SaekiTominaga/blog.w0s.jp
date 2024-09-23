@@ -7,7 +7,7 @@ import { visit, CONTINUE } from 'unist-util-visit';
  * Blank paragraph
  */
 
-export const name = 'x-blank';
+const name = 'x-blank';
 
 interface XBlank extends Node {
 	type: typeof name;

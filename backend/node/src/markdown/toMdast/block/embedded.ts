@@ -9,10 +9,10 @@ import { regexp } from '../../config.js';
  * Embedded content
  */
 
-export const nameMedia = 'x-embedded-media';
-export const nameYouTube = 'x-embedded-youtube';
-export const nameAmazon = 'x-embedded-amazon';
-export const nameAmazonItem = 'x-embedded-amazon-item';
+const nameMedia = 'x-embedded-media';
+const nameYouTube = 'x-embedded-youtube';
+const nameAmazon = 'x-embedded-amazon';
+const nameAmazonItem = 'x-embedded-amazon-item';
 
 export interface Size {
 	width: number;

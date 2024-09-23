@@ -7,7 +7,7 @@ import { name as nameHeading, type XHeading } from './heading.js';
  * Table of contents
  */
 
-export const name = 'x-toc';
+const name = 'x-toc';
 
 interface XToc extends Parent {
 	type: typeof name;
