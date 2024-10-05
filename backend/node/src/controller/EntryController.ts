@@ -128,10 +128,7 @@ export default class EntryController extends Controller implements ControllerInt
 			message: message,
 
 			categoryNames: categoriesDto.map((category) => category.name),
-			categoryFileNames: categoriesDto
-				.map((category) => category.file_name)
-				.filter((fileName) => fileName !== null)
-				.at(0),
+			categoryFileNames: categoriesDto.map((category) => category.file_name).find((fileName) => fileName !== null),
 			relations: relations,
 
 			entryCountOfCategoryList: entryCountOfCategoryList,
