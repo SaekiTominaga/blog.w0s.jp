@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
-import prettier from 'prettier';
+import { format, resolveConfig } from 'prettier';
 import xmlFormatter from 'xml-formatter';
 import BlogFeedDao from '../dao/BlogFeedDao.js';
 import Markdown from '../markdown/Markdown.js';
@@ -64,9 +64,9 @@ export default class CreateFeed {
 		});
 		let feed = feedUnformat;
 
-		const prettierOptions = await prettier.resolveConfig('test.html', { editorconfig: true });
+		const prettierOptions = await resolveConfig('test.html', { editorconfig: true });
 		if (prettierOptions !== null) {
-			feed = await prettier.format(feedUnformat, prettierOptions);
+			feed = await format(feedUnformat, prettierOptions);
 		}
 
 		const feedXmlFormatted = xmlFormatter(feed, {

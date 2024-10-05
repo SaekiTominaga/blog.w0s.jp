@@ -32,7 +32,7 @@ export default class Link {
 	 */
 	static getInfo(mdContent: string, mdUrl: string): Info {
 		/* 絶対 URL */
-		const absoluteUrlMatchGroups = mdUrl.match(new RegExp(`^(?<absoluteUrl>${regexp.absoluteUrl})$`))?.groups;
+		const absoluteUrlMatchGroups = new RegExp(`^(?<absoluteUrl>${regexp.absoluteUrl})$`).exec(mdUrl)?.groups;
 		if (absoluteUrlMatchGroups !== undefined) {
 			const { absoluteUrl } = absoluteUrlMatchGroups;
 
@@ -52,7 +52,7 @@ export default class Link {
 		}
 
 		/* 別記事へのリンク */
-		const entryMatchGroups = mdUrl.match(new RegExp(`^(?<id>${regexp.entryId}(#.+)?)$`))?.groups;
+		const entryMatchGroups = new RegExp(`^(?<id>${regexp.entryId}(#.+)?)$`).exec(mdUrl)?.groups;
 		if (entryMatchGroups !== undefined) {
 			const { id } = entryMatchGroups;
 
@@ -64,7 +64,7 @@ export default class Link {
 		}
 
 		/* Amazon 商品ページへのリンク */
-		const amazonMatchGroups = mdUrl.match(new RegExp(`^amazon:(?<asin>${regexp.asin})$`))?.groups;
+		const amazonMatchGroups = new RegExp(`^amazon:(?<asin>${regexp.asin})$`).exec(mdUrl)?.groups;
 		if (amazonMatchGroups !== undefined) {
 			const { asin } = amazonMatchGroups;
 
@@ -77,7 +77,7 @@ export default class Link {
 		}
 
 		/* ページ内リンク */
-		const pageLinkMatchGroups = mdUrl.match(/^#(?<id>.+)/)?.groups;
+		const pageLinkMatchGroups = /^#(?<id>.+)/.exec(mdUrl)?.groups;
 		if (pageLinkMatchGroups !== undefined) {
 			const { id } = pageLinkMatchGroups;
 

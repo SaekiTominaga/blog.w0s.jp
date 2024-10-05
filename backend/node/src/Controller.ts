@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import Log4js from 'log4js';
-import prettier from 'prettier';
+import { format, resolveConfig } from 'prettier';
 import type { NoName as Configure } from '../../configure/type/common.js';
 import Compress from './util/Compress.js';
 import HttpResponse from './util/HttpResponse.js';
@@ -38,14 +38,14 @@ export default class Controller {
 			httpResponse: HttpResponse;
 		},
 	): Promise<void> {
-		const prettierOptions = await prettier.resolveConfig(options.filePath, { editorconfig: true });
+		const prettierOptions = await resolveConfig(options.filePath, { editorconfig: true });
 
 		let html: string;
 		if (prettierOptions === null) {
 			this.logger.warn('Failed to resolve prettier config');
 			html = htmlUnformat;
 		} else {
-			html = await prettier.format(htmlUnformat, prettierOptions);
+			html = await format(htmlUnformat, prettierOptions);
 		}
 
 		const brotliData = Compress.brotliText(html);
