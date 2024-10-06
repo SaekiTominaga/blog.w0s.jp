@@ -10,7 +10,7 @@
 		"format": "prettier -w .",
 		"html-lint": "markuplint backend/.html/**/*.html",
 		"html-lint-ejs": "markuplint views/**/*.ejs",
-		"github-actions-lint": "yamllint .github/workflows/*.yml"
+		"yaml-lint": "yamllint .github/workflows/*.yml"
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^3.0.0",

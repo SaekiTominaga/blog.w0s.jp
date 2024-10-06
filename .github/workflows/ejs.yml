@@ -1,16 +1,12 @@
-name: backend@errorpage-lint
+name: EJS Files
+
 on:
   pull_request:
     branches:
       - main
     paths:
-      - 'backend/errorpage/*.html'
-      - 'markuplint.config.js'
-  push:
-    branches:
-      - main
-    paths:
-      - 'backend/errorpage/*.html'
+      - 'views/*.ejs'
+      - 'views/_include/*.ejs'
       - 'markuplint.config.js'
   workflow_dispatch:
 
@@ -23,4 +19,4 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci
-      - run: npm run errorpage-lint -w '@blog.w0s.jp/backend'
+      - run: npm run html-lint-ejs
