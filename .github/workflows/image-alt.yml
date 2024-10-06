@@ -1,4 +1,5 @@
-name: image-alt
+name: Check alt text is set on issue or pull requests
+
 on:
   issues:
     types: [opened, edited]
@@ -13,10 +14,9 @@ permissions:
   discussions: write
 
 jobs:
-  accessibility_alt_text_bot:
-    name: Check alt text is set on issue or pull requests
+  check:
     runs-on: ubuntu-latest
     if: ${{ github.event.issue || github.event.pull_request }}
     steps:
       - name: Get action 'github/accessibility-alt-text-bot'
-        uses: github/accessibility-alt-text-bot@v1.3.0
+        uses: github/accessibility-alt-text-bot@v1.5.0

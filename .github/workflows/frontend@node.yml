@@ -1,12 +1,7 @@
-name: frontend@node-lint
+name: Node.js files (Frontend)
+
 on:
   pull_request:
-    branches:
-      - main
-    paths:
-      - 'frontend/build/*.js'
-      - 'frontend/eslint.config.js'
-  push:
     branches:
       - main
     paths:
@@ -15,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
