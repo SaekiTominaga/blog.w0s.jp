@@ -7,10 +7,17 @@
 	& > li {
 		margin-inline-start: 1em;
 		list-style-type: disc;
-	}
 
-	& > li + li {
-		margin-block-start: 0.5em;
+		& + li {
+			margin-block-start: 0.5em;
+		}
+
+		& > .p-list {
+			& > li {
+				margin-block-start: 0.25em;
+				list-style-type: circle;
+			}
+		}
 	}
 }
 
@@ -18,7 +25,7 @@
 .p-list-num {
 	& > li {
 		margin-inline-start: 1em;
-		list-style: decimal;
+		list-style-type: decimal;
 
 		& + li {
 			margin-block-start: 0.5em;
