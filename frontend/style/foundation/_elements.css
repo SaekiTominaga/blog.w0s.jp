@@ -68,7 +68,7 @@ small {
 code {
 	border-radius: var(--border-radius-normal);
 	background-color: var(--color-ultralightgreen);
-	padding-block: 0.25em;
+	padding-block: 0.1lh;
 	color: var(--color-green);
 
 	:is(h1, h2, h3, h4, h5, h6, hgroup, pre, a, .c-domain) & {
