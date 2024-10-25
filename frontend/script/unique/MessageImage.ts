@@ -49,7 +49,7 @@ export default class MessageImage {
 		const imageFileNames = [
 			...preview.querySelectorAll<HTMLAnchorElement>('.p-embed + .c-caption > .c-caption__media-expansion[href^="https://media.w0s.jp/image/blog/"]'),
 		].map((element) => element.href.substring('https://media.w0s.jp/image/blog/'.length));
-		const youtubeImageUrls = [...preview.querySelectorAll<HTMLAnchorElement>('.c-caption > a[href^="https://www.youtube.com/watch?v="]')].map(
+		const youtubeImageUrls = [...preview.querySelectorAll<HTMLAnchorElement>('.c-caption a[href^="https://www.youtube.com/watch?v="]')].map(
 			(element) => `https://i1.ytimg.com/vi/${new URL(element.href).searchParams.get('v') ?? ''}/hqdefault.jpg`,
 		);
 		const amazonImageUrls = [...preview.querySelectorAll<HTMLImageElement>('img.p-amazon__image')].map((element) => {
