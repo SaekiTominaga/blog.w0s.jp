@@ -6,7 +6,7 @@ import ReportSameReferrer from '@w0s/report-same-referrer';
  */
 
 /* JS エラーレポート */
-new ReportJsError('https://report.w0s.jp/js', {
+new ReportJsError('https://report.w0s.jp/report/js', {
 	fetchParam: {
 		location: 'location',
 		message: 'message',
@@ -20,7 +20,7 @@ new ReportJsError('https://report.w0s.jp/js', {
 });
 
 /* リファラーレポート */
-await new ReportSameReferrer('https://report.w0s.jp/referrer', {
+await new ReportSameReferrer('https://report.w0s.jp/report/referrer', {
 	fetchParam: {
 		location: 'location',
 		referrer: 'referrer',
