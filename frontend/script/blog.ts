@@ -5,7 +5,7 @@ import FootnoteReferencePopover from '@w0s/footnote-reference-popover';
 import GoogleAdsense from './unique/GoogleAdsense.js';
 
 /* JS エラーレポート */
-new ReportJsError('https://report.w0s.jp/js', {
+new ReportJsError('https://report.w0s.jp/report/js', {
 	fetchParam: {
 		location: 'location',
 		message: 'message',
