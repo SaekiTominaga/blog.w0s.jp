@@ -456,25 +456,24 @@ export default class PostController extends Controller implements ControllerInte
 		try {
 			await Promise.all(
 				(req.files as Express.Multer.File[]).map(async (file) => {
-					const urlSearchParams = new URLSearchParams();
-					urlSearchParams.append('name', file.originalname);
-					urlSearchParams.append('type', file.mimetype);
-					urlSearchParams.append('temppath', path.resolve(file.path));
-					urlSearchParams.append('size', String(file.size));
-					if (requestQuery.media_overwrite) {
-						urlSearchParams.append('overwrite', '1');
-					}
+					const bodyObject: Readonly<Record<string, string | number | boolean>> = {
+						name: file.originalname,
+						type: file.mimetype,
+						temp: path.resolve(file.path),
+						size: file.size,
+						overwrite: requestQuery.media_overwrite,
+					};
 
-					this.logger.info('Fetch', url);
-					this.logger.info('Fetch', urlSearchParams);
+					this.logger.info('Fetch', url, bodyObject);
 
 					try {
 						const response = await fetch(url, {
 							method: 'POST',
 							headers: {
 								Authorization: `Basic ${Buffer.from(`${httpBasicCredentials.username}:${httpBasicCredentials.password}`).toString('base64')}`,
+								'Content-Type': 'application/json',
 							},
-							body: urlSearchParams,
+							body: JSON.stringify(bodyObject),
 						});
 						if (!response.ok) {
 							this.logger.error('Fetch error', url);
