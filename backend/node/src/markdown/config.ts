@@ -6,7 +6,7 @@ export const config = {
 		{
 			host: 'bsky.app',
 			alt: 'Bluesky',
-			fileName: 'bluesky.png',
+			fileName: 'bluesky.svg',
 		},
 		{
 			host: 'x.com',
