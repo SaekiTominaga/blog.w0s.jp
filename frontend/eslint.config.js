@@ -9,7 +9,7 @@ export default [
 		ignores: ['public/script/*.js', 'public/script/*.mjs'],
 	},
 	{
-		files: ['build/**/*.js'],
+		files: ['build/**/*.ts'],
 		rules: {
 			'no-console': 'off',
 		},

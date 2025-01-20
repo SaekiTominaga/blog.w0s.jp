@@ -9,7 +9,7 @@
 		"prelint": "npm run _config-convert",
 		"lint": "eslint node/src/**/*.ts node/@types/*.d.ts node/__tests__/**/*.js",
 		"pretest": "run-s _config-convert build",
-		"test": "node --test **/*.test.js --experimental-test-coverage",
+		"test": "node --experimental-test-coverage --test **/*.test.js",
 		"config": "run-p _config-convert _config-validate:*",
 		"errorpage-lint": "markuplint errorpage/*.html",
 		"_config-convert": "json2ts -i configure/schema -o configure/type",
