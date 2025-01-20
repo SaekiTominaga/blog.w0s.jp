@@ -18,7 +18,7 @@ export const footnoteReferenceToHast = (state: H, node: FootnoteReference): Hast
 		state.footnoteCounts[id] = 1;
 		counter = state.footnoteOrder.length;
 	} else {
-		state.footnoteCounts[id] += 1;
+		state.footnoteCounts[id] = (state.footnoteCounts[id] ?? 0) + 1;
 		counter = index + 1;
 	}
 
