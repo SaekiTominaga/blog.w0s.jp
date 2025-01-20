@@ -10,7 +10,7 @@
 		"js-prod": "run-s _js-prod:*",
 		"js-lint": "eslint script/**/*.ts",
 		"svg-prod": "run-s _svg-prod:*",
-		"node-lint": "eslint build/*.js",
+		"node-lint": "eslint build/*.ts",
 		"_css-dev:clean": "rimraf public/style/* -g",
 		"_css-dev:build": "postcss style/*.css --base style -d public/style -w",
 		"_css-prod:lint": "npm run css-lint",
@@ -22,7 +22,7 @@
 		"_js-prod:lint": "npm run js-lint",
 		"_js-prod:build": "rollup -c --environment build:production",
 		"_js-prod:compress": "brotli-cli compress -g public/script/*.{js,mjs} -m text",
-		"_svg-prod:build": "node build/svg.js -i image -o public -c svgo.config.js",
+		"_svg-prod:build": "node --experimental-strip-types build/svg.ts -i image -o public -c svgo.config.js",
 		"_svg-prod:compress": "brotli-cli compress -g public/image/**/*.svg -g public/favicon.ico -m text"
 	},
 	"dependencies": {
@@ -41,6 +41,7 @@
 		"svgo": "^3.3.2"
 	},
 	"devDependencies": {
+		"@types/node": "^22.10.7",
 		"@types/trusted-types": "^2.0.7",
 		"brotli-cli": "^2.1.0",
 		"vfile-message": "^4.0.2"
