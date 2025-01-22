@@ -28,6 +28,7 @@ import remarkLintUnorderedListMarkerStyle from 'remark-lint-unordered-list-marke
 import remarkRehype from 'remark-rehype';
 import { type Processor, unified } from 'unified';
 import type { VFile } from 'unified-lint-rule/lib/index.js';
+import http from 'highlight.js/lib/languages/http';
 import footnoteHast from './hast/footnote.js';
 import remarkLintHeadingDepthLimit from './lint/headingDepthLimit.js';
 import remarkLintNoEmptySections from './lint/noEmptySection.js';
@@ -156,6 +157,7 @@ export default class Markdown {
 
 		processor.use(footnoteHast);
 		processor.use(rehypeHighlight, {
+			languages: { http: http },
 			prefix: 'hljs-',
 		});
 
