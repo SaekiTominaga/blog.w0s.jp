@@ -8,11 +8,11 @@ import ReportSameReferrer from '@w0s/report-same-referrer';
 /* JS エラーレポート */
 new ReportJsError('https://report.w0s.jp/report/js', {
 	fetchParam: {
-		location: 'location',
+		location: 'documentURL',
 		message: 'message',
-		filename: 'filename',
-		lineno: 'lineno',
-		colno: 'colno',
+		filename: 'jsURL',
+		lineno: 'lineNumber',
+		colno: 'columnNumber',
 	},
 	fetchContentType: 'application/json',
 	allowFilenames: [/^https:\/\/blog\.w0s\.jp\/script\/.+\.m?js$/],
@@ -22,7 +22,7 @@ new ReportJsError('https://report.w0s.jp/report/js', {
 /* リファラーレポート */
 await new ReportSameReferrer('https://report.w0s.jp/report/referrer', {
 	fetchParam: {
-		location: 'location',
+		location: 'documentURL',
 		referrer: 'referrer',
 	},
 	fetchContentType: 'application/json',
