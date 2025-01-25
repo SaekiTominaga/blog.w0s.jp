@@ -26,22 +26,22 @@
 		"_svg-prod:compress": "brotli-cli compress -g public/image/**/*.svg -g public/favicon.ico -m text"
 	},
 	"dependencies": {
-		"@w0s/button-clipboard": "^2.2.0",
-		"@w0s/footnote-reference-popover": "^6.0.0",
-		"@w0s/form-before-unload-confirm": "^2.0.0",
-		"@w0s/form-submit-overlay": "^3.1.0",
-		"@w0s/input-file-preview": "^2.1.0",
+		"@w0s/button-clipboard": "^3.0.0",
+		"@w0s/footnote-reference-popover": "^7.0.0",
+		"@w0s/form-before-unload-confirm": "^3.0.0",
+		"@w0s/form-submit-overlay": "^4.0.0",
+		"@w0s/input-file-preview": "^3.0.0",
 		"@w0s/paapi-item-image-url-parser": "^3.0.1",
 		"@w0s/report-js-error": "^3.0.0",
 		"@w0s/report-same-referrer": "^4.0.0",
 		"@w0s/string-convert": "^2.0.1",
-		"@w0s/tab": "^4.2.0",
-		"prettier": "^3.3.2",
+		"@w0s/tab": "^4.3.0",
+		"prettier": "^3.4.2",
 		"slash": "^5.1.0",
 		"svgo": "^3.3.2"
 	},
 	"devDependencies": {
-		"@types/node": "^22.10.7",
+		"@types/node": "^22.10.10",
 		"@types/trusted-types": "^2.0.7",
 		"brotli-cli": "^2.1.0",
 		"vfile-message": "^4.0.2"
