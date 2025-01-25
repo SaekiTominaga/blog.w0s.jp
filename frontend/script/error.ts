@@ -1,14 +1,14 @@
-import ReportJsError from '@w0s/report-js-error';
-import ReportSameReferrer from '@w0s/report-same-referrer';
+import reportJsError from '@w0s/report-js-error';
+import reportSameReferrer from '@w0s/report-same-referrer';
 
 /**
  * 403, 404, 410 ページ
  */
 
 /* JS エラーレポート */
-new ReportJsError('https://report.w0s.jp/report/js', {
+reportJsError('https://report.w0s.jp/report/js', {
 	fetchParam: {
-		location: 'documentURL',
+		documentURL: 'documentURL',
 		message: 'message',
 		filename: 'jsURL',
 		lineno: 'lineNumber',
@@ -20,11 +20,11 @@ new ReportJsError('https://report.w0s.jp/report/js', {
 });
 
 /* リファラーレポート */
-await new ReportSameReferrer('https://report.w0s.jp/report/referrer', {
+await reportSameReferrer('https://report.w0s.jp/report/referrer', {
 	fetchParam: {
-		location: 'documentURL',
+		documentURL: 'documentURL',
 		referrer: 'referrer',
 	},
 	fetchContentType: 'application/json',
 	same: ['https://w0s.jp'],
-}).report();
+});
