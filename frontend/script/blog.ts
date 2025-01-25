@@ -1,17 +1,17 @@
-import ButtonClipboard from '@w0s/button-clipboard';
-import ReportJsError from '@w0s/report-js-error';
+import buttonClipboard from '@w0s/button-clipboard';
+import reportJsError from '@w0s/report-js-error';
 import Tab from '@w0s/tab';
-import FootnoteReferencePopover from '@w0s/footnote-reference-popover';
+import footnoteReferencePopover from '@w0s/footnote-reference-popover';
 import GoogleAdsense from './unique/GoogleAdsense.js';
 
 /* JS エラーレポート */
-new ReportJsError('https://report.w0s.jp/report/js', {
+reportJsError('https://report.w0s.jp/report/js', {
 	fetchParam: {
-		location: 'location',
+		documentURL: 'documentURL',
 		message: 'message',
-		filename: 'filename',
-		lineno: 'lineno',
-		colno: 'colno',
+		filename: 'jsURL',
+		lineno: 'lineNumber',
+		colno: 'columnNumber',
 	},
 	fetchContentType: 'application/json',
 	allowFilenames: [/^https:\/\/blog\.w0s\.jp\/script\/.+\.js$/],
@@ -25,14 +25,10 @@ if (window.customElements !== undefined) {
 	}
 
 	/* ツールチップ */
-	for (const targetElement of document.querySelectorAll<HTMLAnchorElement>('.js-footnote-reference-popover')) {
-		new FootnoteReferencePopover(targetElement);
-	}
+	footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popover'));
 
 	/* クリップボード書き込みボタン */
-	for (const targetElement of document.querySelectorAll<HTMLButtonElement>('.js-button-clipboard')) {
-		new ButtonClipboard(targetElement);
-	}
+	buttonClipboard(document.querySelectorAll('.js-button-clipboard'));
 }
 
 /* Google AdSense */

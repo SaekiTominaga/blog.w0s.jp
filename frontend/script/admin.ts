@@ -1,6 +1,6 @@
-import FormBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
-import FormSubmitOverlay from '@w0s/form-submit-overlay';
-import InputFilePreview from '@w0s/input-file-preview';
+import formBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
+import formSubmitOverlay from '@w0s/form-submit-overlay';
+import inputFilePreview from '@w0s/input-file-preview';
 import StringConvert from '@w0s/string-convert';
 import Preview from './unique/Preview.js';
 import MessageImage from './unique/MessageImage.js';
@@ -19,19 +19,13 @@ for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLT
 }
 
 /* ファイルアップロードでプレビュー画像を表示 */
-for (const targetElement of document.querySelectorAll<HTMLInputElement>('.js-input-file-preview')) {
-	new InputFilePreview(targetElement);
-}
+inputFilePreview(document.querySelectorAll('.js-input-file-preview'));
 
 /* フォーム入力中にページが閉じられようとしたら確認メッセージを表示 */
-for (const beforeunloadConfirmElement of document.querySelectorAll<HTMLFormElement>('.js-form-beforeunload-confirm')) {
-	new FormBeforeUnloadConfirm(beforeunloadConfirmElement);
-}
+formBeforeUnloadConfirm(document.querySelectorAll('.js-form-beforeunload-confirm'));
 
 /* 送信ボタン2度押し防止 */
-for (const formElement of document.querySelectorAll<HTMLFormElement>('.js-submit-overlay')) {
-	new FormSubmitOverlay(formElement);
-}
+formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 
 /* 本文プレビュー */
 const messageCtrlElement = document.getElementById('fc-message') as HTMLTextAreaElement | null; // 本文の入力コントロール
