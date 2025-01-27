@@ -51,5 +51,13 @@ if (messageCtrlElement !== null && markdownMessagesElement !== null && messagePr
 	};
 
 	await exec();
-	messageCtrlElement.addEventListener('change', exec, { passive: true });
+	messageCtrlElement.addEventListener(
+		'change',
+		() => {
+			exec().catch((e: unknown) => {
+				throw e;
+			});
+		},
+		{ passive: true },
+	);
 }

@@ -17,14 +17,7 @@ export default [
 	{
 		files: ['script/**/*.ts'],
 		rules: {
-			'@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
 			'@typescript-eslint/no-unnecessary-condition': 'off',
-		},
-	},
-	{
-		files: ['script/*.ts'],
-		rules: {
-			'no-new': 'off',
 		},
 	},
 	{
