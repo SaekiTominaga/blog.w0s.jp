@@ -1,7 +1,7 @@
 import formBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
 import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
-import StringConvert from '@w0s/string-convert';
+import { convert } from '@w0s/string-convert';
 import Preview from './unique/Preview.js';
 import MessageImage from './unique/MessageImage.js';
 
@@ -10,7 +10,7 @@ for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLT
 	formCtrlElement.addEventListener(
 		'change',
 		() => {
-			formCtrlElement.value = StringConvert.convert(formCtrlElement.value, {
+			formCtrlElement.value = convert(formCtrlElement.value, {
 				trim: true,
 			});
 		},
