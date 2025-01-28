@@ -2,7 +2,7 @@ import buttonClipboard from '@w0s/button-clipboard';
 import reportJsError from '@w0s/report-js-error';
 import Tab from '@w0s/tab';
 import footnoteReferencePopover from '@w0s/footnote-reference-popover';
-import GoogleAdsense from './unique/GoogleAdsense.js';
+import adsense from './unique/adsense.js';
 
 /* JS エラーレポート */
 reportJsError('https://report.w0s.jp/report/js', {
@@ -30,6 +30,4 @@ footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popov
 buttonClipboard(document.querySelectorAll('.js-button-clipboard'));
 
 /* Google AdSense */
-for (const adsGoogleElement of document.querySelectorAll('.js-ads-google')) {
-	new GoogleAdsense(adsGoogleElement).init('100px');
-}
+adsense(document.querySelectorAll('.js-ads-google'), { rootMargin: '100px' });
