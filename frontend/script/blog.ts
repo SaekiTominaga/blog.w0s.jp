@@ -18,18 +18,16 @@ reportJsError('https://report.w0s.jp/report/js', {
 	denyUAs: [/Googlebot\/2.1;/],
 });
 
-if (window.customElements !== undefined) {
-	/* タブ */
-	if (document.querySelector('w0s-tab') !== null) {
-		customElements.define('w0s-tab', Tab);
-	}
-
-	/* ツールチップ */
-	footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popover'));
-
-	/* クリップボード書き込みボタン */
-	buttonClipboard(document.querySelectorAll('.js-button-clipboard'));
+/* タブ */
+if (document.querySelector('w0s-tab') !== null) {
+	customElements.define('w0s-tab', Tab);
 }
+
+/* ツールチップ */
+footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popover'));
+
+/* クリップボード書き込みボタン */
+buttonClipboard(document.querySelectorAll('.js-button-clipboard'));
 
 /* Google AdSense */
 for (const adsGoogleElement of document.querySelectorAll('.js-ads-google')) {

@@ -1,6 +1,6 @@
 declare global {
 	interface Window {
-		adsbygoogle: unknown[];
+		adsbygoogle?: unknown[];
 	}
 }
 
@@ -25,11 +25,6 @@ export default class GoogleAdsense {
 	 * @param rootMargin - ルート周りのマージン
 	 */
 	init(rootMargin = '0px'): void {
-		if (window.IntersectionObserver === undefined) {
-			/* Safari 11, iOS Safari 11-12.1 */
-			return;
-		}
-
 		const observer = new IntersectionObserver(
 			(entries) => {
 				if (entries.some((entry) => entry.isIntersecting)) {
