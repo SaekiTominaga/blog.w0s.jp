@@ -15,12 +15,6 @@ export default [
 		},
 	},
 	{
-		files: ['script/**/*.ts'],
-		rules: {
-			'@typescript-eslint/no-unnecessary-condition': 'off',
-		},
-	},
-	{
 		files: ['script/analytics.ts'],
 		languageOptions: {
 			parserOptions: {
