@@ -4,6 +4,7 @@ import type { Request, Response } from 'express';
 import type { Result as ValidationResult, ValidationError } from 'express-validator';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
+import configureExpress from '../config/express.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
 import CreateFeed from '../process/CreateFeed.js';
 import CreateNewlyJson from '../process/CreateNewlyJson.js';
@@ -11,11 +12,11 @@ import CreateSitemap from '../process/CreateSitemap.js';
 import PostBluesky from '../process/PostBluesky.js';
 import PostMastodon from '../process/PostMastodon.js';
 import PostMisskey from '../process/PostMisskey.js';
+import { env } from '../util/env.js';
 import HttpBasicAuth, { type Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import PostValidator from '../validator/PostValidator.js';
-import type { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import type { NoName as Configure } from '../../../configure/type/post.js';
 
 interface PostResult {
@@ -40,18 +41,10 @@ interface MediaUploadResult {
 export default class PostController extends Controller implements ControllerInterface {
 	#config: Configure;
 
-	#env: Express.Env;
-
-	/**
-	 * @param configCommon - 共通設定
-	 * @param env - NODE_ENV
-	 */
-	constructor(configCommon: ConfigureCommon, env: Express.Env) {
-		super(configCommon);
+	constructor() {
+		super();
 
 		this.#config = JSON.parse(fs.readFileSync('configure/post.json', 'utf8')) as Configure;
-
-		this.#env = env;
 	}
 
 	/**
@@ -59,7 +52,7 @@ export default class PostController extends Controller implements ControllerInte
 	 * @param res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const httpResponse = new HttpResponse(req, res, this.configCommon);
+		const httpResponse = new HttpResponse(req, res);
 
 		/* Basic 認証 */
 		const httpBasicCredentials = new HttpBasicAuth(req).getCredentials();
@@ -95,7 +88,7 @@ export default class PostController extends Controller implements ControllerInte
 		const viewUpdateResults = new Set<ViewUpdateResult>();
 		const mediaUploadResults = new Set<MediaUploadResult>();
 
-		const dao = new BlogPostDao(this.configCommon.sqlite.db.blog);
+		const dao = new BlogPostDao(env('SQLITE_BLOG'));
 
 		if (requestQuery.action_add) {
 			/* 登録 */
@@ -118,7 +111,7 @@ export default class PostController extends Controller implements ControllerInte
 				);
 				this.logger.info('データ登録', entryId);
 
-				const entryUrl = this.#getEntryUrl(entryId);
+				const entryUrl = PostController.#getEntryUrl(entryId);
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.insert.success} ${entryUrl}` });
 
 				const [updateModifiedResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
@@ -172,7 +165,7 @@ export default class PostController extends Controller implements ControllerInte
 				);
 				this.logger.info('データ更新', requestQuery.id);
 
-				const entryUrl = this.#getEntryUrl(requestQuery.id);
+				const entryUrl = PostController.#getEntryUrl(requestQuery.id);
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.update.success} ${entryUrl}` });
 
 				const [updateModified, createFeedResult, createSitemapResult, createNewlyJson] = await Promise.all([
@@ -243,8 +236,8 @@ export default class PostController extends Controller implements ControllerInte
 
 		/* レンダリング */
 		res.set('Cache-Control', 'no-cache');
-		res.set('Content-Security-Policy', this.configCommon.response.header.csp_html);
-		res.set('Content-Security-Policy-Report-Only', this.configCommon.response.header.cspro_html);
+		res.set('Content-Security-Policy', configureExpress.response.header.csp_html);
+		res.set('Content-Security-Policy-Report-Only', configureExpress.response.header.cspro_html);
 		res.set('Referrer-Policy', 'no-referrer');
 		res.render(this.#config.view.init, {
 			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
@@ -267,8 +260,8 @@ export default class PostController extends Controller implements ControllerInte
 	 *
 	 * @returns 記事 URL
 	 */
-	#getEntryUrl(id: number) {
-		return `${this.configCommon.origin}/${String(id)}`;
+	static #getEntryUrl(id: number) {
+		return `${configureExpress.origin}/${String(id)}`;
 	}
 
 	/**
@@ -299,11 +292,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createFeed(): Promise<PostResult> {
 		try {
-			const result = await new CreateFeed({
-				dbFilePath: this.configCommon.sqlite.db.blog,
-				views: this.configCommon.views,
-				root: this.configCommon.static.root,
-			}).execute();
+			const result = await new CreateFeed().execute();
 
 			result.createdFilesPath.forEach((filePath): void => {
 				this.logger.info('Feed file was created', filePath);
@@ -328,11 +317,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createSitemap(): Promise<PostResult> {
 		try {
-			const result = await new CreateSitemap({
-				dbFilePath: this.configCommon.sqlite.db.blog,
-				views: this.configCommon.views,
-				root: this.configCommon.static.root,
-			}).execute();
+			const result = await new CreateSitemap().execute();
 
 			this.logger.info('Sitemap file was created', result.createdFilePath);
 		} catch (e) {
@@ -351,14 +336,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createNewlyJson(): Promise<PostResult> {
 		try {
-			const result = await new CreateNewlyJson({
-				dbFilePath: this.configCommon.sqlite.db.blog,
-				root: this.configCommon.static.root,
-				extentions: {
-					json: this.configCommon.extension.json,
-					brotli: this.configCommon.extension.brotli,
-				},
-			}).execute();
+			const result = await new CreateNewlyJson().execute();
 
 			result.createdFilesPath.forEach((filePath): void => {
 				this.logger.info('JSON file was created', filePath);
@@ -381,7 +359,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #postMastodon(entryData: BlogSocial.EntryData): Promise<PostResult> {
 		try {
-			const result = await new PostMastodon({ views: this.configCommon.views }, this.#env).execute(entryData);
+			const result = await new PostMastodon().execute(entryData);
 
 			this.logger.info('Mastodon was posted', result.url, result.content);
 
@@ -402,7 +380,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #postBluesky(entryData: BlogSocial.EntryData): Promise<PostResult> {
 		try {
-			const result = await new PostBluesky({ views: this.configCommon.views }).execute(entryData);
+			const result = await new PostBluesky().execute(entryData);
 
 			this.logger.info('Bluesky was posted');
 
@@ -423,7 +401,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #postMisskey(entryData: BlogSocial.EntryData): Promise<PostResult> {
 		try {
-			const result = await new PostMisskey({ views: this.configCommon.views }, this.#env).execute(entryData);
+			const result = await new PostMisskey().execute(entryData);
 
 			this.logger.info('Misskey was posted', result.url, result.content);
 
@@ -449,7 +427,7 @@ export default class PostController extends Controller implements ControllerInte
 			throw new Error('メディアアップロード時にファイルが指定されていない');
 		}
 
-		const url = this.#env === 'development' ? this.#config.media_upload.url_dev : this.#config.media_upload.url;
+		const url = env('MEDIA_UPLOAD_URL');
 
 		const result = new Set<MediaUploadResult>();
 

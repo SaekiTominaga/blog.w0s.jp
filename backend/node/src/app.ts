@@ -1,11 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import compression from 'compression';
+import * as dotenv from 'dotenv';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import Log4js from 'log4js';
 import { isMatch } from 'matcher';
 import multer from 'multer';
-import type { NoName as Configure } from '../../configure/type/common.js';
+import config from './config/express.js';
 import CategoryController from './controller/CategoryController.js';
 import EntryController from './controller/EntryController.js';
 import HttpBasicAuth from './util/HttpBasicAuth.js';
@@ -13,19 +14,22 @@ import HttpResponse from './util/HttpResponse.js';
 import ListController from './controller/ListController.js';
 import PostController from './controller/PostController.js';
 import PreviewController from './controller/api/PreviewController.js';
+import { env } from './util/env.js';
 
-/* 設定ファイル読み込み */
-const config = JSON.parse((await fs.promises.readFile('configure/common.json')).toString()) as Configure;
+dotenv.config({
+	path: process.env['NODE_ENV'] === 'production' ? '../.env.production' : '../.env.development',
+});
 
 /* Logger 設定 */
-Log4js.configure(config.logger.path);
+Log4js.configure(env('LOGGER'));
 const logger = Log4js.getLogger();
 
+/* Express */
 const app = express();
-const env = app.get('env') as Express.Env;
+const env1 = app.get('env') as Express.Env;
 
 app.set('trust proxy', true);
-app.set('views', config.views);
+app.set('views', env('VIEWS'));
 app.set('view engine', 'ejs');
 app.set('x-powered-by', false);
 
@@ -59,11 +63,11 @@ app.use(
 	}),
 	async (req, res, next) => {
 		/* Basic Authentication */
-		const basic = config.static.auth_basic?.find((auth) => isMatch(req.url, auth.urls));
+		const basic = config.static.auth_basic.find((auth) => isMatch(req.url, auth.urls));
 		if (basic !== undefined) {
 			const httpBasicAuth = new HttpBasicAuth(req);
-			if (!(await httpBasicAuth.htpasswd(basic.htpasswd))) {
-				new HttpResponse(req, res, config).send401('Basic', basic.realm);
+			if (!(await httpBasicAuth.htpasswd(`${env('AUTH_DIRECTORY')}/${basic.htpasswd}`))) {
+				new HttpResponse(req, res).send401('Basic', basic.realm);
 				return;
 			}
 		}
@@ -76,13 +80,13 @@ app.use(
 		let requestFilePath: string | undefined; // 実ファイルパス
 		if (requestPath.endsWith('/')) {
 			/* ディレクトリトップ（e.g. /foo/ ） */
-			const fileName = config.static.indexes?.find((name) => fs.existsSync(`${config.static.root}${requestPath}${name}`));
+			const fileName = config.static.indexes.find((name) => fs.existsSync(`${config.static.root}${requestPath}${name}`));
 			if (fileName !== undefined) {
 				requestFilePath = `${requestPath}${fileName}`;
 			}
 		} else if (path.extname(requestPath) === '') {
 			/* 拡張子のない URL（e.g. /foo ） */
-			const extension = config.static.extensions?.find((ext) => fs.existsSync(`${config.static.root}${requestPath}${ext}`));
+			const extension = config.static.extensions.find((ext) => fs.existsSync(`${config.static.root}${requestPath}${ext}`));
 			if (extension !== undefined) {
 				requestFilePath = `${requestPath}${extension}`;
 			}
@@ -103,7 +107,7 @@ app.use(
 		next();
 	},
 	express.static(config.static.root, {
-		extensions: config.static.extensions?.map((ext) => /* 拡張子の . は不要 */ ext.substring(1)),
+		extensions: config.static.extensions.map((ext) => /* 拡張子の . は不要 */ ext.substring(1)),
 		index: config.static.indexes,
 		setHeaders: (res, localPath) => {
 			const requestUrl = res.req.url; // リクエストパス e.g. ('/foo.html.br')
@@ -129,28 +133,26 @@ app.use(
 			res.setHeader('Content-Type', mimeType ?? 'application/octet-stream');
 
 			/* Cache-Control */
-			if (config.static.headers.cache_control !== undefined) {
-				const cacheControlConfig = env === 'production' ? config.static.headers.cache_control.production : config.static.headers.cache_control.development;
+			const cacheControl =
+				env1 === 'production'
+					? (config.static.headers.cache_control.path.find((ccPath) => ccPath.paths.includes(requestUrlOrigin))?.value ??
+						config.static.headers.cache_control.extension.find((ccExt) => ccExt.extensions.includes(extensionOrigin))?.value ??
+						config.static.headers.cache_control.default)
+					: 'no-cache';
 
-				const cacheControl =
-					cacheControlConfig.path?.find((ccPath) => ccPath.paths.includes(requestUrlOrigin))?.value ??
-					cacheControlConfig.extension?.find((ccExt) => ccExt.extensions.includes(extensionOrigin))?.value ??
-					cacheControlConfig.default;
-
-				res.setHeader('Cache-Control', cacheControl);
-			}
+			res.setHeader('Cache-Control', cacheControl);
 
 			/* CORS */
-			if (config.static.headers.cors?.directory.find((urlPath) => requestUrl.startsWith(urlPath)) !== undefined) {
+			if (config.static.headers.cors.directory.find((urlPath) => requestUrl.startsWith(urlPath)) !== undefined) {
 				const origin = res.req.get('Origin');
-				if (origin !== undefined && config.static.headers.cors.origin.includes(origin)) {
+				if (origin !== undefined && env('JSON_CORS_ORIGINS', 'string[]').includes(origin)) {
 					res.setHeader('Access-Control-Allow-Origin', origin);
 					res.vary('Origin');
 				}
 			}
 
 			/* SourceMap */
-			if (config.static.headers.source_map?.extensions?.includes(extensionOrigin)) {
+			if (config.static.headers.source_map.extensions.includes(extensionOrigin)) {
 				const mapFilePath = `${localPathOrigin}${config.extension.map}`;
 				if (fs.existsSync(mapFilePath)) {
 					res.setHeader('SourceMap', path.basename(mapFilePath));
@@ -166,14 +168,14 @@ app.use(
 	}),
 );
 
-const upload = multer({ dest: config.temp });
+const upload = multer({ dest: env('TEMP') });
 
 /**
  * 記事リスト
  */
 app.get(['/', '/list/:page([1-9][0-9]{0,1})'], async (req, res, next) => {
 	try {
-		await new ListController(config).execute(req, res);
+		await new ListController().execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -184,7 +186,7 @@ app.get(['/', '/list/:page([1-9][0-9]{0,1})'], async (req, res, next) => {
  */
 app.get('/:entry_id([1-9][0-9]{0,2})', async (req, res, next) => {
 	try {
-		await new EntryController(config).execute(req, res);
+		await new EntryController().execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -195,7 +197,7 @@ app.get('/:entry_id([1-9][0-9]{0,2})', async (req, res, next) => {
  */
 app.get('/category/:category_name', async (req, res, next) => {
 	try {
-		await new CategoryController(config).execute(req, res);
+		await new CategoryController().execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -208,14 +210,14 @@ app
 	.route('/admin/post')
 	.get(async (req, res, next) => {
 		try {
-			await new PostController(config, env).execute(req, res);
+			await new PostController().execute(req, res);
 		} catch (e) {
 			next(e);
 		}
 	})
 	.post(upload.array('media'), async (req, res, next) => {
 		try {
-			await new PostController(config, env).execute(req, res);
+			await new PostController().execute(req, res);
 		} catch (e) {
 			next(e);
 		}
@@ -226,7 +228,7 @@ app
  */
 app.post('/api/preview', async (req, res, next) => {
 	try {
-		await new PreviewController(config).execute(req, res);
+		await new PreviewController().execute(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -250,9 +252,8 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction /* eslint-
 <h1>500 Internal Server Error</h1>`);
 });
 
-/**
- * HTTP サーバー起動
- */
-app.listen(config.port, () => {
-	logger.info(`Example app listening at http://localhost:${String(config.port)}`);
+/* HTTP Server */
+const port = env('PORT', 'number');
+app.listen(port, () => {
+	logger.info(`Example app listening at http://localhost:${String(port)}`);
 });

@@ -1,32 +1,16 @@
 import fs from 'node:fs';
 import ejs from 'ejs';
+import { env } from '../util/env.js';
 import type { Misskey as Configure } from '../../../configure/type/misskey.js';
-
-interface ConfigCommon {
-	views: string;
-}
 
 /**
  * Misskey 投稿
  */
 export default class PostMisskey {
-	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
-
 	readonly #config: Configure; // 機能設定
 
-	readonly #env: Express.Env;
-
-	/**
-	 * @param configCommon 共通設定ファイル
-	 * @param configCommon.views テンプレートディレクトリ
-	 * @param env - NODE_ENV
-	 */
-	constructor(configCommon: ConfigCommon, env: Express.Env) {
-		this.#configCommon = configCommon;
-
+	constructor() {
 		this.#config = JSON.parse(fs.readFileSync('configure/misskey.json', 'utf8')) as Configure;
-
-		this.#env = env;
 	}
 
 	/**
@@ -46,9 +30,9 @@ export default class PostMisskey {
 			},
 			body: JSON.stringify({
 				i: this.#config.api.access_token,
-				text: await PostMisskey.#getMessage(`${this.#configCommon.views}/${this.#config.view_path}`, entryData),
-				visibility: this.#env === 'development' ? 'specified' : this.#config.visibility,
-			}), // https://misskey.io/api-doc#tag/notes
+				text: await PostMisskey.#getMessage(`${env('VIEWS')}/${this.#config.view_path}`, entryData),
+				visibility: env('MISSKEY_VISIBILITY'),
+			}), // https://misskey.noellabo.jp/api-doc#tag/notes/POST/notes/create
 		});
 		const responseJson = JSON.parse(await response.text()) as MisskryAPIResponse.NotesCreate;
 		if (!response.ok) {

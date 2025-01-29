@@ -1,27 +1,16 @@
 import fs from 'node:fs';
 import { BskyAgent, RichText } from '@atproto/api';
 import ejs from 'ejs';
+import { env } from '../util/env.js';
 import type { Bluesky as Configure } from '../../../configure/type/bluesky.js';
-
-interface ConfigCommon {
-	views: string;
-}
 
 /**
  * Bluesky 投稿
  */
 export default class PostBluesky {
-	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
-
 	readonly #config: Configure; // 機能設定
 
-	/**
-	 * @param configCommon 共通設定ファイル
-	 * @param configCommon.views テンプレートディレクトリ
-	 */
-	constructor(configCommon: ConfigCommon) {
-		this.#configCommon = configCommon;
-
+	constructor() {
 		this.#config = JSON.parse(fs.readFileSync('configure/bluesky.json', 'utf8')) as Configure;
 	}
 
@@ -44,7 +33,7 @@ export default class PostBluesky {
 		});
 
 		const richText = new RichText({
-			text: await PostBluesky.#getMessage(`${this.#configCommon.views}/${this.#config.view_path}`, entryData),
+			text: await PostBluesky.#getMessage(`${env('VIEWS')}/${this.#config.view_path}`, entryData),
 		});
 		await richText.detectFacets(agent);
 

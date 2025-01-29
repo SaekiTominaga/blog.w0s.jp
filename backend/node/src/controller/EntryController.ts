@@ -5,11 +5,12 @@ import type { Request, Response } from 'express';
 import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
+import configureExpress from '../config/express.js';
 import Markdown from '../markdown/Markdown.js';
 import MarkdownTitle from '../markdown/Title.js';
+import { env } from '../util/env.js';
 import HttpResponse from '../util/HttpResponse.js';
 import Sidebar from '../util/Sidebar.js';
-import type { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 import type { NoName as Configure } from '../../../configure/type/entry.js';
 
 /**
@@ -18,11 +19,8 @@ import type { NoName as Configure } from '../../../configure/type/entry.js';
 export default class EntryController extends Controller implements ControllerInterface {
 	#config: Configure;
 
-	/**
-	 * @param configCommon - 共通設定
-	 */
-	constructor(configCommon: ConfigureCommon) {
-		super(configCommon);
+	constructor() {
+		super();
 
 		this.#config = JSON.parse(fs.readFileSync('configure/entry.json', 'utf8')) as Configure;
 	}
@@ -32,13 +30,13 @@ export default class EntryController extends Controller implements ControllerInt
 	 * @param res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const httpResponse = new HttpResponse(req, res, this.configCommon);
+		const httpResponse = new HttpResponse(req, res);
 
 		const requestQuery: BlogRequest.Entry = {
 			entry_id: Number(req.params['entry_id']),
 		};
 
-		const dao = new BlogEntryDao(this.configCommon.sqlite.db.blog);
+		const dao = new BlogEntryDao(env('SQLITE_BLOG'));
 
 		const lastModified = await dao.getLastModified();
 
@@ -47,12 +45,12 @@ export default class EntryController extends Controller implements ControllerInt
 			return;
 		}
 
-		const htmlFilePath = `${this.configCommon.html}/${this.#config.html.directory}/${String(requestQuery.entry_id)}${this.configCommon.extension.html}`;
-		const htmlBrotliFilePath = `${htmlFilePath}${this.configCommon.extension.brotli}`;
+		const htmlFilePath = `${env('HTML')}/${this.#config.html.directory}/${String(requestQuery.entry_id)}${configureExpress.extension.html}`;
+		const htmlBrotliFilePath = `${htmlFilePath}${configureExpress.extension.brotli}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 			/* 生成された HTML をロードする */
-			await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: this.configCommon.cache_control });
+			await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: configureExpress.cache_control });
 			return;
 		}
 
@@ -72,7 +70,7 @@ export default class EntryController extends Controller implements ControllerInt
 			dao.getCategories(requestQuery.entry_id),
 			dao.getRelations(requestQuery.entry_id),
 			sidebar.getEntryCountOfCategory(),
-			sidebar.getNewlyEntries(this.configCommon.sidebar.newly.maximum_number),
+			sidebar.getNewlyEntries(configureExpress.sidebar.newly.maximum_number),
 		]);
 
 		let imageUrl: string | null = null;
@@ -119,7 +117,7 @@ export default class EntryController extends Controller implements ControllerInt
 		}
 
 		/* HTML 生成 */
-		const html = await ejs.renderFile(`${this.configCommon.views}/${this.#config.view.success}`, {
+		const html = await ejs.renderFile(`${env('VIEWS')}/${this.#config.view.success}`, {
 			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 			requestQuery: requestQuery,
 			structuredData: structuredData,

@@ -1,33 +1,17 @@
 import fs from 'node:fs';
 import ejs from 'ejs';
 import { createRestAPIClient as mastodonRest } from 'masto';
+import { env } from '../util/env.js';
 import type { Mastodon as Configure } from '../../../configure/type/mastodon.js';
-
-interface ConfigCommon {
-	views: string;
-}
 
 /**
  * Mastodon 投稿
  */
 export default class PostMastodon {
-	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
-
 	readonly #config: Configure; // 機能設定
 
-	readonly #env: Express.Env;
-
-	/**
-	 * @param configCommon 共通設定ファイル
-	 * @param configCommon.views テンプレートディレクトリ
-	 * @param env - NODE_ENV
-	 */
-	constructor(configCommon: ConfigCommon, env: Express.Env) {
-		this.#configCommon = configCommon;
-
+	constructor() {
 		this.#config = JSON.parse(fs.readFileSync('configure/mastodon.json', 'utf8')) as Configure;
-
-		this.#env = env;
 	}
 
 	/**
@@ -46,8 +30,8 @@ export default class PostMastodon {
 		});
 
 		const status = await mastodon.v1.statuses.create({
-			status: await PostMastodon.#getMessage(`${this.#configCommon.views}/${this.#config.view_path}`, entryData),
-			visibility: this.#env === 'development' ? 'direct' : this.#config.visibility, // https://docs.joinmastodon.org/entities/Status/#visibility
+			status: await PostMastodon.#getMessage(`${env('VIEWS')}/${this.#config.view_path}`, entryData),
+			visibility: env('MASTODON_VISIBILITY') as 'public' | 'unlisted' | 'private' | 'direct', // https://docs.joinmastodon.org/entities/Status/#visibility
 			language: 'ja',
 		});
 

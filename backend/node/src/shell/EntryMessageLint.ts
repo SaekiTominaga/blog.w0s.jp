@@ -1,8 +1,7 @@
-import fs from 'node:fs';
 import { parseArgs } from 'node:util';
-import Markdown from '../markdown/Markdown.js';
 import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.js';
-import type { NoName as Configure } from '../../../configure/type/common.js';
+import Markdown from '../markdown/Markdown.js';
+import { env } from '../util/env.js';
 
 /**
  * 記事本文の構文チェック
@@ -20,10 +19,7 @@ const argsParsedValues = parseArgs({
 	},
 }).values;
 
-/* 設定ファイル読み込み */
-const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8')) as Configure;
-
-const dao = new BlogEntryMessageConvertDao(config.sqlite.db.blog);
+const dao = new BlogEntryMessageConvertDao(env('SQLITE_BLOG'));
 
 const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
 

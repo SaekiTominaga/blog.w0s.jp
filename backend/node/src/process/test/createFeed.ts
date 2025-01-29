@@ -1,12 +1,4 @@
-import fs from 'node:fs';
 import CreateFeed from '../CreateFeed.js';
-import type { NoName as Configure } from '../../../../configure/type/common.js';
 
-const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8')) as Configure;
-
-const result = await new CreateFeed({
-	dbFilePath: config.sqlite.db.blog,
-	views: config.views,
-	root: config.static.root,
-}).execute();
+const result = await new CreateFeed().execute();
 console.debug(result);

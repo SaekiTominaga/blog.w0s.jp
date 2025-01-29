@@ -2,32 +2,18 @@ import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import xmlFormatter from 'xml-formatter';
+import configExpress from '../config/express.js';
 import BlogSitemapDao from '../dao/BlogSitemapDao.js';
+import { env } from '../util/env.js';
 import type { NoName as Configure } from '../../../configure/type/sitemap.js';
-
-interface ConfigCommon {
-	dbFilePath: string;
-	views: string;
-	root: string;
-}
 
 /**
  * サイトマップ生成
  */
 export default class CreateSitemap {
-	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
-
 	readonly #config: Configure; // 機能設定
 
-	/**
-	 * @param configCommon 共通設定ファイル
-	 * @param configCommon.dbFilePath DB ファイルパス
-	 * @param configCommon.views テンプレートディレクトリ
-	 * @param configCommon.root ルートディレクトリ
-	 */
-	constructor(configCommon: ConfigCommon) {
-		this.#configCommon = configCommon;
-
+	constructor() {
 		this.#config = JSON.parse(fs.readFileSync('configure/sitemap.json', 'utf8')) as Configure;
 	}
 
@@ -37,14 +23,14 @@ export default class CreateSitemap {
 	async execute(): Promise<{
 		createdFilePath: string; // 生成したファイルパス
 	}> {
-		const dao = new BlogSitemapDao(this.#configCommon.dbFilePath);
+		const dao = new BlogSitemapDao(env('SQLITE_BLOG'));
 
 		const [updated, entries] = await Promise.all([
 			dao.getLastModified(),
 			dao.getEntries(this.#config.limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要がある */),
 		]);
 
-		const sitemapXml = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view_path}`, {
+		const sitemapXml = await ejs.renderFile(`${env('VIEWS')}/${this.#config.view_path}`, {
 			updated_at: dayjs(updated),
 			entries: entries,
 		});
@@ -57,7 +43,7 @@ export default class CreateSitemap {
 		});
 
 		/* ファイル出力 */
-		const filePath = `${this.#configCommon.root}/${this.#config.path}`;
+		const filePath = `${configExpress.static.root}/${this.#config.path}`;
 
 		await fs.promises.writeFile(filePath, sitemapXmlFormated);
 

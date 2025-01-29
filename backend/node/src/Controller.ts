@@ -1,24 +1,16 @@
 import fs from 'node:fs';
 import Log4js from 'log4js';
 import { format, resolveConfig } from 'prettier';
-import type { NoName as Configure } from '../../configure/type/common.js';
+import configureExpress from './config/express.js';
 import Compress from './util/Compress.js';
 import HttpResponse from './util/HttpResponse.js';
 
 export default class Controller {
 	protected readonly logger: Log4js.Logger; // Logger
 
-	protected readonly configCommon: Configure; // 共通設定
-
-	/**
-	 * @param configCommon - 共通設定
-	 */
-	constructor(configCommon: Configure) {
+	constructor() {
 		/* Logger */
 		this.logger = Log4js.getLogger(this.constructor.name);
-
-		/* 共通設定 */
-		this.configCommon = configCommon;
 	}
 
 	/**
@@ -52,7 +44,7 @@ export default class Controller {
 
 		await Promise.all([
 			/* レンダリング */
-			options.httpResponse.send200({ body: html, brotliBody: brotliData, cacheControl: this.configCommon.cache_control }),
+			options.httpResponse.send200({ body: html, brotliBody: brotliData, cacheControl: configureExpress.cache_control }),
 
 			/* HTML ファイル出力 */
 			this.#fileWrite(options.filePath, html),

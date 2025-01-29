@@ -1,37 +1,18 @@
 import fs from 'node:fs';
+import configExpress from '../config/express.js';
 import BlogNewlyJsonDao from '../dao/BlogNewlyJsonDao.js';
 import MarkdownTitle from '../markdown/Title.js';
 import Compress from '../util/Compress.js';
+import { env } from '../util/env.js';
 import type { JSON as Configure } from '../../../configure/type/newly-json.js';
-
-interface ConfigCommon {
-	dbFilePath: string;
-	root: string;
-	extentions: {
-		json: string;
-		brotli: string;
-	};
-}
 
 /**
  * 新着 JSON ファイル生成
  */
 export default class CreateNewlyJson {
-	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
-
 	readonly #config: Configure; // 機能設定
 
-	/**
-	 * @param configCommon 共通設定ファイル
-	 * @param configCommon.dbFilePath DB ファイルパス
-	 * @param configCommon.root ルートディレクトリ
-	 * @param configCommon.extentions ファイル拡張子
-	 *
-	 * @returns ファイル生成情報
-	 */
-	constructor(configCommon: ConfigCommon) {
-		this.#configCommon = configCommon;
-
+	constructor() {
 		this.#config = JSON.parse(fs.readFileSync('configure/newly-json.json', 'utf8')) as Configure;
 	}
 
@@ -41,7 +22,7 @@ export default class CreateNewlyJson {
 	async execute(): Promise<{
 		createdFilesPath: string[]; // 生成したファイルパス
 	}> {
-		const dao = new BlogNewlyJsonDao(this.#configCommon.dbFilePath);
+		const dao = new BlogNewlyJsonDao(env('SQLITE_BLOG'));
 
 		const datasCatgroup = new Map<string, BlogView.NewlyEntry[]>();
 
@@ -69,8 +50,8 @@ export default class CreateNewlyJson {
 				/* ファイル出力 */
 				const fileName =
 					fileNameType === '' ? this.#config.filename_prefix : `${this.#config.filename_prefix}${this.#config.filename_separator}${fileNameType}`;
-				const filePath = `${this.#configCommon.root}/${this.#config.directory}/${fileName}${this.#configCommon.extentions.json}`;
-				const brotliFilePath = `${filePath}${this.#configCommon.extentions.brotli}`;
+				const filePath = `${configExpress.static.root}/${this.#config.directory}/${fileName}${configExpress.extension.json}`;
+				const brotliFilePath = `${filePath}${configExpress.extension.brotli}`;
 
 				await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
 				createdFilesPath.push(filePath);

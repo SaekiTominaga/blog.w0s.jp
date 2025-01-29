@@ -73,6 +73,20 @@ export default [
 		},
 	},
 	{
+		files: ['node/src/util/**/*.ts'],
+		rules: {
+			'func-style': [
+				'error',
+				'expression',
+				{
+					overrides: {
+						namedExports: 'ignore',
+					},
+				},
+			],
+		},
+	},
+	{
 		files: ['node/src/util/RequestUtil.ts'],
 		rules: {
 			'@typescript-eslint/no-unsafe-return': 'off',

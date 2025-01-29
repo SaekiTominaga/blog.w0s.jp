@@ -1,10 +1,6 @@
-import fs from 'node:fs';
 import PostBluesky from '../PostBluesky.js';
-import type { NoName as Configure } from '../../../../configure/type/common.js';
 
-const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8')) as Configure;
-
-const result = await new PostBluesky({ views: config.views }).execute({
+const result = await new PostBluesky().execute({
 	url: 'http://exaple.com/entry/1',
 	title: 'タイトル<>"\'',
 	description: '詳細<>"\'',

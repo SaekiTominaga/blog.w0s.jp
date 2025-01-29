@@ -6,11 +6,12 @@ import type { Request, Response } from 'express';
 import BlogListDao from '../dao/BlogListDao.js';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
+import configureExpress from '../config/express.js';
+import MarkdownTitle from '../markdown/Title.js';
+import { env } from '../util/env.js';
 import HttpResponse from '../util/HttpResponse.js';
 import Sidebar from '../util/Sidebar.js';
-import MarkdownTitle from '../markdown/Title.js';
 import type { NoName as Configure } from '../../../configure/type/list.js';
-import type { NoName as ConfigureCommon } from '../../../configure/type/common.js';
 
 /**
  * 記事リスト
@@ -18,11 +19,8 @@ import type { NoName as ConfigureCommon } from '../../../configure/type/common.j
 export default class ListController extends Controller implements ControllerInterface {
 	#config: Configure;
 
-	/**
-	 * @param configCommon - 共通設定
-	 */
-	constructor(configCommon: ConfigureCommon) {
-		super(configCommon);
+	constructor() {
+		super();
 
 		this.#config = JSON.parse(fs.readFileSync('configure/list.json', 'utf8')) as Configure;
 	}
@@ -32,13 +30,13 @@ export default class ListController extends Controller implements ControllerInte
 	 * @param res - Response
 	 */
 	async execute(req: Request, res: Response): Promise<void> {
-		const httpResponse = new HttpResponse(req, res, this.configCommon);
+		const httpResponse = new HttpResponse(req, res);
 
 		const requestQuery: BlogRequest.List = {
 			page: req.params['page'] !== undefined ? Number(req.params['page']) : 1,
 		};
 
-		const dao = new BlogListDao(this.configCommon.sqlite.db.blog);
+		const dao = new BlogListDao(env('SQLITE_BLOG'));
 
 		const lastModified = await dao.getLastModified();
 
@@ -47,12 +45,12 @@ export default class ListController extends Controller implements ControllerInte
 			return;
 		}
 
-		const htmlFilePath = `${this.configCommon.html}/${this.#config.html.directory}/${String(requestQuery.page)}${this.configCommon.extension.html}`;
-		const htmlBrotliFilePath = `${htmlFilePath}${this.configCommon.extension.brotli}`;
+		const htmlFilePath = `${env('HTML')}/${this.#config.html.directory}/${String(requestQuery.page)}${configureExpress.extension.html}`;
+		const htmlBrotliFilePath = `${htmlFilePath}${configureExpress.extension.brotli}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 			/* 生成された HTML をロードする */
-			await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: this.configCommon.cache_control });
+			await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: configureExpress.cache_control });
 			return;
 		}
 
@@ -69,7 +67,7 @@ export default class ListController extends Controller implements ControllerInte
 		const [entryCount, entryCountOfCategoryList, newlyEntries] = await Promise.all([
 			dao.getEntryCount(),
 			sidebar.getEntryCountOfCategory(),
-			sidebar.getNewlyEntries(this.configCommon.sidebar.newly.maximum_number),
+			sidebar.getNewlyEntries(configureExpress.sidebar.newly.maximum_number),
 		]);
 
 		const entries: BlogView.EntryData[] = [];
@@ -104,7 +102,7 @@ export default class ListController extends Controller implements ControllerInte
 		const totalPage = Math.ceil(entryCount / this.#config.maximum_number);
 
 		/* HTML 生成 */
-		const html = await ejs.renderFile(`${this.configCommon.views}/${this.#config.view.success}`, {
+		const html = await ejs.renderFile(`${env('VIEWS')}/${this.#config.view.success}`, {
 			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 			requestQuery: requestQuery,
 			totalPage: totalPage,

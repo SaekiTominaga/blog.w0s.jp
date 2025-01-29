@@ -1,7 +1,6 @@
-import fs from 'node:fs';
 import { parseArgs } from 'node:util';
 import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.js';
-import type { NoName as Configure } from '../../../configure/type/common.js';
+import { env } from '../util/env.js';
 
 /**
  * 記事本文の構文書き換え
@@ -19,10 +18,7 @@ const argsParsedValues = parseArgs({
 	},
 }).values;
 
-/* 設定ファイル読み込み */
-const config = JSON.parse(await fs.promises.readFile('configure/common.json', 'utf8')) as Configure;
-
-const dao = new BlogEntryMessageConvertDao(config.sqlite.db.blog);
+const dao = new BlogEntryMessageConvertDao(env('SQLITE_BLOG'));
 
 const convert = (id: number, message: string): string => {
 	const CRLF = '\r\n';

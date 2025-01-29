@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import StringEscapeHtml from '@w0s/html-escape';
 import type { Request, Response } from 'express';
-import type { NoName as Configure } from '../../../configure/type/common.js';
+import config from '../config/express.js';
 
 type HttpAuthType = 'Basic' | 'Bearer' | 'Digest' | 'HOBA' | 'Mutual' | 'Negotiate' | 'OAuth' | 'SCRAM-SHA-1' | 'SCRAM-SHA-256' | 'vapid';
 
@@ -14,19 +14,15 @@ export default class HttpResponse {
 
 	readonly #res: Response;
 
-	readonly #config: Configure;
-
 	readonly #MIME_TYPE_HTML = 'text/html; charset=utf-8';
 
 	/**
 	 * @param req - Request
 	 * @param res - Request
-	 * @param config - 共通設定ファイル
 	 */
-	constructor(req: Request, res: Response, config: Configure) {
+	constructor(req: Request, res: Response) {
 		this.#req = req;
 		this.#res = res;
-		this.#config = config;
 	}
 
 	/**
@@ -67,8 +63,8 @@ export default class HttpResponse {
 		this.#res
 			.set('Content-Type', this.#MIME_TYPE_HTML)
 			.set('Cache-Control', data.cacheControl ?? 'no-cache')
-			.set('Content-Security-Policy', this.#config.response.header.csp_html)
-			.set('Content-Security-Policy-Report-Only', this.#config.response.header.cspro_html);
+			.set('Content-Security-Policy', config.response.header.csp_html)
+			.set('Content-Security-Policy-Report-Only', config.response.header.cspro_html);
 
 		/* Brotli 圧縮 */
 		if (this.#req.acceptsEncodings('br') === 'br') {
@@ -148,27 +144,27 @@ export default class HttpResponse {
 			.set('WWW-Authenticate', `${type} realm="${realm}"`)
 			.status(401)
 			.set('Content-Type', this.#MIME_TYPE_HTML)
-			.sendFile(path.resolve(this.#config.errorpage.path_401));
+			.sendFile(path.resolve(config.errorpage.path_401));
 	}
 
 	/**
 	 * 403 Forbidden
 	 */
 	send403(): void {
-		this.#res.status(403).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(this.#config.errorpage.path_403));
+		this.#res.status(403).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(config.errorpage.path_403));
 	}
 
 	/**
 	 * 404 Not Found
 	 */
 	send404(): void {
-		this.#res.status(404).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(this.#config.errorpage.path_404));
+		this.#res.status(404).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(config.errorpage.path_404));
 	}
 
 	/**
 	 * 500 Internal Server Error
 	 */
 	send500(): void {
-		this.#res.status(500).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(this.#config.errorpage.path_500));
+		this.#res.status(500).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(config.errorpage.path_500));
 	}
 }

@@ -4,33 +4,19 @@ import ejs from 'ejs';
 import { format, resolveConfig } from 'prettier';
 import xmlFormatter from 'xml-formatter';
 import BlogFeedDao from '../dao/BlogFeedDao.js';
+import configExpress from '../config/express.js';
 import Markdown from '../markdown/Markdown.js';
 import Compress from '../util/Compress.js';
+import { env } from '../util/env.js';
 import type { NoName as Configure } from '../../../configure/type/feed.js';
-
-interface ConfigCommon {
-	dbFilePath: string;
-	views: string;
-	root: string;
-}
 
 /**
  * フィード生成
  */
 export default class CreateFeed {
-	readonly #configCommon: ConfigCommon; // 共通設定の抜き出し
-
 	readonly #config: Configure; // 機能設定
 
-	/**
-	 * @param configCommon 共通設定ファイル
-	 * @param configCommon.dbFilePath DB ファイルパス
-	 * @param configCommon.views テンプレートディレクトリ
-	 * @param configCommon.root ルートディレクトリ
-	 */
-	constructor(configCommon: ConfigCommon) {
-		this.#configCommon = configCommon;
-
+	constructor() {
 		this.#config = JSON.parse(fs.readFileSync('configure/feed.json', 'utf8')) as Configure;
 	}
 
@@ -40,7 +26,7 @@ export default class CreateFeed {
 	async execute(): Promise<{
 		createdFilesPath: string[]; // 生成したファイルパス
 	}> {
-		const dao = new BlogFeedDao(this.#configCommon.dbFilePath);
+		const dao = new BlogFeedDao(env('SQLITE_BLOG'));
 
 		const entriesDto = await dao.getEntries(this.#config.limit);
 
@@ -58,7 +44,7 @@ export default class CreateFeed {
 			}),
 		);
 
-		const feedUnformat = await ejs.renderFile(`${this.#configCommon.views}/${this.#config.view_path}`, {
+		const feedUnformat = await ejs.renderFile(`${env('VIEWS')}/${this.#config.view_path}`, {
 			updated_at: [...entriesView].at(0)?.updated_at,
 			entries: entriesView,
 		});
@@ -79,7 +65,7 @@ export default class CreateFeed {
 		const feedXmlBrotli = Compress.brotliText(feedXmlFormatted);
 
 		/* ファイル出力 */
-		const filePath = `${this.#configCommon.root}/${this.#config.path}`;
+		const filePath = `${configExpress.static.root}/${this.#config.path}`;
 		const brotliFilePath = `${filePath}.br`;
 
 		await Promise.all([fs.promises.writeFile(filePath, feedXmlFormatted), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
