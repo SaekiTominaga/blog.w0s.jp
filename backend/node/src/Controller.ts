@@ -44,7 +44,7 @@ export default class Controller {
 
 		await Promise.all([
 			/* レンダリング */
-			options.httpResponse.send200({ body: html, brotliBody: brotliData, cacheControl: configureExpress.cache_control }),
+			options.httpResponse.send200({ body: html, brotliBody: brotliData, cacheControl: configureExpress.cacheControl }),
 
 			/* HTML ファイル出力 */
 			this.#fileWrite(options.filePath, html),

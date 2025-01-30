@@ -271,7 +271,7 @@ export default class PostController extends Controller implements ControllerInte
 	 * @returns 記事 URL
 	 */
 	static #getEntryUrl(id: number) {
-		return `${configureExpress.origin}/${String(id)}`;
+		return `${env('ORIGIN')}/${String(id)}`;
 	}
 
 	/**

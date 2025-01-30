@@ -154,27 +154,27 @@ export default class HttpResponse {
 			.set('WWW-Authenticate', `${type} realm="${realm}"`)
 			.status(401)
 			.set('Content-Type', this.#MIME_TYPE_HTML)
-			.sendFile(path.resolve(configureExpress.errorpage.path_401));
+			.sendFile(path.resolve(configureExpress.errorpage.path401));
 	}
 
 	/**
 	 * 403 Forbidden
 	 */
 	send403(): void {
-		this.#res.status(403).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(configureExpress.errorpage.path_403));
+		this.#res.status(403).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(configureExpress.errorpage.path403));
 	}
 
 	/**
 	 * 404 Not Found
 	 */
 	send404(): void {
-		this.#res.status(404).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(configureExpress.errorpage.path_404));
+		this.#res.status(404).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(configureExpress.errorpage.path404));
 	}
 
 	/**
 	 * 500 Internal Server Error
 	 */
 	send500(): void {
-		this.#res.status(500).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(configureExpress.errorpage.path_500));
+		this.#res.status(500).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(configureExpress.errorpage.path500));
 	}
 }

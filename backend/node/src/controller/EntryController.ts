@@ -50,7 +50,7 @@ export default class EntryController extends Controller implements ControllerInt
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 			/* 生成された HTML をロードする */
-			await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: configureExpress.cache_control });
+			await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: configureExpress.cacheControl });
 			return;
 		}
 
@@ -70,7 +70,7 @@ export default class EntryController extends Controller implements ControllerInt
 			dao.getCategories(requestQuery.entry_id),
 			dao.getRelations(requestQuery.entry_id),
 			sidebar.getEntryCountOfCategory(),
-			sidebar.getNewlyEntries(configureExpress.sidebar.newly.maximum_number),
+			sidebar.getNewlyEntries(configureExpress.sidebar.newly.maximumNumber),
 		]);
 
 		let imageUrl: string | null = null;

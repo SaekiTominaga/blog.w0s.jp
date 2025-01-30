@@ -51,7 +51,7 @@ export default class CategoryController extends Controller implements Controller
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 			/* 生成された HTML をロードする */
-			await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: configureExpress.cache_control });
+			await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: configureExpress.cacheControl });
 			return;
 		}
 
@@ -68,7 +68,7 @@ export default class CategoryController extends Controller implements Controller
 
 		const [entryCountOfCategoryList, newlyEntries] = await Promise.all([
 			sidebar.getEntryCountOfCategory(),
-			sidebar.getNewlyEntries(configureExpress.sidebar.newly.maximum_number),
+			sidebar.getNewlyEntries(configureExpress.sidebar.newly.maximumNumber),
 		]);
 
 		const entries: BlogView.EntryData[] = [];

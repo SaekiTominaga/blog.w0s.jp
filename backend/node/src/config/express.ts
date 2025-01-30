@@ -1,5 +1,4 @@
 export default {
-	origin: 'https://blog.w0s.jp',
 	extension: {
 		html: '.html',
 		json: '.json',
@@ -68,20 +67,20 @@ export default {
 				'report-uri': ['https://report.w0s.jp/report/csp'],
 				'report-to': ['default'],
 			},
-			reporting_endpoints: {
+			reportingEndpoints: {
 				default: 'https://report.w0s.jp/report/csp',
 			},
 		},
 		compression: {
-			threshold: '512',
+			threshold: 512,
 		},
 	},
 	static: {
 		root: '../frontend/public',
-		extensions: ['.html', '.atom'],
-		indexes: ['index.html'],
+		index: 'index.html',
+		extensions: ['.html', '.atom'], // URL 上で省略できる拡張子
 		headers: {
-			mime_type: {
+			mimeType: {
 				path: {
 					'/favicon.ico': 'image/svg+xml;charset=utf-8',
 				},
@@ -102,7 +101,7 @@ export default {
 					'.txt': 'text/plain;charset=utf-8',
 				},
 			},
-			cache_control: {
+			cacheControl: {
 				default: 'max-age=600',
 				path: [
 					{
@@ -124,11 +123,11 @@ export default {
 			cors: {
 				directory: ['/json/'],
 			},
-			source_map: {
+			sourceMap: {
 				extensions: ['.js', '.mjs'],
 			},
 		},
-		auth_basic: [
+		authBasic: [
 			{
 				urls: ['/admin/*'],
 				realm: 'Admin',
@@ -136,16 +135,16 @@ export default {
 			},
 		],
 	},
-	cache_control: 'max-age=600',
+	cacheControl: 'max-age=600',
 	errorpage: {
-		path_401: 'errorpage/401.html',
-		path_403: 'errorpage/403.html',
-		path_404: 'errorpage/404.html',
-		path_500: 'errorpage/500.html',
+		path401: 'errorpage/401.html',
+		path403: 'errorpage/403.html',
+		path404: 'errorpage/404.html',
+		path500: 'errorpage/500.html',
 	},
 	sidebar: {
 		newly: {
-			maximum_number: 8,
+			maximumNumber: 8,
 		},
 	},
 };

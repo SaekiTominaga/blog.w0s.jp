@@ -49,7 +49,7 @@ app.use(
 		/* Report */
 		res.setHeader(
 			'Reporting-Endpoints',
-			Object.entries(config.response.header.reporting_endpoints)
+			Object.entries(config.response.header.reportingEndpoints)
 				.map((endpoint) => `${endpoint.at(0) ?? ''}="${endpoint.at(1) ?? ''}"`)
 				.join(','),
 		);
@@ -68,7 +68,7 @@ app.use(
 	}),
 	async (req, res, next) => {
 		/* Basic Authentication */
-		const basic = config.static.auth_basic.find((auth) => isMatch(req.url, auth.urls));
+		const basic = config.static.authBasic.find((auth) => isMatch(req.url, auth.urls));
 		if (basic !== undefined) {
 			const httpBasicAuth = new HttpBasicAuth(req);
 			if (!(await httpBasicAuth.htpasswd(`${env('AUTH_DIRECTORY')}/${basic.htpasswd}`))) {
@@ -85,9 +85,9 @@ app.use(
 		let requestFilePath: string | undefined; // 実ファイルパス
 		if (requestPath.endsWith('/')) {
 			/* ディレクトリトップ（e.g. /foo/ ） */
-			const fileName = config.static.indexes.find((name) => fs.existsSync(`${config.static.root}${requestPath}${name}`));
-			if (fileName !== undefined) {
-				requestFilePath = `${requestPath}${fileName}`;
+			const indexPath = `${requestPath}${config.static.index}`;
+			if (fs.existsSync(`${config.static.root}${indexPath}`)) {
+				requestFilePath = indexPath;
 			}
 		} else if (path.extname(requestPath) === '') {
 			/* 拡張子のない URL（e.g. /foo ） */
@@ -113,7 +113,7 @@ app.use(
 	},
 	express.static(config.static.root, {
 		extensions: config.static.extensions.map((ext) => /* 拡張子の . は不要 */ ext.substring(1)),
-		index: config.static.indexes,
+		index: config.static.index,
 		setHeaders: (res, localPath) => {
 			const requestUrl = res.req.url; // リクエストパス e.g. ('/foo.html.br')
 			const requestUrlOrigin = requestUrl.endsWith(config.extension.brotli)
@@ -126,10 +126,10 @@ app.use(
 
 			/* Content-Type */
 			const mimeType =
-				Object.entries(config.static.headers.mime_type.path)
+				Object.entries(config.static.headers.mimeType.path)
 					.find(([filePath]) => filePath === requestUrlOrigin)
 					?.at(1) ??
-				Object.entries(config.static.headers.mime_type.extension)
+				Object.entries(config.static.headers.mimeType.extension)
 					.find(([fileExtension]) => fileExtension === extensionOrigin)
 					?.at(1);
 			if (mimeType === undefined) {
@@ -140,9 +140,9 @@ app.use(
 			/* Cache-Control */
 			const cacheControl =
 				env1 === 'production'
-					? (config.static.headers.cache_control.path.find((ccPath) => ccPath.paths.includes(requestUrlOrigin))?.value ??
-						config.static.headers.cache_control.extension.find((ccExt) => ccExt.extensions.includes(extensionOrigin))?.value ??
-						config.static.headers.cache_control.default)
+					? (config.static.headers.cacheControl.path.find((ccPath) => ccPath.paths.includes(requestUrlOrigin))?.value ??
+						config.static.headers.cacheControl.extension.find((ccExt) => ccExt.extensions.includes(extensionOrigin))?.value ??
+						config.static.headers.cacheControl.default)
 					: 'no-cache';
 
 			res.setHeader('Cache-Control', cacheControl);
@@ -157,7 +157,7 @@ app.use(
 			}
 
 			/* SourceMap */
-			if (config.static.headers.source_map.extensions.includes(extensionOrigin)) {
+			if (config.static.headers.sourceMap.extensions.includes(extensionOrigin)) {
 				const mapFilePath = `${localPathOrigin}${config.extension.map}`;
 				if (fs.existsSync(mapFilePath)) {
 					res.setHeader('SourceMap', path.basename(mapFilePath));
@@ -255,7 +255,7 @@ app.post('/api/preview', async (req, res, next) => {
 app.use((req, res): void => {
 	logger.warn(`404 Not Found: ${req.method} ${req.url}`);
 
-	res.status(404).sendFile(path.resolve(config.errorpage.path_404));
+	res.status(404).sendFile(path.resolve(config.errorpage.path404));
 });
 app.use((err: Error, req: Request, res: Response, _next: NextFunction /* eslint-disable-line @typescript-eslint/no-unused-vars */): void => {
 	logger.fatal(`${req.method} ${req.url}`, err.stack);
