@@ -4,7 +4,7 @@ export default {
 	parser: {
 		'.ejs$': '@markuplint/ejs-parser',
 	},
-	excludeFiles: ['views/feed', 'views/social', 'views/xml'],
+	excludeFiles: ['template/feed', 'template/sns', 'template/xml'],
 	rules: {
 		'disallowed-element': ['base', 'style', 'h5', 'h6', 's', 'i', 'u', 'wbr', 'area'],
 		'class-naming': [
@@ -61,7 +61,7 @@ export default {
 				'label-has-control': false,
 			},
 		},
-		'views/list.ejs': {
+		'template/list.ejs': {
 			rules: {
 				'required-h1': false,
 			},

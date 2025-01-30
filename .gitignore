@@ -6,8 +6,6 @@ log4js.*.json
 /**/node_modules/
 
 /backend/.html/
-/backend/configure/type/
-/backend/configure/*.json
 /backend/node/dist/
 
 /frontend/.rollup.cache/

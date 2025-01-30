@@ -9,7 +9,8 @@
 	"scripts": {
 		"format": "prettier -w .",
 		"html-lint": "markuplint backend/.html/**/*.html",
-		"html-lint-ejs": "markuplint views/**/*.ejs",
+		"errorpage-lint": "markuplint errorpage/*.html",
+		"template-lint": "markuplint template/**/*.ejs",
 		"yaml-lint": "yamllint .github/workflows/*.yml"
 	},
 	"devDependencies": {

@@ -1,4 +1,4 @@
 /.github/ISSUE_TEMPLATE/*.md
-/views/social/*.ejs
+/template/sns/*.ejs
 
 package-lock.json

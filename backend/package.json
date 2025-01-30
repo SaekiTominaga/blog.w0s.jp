@@ -10,8 +10,7 @@
 		"pretest": "npm run build",
 		"test": "node --experimental-test-coverage --test node/dist/util/**/*.test.js node/__tests__/**/*.test.js",
 		"pretest-process": "npm run build",
-		"test-process": "node --env-file=../.env.development --experimental-test-coverage --test node/dist/process/**/*.test.js",
-		"errorpage-lint": "markuplint errorpage/*.html"
+		"test-process": "node --env-file=../.env.development --experimental-test-coverage --test node/dist/process/**/*.test.js"
 	},
 	"dependencies": {
 		"@atproto/api": "^0.12.7",
