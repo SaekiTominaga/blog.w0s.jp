@@ -76,7 +76,7 @@ export default {
 		},
 	},
 	static: {
-		root: '../frontend/public',
+		root: '../public',
 		index: 'index.html',
 		extensions: ['.html', '.atom'], // URL 上で省略できる拡張子
 		headers: {

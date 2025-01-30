@@ -4,7 +4,7 @@ import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 
 const inputDir = 'script';
-const outputDir = 'public/script';
+const outputDir = '../public/script';
 
 const moduleFiles = ['blog.ts', 'error.ts', 'admin.ts'];
 const jsFiles = ['trusted-types.ts'];
