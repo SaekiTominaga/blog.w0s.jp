@@ -4,28 +4,20 @@ import ejs from 'ejs';
 import filenamify from 'filenamify';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 import type { Request, Response } from 'express';
-import BlogCategoryDao from '../dao/BlogCategoryDao.js';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import configureExpress from '../config/express.js';
+import configureCategory from '../config/category.js';
+import BlogCategoryDao from '../dao/BlogCategoryDao.js';
 import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
 import HttpResponse from '../util/HttpResponse.js';
 import Sidebar from '../util/Sidebar.js';
-import type { NoName as Configure } from '../../../configure/type/category.js';
 
 /**
  * カテゴリー
  */
 export default class CategoryController extends Controller implements ControllerInterface {
-	#config: Configure;
-
-	constructor() {
-		super();
-
-		this.#config = JSON.parse(fs.readFileSync('configure/category.json', 'utf8')) as Configure;
-	}
-
 	/**
 	 * @param req - Request
 	 * @param res - Response
@@ -46,7 +38,7 @@ export default class CategoryController extends Controller implements Controller
 			return;
 		}
 
-		const htmlFilePath = `${env('HTML')}/${this.#config.html.directory}/${filenamify(requestQuery.category_name)}${configureExpress.extension.html}`;
+		const htmlFilePath = `${env('HTML')}/${configureCategory.html.directory}/${filenamify(requestQuery.category_name)}${configureExpress.extension.html}`;
 		const htmlBrotliFilePath = `${htmlFilePath}${configureExpress.extension.brotli}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
@@ -78,10 +70,10 @@ export default class CategoryController extends Controller implements Controller
 				const url = new URL(imageExternal);
 
 				switch (url.origin) {
-					case this.#config.image_external.amazon.origin: {
+					case configureCategory.imageExternal.amazon.origin: {
 						/* Amazon */
 						const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageExternal));
-						paapi5ItemImageUrlParser.setSize(this.#config.image_external.amazon.size);
+						paapi5ItemImageUrlParser.setSize(configureCategory.imageExternal.amazon.size);
 
 						imageExternal = paapi5ItemImageUrlParser.toString();
 						break;
@@ -101,7 +93,7 @@ export default class CategoryController extends Controller implements Controller
 		}
 
 		/* HTML 生成 */
-		const html = await ejs.renderFile(`${env('VIEWS')}/${this.#config.view.success}`, {
+		const html = await ejs.renderFile(`${env('VIEWS')}/${configureCategory.template}`, {
 			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 			requestQuery: requestQuery,
 			count: entries.length,

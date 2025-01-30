@@ -5,6 +5,7 @@ import type { Result as ValidationResult, ValidationError } from 'express-valida
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import configureExpress from '../config/express.js';
+import configurePost from '../config/post.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
 import createFeed from '../process/feed.js';
 import createNewlyJson from '../process/newlyJson.js';
@@ -17,7 +18,6 @@ import HttpBasicAuth, { type Credentials as HttpBasicAuthCredentials } from '../
 import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import PostValidator from '../validator/PostValidator.js';
-import type { NoName as Configure } from '../../../configure/type/post.js';
 
 interface PostResult {
 	success: boolean;
@@ -39,14 +39,6 @@ interface MediaUploadResult {
  * 記事投稿
  */
 export default class PostController extends Controller implements ControllerInterface {
-	#config: Configure;
-
-	constructor() {
-		super();
-
-		this.#config = JSON.parse(fs.readFileSync('configure/post.json', 'utf8')) as Configure;
-	}
-
 	/**
 	 * @param req - Request
 	 * @param res - Response
@@ -82,7 +74,7 @@ export default class PostController extends Controller implements ControllerInte
 			action_media: RequestUtil.boolean(req.body['actionmedia']),
 		};
 
-		const validator = new PostValidator(req, this.#config);
+		const validator = new PostValidator(req);
 		let topicValidationResult: ValidationResult<ValidationError> | null = null;
 		const topicPostResults = new Set<PostResult>();
 		const viewUpdateResults = new Set<ViewUpdateResult>();
@@ -112,7 +104,7 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('データ登録', entryId);
 
 				const entryUrl = PostController.#getEntryUrl(entryId);
-				topicPostResults.add({ success: true, message: `${this.#config.process_message.insert.success} ${entryUrl}` });
+				topicPostResults.add({ success: true, message: `${configurePost.processMessage.insert.success} ${entryUrl}` });
 
 				const [updateModifiedResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
 					this.#updateModified(dao),
@@ -166,7 +158,7 @@ export default class PostController extends Controller implements ControllerInte
 				this.logger.info('データ更新', requestQuery.id);
 
 				const entryUrl = PostController.#getEntryUrl(requestQuery.id);
-				topicPostResults.add({ success: true, message: `${this.#config.process_message.update.success} ${entryUrl}` });
+				topicPostResults.add({ success: true, message: `${configurePost.processMessage.update.success} ${entryUrl}` });
 
 				const [updateModified, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
 					this.#updateModified(dao),
@@ -249,7 +241,7 @@ export default class PostController extends Controller implements ControllerInte
 				.join(';'),
 		);
 		res.set('Referrer-Policy', 'no-referrer');
-		res.render(this.#config.view.init, {
+		res.render(configurePost.template, {
 			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 			requestQuery: requestQuery,
 			updateMode: (requestQuery.action_add && topicValidationResult?.isEmpty() === true) || requestQuery.action_revise_preview || requestQuery.action_revise,
@@ -289,10 +281,10 @@ export default class PostController extends Controller implements ControllerInte
 		} catch (e) {
 			this.logger.error(e);
 
-			return { success: false, message: this.#config.process_message.db_modified.failure };
+			return { success: false, message: configurePost.processMessage.dbModified.failure };
 		}
 
-		return { success: true, message: this.#config.process_message.db_modified.success };
+		return { success: true, message: configurePost.processMessage.dbModified.success };
 	}
 
 	/**
@@ -309,15 +301,15 @@ export default class PostController extends Controller implements ControllerInte
 			});
 
 			if (result.files.length === 0) {
-				return { success: true, message: this.#config.process_message.feed.none };
+				return { success: true, message: configurePost.processMessage.feed.none };
 			}
 		} catch (e) {
 			this.logger.error(e);
 
-			return { success: false, message: this.#config.process_message.feed.failure };
+			return { success: false, message: configurePost.processMessage.feed.failure };
 		}
 
-		return { success: true, message: this.#config.process_message.feed.success };
+		return { success: true, message: configurePost.processMessage.feed.success };
 	}
 
 	/**
@@ -333,10 +325,10 @@ export default class PostController extends Controller implements ControllerInte
 		} catch (e) {
 			this.logger.error(e);
 
-			return { success: false, message: this.#config.process_message.sitemap.failure };
+			return { success: false, message: configurePost.processMessage.sitemap.failure };
 		}
 
-		return { success: true, message: this.#config.process_message.sitemap.success };
+		return { success: true, message: configurePost.processMessage.sitemap.success };
 	}
 
 	/**
@@ -354,10 +346,10 @@ export default class PostController extends Controller implements ControllerInte
 		} catch (e) {
 			this.logger.error(e);
 
-			return { success: false, message: this.#config.process_message.newly_json.failure };
+			return { success: false, message: configurePost.processMessage.newlyJson.failure };
 		}
 
-		return { success: true, message: this.#config.process_message.newly_json.success };
+		return { success: true, message: configurePost.processMessage.newlyJson.success };
 	}
 
 	/**
@@ -373,11 +365,11 @@ export default class PostController extends Controller implements ControllerInte
 
 			this.logger.info('Mastodon was posted', result.url, result.content);
 
-			return { success: true, message: `${this.#config.process_message.mastodon.success} ${result.url}` };
+			return { success: true, message: `${configurePost.processMessage.mastodon.success} ${result.url}` };
 		} catch (e) {
 			this.logger.error(e);
 
-			return { success: false, message: this.#config.process_message.mastodon.failure };
+			return { success: false, message: configurePost.processMessage.mastodon.failure };
 		}
 	}
 
@@ -394,11 +386,11 @@ export default class PostController extends Controller implements ControllerInte
 
 			this.logger.info('Bluesky was posted');
 
-			return { success: true, message: `${this.#config.process_message.bluesky.success} ${result.profileUrl}` };
+			return { success: true, message: `${configurePost.processMessage.bluesky.success} ${result.profileUrl}` };
 		} catch (e) {
 			this.logger.error(e);
 
-			return { success: false, message: this.#config.process_message.bluesky.failure };
+			return { success: false, message: configurePost.processMessage.bluesky.failure };
 		}
 	}
 
@@ -415,11 +407,11 @@ export default class PostController extends Controller implements ControllerInte
 
 			this.logger.info('Misskey was posted', result.url, result.content);
 
-			return { success: true, message: `${this.#config.process_message.misskey.success} ${result.url}` };
+			return { success: true, message: `${configurePost.processMessage.misskey.success} ${result.url}` };
 		} catch (e) {
 			this.logger.error(e);
 
-			return { success: false, message: this.#config.process_message.misskey.failure };
+			return { success: false, message: configurePost.processMessage.misskey.failure };
 		}
 	}
 
@@ -468,7 +460,7 @@ export default class PostController extends Controller implements ControllerInte
 
 							result.add({
 								success: false,
-								message: this.#config.media_upload.api_response.other_message_failure,
+								message: configurePost.mediaUpload.apiResponse.otherMessageFailure,
 								filename: file.originalname,
 							});
 							return;
@@ -476,43 +468,43 @@ export default class PostController extends Controller implements ControllerInte
 
 						const responseFile = (await response.json()) as MediaApi.Upload;
 						switch (responseFile.code) {
-							case this.#config.media_upload.api_response.success.code:
+							case configurePost.mediaUpload.apiResponse.success.code:
 								/* 成功 */
 								this.logger.info('File upload success', responseFile.name);
 
 								result.add({
 									success: true,
-									message: this.#config.media_upload.api_response.success.message,
+									message: configurePost.mediaUpload.apiResponse.success.message,
 									filename: file.originalname,
 								});
 								break;
-							case this.#config.media_upload.api_response.type.code:
+							case configurePost.mediaUpload.apiResponse.type.code:
 								/* MIME エラー */
 								this.logger.warn('File upload failure', responseFile.name);
 
 								result.add({
 									success: false,
-									message: this.#config.media_upload.api_response.type.message,
+									message: configurePost.mediaUpload.apiResponse.type.message,
 									filename: file.originalname,
 								});
 								break;
-							case this.#config.media_upload.api_response.overwrite.code:
+							case configurePost.mediaUpload.apiResponse.overwrite.code:
 								/* 上書きエラー */
 								this.logger.warn('File upload failure', responseFile.name);
 
 								result.add({
 									success: false,
-									message: this.#config.media_upload.api_response.overwrite.message,
+									message: configurePost.mediaUpload.apiResponse.overwrite.message,
 									filename: file.originalname,
 								});
 								break;
-							case this.#config.media_upload.api_response.size.code:
+							case configurePost.mediaUpload.apiResponse.size.code:
 								/* サイズ超過エラー */
 								this.logger.warn('File upload failure', responseFile.name);
 
 								result.add({
 									success: false,
-									message: this.#config.media_upload.api_response.size.message,
+									message: configurePost.mediaUpload.apiResponse.size.message,
 									filename: file.originalname,
 								});
 								break;
@@ -521,7 +513,7 @@ export default class PostController extends Controller implements ControllerInte
 
 								result.add({
 									success: false,
-									message: this.#config.media_upload.api_response.other_message_failure,
+									message: configurePost.mediaUpload.apiResponse.otherMessageFailure,
 									filename: file.originalname,
 								});
 						}
@@ -530,7 +522,7 @@ export default class PostController extends Controller implements ControllerInte
 
 						result.add({
 							success: false,
-							message: this.#config.media_upload.api_response.other_message_failure,
+							message: configurePost.mediaUpload.apiResponse.otherMessageFailure,
 							filename: file.originalname,
 						});
 					}

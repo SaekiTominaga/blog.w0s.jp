@@ -3,28 +3,20 @@ import dayjs from 'dayjs';
 import ejs from 'ejs';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 import type { Request, Response } from 'express';
-import BlogListDao from '../dao/BlogListDao.js';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import configureExpress from '../config/express.js';
+import configureList from '../config/list.js';
+import BlogListDao from '../dao/BlogListDao.js';
 import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
 import HttpResponse from '../util/HttpResponse.js';
 import Sidebar from '../util/Sidebar.js';
-import type { NoName as Configure } from '../../../configure/type/list.js';
 
 /**
  * 記事リスト
  */
 export default class ListController extends Controller implements ControllerInterface {
-	#config: Configure;
-
-	constructor() {
-		super();
-
-		this.#config = JSON.parse(fs.readFileSync('configure/list.json', 'utf8')) as Configure;
-	}
-
 	/**
 	 * @param req - Request
 	 * @param res - Response
@@ -45,7 +37,7 @@ export default class ListController extends Controller implements ControllerInte
 			return;
 		}
 
-		const htmlFilePath = `${env('HTML')}/${this.#config.html.directory}/${String(requestQuery.page)}${configureExpress.extension.html}`;
+		const htmlFilePath = `${env('HTML')}/${configureList.html.directory}/${String(requestQuery.page)}${configureExpress.extension.html}`;
 		const htmlBrotliFilePath = `${htmlFilePath}${configureExpress.extension.brotli}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
@@ -55,7 +47,7 @@ export default class ListController extends Controller implements ControllerInte
 		}
 
 		/* DB からデータ取得 */
-		const entriesDto = await dao.getEntries(requestQuery.page, this.#config.maximum_number);
+		const entriesDto = await dao.getEntries(requestQuery.page, configureList.maximum);
 		if (entriesDto.length === 0) {
 			this.logger.info(`無効なページが指定: ${String(requestQuery.page)}`);
 			httpResponse.send404();
@@ -77,10 +69,10 @@ export default class ListController extends Controller implements ControllerInte
 				const url = new URL(imageExternal);
 
 				switch (url.origin) {
-					case this.#config.image_external.amazon.origin: {
+					case configureList.imageExternal.amazon.origin: {
 						/* Amazon */
 						const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageExternal));
-						paapi5ItemImageUrlParser.setSize(this.#config.image_external.amazon.size);
+						paapi5ItemImageUrlParser.setSize(configureList.imageExternal.amazon.size);
 
 						imageExternal = paapi5ItemImageUrlParser.toString();
 						break;
@@ -99,10 +91,10 @@ export default class ListController extends Controller implements ControllerInte
 			});
 		}
 
-		const totalPage = Math.ceil(entryCount / this.#config.maximum_number);
+		const totalPage = Math.ceil(entryCount / configureList.maximum);
 
 		/* HTML 生成 */
-		const html = await ejs.renderFile(`${env('VIEWS')}/${this.#config.view.success}`, {
+		const html = await ejs.renderFile(`${env('VIEWS')}/${configureList.template}`, {
 			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 			requestQuery: requestQuery,
 			totalPage: totalPage,

@@ -2,29 +2,21 @@ import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import type { Request, Response } from 'express';
-import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import configureExpress from '../config/express.js';
+import configureEntry from '../config/entry.js';
+import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Markdown from '../markdown/Markdown.js';
 import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
 import HttpResponse from '../util/HttpResponse.js';
 import Sidebar from '../util/Sidebar.js';
-import type { NoName as Configure } from '../../../configure/type/entry.js';
 
 /**
  * 記事
  */
 export default class EntryController extends Controller implements ControllerInterface {
-	#config: Configure;
-
-	constructor() {
-		super();
-
-		this.#config = JSON.parse(fs.readFileSync('configure/entry.json', 'utf8')) as Configure;
-	}
-
 	/**
 	 * @param req - Request
 	 * @param res - Response
@@ -45,7 +37,7 @@ export default class EntryController extends Controller implements ControllerInt
 			return;
 		}
 
-		const htmlFilePath = `${env('HTML')}/${this.#config.html.directory}/${String(requestQuery.entry_id)}${configureExpress.extension.html}`;
+		const htmlFilePath = `${env('HTML')}/${configureEntry.html.directory}/${String(requestQuery.entry_id)}${configureExpress.extension.html}`;
 		const htmlBrotliFilePath = `${htmlFilePath}${configureExpress.extension.brotli}`;
 
 		if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
@@ -117,7 +109,7 @@ export default class EntryController extends Controller implements ControllerInt
 		}
 
 		/* HTML 生成 */
-		const html = await ejs.renderFile(`${env('VIEWS')}/${this.#config.view.success}`, {
+		const html = await ejs.renderFile(`${env('VIEWS')}/${configureEntry.template}`, {
 			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 			requestQuery: requestQuery,
 			structuredData: structuredData,

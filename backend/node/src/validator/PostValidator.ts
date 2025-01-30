@@ -1,23 +1,19 @@
-import { body, type Result, type ValidationError, validationResult } from 'express-validator';
 import type { Request } from 'express';
+import { body, type Result, type ValidationError, validationResult } from 'express-validator';
+import config from '../config/post.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
-import type { NoName as Configure } from '../../../configure/type/post.js';
 
 /**
  * 記事投稿
  */
 export default class PostValidator {
-	#req: Request;
-
-	#config: Configure;
+	readonly #req: Request;
 
 	/**
 	 * @param req - Request
-	 * @param config - 設定ファイル
 	 */
-	constructor(req: Request, config: Configure) {
+	constructor(req: Request) {
 		this.#req = req;
-		this.#config = config;
 	}
 
 	/**
@@ -36,7 +32,7 @@ export default class PostValidator {
 				}
 				return true;
 			})
-			.withMessage(this.#config.validator.title.message.unique_constraint)
+			.withMessage(config.validator.title.message.unique)
 			.run(this.#req);
 
 		return validationResult(this.#req);

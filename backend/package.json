@@ -6,17 +6,9 @@
 		"app": "nodemon --inspect node/dist/app.js",
 		"watch": "tsc --project node/tsconfig.json -w",
 		"build": "tsc --project node/tsconfig.json",
-		"prelint": "npm run _config-convert",
 		"lint": "eslint node/src/**/*.ts node/@types/*.d.ts node/__tests__/**/*.js",
-		"pretest": "run-s _config-convert build",
 		"test": "node --experimental-test-coverage --test **/*.test.js",
-		"config": "run-p _config-convert _config-validate:*",
-		"errorpage-lint": "markuplint errorpage/*.html",
-		"_config-convert": "json2ts -i configure/schema -o configure/type",
-		"_config-validate:category": "ajv --spec=draft7 -s configure/schema/category.json -d configure/category.json",
-		"_config-validate:entry": "ajv --spec=draft7 -s configure/schema/entry.json -d configure/entry.json",
-		"_config-validate:list": "ajv --spec=draft7 -s configure/schema/list.json -d configure/list.json",
-		"_config-validate:post": "ajv --spec=draft7 -s configure/schema/post.json -d configure/post.json"
+		"errorpage-lint": "markuplint errorpage/*.html"
 	},
 	"dependencies": {
 		"@atproto/api": "^0.12.7",
