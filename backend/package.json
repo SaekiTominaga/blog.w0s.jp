@@ -3,13 +3,14 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"app": "nodemon --inspect node/dist/app.js",
-		"watch": "tsc --project node/tsconfig.json -w",
+		"dev": "tsx --watch --tsconfig node/tsconfig.json node/src/app.ts",
+		"prebuild": "rimraf node/dist/* -g",
 		"build": "tsc --project node/tsconfig.json",
 		"lint": "eslint node/src/**/*.ts node/@types/*.d.ts node/__tests__/**/*.js",
-		"test:markdown": "node --experimental-test-coverage --test node/__tests__/**/*.test.js",
-		"test:process": "node --experimental-test-coverage --test node/dist/process/**/*.test.js",
-		"test:util": "node --experimental-test-coverage --test node/dist/util/**/*.test.js",
+		"pretest": "npm run build",
+		"test": "node --experimental-test-coverage --test node/dist/util/**/*.test.js node/__tests__/**/*.test.js",
+		"pretest-process": "npm run build",
+		"test-process": "node --env-file=../.env.development --experimental-test-coverage --test node/dist/process/**/*.test.js",
 		"errorpage-lint": "markuplint errorpage/*.html"
 	},
 	"dependencies": {
@@ -98,6 +99,7 @@
 		"@types/md5": "^2.3.5",
 		"@types/multer": "^1.4.11",
 		"@types/nodemailer": "^6.4.14",
-		"@types/w3c-xmlserializer": "^2.0.4"
+		"@types/w3c-xmlserializer": "^2.0.4",
+		"tsx": "^4.19.2"
 	}
 }
