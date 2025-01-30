@@ -5,5 +5,5 @@ import create from './sitemap.js';
 await test('create', async () => {
 	const result = await create();
 
-	assert.equal(result.file, '../frontend/public/sitemap.xml');
+	assert.equal(result.file, '../public/sitemap.xml');
 });
