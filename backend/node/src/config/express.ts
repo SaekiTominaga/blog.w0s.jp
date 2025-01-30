@@ -137,10 +137,10 @@ export default {
 	},
 	cacheControl: 'max-age=600',
 	errorpage: {
-		path401: 'errorpage/401.html',
-		path403: 'errorpage/403.html',
-		path404: 'errorpage/404.html',
-		path500: 'errorpage/500.html',
+		path401: '../errorpage/401.html',
+		path403: '../errorpage/403.html',
+		path404: '../errorpage/404.html',
+		path500: '../errorpage/500.html',
 	},
 	sidebar: {
 		newly: {
