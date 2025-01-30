@@ -24,7 +24,6 @@ export default [
 		files: ['node/src/controller/**/*.ts'],
 		rules: {
 			'@typescript-eslint/dot-notation': 'off',
-			'@typescript-eslint/no-non-null-assertion': 'off',
 			'@typescript-eslint/no-unsafe-member-access': 'off',
 		},
 	},
@@ -59,17 +58,25 @@ export default [
 		},
 	},
 	{
-		files: ['node/src/process/test/*.ts'],
-		rules: {
-			'no-console': 'off',
-		},
-	},
-	{
 		files: ['node/src/shell/*.ts'],
 		rules: {
 			'no-await-in-loop': 'off',
 			'no-console': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
+		},
+	},
+	{
+		files: ['node/src/util/**/*.ts'],
+		rules: {
+			'func-style': [
+				'error',
+				'expression',
+				{
+					overrides: {
+						namedExports: 'ignore',
+					},
+				},
+			],
 		},
 	},
 	{

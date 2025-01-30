@@ -1,31 +1,33 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import compression from 'compression';
+import * as dotenv from 'dotenv';
 import express, { type NextFunction, type Request, type Response } from 'express';
 import Log4js from 'log4js';
 import { isMatch } from 'matcher';
 import multer from 'multer';
-import type { NoName as Configure } from '../../configure/type/common.js';
-import CategoryController from './controller/CategoryController.js';
-import EntryController from './controller/EntryController.js';
+import config from './config/express.js';
+import category from './controller/category.js';
+import entry from './controller/entry.js';
+import list from './controller/list.js';
+import post from './controller/post.js';
+import preview from './controller/preview.js';
+import { env } from './util/env.js';
 import HttpBasicAuth from './util/HttpBasicAuth.js';
-import HttpResponse from './util/HttpResponse.js';
-import ListController from './controller/ListController.js';
-import PostController from './controller/PostController.js';
-import PreviewController from './controller/api/PreviewController.js';
 
-/* 設定ファイル読み込み */
-const config = JSON.parse((await fs.promises.readFile('configure/common.json')).toString()) as Configure;
+dotenv.config({
+	path: process.env['NODE_ENV'] === 'production' ? '../.env.production' : '../.env.development',
+});
 
 /* Logger 設定 */
-Log4js.configure(config.logger.path);
+Log4js.configure(env('LOGGER'));
 const logger = Log4js.getLogger();
 
+/* Express */
 const app = express();
-const env = app.get('env') as Express.Env;
 
 app.set('trust proxy', true);
-app.set('views', config.views);
+app.set('views', env('VIEWS'));
 app.set('view engine', 'ejs');
 app.set('x-powered-by', false);
 
@@ -35,12 +37,17 @@ app.use(
 		res.setHeader('Strict-Transport-Security', config.response.header.hsts);
 
 		/* CSP */
-		res.setHeader('Content-Security-Policy', config.response.header.csp);
+		res.setHeader(
+			'Content-Security-Policy',
+			Object.entries(config.response.header.csp)
+				.map(([key, values]) => `${key} ${values.join(' ')}`)
+				.join(';'),
+		);
 
 		/* Report */
 		res.setHeader(
 			'Reporting-Endpoints',
-			Object.entries(config.response.header.reporting_endpoints)
+			Object.entries(config.response.header.reportingEndpoints)
 				.map((endpoint) => `${endpoint.at(0) ?? ''}="${endpoint.at(1) ?? ''}"`)
 				.join(','),
 		);
@@ -59,11 +66,11 @@ app.use(
 	}),
 	async (req, res, next) => {
 		/* Basic Authentication */
-		const basic = config.static.auth_basic?.find((auth) => isMatch(req.url, auth.urls));
+		const basic = config.static.authBasic.find((auth) => isMatch(req.url, auth.urls));
 		if (basic !== undefined) {
 			const httpBasicAuth = new HttpBasicAuth(req);
-			if (!(await httpBasicAuth.htpasswd(basic.htpasswd))) {
-				new HttpResponse(req, res, config).send401('Basic', basic.realm);
+			if (!(await httpBasicAuth.htpasswd(`${env('AUTH_DIRECTORY')}/${basic.htpasswd}`))) {
+				res.set('WWW-Authenticate', `Basic realm="${basic.realm}"`).status(401).sendFile(path.resolve(config.errorpage.path401));
 				return;
 			}
 		}
@@ -76,13 +83,13 @@ app.use(
 		let requestFilePath: string | undefined; // 実ファイルパス
 		if (requestPath.endsWith('/')) {
 			/* ディレクトリトップ（e.g. /foo/ ） */
-			const fileName = config.static.indexes?.find((name) => fs.existsSync(`${config.static.root}${requestPath}${name}`));
-			if (fileName !== undefined) {
-				requestFilePath = `${requestPath}${fileName}`;
+			const indexPath = `${requestPath}${config.static.index}`;
+			if (fs.existsSync(`${config.static.root}${indexPath}`)) {
+				requestFilePath = indexPath;
 			}
 		} else if (path.extname(requestPath) === '') {
 			/* 拡張子のない URL（e.g. /foo ） */
-			const extension = config.static.extensions?.find((ext) => fs.existsSync(`${config.static.root}${requestPath}${ext}`));
+			const extension = config.static.extensions.find((ext) => fs.existsSync(`${config.static.root}${requestPath}${ext}`));
 			if (extension !== undefined) {
 				requestFilePath = `${requestPath}${extension}`;
 			}
@@ -103,8 +110,8 @@ app.use(
 		next();
 	},
 	express.static(config.static.root, {
-		extensions: config.static.extensions?.map((ext) => /* 拡張子の . は不要 */ ext.substring(1)),
-		index: config.static.indexes,
+		extensions: config.static.extensions.map((ext) => /* 拡張子の . は不要 */ ext.substring(1)),
+		index: config.static.index,
 		setHeaders: (res, localPath) => {
 			const requestUrl = res.req.url; // リクエストパス e.g. ('/foo.html.br')
 			const requestUrlOrigin = requestUrl.endsWith(config.extension.brotli)
@@ -117,10 +124,10 @@ app.use(
 
 			/* Content-Type */
 			const mimeType =
-				Object.entries(config.static.headers.mime_type.path)
+				Object.entries(config.static.headers.mimeType.path)
 					.find(([filePath]) => filePath === requestUrlOrigin)
 					?.at(1) ??
-				Object.entries(config.static.headers.mime_type.extension)
+				Object.entries(config.static.headers.mimeType.extension)
 					.find(([fileExtension]) => fileExtension === extensionOrigin)
 					?.at(1);
 			if (mimeType === undefined) {
@@ -129,28 +136,26 @@ app.use(
 			res.setHeader('Content-Type', mimeType ?? 'application/octet-stream');
 
 			/* Cache-Control */
-			if (config.static.headers.cache_control !== undefined) {
-				const cacheControlConfig = env === 'production' ? config.static.headers.cache_control.production : config.static.headers.cache_control.development;
+			const cacheControl =
+				process.env['NODE_ENV'] === 'production'
+					? (config.static.headers.cacheControl.path.find((ccPath) => ccPath.paths.includes(requestUrlOrigin))?.value ??
+						config.static.headers.cacheControl.extension.find((ccExt) => ccExt.extensions.includes(extensionOrigin))?.value ??
+						config.static.headers.cacheControl.default)
+					: 'no-cache';
 
-				const cacheControl =
-					cacheControlConfig.path?.find((ccPath) => ccPath.paths.includes(requestUrlOrigin))?.value ??
-					cacheControlConfig.extension?.find((ccExt) => ccExt.extensions.includes(extensionOrigin))?.value ??
-					cacheControlConfig.default;
-
-				res.setHeader('Cache-Control', cacheControl);
-			}
+			res.setHeader('Cache-Control', cacheControl);
 
 			/* CORS */
-			if (config.static.headers.cors?.directory.find((urlPath) => requestUrl.startsWith(urlPath)) !== undefined) {
+			if (config.static.headers.cors.directory.find((urlPath) => requestUrl.startsWith(urlPath)) !== undefined) {
 				const origin = res.req.get('Origin');
-				if (origin !== undefined && config.static.headers.cors.origin.includes(origin)) {
+				if (origin !== undefined && env('JSON_CORS_ORIGINS', 'string[]').includes(origin)) {
 					res.setHeader('Access-Control-Allow-Origin', origin);
 					res.vary('Origin');
 				}
 			}
 
 			/* SourceMap */
-			if (config.static.headers.source_map?.extensions?.includes(extensionOrigin)) {
+			if (config.static.headers.sourceMap.extensions.includes(extensionOrigin)) {
 				const mapFilePath = `${localPathOrigin}${config.extension.map}`;
 				if (fs.existsSync(mapFilePath)) {
 					res.setHeader('SourceMap', path.basename(mapFilePath));
@@ -159,21 +164,31 @@ app.use(
 
 			/* CSP */
 			if (['.html', '.xhtml'].includes(extensionOrigin)) {
-				res.setHeader('Content-Security-Policy', config.response.header.csp_html);
-				res.setHeader('Content-Security-Policy-Report-Only', config.response.header.cspro_html);
+				res.setHeader(
+					'Content-Security-Policy',
+					Object.entries(config.response.header.cspHtml)
+						.map(([key, values]) => `${key} ${values.join(' ')}`)
+						.join(';'),
+				);
+				res.setHeader(
+					'Content-Security-Policy-Report-Only',
+					Object.entries(config.response.header.csproHtml)
+						.map(([key, values]) => `${key} ${values.join(' ')}`)
+						.join(';'),
+				);
 			}
 		},
 	}),
 );
 
-const upload = multer({ dest: config.temp });
+const upload = multer({ dest: env('TEMP') });
 
 /**
  * 記事リスト
  */
 app.get(['/', '/list/:page([1-9][0-9]{0,1})'], async (req, res, next) => {
 	try {
-		await new ListController(config).execute(req, res);
+		await list(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -184,7 +199,7 @@ app.get(['/', '/list/:page([1-9][0-9]{0,1})'], async (req, res, next) => {
  */
 app.get('/:entry_id([1-9][0-9]{0,2})', async (req, res, next) => {
 	try {
-		await new EntryController(config).execute(req, res);
+		await entry(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -195,7 +210,7 @@ app.get('/:entry_id([1-9][0-9]{0,2})', async (req, res, next) => {
  */
 app.get('/category/:category_name', async (req, res, next) => {
 	try {
-		await new CategoryController(config).execute(req, res);
+		await category(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -208,14 +223,14 @@ app
 	.route('/admin/post')
 	.get(async (req, res, next) => {
 		try {
-			await new PostController(config, env).execute(req, res);
+			await post(req, res);
 		} catch (e) {
 			next(e);
 		}
 	})
 	.post(upload.array('media'), async (req, res, next) => {
 		try {
-			await new PostController(config, env).execute(req, res);
+			await post(req, res);
 		} catch (e) {
 			next(e);
 		}
@@ -226,7 +241,7 @@ app
  */
 app.post('/api/preview', async (req, res, next) => {
 	try {
-		await new PreviewController(config).execute(req, res);
+		await preview(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -238,7 +253,7 @@ app.post('/api/preview', async (req, res, next) => {
 app.use((req, res): void => {
 	logger.warn(`404 Not Found: ${req.method} ${req.url}`);
 
-	res.status(404).sendFile(path.resolve(config.errorpage.path_404));
+	res.status(404).sendFile(path.resolve(config.errorpage.path404));
 });
 app.use((err: Error, req: Request, res: Response, _next: NextFunction /* eslint-disable-line @typescript-eslint/no-unused-vars */): void => {
 	logger.fatal(`${req.method} ${req.url}`, err.stack);
@@ -250,9 +265,8 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction /* eslint-
 <h1>500 Internal Server Error</h1>`);
 });
 
-/**
- * HTTP サーバー起動
- */
-app.listen(config.port, () => {
-	logger.info(`Example app listening at http://localhost:${String(config.port)}`);
+/* HTTP Server */
+const port = env('PORT', 'number');
+app.listen(port, () => {
+	logger.info(`Example app listening at http://localhost:${String(port)}`);
 });

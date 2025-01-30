@@ -1,5 +1,5 @@
 declare namespace MisskryAPIResponse {
-	/* https://misskey.io/api-doc#tag/notes/operation/notes___create */
+	/* https://misskey.noellabo.jp/api-doc#tag/notes/POST/notes/create */
 	interface NotesCreate {
 		createdNote: {
 			id: string;

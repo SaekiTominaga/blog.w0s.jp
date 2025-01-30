@@ -3,26 +3,15 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"app": "nodemon --inspect node/dist/app.js",
-		"watch": "tsc --project node/tsconfig.json -w",
+		"dev": "tsx --watch --tsconfig node/tsconfig.json node/src/app.ts",
+		"prebuild": "rimraf node/dist/* -g",
 		"build": "tsc --project node/tsconfig.json",
-		"prelint": "npm run _config-convert",
 		"lint": "eslint node/src/**/*.ts node/@types/*.d.ts node/__tests__/**/*.js",
-		"pretest": "run-s _config-convert build",
-		"test": "node --experimental-test-coverage --test **/*.test.js",
-		"config": "run-p _config-convert _config-validate:*",
-		"errorpage-lint": "markuplint errorpage/*.html",
-		"_config-convert": "json2ts -i configure/schema -o configure/type",
-		"_config-validate:category": "ajv --spec=draft7 -s configure/schema/category.json -d configure/category.json",
-		"_config-validate:common": "ajv --spec=draft7 -s configure/schema/common.json -d configure/common.json",
-		"_config-validate:entry": "ajv --spec=draft7 -s configure/schema/entry.json -d configure/entry.json",
-		"_config-validate:list": "ajv --spec=draft7 -s configure/schema/list.json -d configure/list.json",
-		"_config-validate:post": "ajv --spec=draft7 -s configure/schema/post.json -d configure/post.json",
-		"_config-validate:feed": "ajv --spec=draft7 -s configure/schema/feed.json -d configure/feed.json",
-		"_config-validate:mastodon": "ajv --spec=draft7 -s configure/schema/mastodon.json -d configure/mastodon.json",
-		"_config-validate:misskey": "ajv --spec=draft7 -s configure/schema/misskey.json -d configure/misskey.json",
-		"_config-validate:newly-json": "ajv --spec=draft7 -s configure/schema/newly-json.json -d configure/newly-json.json",
-		"_config-validate:sitemap": "ajv --spec=draft7 -s configure/schema/sitemap.json -d configure/sitemap.json"
+		"pretest": "npm run build",
+		"test": "node --experimental-test-coverage --test node/dist/util/**/*.test.js node/__tests__/**/*.test.js",
+		"pretest-process": "npm run build",
+		"test-process": "node --env-file=../.env.development --experimental-test-coverage --test node/dist/process/**/*.test.js",
+		"errorpage-lint": "markuplint errorpage/*.html"
 	},
 	"dependencies": {
 		"@atproto/api": "^0.12.7",
@@ -33,6 +22,7 @@
 		"basic-auth": "^2.0.1",
 		"compression": "^1.7.4",
 		"dayjs": "^1.11.10",
+		"dotenv": "^16.4.7",
 		"ejs": "^3.1.9",
 		"express": "^4.20.0",
 		"express-validator": "^7.0.1",
@@ -109,6 +99,7 @@
 		"@types/md5": "^2.3.5",
 		"@types/multer": "^1.4.11",
 		"@types/nodemailer": "^6.4.14",
-		"@types/w3c-xmlserializer": "^2.0.4"
+		"@types/w3c-xmlserializer": "^2.0.4",
+		"tsx": "^4.19.2"
 	}
 }
