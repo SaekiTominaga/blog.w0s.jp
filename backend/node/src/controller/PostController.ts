@@ -6,9 +6,9 @@ import Controller from '../Controller.js';
 import type ControllerInterface from '../ControllerInterface.js';
 import configureExpress from '../config/express.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
-import CreateFeed from '../process/CreateFeed.js';
-import CreateNewlyJson from '../process/CreateNewlyJson.js';
-import CreateSitemap from '../process/CreateSitemap.js';
+import createFeed from '../process/feed.js';
+import createNewlyJson from '../process/newlyJson.js';
+import createSitemap from '../process/sitemap.js';
 import postBluesky from '../process/snsBluesky.js';
 import postMastodon from '../process/snsMastodon.js';
 import postMisskey from '../process/snsMisskey.js';
@@ -168,7 +168,7 @@ export default class PostController extends Controller implements ControllerInte
 				const entryUrl = PostController.#getEntryUrl(requestQuery.id);
 				topicPostResults.add({ success: true, message: `${this.#config.process_message.update.success} ${entryUrl}` });
 
-				const [updateModified, createFeedResult, createSitemapResult, createNewlyJson] = await Promise.all([
+				const [updateModified, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
 					this.#updateModified(dao),
 					this.#createFeed(),
 					this.#createSitemap(),
@@ -177,7 +177,7 @@ export default class PostController extends Controller implements ControllerInte
 				topicPostResults.add(updateModified);
 				topicPostResults.add(createFeedResult);
 				topicPostResults.add(createSitemapResult);
-				topicPostResults.add(createNewlyJson);
+				topicPostResults.add(createNewlyJsonResult);
 			}
 		} else if (requestQuery.action_revise_preview) {
 			/* 修正データ選択 */
@@ -302,13 +302,13 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createFeed(): Promise<PostResult> {
 		try {
-			const result = await new CreateFeed().execute();
+			const result = await createFeed();
 
-			result.createdFilesPath.forEach((filePath): void => {
+			result.files.forEach((filePath): void => {
 				this.logger.info('Feed file was created', filePath);
 			});
 
-			if (result.createdFilesPath.length === 0) {
+			if (result.files.length === 0) {
 				return { success: true, message: this.#config.process_message.feed.none };
 			}
 		} catch (e) {
@@ -327,9 +327,9 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createSitemap(): Promise<PostResult> {
 		try {
-			const result = await new CreateSitemap().execute();
+			const result = await createSitemap();
 
-			this.logger.info('Sitemap file was created', result.createdFilePath);
+			this.logger.info('Sitemap file was created', result.file);
 		} catch (e) {
 			this.logger.error(e);
 
@@ -346,9 +346,9 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #createNewlyJson(): Promise<PostResult> {
 		try {
-			const result = await new CreateNewlyJson().execute();
+			const result = await createNewlyJson();
 
-			result.createdFilesPath.forEach((filePath): void => {
+			result.files.forEach((filePath): void => {
 				this.logger.info('JSON file was created', filePath);
 			});
 		} catch (e) {

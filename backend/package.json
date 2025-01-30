@@ -16,10 +16,7 @@
 		"_config-validate:category": "ajv --spec=draft7 -s configure/schema/category.json -d configure/category.json",
 		"_config-validate:entry": "ajv --spec=draft7 -s configure/schema/entry.json -d configure/entry.json",
 		"_config-validate:list": "ajv --spec=draft7 -s configure/schema/list.json -d configure/list.json",
-		"_config-validate:post": "ajv --spec=draft7 -s configure/schema/post.json -d configure/post.json",
-		"_config-validate:feed": "ajv --spec=draft7 -s configure/schema/feed.json -d configure/feed.json",
-		"_config-validate:newly-json": "ajv --spec=draft7 -s configure/schema/newly-json.json -d configure/newly-json.json",
-		"_config-validate:sitemap": "ajv --spec=draft7 -s configure/schema/sitemap.json -d configure/sitemap.json"
+		"_config-validate:post": "ajv --spec=draft7 -s configure/schema/post.json -d configure/post.json"
 	},
 	"dependencies": {
 		"@atproto/api": "^0.12.7",
