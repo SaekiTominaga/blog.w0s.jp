@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'frontend/build/*.js'
+      - 'frontend/build/*.ts'
       - 'frontend/eslint.config.js'
   workflow_dispatch:
 
