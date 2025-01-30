@@ -7,7 +7,9 @@
 		"watch": "tsc --project node/tsconfig.json -w",
 		"build": "tsc --project node/tsconfig.json",
 		"lint": "eslint node/src/**/*.ts node/@types/*.d.ts node/__tests__/**/*.js",
-		"test": "node --experimental-test-coverage --test **/*.test.js",
+		"test:markdown": "node --experimental-test-coverage --test node/__tests__/**/*.test.js",
+		"test:process": "node --experimental-test-coverage --test node/dist/process/**/*.test.js",
+		"test:util": "node --experimental-test-coverage --test node/dist/util/**/*.test.js",
 		"errorpage-lint": "markuplint errorpage/*.html"
 	},
 	"dependencies": {

@@ -7,7 +7,7 @@ import configExpress from '../config/express.js';
 import configFeed from '../config/feed.js';
 import BlogFeedDao from '../dao/BlogFeedDao.js';
 import Markdown from '../markdown/Markdown.js';
-import Compress from '../util/Compress.js';
+import { brotliCompressText } from '../util/compress.js';
 import { env } from '../util/env.js';
 
 /**
@@ -53,7 +53,7 @@ const create = async (): Promise<{
 		lineSeparator: '\n',
 	});
 
-	const feedXmlBrotli = Compress.brotliText(feedXmlFormatted);
+	const feedXmlBrotli = brotliCompressText(feedXmlFormatted);
 
 	/* ファイル出力 */
 	const filePath = `${configExpress.static.root}/${configFeed.path}`;

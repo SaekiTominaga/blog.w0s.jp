@@ -5,13 +5,12 @@ import type { Request, Response } from 'express';
 import filenamify from 'filenamify';
 import Log4js from 'log4js';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
-import configureExpress from '../config/express.js';
-import configureCategory from '../config/category.js';
+import configExpress from '../config/express.js';
+import configCategory from '../config/category.js';
 import BlogCategoryDao from '../dao/BlogCategoryDao.js';
 import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
-import HttpResponse from '../util/HttpResponse.js';
-import response from '../util/response.js';
+import { rendering, generation, checkLastModified, rendering404 } from '../util/response.js';
 import Sidebar from '../util/Sidebar.js';
 
 const logger = Log4js.getLogger('category');
@@ -23,8 +22,6 @@ const logger = Log4js.getLogger('category');
  * @param res - Response
  */
 const execute = async (req: Request, res: Response): Promise<void> => {
-	const httpResponse = new HttpResponse(req, res);
-
 	const requestQuery: BlogRequest.Category = {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		category_name: req.params['category_name']!,
@@ -35,16 +32,16 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 	const lastModified = await dao.getLastModified();
 
 	/* 最終更新日時をセット */
-	if (httpResponse.checkLastModified(lastModified)) {
+	if (checkLastModified(req, res, lastModified)) {
 		return;
 	}
 
-	const htmlFilePath = `${env('HTML')}/${configureCategory.html.directory}/${filenamify(requestQuery.category_name)}${configureExpress.extension.html}`;
-	const htmlBrotliFilePath = `${htmlFilePath}${configureExpress.extension.brotli}`;
+	const htmlFilePath = `${env('HTML')}/${configCategory.html.directory}/${filenamify(requestQuery.category_name)}${configExpress.extension.html}`;
+	const htmlBrotliFilePath = `${htmlFilePath}${configExpress.extension.brotli}`;
 
 	if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 		/* 生成された HTML をロードする */
-		await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: configureExpress.cacheControl });
+		await rendering(req, res, { htmlPath: htmlFilePath, brotliPath: htmlBrotliFilePath });
 		return;
 	}
 
@@ -53,7 +50,7 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 
 	if (entriesDto.length === 0) {
 		logger.info(`無効なカテゴリが指定: ${requestQuery.category_name}`);
-		httpResponse.send404();
+		rendering404(res);
 		return;
 	}
 
@@ -61,7 +58,7 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 
 	const [entryCountOfCategoryList, newlyEntries] = await Promise.all([
 		sidebar.getEntryCountOfCategory(),
-		sidebar.getNewlyEntries(configureExpress.sidebar.newly.maximumNumber),
+		sidebar.getNewlyEntries(configExpress.sidebar.newly.maximumNumber),
 	]);
 
 	const entries: BlogView.EntryData[] = [];
@@ -71,10 +68,10 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 			const url = new URL(imageExternal);
 
 			switch (url.origin) {
-				case configureCategory.imageExternal.amazon.origin: {
+				case configCategory.imageExternal.amazon.origin: {
 					/* Amazon */
 					const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageExternal));
-					paapi5ItemImageUrlParser.setSize(configureCategory.imageExternal.amazon.size);
+					paapi5ItemImageUrlParser.setSize(configCategory.imageExternal.amazon.size);
 
 					imageExternal = paapi5ItemImageUrlParser.toString();
 					break;
@@ -94,7 +91,7 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 	}
 
 	/* HTML 生成 */
-	const html = await ejs.renderFile(`${env('VIEWS')}/${configureCategory.template}`, {
+	const html = await ejs.renderFile(`${env('VIEWS')}/${configCategory.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		requestQuery: requestQuery,
 		count: entries.length,
@@ -104,10 +101,9 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 	});
 
 	/* レンダリング、ファイル出力 */
-	await response(html, {
-		filePath: htmlFilePath,
-		brotliFilePath: htmlBrotliFilePath,
-		httpResponse: httpResponse,
+	await generation(req, res, html, {
+		htmlPath: htmlFilePath,
+		brotliPath: htmlBrotliFilePath,
 	});
 };
 

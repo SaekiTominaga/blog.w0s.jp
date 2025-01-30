@@ -3,7 +3,7 @@ import configExpress from '../config/express.js';
 import configNewlyJson from '../config/newlyJson.js';
 import BlogNewlyJsonDao from '../dao/BlogNewlyJsonDao.js';
 import MarkdownTitle from '../markdown/Title.js';
-import Compress from '../util/Compress.js';
+import { brotliCompressText } from '../util/compress.js';
 import { env } from '../util/env.js';
 
 /**
@@ -37,7 +37,7 @@ const create = async (): Promise<{
 				})),
 			);
 
-			const newlyJsonBrotli = Compress.brotliText(newlyJson);
+			const newlyJsonBrotli = brotliCompressText(newlyJson);
 
 			/* ファイル出力 */
 			const fileName =

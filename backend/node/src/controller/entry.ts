@@ -2,14 +2,13 @@ import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import type { Request, Response } from 'express';
-import configureExpress from '../config/express.js';
-import configureEntry from '../config/entry.js';
+import configExpress from '../config/express.js';
+import configEntry from '../config/entry.js';
 import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Markdown from '../markdown/Markdown.js';
 import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
-import HttpResponse from '../util/HttpResponse.js';
-import response from '../util/response.js';
+import { rendering, generation, checkLastModified, rendering404 } from '../util/response.js';
 import Sidebar from '../util/Sidebar.js';
 
 /**
@@ -19,8 +18,6 @@ import Sidebar from '../util/Sidebar.js';
  * @param res - Response
  */
 const execute = async (req: Request, res: Response): Promise<void> => {
-	const httpResponse = new HttpResponse(req, res);
-
 	const requestQuery: BlogRequest.Entry = {
 		entry_id: Number(req.params['entry_id']),
 	};
@@ -30,23 +27,23 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 	const lastModified = await dao.getLastModified();
 
 	/* 最終更新日時をセット */
-	if (httpResponse.checkLastModified(lastModified)) {
+	if (checkLastModified(req, res, lastModified)) {
 		return;
 	}
 
-	const htmlFilePath = `${env('HTML')}/${configureEntry.html.directory}/${String(requestQuery.entry_id)}${configureExpress.extension.html}`;
-	const htmlBrotliFilePath = `${htmlFilePath}${configureExpress.extension.brotli}`;
+	const htmlFilePath = `${env('HTML')}/${configEntry.html.directory}/${String(requestQuery.entry_id)}${configExpress.extension.html}`;
+	const htmlBrotliFilePath = `${htmlFilePath}${configExpress.extension.brotli}`;
 
 	if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
 		/* 生成された HTML をロードする */
-		await httpResponse.send200({ filePath: htmlFilePath, brotliFilePath: htmlBrotliFilePath, cacheControl: configureExpress.cacheControl });
+		await rendering(req, res, { htmlPath: htmlFilePath, brotliPath: htmlBrotliFilePath });
 		return;
 	}
 
 	/* DB からデータ取得 */
 	const entryDto = await dao.getEntry(requestQuery.entry_id);
 	if (entryDto === null) {
-		httpResponse.send404();
+		rendering404(res);
 		return;
 	}
 
@@ -59,7 +56,7 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 		dao.getCategories(requestQuery.entry_id),
 		dao.getRelations(requestQuery.entry_id),
 		sidebar.getEntryCountOfCategory(),
-		sidebar.getNewlyEntries(configureExpress.sidebar.newly.maximumNumber),
+		sidebar.getNewlyEntries(configExpress.sidebar.newly.maximumNumber),
 	]);
 
 	let imageUrl: string | null = null;
@@ -106,7 +103,7 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 	}
 
 	/* HTML 生成 */
-	const html = await ejs.renderFile(`${env('VIEWS')}/${configureEntry.template}`, {
+	const html = await ejs.renderFile(`${env('VIEWS')}/${configEntry.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		requestQuery: requestQuery,
 		structuredData: structuredData,
@@ -123,10 +120,9 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 	});
 
 	/* レンダリング、ファイル出力 */
-	await response(html, {
-		filePath: htmlFilePath,
-		brotliFilePath: htmlBrotliFilePath,
-		httpResponse: httpResponse,
+	await generation(req, res, html, {
+		htmlPath: htmlFilePath,
+		brotliPath: htmlBrotliFilePath,
 	});
 };
 

@@ -14,7 +14,6 @@ import post from './controller/post.js';
 import preview from './controller/preview.js';
 import { env } from './util/env.js';
 import HttpBasicAuth from './util/HttpBasicAuth.js';
-import HttpResponse from './util/HttpResponse.js';
 
 dotenv.config({
 	path: process.env['NODE_ENV'] === 'production' ? '../.env.production' : '../.env.development',
@@ -26,7 +25,6 @@ const logger = Log4js.getLogger();
 
 /* Express */
 const app = express();
-const env1 = app.get('env') as Express.Env;
 
 app.set('trust proxy', true);
 app.set('views', env('VIEWS'));
@@ -72,7 +70,7 @@ app.use(
 		if (basic !== undefined) {
 			const httpBasicAuth = new HttpBasicAuth(req);
 			if (!(await httpBasicAuth.htpasswd(`${env('AUTH_DIRECTORY')}/${basic.htpasswd}`))) {
-				new HttpResponse(req, res).send401('Basic', basic.realm);
+				res.set('WWW-Authenticate', `Basic realm="${basic.realm}"`).status(401).sendFile(path.resolve(config.errorpage.path401));
 				return;
 			}
 		}
@@ -139,7 +137,7 @@ app.use(
 
 			/* Cache-Control */
 			const cacheControl =
-				env1 === 'production'
+				process.env['NODE_ENV'] === 'production'
 					? (config.static.headers.cacheControl.path.find((ccPath) => ccPath.paths.includes(requestUrlOrigin))?.value ??
 						config.static.headers.cacheControl.extension.find((ccExt) => ccExt.extensions.includes(extensionOrigin))?.value ??
 						config.static.headers.cacheControl.default)

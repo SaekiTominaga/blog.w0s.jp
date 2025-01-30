@@ -3,8 +3,8 @@ import path from 'node:path';
 import type { Request, Response } from 'express';
 import type { Result as ValidationResult, ValidationError } from 'express-validator';
 import Log4js from 'log4js';
-import configureExpress from '../config/express.js';
-import configurePost from '../config/post.js';
+import configExpress from '../config/express.js';
+import configPost from '../config/post.js';
 import BlogPostDao from '../dao/BlogPostDao.js';
 import createFeed from '../process/feed.js';
 import createNewlyJson from '../process/newlyJson.js';
@@ -14,9 +14,9 @@ import postMastodon from '../process/snsMastodon.js';
 import postMisskey from '../process/snsMisskey.js';
 import { env } from '../util/env.js';
 import HttpBasicAuth, { type Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
-import HttpResponse from '../util/HttpResponse.js';
 import RequestUtil from '../util/RequestUtil.js';
 import PostValidator from '../validator/PostValidator.js';
+import { rendering403, rendering500 } from '../util/response.js';
 
 interface PostResult {
 	success: boolean;
@@ -60,10 +60,10 @@ const updateModified = async (dao: BlogPostDao): Promise<PostResult> => {
 	} catch (e) {
 		logger.error(e);
 
-		return { success: false, message: configurePost.processMessage.dbModified.failure };
+		return { success: false, message: configPost.processMessage.dbModified.failure };
 	}
 
-	return { success: true, message: configurePost.processMessage.dbModified.success };
+	return { success: true, message: configPost.processMessage.dbModified.success };
 };
 
 /**
@@ -80,15 +80,15 @@ const createFeed2 = async (): Promise<PostResult> => {
 		});
 
 		if (result.files.length === 0) {
-			return { success: true, message: configurePost.processMessage.feed.none };
+			return { success: true, message: configPost.processMessage.feed.none };
 		}
 	} catch (e) {
 		logger.error(e);
 
-		return { success: false, message: configurePost.processMessage.feed.failure };
+		return { success: false, message: configPost.processMessage.feed.failure };
 	}
 
-	return { success: true, message: configurePost.processMessage.feed.success };
+	return { success: true, message: configPost.processMessage.feed.success };
 };
 
 /**
@@ -104,10 +104,10 @@ const createSitemap2 = async (): Promise<PostResult> => {
 	} catch (e) {
 		logger.error(e);
 
-		return { success: false, message: configurePost.processMessage.sitemap.failure };
+		return { success: false, message: configPost.processMessage.sitemap.failure };
 	}
 
-	return { success: true, message: configurePost.processMessage.sitemap.success };
+	return { success: true, message: configPost.processMessage.sitemap.success };
 };
 
 /**
@@ -125,10 +125,10 @@ const createNewlyJson2 = async (): Promise<PostResult> => {
 	} catch (e) {
 		logger.error(e);
 
-		return { success: false, message: configurePost.processMessage.newlyJson.failure };
+		return { success: false, message: configPost.processMessage.newlyJson.failure };
 	}
 
-	return { success: true, message: configurePost.processMessage.newlyJson.success };
+	return { success: true, message: configPost.processMessage.newlyJson.success };
 };
 
 /**
@@ -144,11 +144,11 @@ const postMastodon2 = async (entryData: BlogSocial.EntryData): Promise<PostResul
 
 		logger.info('Mastodon was posted', result.url, result.content);
 
-		return { success: true, message: `${configurePost.processMessage.mastodon.success} ${result.url}` };
+		return { success: true, message: `${configPost.processMessage.mastodon.success} ${result.url}` };
 	} catch (e) {
 		logger.error(e);
 
-		return { success: false, message: configurePost.processMessage.mastodon.failure };
+		return { success: false, message: configPost.processMessage.mastodon.failure };
 	}
 };
 
@@ -165,11 +165,11 @@ const postBluesky2 = async (entryData: BlogSocial.EntryData): Promise<PostResult
 
 		logger.info('Bluesky was posted');
 
-		return { success: true, message: `${configurePost.processMessage.bluesky.success} ${result.profileUrl}` };
+		return { success: true, message: `${configPost.processMessage.bluesky.success} ${result.profileUrl}` };
 	} catch (e) {
 		logger.error(e);
 
-		return { success: false, message: configurePost.processMessage.bluesky.failure };
+		return { success: false, message: configPost.processMessage.bluesky.failure };
 	}
 };
 
@@ -186,11 +186,11 @@ const postMisskey2 = async (entryData: BlogSocial.EntryData): Promise<PostResult
 
 		logger.info('Misskey was posted', result.url, result.content);
 
-		return { success: true, message: `${configurePost.processMessage.misskey.success} ${result.url}` };
+		return { success: true, message: `${configPost.processMessage.misskey.success} ${result.url}` };
 	} catch (e) {
 		logger.error(e);
 
-		return { success: false, message: configurePost.processMessage.misskey.failure };
+		return { success: false, message: configPost.processMessage.misskey.failure };
 	}
 };
 
@@ -239,7 +239,7 @@ const mediaUpload = async (req: Request, requestQuery: BlogRequest.Post, httpBas
 
 						result.add({
 							success: false,
-							message: configurePost.mediaUpload.apiResponse.otherMessageFailure,
+							message: configPost.mediaUpload.apiResponse.otherMessageFailure,
 							filename: file.originalname,
 						});
 						return;
@@ -247,43 +247,43 @@ const mediaUpload = async (req: Request, requestQuery: BlogRequest.Post, httpBas
 
 					const responseFile = (await response.json()) as MediaApi.Upload;
 					switch (responseFile.code) {
-						case configurePost.mediaUpload.apiResponse.success.code:
+						case configPost.mediaUpload.apiResponse.success.code:
 							/* 成功 */
 							logger.info('File upload success', responseFile.name);
 
 							result.add({
 								success: true,
-								message: configurePost.mediaUpload.apiResponse.success.message,
+								message: configPost.mediaUpload.apiResponse.success.message,
 								filename: file.originalname,
 							});
 							break;
-						case configurePost.mediaUpload.apiResponse.type.code:
+						case configPost.mediaUpload.apiResponse.type.code:
 							/* MIME エラー */
 							logger.warn('File upload failure', responseFile.name);
 
 							result.add({
 								success: false,
-								message: configurePost.mediaUpload.apiResponse.type.message,
+								message: configPost.mediaUpload.apiResponse.type.message,
 								filename: file.originalname,
 							});
 							break;
-						case configurePost.mediaUpload.apiResponse.overwrite.code:
+						case configPost.mediaUpload.apiResponse.overwrite.code:
 							/* 上書きエラー */
 							logger.warn('File upload failure', responseFile.name);
 
 							result.add({
 								success: false,
-								message: configurePost.mediaUpload.apiResponse.overwrite.message,
+								message: configPost.mediaUpload.apiResponse.overwrite.message,
 								filename: file.originalname,
 							});
 							break;
-						case configurePost.mediaUpload.apiResponse.size.code:
+						case configPost.mediaUpload.apiResponse.size.code:
 							/* サイズ超過エラー */
 							logger.warn('File upload failure', responseFile.name);
 
 							result.add({
 								success: false,
-								message: configurePost.mediaUpload.apiResponse.size.message,
+								message: configPost.mediaUpload.apiResponse.size.message,
 								filename: file.originalname,
 							});
 							break;
@@ -292,7 +292,7 @@ const mediaUpload = async (req: Request, requestQuery: BlogRequest.Post, httpBas
 
 							result.add({
 								success: false,
-								message: configurePost.mediaUpload.apiResponse.otherMessageFailure,
+								message: configPost.mediaUpload.apiResponse.otherMessageFailure,
 								filename: file.originalname,
 							});
 					}
@@ -301,7 +301,7 @@ const mediaUpload = async (req: Request, requestQuery: BlogRequest.Post, httpBas
 
 					result.add({
 						success: false,
-						message: configurePost.mediaUpload.apiResponse.otherMessageFailure,
+						message: configPost.mediaUpload.apiResponse.otherMessageFailure,
 						filename: file.originalname,
 					});
 				}
@@ -329,13 +329,11 @@ const mediaUpload = async (req: Request, requestQuery: BlogRequest.Post, httpBas
  * @param res - Response
  */
 const execute = async (req: Request, res: Response): Promise<void> => {
-	const httpResponse = new HttpResponse(req, res);
-
 	/* Basic 認証 */
 	const httpBasicCredentials = new HttpBasicAuth(req).getCredentials();
 	if (httpBasicCredentials === null) {
 		logger.error('Basic 認証の認証情報が取得できない');
-		httpResponse.send500();
+		rendering500(res);
 		return;
 	}
 
@@ -373,7 +371,7 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 		if (topicValidationResult.isEmpty()) {
 			if (requestQuery.title === null || requestQuery.message === null) {
 				logger.warn('データ登録時に必要なパラメーターが指定されていない');
-				httpResponse.send403();
+				rendering403(res);
 				return;
 			}
 
@@ -389,7 +387,7 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 			logger.info('データ登録', entryId);
 
 			const entryUrl = getEntryUrl(entryId);
-			topicPostResults.add({ success: true, message: `${configurePost.processMessage.insert.success} ${entryUrl}` });
+			topicPostResults.add({ success: true, message: `${configPost.processMessage.insert.success} ${entryUrl}` });
 
 			const [updateModifiedResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
 				updateModified(dao),
@@ -425,7 +423,7 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 		if (topicValidationResult.isEmpty()) {
 			if (requestQuery.id === null || requestQuery.title === null || requestQuery.message === null) {
 				logger.warn('データ修正時に必要なパラメーターが指定されていない');
-				httpResponse.send403();
+				rendering403(res);
 				return;
 			}
 
@@ -443,7 +441,7 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 			logger.info('データ更新', requestQuery.id);
 
 			const entryUrl = getEntryUrl(requestQuery.id);
-			topicPostResults.add({ success: true, message: `${configurePost.processMessage.update.success} ${entryUrl}` });
+			topicPostResults.add({ success: true, message: `${configPost.processMessage.update.success} ${entryUrl}` });
 
 			const [updateModifiedResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
 				updateModified(dao),
@@ -460,14 +458,14 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 		/* 修正データ選択 */
 		if (requestQuery.id === null) {
 			logger.warn('修正データ選択時に記事 ID が指定されていない');
-			httpResponse.send403();
+			rendering403(res);
 			return;
 		}
 
 		const reviseData = await dao.getReviseData(requestQuery.id);
 		if (reviseData === null) {
 			logger.warn('修正データが取得できない', requestQuery.id);
-			httpResponse.send403();
+			rendering403(res);
 			return;
 		}
 
@@ -515,18 +513,18 @@ const execute = async (req: Request, res: Response): Promise<void> => {
 	res.set('Cache-Control', 'no-cache');
 	res.set(
 		'Content-Security-Policy',
-		Object.entries(configureExpress.response.header.cspHtml)
+		Object.entries(configExpress.response.header.cspHtml)
 			.map(([key, values]) => `${key} ${values.join(' ')}`)
 			.join(';'),
 	);
 	res.set(
 		'Content-Security-Policy-Report-Only',
-		Object.entries(configureExpress.response.header.csproHtml)
+		Object.entries(configExpress.response.header.csproHtml)
 			.map(([key, values]) => `${key} ${values.join(' ')}`)
 			.join(';'),
 	);
 	res.set('Referrer-Policy', 'no-referrer');
-	res.render(configurePost.template, {
+	res.render(configPost.template, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		requestQuery: requestQuery,
 		updateMode: (requestQuery.action_add && topicValidationResult?.isEmpty() === true) || requestQuery.action_revise_preview || requestQuery.action_revise,
