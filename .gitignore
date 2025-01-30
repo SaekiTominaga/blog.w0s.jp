@@ -2,15 +2,9 @@
 .env.*
 log4js.*.json
 
-/log/
 /**/node_modules/
-
-/backend/.html/
-/backend/node/dist/
-
-/frontend/.rollup.cache/
-/frontend/script/tsconfig.tsbuildinfo
-
+/.html/
+/log/
 /public/**/*.atom
 /public/**/*.br
 /public/**/*.map
@@ -20,3 +14,8 @@ log4js.*.json
 /public/json/
 /public/script/
 /public/style/
+
+/backend/node/dist/
+
+/frontend/.rollup.cache/
+/frontend/script/tsconfig.tsbuildinfo
