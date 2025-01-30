@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'views/*.ejs'
-      - 'views/_include/*.ejs'
+      - 'template/*.ejs'
+      - 'template/_include/*.ejs'
       - 'markuplint.config.js'
   workflow_dispatch:
 
@@ -19,4 +19,4 @@ jobs:
         with:
           node-version: '22'
       - run: npm ci
-      - run: npm run html-lint-ejs
+      - run: npm run template-lint

@@ -1,4 +1,4 @@
-import StringEscapeHtml from '@w0s/html-escape';
+import { escape } from '@w0s/html-escape';
 
 /**
  * 記事タイトルの処理
@@ -10,7 +10,7 @@ export default class MarkdownTitle {
 	 * @param input - 処理対象のテキスト
 	 */
 	constructor(input: string) {
-		this.#value = StringEscapeHtml.escape(input);
+		this.#value = escape(input);
 	}
 
 	/**

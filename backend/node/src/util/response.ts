@@ -20,8 +20,6 @@ const logger = Log4js.getLogger('response');
  * @param body.brotli - Brotli 内容
  * @param body.htmlPath - HTML ファイルパス
  * @param body.brotliPath - Brotli ファイルパス
- * @param header - レスポンスヘッダー情報
- * @param header.cacheControl - Cache-Control ヘッダーフィールド値
  */
 export const rendering = async (
 	req: Request,

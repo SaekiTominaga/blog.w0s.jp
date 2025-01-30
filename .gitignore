@@ -2,23 +2,20 @@
 .env.*
 log4js.*.json
 
-/log/
 /**/node_modules/
+/.html/
+/log/
+/public/**/*.atom
+/public/**/*.br
+/public/**/*.map
+/public/**/*.svg
+/public/favicon.ico
+/public/sitemap.xml
+/public/json/
+/public/script/
+/public/style/
 
-/backend/.html/
-/backend/configure/type/
-/backend/configure/*.json
 /backend/node/dist/
 
 /frontend/.rollup.cache/
-/frontend/public/**/*.atom
-/frontend/public/**/*.br
-/frontend/public/**/*.map
-/frontend/public/**/*.svg
-/frontend/public/favicon.ico
-/frontend/public/sitemap.xml
-/frontend/public/json/
-/frontend/public/script/*.js
-/frontend/public/script/*.mjs
-/frontend/public/style/*.css
 /frontend/script/tsconfig.tsbuildinfo

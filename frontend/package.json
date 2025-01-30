@@ -11,19 +11,19 @@
 		"js-lint": "eslint script/**/*.ts",
 		"svg-prod": "run-s _svg-prod:*",
 		"node-lint": "eslint build/*.ts",
-		"_css-dev:clean": "rimraf public/style/* -g",
-		"_css-dev:build": "postcss style/*.css --base style -d public/style -w",
+		"_css-dev:clean": "rimraf ../public/style/* -g",
+		"_css-dev:build": "postcss style/*.css --base style -d ../public/style -w",
 		"_css-prod:lint": "npm run css-lint",
-		"_css-prod:build": "postcss style/*.css --base style -d public/style",
-		"_css-prod:format": "prettier --config ../.prettierrc.mjs -w public/style/*.css",
-		"_css-prod:compress": "brotli-cli compress -g public/style/*.css -m text",
-		"_js-dev:clean": "rimraf public/script/* -g",
+		"_css-prod:build": "postcss style/*.css --base style -d ../public/style",
+		"_css-prod:format": "prettier --config ../.prettierrc.mjs -w ../public/style/*.css",
+		"_css-prod:compress": "brotli-cli compress -g ../public/style/*.css -m text",
+		"_js-dev:clean": "rimraf ../public/script/* -g",
 		"_js-dev:build": "rollup -c -w --environment build:development",
 		"_js-prod:lint": "npm run js-lint",
 		"_js-prod:build": "rollup -c --environment build:production",
-		"_js-prod:compress": "brotli-cli compress -g public/script/*.{js,mjs} -m text",
-		"_svg-prod:build": "node --experimental-strip-types build/svg.ts -i image -o public -c svgo.config.js",
-		"_svg-prod:compress": "brotli-cli compress -g public/image/**/*.svg -g public/favicon.ico -m text"
+		"_js-prod:compress": "brotli-cli compress -g ../public/script/*.{js,mjs} -m text",
+		"_svg-prod:build": "node --experimental-strip-types build/svg.ts -i image -o ../public -c svgo.config.js",
+		"_svg-prod:compress": "brotli-cli compress -g ../public/image/**/*.svg -g ../public/favicon.ico -m text"
 	},
 	"dependencies": {
 		"@w0s/button-clipboard": "^3.0.1",
@@ -41,9 +41,22 @@
 		"svgo": "^3.3.2"
 	},
 	"devDependencies": {
-		"@types/node": "^22.10.10",
+		"@csstools/postcss-global-data": "^3.0.0",
+		"@rollup/plugin-commonjs": "^28.0.2",
+		"@rollup/plugin-node-resolve": "^16.0.0",
+		"@rollup/plugin-terser": "^0.4.4",
+		"@rollup/plugin-typescript": "^12.1.2",
+		"@types/node": "^22.12.0",
 		"@types/trusted-types": "^2.0.7",
 		"brotli-cli": "^2.1.0",
+		"cssnano": "^7.0.6",
+		"cssnano-preset-lite": "^4.0.3",
+		"postcss": "^8.5.1",
+		"postcss-cli": "^11.0.0",
+		"postcss-custom-media": "^11.0.5",
+		"postcss-import": "^16.1.0",
+		"postcss-nesting": "^13.0.1",
+		"rollup": "^4.32.1",
 		"vfile-message": "^4.0.2"
 	}
 }

@@ -1,4 +1,4 @@
-import { BskyAgent, RichText } from '@atproto/api';
+import { AtpAgent, RichText } from '@atproto/api';
 import ejs from 'ejs';
 import configBluesky from '../config/bluesky.js';
 import { env } from '../util/env.js';
@@ -41,7 +41,7 @@ const post = async (
 	cid: string;
 	profileUrl: string;
 }> => {
-	const agent = new BskyAgent({
+	const agent = new AtpAgent({
 		service: env('BLUESKY_INSTANCE'),
 	});
 	await agent.login({
@@ -58,7 +58,6 @@ const post = async (
 		text: richText.text,
 		facets: richText.facets ?? [],
 		langs: ['ja'],
-		createdAt: new Date().toISOString(),
 	});
 
 	return {

@@ -1,3 +1,3 @@
 export default {
-	template: 'social/bluesky.ejs',
+	template: 'sns/bluesky.ejs',
 };
