@@ -39,7 +39,12 @@ app.use(
 		res.setHeader('Strict-Transport-Security', config.response.header.hsts);
 
 		/* CSP */
-		res.setHeader('Content-Security-Policy', config.response.header.csp);
+		res.setHeader(
+			'Content-Security-Policy',
+			Object.entries(config.response.header.csp)
+				.map(([key, values]) => `${key} ${values.join(' ')}`)
+				.join(';'),
+		);
 
 		/* Report */
 		res.setHeader(
@@ -161,8 +166,18 @@ app.use(
 
 			/* CSP */
 			if (['.html', '.xhtml'].includes(extensionOrigin)) {
-				res.setHeader('Content-Security-Policy', config.response.header.csp_html);
-				res.setHeader('Content-Security-Policy-Report-Only', config.response.header.cspro_html);
+				res.setHeader(
+					'Content-Security-Policy',
+					Object.entries(config.response.header.cspHtml)
+						.map(([key, values]) => `${key} ${values.join(' ')}`)
+						.join(';'),
+				);
+				res.setHeader(
+					'Content-Security-Policy-Report-Only',
+					Object.entries(config.response.header.csproHtml)
+						.map(([key, values]) => `${key} ${values.join(' ')}`)
+						.join(';'),
+				);
 			}
 		},
 	}),

@@ -14,11 +14,60 @@ export default {
 	response: {
 		header: {
 			hsts: 'max-age=31536000',
-			csp: "frame-ancestors 'self'; report-uri https://report.w0s.jp/report/csp report-to default",
-			csp_html:
-				"base-uri 'none'; form-action 'self' https://www.google.com; frame-ancestors 'self'; report-uri https://report.w0s.jp/report/csp report-to default",
-			cspro_html:
-				"default-src 'self'; connect-src 'self' https://w0s.jp https://*.w0s.jp https://pagead2.googlesyndication.com https://csi.gstatic.com https://ep1.adtrafficquality.google; font-src 'self' data:; frame-src 'self' https://www.youtube-nocookie.com https://www.google.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google; img-src 'self' data: https://media.w0s.jp https://m.media-amazon.com https://*.ytimg.com https://pagead2.googlesyndication.com https://ep1.adtrafficquality.google; media-src 'self' https://media.w0s.jp; script-src-elem 'self' https://analytics.w0s.jp https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://ep2.adtrafficquality.google; style-src 'self' 'unsafe-inline'; trusted-types default goog#html google#safe dompurify 'allow-duplicates'; require-trusted-types-for 'script'; report-uri https://report.w0s.jp/report/csp; report-to default",
+			csp: {
+				'frame-ancestors': ["'self'"],
+				'report-uri': ['https://report.w0s.jp/report/csp'],
+				'report-to': ['default'],
+			},
+			cspHtml: {
+				'base-uri': ["'none'"],
+				'form-action': ["'self'", 'https://www.google.com'],
+				'frame-ancestors': ["'self'"],
+				'report-uri': ['https://report.w0s.jp/report/csp'],
+				'report-to': ['default'],
+			},
+			csproHtml: {
+				'default-src': ["'self'"],
+				'connect-src': [
+					"'self'",
+					'https://w0s.jp',
+					'https://*.w0s.jp',
+					'https://pagead2.googlesyndication.com',
+					'https://csi.gstatic.com',
+					'https://ep1.adtrafficquality.google',
+				],
+				'font-src': ["'self'", 'data:'],
+				'frame-src': [
+					"'self'",
+					'https://www.youtube-nocookie.com',
+					'https://www.google.com',
+					'https://tpc.googlesyndication.com',
+					'https://googleads.g.doubleclick.net',
+					'https://ep2.adtrafficquality.google',
+				],
+				'img-src': [
+					"'self'",
+					'data:',
+					'https://media.w0s.jp',
+					'https://m.media-amazon.com',
+					'https://*.ytimg.com',
+					'https://pagead2.googlesyndication.com',
+					'https://ep1.adtrafficquality.google',
+				],
+				'media-src': ["'self'", 'https://media.w0s.jp'],
+				'script-src-elem': [
+					"'self'",
+					'https://analytics.w0s.jp',
+					'https://pagead2.googlesyndication.com',
+					'https://tpc.googlesyndication.com',
+					'https://ep2.adtrafficquality.google',
+				],
+				'style-src': ["'self'", "'unsafe-inline'"],
+				'trusted-types': ['default', 'goog#html', 'google#safe', "'allow-duplicates'"],
+				'require-trusted-types-for': ["'script'"],
+				'report-uri': ['https://report.w0s.jp/report/csp'],
+				'report-to': ['default'],
+			},
 			reporting_endpoints: {
 				default: 'https://report.w0s.jp/report/csp',
 			},

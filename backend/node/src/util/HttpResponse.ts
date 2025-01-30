@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import StringEscapeHtml from '@w0s/html-escape';
 import type { Request, Response } from 'express';
-import config from '../config/express.js';
+import configureExpress from '../config/express.js';
 
 type HttpAuthType = 'Basic' | 'Bearer' | 'Digest' | 'HOBA' | 'Mutual' | 'Negotiate' | 'OAuth' | 'SCRAM-SHA-1' | 'SCRAM-SHA-256' | 'vapid';
 
@@ -63,8 +63,18 @@ export default class HttpResponse {
 		this.#res
 			.set('Content-Type', this.#MIME_TYPE_HTML)
 			.set('Cache-Control', data.cacheControl ?? 'no-cache')
-			.set('Content-Security-Policy', config.response.header.csp_html)
-			.set('Content-Security-Policy-Report-Only', config.response.header.cspro_html);
+			.set(
+				'Content-Security-Policy',
+				Object.entries(configureExpress.response.header.cspHtml)
+					.map(([key, values]) => `${key} ${values.join(' ')}`)
+					.join(';'),
+			)
+			.set(
+				'Content-Security-Policy-Report-Only',
+				Object.entries(configureExpress.response.header.csproHtml)
+					.map(([key, values]) => `${key} ${values.join(' ')}`)
+					.join(';'),
+			);
 
 		/* Brotli 圧縮 */
 		if (this.#req.acceptsEncodings('br') === 'br') {
@@ -144,27 +154,27 @@ export default class HttpResponse {
 			.set('WWW-Authenticate', `${type} realm="${realm}"`)
 			.status(401)
 			.set('Content-Type', this.#MIME_TYPE_HTML)
-			.sendFile(path.resolve(config.errorpage.path_401));
+			.sendFile(path.resolve(configureExpress.errorpage.path_401));
 	}
 
 	/**
 	 * 403 Forbidden
 	 */
 	send403(): void {
-		this.#res.status(403).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(config.errorpage.path_403));
+		this.#res.status(403).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(configureExpress.errorpage.path_403));
 	}
 
 	/**
 	 * 404 Not Found
 	 */
 	send404(): void {
-		this.#res.status(404).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(config.errorpage.path_404));
+		this.#res.status(404).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(configureExpress.errorpage.path_404));
 	}
 
 	/**
 	 * 500 Internal Server Error
 	 */
 	send500(): void {
-		this.#res.status(500).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(config.errorpage.path_500));
+		this.#res.status(500).set('Content-Type', this.#MIME_TYPE_HTML).sendFile(path.resolve(configureExpress.errorpage.path_500));
 	}
 }

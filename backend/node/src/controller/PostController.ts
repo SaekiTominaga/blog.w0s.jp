@@ -236,8 +236,18 @@ export default class PostController extends Controller implements ControllerInte
 
 		/* レンダリング */
 		res.set('Cache-Control', 'no-cache');
-		res.set('Content-Security-Policy', configureExpress.response.header.csp_html);
-		res.set('Content-Security-Policy-Report-Only', configureExpress.response.header.cspro_html);
+		res.set(
+			'Content-Security-Policy',
+			Object.entries(configureExpress.response.header.cspHtml)
+				.map(([key, values]) => `${key} ${values.join(' ')}`)
+				.join(';'),
+		);
+		res.set(
+			'Content-Security-Policy-Report-Only',
+			Object.entries(configureExpress.response.header.csproHtml)
+				.map(([key, values]) => `${key} ${values.join(' ')}`)
+				.join(';'),
+		);
 		res.set('Referrer-Policy', 'no-referrer');
 		res.render(this.#config.view.init, {
 			pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
