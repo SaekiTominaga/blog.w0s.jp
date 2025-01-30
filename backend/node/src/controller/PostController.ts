@@ -9,9 +9,9 @@ import BlogPostDao from '../dao/BlogPostDao.js';
 import CreateFeed from '../process/CreateFeed.js';
 import CreateNewlyJson from '../process/CreateNewlyJson.js';
 import CreateSitemap from '../process/CreateSitemap.js';
-import PostBluesky from '../process/PostBluesky.js';
-import PostMastodon from '../process/PostMastodon.js';
-import PostMisskey from '../process/PostMisskey.js';
+import postBluesky from '../process/snsBluesky.js';
+import postMastodon from '../process/snsMastodon.js';
+import postMisskey from '../process/snsMisskey.js';
 import { env } from '../util/env.js';
 import HttpBasicAuth, { type Credentials as HttpBasicAuthCredentials } from '../util/HttpBasicAuth.js';
 import HttpResponse from '../util/HttpResponse.js';
@@ -369,7 +369,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #postMastodon(entryData: BlogSocial.EntryData): Promise<PostResult> {
 		try {
-			const result = await new PostMastodon().execute(entryData);
+			const result = await postMastodon(entryData);
 
 			this.logger.info('Mastodon was posted', result.url, result.content);
 
@@ -390,11 +390,11 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #postBluesky(entryData: BlogSocial.EntryData): Promise<PostResult> {
 		try {
-			const result = await new PostBluesky().execute(entryData);
+			const result = await postBluesky(entryData);
 
 			this.logger.info('Bluesky was posted');
 
-			return { success: true, message: `${this.#config.process_message.bluesky.success} ${result.profile_url}` };
+			return { success: true, message: `${this.#config.process_message.bluesky.success} ${result.profileUrl}` };
 		} catch (e) {
 			this.logger.error(e);
 
@@ -411,7 +411,7 @@ export default class PostController extends Controller implements ControllerInte
 	 */
 	async #postMisskey(entryData: BlogSocial.EntryData): Promise<PostResult> {
 		try {
-			const result = await new PostMisskey().execute(entryData);
+			const result = await postMisskey(entryData);
 
 			this.logger.info('Misskey was posted', result.url, result.content);
 
