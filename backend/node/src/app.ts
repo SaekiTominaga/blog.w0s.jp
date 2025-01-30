@@ -7,14 +7,14 @@ import Log4js from 'log4js';
 import { isMatch } from 'matcher';
 import multer from 'multer';
 import config from './config/express.js';
-import CategoryController from './controller/CategoryController.js';
-import EntryController from './controller/EntryController.js';
+import category from './controller/category.js';
+import entry from './controller/entry.js';
+import list from './controller/list.js';
+import post from './controller/post.js';
+import preview from './controller/preview.js';
+import { env } from './util/env.js';
 import HttpBasicAuth from './util/HttpBasicAuth.js';
 import HttpResponse from './util/HttpResponse.js';
-import ListController from './controller/ListController.js';
-import PostController from './controller/PostController.js';
-import PreviewController from './controller/api/PreviewController.js';
-import { env } from './util/env.js';
 
 dotenv.config({
 	path: process.env['NODE_ENV'] === 'production' ? '../.env.production' : '../.env.development',
@@ -190,7 +190,7 @@ const upload = multer({ dest: env('TEMP') });
  */
 app.get(['/', '/list/:page([1-9][0-9]{0,1})'], async (req, res, next) => {
 	try {
-		await new ListController().execute(req, res);
+		await list(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -201,7 +201,7 @@ app.get(['/', '/list/:page([1-9][0-9]{0,1})'], async (req, res, next) => {
  */
 app.get('/:entry_id([1-9][0-9]{0,2})', async (req, res, next) => {
 	try {
-		await new EntryController().execute(req, res);
+		await entry(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -212,7 +212,7 @@ app.get('/:entry_id([1-9][0-9]{0,2})', async (req, res, next) => {
  */
 app.get('/category/:category_name', async (req, res, next) => {
 	try {
-		await new CategoryController().execute(req, res);
+		await category(req, res);
 	} catch (e) {
 		next(e);
 	}
@@ -225,14 +225,14 @@ app
 	.route('/admin/post')
 	.get(async (req, res, next) => {
 		try {
-			await new PostController().execute(req, res);
+			await post(req, res);
 		} catch (e) {
 			next(e);
 		}
 	})
 	.post(upload.array('media'), async (req, res, next) => {
 		try {
-			await new PostController().execute(req, res);
+			await post(req, res);
 		} catch (e) {
 			next(e);
 		}
@@ -243,7 +243,7 @@ app
  */
 app.post('/api/preview', async (req, res, next) => {
 	try {
-		await new PreviewController().execute(req, res);
+		await preview(req, res);
 	} catch (e) {
 		next(e);
 	}

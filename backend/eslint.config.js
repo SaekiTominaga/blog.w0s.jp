@@ -24,7 +24,6 @@ export default [
 		files: ['node/src/controller/**/*.ts'],
 		rules: {
 			'@typescript-eslint/dot-notation': 'off',
-			'@typescript-eslint/no-non-null-assertion': 'off',
 			'@typescript-eslint/no-unsafe-member-access': 'off',
 		},
 	},
@@ -56,12 +55,6 @@ export default [
 			'lines-between-class-members': 'off',
 			'no-await-in-loop': 'off',
 			'no-continue': 'off',
-		},
-	},
-	{
-		files: ['node/src/process/test/*.ts'],
-		rules: {
-			'no-console': 'off',
 		},
 	},
 	{
