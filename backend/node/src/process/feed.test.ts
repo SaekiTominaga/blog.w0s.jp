@@ -6,6 +6,6 @@ await test('create', async () => {
 	const result = await create();
 
 	assert.equal(result.files.length, 2);
-	assert.equal(result.files.includes('../frontend/public/feed.atom'), true);
-	assert.equal(result.files.includes('../frontend/public/feed.atom.br'), true);
+	assert.equal(result.files.includes('../public/feed.atom'), true);
+	assert.equal(result.files.includes('../public/feed.atom.br'), true);
 });
