@@ -15,7 +15,7 @@ log4js.*.json
 /public/script/
 /public/style/
 
-/backend/node/dist/
-
 /frontend/.rollup.cache/
 /frontend/script/tsconfig.tsbuildinfo
+
+/hono/dist/

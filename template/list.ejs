@@ -5,12 +5,12 @@
 
 		<link rel="alternate" href="/feed" type="application/atom+xml" title="「富永日記帳」の新着フィード" />
 
-		<%_ if (requestQuery.page > 2) { _%>
-		<link rel="prev" href="/list/<%= requestQuery.page - 1 %>" title="新しい記事" />
-		<%_ } else if (requestQuery.page === 2) { _%>
+		<%_ if (requestParam.page > 2) { _%>
+		<link rel="prev" href="/list/<%= requestParam.page - 1 %>" title="新しい記事" />
+		<%_ } else if (requestParam.page === 2) { _%>
 		<link rel="prev" href="/" title="新しい記事" />
-		<%_ } _%> <%_ if (requestQuery.page < totalPage) { _%>
-		<link rel="next" href="/list/<%= requestQuery.page + 1 %>" title="古い記事" />
+		<%_ } _%> <%_ if (requestParam.page < totalPage) { _%>
+		<link rel="next" href="/list/<%= requestParam.page + 1 %>" title="古い記事" />
 		<%_ } _%>
 
 		<link rel="stylesheet" href="/style/blog.css" />
@@ -26,7 +26,7 @@
 		<script src="https://analytics.w0s.jp/matomo/matomo.js" async=""></script>
 		<script src="/script/analytics.js" defer=""></script>
 
-		<title>富永日記帳<%_ if (requestQuery.page !== 1) { _%>: <%= entries.at(-1).created.format('YYYY年M月D日') %>～<%= entries.at(0).created.format('YYYY年M月D日') %>の記事一覧<%_ } _%></title>
+		<title>富永日記帳<%_ if (requestParam.page !== 1) { _%>: <%= entries.at(-1).created.format('YYYY年M月D日') %>～<%= entries.at(0).created.format('YYYY年M月D日') %>の記事一覧<%_ } _%></title>
 	</head>
 	<body>
 		<div class="l-page">
@@ -36,13 +36,13 @@
 				<div class="l-content__header">
 					<nav aria-label="前後記事">
 						<ul class="p-page-nav">
-							<%_ if (requestQuery.page > 2) { _%>
+							<%_ if (requestParam.page > 2) { _%>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
-							<li><a href="/list/<%= requestQuery.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<%_ } else if (requestQuery.page === 2) { _%>
+							<li><a href="/list/<%= requestParam.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
+							<%_ } else if (requestParam.page === 2) { _%>
 							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<%_ } _%><%_ if (requestQuery.page < totalPage) { _%>
-							<li><a href="/list/<%= requestQuery.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
+							<%_ } _%><%_ if (requestParam.page < totalPage) { _%>
+							<li><a href="/list/<%= requestParam.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
 							<%_ } _%>
 						</ul>
 					</nav>
@@ -52,7 +52,7 @@
 						<%_ for (const entry of entries) { _%>
 						<li>
 							<div class="c-entry-link">
-								<a href="/<%= entry.id %>">
+								<a href="/entry/<%= entry.id %>">
 									<span class="c-entry-link__title"><%- entry.title %></span>
 									<span class="c-entry-link__thumb">
 										<%_ if (entry.image_internal !== null) { _%>
@@ -90,13 +90,13 @@
 				<div class="l-content__footer">
 					<nav aria-label="前後記事">
 						<ul class="p-page-nav">
-							<%_ if (requestQuery.page > 2) { _%>
+							<%_ if (requestParam.page > 2) { _%>
 							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
-							<li><a href="/list/<%= requestQuery.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<%_ } else if (requestQuery.page === 2) { _%>
+							<li><a href="/list/<%= requestParam.page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
+							<%_ } else if (requestParam.page === 2) { _%>
 							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<%_ } _%><%_ if (requestQuery.page < totalPage) { _%>
-							<li><a href="/list/<%= requestQuery.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
+							<%_ } _%><%_ if (requestParam.page < totalPage) { _%>
+							<li><a href="/list/<%= requestParam.page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
 							<%_ } _%>
 						</ul>
 					</nav>

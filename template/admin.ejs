@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+		<link rel="stylesheet" href="/style/admin.css" />
+		<link rel="stylesheet" href="/style/layout_full.css" title="通常表示" />
+		<link rel="alternate stylesheet" href="/style/layout_reader.css" title="リーダー表示" />
+		<link rel="stylesheet" href="/style/layout_reader.css" media="print" />
+
+		<link rel="icon" href="/favicon.ico" type="image/svg+xml" />
+		<link rel="alternate icon" href="/favicon.png" type="image/png" />
+
+		<script src="/script/admin.mjs" type="module"></script>
+
+		<title>富永日記帳: 記事投稿</title>
+	</head>
+	<body>
+		<div class="l-page">
+			<%- include('./_include/header', { heading: false } ) -%>
+
+			<main id="content" class="l-content -nosidebar">
+				<div class="l-content__header">
+					<div class="p-title">
+						<h1>記事投稿</h1>
+					</div>
+
+					<ul class="p-links">
+						<li><a href="/admin/">新規記事投稿</a></li>
+					</ul>
+				</div>
+				<div class="l-content__body">
+					<section class="p-section -hdg-a" id="select">
+						<div class="p-section__hdg">
+							<h2>記事選択</h2>
+						</div>
+
+						<form action="/admin/#post" class="c-stack">
+							<div class="c-form-controls">
+								<p>
+									<label class="c-label -input">
+										<span class="c-label__text">記事 ID</span>
+										<input type="number" class="c-input" id="fc-idselect" name="id" value="<%= requestQuery.id ?? latestId %>" min="1" max="<%= latestId %>" required="" style="--inline-size: 4.5em"
+									/></label>
+								</p>
+								<p><button class="c-submit">選択</button></p>
+							</div>
+						</form>
+					</section>
+
+					<section class="p-section -hdg-a" id="post">
+						<div class="p-section__hdg">
+							<h2>記事投稿</h2>
+						</div>
+
+						<form action="/admin/post#post" method="post" class="c-stack js-form-beforeunload-confirm js-submit-overlay" data-overlayed-by="form-submit-overlay">
+							<%_ if (postValidates.length > 0) { _%>
+							<div class="p-form-errors">
+								<p><strong><%= postValidates.length %>個のエラーがあります。</strong></p>
+								<ul class="p-list">
+									<%_ for (const errorMessage of postValidates) { _%>
+									<li><%= errorMessage %></li>
+									<%_ } _%>
+								</ul>
+							</div>
+							<%_ } _%> <%_ if (postResults.length > 0) { _%>
+							<ul class="p-form-results">
+								<%_ for (const result of postResults) { _%><%_ if (result.success) { _%>
+								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %></span></li>
+								<%_ } else { _%>
+								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %></span></li>
+								<%_ } _%> <%_ } _%>
+							</ul>
+							<%_ } _%>
+
+							<p><input type="hidden" name="id" value="<%= requestQuery?.id %>" /></p>
+
+							<div class="p-form-grid">
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend">
+											<label for="fc-title" class="c-label">題名 <strong class="c-label-icon -required">必須</strong></label>
+										</legend>
+										<div class="p-form-grid__contents">
+											<div class="c-form-controls">
+												<input class="c-input -full js-convert-trim" name="title" value="<%= reviseData.title %>" id="fc-title" required="" />
+											</div>
+										</div>
+									</fieldset>
+								</div>
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend"><label for="fc-description" class="c-label">概要</label></legend>
+										<div class="p-form-grid__contents">
+											<div class="c-form-controls">
+												<input class="c-input -full js-convert-trim" name="description" value="<%= reviseData.description %>" id="fc-description" />
+											</div>
+										</div>
+									</fieldset>
+								</div>
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend">
+											<label for="fc-message" class="c-label">本文 <strong class="c-label-icon -required">必須</strong></label>
+										</legend>
+										<div class="p-form-grid__contents">
+											<div class="c-form-controls">
+												<textarea class="c-textarea js-convert-trim" name="message" id="fc-message" required="" style="--block-size: 15em"><%= reviseData.message %></textarea>
+											</div>
+											<div class="p-post-preview">
+												<table class="p-post-preview__messages" lang="en">
+													<tbody>
+														<template id="markdown-messages">
+															<tr>
+																<td class="u-cell -center">
+																	<span class="js-icon-info" hidden="">⚠</span>
+																	<span class="js-icon-warning" hidden="">❌</span>
+																</td>
+																<td><span class="js-line"></span>:<span class="js-column"></span></td>
+																<td><span class="js-reason"></span></td>
+																<td><a class="js-rule"></a></td>
+															</tr>
+														</template>
+													</tbody>
+												</table>
+												<div class="p-post-preview__preview">
+													<article aria-label="本文プレビュー" class="p-entry">
+														<template id="message-preview">
+															<div class="p-entry__body"></div>
+														</template>
+													</article>
+												</div>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend">カテゴリ</legend>
+										<div class="p-form-grid__contents">
+											<%_ for (const [categoryGroupName, categories] of categoryMaster) { _%>
+											<div class="c-form-controls -checkbox">
+												<%_ for (const category of categories) { _%>
+												<label class="c-label -check">
+													<%_ if (reviseData.category_ids !== undefined && reviseData.category_ids.includes(category.id)) { _%>
+													<input type="checkbox" name="category" value="<%= category.id %>" checked="" />
+													<%_ } else { _%>
+													<input type="checkbox" name="category" value="<%= category.id %>" />
+													<%_ } _%>
+													<span class="c-label__text"><%= category.name %></span></label
+												>
+												<%_ } _%>
+											</div>
+											<%_ } _%>
+										</div>
+									</fieldset>
+								</div>
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend" id="label-image">画像</legend>
+										<div class="p-form-grid__contents">
+											<ul class="c-form-controls" role="radiogroup" aria-labelledby="label-image">
+												<template id="select-image" data-selected="<%= reviseData.image ?? reviseData.image_external %>">
+													<li class="p-post-select-image">
+														<label>
+															<input type="radio" name="image" value="" />
+															<img src="" alt="" title="" width="240" height="240" />
+														</label>
+													</li>
+												</template>
+											</ul>
+										</div>
+									</fieldset>
+								</div>
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend"><label for="fc-relation" class="c-label">関連記事</label></legend>
+										<div class="p-form-grid__contents">
+											<div class="c-form-controls">
+												<span>
+													<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= reviseData.relation_ids?.join(',') %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" title="記事 ID のカンマ区切り" style="--inline-size: 15em" />
+													<small>（カンマ区切り）</small>
+												</span>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend">公開</legend>
+										<div class="p-form-grid__contents">
+											<div class="c-form-controls">
+												<label class="c-label -check">
+													<%_ if (reviseData.public) { _%>
+													<input type="checkbox" name="public" value="1" checked="" />
+													<%_ } else { _%>
+													<input type="checkbox" name="public" value="1" />
+													<%_ } _%>
+													<span class="c-label__text">公開状態</span>
+												</label>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+								<%_ if (updateMode) { _%>
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend">更新時の処理</legend>
+										<div class="p-form-grid__contents">
+											<div class="c-form-controls">
+												<label class="c-label -check">
+													<%_ if (requestQuery.timestamp) { _%>
+													<input type="checkbox" name="timestamp" value="1" checked="" />
+													<%_ } else { _%>
+													<input type="checkbox" name="timestamp" value="1" />
+													<%_ } _%>
+													<span class="c-label__text">更新日時を変更</span>
+												</label>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+								<%_ } else { _%>
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend">外部サービス</legend>
+										<div class="p-form-grid__contents">
+											<div class="c-form-controls">
+												<label class="c-label -check">
+													<%_ if (requestQuery.social) { _%>
+													<input type="checkbox" name="social" value="1" checked="" />
+													<%_ } else { _%>
+													<input type="checkbox" name="social" value="1" />
+													<%_ } _%>
+													<span class="c-label__text">ソーシャルサービスへ投稿</span>
+												</label>
+											</div>
+											<div class="c-form-controls">
+												<label class="c-label -input">
+													<span class="c-label__text">ハッシュタグ</span>
+													<input id="fc-social-tag" class="c-input js-convert-trim" name="social_tag" value="<%= requestQuery.social_tag %>" maxlength="100" style="--inline-size: 15em" />
+													<small>（カンマ区切り）</small>
+												</label>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+								<%_ } _%>
+							</div>
+
+							<div class="c-form-controls -submit">
+								<%_ if (updateMode) { _%>
+								<p><button class="c-submit">修正実行</button></p>
+								<%_ } else { _%>
+								<p><button class="c-submit">新規追加</button></p>
+								<%_ } _%>
+							</div>
+						</form>
+					</section>
+
+					<section class="p-section -hdg-a" id="view">
+						<div class="p-section__hdg">
+							<h2>View アップデート反映</h2>
+						</div>
+
+						<form action="/admin/update#view" method="post" class="c-stack js-submit-overlay" data-overlayed-by="form-submit-overlay">
+							<%_ if (updateResults.length > 0) { _%>
+							<ul class="p-form-results">
+								<%_ for (const result of updateResults) { _%><%_ if (result.success) { _%>
+								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %></span></li>
+								<%_ } else { _%>
+								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %></span></li>
+								<%_ } _%> <%_ } _%>
+							</ul>
+							<%_ } _%>
+
+							<div class="c-form-controls">
+								<p><button class="c-submit">反映</button></p>
+							</div>
+						</form>
+					</section>
+
+					<section class="p-section -hdg-a" id="media">
+						<div class="p-section__hdg">
+							<h2>画像、動画登録</h2>
+						</div>
+
+						<form action="/admin/upload#media" method="post" enctype="multipart/form-data" class="c-stack js-submit-overlay" data-overlayed-by="form-submit-overlay">
+							<%_ if (uploadResults.length > 0) { _%>
+							<ul class="p-form-results">
+								<%_ for (const result of uploadResults) { _%><%_ if (result.success) { _%>
+								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %>: <%= result.filename %></span></li>
+								<%_ } else { _%>
+								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %>: <%= result.filename %></span></li>
+								<%_ } _%> <%_ } _%>
+							</ul>
+							<%_ } _%>
+
+							<div class="p-form-grid">
+								<div class="p-form-grid__group">
+									<fieldset>
+										<legend class="p-form-grid__legend"><label for="c-input-media" class="c-label">ファイル</label></legend>
+										<div class="p-form-grid__contents">
+											<div class="c-form-controls">
+												<p><input type="file" class="c-input-file js-input-file-preview" id="c-input-media" name="media" accept="image/*,video/*" required="" multiple="" data-preview="image-preview" /></p>
+												<p>
+													<label class="c-label -check"><input type="checkbox" name="overwrite" value="1" /><span class="c-label__text">上書き許可</span></label>
+												</p>
+											</div>
+											<div class="c-form-controls">
+												<ul class="p-image-preview">
+													<template id="image-preview">
+														<li>
+															<output for="c-input-media"><code>${name}</code> (<data value="${size}">${size} byte</data>) はプレビューできません。</output>
+														</li>
+													</template>
+												</ul>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+							</div>
+
+							<div class="c-form-controls -submit">
+								<p><button class="c-submit">ファイル送信</button></p>
+							</div>
+						</form>
+					</section>
+
+					<section class="p-section -hdg-a">
+						<div class="p-section__hdg">
+							<h2>凡例</h2>
+						</div>
+
+						<table class="p-table">
+							<thead>
+								<tr>
+									<th scope="col">構文</th>
+									<th scope="col">説明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">#<b class="u-red">␣</b></th>
+									<td>見出し（<code>h2</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">##<b class="u-red">␣</b></th>
+									<td>見出し（<code>h3</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">-<b class="u-red">␣</b></th>
+									<td>順不同リスト（<code>ul</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">-<b class="u-red">␣</b>note:<b class="u-red">␣</b></th>
+									<td>注釈</td>
+								</tr>
+								<tr>
+									<th scope="row">-<b class="u-red">␣</b>YYYY-MM-DD:<b class="u-red">␣</b></th>
+									<td>追記</td>
+								</tr>
+								<tr>
+									<th scope="row">1.<b class="u-red">␣</b></th>
+									<td>順序つきリスト（<code>ol</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">定義語<br />:<b class="u-red">␣</b>説明文</th>
+									<td>記述リスト（<code>dl</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">&gt;<b class="u-red">␣</b></th>
+									<td>ブロックレベルの引用（<code>blockquote</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">&gt;~</th>
+									<td>引用の「中略」</td>
+								</tr>
+								<tr>
+									<th scope="row">&gt;-<b class="u-red">␣</b>?</th>
+									<td>出典のURI、言語、タイトル</td>
+								</tr>
+								<tr>
+									<th scope="row">```<br />```</th>
+									<td>コード表示（<code>pre &gt; code</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">|</th>
+									<td>表セル（<code>td</code>, <code>thead th</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">|~</th>
+									<td>表見出しセル（<code>th[scope=row]</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">|<b class="u-red">␣</b>-<b class="u-red">␣</b>|</th>
+									<td>表ヘッダ（<code>thead</code>）と表本体（<code>tbody</code>）の区切り</td>
+								</tr>
+								<tr>
+									<th scope="row">:::normal<br />:::</th>
+									<td>汎用ボックス</td>
+								</tr>
+								<tr>
+									<th scope="row">@ファイル名:<b class="u-red">␣</b>キャプション<b class="u-red">␣</b>&lt;幅x高さ<b class="u-red">?</b>&gt;</th>
+									<td>画像、動画</td>
+								</tr>
+								<tr>
+									<th scope="row">@youtube:<b class="u-red">␣</b>ID<b class="u-red">␣</b>キャプション<b class="u-red">␣</b>&lt;幅x高さ<b class="u-red">?</b><b class="u-red">␣</b>開始秒(-終了秒<b class="u-red">?</b>)s<b class="u-red">?</b>&gt;</th>
+									<td>YouTube 動画</td>
+								</tr>
+								<tr>
+									<th scope="row">- @amazon:<b class="u-red">␣</b>ASIN<b class="u-red">␣</b>商品タイトル<b class="u-red">␣</b>&lt;画像ID<b class="u-red">?</b><b class="u-red">␣</b>幅x高さ<b class="u-red">?</b>&gt;</th>
+									<td>Amazon 商品</td>
+								</tr>
+								<tr>
+									<th scope="row">[^ID]:<b class="u-red">␣</b>脚注</th>
+									<td>脚注</td>
+								</tr>
+							</tbody>
+							<tbody>
+								<tr>
+									<th scope="row">[リンク名](記事 ID)</th>
+									<td>記事リンク（<code>a</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">[リンク名](#section-N)</th>
+									<td>記事内リンク（<code>a</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">[リンク名](URL)</th>
+									<td>外部サイトリンク（<code>a</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">[リンク名](amazon:ASIN)</th>
+									<td>Amazon アフィリエイトリンク（<code>a</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">*強調*</th>
+									<td>強調（<code>em</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">**重要**</th>
+									<td>重要（<code>strong</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">`コード`</th>
+									<td>コード（<code>code</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">{引用文}(URL<b class="u-red">?␣</b>ISBN<b class="u-red">?␣</b>言語<b class="u-red">?</b>)</th>
+									<td>インラインレベルの引用（<code>q</code>）</td>
+								</tr>
+								<tr>
+									<th scope="row">[^ID]</th>
+									<td>脚注</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+
+					<dialog class="p-dialog-overlay" id="form-submit-overlay" aria-labelledby="form-submit-overlay-message" aria-describedby="form-submit-overlay-message">
+						<p id="form-submit-overlay-message">送信中</p>
+					</dialog>
+				</div>
+			</main>
+
+			<%- include('./_include/footer') -%>
+		</div>
+	</body>
+</html>

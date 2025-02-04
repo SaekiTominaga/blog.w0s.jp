@@ -2,7 +2,7 @@
 	"name": "blog.w0s.jp",
 	"private": true,
 	"workspaces": [
-		"backend",
+		"hono",
 		"frontend"
 	],
 	"type": "module",
