@@ -11,7 +11,6 @@ import type { ContentfulStatusCode } from 'hono/utils/http-status.js';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import Log4js from 'log4js';
-import multer from 'multer';
 import { escape } from '@w0s/html-escape';
 import config from './config/hono.js';
 import { categoryApp } from './controller/category.js';
@@ -157,9 +156,6 @@ app.use(
 
 /* TODO: SourceMap */
 /* TODO: CSP */
-
-const upload = multer({ dest: env('TEMP') });
-upload.array('media');
 
 /* Routes */
 app.route('/', topApp);
