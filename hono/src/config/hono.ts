@@ -132,4 +132,11 @@ export default {
 			maximumNumber: 8,
 		},
 	},
+	redirect: [
+		{
+			/* 2025-02-XX */
+			from: '/:entryId{[1-9][0-9]{1,2}}',
+			to: '/entry/$1',
+		},
+	],
 };

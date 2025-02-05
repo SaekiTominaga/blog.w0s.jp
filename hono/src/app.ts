@@ -12,6 +12,7 @@ import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import Log4js from 'log4js';
 import multer from 'multer';
+import { escape } from '@w0s/html-escape';
 import config from './config/hono.js';
 import { categoryApp } from './controller/category.js';
 import { entryApp } from './controller/entry.js';
@@ -55,17 +56,50 @@ app.use(async (context, next) => {
 	await next();
 });
 
+/* Redirect */
+config.redirect.forEach((redirect) => {
+	if (!redirect.to.startsWith('/')) {
+		throw new Error('The path to the redirect must begin with a U+002F slash');
+	}
+
+	app.get(redirect.from, (context) => {
+		const { req } = context;
+
+		let redirectPath = redirect.to;
+		Object.entries(req.param()).forEach(([, paramValue], index) => {
+			if (typeof paramValue !== 'string') {
+				throw new Error('Parameter value is not of type `string`');
+			}
+			redirectPath = redirectPath.replace(`$${String(index + 1)}`, paramValue);
+		});
+
+		logger.debug(`redirect: ${req.url} → ${redirectPath}`);
+
+		return context.html(
+			`<!DOCTYPE html>
+<html lang=ja>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>ページ移動</title>
+<p>このページは <a href="${escape(redirectPath)}"><code>${escape(redirectPath)}</code></a> に移動しました。`,
+			301,
+			{ Location: redirectPath },
+		);
+	});
+});
+
+/* Favicon */
 app.get('/favicon.ico', async (context, next) => {
 	const { res } = context;
 
 	const file = await fs.promises.readFile(`${config.static.root}/favicon.ico`);
 
-	res.headers.set('Content-Type', 'image/svg+xml;charset=utf-8'); // `context.header` だと実際には問題ないが、test で落ちる
+	res.headers.set('Content-Type', 'image/svg+xml;charset=utf-8');
 	context.body(file);
 
 	await next();
 });
 
+/* Static files */
 app.use(
 	serveStatic({
 		root: config.static.root,
@@ -199,8 +233,8 @@ app.onError(async (err, context) => {
 		`<!DOCTYPE html>
 <html lang=ja>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>富永日記帳</title>
-<h1>${title}</h1>`,
+<title>${escape(title)}</title>
+<h1>${escape(title)}</h1>`,
 		status,
 	);
 });
