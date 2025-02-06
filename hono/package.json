@@ -8,7 +8,7 @@
 		"build": "tsc --project tsconfig.json",
 		"lint": "eslint src/**/*.ts @types/*.d.ts __tests__/**/*.js",
 		"pretest": "npm run build",
-		"test": "node --experimental-test-coverage --test dist/util/**/*.test.js __tests__/**/*.test.js",
+		"test": "node --env-file=../.env.test --experimental-test-coverage --test dist/app.test.js dist/util/**/*.test.js __tests__/**/*.test.js",
 		"pretest-process": "npm run build",
 		"test-process": "node --env-file=../.env.development --experimental-test-coverage --test dist/process/**/*.test.js"
 	},
