@@ -12,17 +12,16 @@ import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
 import { rendering, generation, checkLastModified } from '../util/response.js';
 import Sidebar from '../util/Sidebar.js';
+import { param as validatorParam } from '../validator/category.js';
 
 /**
  * カテゴリー
  */
 
-export const categoryApp = new Hono().get('/:categoryName', async (context) => {
+export const categoryApp = new Hono().get('/:categoryName', validatorParam, async (context) => {
 	const { req } = context;
 
-	const requestParam = req.param();
-
-	const { categoryName } = requestParam;
+	const { categoryName } = req.valid('param');
 
 	const dao = new BlogCategoryDao(env('SQLITE_BLOG'));
 
@@ -88,7 +87,7 @@ export const categoryApp = new Hono().get('/:categoryName', async (context) => {
 	/* HTML 生成 */
 	const html = await ejs.renderFile(`${env('VIEWS')}/${configCategory.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
-		requestParam: requestParam,
+		categoryName: categoryName,
 		count: entries.length,
 		entries: entries,
 		entryCountOfCategoryList: entryCountOfCategoryList,

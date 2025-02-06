@@ -18,7 +18,7 @@
 		<script src="https://analytics.w0s.jp/matomo/matomo.js" async=""></script>
 		<script src="/script/analytics.js" defer=""></script>
 
-		<title>富永日記帳: 「<%= requestParam.categoryName %>」の記事一覧</title>
+		<title>富永日記帳: 「<%= categoryName %>」の記事一覧</title>
 	</head>
 	<body>
 		<div class="l-page">
@@ -27,7 +27,7 @@
 			<main id="content" class="l-content">
 				<div class="l-content__header">
 					<div class="p-title">
-						<h1>「<%= requestParam.categoryName %>」の記事一覧（<%= count %>件）</h1>
+						<h1>「<%= categoryName %>」の記事一覧（<%= count %>件）</h1>
 					</div>
 				</div>
 				<div class="l-content__body">

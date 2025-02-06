@@ -11,17 +11,16 @@ import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
 import { rendering, generation, checkLastModified } from '../util/response.js';
 import Sidebar from '../util/Sidebar.js';
+import { param as validatorParam } from '../validator/entry.js';
 
 /**
  * 記事
  */
 
-export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', async (context) => {
+export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam, async (context) => {
 	const { req } = context;
 
-	const requestParam = req.param();
-
-	const entryId = Number(requestParam.entryId);
+	const { entryId } = req.valid('param');
 
 	const dao = new BlogEntryDao(env('SQLITE_BLOG'));
 
@@ -105,7 +104,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', async (context)
 	/* HTML 生成 */
 	const html = await ejs.renderFile(`${env('VIEWS')}/${configEntry.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
-		requestParam: requestParam,
+		entryId: entryId,
 		structuredData: structuredData,
 		jsonLd: Object.fromEntries(jsonLd),
 

@@ -11,12 +11,13 @@ import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
 import { rendering, generation, checkLastModified } from '../util/response.js';
 import Sidebar from '../util/Sidebar.js';
+import { param as validatorParam } from '../validator/list.js';
 
 /**
  * 記事リスト
  */
 
-const commonProcess = async (context: Context, requestParam: object, page = 1): Promise<Response> => {
+const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 	const { req } = context;
 
 	const dao = new BlogListDao(env('SQLITE_BLOG'));
@@ -85,7 +86,7 @@ const commonProcess = async (context: Context, requestParam: object, page = 1): 
 	/* HTML 生成 */
 	const html = await ejs.renderFile(`${env('VIEWS')}/${configList.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
-		requestParam: requestParam,
+		page: page,
 		totalPage: totalPage,
 		entries: entries,
 		entryCountOfCategoryList: entryCountOfCategoryList,
@@ -99,20 +100,12 @@ const commonProcess = async (context: Context, requestParam: object, page = 1): 
 	});
 };
 
-export const topApp = new Hono().get('/', async (context) => {
+export const topApp = new Hono().get('/', async (context) => commonProcess(context));
+
+export const listApp = new Hono().get('/:page{[1-9][0-9]*}', validatorParam, async (context) => {
 	const { req } = context;
 
-	const requestParam = req.param();
+	const { page } = req.valid('param');
 
-	return commonProcess(context, requestParam);
-});
-
-export const listApp = new Hono().get('/:page{[1-9][0-9]*}', async (context) => {
-	const { req } = context;
-
-	const requestParam = req.param();
-
-	const page = Number(requestParam.page);
-
-	return commonProcess(context, requestParam, page);
+	return commonProcess(context, page);
 });
