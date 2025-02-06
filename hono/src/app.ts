@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import * as dotenv from 'dotenv';
+import ejs from 'ejs';
 import { Hono } from 'hono';
 import { basicAuth } from 'hono/basic-auth';
 import { compress } from 'hono/compress';
@@ -184,7 +185,7 @@ app.route('/api/preview', previewApp);
 app.notFound(async (context) => {
 	logger.warn(`404 Not Found: ${context.req.method} ${context.req.url}`);
 
-	const html = await fs.promises.readFile(config.errorpage.path404);
+	const html = await fs.promises.readFile(`${env('VIEWS')}/${config.errorpage.notfound}`);
 	return context.html(html.toString(), 404);
 });
 app.onError(async (err, context) => {
@@ -219,24 +220,45 @@ app.onError(async (err, context) => {
 	let htmlFilePath: string;
 	switch (status) {
 		case 401: {
-			htmlFilePath = config.errorpage.path401;
+			htmlFilePath = config.errorpage.unauthorized;
+			break;
+		}
+		case 404: {
+			htmlFilePath = config.errorpage.notfound;
 			break;
 		}
 		default: {
-			htmlFilePath = config.errorpage.path500;
+			htmlFilePath = config.errorpage.error;
 		}
 	}
 
 	try {
-		const html = await fs.promises.readFile(htmlFilePath);
-		return context.html(html.toString(), status, Object.fromEntries(headers.entries()));
+		let html: string;
+
+		switch (path.extname(htmlFilePath)) {
+			case '.html': {
+				html = (await fs.promises.readFile(`${env('VIEWS')}/${htmlFilePath}`)).toString();
+				break;
+			}
+			case '.ejs': {
+				html = await ejs.renderFile(`${env('VIEWS')}/${htmlFilePath}`, {
+					status: status,
+					message: err.message,
+				});
+				break;
+			}
+			default:
+				throw new Error('エラーページの拡張子が想定外');
+		}
+
+		return context.html(html, status, Object.fromEntries(headers.entries()));
 	} catch (e) {}
 
 	return context.html(
 		`<!DOCTYPE html>
 <html lang=ja>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>${escape(title)}</title>
+<title>富永日記帳</title>
 <h1>${escape(title)}</h1>`,
 		status,
 	);

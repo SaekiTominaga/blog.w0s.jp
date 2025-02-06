@@ -11,14 +11,16 @@
 		<div class="l-page">
 			<header id="header" class="l-header">
 				<hgroup class="p-err-title">
-					<h1>サーバー内部エラー</h1>
-					<p class="p-err-title__code">500 Internal Server Error</p>
+					<%_ if (status >= 400 && status < 500) { _%>
+					<h1>クライアントエラー</h1>
+					<%_ } else { _%>
+					<h1>サーバーエラー</h1>
+					<%_ } _%>
 				</hgroup>
 			</header>
 			<main id="content" class="l-content">
 				<div class="p-err-text">
-					<p>時間をおいてアクセスし直してください。</p>
-					<p>しばらく経っても解消されない場合は <a href="https://fedibird.com/@SaekiTominaga">Mastodon: @SaekiTominaga@fedibird.com</a> までお問い合わせください。</p>
+					<p><%= message %></p>
 				</div>
 			</main>
 		</div>

@@ -110,9 +110,9 @@ export default {
 	},
 	cacheControl: 'max-age=600',
 	errorpage: {
-		path401: '../errorpage/401.html',
-		path404: '../errorpage/404.html',
-		path500: '../errorpage/500.html',
+		unauthorized: '401.html', // 401
+		notfound: '404.html', // 404
+		error: 'error.ejs', // その他の汎用的なエラー
 	},
 	extension: {
 		html: '.html',

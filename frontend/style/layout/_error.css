@@ -1,7 +1,10 @@
 /* ==============================
  *   エラーページ
  * ============================== */
+
 .l-page {
+	--page-margin-inline: calc((100% - 960px) / 2 - var(--page-padding-inline)); /* ページの左右の余白 */
+
 	display: block grid;
 	grid-template-areas:
 		"margin-left padding-left header  padding-right margin-right"

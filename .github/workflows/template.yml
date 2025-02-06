@@ -1,4 +1,4 @@
-name: EJS Files
+name: Template Files
 
 on:
   pull_request:
@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'template/*.ejs'
+      - 'template/*.html'
       - 'template/_include/*.ejs'
       - 'markuplint.config.js'
   workflow_dispatch:
