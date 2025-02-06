@@ -30,9 +30,6 @@ export const form = validator('form', (value): RequestForm => {
 
 		files.push(...media);
 	}
-	/* 	if (medias.some((media1) => !media1.type.startsWith('image/') && !media1.type.startsWith('video/'))) {
-		throw new HTTPException(400, { message: 'The `media` parameter is required' });
-	} */
 
 	if (Array.isArray(overwrite)) {
 		throw new HTTPException(400, { message: 'The `overwrite` parameter can only be singular' });

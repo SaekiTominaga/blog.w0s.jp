@@ -3,7 +3,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import ejs from 'ejs';
 import { Hono, type Context } from 'hono';
-import { HTTPException } from 'hono/http-exception';
 import Log4js from 'log4js';
 import configHono from '../config/hono.js';
 import configAdmin from '../config/admin.js';
