@@ -116,8 +116,17 @@ app.use(
 			return urlPath;
 		},
 		onFound: (localPath, context) => {
+			const { res } = context;
+
 			const urlPath = path.normalize(localPath).substring(path.normalize(config.static.root).length).replaceAll(path.sep, '/'); // URL のパス部分 e.g. ('/foo.html')
 			const urlExtension = path.extname(urlPath); // URL の拡張子部分 (e.g. '.html')
+
+			/* Content-Type; hono 公式に登録されていない MIME タイプを設定 */
+			const addedContentType = Object.entries(config.static.headers.contentType).find(([ext]) => ext === urlExtension);
+			if (addedContentType !== undefined) {
+				const [, contentType] = addedContentType;
+				res.headers.set('Content-Type', contentType);
+			}
 
 			/* Cache-Control */
 			const cacheControl =
@@ -126,7 +135,16 @@ app.use(
 						config.static.headers.cacheControl.extension.find((ccExt) => ccExt.extensions.includes(urlExtension))?.value ??
 						config.static.headers.cacheControl.default)
 					: 'no-cache';
-			context.header('Cache-Control', cacheControl);
+			res.headers.set('Cache-Control', cacheControl);
+
+			/* SourceMap */
+			if (config.static.headers.sourceMap.includes(urlExtension)) {
+				const mapPath = `${urlPath}${config.extension.map}`;
+
+				res.headers.set('SourceMap', path.basename(mapPath));
+			}
+
+			/* TODO: HTML ファイルの CSP */
 		},
 	}),
 );
@@ -153,9 +171,6 @@ app.use(
 		invalidUserMessage: config.basicAuth.unauthorizedMessage,
 	}),
 );
-
-/* TODO: SourceMap */
-/* TODO: CSP */
 
 /* Routes */
 app.route('/', topApp);
@@ -209,10 +224,6 @@ app.onError(async (err, context) => {
 		}
 		case 403: {
 			htmlFilePath = config.errorpage.path403;
-			break;
-		}
-		case 404: {
-			htmlFilePath = config.errorpage.path404;
 			break;
 		}
 		default: {

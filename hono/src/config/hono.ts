@@ -1,10 +1,4 @@
 export default {
-	extension: {
-		html: '.html',
-		json: '.json',
-		brotli: '.br',
-		map: '.map',
-	},
 	response: {
 		header: {
 			hsts: 'max-age=31536000',
@@ -70,29 +64,25 @@ export default {
 			threshold: 512,
 		},
 	},
+	redirect: [
+		{
+			/* 2025-02-XX */
+			from: '/:entryId{[1-9][0-9]{0,2}}',
+			to: '/entry/$1',
+		},
+	],
 	static: {
 		root: '../public',
 		index: 'index.html',
 		extensions: ['.html', '.atom'], // URL 上で省略できる拡張子
 		headers: {
-			mimeType: {
-				extension: {
-					'.atom': 'application/atom+xml;charset=utf-8',
-					'.json': 'application/json',
-					'.map': 'application/octet-stream',
-					'.xml': 'application/xml;charset=utf-8',
-					'.jpg': 'image/jpeg',
-					'.jpeg': 'image/jpeg',
-					'.png': 'image/png',
-					'.svg': 'image/svg+xml;charset=utf-8',
-					'.webp': 'image/webp',
-					'.css': 'text/css;charset=utf-8',
-					'.html': 'text/html;charset=utf-8',
-					'.js': 'text/javascript;charset=utf-8',
-					'.mjs': 'text/javascript;charset=utf-8',
-					'.txt': 'text/plain;charset=utf-8',
-				},
-			}, // TODO: 未使用
+			contentType: {
+				/* https://github.com/honojs/hono/blob/main/src/utils/mime.ts */
+				'.atom': 'application/atom+xml; charset=utf-8',
+				'.css': 'text/css; charset=utf-8',
+				'.js': 'text/javascript; charset=utf-8',
+				'.mjs': 'text/javascript; charset=utf-8',
+			},
 			cacheControl: {
 				default: 'max-age=600',
 				path: [
@@ -112,9 +102,7 @@ export default {
 					},
 				],
 			},
-			sourceMap: {
-				extensions: ['.js', '.mjs'],
-			},
+			sourceMap: ['.js', '.mjs'],
 		},
 	},
 	basicAuth: {
@@ -127,16 +115,15 @@ export default {
 		path404: '../errorpage/404.html',
 		path500: '../errorpage/500.html',
 	},
+	extension: {
+		html: '.html',
+		json: '.json',
+		brotli: '.br',
+		map: '.map',
+	},
 	sidebar: {
 		newly: {
 			maximumNumber: 8,
 		},
 	},
-	redirect: [
-		{
-			/* 2025-02-XX */
-			from: '/:entryId{[1-9][0-9]{1,2}}',
-			to: '/entry/$1',
-		},
-	],
 };
