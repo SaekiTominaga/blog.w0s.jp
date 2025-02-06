@@ -222,10 +222,6 @@ app.onError(async (err, context) => {
 			htmlFilePath = config.errorpage.path401;
 			break;
 		}
-		case 403: {
-			htmlFilePath = config.errorpage.path403;
-			break;
-		}
 		default: {
 			htmlFilePath = config.errorpage.path500;
 		}

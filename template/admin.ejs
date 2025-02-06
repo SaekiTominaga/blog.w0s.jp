@@ -35,7 +35,18 @@
 							<h2>記事選択</h2>
 						</div>
 
-						<form action="/admin/#post" class="c-stack">
+						<%_ if (selectValidates.length > 0) { _%>
+						<div class="p-form-errors">
+							<p><strong><%= selectValidates.length %>個のエラーがあります。</strong></p>
+							<ul class="p-list">
+								<%_ for (const errorMessage of selectValidates) { _%>
+								<li><%= errorMessage %></li>
+								<%_ } _%>
+							</ul>
+						</div>
+						<%_ } _%>
+
+						<form action="/admin/#select" class="c-stack">
 							<div class="c-form-controls">
 								<p>
 									<label class="c-label -input">

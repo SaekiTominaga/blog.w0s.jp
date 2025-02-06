@@ -54,6 +54,7 @@ const updateModified = async (dao: BlogPostDao): Promise<Process.Result> => {
  * @param requestQuery - URL クエリー情報
  * @param reviseData - 修正記事データ
  * @param validate - バリデートエラーメッセージ
+ * @param validate.select - 記事選択
  * @param validate.post - 記事投稿
  * @param validate.update - View アップデート反映
  * @param validate.upload - メディアアップロード
@@ -69,6 +70,7 @@ const rendering = async (
 	requestQuery?: Readonly<RequestQuery>,
 	reviseData?: Readonly<ReviseData>,
 	validate?: {
+		select?: string[];
 		post?: string[];
 		update?: string[];
 		upload?: string[];
@@ -108,6 +110,7 @@ const rendering = async (
 		requestQuery: requestQuery ?? {},
 		reviseData: reviseData ?? {},
 		updateMode: requestQuery?.id !== undefined,
+		selectValidates: validate?.select ?? [],
 		postValidates: validate?.post ?? [],
 		postResults: results?.post ?? [],
 		updateResults: results?.update ?? [],
@@ -136,7 +139,10 @@ export const adminApp = new Hono()
 			/* 修正データ選択 */
 			reviseData = await dao.getReviseData(requestQuery.id);
 			if (reviseData === undefined) {
-				throw new HTTPException(403, { message: `修正データが取得できない: ${String(requestQuery.id)}` });
+				/* 存在しない記事 ID を指定した場合 */
+				return await rendering(context, requestQuery, reviseData, {
+					select: [configAdmin.validator.entryNotFound],
+				});
 			}
 		}
 

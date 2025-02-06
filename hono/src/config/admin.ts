@@ -1,6 +1,7 @@
 export default {
 	template: 'admin.ejs',
 	validator: {
+		entryNotFound: '記事が存在しません。',
 		titleUnique: '他の記事で使用されているタイトルです。',
 	},
 	processMessage: {
