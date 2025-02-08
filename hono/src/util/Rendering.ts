@@ -23,7 +23,7 @@ export default class Rendering {
 	 * @param htmlFilePath - HTML ファイルパス
 	 */
 	constructor(context: Context, lastModified: Date, htmlFilePath: string) {
-		this.#logger = Log4js.getLogger('response');
+		this.#logger = Log4js.getLogger('rendering');
 
 		this.#context = context;
 

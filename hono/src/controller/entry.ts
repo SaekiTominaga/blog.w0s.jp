@@ -23,11 +23,9 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 
 	const dao = new BlogEntryDao(env('SQLITE_BLOG'));
 
-	const lastModified = await dao.getLastModified();
-
 	const htmlFilePath = `${env('HTML')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
 
-	const rendering = new Rendering(context, lastModified, htmlFilePath);
+	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
 	if (response !== null) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */

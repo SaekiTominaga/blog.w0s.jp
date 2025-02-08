@@ -21,11 +21,9 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 
 	const dao = new BlogListDao(env('SQLITE_BLOG'));
 
-	const lastModified = await dao.getLastModified();
-
 	const htmlFilePath = `${env('HTML')}/${configList.html.directory}/${String(page)}${configHono.extension.html}`;
 
-	const rendering = new Rendering(context, lastModified, htmlFilePath);
+	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
 	if (response !== null) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */

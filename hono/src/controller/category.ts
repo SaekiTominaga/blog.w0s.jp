@@ -24,11 +24,9 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 
 	const dao = new BlogCategoryDao(env('SQLITE_BLOG'));
 
-	const lastModified = await dao.getLastModified();
-
 	const htmlFilePath = `${env('HTML')}/${configCategory.html.directory}/${filenamify(categoryName)}${configHono.extension.html}`;
 
-	const rendering = new Rendering(context, lastModified, htmlFilePath);
+	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
 	if (response !== null) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
