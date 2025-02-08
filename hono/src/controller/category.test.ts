@@ -54,7 +54,7 @@ await test('exit category', async (t) => {
 
 	await t.test('304', async () => {
 		const res = await app.request(`/category/${categoryName}`, {
-			headers: { 'If-Modified-Since':new Date().toUTCString() },
+			headers: { 'If-Modified-Since': new Date().toUTCString() },
 		});
 
 		assert.equal(res.status, 304);

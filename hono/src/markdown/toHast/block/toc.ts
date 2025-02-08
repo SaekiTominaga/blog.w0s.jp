@@ -31,7 +31,6 @@ export const xTocToHast = (state: H, node: XToc): HastElementContent | HastEleme
 		},
 		children: [
 			{
-
 				type: 'element',
 				tagName: 'ol',
 				children: children.map((childNode): HastElementContent => {
