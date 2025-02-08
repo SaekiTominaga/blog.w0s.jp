@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import { Hono } from 'hono';
@@ -9,7 +8,7 @@ import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Markdown from '../markdown/Markdown.js';
 import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
-import { rendering, generation, checkLastModified } from '../util/response.js';
+import Rendering from '../util/Rendering.js';
 import Sidebar from '../util/Sidebar.js';
 import { param as validatorParam } from '../validator/entry.js';
 
@@ -26,18 +25,13 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 
 	const lastModified = await dao.getLastModified();
 
-	/* 最終更新日時をセット */
-	const response304 = checkLastModified(context, lastModified);
-	if (response304 !== null) {
-		return response304;
-	}
-
 	const htmlFilePath = `${env('HTML')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
-	const htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
 
-	if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
-		/* 生成された HTML をロードする */
-		return await rendering(context, { htmlPath: htmlFilePath, brotliPath: htmlBrotliFilePath });
+	const rendering = new Rendering(context, lastModified, htmlFilePath);
+	const response = await rendering.serverCache();
+	if (response !== null) {
+		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
+		return response;
 	}
 
 	/* DB からデータ取得 */
@@ -119,8 +113,5 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 	});
 
 	/* レンダリング、ファイル出力 */
-	return await generation(context, html, {
-		htmlPath: htmlFilePath,
-		brotliPath: htmlBrotliFilePath,
-	});
+	return await rendering.generation(html);
 });

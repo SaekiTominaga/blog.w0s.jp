@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import { Hono, type Context } from 'hono';
@@ -9,7 +8,7 @@ import configList from '../config/list.js';
 import BlogListDao from '../dao/BlogListDao.js';
 import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
-import { rendering, generation, checkLastModified } from '../util/response.js';
+import Rendering from '../util/Rendering.js';
 import Sidebar from '../util/Sidebar.js';
 import { param as validatorParam } from '../validator/list.js';
 
@@ -24,18 +23,13 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 
 	const lastModified = await dao.getLastModified();
 
-	/* 最終更新日時をセット */
-	const response304 = checkLastModified(context, lastModified);
-	if (response304 !== null) {
-		return response304;
-	}
-
 	const htmlFilePath = `${env('HTML')}/${configList.html.directory}/${String(page)}${configHono.extension.html}`;
-	const htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
 
-	if (fs.existsSync(htmlFilePath) && lastModified <= (await fs.promises.stat(htmlFilePath)).mtime) {
-		/* 生成された HTML をロードする */
-		return await rendering(context, { htmlPath: htmlFilePath, brotliPath: htmlBrotliFilePath });
+	const rendering = new Rendering(context, lastModified, htmlFilePath);
+	const response = await rendering.serverCache();
+	if (response !== null) {
+		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
+		return response;
 	}
 
 	/* DB からデータ取得 */
@@ -94,10 +88,7 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 	});
 
 	/* レンダリング、ファイル出力 */
-	return await generation(context, html, {
-		htmlPath: htmlFilePath,
-		brotliPath: htmlBrotliFilePath,
-	});
+	return await rendering.generation(html);
 };
 
 export const topApp = new Hono().get('/', async (context) => commonProcess(context));
