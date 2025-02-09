@@ -33,7 +33,9 @@ await test('public entry', async (t) => {
 	const htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
 
 	before(async () => {
-		await Promise.all([fs.promises.unlink(htmlFilePath), fs.promises.unlink(htmlBrotliFilePath)]);
+		if (fs.existsSync(htmlFilePath)) {
+			await Promise.all([fs.promises.unlink(htmlFilePath), fs.promises.unlink(htmlBrotliFilePath)]);
+		}
 	});
 
 	await t.test('generation', async () => {
