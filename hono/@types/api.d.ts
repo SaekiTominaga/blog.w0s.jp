@@ -11,8 +11,8 @@ declare namespace BlogApi {
 declare namespace MediaApi {
 	/* アップロード */
 	interface Upload {
-		name: string | null;
-		size: number | null;
+		name: string;
+		size: number;
 		code: number;
 		message: string;
 	}
