@@ -1,3 +1,4 @@
+import type { Heading } from 'mdast';
 import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
 import type { Icon as LinkIcon } from '../lib/Link.js';
 
@@ -10,7 +11,7 @@ export default class MdastUtil {
 	 *
 	 * @returns Heading element
 	 */
-	static hn(depth: Remark.HeadingDepth, children: HastElementContent[]): HastElementContent {
+	static hn(depth: Heading['depth'], children: HastElementContent[]): HastElementContent {
 		const START_LEVEL = 2;
 
 		const level = depth + (START_LEVEL - 1);

@@ -1,5 +1,5 @@
 import IsbnVerify from '@w0s/isbn-verify';
-import { regexp } from '../config.js';
+import configRemark from '../../config/remark.js';
 
 interface MetaIsbn {
 	value: string;
@@ -23,21 +23,21 @@ export default class Quote {
 	 */
 	static classifyMeta(meta: string): Meta {
 		/* 言語 */
-		if (new RegExp(`^${regexp.lang}$`).test(meta)) {
+		if (new RegExp(`^${configRemark.regexp.lang}$`).test(meta)) {
 			return {
 				lang: meta,
 			};
 		}
 
 		/* 絶対 URL */
-		if (new RegExp(`^${regexp.absoluteUrl}$`).test(meta)) {
+		if (new RegExp(`^${configRemark.regexp.absoluteUrl}$`).test(meta)) {
 			return {
 				url: meta,
 			};
 		}
 
 		/* ISBN */
-		if (new RegExp(`^${regexp.isbn}$`).test(meta)) {
+		if (new RegExp(`^${configRemark.regexp.isbn}$`).test(meta)) {
 			return {
 				isbn: {
 					value: meta,
@@ -47,7 +47,7 @@ export default class Quote {
 		}
 
 		/* Amazon 商品ページへのリンク */
-		if (new RegExp(`^amazon:${regexp.asin}$`).test(meta)) {
+		if (new RegExp(`^amazon:${configRemark.regexp.asin}$`).test(meta)) {
 			return {
 				amazon: meta,
 			};

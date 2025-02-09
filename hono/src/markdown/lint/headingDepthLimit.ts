@@ -5,7 +5,7 @@ import { visit, CONTINUE } from 'unist-util-visit';
 import { generated } from 'unist-util-generated';
 import type { VFile } from 'vfile';
 
-const headingDepthLimit = lintRule('remark-lint:heading-depth-limit', (tree: Parent, file: VFile, option: Remark.HeadingDepth) => {
+const headingDepthLimit = lintRule('remark-lint:heading-depth-limit', (tree: Parent, file: VFile, option: Heading['depth']) => {
 	visit(tree, 'heading', (node: Heading): boolean => {
 		if (generated(node)) {
 			return CONTINUE;

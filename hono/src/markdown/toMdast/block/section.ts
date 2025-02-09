@@ -1,3 +1,4 @@
+import type { Heading } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { findAfter } from 'unist-util-find-after';
@@ -17,7 +18,7 @@ interface XSection extends Parent {
 }
 
 interface Options {
-	maxDepth?: Remark.HeadingDepth;
+	maxDepth?: Heading['depth'];
 }
 
 const toMdast = (options?: Options): Plugin => {

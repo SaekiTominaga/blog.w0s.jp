@@ -1,7 +1,18 @@
-export const config = {
+import type { Heading } from 'mdast';
+
+export default {
 	lang: 'ja',
-	headingDepthLimit: 2,
-	amazonTrackingId: 'w0s.jp-22',
+	regexp: {
+		lang: '[a-z]{2}',
+		absoluteUrl: "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+",
+		isbn: '(978|979)-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]|[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]',
+		entryId: '[1-9][0-9]*',
+		footnoteId: '[a-zA-Z0-9-_]+',
+		asin: '[0-9A-Z]{10}',
+		amazonImageId: '[a-zA-Z0-9-_+%]+',
+		youtubeId: '[a-zA-Z0-9-_]+',
+	},
+	headingDepthLimit: 2 as Heading['depth'],
 	linkHostIcon: [
 		{
 			host: 'bsky.app',
@@ -64,6 +75,7 @@ export const config = {
 			fileName: 'caniuse.png',
 		},
 	],
+	amazonTrackingId: 'w0s.jp-22',
 	codeLanguages: [
 		'css', // ✅
 		'diff', // ✅
@@ -75,15 +87,4 @@ export const config = {
 		'xml', // ✅
 		'html', // ✅
 	], // `common` にないものは Markdown.ts における `rehype-highlight` の読み込み時に登録作業が必要 https://github.com/wooorm/lowlight#data
-};
-
-export const regexp = {
-	lang: '[a-z]{2}',
-	absoluteUrl: "https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+",
-	isbn: '(978|979)-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]|[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]',
-	entryId: '[1-9][0-9]*',
-	footnoteId: '[a-zA-Z0-9-_]+',
-	asin: '[0-9A-Z]{10}',
-	amazonImageId: '[a-zA-Z0-9-_+%]+',
-	youtubeId: '[a-zA-Z0-9-_]+',
 };

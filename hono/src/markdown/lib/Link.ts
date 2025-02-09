@@ -1,4 +1,4 @@
-import { config, regexp } from '../config.js';
+import configRemark from '../../config/remark.js';
 
 export interface Icon {
 	fileName: string; // アイコンのファイル名
@@ -32,7 +32,7 @@ export default class Link {
 	 */
 	static getInfo(mdContent: string, mdUrl: string): Info {
 		/* 絶対 URL */
-		const absoluteUrlMatchGroups = new RegExp(`^(?<absoluteUrl>${regexp.absoluteUrl})$`).exec(mdUrl)?.groups;
+		const absoluteUrlMatchGroups = new RegExp(`^(?<absoluteUrl>${configRemark.regexp.absoluteUrl})$`).exec(mdUrl)?.groups;
 		if (absoluteUrlMatchGroups !== undefined) {
 			const { absoluteUrl } = absoluteUrlMatchGroups;
 
@@ -52,7 +52,7 @@ export default class Link {
 		}
 
 		/* 別記事へのリンク */
-		const entryMatchGroups = new RegExp(`^(?<id>${regexp.entryId}(#.+)?)$`).exec(mdUrl)?.groups;
+		const entryMatchGroups = new RegExp(`^(?<id>${configRemark.regexp.entryId}(#.+)?)$`).exec(mdUrl)?.groups;
 		if (entryMatchGroups !== undefined) {
 			const { id } = entryMatchGroups;
 
@@ -64,13 +64,13 @@ export default class Link {
 		}
 
 		/* Amazon 商品ページへのリンク */
-		const amazonMatchGroups = new RegExp(`^amazon:(?<asin>${regexp.asin})$`).exec(mdUrl)?.groups;
+		const amazonMatchGroups = new RegExp(`^amazon:(?<asin>${configRemark.regexp.asin})$`).exec(mdUrl)?.groups;
 		if (amazonMatchGroups !== undefined) {
 			const { asin } = amazonMatchGroups;
 
 			if (asin !== undefined) {
 				return {
-					href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+					href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${configRemark.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
 					hostIcon: { fileName: 'amazon.png', altText: 'Amazon' },
 				};
 			}
@@ -125,11 +125,11 @@ export default class Link {
 		let hostText: string | undefined;
 
 		/* 絶対 URL 表記でない場合はドメイン情報を記載 */
-		if (!new RegExp(`^${regexp.absoluteUrl}$`).test(content)) {
+		if (!new RegExp(`^${configRemark.regexp.absoluteUrl}$`).test(content)) {
 			const host = url.hostname;
 
 			/* サイトアイコン */
-			const hostIconConfig = config.linkHostIcon.find((icon) => icon.host === host);
+			const hostIconConfig = configRemark.linkHostIcon.find((icon) => icon.host === host);
 			if (hostIconConfig !== undefined) {
 				hostIcon = {
 					fileName: hostIconConfig.fileName,

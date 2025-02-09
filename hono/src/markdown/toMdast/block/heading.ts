@@ -13,13 +13,13 @@ export const name = 'x-heading';
 
 export interface XHeading extends Parent {
 	type: typeof name;
-	depth: Remark.HeadingDepth;
+	depth: Heading['depth'];
 	id?: string;
 	children: PhrasingContent[];
 }
 
 interface Options {
-	maxDepth?: Remark.HeadingDepth;
+	maxDepth?: Heading['depth'];
 }
 
 const toMdast = (options?: Options): Plugin => {

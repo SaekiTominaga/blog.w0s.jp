@@ -3,7 +3,7 @@ import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { visit, CONTINUE } from 'unist-util-visit';
-import { regexp } from '../../config.js';
+import configRemark from '../../../config/remark.js';
 
 /**
  * Embedded content
@@ -194,7 +194,7 @@ const toMdast = (): Plugin => {
 				const id = metaRequireString.substring(0, requireSeparator1Index);
 				const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
 
-				if (!new RegExp(`^${regexp.youtubeId}$`).test(id)) {
+				if (!new RegExp(`^${configRemark.regexp.youtubeId}$`).test(id)) {
 					return CONTINUE;
 				}
 
@@ -262,7 +262,7 @@ const toMdast = (): Plugin => {
 					const asin = metaRequireString.substring(0, requireSeparator1Index);
 					const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
 
-					if (!new RegExp(`^${regexp.asin}$`).test(asin)) {
+					if (!new RegExp(`^${configRemark.regexp.asin}$`).test(asin)) {
 						return false;
 					}
 
@@ -276,7 +276,7 @@ const toMdast = (): Plugin => {
 								width: Number(sizes.at(0)),
 								height: Number(sizes.at(1)),
 							};
-						} else if (new RegExp(`^${regexp.amazonImageId}$`).test(meta)) {
+						} else if (new RegExp(`^${configRemark.regexp.amazonImageId}$`).test(meta)) {
 							/* 画像ID */
 							imageId = meta;
 						}

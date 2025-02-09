@@ -4,7 +4,7 @@ import type { H } from 'mdast-util-to-hast';
 import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.js';
 import HastUtil from '../../lib/HastUtil.js';
 import LinkUtil from '../../lib/Link.js';
-import { config } from '../../config.js';
+import configRemark from '../../../config/remark.js';
 
 /**
  * <blockquote>
@@ -33,8 +33,8 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 					const omitAttribute: Properties = {
 						className: ['p-quote__omit'],
 					};
-					if (lang !== undefined && lang !== config.lang) {
-						omitAttribute['lang'] = config.lang;
+					if (lang !== undefined && lang !== configRemark.lang) {
+						omitAttribute['lang'] = configRemark.lang;
 					}
 
 					childElements.push({
@@ -72,7 +72,7 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 	const blockquoteAttribute: Properties = {
 		className: ['p-quote'],
 	};
-	if (lang !== undefined && lang !== config.lang) {
+	if (lang !== undefined && lang !== configRemark.lang) {
 		blockquoteAttribute['lang'] = lang;
 	}
 	if (citeurl !== undefined) {
