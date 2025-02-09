@@ -6,7 +6,6 @@ import ejs from 'ejs';
 import { Hono } from 'hono';
 import { basicAuth } from 'hono/basic-auth';
 import { compress } from 'hono/compress';
-import { cors } from 'hono/cors';
 import { HTTPException } from 'hono/http-exception';
 import type { ContentfulStatusCode } from 'hono/utils/http-status.js';
 import { serve } from '@hono/node-server';
@@ -117,7 +116,7 @@ app.use(
 			return urlPath;
 		},
 		onFound: (localPath, context) => {
-			const { res } = context;
+			const { req, res } = context;
 
 			const urlPath = path.normalize(localPath).substring(path.normalize(config.static.root).length).replaceAll(path.sep, '/'); // URL のパス部分 e.g. ('/foo.html')
 			const urlExtension = path.extname(urlPath); // URL の拡張子部分 (e.g. '.html')
@@ -145,17 +144,20 @@ app.use(
 				res.headers.set('SourceMap', path.basename(mapPath));
 			}
 
+			/* CORS */
+			if (urlPath.startsWith('/json/')) {
+				const requestOrigin = req.header('Origin');
+				if (requestOrigin !== undefined) {
+					const allowOrigins = env('JSON_CORS_ORIGINS', 'string[]');
+					if (allowOrigins.includes(requestOrigin)) {
+						res.headers.set('Access-Control-Allow-Origin', requestOrigin);
+					}
+				}
+				res.headers.append('Vary', 'Origin');
+			}
+
 			/* TODO: HTML ファイルの CSP */
 		},
-	}),
-);
-
-/* CORS */
-app.use(
-	'/json/*',
-	cors({
-		origin: env('JSON_CORS_ORIGINS', 'string[]'),
-		allowMethods: ['GET'],
 	}),
 );
 
