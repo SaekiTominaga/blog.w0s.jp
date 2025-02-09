@@ -1,8 +1,8 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import MarkdownTitle from '../dist/markdown/Title.js';
+import MarkdownTitle from '../Title.js';
 
-test('code', async (t) => {
+await test('code', async (t) => {
 	await t.test('single', () => {
 		assert.equal(new MarkdownTitle('text1`code1`text2').mark(), 'text1<code>code1</code>text2');
 	});

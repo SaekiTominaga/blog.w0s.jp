@@ -1,9 +1,9 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import Markdown from '../dist/markdown/Markdown.js';
-import format from './format.js';
+import Markdown from '../Markdown.js';
+import format from './util/format.js';
 
-test('heaging', async (t) => {
+await test('heaging', async (t) => {
 	await t.test('h1', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -120,7 +120,7 @@ text
 	});
 });
 
-test('paragraph', async (t) => {
+await test('paragraph', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(await format(await markdown.toHtml('text')), '<p>text</p>'.trim());
@@ -132,7 +132,7 @@ test('paragraph', async (t) => {
 	});
 });
 
-test('unordered list', async (t) => {
+await test('unordered list', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -180,7 +180,7 @@ test('unordered list', async (t) => {
 	});
 });
 
-test('ordered list', async (t) => {
+await test('ordered list', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -222,7 +222,7 @@ test('ordered list', async (t) => {
 	});
 });
 
-test('link list', async (t) => {
+await test('link list', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -266,7 +266,7 @@ test('link list', async (t) => {
 	});
 });
 
-test('note', async (t) => {
+await test('note', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -310,7 +310,7 @@ test('note', async (t) => {
 	});
 });
 
-test('ins', async (t) => {
+await test('ins', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -332,7 +332,7 @@ test('ins', async (t) => {
 	});
 });
 
-test('definition list', async (t) => {
+await test('definition list', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -361,7 +361,7 @@ dt*2*
 	});
 });
 
-test('blockquote', async (t) => {
+await test('blockquote', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -593,7 +593,7 @@ test('blockquote', async (t) => {
 	});
 });
 
-test('code', async (t) => {
+await test('code', async (t) => {
 	await t.test('single line', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -665,7 +665,7 @@ code*2*</code></pre>
 	});
 });
 
-test('table', async (t) => {
+await test('table', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -834,7 +834,7 @@ test('table', async (t) => {
 	});
 });
 
-test('box', async (t) => {
+await test('box', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -965,7 +965,7 @@ text1
 	});
 });
 
-test('Image', async (t) => {
+await test('Image', async (t) => {
 	await t.test('JPEG', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -1214,7 +1214,7 @@ test('Image', async (t) => {
 	});
 });
 
-test('YouTube', async (t) => {
+await test('YouTube', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -1347,7 +1347,7 @@ test('YouTube', async (t) => {
 	});
 });
 
-test('Amazon', async (t) => {
+await test('Amazon', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(

@@ -9,12 +9,6 @@ export default [
 		ignores: ['dist/**/*.js'],
 	},
 	{
-		files: ['__tests__/**/*.js'],
-		rules: {
-			'import/no-unresolved': 'off', // Github Actions 環境では /dist/ ファイルが存在しないためテスト不可
-		},
-	},
-	{
 		files: ['src/dao/**/*.ts'],
 		rules: {
 			'@typescript-eslint/no-non-null-assertion': 'off',

@@ -1,6 +1,7 @@
 import { format } from 'prettier';
+import type { VFile } from 'unified-lint-rule/lib/index.js';
 
-export default async (vFile) => {
+export default async (vFile: VFile): Promise<string> => {
 	const value = vFile.value.toString();
 
 	const formatted = await format(value, {

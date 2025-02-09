@@ -6,9 +6,9 @@
 		"dev": "tsx --watch --tsconfig tsconfig.json src/app.ts",
 		"prebuild": "rimraf dist/* -g",
 		"build": "tsc --project tsconfig.json",
-		"lint": "eslint src/**/*.ts @types/*.d.ts __tests__/**/*.js",
+		"lint": "eslint src/**/*.ts @types/*.d.ts",
 		"pretest": "npm run build",
-		"test": "node --env-file=../.env.test --experimental-test-coverage --test dist/app.test.js dist/{controller,util}/**/*.test.js __tests__/**/*.test.js",
+		"test": "node --env-file=../.env.test --experimental-test-coverage --test dist/app.test.js dist/{controller,markdown,util}/**/*.test.js",
 		"pretest-process": "npm run build",
 		"test-process": "node --env-file=../.env.development --experimental-test-coverage --test dist/process/**/*.test.js"
 	},

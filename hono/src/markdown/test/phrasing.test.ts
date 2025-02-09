@@ -1,9 +1,9 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import Markdown from '../dist/markdown/Markdown.js';
-import format from './format.js';
+import Markdown from '../Markdown.js';
+import format from './util/format.js';
 
-test('Text', async (t) => {
+await test('Text', async (t) => {
 	await t.test('HTML tag', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -18,7 +18,7 @@ test('Text', async (t) => {
 	});
 });
 
-test('link', async (t) => {
+await test('link', async (t) => {
 	await t.test('URL &', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -79,7 +79,7 @@ test('link', async (t) => {
 	});
 });
 
-test('quote', async (t) => {
+await test('quote', async (t) => {
 	await t.test('single', async () => {
 		const markdown = new Markdown();
 		assert.equal(await format(await markdown.toHtml('text1{quote1}text2')), '<p>text1<q>quote1</q>text2</p>'.trim());
@@ -150,7 +150,7 @@ test('quote', async (t) => {
 	});
 });
 
-test('footnote', async (t) => {
+await test('footnote', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(
