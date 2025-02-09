@@ -52,13 +52,13 @@ export default class Link {
 		}
 
 		/* 別記事へのリンク */
-		const entryMatchGroups = new RegExp(`^(?<id>${configRemark.regexp.entryId}(#.+)?)$`).exec(mdUrl)?.groups;
+		const entryMatchGroups = new RegExp(`^(?<entryId>${configRemark.regexp.entryId}(#.+)?)$`).exec(mdUrl)?.groups;
 		if (entryMatchGroups !== undefined) {
-			const { id } = entryMatchGroups;
+			const { entryId } = entryMatchGroups;
 
-			if (id !== undefined) {
+			if (entryId !== undefined) {
 				return {
-					href: `/${mdUrl}`,
+					href: `/entry/${mdUrl}`,
 				};
 			}
 		}

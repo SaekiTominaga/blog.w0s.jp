@@ -8,6 +8,6 @@ assignees: SaekiTominaga
 
 ## 記事タイトルまたは URL
 
-https://blog.w0s.jp/XXX
+https://blog.w0s.jp/entry/XXX
 
 ## 内容
