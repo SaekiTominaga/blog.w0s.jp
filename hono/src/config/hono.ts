@@ -79,9 +79,15 @@ export default {
 			contentType: {
 				/* https://github.com/honojs/hono/blob/main/src/utils/mime.ts */
 				'.atom': 'application/atom+xml; charset=utf-8',
+				'.json': 'application/json',
+				/* '.map': 'application/octet-stream', */
+				'.xml': 'application/xml; charset=utf-8',
+				/* '.png': 'image/png', */
+				'.svg': 'image/svg+xml; charset=utf-8',
 				'.css': 'text/css; charset=utf-8',
 				'.js': 'text/javascript; charset=utf-8',
 				'.mjs': 'text/javascript; charset=utf-8',
+				/* '.txt': 'text/plain; charset=utf-8', */
 			},
 			cacheControl: {
 				default: 'max-age=600',
