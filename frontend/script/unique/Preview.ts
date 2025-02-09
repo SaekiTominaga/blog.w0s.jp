@@ -29,12 +29,12 @@ export default class Preview {
 	 * 処理実行
 	 */
 	async exec(): Promise<void> {
-		const formData = new FormData();
-		formData.append('md', this.#ctrlElement.value);
-
 		const response = await fetch('/api/preview', {
 			method: 'POST',
-			body: new URLSearchParams([...formData] as string[][]),
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				md: this.#ctrlElement.value,
+			}),
 		});
 
 		if (!response.ok) {

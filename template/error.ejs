@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ja">
+	<head>
+		<title>富永日記帳</title>
+
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+		<link rel="stylesheet" href="/style/error.css" />
+	</head>
+	<body>
+		<div class="l-page">
+			<header id="header" class="l-header">
+				<hgroup class="p-err-title">
+					<%_ if (status >= 400 && status < 500) { _%>
+					<h1>クライアントエラー</h1>
+					<%_ } else { _%>
+					<h1>サーバーエラー</h1>
+					<%_ } _%>
+				</hgroup>
+			</header>
+			<main id="content" class="l-content">
+				<div class="p-err-text">
+					<p><%= message %></p>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>

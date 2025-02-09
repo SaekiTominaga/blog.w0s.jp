@@ -61,6 +61,11 @@ export default {
 				'label-has-control': false,
 			},
 		},
+		'template/error.ejs': {
+			rules: {
+				'required-h1': false,
+			},
+		},
 		'template/list.ejs': {
 			rules: {
 				'required-h1': false,

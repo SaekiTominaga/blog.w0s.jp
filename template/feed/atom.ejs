@@ -17,7 +17,7 @@
 		<summary><%= entry.description %></summary>
 		<%_ } _%>
 		<id>tag:blog.w0s.jp,<%= entry.updated_at.format('YYYY-MM-DD') %>:/<%= entry.id %></id>
-		<link href="/<%= entry.id %>" type="text/html" />
+		<link href="/entry/<%= entry.id %>" type="text/html" />
 		<updated><%= entry.updated_at.format('YYYY-MM-DDTHH:mm:ssZ') %></updated>
 		<content type="html" xml:base="/<%= entry.id %>"> <![CDATA[ <%- entry.message %> ]]> </content>
 	</entry>

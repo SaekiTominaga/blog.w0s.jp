@@ -2,7 +2,6 @@
 
 /* Foundation */
 @import url("foundation/_var.css");
-@import url("foundation/_view-transition.css");
 @import url("foundation/_reset.css") layer(reset);
 @import url("foundation/_elements.css") layer(elements);
 
