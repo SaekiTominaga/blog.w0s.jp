@@ -46,17 +46,29 @@ await test('serveStatic', async (t) => {
 
 	await t.test('Content-Type', async (t2) => {
 		await t2.test('hono', async () => {
-			assert.equal((await app.request('robots.txt')).headers.get('Content-Type'), 'text/plain; charset=utf-8');
-			assert.equal((await app.request('sitemap.xml')).headers.get('Content-Type'), 'application/xml');
-			assert.equal((await app.request('/image/footnote-popover-close.svg')).headers.get('Content-Type'), 'image/svg+xml');
+			assert.equal((await app.request('robots.txt', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'text/plain; charset=utf-8');
+			assert.equal((await app.request('sitemap.xml', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/xml');
 		});
 
 		await t2.test('added', async () => {
-			/*
-			assert.equal((await app.request('/feed')).headers.get('Content-Type'), 'application/atom+xml; charset=utf-8'); // test ではなぜか application/octet-stream になる
-			assert.equal((await app.request('/style/blog.css')).headers.get('Content-Type'), 'text/css; charset=utf-8'); // 実際は自己設定の値が設定されるが、test では hono 側の値が設定される
-			assert.equal((await app.request('/script/blog.mjs')).headers.get('Content-Type'), 'text/javascript; charset=utf-8'); // 実際は自己設定の値が設定されるが、test では hono 側の値が設定される
-			*/
+			assert.equal((await app.request('/feed', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/atom+xml; charset=utf-8');
+		});
+
+		await t2.test('node-server#226', async () => {
+			assert.equal((await app.request('/json/newly.json', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/json');
+			assert.equal(
+				(await app.request('/image/footnote-popover-close.svg', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'),
+				'image/svg+xml; charset=utf-8',
+			);
+			assert.equal((await app.request('/style/blog.css', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'text/css; charset=utf-8');
+			assert.equal(
+				(await app.request('/script/blog.mjs', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'),
+				'text/javascript; charset=utf-8',
+			);
+			assert.equal(
+				(await app.request('/script/analytics.js', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'),
+				'text/javascript; charset=utf-8',
+			);
 		});
 	});
 
