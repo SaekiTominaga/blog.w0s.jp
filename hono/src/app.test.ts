@@ -1,6 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { test, before } from 'node:test';
 import app from './app.js';
+import { env } from './util/env.js';
 
 await test('headers', async () => {
 	const res = await app.request('/');
@@ -89,6 +90,41 @@ await test('serveStatic', async (t) => {
 
 	await t.test('SourceMap', async () => {
 		assert.equal((await app.request('/script/blog.mjs')).headers.get('SourceMap'), 'blog.mjs.map');
+	});
+});
+
+await test('CORS', async (t) => {
+	await t.test('no origin', async () => {
+		const res = await app.request('/json/newly.json');
+
+		assert.equal(res.status, 200);
+		assert.equal(res.headers.get('Access-Control-Allow-Origin'), null);
+		assert.equal(res.headers.get('Vary'), 'Origin');
+		assert.equal(res.headers.get('Content-Type'), 'application/json');
+	});
+
+	await t.test('disallow origin', async () => {
+		const res = await app.request('/json/newly.json', {
+			headers: { Origin: 'http://example.com' },
+		});
+
+		assert.equal(res.status, 200);
+		assert.equal(res.headers.get('Access-Control-Allow-Origin'), null);
+		assert.equal(res.headers.get('Vary'), 'Origin');
+		assert.equal(res.headers.get('Content-Type'), 'application/json');
+	});
+
+	await t.test('allow origin', async () => {
+		const origin = env('JSON_CORS_ORIGINS', 'string[]').at(0)!;
+
+		const res = await app.request('/json/newly.json', {
+			headers: { Origin: origin },
+		});
+
+		assert.equal(res.status, 200);
+		assert.equal(res.headers.get('Access-Control-Allow-Origin'), origin);
+		assert.equal(res.headers.get('Vary'), 'Origin');
+		assert.equal(res.headers.get('Content-Type'), 'application/json');
 	});
 });
 
