@@ -6,7 +6,7 @@
 	</url>
 	<%_ for (const entry of entries) { _%>
 	<url>
-		<loc>https://blog.w0s.jp/<%= entry.id %></loc>
+		<loc>https://blog.w0s.jp/entry/<%= entry.id %></loc>
 		<lastmod><%= entry.updated_at.format('YYYY-MM-DDTHH:mm:ssZ') %></lastmod>
 	</url>
 	<%_ } _%>
