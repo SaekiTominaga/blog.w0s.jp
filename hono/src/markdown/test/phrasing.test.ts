@@ -55,7 +55,7 @@ await test('link', async (t) => {
 
 	await t.test('entry ID', async () => {
 		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('text1[link1](1)text2')), '<p>text1<a href="/1">link1</a>text2</p>'.trim());
+		assert.equal(await format(await markdown.toHtml('text1[link1](1)text2')), '<p>text1<a href="/entry/1">link1</a>text2</p>'.trim());
 	});
 
 	await t.test('amazon', async () => {
