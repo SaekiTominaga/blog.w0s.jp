@@ -4,7 +4,12 @@ log4js.*.json
 
 /**/node_modules/
 /.html/
-/log/
+
+/frontend/.rollup.cache/
+/frontend/script/tsconfig.tsbuildinfo
+
+/hono/dist/
+
 /public/**/*.atom
 /public/**/*.br
 /public/**/*.map
@@ -14,8 +19,3 @@ log4js.*.json
 /public/json/
 /public/script/
 /public/style/
-
-/frontend/.rollup.cache/
-/frontend/script/tsconfig.tsbuildinfo
-
-/hono/dist/
