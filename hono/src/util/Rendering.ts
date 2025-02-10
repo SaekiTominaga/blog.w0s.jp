@@ -109,7 +109,7 @@ export default class Rendering {
 			this.#logger.warn('Failed to resolve prettier config');
 		}
 
-		const brotliData = brotliCompressText(htmlFormatted);
+		const brotliData = await brotliCompressText(htmlFormatted);
 
 		/* キャッシュ HTML ファイル出力 */
 		await Promise.all([fs.promises.writeFile(this.#htmlFilePath, htmlFormatted), fs.promises.writeFile(this.#htmlBrotliFilePath, brotliData)]);

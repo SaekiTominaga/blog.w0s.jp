@@ -37,7 +37,7 @@ const create = async (): Promise<Process.Result> => {
 					})),
 				);
 
-				const newlyJsonBrotli = brotliCompressText(newlyJson);
+				const newlyJsonBrotli = await brotliCompressText(newlyJson);
 
 				/* ファイル出力 */
 				const fileName =
