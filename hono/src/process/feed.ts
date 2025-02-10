@@ -55,7 +55,7 @@ const create = async (): Promise<Process.Result> => {
 			lineSeparator: '\n',
 		});
 
-		const feedXmlBrotli = brotliCompressText(feedXmlFormatted);
+		const feedXmlBrotli = await brotliCompressText(feedXmlFormatted);
 
 		/* ファイル出力 */
 		const filePath = `${configHono.static.root}/${configFeed.path}`;
