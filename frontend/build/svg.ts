@@ -41,21 +41,23 @@ const configFilePath = slash(argsParsedValues.config);
 
 const config = await loadConfig(configFilePath);
 
-const files = fs.promises.glob(filesPath);
+const files = await Array.fromAsync(fs.promises.glob(filesPath));
 
-for await (const file of files) {
-	/* ファイル読み込み */
-	const fileData = (await fs.promises.readFile(file)).toString();
+await Promise.all(
+	files.map(async (filePath) => {
+		/* ファイル読み込み */
+		const fileData = (await fs.promises.readFile(filePath)).toString();
 
-	/* SVG 最適化 */
-	const optimized = optimize(fileData.replace(/<svg version="([0-9.]+)"/, '<svg').replace(' id="レイヤー_1"', ''), config);
+		/* SVG 最適化 */
+		const optimized = optimize(fileData.replace(/<svg version="([0-9.]+)"/, '<svg').replace(' id="レイヤー_1"', ''), config);
 
-	/* 出力 */
-	const outFileParse = path.parse(file.replace(new RegExp(`^${argsParsedValues.inDir}`), outDirectory));
-	const outExtension = outFileParse.dir === outDirectory && outFileParse.base === 'favicon.svg' ? '.ico' : '.svg'; // favicon.svg のみ favicon.ico にリネームする
-	const outPath = `${outFileParse.dir}/${outFileParse.name}${outExtension}`;
+		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+		const outFileParsed = path.parse(filePath.replace(new RegExp(`^${argsParsedValues.inDir}`), outDirectory));
+		const outExtension = outFileParsed.dir === outDirectory && outFileParsed.base === 'favicon.svg' ? '.ico' : '.svg'; // favicon.svg のみ favicon.ico にリネームする
+		const outPath = `${outFileParsed.dir}/${outFileParsed.name}${outExtension}`;
 
-	/* 出力 */
-	await fs.promises.writeFile(outPath, optimized.data);
-	console.info(`SVG file optimized: ${outPath}`);
-}
+		/* 出力 */
+		await fs.promises.writeFile(outPath, optimized.data);
+		console.info(`SVG file optimized: ${outPath}`);
+	}),
+);
