@@ -55,12 +55,12 @@
 									<dl class="c-entry-meta">
 										<div class="c-entry-meta__group">
 											<dt>投稿</dt>
-											<dd><time datetime="<%= entry.created.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.created.format('YYYY年M月D日') %></time></dd>
+											<dd><time datetime="<%= entry.registed_at.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.registed_at.format('YYYY年M月D日') %></time></dd>
 										</div>
-										<%_ if (entry.last_updated !== null) { _%>
+										<%_ if (entry.updated_at !== null) { _%>
 										<div class="c-entry-meta__group">
 											<dt>最終更新</dt>
-											<dd><time datetime="<%= entry.last_updated.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.last_updated.format('YYYY年M月D日') %></time></dd>
+											<dd><time datetime="<%= entry.updated_at.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.updated_at.format('YYYY年M月D日') %></time></dd>
 										</div>
 										<%_ } _%>
 									</dl>

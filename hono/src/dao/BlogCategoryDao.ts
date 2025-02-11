@@ -5,8 +5,8 @@ interface Entry {
 	title: string;
 	image_internal: string | null;
 	image_external: string | null;
-	created: Date;
-	last_updated?: Date | null;
+	registed_at: Date;
+	updated_at?: Date | null;
 }
 
 /**
@@ -26,31 +26,31 @@ export default class BlogCategoryDao extends BlogDao {
 			title: string;
 			image_internal: string | null;
 			image_external: string | null;
-			created: number;
-			last_updated: number | null;
+			registed_at: number;
+			updated_at: number | null;
 		}
 
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 				SELECT
-					t.id AS id,
-					t.title AS title,
-					t.image AS image_internal,
-					t.image_external AS image_external,
-					t.insert_date AS created,
-					t.last_update AS last_updated
+					e.id AS id,
+					e.title AS title,
+					e.image_internal AS image_internal,
+					e.image_external AS image_external,
+					e.registed_at,
+					e.updated_at AS updated_at
 				FROM
 					m_category c,
-					d_topic_category tc,
-					d_topic t
+					d_entry_category ec,
+					d_entry e
 				WHERE
 					c.name = :name AND
-					c.id = tc.category_id AND
-					tc.topic_id = t.id AND
-					t.public = :public
+					c.id = ec.category_id AND
+					ec.entry_id = e.id AND
+					e.public = :public
 				ORDER BY
-					t.insert_date DESC
+					e.registed_at DESC
 		`);
 		await sth.bind({
 			':name': categoryName,
@@ -66,8 +66,8 @@ export default class BlogCategoryDao extends BlogDao {
 				title: row.title,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				created: new Date(row.created * 1000),
-				last_updated: row.last_updated !== null ? new Date(row.last_updated * 1000) : null,
+				registed_at: new Date(row.registed_at * 1000),
+				updated_at: row.updated_at !== null ? new Date(row.updated_at * 1000) : null,
 			});
 		}
 

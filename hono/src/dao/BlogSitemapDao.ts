@@ -15,7 +15,7 @@ export default class BlogSitemapDao extends BlogDao {
 	async getEntries(limit: number): Promise<BlogView.SitemapEntry[]> {
 		interface Select {
 			id: number;
-			created_at: number;
+			registed_at: number;
 			updated_at: number | null;
 		}
 
@@ -24,10 +24,10 @@ export default class BlogSitemapDao extends BlogDao {
 		const sth = await dbh.prepare(`
 			SELECT
 				id,
-				insert_date AS created_at,
-				last_update AS updated_at
+				registed_at,
+				updated_at
 			FROM
-				d_topic
+				d_entry
 			WHERE
 				public = :public
 			ORDER BY
@@ -46,7 +46,7 @@ export default class BlogSitemapDao extends BlogDao {
 		for (const row of rows) {
 			entries.push({
 				id: row.id,
-				updated_at: DbUtil.unixToDayjs(row.updated_at ?? row.created_at)!,
+				updated_at: DbUtil.unixToDayjs(row.updated_at ?? row.registed_at)!,
 			});
 		}
 

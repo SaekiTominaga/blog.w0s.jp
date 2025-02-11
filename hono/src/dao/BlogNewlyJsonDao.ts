@@ -60,7 +60,7 @@ export default class BlogNewlyJsonDao extends BlogDao {
 					id,
 					title
 				FROM
-					d_topic
+					d_entry
 				WHERE
 					public = :public
 				ORDER BY
@@ -74,23 +74,23 @@ export default class BlogNewlyJsonDao extends BlogDao {
 		} else {
 			sth = await dbh.prepare(`
 				SELECT
-					t.id AS id,
-					t.title AS title
+					e.id AS id,
+					e.title AS title
 				FROM
-					d_topic t,
-					d_topic_category tc,
+					d_entry e,
+					d_entry_category ec,
 					m_category c,
 					m_catgroup cg
 				WHERE
-					t.public = :public AND
-					t.id = tc.topic_id AND
-					tc.category_id = c.id AND
+					e.public = :public AND
+					e.id = ec.entry_id AND
+					ec.category_id = c.id AND
 					c.catgroup = cg.id AND
 					cg.file_name = :catgroup_id
 				GROUP BY
-					t.id
+					e.id
 				ORDER BY
-					t.id DESC
+					e.id DESC
 				LIMIT :limit
 			`);
 			await sth.bind({

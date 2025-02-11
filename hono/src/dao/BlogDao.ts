@@ -64,7 +64,7 @@ export default class BlogDao {
 			SELECT
 				COUNT(id) AS count
 			FROM
-				d_topic
+				d_entry
 			WHERE
 				public = :public
 		`);
@@ -132,11 +132,11 @@ export default class BlogDao {
 				id,
 				title
 			FROM
-				d_topic
+				d_entry
 			WHERE
 				public = :public
 			ORDER BY
-				insert_date DESC
+				registed_at DESC
 			LIMIT :limit
 		`);
 		await sth.bind({
@@ -175,17 +175,17 @@ export default class BlogDao {
 			SELECT
 				cg.name AS group_name,
 				c.name AS name,
-				COUNT(tc.category_id) AS count
+				COUNT(ec.category_id) AS count
 			FROM
 				m_category c,
 				m_catgroup cg,
-				d_topic_category tc,
-				d_topic t
+				d_entry_category ec,
+				d_entry e
 			WHERE
 				c.catgroup = cg.id AND
-				c.id = tc.category_id AND
-				tc.topic_id = t.id AND
-				t.public = :public
+				c.id = ec.category_id AND
+				ec.entry_id = e.id AND
+				e.public = :public
 			GROUP BY
 				c.id
 			ORDER BY
