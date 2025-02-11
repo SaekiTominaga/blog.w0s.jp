@@ -26,7 +26,7 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 					id,
 					message
 				FROM
-					d_topic
+					d_entry
 			`);
 			const rows: Select[] = await sth.all();
 			await sth.finalize();
@@ -43,7 +43,7 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 				SELECT
 					message
 				FROM
-					d_topic
+					d_entry
 				WHERE
 					id = :id
 			`);
@@ -64,17 +64,17 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 	/**
 	 * 記事データを修正する
 	 *
-	 * @param topicId - 記事 ID
+	 * @param entryId - 記事 ID
 	 * @param message - 本文
 	 */
-	public async update(topicId: number, message: string): Promise<void> {
+	public async update(entryId: number, message: string): Promise<void> {
 		const dbh = await this.getDbh();
 
 		await dbh.exec('BEGIN');
 		try {
 			const sth = await dbh.prepare(`
 					UPDATE
-						d_topic
+						d_entry
 					SET
 						message = :message
 					WHERE
@@ -82,7 +82,7 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 				`);
 			await sth.run({
 				':message': message,
-				':id': topicId,
+				':id': entryId,
 			});
 			await sth.finalize();
 

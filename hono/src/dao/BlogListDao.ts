@@ -5,8 +5,8 @@ interface Entry {
 	title: string;
 	image_internal: string | null;
 	image_external: string | null;
-	created: Date;
-	last_updated?: Date | null;
+	registed_at: Date;
+	updated_at?: Date | null;
 }
 
 /**
@@ -27,8 +27,8 @@ export default class BlogListDao extends BlogDao {
 			title: string;
 			image_internal: string | null;
 			image_external: string | null;
-			created: number;
-			last_updated: number | null;
+			registed_at: number;
+			updated_at: number | null;
 		}
 
 		const dbh = await this.getDbh();
@@ -37,16 +37,16 @@ export default class BlogListDao extends BlogDao {
 			SELECT
 				id,
 				title,
-				image AS image_internal,
+				image_internal,
 				image_external,
-				insert_date AS created,
-				last_update AS last_updated
+				registed_at,
+				updated_at
 			FROM
-				d_topic
+				d_entry
 			WHERE
 				public = :public
 			ORDER BY
-				insert_date DESC
+				registed_at DESC
 			LIMIT :limit
 			OFFSET :offset
 		`);
@@ -65,8 +65,8 @@ export default class BlogListDao extends BlogDao {
 				title: row.title,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				created: new Date(row.created * 1000),
-				last_updated: row.last_updated !== null ? new Date(row.last_updated * 1000) : null,
+				registed_at: new Date(row.registed_at * 1000),
+				updated_at: row.updated_at !== null ? new Date(row.updated_at * 1000) : null,
 			});
 		}
 

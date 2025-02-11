@@ -13,7 +13,7 @@ export interface ReviseData {
 	description: string | null;
 	message: string;
 	category_ids: string[];
-	image: string | null;
+	image_internal: string | null;
 	image_external: string | null;
 	relation_ids: string[];
 	public: boolean;
@@ -39,9 +39,9 @@ export default class BlogPostDao extends BlogDao {
 			SELECT
 				id
 			FROM
-				d_topic
+				d_entry
 			ORDER BY
-				insert_date DESC
+				registed_at DESC
 			LIMIT 1
 		`);
 
@@ -136,29 +136,29 @@ export default class BlogPostDao extends BlogDao {
 	 * 記事タイトル重複チェック
 	 *
 	 * @param title - 記事タイトル
-	 * @param topicId - 記事 ID（記事修正時、自記事をチェック対象から除外するのに使用）
+	 * @param entryId - 記事 ID（記事修正時、自記事をチェック対象から除外するのに使用）
 	 *
 	 * @returns 同一の記事タイトルがあれば true
 	 */
-	async isExistsTitle(title: string, topicId?: number): Promise<boolean> {
+	async isExistsTitle(title: string, entryId?: number): Promise<boolean> {
 		interface Select {
 			count: number;
 		}
 
 		const dbh = await this.getDbh();
 
-		if (topicId !== undefined) {
+		if (entryId !== undefined) {
 			const sth = await dbh.prepare(`
 				SELECT
 					COUNT() AS count
 				FROM
-					d_topic
+					d_entry
 				WHERE
 					id != :id AND
 					title = :title
 			`);
 			await sth.bind({
-				':id': topicId,
+				':id': entryId,
 				':title': title,
 			});
 
@@ -172,7 +172,7 @@ export default class BlogPostDao extends BlogDao {
 			SELECT
 				COUNT() AS count
 			FROM
-				d_topic
+				d_entry
 			WHERE
 				title = :title
 			LIMIT 1
@@ -224,39 +224,39 @@ export default class BlogPostDao extends BlogDao {
 
 		await dbh.exec('BEGIN');
 		try {
-			const topicInsertSth = await dbh.prepare(`
-				INSERT INTO d_topic
-					(title, description, message, image, image_external, insert_date, public)
+			const entryInsertSth = await dbh.prepare(`
+				INSERT INTO d_entry
+					(title, description, message, image_internal, image_external, registed_at, public)
 				VALUES
-					(:title, :description, :message, :image_internal, :image_external, :insert_date, :public)
+					(:title, :description, :message, :image_internal, :image_external, :registed_at, :public)
 			`);
-			const topicInsertResult = await topicInsertSth.run({
+			const entryInsertResult = await entryInsertSth.run({
 				':title': title,
 				':description': DbUtil.emptyToNull(description ?? null),
 				':message': message,
 				':image_internal': imageInternal,
 				':image_external': imageExternal,
-				':insert_date': DbUtil.dateToUnix(),
+				':registed_at': DbUtil.dateToUnix(),
 				':public': publicFlag,
 			});
-			await topicInsertSth.finalize();
+			await entryInsertSth.finalize();
 
-			const topicId = topicInsertResult.lastID;
-			if (topicId === undefined) {
-				throw new Error('Failed to INSERT into `d_topic` table.');
+			const entryId = entryInsertResult.lastID;
+			if (entryId === undefined) {
+				throw new Error('Failed to INSERT into `d_entry` table.');
 			}
 
 			if (categoryIds !== undefined && categoryIds.length > 0) {
 				const categoryInsertSth = await dbh.prepare(`
-					INSERT INTO d_topic_category
-						(topic_id, category_id)
+					INSERT INTO d_entry_category
+						(entry_id, category_id)
 					VALUES
-						(:topic_id, :category_id)
+						(:entry_id, :category_id)
 				`);
 				await Promise.all(
 					categoryIds.map(async (categoryId) => {
 						await categoryInsertSth.run({
-							':topic_id': topicId,
+							':entry_id': entryId,
 							':category_id': categoryId,
 						});
 					}),
@@ -266,15 +266,15 @@ export default class BlogPostDao extends BlogDao {
 
 			if (relationIds !== undefined && relationIds.length > 0) {
 				const relationInsertSth = await dbh.prepare(`
-					INSERT INTO d_topic_relation
-						(topic_id, relation_id)
+					INSERT INTO d_entry_relation
+						(entry_id, relation_id)
 					VALUES
-						(:topic_id, :relation_id)
+						(:entry_id, :relation_id)
 				`);
 				await Promise.all(
 					relationIds.map(async (relationId) => {
 						await relationInsertSth.run({
-							':topic_id': topicId,
+							':entry_id': entryId,
 							':relation_id': relationId,
 						});
 					}),
@@ -284,7 +284,7 @@ export default class BlogPostDao extends BlogDao {
 
 			await dbh.exec('COMMIT');
 
-			return topicId;
+			return entryId;
 		} catch (e) {
 			await dbh.exec('ROLLBACK');
 			throw e;
@@ -294,7 +294,7 @@ export default class BlogPostDao extends BlogDao {
 	/**
 	 * 記事データを修正する
 	 *
-	 * @param topicId - 記事 ID
+	 * @param entryId - 記事 ID
 	 * @param title - タイトル
 	 * @param description - 概要
 	 * @param message - 本文
@@ -305,7 +305,7 @@ export default class BlogPostDao extends BlogDao {
 	 * @param timestampUpdate - 更新日時を変更する
 	 */
 	async update(
-		topicId: number,
+		entryId: number,
 		title: string,
 		description: string | undefined,
 		message: string,
@@ -331,79 +331,79 @@ export default class BlogPostDao extends BlogDao {
 		await dbh.exec('BEGIN');
 		try {
 			if (timestampUpdate) {
-				const topicUpdateSth = await dbh.prepare(`
+				const entryUpdateSth = await dbh.prepare(`
 					UPDATE
-						d_topic
+						d_entry
 					SET
 						title = :title,
 						description = :description,
 						message = :message,
-						image = :image_internal,
+						image_internal = :image_internal,
 						image_external = :image_external,
-						last_update = :last_update,
+						updated_at = :updated_at,
 						public = :public
 					WHERE
-						id = :topic_id
+						id = :entry_id
 				`);
-				await topicUpdateSth.run({
+				await entryUpdateSth.run({
 					':title': title,
 					':description': DbUtil.emptyToNull(description ?? null),
 					':message': message,
 					':image_internal': imageInternal,
 					':image_external': imageExternal,
-					':last_update': DbUtil.dateToUnix(),
+					':updated_at': DbUtil.dateToUnix(),
 					':public': publicFlag,
-					':topic_id': topicId,
+					':entry_id': entryId,
 				});
-				await topicUpdateSth.finalize();
+				await entryUpdateSth.finalize();
 			} else {
-				const topicUpdateSth = await dbh.prepare(`
+				const entryUpdateSth = await dbh.prepare(`
 					UPDATE
-						d_topic
+						d_entry
 					SET
 						title = :title,
 						description = :description,
 						message = :message,
-						image = :image_internal,
+						image_internal = :image_internal,
 						image_external = :image_external,
 						public = :public
 					WHERE
-						id = :topic_id
+						id = :entry_id
 				`);
-				await topicUpdateSth.run({
+				await entryUpdateSth.run({
 					':title': title,
 					':description': DbUtil.emptyToNull(description ?? null),
 					':message': message,
 					':image_internal': imageInternal,
 					':image_external': imageExternal,
 					':public': publicFlag,
-					':topic_id': topicId,
+					':entry_id': entryId,
 				});
-				await topicUpdateSth.finalize();
+				await entryUpdateSth.finalize();
 			}
 
 			const categoryDeleteSth = await dbh.prepare(`
 				DELETE FROM
-					d_topic_category
+					d_entry_category
 				WHERE
-					topic_id = :topic_id
+					entry_id = :entry_id
 			`);
 			await categoryDeleteSth.run({
-				':topic_id': topicId,
+				':entry_id': entryId,
 			});
 			await categoryDeleteSth.finalize();
 
 			if (categoryIds !== undefined && categoryIds.length > 0) {
 				const categoryInsertSth = await dbh.prepare(`
-					INSERT INTO d_topic_category
-						(topic_id, category_id)
+					INSERT INTO d_entry_category
+						(entry_id, category_id)
 					VALUES
-						(:topic_id, :category_id)
+						(:entry_id, :category_id)
 				`);
 				await Promise.all(
 					categoryIds.map(async (categoryId) => {
 						await categoryInsertSth.run({
-							':topic_id': topicId,
+							':entry_id': entryId,
 							':category_id': categoryId,
 						});
 					}),
@@ -413,26 +413,26 @@ export default class BlogPostDao extends BlogDao {
 
 			const relationDeleteSth = await dbh.prepare(`
 				DELETE FROM
-					d_topic_relation
+					d_entry_relation
 				WHERE
-					topic_id = :topic_id
+					entry_id = :entry_id
 			`);
 			await relationDeleteSth.run({
-				':topic_id': topicId,
+				':entry_id': entryId,
 			});
 			await relationDeleteSth.finalize();
 
 			if (relationIds !== undefined && relationIds.length > 0) {
 				const relationInsertSth = await dbh.prepare(`
-					INSERT INTO d_topic_relation
-						(topic_id, relation_id)
+					INSERT INTO d_entry_relation
+						(entry_id, relation_id)
 					VALUES
-						(:topic_id, :relation_id)
+						(:entry_id, :relation_id)
 				`);
 				await Promise.all(
 					relationIds.map(async (relationId) => {
 						await relationInsertSth.run({
-							':topic_id': topicId,
+							':entry_id': entryId,
 							':relation_id': relationId,
 						});
 					}),
@@ -460,7 +460,7 @@ export default class BlogPostDao extends BlogDao {
 			description: string | null;
 			message: string;
 			category_ids: string | null;
-			image: string | null;
+			image_internal: string | null;
 			image_external: string | null;
 			relation_ids: string | null;
 			public: number;
@@ -470,18 +470,18 @@ export default class BlogPostDao extends BlogDao {
 
 		const sth = await dbh.prepare(`
 			SELECT
-				t.title,
-				t.description,
-				t.message,
-				(SELECT group_concat(tc.category_id, " ") FROM d_topic_category tc WHERE t.id = tc.topic_id ORDER BY tc.category_id) AS category_ids,
-				t.image,
-				t.image_external,
-				(SELECT group_concat(tr.relation_id, " ") FROM d_topic_relation tr WHERE t.id = tr.topic_id) AS relation_ids,
-				t.public
+				e.title,
+				e.description,
+				e.message,
+				(SELECT group_concat(ec.category_id, " ") FROM d_entry_category ec WHERE e.id = ec.entry_id ORDER BY ec.category_id) AS category_ids,
+				e.image_internal,
+				e.image_external,
+				(SELECT group_concat(er.relation_id, " ") FROM d_entry_relation er WHERE e.id = er.entry_id) AS relation_ids,
+				e.public
 			FROM
-				d_topic t
+				d_entry e
 			WHERE
-				t.id = :id
+				e.id = :id
 		`);
 		await sth.bind({
 			':id': id,
@@ -500,7 +500,7 @@ export default class BlogPostDao extends BlogDao {
 			description: row.description,
 			message: row.message,
 			category_ids: row.category_ids !== null ? row.category_ids.split(' ') : [],
-			image: row.image,
+			image_internal: row.image_internal,
 			image_external: row.image_external,
 			relation_ids: row.relation_ids !== null ? row.relation_ids.split(' ') : [],
 			public: Boolean(row.public),

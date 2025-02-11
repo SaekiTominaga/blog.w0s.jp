@@ -71,8 +71,8 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 			title: new MarkdownTitle(entryDto.title).mark(),
 			image_internal: entryDto.image_internal,
 			image_external: imageExternal,
-			created: dayjs(entryDto.created),
-			last_updated: entryDto.last_updated !== null ? dayjs(entryDto.last_updated) : null,
+			registed_at: dayjs(entryDto.registed_at),
+			updated_at: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : null,
 		});
 	}
 

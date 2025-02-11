@@ -20,7 +20,7 @@ export default class BlogPostDao extends BlogDao {
 			message: string;
 			image_internal: string | null;
 			image_external: string | null;
-			created_at: number;
+			registed_at: number;
 			updated_at: number | null;
 			public: number;
 		}
@@ -33,19 +33,19 @@ export default class BlogPostDao extends BlogDao {
 				title,
 				description,
 				message,
-				image AS image_internal,
+				image_internal,
 				image_external,
-				insert_date AS created_at,
-				last_update AS updated_at,
+				registed_at,
+				updated_at,
 				public
 			FROM
-				d_topic
+				d_entry
 			WHERE
 				public = :public
 			ORDER BY
 				CASE
-					WHEN last_update IS NULL THEN insert_date
-					ELSE last_update
+					WHEN updated_at IS NULL THEN registed_at
+					ELSE updated_at
 				END DESC
 			LIMIT :limit
 		`);
@@ -65,7 +65,7 @@ export default class BlogPostDao extends BlogDao {
 				message: row.message,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				created_at: DbUtil.unixToDate(row.created_at)!,
+				registed_at: DbUtil.unixToDate(row.registed_at)!,
 				updated_at: DbUtil.unixToDate(row.updated_at),
 				public: Boolean(row.public),
 			});

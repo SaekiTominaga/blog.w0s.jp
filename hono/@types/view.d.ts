@@ -6,8 +6,8 @@ declare namespace BlogView {
 		description?: string | null;
 		image_internal: string | null;
 		image_external: string | null;
-		created: import('dayjs').Dayjs;
-		last_updated?: import('dayjs').Dayjs | null;
+		registed_at: import('dayjs').Dayjs;
+		updated_at?: import('dayjs').Dayjs | null;
 	}
 
 	interface Category {

@@ -31,7 +31,7 @@ const create = async (): Promise<Process.Result> => {
 					title: entry.title,
 					description: entry.description,
 					message: (await new Markdown().toHtml(entry.message)).value.toString(),
-					updated_at: dayjs(entry.updated_at ?? entry.created_at),
+					updated_at: dayjs(entry.updated_at ?? entry.registed_at),
 					update: Boolean(entry.updated_at),
 				}),
 			),

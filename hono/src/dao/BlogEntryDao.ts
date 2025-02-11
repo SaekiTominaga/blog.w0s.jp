@@ -12,7 +12,7 @@ interface Relation {
 	title: string;
 	image_internal: string | null;
 	image_external: string | null;
-	created: Date;
+	registed_at: Date;
 }
 
 /**
@@ -33,7 +33,7 @@ export default class BlogEntryDao extends BlogDao {
 			message: string;
 			image_internal: string | null;
 			image_external: string | null;
-			created_at: number;
+			registed_at: number;
 			updated_at: number | null;
 		}
 
@@ -44,12 +44,12 @@ export default class BlogEntryDao extends BlogDao {
 				title,
 				description,
 				message,
-				image AS image_internal,
+				image_internal,
 				image_external,
-				insert_date AS created_at,
-				last_update AS updated_at
+				registed_at,
+				updated_at
 			FROM
-				d_topic
+				d_entry
 			WHERE
 				id = :id AND
 				public = :public
@@ -72,7 +72,7 @@ export default class BlogEntryDao extends BlogDao {
 			message: row.message,
 			image_internal: row.image_internal,
 			image_external: row.image_external,
-			created_at: DbUtil.unixToDate(row.created_at)!,
+			registed_at: DbUtil.unixToDate(row.registed_at)!,
 			updated_at: DbUtil.unixToDate(row.updated_at),
 			public: true,
 		};
@@ -100,12 +100,12 @@ export default class BlogEntryDao extends BlogDao {
 				c.name AS name,
 				cg.file_name AS file_name
 			FROM
-				d_topic_category tc,
+				d_entry_category ec,
 				m_category c,
 				m_catgroup cg
 			WHERE
-				tc.topic_id = :id AND
-				tc.category_id = c.id AND
+				ec.entry_id = :id AND
+				ec.category_id = c.id AND
 				c.catgroup = cg.id
 			ORDER BY
 				cg.sort,
@@ -142,27 +142,27 @@ export default class BlogEntryDao extends BlogDao {
 			title: string;
 			image_internal: string | null;
 			image_external: string | null;
-			created: number;
+			registed_at: number;
 		}
 
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
 			SELECT
-				t.id AS id,
-				t.title AS title,
-				t.image AS image_internal,
-				t.image_external AS image_external,
-				t.insert_date AS created
+				e.id AS id,
+				e.title AS title,
+				e.image_internal AS image_internal,
+				e.image_external AS image_external,
+				e.registed_at AS registed_at
 			FROM
-				d_topic t,
-				d_topic_relation tr
+				d_entry e,
+				d_entry_relation er
 			WHERE
-				tr.topic_id = :id AND
-				tr.relation_id = t.id AND
-				t.public = :public
+				er.entry_id = :id AND
+				er.relation_id = e.id AND
+				e.public = :public
 			ORDER BY
-				t.insert_date DESC
+				e.registed_at DESC
 		`);
 		await sth.bind({
 			':id': entryId,
@@ -178,7 +178,7 @@ export default class BlogEntryDao extends BlogDao {
 				title: row.title,
 				image_internal: row.image_internal,
 				image_external: row.image_external,
-				created: DbUtil.unixToDate(row.created)!,
+				registed_at: DbUtil.unixToDate(row.registed_at)!,
 			});
 		}
 

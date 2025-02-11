@@ -64,14 +64,14 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 			title: new MarkdownTitle(relationData.title).mark(),
 			image_internal: relationData.image_internal,
 			image_external: relationData.image_external,
-			created: dayjs(relationData.created),
+			registed_at: dayjs(relationData.registed_at),
 		});
 	}
 
 	const structuredData = {
 		title: entryDto.title,
 		title_marked: new MarkdownTitle(entryDto.title).mark(),
-		datePublished: dayjs(entryDto.created_at),
+		datePublished: dayjs(entryDto.registed_at),
 		dateModified: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : undefined,
 		description: entryDto.description ?? undefined,
 		image: imageUrl ?? undefined,
