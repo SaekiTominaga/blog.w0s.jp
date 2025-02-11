@@ -2,12 +2,10 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import * as dotenv from 'dotenv';
-import ejs from 'ejs';
 import { Hono } from 'hono';
 import { basicAuth } from 'hono/basic-auth';
 import { compress } from 'hono/compress';
 import { HTTPException } from 'hono/http-exception';
-import type { ContentfulStatusCode } from 'hono/utils/http-status.js';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import Log4js from 'log4js';
@@ -187,31 +185,35 @@ app.route('/api/preview', previewApp);
 app.notFound(async (context) => {
 	logger.warn(`404 Not Found: ${context.req.method} ${context.req.url}`);
 
-	const html = await fs.promises.readFile(`${env('VIEWS')}/${config.errorpage.notfound}`);
-	return context.html(html.toString(), 404);
+	const html = (await fs.promises.readFile(`${env('VIEWS')}/${config.errorpage.notfound}`)).toString();
+	return context.html(html, 404);
 });
 app.onError(async (err, context) => {
-	const TITLE_4XX = 'Client error';
-	const TITLE_5XX = 'Server error';
-
-	let status: ContentfulStatusCode = 500;
+	let htmlFilePath = config.errorpage.serverError;
 	const headers = new Headers();
-	let title = TITLE_5XX;
 	if (err instanceof HTTPException) {
-		status = err.status;
-
 		if (err.status >= 400 && err.status < 500) {
-			if (err.status === 401) {
-				/* 手動で `WWW-Authenticate` ヘッダーを設定 https://github.com/honojs/hono/issues/952 */
-				const wwwAuthenticate = err.res?.headers.get('WWW-Authenticate');
-				if (wwwAuthenticate !== null && wwwAuthenticate !== undefined) {
-					headers.set('WWW-Authenticate', wwwAuthenticate);
-				}
-			} else {
-				logger.info(err.status, err.message, context.req.header('User-Agent'));
-			}
+			switch (err.status) {
+				case 401: {
+					htmlFilePath = config.errorpage.unauthorized;
 
-			title = TITLE_4XX;
+					/* 手動で `WWW-Authenticate` ヘッダーを設定 https://github.com/honojs/hono/issues/952 */
+					const wwwAuthenticate = err.res?.headers.get('WWW-Authenticate');
+					if (wwwAuthenticate !== null && wwwAuthenticate !== undefined) {
+						headers.set('WWW-Authenticate', wwwAuthenticate);
+					}
+					break;
+				}
+				case 404: {
+					htmlFilePath = config.errorpage.notfound;
+					logger.info(err.message);
+					break;
+				}
+				default: {
+					htmlFilePath = config.errorpage.clientError;
+					logger.info(err.status, err.message);
+				}
+			}
 		} else {
 			logger.error(err.message);
 		}
@@ -219,51 +221,10 @@ app.onError(async (err, context) => {
 		logger.fatal(err.message);
 	}
 
-	let htmlFilePath: string;
-	switch (status) {
-		case 401: {
-			htmlFilePath = config.errorpage.unauthorized;
-			break;
-		}
-		case 404: {
-			htmlFilePath = config.errorpage.notfound;
-			break;
-		}
-		default: {
-			htmlFilePath = config.errorpage.error;
-		}
-	}
+	const html = (await fs.promises.readFile(`${env('VIEWS')}/${htmlFilePath}`)).toString();
+	const status = err instanceof HTTPException ? err.status : 500;
 
-	try {
-		let html: string;
-
-		switch (path.extname(htmlFilePath)) {
-			case '.html': {
-				html = (await fs.promises.readFile(`${env('VIEWS')}/${htmlFilePath}`)).toString();
-				break;
-			}
-			case '.ejs': {
-				html = await ejs.renderFile(`${env('VIEWS')}/${htmlFilePath}`, {
-					status: status,
-					message: err.message,
-				});
-				break;
-			}
-			default:
-				throw new Error('エラーページの拡張子が想定外');
-		}
-
-		return context.html(html, status, Object.fromEntries(headers.entries()));
-	} catch (e) {}
-
-	return context.html(
-		`<!DOCTYPE html>
-<html lang=ja>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>富永日記帳</title>
-<h1>${escape(title)}</h1>`,
-		status,
-	);
+	return context.html(html, status, Object.fromEntries(headers.entries()));
 });
 
 if (process.env['TEST'] !== 'test') {
