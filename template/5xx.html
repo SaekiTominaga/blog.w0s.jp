@@ -11,16 +11,13 @@
 		<div class="l-page">
 			<header id="header" class="l-header">
 				<hgroup class="p-err-title">
-					<%_ if (status >= 400 && status < 500) { _%>
-					<h1>クライアントエラー</h1>
-					<%_ } else { _%>
 					<h1>サーバーエラー</h1>
-					<%_ } _%>
 				</hgroup>
 			</header>
 			<main id="content" class="l-content">
 				<div class="p-err-text">
-					<p><%= message %></p>
+					<p>サーバー側で何らかのエラーが起こったため、コンテンツを閲覧することができません。</p>
+					<p>管理者への連絡は <a href="https://github.com/SaekiTominaga" rel="external">GitHub</a>、<a href="https://fedibird.com/@SaekiTominaga" rel="external">Mastodon</a>、<a href="https://bsky.app/profile/w0s.jp" rel="external">Bluesky</a> のいずれかをご利用ください。</p>
 				</div>
 			</main>
 		</div>

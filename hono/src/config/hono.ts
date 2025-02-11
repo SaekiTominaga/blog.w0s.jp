@@ -116,7 +116,8 @@ export default {
 	errorpage: {
 		unauthorized: '401.html', // 401
 		notfound: '404.html', // 404
-		error: 'error.ejs', // その他の汎用的なエラー
+		clientError: '4xx.html', // 4xx
+		serverError: '5xx.html', // 5xx
 	},
 	extension: {
 		html: '.html',
