@@ -20,7 +20,7 @@ export interface RequestForm {
 }
 
 export const form = validator('form', (value): RequestForm => {
-	const { id, title, description, message, category: categories, image: imagePath, relation, public: pub, timestamp, social, social_tag: socialTag } = value;
+	const { id, title, description, message, category, image: imagePath, relation, public: pub, timestamp, social, social_tag: socialTag } = value;
 
 	if (Array.isArray(id)) {
 		throw new HTTPException(400, { message: 'The `id` parameter can only be singular' });
@@ -56,12 +56,20 @@ export const form = validator('form', (value): RequestForm => {
 		throw new HTTPException(400, { message: 'The `message` parameter is required' });
 	}
 
-	if (categories !== undefined) {
-		if (!Array.isArray(categories)) {
-			throw new HTTPException(400, { message: 'The `category` parameter can only be plural' });
-		}
-		if (!categories.every((category) => typeof category !== 'object')) {
-			throw new HTTPException(400, { message: 'The `category` parameter is invalid' });
+	let categories: string[] | undefined;
+	if (category !== undefined) {
+		if (!Array.isArray(category)) {
+			if (typeof category === 'object') {
+				throw new HTTPException(400, { message: 'The `category` parameter is invalid' });
+			}
+
+			categories = [category];
+		} else {
+			if (!category.every((cat) => typeof cat !== 'object')) {
+				throw new HTTPException(400, { message: 'The `category` parameter is invalid' });
+			}
+
+			categories = category;
 		}
 	}
 
