@@ -11,7 +11,7 @@ export interface RequestForm {
 	description: string | undefined;
 	message: string;
 	categories: string[] | undefined;
-	imagePath: string | undefined;
+	imagePath: string | URL | undefined;
 	relationIds: string[] | undefined;
 	public: boolean;
 	timestamp: boolean;
@@ -100,7 +100,7 @@ export const form = validator('form', (value): RequestForm => {
 		description,
 		message,
 		categories,
-		imagePath,
+		imagePath: imagePath !== undefined ? (URL.parse(imagePath) ?? imagePath) : undefined,
 		relationIds: relation?.split(','),
 		public: Boolean(pub),
 		timestamp: Boolean(timestamp),

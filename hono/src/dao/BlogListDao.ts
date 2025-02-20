@@ -5,7 +5,7 @@ interface Entry {
 	id: number;
 	title: string;
 	imageInternal: string | undefined;
-	imageExternal: string | undefined;
+	imageExternal: URL | undefined;
 	registedAt: Date;
 	updatedAt?: Date | undefined;
 }
@@ -64,7 +64,7 @@ export default class BlogListDao extends BlogDao {
 				id: sqliteToJS(row.id),
 				title: sqliteToJS(row.title),
 				imageInternal: sqliteToJS(row.image_internal),
-				imageExternal: sqliteToJS(row.image_external),
+				imageExternal: sqliteToJS(row.image_external, 'url'),
 				registedAt: sqliteToJS(row.registed_at, 'date'),
 				updatedAt: sqliteToJS(row.updated_at, 'date'),
 			}),

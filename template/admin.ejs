@@ -171,7 +171,7 @@
 										<legend class="p-form-grid__legend" id="label-image">画像</legend>
 										<div class="p-form-grid__contents">
 											<ul class="c-form-controls" role="radiogroup" aria-labelledby="label-image">
-												<template id="select-image" data-selected="<%= reviseData.image ?? reviseData.imageExternal %>">
+												<template id="select-image" data-selected="<%= reviseData.imageInternal ?? reviseData.imageExternal?.toString() %>">
 													<li class="p-post-select-image">
 														<label>
 															<input type="radio" name="image" value="" />

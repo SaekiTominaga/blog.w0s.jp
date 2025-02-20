@@ -15,7 +15,7 @@ export interface ReviseData {
 	message: string;
 	categoryIds: string[];
 	imageInternal: string | undefined;
-	imageExternal: string | undefined;
+	imageExternal: URL | undefined;
 	relationIds: string[];
 	public: boolean;
 }
@@ -191,7 +191,8 @@ export default class BlogPostDao extends BlogDao {
 	 * @param description - 概要
 	 * @param message - 本文
 	 * @param categoryIds - カテゴリー ID
-	 * @param imagePath - 画像パス
+	 * @param imageInternal - 内部画像パス
+	 * @param imageExternal - 外部画像 URL
 	 * @param relationIds - 関連記事 ID
 	 * @param publicFlag - 公開フラグ
 	 *
@@ -202,22 +203,12 @@ export default class BlogPostDao extends BlogDao {
 		description: string | undefined,
 		message: string,
 		categoryIds: string[] | undefined,
-		imagePath: string | undefined,
+		imageInternal: string | undefined,
+		imageExternal: URL | undefined,
 		relationIds: string[] | undefined,
 		publicFlag: boolean,
 	): Promise<number> {
 		const dbh = await this.getDbh();
-
-		let imageInternal: string | undefined;
-		let imageExternal: string | undefined;
-		if (imagePath !== undefined) {
-			try {
-				new URL(imagePath); /* eslint-disable-line no-new */
-				imageExternal = imagePath;
-			} catch {
-				imageInternal = imagePath;
-			}
-		}
 
 		await dbh.exec('BEGIN');
 		try {
@@ -303,7 +294,8 @@ export default class BlogPostDao extends BlogDao {
 	 * @param description - 概要
 	 * @param message - 本文
 	 * @param categoryIds - カテゴリー ID
-	 * @param imagePath - 画像パス
+	 * @param imageInternal - 内部画像パス
+	 * @param imageExternal - 外部画像 URL
 	 * @param relationIds - 関連記事 ID
 	 * @param publicFlag - 公開フラグ
 	 * @param timestampUpdate - 更新日時を変更する
@@ -314,23 +306,13 @@ export default class BlogPostDao extends BlogDao {
 		description: string | undefined,
 		message: string,
 		categoryIds: string[] | undefined,
-		imagePath: string | undefined,
+		imageInternal: string | undefined,
+		imageExternal: URL | undefined,
 		relationIds: string[] | undefined,
 		publicFlag: boolean,
 		timestampUpdate: boolean,
 	): Promise<void> {
 		const dbh = await this.getDbh();
-
-		let imageInternal: string | undefined;
-		let imageExternal: string | undefined;
-		if (imagePath !== undefined) {
-			try {
-				new URL(imagePath); /* eslint-disable-line no-new */
-				imageExternal = imagePath;
-			} catch {
-				imageInternal = imagePath;
-			}
-		}
 
 		await dbh.exec('BEGIN');
 		try {
@@ -498,7 +480,7 @@ export default class BlogPostDao extends BlogDao {
 			message: sqliteToJS(row.message),
 			categoryIds: sqliteToJS(row.category_ids)?.split(' ') ?? [],
 			imageInternal: sqliteToJS(row.image_internal),
-			imageExternal: sqliteToJS(row.image_external),
+			imageExternal: sqliteToJS(row.image_external, 'url'),
 			relationIds: sqliteToJS(row.relation_ids)?.split(' ') ?? [],
 			public: sqliteToJS(row.public, 'boolean'),
 		};

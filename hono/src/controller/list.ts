@@ -56,7 +56,7 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 					const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageExternal));
 					paapi5ItemImageUrlParser.setSize(configList.imageExternal.amazon.size);
 
-					imageExternal = paapi5ItemImageUrlParser.toString();
+					imageExternal = new URL(paapi5ItemImageUrlParser.toString());
 					break;
 				}
 				default:

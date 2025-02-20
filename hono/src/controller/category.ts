@@ -51,15 +51,13 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 	for (const entryDto of entriesDto) {
 		let { imageExternal } = entryDto;
 		if (imageExternal !== undefined) {
-			const url = new URL(imageExternal);
-
-			switch (url.origin) {
+			switch (imageExternal.origin) {
 				case configCategory.imageExternal.amazon.origin: {
 					/* Amazon */
-					const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(imageExternal));
+					const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(imageExternal);
 					paapi5ItemImageUrlParser.setSize(configCategory.imageExternal.amazon.size);
 
-					imageExternal = paapi5ItemImageUrlParser.toString();
+					imageExternal = new URL(paapi5ItemImageUrlParser.toString());
 					break;
 				}
 				default:

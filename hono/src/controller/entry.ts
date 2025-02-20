@@ -50,9 +50,9 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		sidebar.getNewlyEntries(configHono.sidebar.newly.maximumNumber),
 	]);
 
-	let imageUrl: string | undefined;
+	let imageUrl: URL | undefined;
 	if (entryDto.imageInternal !== undefined) {
-		imageUrl = `https://media.w0s.jp/image/blog/${entryDto.imageInternal}`;
+		imageUrl = new URL(`https://media.w0s.jp/image/blog/${entryDto.imageInternal}`);
 	} else if (entryDto.imageExternal !== undefined) {
 		imageUrl = entryDto.imageExternal;
 	}
@@ -90,7 +90,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		jsonLd.set('description', structuredData.description);
 	}
 	if (structuredData.image !== undefined) {
-		jsonLd.set('image', structuredData.image);
+		jsonLd.set('image', structuredData.image.toString());
 	}
 
 	/* HTML 生成 */

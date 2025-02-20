@@ -62,7 +62,7 @@
 											<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
 										</picture>
 										<%_ } else if (entry.imageExternal !== undefined) { _%>
-										<img src="<%= entry.imageExternal %>" alt="" class="c-entry-link__image" />
+										<img src="<%= entry.imageExternal.toString() %>" alt="" class="c-entry-link__image" />
 										<%_ } else { _%>
 										<img src="/image/noimage.svg" alt="" width="180" height="120" class="c-entry-link__image" />
 										<%_ } _%>
