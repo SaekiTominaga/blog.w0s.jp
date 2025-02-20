@@ -4,6 +4,7 @@ log4js.*.json
 
 /**/node_modules/
 /.html/
+/.vscode/
 
 /frontend/.rollup.cache/
 /frontend/script/tsconfig.tsbuildinfo
