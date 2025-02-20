@@ -1,5 +1,6 @@
 import * as sqlite from 'sqlite';
 import sqlite3 from 'sqlite3';
+import { sqliteToJS } from '../util/sql.js';
 
 interface NewlyEntry {
 	id: number;
@@ -7,7 +8,7 @@ interface NewlyEntry {
 }
 
 interface EntryCountOfCategory {
-	group_name: string;
+	groupName: string;
 	name: string;
 	count: number;
 }
@@ -58,6 +59,10 @@ export default class BlogDao {
 	 * @returns 記事件数
 	 */
 	async getEntryCount(): Promise<number> {
+		interface Select {
+			count: number;
+		}
+
 		const dbh = await this.getDbh();
 
 		const sth = await dbh.prepare(`
@@ -71,7 +76,7 @@ export default class BlogDao {
 		await sth.bind({
 			':public': true,
 		});
-		const row: { count: number } | undefined = await sth.get();
+		const row = await sth.get<Select>();
 		await sth.finalize();
 
 		if (row === undefined) {
@@ -102,14 +107,14 @@ export default class BlogDao {
 				modified DESC
 			LIMIT 1
 		`);
-		const row: Select | undefined = await sth.get();
+		const row = await sth.get<Select>();
 		await sth.finalize();
 
 		if (row === undefined) {
 			throw new Error('No data is registered in the `d_info` table.');
 		}
 
-		return new Date(row.modified * 1000);
+		return sqliteToJS(row.modified, 'date');
 	}
 
 	/**
@@ -143,18 +148,15 @@ export default class BlogDao {
 			':public': true,
 			':limit': limit,
 		});
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const newlyEntries: NewlyEntry[] = [];
-		for (const row of rows) {
-			newlyEntries.push({
-				id: row.id,
-				title: row.title,
-			});
-		}
-
-		return newlyEntries;
+		return rows.map(
+			(row): NewlyEntry => ({
+				id: sqliteToJS(row.id),
+				title: sqliteToJS(row.title),
+			}),
+		);
 	}
 
 	/**
@@ -195,18 +197,15 @@ export default class BlogDao {
 		await sth.bind({
 			':public': true,
 		});
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const entryCountOfCategory: EntryCountOfCategory[] = [];
-		for (const row of rows) {
-			entryCountOfCategory.push({
-				group_name: row.group_name,
-				name: row.name,
-				count: row.count,
-			});
-		}
-
-		return entryCountOfCategory;
+		return rows.map(
+			(row): EntryCountOfCategory => ({
+				groupName: sqliteToJS(row.group_name),
+				name: sqliteToJS(row.name),
+				count: sqliteToJS(row.count),
+			}),
+		);
 	}
 }

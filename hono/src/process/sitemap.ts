@@ -19,14 +19,23 @@ const create = async (): Promise<Process.Result> => {
 	try {
 		const dao = new BlogSitemapDao(env('SQLITE_BLOG'));
 
-		const [updated, entries] = await Promise.all([
+		const [updated, entriesDto] = await Promise.all([
 			dao.getLastModified(),
 			dao.getEntries(configSitemap.limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要がある */),
 		]);
 
+		const entriesView = await Promise.all(
+			entriesDto.map(
+				(entry): BlogView.SitemapEntry => ({
+					id: entry.id,
+					updatedAt: dayjs(entry.updatedAt),
+				}),
+			),
+		);
+
 		const sitemapXml = await ejs.renderFile(`${env('VIEWS')}/${configSitemap.template}`, {
-			updated_at: dayjs(updated),
-			entries: entries,
+			updatedAt: dayjs(updated),
+			entries: entriesView,
 		});
 
 		const sitemapXmlFormated = xmlFormatter(sitemapXml, {

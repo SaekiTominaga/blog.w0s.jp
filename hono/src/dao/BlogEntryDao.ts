@@ -1,18 +1,18 @@
-import DbUtil from '../util/DbUtil.js';
+import { sqliteToJS } from '../util/sql.js';
 import BlogDao from './BlogDao.js';
 
 interface Category {
 	id: string;
 	name: string;
-	file_name: string | null;
+	fileName: string | undefined;
 }
 
 interface Relation {
 	id: number;
 	title: string;
-	image_internal: string | null;
-	image_external: string | null;
-	registed_at: Date;
+	imageInternal: string | undefined;
+	imageExternal: string | undefined;
+	registedAt: Date;
 }
 
 /**
@@ -58,7 +58,7 @@ export default class BlogEntryDao extends BlogDao {
 			':id': entryId,
 			':public': true,
 		});
-		const row: Select | undefined = await sth.get();
+		const row = await sth.get<Select>();
 		await sth.finalize();
 
 		if (row === undefined) {
@@ -66,14 +66,14 @@ export default class BlogEntryDao extends BlogDao {
 		}
 
 		return {
-			id: entryId,
-			title: row.title,
-			description: row.description,
-			message: row.message,
-			image_internal: row.image_internal,
-			image_external: row.image_external,
-			registed_at: DbUtil.unixToDate(row.registed_at)!,
-			updated_at: DbUtil.unixToDate(row.updated_at),
+			id: sqliteToJS(entryId),
+			title: sqliteToJS(row.title),
+			description: sqliteToJS(row.description),
+			message: sqliteToJS(row.message),
+			imageInternal: sqliteToJS(row.image_internal),
+			imageExternal: sqliteToJS(row.image_external),
+			registedAt: sqliteToJS(row.registed_at, 'date'),
+			updatedAt: sqliteToJS(row.updated_at, 'date'),
 			public: true,
 		};
 	}
@@ -114,19 +114,16 @@ export default class BlogEntryDao extends BlogDao {
 		await sth.bind({
 			':id': entryId,
 		});
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const categories: Category[] = [];
-		for (const row of rows) {
-			categories.push({
-				id: row.id,
-				name: row.name,
-				file_name: row.file_name,
-			});
-		}
-
-		return categories;
+		return rows.map(
+			(row): Category => ({
+				id: sqliteToJS(row.id),
+				name: sqliteToJS(row.name),
+				fileName: sqliteToJS(row.file_name),
+			}),
+		);
 	}
 
 	/**
@@ -168,20 +165,17 @@ export default class BlogEntryDao extends BlogDao {
 			':id': entryId,
 			':public': true,
 		});
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const relations: Relation[] = [];
-		for (const row of rows) {
-			relations.push({
-				id: row.id,
-				title: row.title,
-				image_internal: row.image_internal,
-				image_external: row.image_external,
-				registed_at: DbUtil.unixToDate(row.registed_at)!,
-			});
-		}
-
-		return relations;
+		return rows.map(
+			(row): Relation => ({
+				id: sqliteToJS(row.id),
+				title: sqliteToJS(row.title),
+				imageInternal: sqliteToJS(row.image_internal),
+				imageExternal: sqliteToJS(row.image_external),
+				registedAt: sqliteToJS(row.registed_at, 'date'),
+			}),
+		);
 	}
 }

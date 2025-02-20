@@ -3,22 +3,22 @@
 		<h2 class="p-sidebar-categories__hdg" id="landmark-category-label">記事カテゴリー</h2>
 
 		<w0s-tab storage-key="sidebar-category-tab">
-			<%_ for (const [group_name, ] of entryCountOfCategoryList) { _%>
-			<a href="#category-tab-<%= group_name %>" slot="tab" class="p-sidebar-categories__item"><%= group_name %></a>
-			<%_ } _%><%_ for (const [group_name, countDataList] of entryCountOfCategoryList) { _%>
-			<div slot="tabpanel" class="p-sidebar-categories__panel" id="category-tab-<%= group_name %>">
+			<%_ for (const [groupName, ] of entryCountOfCategoryList) { _%>
+			<a href="#category-tab-<%= groupName %>" slot="tab" class="p-sidebar-categories__item"><%= groupName %></a>
+			<%_ } _%><%_ for (const [groupName, countDataList] of entryCountOfCategoryList) { _%>
+			<div slot="tabpanel" class="p-sidebar-categories__panel" id="category-tab-<%= groupName %>">
 				<%_ if (typeof(categoryName) !== 'undefined') { _%>
 				<ul class="p-sidebar-link -category">
 					<%_ for (const countData of countDataList) { _%>
 					<li>
-						<%_ if (categoryName === countData.category_name) { _%>
+						<%_ if (categoryName === countData.categoryName) { _%>
 						<a aria-current="page">
-							<%= countData.category_name %>
+							<%= countData.categoryName %>
 							<span class="p-sidebar-link__icon c-entry-count"><span class="c-entry-count__num"><%= countData.count %></span>件</span>
 						</a>
 						<%_ } else { _%>
-						<a href="/category/<%= encodeURI(countData.category_name) %>">
-							<%= countData.category_name %>
+						<a href="/category/<%= encodeURI(countData.categoryName) %>">
+							<%= countData.categoryName %>
 							<span class="p-sidebar-link__icon c-entry-count"><span class="c-entry-count__num"><%= countData.count %></span>件</span>
 						</a>
 						<%_ } _%>
@@ -29,8 +29,8 @@
 				<ul class="p-sidebar-link -category">
 					<%_ for (const countData of countDataList) { _%>
 					<li>
-						<a href="/category/<%= encodeURI(countData.category_name) %>">
-							<%= countData.category_name %>
+						<a href="/category/<%= encodeURI(countData.categoryName) %>">
+							<%= countData.categoryName %>
 							<span class="p-sidebar-link__icon c-entry-count"><span class="c-entry-count__num"><%= countData.count %></span>件</span>
 						</a>
 					</li>

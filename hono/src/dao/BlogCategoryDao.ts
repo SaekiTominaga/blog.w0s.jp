@@ -1,12 +1,13 @@
+import { sqliteToJS } from '../util/sql.js';
 import BlogDao from './BlogDao.js';
 
 interface Entry {
 	id: number;
 	title: string;
-	image_internal: string | null;
-	image_external: string | null;
-	registed_at: Date;
-	updated_at?: Date | null;
+	imageInternal: string | undefined;
+	imageExternal: string | undefined;
+	registedAt: Date;
+	updatedAt?: Date | undefined;
 }
 
 /**
@@ -56,21 +57,18 @@ export default class BlogCategoryDao extends BlogDao {
 			':name': categoryName,
 			':public': true,
 		});
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const entries: Entry[] = [];
-		for (const row of rows) {
-			entries.push({
-				id: row.id,
-				title: row.title,
-				image_internal: row.image_internal,
-				image_external: row.image_external,
-				registed_at: new Date(row.registed_at * 1000),
-				updated_at: row.updated_at !== null ? new Date(row.updated_at * 1000) : null,
-			});
-		}
-
-		return entries;
+		return rows.map(
+			(row): Entry => ({
+				id: sqliteToJS(row.id),
+				title: sqliteToJS(row.title),
+				imageInternal: sqliteToJS(row.image_internal),
+				imageExternal: sqliteToJS(row.image_external),
+				registedAt: sqliteToJS(row.registed_at, 'date'),
+				updatedAt: sqliteToJS(row.updated_at, 'date'),
+			}),
+		);
 	}
 }

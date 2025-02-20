@@ -92,7 +92,7 @@ const rendering = async (
 
 	const categoryMasterView = new Map<string, BlogView.Category[]>();
 	for (const category of categoryMaster) {
-		const groupName = category.group_name;
+		const { groupName } = category;
 
 		const categoryOfGroupView = categoryMasterView.get(groupName) ?? [];
 		categoryOfGroupView.push({

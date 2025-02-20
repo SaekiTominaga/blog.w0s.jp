@@ -4,8 +4,8 @@ import ejs from 'ejs';
 import Log4js from 'log4js';
 import { format, resolveConfig } from 'prettier';
 import xmlFormatter from 'xml-formatter';
-import configHono from '../config/hono.js';
 import configFeed from '../config/feed.js';
+import configHono from '../config/hono.js';
 import BlogFeedDao from '../dao/BlogFeedDao.js';
 import Markdown from '../markdown/Markdown.js';
 import { brotliCompressText } from '../util/compress.js';
@@ -31,14 +31,14 @@ const create = async (): Promise<Process.Result> => {
 					title: entry.title,
 					description: entry.description,
 					message: (await new Markdown().toHtml(entry.message)).value.toString(),
-					updated_at: dayjs(entry.updated_at ?? entry.registed_at),
-					update: Boolean(entry.updated_at),
+					updatedAt: dayjs(entry.updatedAt ?? entry.registedAt),
+					update: Boolean(entry.updatedAt),
 				}),
 			),
 		);
 
 		const feed = await ejs.renderFile(`${env('VIEWS')}/${configFeed.template}`, {
-			updated_at: entriesView.at(0)?.updated_at,
+			updatedAt: entriesView.at(0)?.updatedAt,
 			entries: entriesView,
 		});
 

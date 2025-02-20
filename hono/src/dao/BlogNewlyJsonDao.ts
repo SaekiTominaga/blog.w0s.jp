@@ -1,4 +1,5 @@
 import type * as sqlite from 'sqlite';
+import { sqliteToJS } from '../util/sql.js';
 import BlogDao from './BlogDao.js';
 
 /**
@@ -26,15 +27,10 @@ export default class BlogNewlyJsonDao extends BlogDao {
 				file_name IS NOT NULL
 		`);
 
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const fileNames: string[] = [];
-		for (const row of rows) {
-			fileNames.push(row.file_name);
-		}
-
-		return fileNames;
+		return rows.map((row): string => sqliteToJS(row.file_name));
 	}
 
 	/**
@@ -99,17 +95,14 @@ export default class BlogNewlyJsonDao extends BlogDao {
 				':limit': limit,
 			});
 		}
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const entries: BlogView.NewlyEntry[] = [];
-		for (const row of rows) {
-			entries.push({
-				id: row.id,
-				title: row.title,
-			});
-		}
-
-		return entries;
+		return rows.map(
+			(row): BlogView.NewlyEntry => ({
+				id: sqliteToJS(row.id),
+				title: sqliteToJS(row.title),
+			}),
+		);
 	}
 }

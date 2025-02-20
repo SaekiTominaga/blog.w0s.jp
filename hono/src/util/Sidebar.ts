@@ -7,7 +7,7 @@ interface NewlyEntry {
 }
 
 interface EntryCountOfCategory {
-	category_name: string;
+	categoryName: string;
 	count: number;
 }
 
@@ -34,12 +34,12 @@ export default class Sidebar {
 
 		const entryCountOfCategoryList = new Map<string, EntryCountOfCategory[]>();
 		for (const entryCountOfCategory of dto) {
-			const countDataList = entryCountOfCategoryList.get(entryCountOfCategory.group_name) ?? [];
+			const countDataList = entryCountOfCategoryList.get(entryCountOfCategory.groupName) ?? [];
 			countDataList.push({
-				category_name: entryCountOfCategory.name,
+				categoryName: entryCountOfCategory.name,
 				count: entryCountOfCategory.count,
 			});
-			entryCountOfCategoryList.set(entryCountOfCategory.group_name, countDataList);
+			entryCountOfCategoryList.set(entryCountOfCategory.groupName, countDataList);
 		}
 
 		return entryCountOfCategoryList;

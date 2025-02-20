@@ -1,4 +1,4 @@
-import DbUtil from '../util/DbUtil.js';
+import { sqliteToJS } from '../util/sql.js';
 import BlogDao from './BlogDao.js';
 
 /**
@@ -53,24 +53,21 @@ export default class BlogPostDao extends BlogDao {
 			':public': true,
 			':limit': limit,
 		});
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const entries: BlogDb.Entry[] = [];
-		for (const row of rows) {
-			entries.push({
-				id: row.id,
-				title: row.title,
-				description: row.description,
-				message: row.message,
-				image_internal: row.image_internal,
-				image_external: row.image_external,
-				registed_at: DbUtil.unixToDate(row.registed_at)!,
-				updated_at: DbUtil.unixToDate(row.updated_at),
-				public: Boolean(row.public),
-			});
-		}
-
-		return entries;
+		return rows.map(
+			(row): BlogDb.Entry => ({
+				id: sqliteToJS(row.id),
+				title: sqliteToJS(row.title),
+				description: sqliteToJS(row.description),
+				message: sqliteToJS(row.message),
+				imageInternal: sqliteToJS(row.image_internal),
+				imageExternal: sqliteToJS(row.image_external),
+				registedAt: sqliteToJS(row.registed_at, 'date'),
+				updatedAt: sqliteToJS(row.updated_at, 'date'),
+				public: sqliteToJS(row.public, 'boolean'),
+			}),
+		);
 	}
 }

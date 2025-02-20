@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 import ejs from 'ejs';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
-import configHono from '../config/hono.js';
 import configEntry from '../config/entry.js';
+import configHono from '../config/hono.js';
 import BlogEntryDao from '../dao/BlogEntryDao.js';
 import Markdown from '../markdown/Markdown.js';
 import MarkdownTitle from '../markdown/Title.js';
@@ -50,11 +50,11 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		sidebar.getNewlyEntries(configHono.sidebar.newly.maximumNumber),
 	]);
 
-	let imageUrl: string | null = null;
-	if (entryDto.image_internal !== null) {
-		imageUrl = `https://media.w0s.jp/image/blog/${entryDto.image_internal}`;
-	} else if (entryDto.image_external !== null) {
-		imageUrl = entryDto.image_external;
+	let imageUrl: string | undefined;
+	if (entryDto.imageInternal !== undefined) {
+		imageUrl = `https://media.w0s.jp/image/blog/${entryDto.imageInternal}`;
+	} else if (entryDto.imageExternal !== undefined) {
+		imageUrl = entryDto.imageExternal;
 	}
 
 	const relations: BlogView.EntryData[] = [];
@@ -62,19 +62,19 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		relations.push({
 			id: relationData.id,
 			title: new MarkdownTitle(relationData.title).mark(),
-			image_internal: relationData.image_internal,
-			image_external: relationData.image_external,
-			registed_at: dayjs(relationData.registed_at),
+			imageInternal: relationData.imageInternal,
+			imageExternal: relationData.imageExternal,
+			registedAt: dayjs(relationData.registedAt),
 		});
 	}
 
 	const structuredData = {
 		title: entryDto.title,
-		title_marked: new MarkdownTitle(entryDto.title).mark(),
-		datePublished: dayjs(entryDto.registed_at),
-		dateModified: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : undefined,
-		description: entryDto.description ?? undefined,
-		image: imageUrl ?? undefined,
+		titleMarked: new MarkdownTitle(entryDto.title).mark(),
+		datePublished: dayjs(entryDto.registedAt),
+		dateModified: entryDto.updatedAt !== undefined ? dayjs(entryDto.updatedAt) : undefined,
+		description: entryDto.description,
+		image: imageUrl,
 	}; // 構造データ
 
 	const jsonLd = new Map<string, string | string[] | object>([
@@ -103,7 +103,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		message: message,
 
 		categoryNames: categoriesDto.map((category) => category.name),
-		categoryFileNames: categoriesDto.map((category) => category.file_name).find((fileName) => fileName !== null),
+		categoryFileNames: categoriesDto.map((category) => category.fileName).find((fileName) => fileName !== undefined),
 		relations: relations,
 
 		entryCountOfCategoryList: entryCountOfCategoryList,

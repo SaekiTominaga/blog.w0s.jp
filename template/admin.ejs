@@ -153,7 +153,7 @@
 											<div class="c-form-controls -checkbox">
 												<%_ for (const category of categories) { _%>
 												<label class="c-label -check">
-													<%_ if (reviseData.category_ids !== undefined && reviseData.category_ids.includes(category.id)) { _%>
+													<%_ if (reviseData.categoryIds !== undefined && reviseData.categoryIds.includes(category.id)) { _%>
 													<input type="checkbox" name="category" value="<%= category.id %>" checked="" />
 													<%_ } else { _%>
 													<input type="checkbox" name="category" value="<%= category.id %>" />
@@ -171,7 +171,7 @@
 										<legend class="p-form-grid__legend" id="label-image">画像</legend>
 										<div class="p-form-grid__contents">
 											<ul class="c-form-controls" role="radiogroup" aria-labelledby="label-image">
-												<template id="select-image" data-selected="<%= reviseData.image ?? reviseData.image_external %>">
+												<template id="select-image" data-selected="<%= reviseData.image ?? reviseData.imageExternal %>">
 													<li class="p-post-select-image">
 														<label>
 															<input type="radio" name="image" value="" />
@@ -189,7 +189,7 @@
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
 												<span>
-													<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= reviseData.relation_ids?.join(',') %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" title="記事 ID のカンマ区切り" style="--inline-size: 15em" />
+													<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= reviseData.relationIds?.join(',') %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" title="記事 ID のカンマ区切り" style="--inline-size: 15em" />
 													<small>（カンマ区切り）</small>
 												</span>
 											</div>
