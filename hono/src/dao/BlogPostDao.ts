@@ -1,8 +1,9 @@
-import DbUtil from '../util/DbUtil.js';
+import * as sqlite from 'sqlite';
+import { prepareDelete, prepareInsert, prepareUpdate, sqliteToJS } from '../util/sql.js';
 import BlogDao from './BlogDao.js';
 
 interface CategoryMaster {
-	group_name: string;
+	groupName: string;
 	id: string;
 	name: string;
 }
@@ -10,12 +11,12 @@ interface CategoryMaster {
 export interface ReviseData {
 	id: number;
 	title: string;
-	description: string | null;
+	description: string | undefined;
 	message: string;
-	category_ids: string[];
-	image_internal: string | null;
-	image_external: string | null;
-	relation_ids: string[];
+	categoryIds: string[];
+	imageInternal: string | undefined;
+	imageExternal: string | undefined;
+	relationIds: string[];
 	public: boolean;
 }
 
@@ -45,14 +46,14 @@ export default class BlogPostDao extends BlogDao {
 			LIMIT 1
 		`);
 
-		const row: Select | undefined = await sth.get();
+		const row = await sth.get<Select>();
 		await sth.finalize();
 
 		if (row === undefined) {
 			return 0;
 		}
 
-		return row.id;
+		return sqliteToJS(row.id);
 	}
 
 	/**
@@ -70,16 +71,19 @@ export default class BlogPostDao extends BlogDao {
 			`);
 
 			/* 現在日時を記録 */
-			const insertSth = await dbh.prepare(`
-				INSERT INTO d_info
-					(modified)
-				VALUES
-					(:modified)
-			`);
-			await insertSth.run({
-				':modified': DbUtil.dateToUnix(),
+			const { sqlInto, sqlValues, bindParams } = prepareInsert({
+				modified: new Date(),
 			});
-			await insertSth.finalize();
+
+			const sth = await dbh.prepare(`
+				INSERT INTO
+					d_info
+					${sqlInto}
+				VALUES
+					${sqlValues}
+			`);
+			await sth.run(bindParams);
+			await sth.finalize();
 
 			await dbh.exec('COMMIT');
 		} catch (e) {
@@ -117,19 +121,16 @@ export default class BlogPostDao extends BlogDao {
 				c.sort
 		`);
 
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const categories: CategoryMaster[] = [];
-		for (const row of rows) {
-			categories.push({
-				group_name: row.group_name,
-				id: row.id,
-				name: row.name,
-			});
-		}
-
-		return categories;
+		return rows.map(
+			(row): CategoryMaster => ({
+				groupName: sqliteToJS(row.group_name),
+				id: sqliteToJS(row.id),
+				name: sqliteToJS(row.name),
+			}),
+		);
 	}
 
 	/**
@@ -147,8 +148,9 @@ export default class BlogPostDao extends BlogDao {
 
 		const dbh = await this.getDbh();
 
+		let sth: sqlite.Statement;
 		if (entryId !== undefined) {
-			const sth = await dbh.prepare(`
+			sth = await dbh.prepare(`
 				SELECT
 					COUNT() AS count
 				FROM
@@ -161,27 +163,22 @@ export default class BlogPostDao extends BlogDao {
 				':id': entryId,
 				':title': title,
 			});
-
-			const row: Select | undefined = await sth.get();
-			await sth.finalize();
-
-			return row !== undefined && row.count > 0;
+		} else {
+			sth = await dbh.prepare(`
+				SELECT
+					COUNT() AS count
+				FROM
+					d_entry
+				WHERE
+					title = :title
+				LIMIT 1
+			`);
+			await sth.bind({
+				':title': title,
+			});
 		}
 
-		const sth = await dbh.prepare(`
-			SELECT
-				COUNT() AS count
-			FROM
-				d_entry
-			WHERE
-				title = :title
-			LIMIT 1
-		`);
-		await sth.bind({
-			':title': title,
-		});
-
-		const row: Select | undefined = await sth.get();
+		const row = await sth.get<Select>();
 		await sth.finalize();
 
 		return row !== undefined && row.count > 0;
@@ -211,8 +208,8 @@ export default class BlogPostDao extends BlogDao {
 	): Promise<number> {
 		const dbh = await this.getDbh();
 
-		let imageInternal: string | null = null;
-		let imageExternal: string | null = null;
+		let imageInternal: string | undefined;
+		let imageExternal: string | undefined;
 		if (imagePath !== undefined) {
 			try {
 				new URL(imagePath); /* eslint-disable-line no-new */
@@ -224,62 +221,69 @@ export default class BlogPostDao extends BlogDao {
 
 		await dbh.exec('BEGIN');
 		try {
-			const entryInsertSth = await dbh.prepare(`
-				INSERT INTO d_entry
-					(title, description, message, image_internal, image_external, registed_at, public)
-				VALUES
-					(:title, :description, :message, :image_internal, :image_external, :registed_at, :public)
-			`);
-			const entryInsertResult = await entryInsertSth.run({
-				':title': title,
-				':description': DbUtil.emptyToNull(description ?? null),
-				':message': message,
-				':image_internal': imageInternal,
-				':image_external': imageExternal,
-				':registed_at': DbUtil.dateToUnix(),
-				':public': publicFlag,
+			const { sqlInto, sqlValues, bindParams } = prepareInsert({
+				title: title,
+				description: description,
+				message: message,
+				image_internal: imageInternal,
+				image_external: imageExternal,
+				registed_at: new Date(),
+				public: publicFlag,
 			});
-			await entryInsertSth.finalize();
 
-			const entryId = entryInsertResult.lastID;
+			const sth = await dbh.prepare(`
+				INSERT INTO
+					d_entry
+					${sqlInto}
+				VALUES
+					${sqlValues}
+			`);
+			const result = await sth.run(bindParams);
+			await sth.finalize();
+
+			const entryId = result.lastID;
 			if (entryId === undefined) {
 				throw new Error('Failed to INSERT into `d_entry` table.');
 			}
 
 			if (categoryIds !== undefined && categoryIds.length > 0) {
-				const categoryInsertSth = await dbh.prepare(`
-					INSERT INTO d_entry_category
+				const categorySth = await dbh.prepare(`
+					INSERT INTO
+						d_entry_category
 						(entry_id, category_id)
 					VALUES
 						(:entry_id, :category_id)
 				`);
+
 				await Promise.all(
 					categoryIds.map(async (categoryId) => {
-						await categoryInsertSth.run({
+						await categorySth.run({
 							':entry_id': entryId,
 							':category_id': categoryId,
 						});
 					}),
 				);
-				await categoryInsertSth.finalize();
+				await categorySth.finalize();
 			}
 
 			if (relationIds !== undefined && relationIds.length > 0) {
-				const relationInsertSth = await dbh.prepare(`
-					INSERT INTO d_entry_relation
+				const relationSth = await dbh.prepare(`
+					INSERT INTO
+						d_entry_relation
 						(entry_id, relation_id)
 					VALUES
 						(:entry_id, :relation_id)
 				`);
+
 				await Promise.all(
 					relationIds.map(async (relationId) => {
-						await relationInsertSth.run({
+						await relationSth.run({
 							':entry_id': entryId,
 							':relation_id': relationId,
 						});
 					}),
 				);
-				await relationInsertSth.finalize();
+				await relationSth.finalize();
 			}
 
 			await dbh.exec('COMMIT');
@@ -317,8 +321,8 @@ export default class BlogPostDao extends BlogDao {
 	): Promise<void> {
 		const dbh = await this.getDbh();
 
-		let imageInternal = null;
-		let imageExternal = null;
+		let imageInternal: string | undefined;
+		let imageExternal: string | undefined;
 		if (imagePath !== undefined) {
 			try {
 				new URL(imagePath); /* eslint-disable-line no-new */
@@ -330,68 +334,57 @@ export default class BlogPostDao extends BlogDao {
 
 		await dbh.exec('BEGIN');
 		try {
-			if (timestampUpdate) {
+			{
+				const { sqlSet, sqlWhere, bindParams } = prepareUpdate(
+					timestampUpdate
+						? {
+								title: title,
+								description: description,
+								message: message,
+								image_internal: imageInternal,
+								image_external: imageExternal,
+								updated_at: new Date(),
+								public: publicFlag,
+							}
+						: {
+								title: title,
+								description: description,
+								message: message,
+								image_internal: imageInternal,
+								image_external: imageExternal,
+								public: publicFlag,
+							},
+					{
+						id: entryId,
+					},
+				);
+
 				const entryUpdateSth = await dbh.prepare(`
 					UPDATE
 						d_entry
 					SET
-						title = :title,
-						description = :description,
-						message = :message,
-						image_internal = :image_internal,
-						image_external = :image_external,
-						updated_at = :updated_at,
-						public = :public
+						${sqlSet}
 					WHERE
-						id = :entry_id
+						${sqlWhere}
 				`);
-				await entryUpdateSth.run({
-					':title': title,
-					':description': DbUtil.emptyToNull(description ?? null),
-					':message': message,
-					':image_internal': imageInternal,
-					':image_external': imageExternal,
-					':updated_at': DbUtil.dateToUnix(),
-					':public': publicFlag,
-					':entry_id': entryId,
-				});
-				await entryUpdateSth.finalize();
-			} else {
-				const entryUpdateSth = await dbh.prepare(`
-					UPDATE
-						d_entry
-					SET
-						title = :title,
-						description = :description,
-						message = :message,
-						image_internal = :image_internal,
-						image_external = :image_external,
-						public = :public
-					WHERE
-						id = :entry_id
-				`);
-				await entryUpdateSth.run({
-					':title': title,
-					':description': DbUtil.emptyToNull(description ?? null),
-					':message': message,
-					':image_internal': imageInternal,
-					':image_external': imageExternal,
-					':public': publicFlag,
-					':entry_id': entryId,
-				});
+				await entryUpdateSth.run(bindParams);
 				await entryUpdateSth.finalize();
 			}
 
-			const categoryDeleteSth = await dbh.prepare(`
-				DELETE FROM
-					d_entry_category
-				WHERE
-					entry_id = :entry_id
-			`);
-			await categoryDeleteSth.run({
-				':entry_id': entryId,
-			});
-			await categoryDeleteSth.finalize();
+			{
+				const { sqlWhere, bindParams } = prepareDelete({
+					entry_id: entryId,
+				});
+
+				const categoryDeleteSth = await dbh.prepare(`
+					DELETE FROM
+						d_entry_category
+					WHERE
+						${sqlWhere}
+				`);
+				await categoryDeleteSth.run(bindParams);
+				await categoryDeleteSth.finalize();
+			}
 
 			if (categoryIds !== undefined && categoryIds.length > 0) {
 				const categoryInsertSth = await dbh.prepare(`
@@ -411,16 +404,20 @@ export default class BlogPostDao extends BlogDao {
 				await categoryInsertSth.finalize();
 			}
 
-			const relationDeleteSth = await dbh.prepare(`
-				DELETE FROM
-					d_entry_relation
-				WHERE
-					entry_id = :entry_id
-			`);
-			await relationDeleteSth.run({
-				':entry_id': entryId,
-			});
-			await relationDeleteSth.finalize();
+			{
+				const { sqlWhere, bindParams } = prepareDelete({
+					entry_id: entryId,
+				});
+
+				const relationDeleteSth = await dbh.prepare(`
+					DELETE FROM
+						d_entry_relation
+					WHERE
+						${sqlWhere}
+				`);
+				await relationDeleteSth.run(bindParams);
+				await relationDeleteSth.finalize();
+			}
 
 			if (relationIds !== undefined && relationIds.length > 0) {
 				const relationInsertSth = await dbh.prepare(`
@@ -487,7 +484,7 @@ export default class BlogPostDao extends BlogDao {
 			':id': id,
 		});
 
-		const row: Select | undefined = await sth.get();
+		const row = await sth.get<Select>();
 		await sth.finalize();
 
 		if (row === undefined) {
@@ -495,15 +492,15 @@ export default class BlogPostDao extends BlogDao {
 		}
 
 		return {
-			id: id,
-			title: row.title,
-			description: row.description,
-			message: row.message,
-			category_ids: row.category_ids !== null ? row.category_ids.split(' ') : [],
-			image_internal: row.image_internal,
-			image_external: row.image_external,
-			relation_ids: row.relation_ids !== null ? row.relation_ids.split(' ') : [],
-			public: Boolean(row.public),
+			id: sqliteToJS(id),
+			title: sqliteToJS(row.title),
+			description: sqliteToJS(row.description),
+			message: sqliteToJS(row.message),
+			categoryIds: sqliteToJS(row.category_ids)?.split(' ') ?? [],
+			imageInternal: sqliteToJS(row.image_internal),
+			imageExternal: sqliteToJS(row.image_external),
+			relationIds: sqliteToJS(row.relation_ids)?.split(' ') ?? [],
+			public: sqliteToJS(row.public, 'boolean'),
 		};
 	}
 }

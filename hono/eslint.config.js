@@ -9,12 +9,6 @@ export default [
 		ignores: ['dist/**/*.js'],
 	},
 	{
-		files: ['src/dao/**/*.ts'],
-		rules: {
-			'@typescript-eslint/no-non-null-assertion': 'off',
-		},
-	},
-	{
 		files: ['src/markdown/**/*.ts'],
 		rules: {
 			'arrow-body-style': 'off',

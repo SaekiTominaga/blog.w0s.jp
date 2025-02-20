@@ -46,8 +46,8 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 
 	const entries: BlogView.EntryData[] = [];
 	for (const entryDto of entriesDto) {
-		let imageExternal = entryDto.image_external;
-		if (imageExternal !== null) {
+		let { imageExternal } = entryDto;
+		if (imageExternal !== undefined) {
 			const url = new URL(imageExternal);
 
 			switch (url.origin) {
@@ -66,10 +66,10 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 		entries.push({
 			id: entryDto.id,
 			title: new MarkdownTitle(entryDto.title).mark(),
-			image_internal: entryDto.image_internal,
-			image_external: imageExternal,
-			registed_at: dayjs(entryDto.registed_at),
-			updated_at: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : null,
+			imageInternal: entryDto.imageInternal,
+			imageExternal: imageExternal,
+			registedAt: dayjs(entryDto.registedAt),
+			updatedAt: entryDto.updatedAt !== undefined ? dayjs(entryDto.updatedAt) : undefined,
 		});
 	}
 

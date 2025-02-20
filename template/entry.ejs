@@ -45,7 +45,7 @@
 					<article class="p-entry">
 						<header class="p-entry__header">
 							<div class="p-entry-header-title">
-								<h1><%- structuredData.title_marked %></h1>
+								<h1><%- structuredData.titleMarked %></h1>
 							</div>
 
 							<dl class="p-entry-header-date c-entry-meta">
@@ -105,21 +105,21 @@
 											<a href="<%= relation.id %>">
 												<span class="c-entry-link__title"><%- relation.title %></span>
 												<span class="c-entry-link__thumb">
-													<%_ if (relation.image_internal !== null) { _%>
+													<%_ if (relation.imageInternal !== undefined) { _%>
 													<picture>
-														<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=avif;w=360;h=240;quality=30 2x" />
-														<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=webp;w=360;h=240;quality=30 2x" />
-														<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
+														<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=avif;w=360;h=240;quality=30 2x" />
+														<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=webp;w=360;h=240;quality=30 2x" />
+														<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
 													</picture>
-													<%_ } else if (relation.image_external !== null) { _%>
-													<img src="<%= relation.image_external %>" alt="" class="c-entry-link__image" />
+													<%_ } else if (relation.imageExternal !== undefined) { _%>
+													<img src="<%= relation.imageExternal %>" alt="" class="c-entry-link__image" />
 													<%_ } else { _%>
 													<img src="/image/noimage.svg" alt="" width="180" height="120" class="c-entry-link__image" />
 													<%_ } _%>
 												</span>
 											</a>
 											<div class="c-entry-link__date">
-												<time datetime="<%= relation.registed_at.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= relation.registed_at.format('YYYY年M月D日') %></time>
+												<time datetime="<%= relation.registedAt.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= relation.registedAt.format('YYYY年M月D日') %></time>
 											</div>
 										</div>
 									</li>

@@ -28,7 +28,7 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 				FROM
 					d_entry
 			`);
-			const rows: Select[] = await sth.all();
+			const rows = await sth.all<Select[]>();
 			await sth.finalize();
 
 			for (const row of rows) {
@@ -50,7 +50,7 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 			await sth.bind({
 				':id': entryId,
 			});
-			const row: Select | undefined = await sth.get();
+			const row = await sth.get<Select>();
 			await sth.finalize();
 
 			if (row !== undefined) {
@@ -73,13 +73,13 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 		await dbh.exec('BEGIN');
 		try {
 			const sth = await dbh.prepare(`
-					UPDATE
-						d_entry
-					SET
-						message = :message
-					WHERE
-						id = :id
-				`);
+				UPDATE
+					d_entry
+				SET
+					message = :message
+				WHERE
+					id = :id
+			`);
 			await sth.run({
 				':message': message,
 				':id': entryId,

@@ -4,8 +4,8 @@ import filenamify from 'filenamify';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
-import configHono from '../config/hono.js';
 import configCategory from '../config/category.js';
+import configHono from '../config/hono.js';
 import BlogCategoryDao from '../dao/BlogCategoryDao.js';
 import MarkdownTitle from '../markdown/Title.js';
 import { env } from '../util/env.js';
@@ -49,8 +49,8 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 
 	const entries: BlogView.EntryData[] = [];
 	for (const entryDto of entriesDto) {
-		let imageExternal = entryDto.image_external;
-		if (imageExternal !== null) {
+		let { imageExternal } = entryDto;
+		if (imageExternal !== undefined) {
 			const url = new URL(imageExternal);
 
 			switch (url.origin) {
@@ -69,10 +69,10 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 		entries.push({
 			id: entryDto.id,
 			title: new MarkdownTitle(entryDto.title).mark(),
-			image_internal: entryDto.image_internal,
-			image_external: imageExternal,
-			registed_at: dayjs(entryDto.registed_at),
-			updated_at: entryDto.updated_at !== null ? dayjs(entryDto.updated_at) : null,
+			imageInternal: entryDto.imageInternal,
+			imageExternal: imageExternal,
+			registedAt: dayjs(entryDto.registedAt),
+			updatedAt: entryDto.updatedAt !== undefined ? dayjs(entryDto.updatedAt) : undefined,
 		});
 	}
 

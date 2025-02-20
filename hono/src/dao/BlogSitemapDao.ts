@@ -1,5 +1,10 @@
-import DbUtil from '../util/DbUtil.js';
+import { sqliteToJS } from '../util/sql.js';
 import BlogDao from './BlogDao.js';
+
+interface Entry {
+	id: number;
+	updatedAt: Date;
+}
 
 /**
  * サイトマップ
@@ -12,7 +17,7 @@ export default class BlogSitemapDao extends BlogDao {
 	 *
 	 * @returns 記事データ（該当する記事が存在しない場合は空配列）
 	 */
-	async getEntries(limit: number): Promise<BlogView.SitemapEntry[]> {
+	async getEntries(limit: number): Promise<Entry[]> {
 		interface Select {
 			id: number;
 			registed_at: number;
@@ -39,17 +44,14 @@ export default class BlogSitemapDao extends BlogDao {
 			':limit': limit,
 		});
 
-		const rows: Select[] = await sth.all();
+		const rows = await sth.all<Select[]>();
 		await sth.finalize();
 
-		const entries: BlogView.SitemapEntry[] = [];
-		for (const row of rows) {
-			entries.push({
-				id: row.id,
-				updated_at: DbUtil.unixToDayjs(row.updated_at ?? row.registed_at)!,
-			});
-		}
-
-		return entries;
+		return rows.map(
+			(row): Entry => ({
+				id: sqliteToJS(row.id),
+				updatedAt: sqliteToJS(row.updated_at ?? row.registed_at, 'date'),
+			}),
+		);
 	}
 }

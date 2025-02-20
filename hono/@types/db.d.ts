@@ -2,12 +2,12 @@ declare namespace BlogDb {
 	interface Entry {
 		id: number;
 		title: string;
-		description: string | null;
+		description: string | undefined;
 		message: string;
-		image_internal: string | null;
-		image_external: string | null;
-		registed_at: Date;
-		updated_at: Date | null;
+		imageInternal: string | undefined;
+		imageExternal: string | undefined;
+		registedAt: Date;
+		updatedAt: Date | undefined;
 		public: boolean;
 	}
 }

@@ -26,7 +26,7 @@
 		<script src="https://analytics.w0s.jp/matomo/matomo.js" async=""></script>
 		<script src="/script/analytics.js" defer=""></script>
 
-		<title>富永日記帳<%_ if (page !== 1) { _%>: <%= entries.at(-1).registed_at.format('YYYY年M月D日') %>～<%= entries.at(0).registed_at.format('YYYY年M月D日') %>の記事一覧<%_ } _%></title>
+		<title>富永日記帳<%_ if (page !== 1) { _%>: <%= entries.at(-1).registedAt.format('YYYY年M月D日') %>～<%= entries.at(0).registedAt.format('YYYY年M月D日') %>の記事一覧<%_ } _%></title>
 	</head>
 	<body>
 		<div class="l-page">
@@ -55,14 +55,14 @@
 								<a href="/entry/<%= entry.id %>">
 									<span class="c-entry-link__title"><%- entry.title %></span>
 									<span class="c-entry-link__thumb">
-										<%_ if (entry.image_internal !== null) { _%>
+										<%_ if (entry.imageInternal !== undefined) { _%>
 										<picture>
-											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=avif;w=360;h=240;quality=30 2x" />
-											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=webp;w=360;h=240;quality=30 2x" />
-											<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.image_internal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
+											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=avif;w=360;h=240;quality=30 2x" />
+											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=webp;w=360;h=240;quality=30 2x" />
+											<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
 										</picture>
-										<%_ } else if (entry.image_external !== null) { _%>
-										<img src="<%= entry.image_external %>" alt="" class="c-entry-link__image" />
+										<%_ } else if (entry.imageExternal !== undefined) { _%>
+										<img src="<%= entry.imageExternal %>" alt="" class="c-entry-link__image" />
 										<%_ } else { _%>
 										<img src="/image/noimage.svg" alt="" width="180" height="120" class="c-entry-link__image" />
 										<%_ } _%>
@@ -72,12 +72,12 @@
 									<dl class="c-entry-meta">
 										<div class="c-entry-meta__group">
 											<dt>投稿</dt>
-											<dd><time datetime="<%= entry.registed_at.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.registed_at.format('YYYY年M月D日') %></time></dd>
+											<dd><time datetime="<%= entry.registedAt.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.registedAt.format('YYYY年M月D日') %></time></dd>
 										</div>
-										<%_ if (entry.updated_at !== null) { _%>
+										<%_ if (entry.updatedAt !== undefined) { _%>
 										<div class="c-entry-meta__group">
 											<dt>最終更新</dt>
-											<dd><time datetime="<%= entry.updated_at.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.updated_at.format('YYYY年M月D日') %></time></dd>
+											<dd><time datetime="<%= entry.updatedAt.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.updatedAt.format('YYYY年M月D日') %></time></dd>
 										</div>
 										<%_ } _%>
 									</dl>
