@@ -52,6 +52,7 @@ const updateModified = async (dao: BlogPostDao): Promise<Process.Result> => {
  * @param context - Context
  * @param requestQuery - URL クエリー情報
  * @param reviseData - 修正記事データ
+ * @param updateMode - 新規追加 or 修正
  * @param validate - バリデートエラーメッセージ
  * @param validate.select - 記事選択
  * @param validate.post - 記事投稿
@@ -68,6 +69,7 @@ const rendering = async (
 	context: Context,
 	requestQuery?: Readonly<RequestQuery>,
 	reviseData?: Readonly<ReviseData>,
+	updateMode?: boolean,
 	validate?: {
 		select?: string[];
 		post?: string[];
@@ -108,7 +110,7 @@ const rendering = async (
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		requestQuery: requestQuery ?? {},
 		reviseData: reviseData ?? {},
-		updateMode: requestQuery?.id !== undefined,
+		updateMode: updateMode ?? false,
 		selectValidates: validate?.select ?? [],
 		postValidates: validate?.post ?? [],
 		postResults: results?.post ?? [],
@@ -139,13 +141,13 @@ export const adminApp = new Hono()
 			reviseData = await dao.getReviseData(requestQuery.id);
 			if (reviseData === undefined) {
 				/* 存在しない記事 ID を指定した場合 */
-				return await rendering(context, requestQuery, reviseData, {
+				return await rendering(context, requestQuery, reviseData, undefined, {
 					select: [configAdmin.validator.entryNotFound],
 				});
 			}
 		}
 
-		return await rendering(context, requestQuery, reviseData);
+		return await rendering(context, requestQuery, reviseData, requestQuery.id !== undefined);
 	})
 	.post('/post', validatorPostForm, async (context) => {
 		/* 記事投稿 */
@@ -156,16 +158,17 @@ export const adminApp = new Hono()
 		const dao = new BlogPostDao(env('SQLITE_BLOG'));
 
 		const postResults: Process.Result[] = [];
+		let entryId: number;
 		let entryUrl: string;
 		if (requestForm.id === undefined) {
 			/* 新規記事追加 */
 			if (await dao.isExistsTitle(requestForm.title)) {
-				return await rendering(context, undefined, undefined, {
+				return await rendering(context, undefined, undefined, false, {
 					post: [configAdmin.validator.titleUnique],
 				});
 			}
 
-			const entryId = await dao.insert(
+			entryId = await dao.insert(
 				requestForm.title,
 				requestForm.description,
 				requestForm.message,
@@ -181,6 +184,8 @@ export const adminApp = new Hono()
 			postResults.push({ success: true, message: `${configAdmin.processMessage.insert.success} ${entryUrl}` });
 		} else {
 			/* 既存記事更新 */
+			entryId = requestForm.id;
+
 			await dao.update(
 				requestForm.id,
 				requestForm.title,
@@ -228,9 +233,26 @@ export const adminApp = new Hono()
 			postResults.push(postMisskeyResult);
 		}
 
-		return await rendering(context, undefined, undefined, undefined, {
-			post: postResults,
-		});
+		return await rendering(
+			context,
+			undefined,
+			{
+				id: entryId,
+				title: requestForm.title,
+				description: requestForm.description,
+				message: requestForm.message,
+				categoryIds: requestForm.categories ?? [],
+				imageInternal: requestForm.imagePath,
+				imageExternal: requestForm.imagePath,
+				relationIds: requestForm.relationIds ?? [],
+				public: requestForm.public,
+			},
+			true,
+			undefined,
+			{
+				post: postResults,
+			},
+		);
 	})
 	.post('/update', async (context) => {
 		/* View アップデート反映 */
@@ -242,7 +264,7 @@ export const adminApp = new Hono()
 		results.push(updateModifiedResult);
 		results.push(createFeedResult);
 
-		return await rendering(context, undefined, undefined, undefined, {
+		return await rendering(context, undefined, undefined, undefined, undefined, {
 			update: results,
 		});
 	})
@@ -377,7 +399,7 @@ export const adminApp = new Hono()
 			);
 		}
 
-		return await rendering(context, undefined, undefined, undefined, {
+		return await rendering(context, undefined, undefined, undefined, undefined, {
 			upload: results,
 		});
 	});
