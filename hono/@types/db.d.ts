@@ -5,7 +5,7 @@ declare namespace BlogDb {
 		description: string | undefined;
 		message: string;
 		imageInternal: string | undefined;
-		imageExternal: string | undefined;
+		imageExternal: URL | undefined;
 		registedAt: Date;
 		updatedAt: Date | undefined;
 		public: boolean;

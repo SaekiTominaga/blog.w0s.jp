@@ -11,7 +11,7 @@ interface Relation {
 	id: number;
 	title: string;
 	imageInternal: string | undefined;
-	imageExternal: string | undefined;
+	imageExternal: URL | undefined;
 	registedAt: Date;
 }
 
@@ -71,7 +71,7 @@ export default class BlogEntryDao extends BlogDao {
 			description: sqliteToJS(row.description),
 			message: sqliteToJS(row.message),
 			imageInternal: sqliteToJS(row.image_internal),
-			imageExternal: sqliteToJS(row.image_external),
+			imageExternal: sqliteToJS(row.image_external, 'url'),
 			registedAt: sqliteToJS(row.registed_at, 'date'),
 			updatedAt: sqliteToJS(row.updated_at, 'date'),
 			public: true,
@@ -173,7 +173,7 @@ export default class BlogEntryDao extends BlogDao {
 				id: sqliteToJS(row.id),
 				title: sqliteToJS(row.title),
 				imageInternal: sqliteToJS(row.image_internal),
-				imageExternal: sqliteToJS(row.image_external),
+				imageExternal: sqliteToJS(row.image_external, 'url'),
 				registedAt: sqliteToJS(row.registed_at, 'date'),
 			}),
 		);

@@ -160,6 +160,17 @@ export const adminApp = new Hono()
 		const postResults: Process.Result[] = [];
 		let entryId: number;
 		let entryUrl: string;
+
+		let imageInternal: string | undefined;
+		let imageExternal: URL | undefined;
+		if (requestForm.imagePath !== undefined) {
+			if (!(requestForm.imagePath instanceof URL)) {
+				imageInternal = requestForm.imagePath;
+			} else {
+				imageExternal = requestForm.imagePath;
+			}
+		}
+
 		if (requestForm.id === undefined) {
 			/* 新規記事追加 */
 			if (await dao.isExistsTitle(requestForm.title)) {
@@ -173,7 +184,8 @@ export const adminApp = new Hono()
 				requestForm.description,
 				requestForm.message,
 				requestForm.categories,
-				requestForm.imagePath,
+				imageInternal,
+				imageExternal,
 				requestForm.relationIds,
 				requestForm.public,
 			);
@@ -192,7 +204,8 @@ export const adminApp = new Hono()
 				requestForm.description,
 				requestForm.message,
 				requestForm.categories,
-				requestForm.imagePath,
+				imageInternal,
+				imageExternal,
 				requestForm.relationIds,
 				requestForm.public,
 				requestForm.timestamp,
@@ -242,8 +255,8 @@ export const adminApp = new Hono()
 				description: requestForm.description,
 				message: requestForm.message,
 				categoryIds: requestForm.categories ?? [],
-				imageInternal: requestForm.imagePath,
-				imageExternal: requestForm.imagePath,
+				imageInternal: imageInternal,
+				imageExternal: imageExternal,
 				relationIds: requestForm.relationIds ?? [],
 				public: requestForm.public,
 			},

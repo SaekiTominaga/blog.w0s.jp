@@ -325,12 +325,12 @@ export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastEle
 			const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(`https://m.media-amazon.com/images/I/${image.id}.jpg`));
 			paapi5ItemImageUrlParser.setSize(AMAZON_IMAGE_SIZE);
 
-			const url = paapi5ItemImageUrlParser.toString();
+			const url1x = paapi5ItemImageUrlParser.getURL();
 			paapi5ItemImageUrlParser.setSizeMultiply(2);
-			const url2x = paapi5ItemImageUrlParser.toString();
+			const url2x = paapi5ItemImageUrlParser.getURL();
 
-			imageElementProperties['src'] = url;
-			imageElementProperties['srcset'] = `${url2x} 2x`;
+			imageElementProperties['src'] = url1x.toString();
+			imageElementProperties['srcset'] = `${url2x.toString()} 2x`;
 			imageElementProperties['alt'] = '';
 
 			if (image.size !== undefined) {

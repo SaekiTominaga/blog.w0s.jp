@@ -25,7 +25,7 @@
 		<%_ } _%> <%_ if (structuredData.image !== undefined) { _%>
 		<meta property="og:title" content="<%= structuredData.title %>" />
 		<meta property="og:type" content="article" />
-		<meta property="og:image" content="<%= structuredData.image %>" />
+		<meta property="og:image" content="<%= structuredData.image.toString() %>" />
 		<meta property="og:url" content="https://blog.w0s.jp/entry/<%= entryId %>" />
 		<meta property="og:locale" content="ja_JP" />
 		<meta property="og:site_name" content="富永日記帳" />
@@ -112,7 +112,7 @@
 														<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
 													</picture>
 													<%_ } else if (relation.imageExternal !== undefined) { _%>
-													<img src="<%= relation.imageExternal %>" alt="" class="c-entry-link__image" />
+													<img src="<%= relation.imageExternal.toString() %>" alt="" class="c-entry-link__image" />
 													<%_ } else { _%>
 													<img src="/image/noimage.svg" alt="" width="180" height="120" class="c-entry-link__image" />
 													<%_ } _%>

@@ -5,7 +5,7 @@ declare namespace BlogView {
 		message?: string;
 		description?: string | undefined;
 		imageInternal: string | undefined;
-		imageExternal: string | undefined;
+		imageExternal: URL | undefined;
 		registedAt: import('dayjs').Dayjs;
 		updatedAt?: import('dayjs').Dayjs | undefined;
 	}

@@ -63,7 +63,7 @@ export default class BlogPostDao extends BlogDao {
 				description: sqliteToJS(row.description),
 				message: sqliteToJS(row.message),
 				imageInternal: sqliteToJS(row.image_internal),
-				imageExternal: sqliteToJS(row.image_external),
+				imageExternal: sqliteToJS(row.image_external, 'url'),
 				registedAt: sqliteToJS(row.registed_at, 'date'),
 				updatedAt: sqliteToJS(row.updated_at, 'date'),
 				public: sqliteToJS(row.public, 'boolean'),
