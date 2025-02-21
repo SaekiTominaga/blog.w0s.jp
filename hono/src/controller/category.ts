@@ -57,7 +57,7 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 					const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(imageExternal);
 					paapi5ItemImageUrlParser.setSize(configCategory.imageExternal.amazon.size);
 
-					imageExternal = new URL(paapi5ItemImageUrlParser.toString());
+					imageExternal = paapi5ItemImageUrlParser.getURL();
 					break;
 				}
 				default:
