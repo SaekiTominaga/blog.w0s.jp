@@ -1,6 +1,5 @@
 import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import terser from '@rollup/plugin-terser';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 
 const inputDir = 'script';
@@ -11,10 +10,10 @@ const jsFiles = ['trusted-types.ts'];
 const legacyFiles = ['analytics.ts'];
 
 const pluginCommonjs = commonjs();
-const pluginResolve = resolve();
-const pluginTerser = process.env.build === 'production' ? terser() : undefined;
+const pluginResolve = nodeResolve();
 const pluginTypeScript = typescript({
 	tsconfig: `${inputDir}/tsconfig.json`,
+	outputToFilesystem: true,
 });
 
 const moduleConfigurations = moduleFiles.map(
@@ -22,40 +21,45 @@ const moduleConfigurations = moduleFiles.map(
 		/** @type {import('rollup').RollupOptions} */
 		({
 			input: `${inputDir}/${file}`,
-			plugins: [pluginCommonjs, pluginResolve, pluginTerser, pluginTypeScript],
+			plugins: [pluginCommonjs, pluginResolve, pluginTypeScript],
 			output: {
 				dir: outputDir,
-				sourcemap: true,
+				format: 'es',
 				entryFileNames: '[name].mjs',
+				generatedCode: 'es2015',
+				minifyInternalExports: false,
+				sourcemap: 'hidden',
 			},
+			strictDeprecations: true,
 		}),
 );
 
-const jsConfigurations = jsFiles.map(
-	(file) =>
-		/** @type {import('rollup').RollupOptions} */
-		({
-			input: `${inputDir}/${file}`,
-			plugins: [pluginTerser, pluginTypeScript],
-			output: {
-				dir: outputDir,
-				sourcemap: true,
-				format: 'iife',
-			},
-		}),
-);
+/** @type {import('rollup').RollupOptions} */
+const jsConfig = {
+	input: jsFiles.map((file) => `${inputDir}/${file}`),
+	plugins: [pluginTypeScript],
+	output: {
+		dir: outputDir,
+		format: 'iife',
+		generatedCode: 'es2015',
+		minifyInternalExports: false,
+		sourcemap: 'hidden',
+	},
+	strictDeprecations: true,
+};
 
-const legacyConfigurations = legacyFiles.map(
-	(file) =>
-		/** @type {import('rollup').RollupOptions} */
-		({
-			input: `${inputDir}/${file}`,
-			plugins: [pluginTerser, pluginTypeScript],
-			output: {
-				dir: outputDir,
-				sourcemap: true,
-			},
-		}),
-);
+/** @type {import('rollup').RollupOptions} */
+const legacyConfig = {
+	input: legacyFiles.map((file) => `${inputDir}/${file}`),
+	plugins: [pluginTypeScript],
+	output: {
+		dir: outputDir,
+		format: 'es',
+		generatedCode: 'es2015',
+		minifyInternalExports: false,
+		sourcemap: 'hidden',
+	},
+	strictDeprecations: true,
+};
 
-export default moduleConfigurations.concat(jsConfigurations).concat(legacyConfigurations);
+export default [...moduleConfigurations, jsConfig, legacyConfig];
