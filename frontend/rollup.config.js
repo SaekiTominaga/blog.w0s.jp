@@ -28,7 +28,7 @@ const moduleConfigurations = moduleFiles.map(
 				entryFileNames: '[name].mjs',
 				generatedCode: 'es2015',
 				minifyInternalExports: false,
-				sourcemap: true,
+				sourcemap: 'hidden',
 			},
 			strictDeprecations: true,
 		}),
@@ -43,7 +43,7 @@ const jsConfig = {
 		format: 'iife',
 		generatedCode: 'es2015',
 		minifyInternalExports: false,
-		sourcemap: true,
+		sourcemap: 'hidden',
 	},
 	strictDeprecations: true,
 };
@@ -57,7 +57,7 @@ const legacyConfig = {
 		format: 'es',
 		generatedCode: 'es2015',
 		minifyInternalExports: false,
-		sourcemap: true,
+		sourcemap: 'hidden',
 	},
 	strictDeprecations: true,
 };
