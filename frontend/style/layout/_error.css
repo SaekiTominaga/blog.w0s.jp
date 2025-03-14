@@ -16,11 +16,11 @@
 .l-header {
 	grid-column: header;
 	border-block-end: 1px dashed var(--color-border-dark);
-	padding: 12vb 0 8vb;
+	padding-block: 12dvb 8dvb;
 }
 
 /* ===== コンテンツエリア ===== */
 .l-content {
 	grid-column: content;
-	padding: 10vb 0;
+	padding-block: 10dvb;
 }

@@ -283,8 +283,8 @@
 	margin: 0;
 	background: transparent;
 	padding: 1em;
-	block-size: 100vb;
-	inline-size: 100vi;
+	block-size: 100dvb;
+	inline-size: 100dvi;
 	color: var(--color-white);
 	font-size: 1.2rem;
 

@@ -28,7 +28,7 @@
 
 .p-post-preview__preview {
 	border: 1px solid var(--color-lightgray);
-	max-block-size: 75vb;
+	max-block-size: 75dvb;
 	overflow-y: scroll;
 	resize: block;
 }
