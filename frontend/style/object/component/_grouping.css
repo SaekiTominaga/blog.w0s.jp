@@ -12,7 +12,7 @@
 	--_bullet-gap: 0.5em;
 	--_image-border-width: 1px;
 	/* stylelint-disable-next-line plugin/use-logical-units */
-	--_image-width: min(180px, 30vw);
+	--_image-width: min(180px, 30dvw);
 	--_image-height: 120px;
 	--_padding-inline-start: calc(var(--_image-width) + var(--_image-border-width) * 2 + var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
 	--_padding-inline-end: 0;
