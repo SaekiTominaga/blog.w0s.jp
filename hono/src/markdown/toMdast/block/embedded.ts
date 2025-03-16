@@ -269,7 +269,7 @@ const toMdast = (): Plugin => {
 					let imageId: string | undefined;
 					let imageSize: Size | undefined;
 					metaOption?.split(META_SEPARATOR).forEach((meta) => {
-						if (/^[1-9][0-9]{1,2}x[1-9][0-9]{1,2}$/.test(meta)) {
+						if (/^[1-9][0-9]{1,3}x[1-9][0-9]{1,3}$/.test(meta)) {
 							/* 画像サイズ */
 							const sizes = meta.split('x');
 							imageSize = {
