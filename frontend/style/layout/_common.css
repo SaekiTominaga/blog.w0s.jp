@@ -128,15 +128,22 @@
 	line-height: var(--line-height-narrow);
 }
 
-/* サイト横断ナビゲーション */
+/* サイトナビゲーション */
 .l-footer__nav {
 	grid-column: content;
 	container: footer-nav / inline-size;
+}
+
+/* ソーシャルメディア */
+.l-footer__social {
+	grid-column: content;
+	container: footer-social / inline-size;
+	margin-block-start: 2em;
 }
 
 /* アドセンス */
 .l-footer__ads {
 	grid-column: content;
 	container: footer-ads / inline-size;
-	margin-block-start: 100px;
+	margin-block-start: 8em;
 }

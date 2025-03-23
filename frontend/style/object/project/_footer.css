@@ -2,38 +2,62 @@
  *   ページフッター
  * ============================== */
 
-/* ===== ナビゲーション ===== */
+/* ===== サイトナビゲーション ===== */
 .p-footer-nav {
+}
+
+.p-footer-nav__links {
 	--_flex-direction: column;
-	--_justify-content: flex-start;
 
 	display: block flex;
 	flex-flow: var(--_flex-direction) wrap;
-	gap: 0.5em 0;
-	justify-content: var(--_justify-content);
-	font-size: calc(100% * pow(var(--font-ratio), 1));
+	gap: 1em 2em;
+	justify-content: flex-start;
 
 	@container footer-nav (inline-size >= 30em) {
 		--_flex-direction: row;
-		--_justify-content: center;
-
-		& > li {
-			display: block flex;
-			align-items: center;
-
-			&:not(:last-child)::after {
-				transform: rotate(22.5deg);
-				margin-inline: 2em;
-				background-color: var(--page-color);
-				block-size: 0.8em;
-				inline-size: 1px;
-				content: "";
-			}
-		}
 	}
 
 	& :any-link {
 		outline-offset: var(--outline-offset-linkonly);
+	}
+}
+
+/* ===== ソーシャルメディア ===== */
+.p-footer-social {
+}
+
+.p-footer-social__links {
+	display: block flex;
+	flex-flow: row wrap;
+	gap: 24px;
+	font-size: calc(100% / pow(var(--font-ratio), 2));
+
+	@container footer-social (inline-size >= 600px) {
+		justify-content: flex-end;
+	}
+
+	& > li {
+		text-align: center;
+	}
+
+	& :any-link {
+		outline-offset: var(--outline-offset-linkonly);
+	}
+}
+
+.p-footer-social__image {
+	display: inline flex;
+	align-items: center;
+	padding-block-end: 0.5em;
+}
+
+.p-footer-social__text {
+	inline-size: fit-content;
+
+	&::before {
+		display: block flow;
+		content: "";
 	}
 }
 
