@@ -97,7 +97,7 @@ export const form = validator('form', (value): RequestForm => {
 	return {
 		id: id !== undefined && id !== '' ? Number(id) : undefined,
 		title,
-		description,
+		description: description !== '' ? description : undefined,
 		message,
 		categories,
 		imagePath: imagePath !== undefined ? (URL.parse(imagePath) ?? imagePath) : undefined,
