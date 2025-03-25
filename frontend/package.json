@@ -22,25 +22,25 @@
 	},
 	"dependencies": {
 		"@w0s/button-clipboard": "^3.0.1",
-		"@w0s/footnote-reference-popover": "^7.0.1",
+		"@w0s/footnote-reference-popover": "^7.1.1",
 		"@w0s/form-before-unload-confirm": "^3.0.1",
 		"@w0s/form-submit-overlay": "^4.0.1",
-		"@w0s/input-file-preview": "^3.0.1",
-		"@w0s/paapi-item-image-url-parser": "^3.1.1",
+		"@w0s/input-file-preview": "^3.0.2",
+		"@w0s/paapi-item-image-url-parser": "^3.2.1",
 		"@w0s/report-js-error": "^3.0.1",
 		"@w0s/report-same-referrer": "^4.0.1",
 		"@w0s/string-convert": "^3.0.0",
-		"@w0s/tab": "^4.3.1",
-		"prettier": "^3.4.2",
+		"@w0s/tab": "^4.4.1",
+		"prettier": "^3.5.3",
 		"slash": "^5.1.0",
 		"svgo": "^3.3.2"
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^3.0.0",
-		"@rollup/plugin-commonjs": "^28.0.2",
-		"@rollup/plugin-node-resolve": "^16.0.0",
+		"@rollup/plugin-commonjs": "^28.0.3",
+		"@rollup/plugin-node-resolve": "^16.0.1",
 		"@rollup/plugin-typescript": "^12.1.2",
-		"@types/node": "^22.12.0",
+		"@types/node": "^22.13.13",
 		"@types/trusted-types": "^2.0.7",
 		"brotli-cli": "^2.1.0",
 		"cssnano": "^7.0.6",
@@ -50,7 +50,7 @@
 		"postcss-custom-media": "^11.0.5",
 		"postcss-import": "^16.1.0",
 		"postcss-nesting": "^13.0.1",
-		"rollup": "^4.32.1",
+		"rollup": "^4.37.0",
 		"vfile-message": "^4.0.2"
 	}
 }
