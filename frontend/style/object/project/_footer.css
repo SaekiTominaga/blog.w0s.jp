@@ -4,9 +4,6 @@
 
 /* ===== サイトナビゲーション ===== */
 .p-footer-nav {
-}
-
-.p-footer-nav__links {
 	--_flex-direction: column;
 
 	display: block flex;
@@ -25,9 +22,6 @@
 
 /* ===== ソーシャルメディア ===== */
 .p-footer-social {
-}
-
-.p-footer-social__links {
 	display: block flex;
 	flex-flow: row wrap;
 	gap: 24px;
