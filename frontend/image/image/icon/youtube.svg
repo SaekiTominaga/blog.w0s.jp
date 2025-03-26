@@ -1,4 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
-<path fill="#ff0000" d="M15.7,4.1c-0.2-0.7-0.7-1.2-1.4-1.4C13,2.4,8,2.4,8,2.4s-5,0-6.3,0.3C1.1,2.9,0.5,3.4,0.3,4.1C0,5.4,0,8,0,8s0,2.6,0.3,3.9c0.2,0.7,0.7,1.2,1.4,1.4C3,13.6,8,13.6,8,13.6s5,0,6.3-0.3c0.7-0.2,1.2-0.7,1.4-1.4C16,10.6,16,8,16,8S16,5.4,15.7,4.1"/>
-<polygon fill="#ffffff" points="6.4,10.4 10.5,8 6.4,5.6"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="176px" height="176px" viewBox="0 0 176 176" style="enable-background:new 0 0 176 176;">
+<style type="text/css">
+<![CDATA[
+	.st0{fill:#FF0000;}
+	.st1{fill:#FFFFFF;}
+]]>
+</style>
+<g>
+	<path class="st0" d="M172.3,45.4c-2-7.6-8-13.6-15.6-15.7C143,26,88,26,88,26s-55,0-68.8,3.7c-7.6,2-13.5,8-15.6,15.7
+		C0,59.2,0,88,0,88s0,28.8,3.7,42.6c2,7.6,8,13.6,15.6,15.7C33,150,88,150,88,150s55,0,68.8-3.7c7.6-2,13.5-8,15.6-15.7
+		C176,116.8,176,88,176,88S176,59.2,172.3,45.4"/>
+	<polygon class="st1" points="70,114.2 116,88 70,61.8 	"/>
+</g>
 </svg>
