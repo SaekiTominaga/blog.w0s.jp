@@ -20,7 +20,7 @@
 		"@w0s/isbn-verify": "^3.1.0",
 		"@w0s/paapi-item-image-url-parser": "^3.2.1",
 		"dayjs": "^1.11.13",
-		"dotenv": "^16.4.7",
+		"dotenv": "^17.2.1",
 		"ejs": "^3.1.10",
 		"filenamify": "^6.0.0",
 		"github-slugger": "^2.0.0",
