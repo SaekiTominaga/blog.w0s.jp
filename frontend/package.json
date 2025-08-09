@@ -33,7 +33,7 @@
 		"@w0s/tab": "^4.4.1",
 		"prettier": "^3.5.3",
 		"slash": "^5.1.0",
-		"svgo": "^3.3.2"
+		"svgo": "^4.0.0"
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^3.0.0",
