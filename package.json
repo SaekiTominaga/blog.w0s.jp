@@ -13,13 +13,13 @@
 		"yaml-lint": "yamllint .github/workflows/*.yml"
 	},
 	"devDependencies": {
-		"@markuplint/ejs-parser": "^4.6.14",
+		"@markuplint/ejs-parser": "^4.6.21",
 		"@w0s/eslint-config": "^8.4.0",
-		"@w0s/markuplint-config": "^3.9.2",
+		"@w0s/markuplint-config": "^3.10.0",
 		"@w0s/stylelint-config": "^4.11.0",
 		"@w0s/tsconfig": "^1.5.1",
 		"eslint": "^9.23.0",
-		"markuplint": "^4.11.4",
+		"markuplint": "^4.13.1",
 		"prettier": "^3.5.3",
 		"rimraf": "^6.0.1",
 		"stylelint": "^16.15.0",
