@@ -9,6 +9,14 @@ export default [
 		ignores: ['dist/**/*.js'],
 	},
 	{
+		files: ['**/*.ts'],
+		languageOptions: {
+			parserOptions: {
+				tsconfigRootDir: import.meta.dirname,
+			},
+		},
+	},
+	{
 		files: ['src/markdown/**/*.ts'],
 		rules: {
 			'arrow-body-style': 'off',
