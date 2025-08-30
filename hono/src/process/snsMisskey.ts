@@ -56,7 +56,7 @@ const post = async (entryData: Readonly<BlogSocial.EntryData>): Promise<Process.
 
 		const { createdNote } = responseJson;
 
-		const url = `${env('MISSKEY_INSTANCE')}/notes/${String(createdNote.id)}`;
+		const url = `${env('MISSKEY_INSTANCE')}/notes/${createdNote.id}`;
 
 		logger.info('Misskey posted success', url);
 

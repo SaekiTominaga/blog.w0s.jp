@@ -14,11 +14,11 @@
 	},
 	"devDependencies": {
 		"@markuplint/ejs-parser": "^4.6.21",
-		"@w0s/eslint-config": "^8.4.0",
+		"@w0s/eslint-config": "^8.5.0",
 		"@w0s/markuplint-config": "^3.10.0",
 		"@w0s/stylelint-config": "^4.11.0",
 		"@w0s/tsconfig": "^1.5.1",
-		"eslint": "^9.23.0",
+		"eslint": "^9.34.0",
 		"markuplint": "^4.13.1",
 		"prettier": "^3.5.3",
 		"rimraf": "^6.0.1",
