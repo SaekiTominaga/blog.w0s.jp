@@ -3,8 +3,8 @@ import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { findAllBetween } from 'unist-util-find-between-all';
 import { visit, CONTINUE } from 'unist-util-visit';
-import MdastUtil from '../../lib/MdastUtil.js';
-import UnistUtil from '../../lib/UnistUtil.js';
+import MdastUtil from '../../lib/MdastUtil.ts';
+import UnistUtil from '../../lib/UnistUtil.ts';
 
 /**
  * Box

@@ -4,21 +4,21 @@ import path from 'node:path';
 import ejs from 'ejs';
 import { Hono, type Context } from 'hono';
 import Log4js from 'log4js';
-import configHono from '../config/hono.js';
-import configAdmin from '../config/admin.js';
-import BlogPostDao, { type ReviseData } from '../dao/BlogPostDao.js';
-import createFeed from '../process/feed.js';
-import createNewlyJson from '../process/newlyJson.js';
-import createSitemap from '../process/sitemap.js';
-import postBluesky from '../process/snsBluesky.js';
-import postMastodon from '../process/snsMastodon.js';
-import postMisskey from '../process/snsMisskey.js';
-import { getEntryUrl } from '../util/blogUrl.js';
-import { env } from '../util/env.js';
-import { csp as cspHeader } from '../util/httpHeader.js';
-import { query as validatorQuery, type RequestQuery } from '../validator/admin.js';
-import { form as validatorPostForm } from '../validator/adminPost.js';
-import { form as validatorUploadForm } from '../validator/adminUpload.js';
+import configHono from '../config/hono.ts';
+import configAdmin from '../config/admin.ts';
+import BlogPostDao, { type ReviseData } from '../dao/BlogPostDao.ts';
+import createFeed from '../process/feed.ts';
+import createNewlyJson from '../process/newlyJson.ts';
+import createSitemap from '../process/sitemap.ts';
+import postBluesky from '../process/snsBluesky.ts';
+import postMastodon from '../process/snsMastodon.ts';
+import postMisskey from '../process/snsMisskey.ts';
+import { getEntryUrl } from '../util/blogUrl.ts';
+import { env } from '../util/env.ts';
+import { csp as cspHeader } from '../util/httpHeader.ts';
+import { query as validatorQuery, type RequestQuery } from '../validator/admin.ts';
+import { form as validatorPostForm } from '../validator/adminPost.ts';
+import { form as validatorUploadForm } from '../validator/adminUpload.ts';
 
 /**
  * 記事投稿

@@ -1,9 +1,9 @@
 import type { Link } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import { toString } from 'mdast-util-to-string';
-import HastUtil from '../../lib/HastUtil.js';
-import LinkUtil from '../../lib/Link.js';
+import HastUtil from '../../lib/HastUtil.ts';
+import LinkUtil from '../../lib/Link.ts';
 
 /**
  * <a href>

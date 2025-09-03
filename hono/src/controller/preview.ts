@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import Markdown from '../markdown/Markdown.js';
-import { json as validatorJson } from '../validator/preview.js';
+import Markdown from '../markdown/Markdown.ts';
+import { json as validatorJson } from '../validator/preview.ts';
 
 /**
  * 本文プレビュー

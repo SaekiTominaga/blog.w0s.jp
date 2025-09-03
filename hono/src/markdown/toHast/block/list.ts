@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import type { Properties } from 'hast-util-select/lib/types.js';
+import type { Properties } from 'hast-util-select/lib/types.ts';
 import type { Literal, List, Paragraph } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 
 /**
  * <ol>, <ul>

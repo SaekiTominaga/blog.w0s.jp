@@ -1,6 +1,6 @@
 import { type DefListNode } from 'mdast-util-definition-list';
 import { all, type H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 
 /**
  * <dl>

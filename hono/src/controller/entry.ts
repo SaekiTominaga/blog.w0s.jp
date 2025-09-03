@@ -2,15 +2,15 @@ import dayjs from 'dayjs';
 import ejs from 'ejs';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
-import configEntry from '../config/entry.js';
-import configHono from '../config/hono.js';
-import BlogEntryDao from '../dao/BlogEntryDao.js';
-import Markdown from '../markdown/Markdown.js';
-import MarkdownTitle from '../markdown/Title.js';
-import { env } from '../util/env.js';
-import Rendering from '../util/Rendering.js';
-import Sidebar from '../util/Sidebar.js';
-import { param as validatorParam } from '../validator/entry.js';
+import configEntry from '../config/entry.ts';
+import configHono from '../config/hono.ts';
+import BlogEntryDao from '../dao/BlogEntryDao.ts';
+import Markdown from '../markdown/Markdown.ts';
+import MarkdownTitle from '../markdown/Title.ts';
+import { env } from '../util/env.ts';
+import Rendering from '../util/Rendering.ts';
+import Sidebar from '../util/Sidebar.ts';
+import { param as validatorParam } from '../validator/entry.ts';
 
 /**
  * 記事

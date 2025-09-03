@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import { strict as assert } from 'node:assert';
 import { test, before } from 'node:test';
-import app from '../app.js';
-import configHono from '../config/hono.js';
-import configList from '../config/list.js';
-import { env } from '../util/env.js';
+import app from '../app.ts';
+import configHono from '../config/hono.ts';
+import configList from '../config/list.ts';
+import { env } from '../util/env.ts';
 
 await test('top page', async () => {
 	const res = await app.request('/');

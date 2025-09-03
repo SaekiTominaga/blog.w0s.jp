@@ -1,11 +1,11 @@
 import fs from 'node:fs';
 import Log4js from 'log4js';
-import configHono from '../config/hono.js';
-import configNewlyJson from '../config/newlyJson.js';
-import BlogNewlyJsonDao from '../dao/BlogNewlyJsonDao.js';
-import MarkdownTitle from '../markdown/Title.js';
-import { brotliCompressText } from '../util/compress.js';
-import { env } from '../util/env.js';
+import configHono from '../config/hono.ts';
+import configNewlyJson from '../config/newlyJson.ts';
+import BlogNewlyJsonDao from '../dao/BlogNewlyJsonDao.ts';
+import MarkdownTitle from '../markdown/Title.ts';
+import { brotliCompressText } from '../util/compress.ts';
+import { env } from '../util/env.ts';
 
 const logger = Log4js.getLogger('NewlyJson');
 

@@ -1,11 +1,11 @@
 import path from 'node:path';
-import type { Properties } from 'hast-util-select/lib/types.js';
+import type { Properties } from 'hast-util-select/lib/types.ts';
 import type { Root } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
-import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.js';
+import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
-import type { AmazonImage, Size } from '../../toMdast/block/embedded.js';
-import configRemark from '../../../config/remark.js';
+import type { AmazonImage, Size } from '../../toMdast/block/embedded.ts';
+import configRemark from '../../../config/remark.ts';
 
 /**
  * Embedded content

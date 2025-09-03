@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import Markdown from '../Markdown.js';
-import format from './util/format.js';
+import Markdown from '../Markdown.ts';
+import format from './util/format.ts';
 
 await test('Text', async (t) => {
 	await t.test('HTML tag', async () => {

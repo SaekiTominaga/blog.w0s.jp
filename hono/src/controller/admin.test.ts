@@ -1,9 +1,9 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import app from '../app.js';
-import BlogPostDao from '../dao/BlogPostDao.js';
-import { getAuth } from '../util/auth.js';
-import { env } from '../util/env.js';
+import app from '../app.ts';
+import BlogPostDao from '../dao/BlogPostDao.ts';
+import { getAuth } from '../util/auth.ts';
+import { env } from '../util/env.ts';
 
 const auth = await getAuth();
 const authorization = `Basic ${Buffer.from(`${auth.user}:${auth.password_orig!}`).toString('base64')}`;

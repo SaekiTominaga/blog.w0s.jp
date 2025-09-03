@@ -1,7 +1,7 @@
 import type { Heading } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
-import HastUtil from '../../lib/HastUtil.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import HastUtil from '../../lib/HastUtil.ts';
 
 /**
  * <hn>

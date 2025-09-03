@@ -3,10 +3,10 @@ import dayjs from 'dayjs';
 import ejs from 'ejs';
 import Log4js from 'log4js';
 import xmlFormatter from 'xml-formatter';
-import configHono from '../config/hono.js';
-import configSitemap from '../config/sitemap.js';
-import BlogSitemapDao from '../dao/BlogSitemapDao.js';
-import { env } from '../util/env.js';
+import configHono from '../config/hono.ts';
+import configSitemap from '../config/sitemap.ts';
+import BlogSitemapDao from '../dao/BlogSitemapDao.ts';
+import { env } from '../util/env.ts';
 
 const logger = Log4js.getLogger('Sitemap');
 

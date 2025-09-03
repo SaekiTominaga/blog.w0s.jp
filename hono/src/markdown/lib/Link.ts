@@ -1,4 +1,4 @@
-import configRemark from '../../config/remark.js';
+import configRemark from '../../config/remark.ts';
 
 export interface Icon {
 	fileName: string; // アイコンのファイル名

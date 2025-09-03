@@ -1,6 +1,6 @@
 import { select, selectAll } from 'hast-util-select';
-import type { Node } from 'hast-util-select/lib/types.js';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
+import type { Node } from 'hast-util-select/lib/types.ts';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import type { Plugin } from 'unified';
 
 /**

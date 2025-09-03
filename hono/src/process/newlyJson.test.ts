@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import create from './newlyJson.js';
+import create from './newlyJson.ts';
 
 await test('create', async () => {
 	const result = await create();

@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import MarkdownTitle from '../Title.js';
+import MarkdownTitle from '../Title.ts';
 
 await test('code', async (t) => {
 	await t.test('single', () => {

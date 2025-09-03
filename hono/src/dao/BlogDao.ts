@@ -1,6 +1,6 @@
 import * as sqlite from 'sqlite';
 import sqlite3 from 'sqlite3';
-import { sqliteToJS } from '../util/sql.js';
+import { sqliteToJS } from '../util/sql.ts';
 
 interface NewlyEntry {
 	id: number;

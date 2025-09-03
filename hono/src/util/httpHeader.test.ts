@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import { supportCompressionEncoding, csp, reportingEndpoints } from './httpHeader.js';
+import { supportCompressionEncoding, csp, reportingEndpoints } from './httpHeader.ts';
 
 await test('supportCompressionEncoding', async (t) => {
 	await t.test('undefined', () => {

@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import post from './snsMastodon.js';
+import post from './snsMastodon.ts';
 
 await test('minimum properties', async () => {
 	const result = await post({

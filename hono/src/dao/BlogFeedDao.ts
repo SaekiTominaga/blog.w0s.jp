@@ -1,5 +1,5 @@
-import { sqliteToJS } from '../util/sql.js';
-import BlogDao from './BlogDao.js';
+import { sqliteToJS } from '../util/sql.ts';
+import BlogDao from './BlogDao.ts';
 
 /**
  * フィード

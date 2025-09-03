@@ -1,10 +1,10 @@
 import type { Properties } from 'hast';
 import type { Blockquote } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
-import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.js';
-import HastUtil from '../../lib/HastUtil.js';
-import LinkUtil from '../../lib/Link.js';
-import configRemark from '../../../config/remark.js';
+import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import HastUtil from '../../lib/HastUtil.ts';
+import LinkUtil from '../../lib/Link.ts';
+import configRemark from '../../../config/remark.ts';
 
 /**
  * <blockquote>

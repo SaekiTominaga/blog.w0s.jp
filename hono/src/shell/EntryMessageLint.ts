@@ -1,7 +1,7 @@
 import { parseArgs } from 'node:util';
-import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.js';
-import Markdown from '../markdown/Markdown.js';
-import { env } from '../util/env.js';
+import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.ts';
+import Markdown from '../markdown/Markdown.ts';
+import { env } from '../util/env.ts';
 
 /**
  * 記事本文の構文チェック

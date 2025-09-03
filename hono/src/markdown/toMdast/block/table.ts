@@ -1,6 +1,6 @@
 import type { Table, AlignType, TableContent } from 'mdast';
 import { gfmTableFromMarkdown } from 'mdast-util-gfm-table';
-import type { FromMarkdownExtension } from 'mdast-util-gfm-table/lib/index.js';
+import type { FromMarkdownExtension } from 'mdast-util-gfm-table/lib/index.ts';
 import { gfmTable } from 'micromark-extension-gfm-table';
 import type { Extension } from 'micromark-util-types';
 import type { Plugin } from 'unified';

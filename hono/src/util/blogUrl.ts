@@ -1,4 +1,4 @@
-import { env } from '../util/env.js';
+import { env } from './env.ts';
 
 /**
  * 記事 URL を取得する
