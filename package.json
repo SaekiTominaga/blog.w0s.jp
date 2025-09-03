@@ -15,7 +15,7 @@
 	"devDependencies": {
 		"@markuplint/ejs-parser": "^4.6.21",
 		"@w0s/eslint-config": "^8.5.0",
-		"@w0s/markuplint-config": "^3.10.0",
+		"@w0s/markuplint-config": "^3.11.0",
 		"@w0s/stylelint-config": "^4.11.0",
 		"@w0s/tsconfig": "^1.5.1",
 		"eslint": "^9.34.0",

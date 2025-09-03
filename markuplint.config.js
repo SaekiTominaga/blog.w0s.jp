@@ -25,13 +25,23 @@ export default {
 			selector: 'table',
 			rules: {
 				'require-accessible-name': false,
+			},
+		},
+		{
+			selector: '.p-entry__body dl',
+			rules: {
+				'required-element': false,
+			},
+		},
+		{
+			selector: '.p-entry__body table',
+			rules: {
 				'required-element': ['thead'],
 			},
 		},
 		{
-			selector: 'table.p-post-preview__messages',
+			selector: '.p-post-preview__messages',
 			rules: {
-				'required-element': false,
 				'wai-aria': false,
 			},
 		},
