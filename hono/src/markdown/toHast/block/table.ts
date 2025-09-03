@@ -1,9 +1,9 @@
-import type { Properties } from 'hast-util-select/lib/types.js';
+import type { Properties } from 'hast-util-select/lib/types.ts';
 import type { Table, TableRow } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import { toString } from 'mdast-util-to-string';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
-import type { ElementContent } from 'mdast-util-to-hast/lib/handlers/table-row.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { ElementContent } from 'mdast-util-to-hast/lib/handlers/table-row.ts';
 
 /**
  * <table>

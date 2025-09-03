@@ -1,8 +1,8 @@
 import ejs from 'ejs';
 import Log4js from 'log4js';
 import { createRestAPIClient as mastodonRest } from 'masto';
-import configMastodon from '../config/mastodon.js';
-import { env } from '../util/env.js';
+import configMastodon from '../config/mastodon.ts';
+import { env } from '../util/env.ts';
 
 const logger = Log4js.getLogger('Mastodon');
 

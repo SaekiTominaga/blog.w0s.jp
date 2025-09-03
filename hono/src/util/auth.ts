@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { env } from './env.js';
+import { env } from './env.ts';
 
 interface Auth {
 	user: string;

@@ -1,7 +1,7 @@
 import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
 import { selectAll } from 'unist-util-select';
-import { name as nameHeading, type XHeading } from './heading.js';
+import { name as nameHeading, type XHeading } from './heading.ts';
 
 /**
  * Table of contents

@@ -3,14 +3,14 @@ import ejs from 'ejs';
 import { Hono, type Context } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
-import configHono from '../config/hono.js';
-import configList from '../config/list.js';
-import BlogListDao from '../dao/BlogListDao.js';
-import MarkdownTitle from '../markdown/Title.js';
-import { env } from '../util/env.js';
-import Rendering from '../util/Rendering.js';
-import Sidebar from '../util/Sidebar.js';
-import { param as validatorParam } from '../validator/list.js';
+import configHono from '../config/hono.ts';
+import configList from '../config/list.ts';
+import BlogListDao from '../dao/BlogListDao.ts';
+import MarkdownTitle from '../markdown/Title.ts';
+import { env } from '../util/env.ts';
+import Rendering from '../util/Rendering.ts';
+import Sidebar from '../util/Sidebar.ts';
+import { param as validatorParam } from '../validator/list.ts';
 
 /**
  * 記事リスト

@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import post from './snsMisskey.js';
+import post from './snsMisskey.ts';
 
 await test('minimum properties', async () => {
 	const result = await post({

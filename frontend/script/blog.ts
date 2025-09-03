@@ -2,7 +2,7 @@ import buttonClipboard from '@w0s/button-clipboard';
 import reportJsError from '@w0s/report-js-error';
 import Tab from '@w0s/tab';
 import footnoteReferencePopover from '@w0s/footnote-reference-popover';
-import adsense from './unique/adsense.js';
+import adsense from './unique/adsense.ts';
 
 /* JS エラーレポート */
 reportJsError('https://report.w0s.jp/report/js', {

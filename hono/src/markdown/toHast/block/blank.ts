@@ -1,4 +1,4 @@
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 
 /**
  * Blank paragraph

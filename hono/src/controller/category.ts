@@ -4,14 +4,14 @@ import filenamify from 'filenamify';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
-import configCategory from '../config/category.js';
-import configHono from '../config/hono.js';
-import BlogCategoryDao from '../dao/BlogCategoryDao.js';
-import MarkdownTitle from '../markdown/Title.js';
-import { env } from '../util/env.js';
-import Rendering from '../util/Rendering.js';
-import Sidebar from '../util/Sidebar.js';
-import { param as validatorParam } from '../validator/category.js';
+import configCategory from '../config/category.ts';
+import configHono from '../config/hono.ts';
+import BlogCategoryDao from '../dao/BlogCategoryDao.ts';
+import MarkdownTitle from '../markdown/Title.ts';
+import { env } from '../util/env.ts';
+import Rendering from '../util/Rendering.ts';
+import Sidebar from '../util/Sidebar.ts';
+import { param as validatorParam } from '../validator/category.ts';
 
 /**
  * カテゴリー

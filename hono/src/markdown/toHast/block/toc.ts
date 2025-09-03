@@ -1,8 +1,8 @@
 import type { Heading, Root } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
-import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.js';
+import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import { select } from 'unist-util-select';
-import { name as nameXHeading } from '../../toMdast/block/heading.js';
+import { name as nameXHeading } from '../../toMdast/block/heading.ts';
 
 /**
  * Table of contents

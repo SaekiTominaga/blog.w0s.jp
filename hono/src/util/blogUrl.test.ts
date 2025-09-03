@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import { getEntryUrl } from './blogUrl.js';
+import { getEntryUrl } from './blogUrl.ts';
 
 process.env['ORIGIN'] = 'http://example.com';
 

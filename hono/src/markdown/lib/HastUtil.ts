@@ -1,6 +1,6 @@
 import type { Heading } from 'mdast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
-import type { Icon as LinkIcon } from '../lib/Link.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { Icon as LinkIcon } from './Link.ts';
 
 export default class MdastUtil {
 	/**

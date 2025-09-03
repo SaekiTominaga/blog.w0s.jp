@@ -1,6 +1,6 @@
 import type { FootnoteReference } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import { normalizeUri } from 'micromark-util-sanitize-uri';
 
 /**

@@ -1,5 +1,5 @@
-import BlogDao from '../dao/BlogDao.js';
-import MarkdownTitle from '../markdown/Title.js';
+import BlogDao from '../dao/BlogDao.ts';
+import MarkdownTitle from '../markdown/Title.ts';
 
 interface NewlyEntry {
 	id: number;

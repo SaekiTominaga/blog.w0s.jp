@@ -4,12 +4,12 @@ import ejs from 'ejs';
 import Log4js from 'log4js';
 import { format, resolveConfig } from 'prettier';
 import xmlFormatter from 'xml-formatter';
-import configFeed from '../config/feed.js';
-import configHono from '../config/hono.js';
-import BlogFeedDao from '../dao/BlogFeedDao.js';
-import Markdown from '../markdown/Markdown.js';
-import { brotliCompressText } from '../util/compress.js';
-import { env } from '../util/env.js';
+import configFeed from '../config/feed.ts';
+import configHono from '../config/hono.ts';
+import BlogFeedDao from '../dao/BlogFeedDao.ts';
+import Markdown from '../markdown/Markdown.ts';
+import { brotliCompressText } from '../util/compress.ts';
+import { env } from '../util/env.ts';
 
 const logger = Log4js.getLogger('Feed');
 

@@ -1,5 +1,5 @@
 import IsbnVerify from '@w0s/isbn-verify';
-import configRemark from '../../config/remark.js';
+import configRemark from '../../config/remark.ts';
 
 interface MetaIsbn {
 	value: string;

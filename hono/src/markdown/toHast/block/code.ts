@@ -2,8 +2,8 @@ import type { Properties } from 'hast';
 import md5 from 'md5';
 import type { Code } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
-import configRemark from '../../../config/remark.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import configRemark from '../../../config/remark.ts';
 
 /**
  * <pre><code>

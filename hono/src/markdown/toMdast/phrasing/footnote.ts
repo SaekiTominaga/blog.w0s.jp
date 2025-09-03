@@ -1,5 +1,5 @@
 import { gfmFootnoteFromMarkdown } from 'mdast-util-gfm-footnote';
-import type { FromMarkdownExtension } from 'mdast-util-gfm-footnote/lib/index.js';
+import type { FromMarkdownExtension } from 'mdast-util-gfm-footnote/lib/index.ts';
 import { gfmFootnote } from 'micromark-extension-gfm-footnote';
 import type { Extension } from 'micromark-util-types';
 

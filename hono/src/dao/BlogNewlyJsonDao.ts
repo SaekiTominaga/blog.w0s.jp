@@ -1,6 +1,6 @@
 import type * as sqlite from 'sqlite';
-import { sqliteToJS } from '../util/sql.js';
-import BlogDao from './BlogDao.js';
+import { sqliteToJS } from '../util/sql.ts';
+import BlogDao from './BlogDao.ts';
 
 /**
  * 新着 JSON ファイル

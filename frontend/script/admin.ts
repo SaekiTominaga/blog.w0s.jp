@@ -2,8 +2,8 @@ import formBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
 import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
-import Preview from './unique/Preview.js';
-import MessageImage from './unique/MessageImage.js';
+import Preview from './unique/Preview.ts';
+import MessageImage from './unique/MessageImage.ts';
 
 /* 入力値の変換 */
 for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim')) {

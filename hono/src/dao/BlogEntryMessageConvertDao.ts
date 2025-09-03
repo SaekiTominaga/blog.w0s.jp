@@ -1,4 +1,4 @@
-import BlogDao from './BlogDao.js';
+import BlogDao from './BlogDao.ts';
 
 /**
  * 記事本文の構文書き換え

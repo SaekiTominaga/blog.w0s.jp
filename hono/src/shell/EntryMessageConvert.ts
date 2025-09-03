@@ -1,6 +1,6 @@
 import { parseArgs } from 'node:util';
-import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.js';
-import { env } from '../util/env.js';
+import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.ts';
+import { env } from '../util/env.ts';
 
 /**
  * 記事本文の構文書き換え

@@ -1,7 +1,7 @@
 import type { PhrasingContent, Root } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.js';
-import { type Meta } from '../../lib/Quote.js';
+import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import { type Meta } from '../../lib/Quote.ts';
 
 interface XQuote extends Root {
 	quotemeta: Meta;

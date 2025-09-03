@@ -2,9 +2,9 @@ import fs from 'node:fs';
 import type { Context } from 'hono';
 import Log4js from 'log4js';
 import { format, resolveConfig } from 'prettier';
-import configHono from '../config/hono.js';
-import { brotliCompressText } from './compress.js';
-import { csp as cspHeader, supportCompressionEncoding } from './httpHeader.js';
+import configHono from '../config/hono.ts';
+import { brotliCompressText } from './compress.ts';
+import { csp as cspHeader, supportCompressionEncoding } from './httpHeader.ts';
 
 export default class Rendering {
 	readonly #logger: Log4js.Logger;

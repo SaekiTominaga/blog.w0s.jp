@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import { env } from './env.js';
+import { env } from './env.ts';
 
 process.env['TEST_STRING'] = 'foo';
 process.env['TEST_STRINGS'] = 'foo bar baz';

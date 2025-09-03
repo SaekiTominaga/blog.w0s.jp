@@ -1,8 +1,8 @@
 import { AtpAgent, RichText } from '@atproto/api';
 import ejs from 'ejs';
 import Log4js from 'log4js';
-import configBluesky from '../config/bluesky.js';
-import { env } from '../util/env.js';
+import configBluesky from '../config/bluesky.ts';
+import { env } from '../util/env.ts';
 
 const logger = Log4js.getLogger('Bluesky');
 

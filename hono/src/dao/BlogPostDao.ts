@@ -1,6 +1,6 @@
 import * as sqlite from 'sqlite';
-import { prepareDelete, prepareInsert, prepareUpdate, sqliteToJS } from '../util/sql.js';
-import BlogDao from './BlogDao.js';
+import { prepareDelete, prepareInsert, prepareUpdate, sqliteToJS } from '../util/sql.ts';
+import BlogDao from './BlogDao.ts';
 
 interface CategoryMaster {
 	groupName: string;

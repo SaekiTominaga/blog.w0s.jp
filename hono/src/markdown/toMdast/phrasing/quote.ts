@@ -2,7 +2,7 @@ import type { Literal, PhrasingContent } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
 import { visit, CONTINUE } from 'unist-util-visit';
-import Quote, { type Meta } from '../../lib/Quote.js';
+import Quote, { type Meta } from '../../lib/Quote.ts';
 
 /**
  * <q>

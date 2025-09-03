@@ -4,7 +4,7 @@ import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
 import { remove } from 'unist-util-remove';
 import { visit, CONTINUE, EXIT } from 'unist-util-visit';
-import Quote from '../../lib/Quote.js';
+import Quote from '../../lib/Quote.ts';
 
 /**
  * <blockquote>
