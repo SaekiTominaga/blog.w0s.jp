@@ -2,19 +2,25 @@ name: YAML files
 
 on:
   pull_request:
-    branches:
-      - main
     paths:
       - '.github/workflows/*.yml'
   workflow_dispatch:
 
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - name: Run actionlint
+        uses: docker://rhysd/actionlint:latest
         with:
-          node-version: '24'
-      - run: npm ci
-      - run: npm run yaml-lint
+          args: -color

@@ -9,8 +9,7 @@
 	"scripts": {
 		"format": "prettier -w .",
 		"html-lint": "markuplint .html/**/*.html",
-		"template-lint": "markuplint template/**/*.{ejs,html}",
-		"yaml-lint": "yamllint .github/workflows/*.yml"
+		"template-lint": "markuplint template/**/*.{ejs,html}"
 	},
 	"devDependencies": {
 		"@markuplint/ejs-parser": "^4.6.21",
@@ -23,7 +22,6 @@
 		"prettier": "^3.5.3",
 		"rimraf": "^6.0.1",
 		"stylelint": "^16.15.0",
-		"typescript": "^5.9.2",
-		"yaml-lint": "^1.7.0"
+		"typescript": "^5.9.2"
 	}
 }
