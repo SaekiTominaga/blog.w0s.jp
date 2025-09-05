@@ -2,8 +2,6 @@ name: Node.js files (Backend)
 
 on:
   pull_request:
-    branches:
-      - main
     paths:
       - 'hono/@types/*.d.ts'
       - 'hono/src/**/*.ts'

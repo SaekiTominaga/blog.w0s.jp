@@ -2,8 +2,6 @@ name: Template Files
 
 on:
   pull_request:
-    branches:
-      - main
     paths:
       - 'template/*.ejs'
       - 'template/*.html'

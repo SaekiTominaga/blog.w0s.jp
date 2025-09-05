@@ -2,8 +2,6 @@ name: CSS files
 
 on:
   pull_request:
-    branches:
-      - main
     paths:
       - 'frontend/style/**/*.css'
       - 'frontend/stylelint.config.js'
