@@ -2,20 +2,23 @@ name: Node.js files (Backend)
 
 on:
   pull_request:
-    branches:
-      - main
     paths:
       - 'hono/@types/*.d.ts'
       - 'hono/src/**/*.ts'
       - 'hono/eslint.config.js'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: '24'
       - run: npm ci
