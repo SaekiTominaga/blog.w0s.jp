@@ -1,4 +1,4 @@
-name: YAML files
+name: GitHub workflow files
 
 on:
   pull_request:
