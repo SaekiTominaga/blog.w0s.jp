@@ -24,15 +24,12 @@ const create = async (): Promise<Process.Result> => {
 			dao.getEntries(configSitemap.limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要がある */),
 		]);
 
-		const entriesView = await Promise.all(
-			entriesDto.map(
-				(entry): BlogView.SitemapEntry => ({
-					id: entry.id,
-					updatedAt: dayjs(entry.updatedAt),
-				}),
-			),
+		const entriesView = entriesDto.map(
+			(entry): BlogView.SitemapEntry => ({
+				id: entry.id,
+				updatedAt: dayjs(entry.updatedAt),
+			}),
 		);
-
 		const sitemapXml = await ejs.renderFile(`${env('VIEWS')}/${configSitemap.template}`, {
 			updatedAt: dayjs(updated),
 			entries: entriesView,

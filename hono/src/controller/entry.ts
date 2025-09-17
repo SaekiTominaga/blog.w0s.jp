@@ -43,7 +43,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 	const sidebar = new Sidebar(dao);
 
 	const [message, categoriesDto, relationDataListDto, entryCountOfCategoryList, newlyEntries] = await Promise.all([
-		(await markdown.toHtml(entryDto.message)).value.toString(),
+		markdown.toHtml(entryDto.message),
 		dao.getCategories(entryId),
 		dao.getRelations(entryId),
 		sidebar.getEntryCountOfCategory(),
@@ -100,7 +100,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		structuredData: structuredData,
 		jsonLd: Object.fromEntries(jsonLd),
 
-		message: message,
+		message: message.value.toString(),
 
 		categoryNames: categoriesDto.map((category) => category.name),
 		categoryFileNames: categoriesDto.map((category) => category.fileName).find((fileName) => fileName !== undefined),

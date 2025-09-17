@@ -32,7 +32,7 @@ export default class MessageImage {
 		let selectedImageName: string | undefined;
 
 		/* いったんクリア */
-		while (this.#selectImageElement.nextElementSibling) {
+		while (this.#selectImageElement.nextElementSibling !== null) {
 			const radioCheckedElements = this.#selectImageElement.nextElementSibling.querySelectorAll<HTMLInputElement>('input[type="radio"]:checked');
 			if (radioCheckedElements.length === 1) {
 				selectedImageName = radioCheckedElements[0]?.value;
