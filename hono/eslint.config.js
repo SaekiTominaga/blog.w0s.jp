@@ -2,7 +2,7 @@
 
 import w0sConfig from '@w0s/eslint-config';
 
-/** @type {import("@typescript-eslint/utils/ts-eslint").FlatConfig.ConfigArray} */
+/** @type {import("eslint").Linter.Config[]} */
 export default [
 	...w0sConfig,
 	{
@@ -20,6 +20,12 @@ export default [
 		files: ['src/markdown/**/*.ts'],
 		rules: {
 			'arrow-body-style': 'off',
+		},
+	},
+	{
+		files: ['src/markdown/lib/*.ts'],
+		rules: {
+			'@typescript-eslint/no-extraneous-class': 'off',
 		},
 	},
 	{

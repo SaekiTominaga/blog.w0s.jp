@@ -32,7 +32,7 @@ export default class Link {
 	 */
 	static getInfo(mdContent: string, mdUrl: string): Info {
 		/* 絶対 URL */
-		const absoluteUrlMatchGroups = new RegExp(`^(?<absoluteUrl>${configRemark.regexp.absoluteUrl})$`).exec(mdUrl)?.groups;
+		const absoluteUrlMatchGroups = new RegExp(`^(?<absoluteUrl>${configRemark.regexp.absoluteUrl})$`, 'v').exec(mdUrl)?.groups;
 		if (absoluteUrlMatchGroups !== undefined) {
 			const { absoluteUrl } = absoluteUrlMatchGroups;
 
@@ -52,7 +52,7 @@ export default class Link {
 		}
 
 		/* 別記事へのリンク */
-		const entryMatchGroups = new RegExp(`^(?<entryId>${configRemark.regexp.entryId}(#.+)?)$`).exec(mdUrl)?.groups;
+		const entryMatchGroups = new RegExp(`^(?<entryId>${configRemark.regexp.entryId}(#.+)?)$`, 'v').exec(mdUrl)?.groups;
 		if (entryMatchGroups !== undefined) {
 			const { entryId } = entryMatchGroups;
 
@@ -64,7 +64,7 @@ export default class Link {
 		}
 
 		/* Amazon 商品ページへのリンク */
-		const amazonMatchGroups = new RegExp(`^amazon:(?<asin>${configRemark.regexp.asin})$`).exec(mdUrl)?.groups;
+		const amazonMatchGroups = new RegExp(`^amazon:(?<asin>${configRemark.regexp.asin})$`, 'v').exec(mdUrl)?.groups;
 		if (amazonMatchGroups !== undefined) {
 			const { asin } = amazonMatchGroups;
 
@@ -77,7 +77,7 @@ export default class Link {
 		}
 
 		/* ページ内リンク */
-		const pageLinkMatchGroups = /^#(?<id>.+)/.exec(mdUrl)?.groups;
+		const pageLinkMatchGroups = /^#(?<id>.+)/v.exec(mdUrl)?.groups;
 		if (pageLinkMatchGroups !== undefined) {
 			const { id } = pageLinkMatchGroups;
 
@@ -125,7 +125,7 @@ export default class Link {
 		let hostText: string | undefined;
 
 		/* 絶対 URL 表記でない場合はドメイン情報を記載 */
-		if (!new RegExp(`^${configRemark.regexp.absoluteUrl}$`).test(content)) {
+		if (!new RegExp(`^${configRemark.regexp.absoluteUrl}$`, 'v').test(content)) {
 			const host = url.hostname;
 
 			/* サイトアイコン */

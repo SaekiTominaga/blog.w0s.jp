@@ -168,7 +168,7 @@ const toMdast = (): Plugin => {
 
 				let size: Size | undefined;
 				metaOption?.split(META_SEPARATOR).forEach((meta) => {
-					if (/^[1-9][0-9]*x[1-9][0-9]*$/.test(meta)) {
+					if (/^[1-9][0-9]*x[1-9][0-9]*$/v.test(meta)) {
 						/* サイズ */
 						const [width, height] = meta.split('x');
 						size = {
@@ -194,7 +194,7 @@ const toMdast = (): Plugin => {
 				const id = metaRequireString.substring(0, requireSeparator1Index);
 				const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
 
-				if (!new RegExp(`^${configRemark.regexp.youtubeId}$`).test(id)) {
+				if (!new RegExp(`^${configRemark.regexp.youtubeId}$`, 'v').test(id)) {
 					return CONTINUE;
 				}
 
@@ -202,7 +202,7 @@ const toMdast = (): Plugin => {
 				let start: number | undefined;
 				let end: number | undefined;
 				metaOption?.split(META_SEPARATOR).forEach((meta) => {
-					if (/^[1-9][0-9]{2}x[1-9][0-9]{2}$/.test(meta)) {
+					if (/^[1-9][0-9]{2}x[1-9][0-9]{2}$/v.test(meta)) {
 						/* 動画サイズ */
 						const [metaWidth, metaHeight] = meta.split('x');
 
@@ -210,7 +210,7 @@ const toMdast = (): Plugin => {
 							width: Number(metaWidth),
 							height: Number(metaHeight),
 						};
-					} else if (/^[1-9][0-9]*(-[1-9][0-9]*)?s$/.test(meta)) {
+					} else if (/^[1-9][0-9]*(-[1-9][0-9]*)?s$/v.test(meta)) {
 						/* 開始・終了位置（秒） */
 						const [metaStart, metaEnd] = meta.substring(0, meta.length - 1).split('-');
 
@@ -262,21 +262,21 @@ const toMdast = (): Plugin => {
 					const asin = metaRequireString.substring(0, requireSeparator1Index);
 					const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
 
-					if (!new RegExp(`^${configRemark.regexp.asin}$`).test(asin)) {
+					if (!new RegExp(`^${configRemark.regexp.asin}$`, 'v').test(asin)) {
 						return false;
 					}
 
 					let imageId: string | undefined;
 					let imageSize: Size | undefined;
 					metaOption?.split(META_SEPARATOR).forEach((meta) => {
-						if (/^[1-9][0-9]{1,3}x[1-9][0-9]{1,3}$/.test(meta)) {
+						if (/^[1-9][0-9]{1,3}x[1-9][0-9]{1,3}$/v.test(meta)) {
 							/* 画像サイズ */
 							const sizes = meta.split('x');
 							imageSize = {
 								width: Number(sizes.at(0)),
 								height: Number(sizes.at(1)),
 							};
-						} else if (new RegExp(`^${configRemark.regexp.amazonImageId}$`).test(meta)) {
+						} else if (new RegExp(`^${configRemark.regexp.amazonImageId}$`, 'v').test(meta)) {
 							/* 画像ID */
 							imageId = meta;
 						}
