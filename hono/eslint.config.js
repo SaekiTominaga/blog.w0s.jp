@@ -23,6 +23,12 @@ export default [
 		},
 	},
 	{
+		files: ['src/markdown/lib/*.ts'],
+		rules: {
+			'@typescript-eslint/no-extraneous-class': 'off',
+		},
+	},
+	{
 		files: ['src/markdown/toHast/**/*.ts'],
 		rules: {
 			'import/prefer-default-export': 'off',

@@ -68,7 +68,7 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 	}
 
 	/* Insert list */
-	const INSERT_PATTERN = /^[0-9]{4}-[0-9]{2}-[0-9]{2}: /;
+	const INSERT_PATTERN = /^[0-9]{4}-[0-9]{2}-[0-9]{2}: /v;
 
 	const insertList = listItems.every((listItem) => {
 		const childFirstNode = (listItem.children as Paragraph[]).at(0)?.children.at(0);

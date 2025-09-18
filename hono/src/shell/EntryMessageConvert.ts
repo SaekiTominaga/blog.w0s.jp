@@ -31,7 +31,7 @@ const convert = (id: number, message: string): string => {
 		const beforeLine = lines.at(index - 1);
 		// @ts-expect-error: ts(6133)
 		const afterLine = lines.at(index + 1);
-		const convertedLine = line.replaceAll(/{{(.+?)}}/g, (_match, quote) => {
+		const convertedLine = line.replaceAll(/\{\{(.+?)\}\}/gv, (_match, quote) => {
 			console.info(`${String(id)}: ${String(quote)}`);
 			return `{${String(quote)}}`;
 		}); // TODO: ここに変換処理を書く

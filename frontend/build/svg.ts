@@ -49,10 +49,10 @@ await Promise.all(
 		const fileData = (await fs.promises.readFile(filePath)).toString();
 
 		/* SVG 最適化 */
-		const optimized = optimize(fileData.replace(/<svg version="([0-9.]+)"/, '<svg').replace(' id="レイヤー_1"', ''), config);
+		const optimized = optimize(fileData.replace(/<svg version="([0-9.]+)"/v, '<svg').replace(' id="レイヤー_1"', ''), config);
 
 		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-		const outFileParsed = path.parse(filePath.replace(new RegExp(`^${argsParsedValues.inDir}`), outDirectory));
+		const outFileParsed = path.parse(filePath.replace(new RegExp(`^${argsParsedValues.inDir}`, 'v'), outDirectory));
 		const outExtension = outFileParsed.dir === outDirectory && outFileParsed.base === 'favicon.svg' ? '.ico' : '.svg'; // favicon.svg のみ favicon.ico にリネームする
 		const outPath = `${outFileParsed.dir}/${outFileParsed.name}${outExtension}`;
 

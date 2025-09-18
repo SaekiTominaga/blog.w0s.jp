@@ -2,6 +2,10 @@
 	"extends": "@w0s/tsconfig",
 	"include": ["@types/*.d.ts", "src/**/*.ts"],
 	"compilerOptions": {
+		/* Modules */
+		"module": "es2022", // xml-formatter で no call signatures エラーが発生するため
+		"moduleResolution": "node",
+
 		/* Emit */
 		"outDir": "dist"
 	}
