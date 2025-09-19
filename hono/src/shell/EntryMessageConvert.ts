@@ -1,6 +1,6 @@
 import { parseArgs } from 'node:util';
+import { env } from '@w0s/env-value-type';
 import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.ts';
-import { env } from '../util/env.ts';
 
 /**
  * 記事本文の構文書き換え

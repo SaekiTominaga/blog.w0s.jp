@@ -9,6 +9,7 @@ import { HTTPException } from 'hono/http-exception';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import Log4js from 'log4js';
+import { env } from '@w0s/env-value-type';
 import { escape } from '@w0s/html-escape';
 import config from './config/hono.ts';
 import { categoryApp } from './controller/category.ts';
@@ -17,7 +18,6 @@ import { topApp, listApp } from './controller/list.ts';
 import { adminApp } from './controller/admin.ts';
 import { previewApp } from './controller/preview.ts';
 import { getAuth } from './util/auth.ts';
-import { env } from './util/env.ts';
 import { csp as cspHeader, reportingEndpoints as reportingEndpointsHeader } from './util/httpHeader.ts';
 
 loadEnvFile(process.env['NODE_ENV'] === 'production' ? '../.env.production' : '../.env.development');

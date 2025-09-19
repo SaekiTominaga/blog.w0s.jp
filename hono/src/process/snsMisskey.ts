@@ -1,7 +1,7 @@
 import ejs from 'ejs';
 import Log4js from 'log4js';
+import { env } from '@w0s/env-value-type';
 import configMisskey from '../config/misskey.ts';
-import { env } from '../util/env.ts';
 
 const logger = Log4js.getLogger('Misskey');
 
