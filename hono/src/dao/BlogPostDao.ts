@@ -1,5 +1,5 @@
 import * as sqlite from 'sqlite';
-import { prepareDelete, prepareInsert, prepareUpdate, sqliteToJS } from '../util/sql.ts';
+import { prepareDelete, prepareInsert, prepareUpdate, sqliteToJS } from '@w0s/sqlite-utility';
 import BlogDao from './BlogDao.ts';
 
 interface CategoryMaster {
