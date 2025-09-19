@@ -1,4 +1,4 @@
-import { env } from './env.ts';
+import { env } from '@w0s/env-value-type';
 
 /**
  * 記事 URL を取得する

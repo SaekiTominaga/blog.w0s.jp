@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import { strict as assert } from 'node:assert';
 import { test, before } from 'node:test';
+import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
 import configHono from '../config/hono.ts';
 import configCategory from '../config/category.ts';
-import { env } from '../util/env.ts';
 
 await test('no param', async () => {
 	const res = await app.request('/category');
