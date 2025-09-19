@@ -1,5 +1,5 @@
 import type * as sqlite from 'sqlite';
-import { sqliteToJS } from '../util/sql.ts';
+import { sqliteToJS } from '@w0s/sqlite-utility';
 import BlogDao from './BlogDao.ts';
 
 /**
