@@ -98,8 +98,8 @@
 	container: sidebar / inline-size;
 	line-height: var(--line-height-narrow);
 
-	& > [class^="p-sidebar-" i]:not([hidden]) {
-		& + [class^="p-sidebar-" i] {
+	& > [class^="p-sidebar-"]:not([hidden]) {
+		& + [class^="p-sidebar-"] {
 			margin-block-start: 3em;
 		}
 	}
