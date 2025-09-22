@@ -17,11 +17,11 @@
 		padding: 0.25em 0.5em;
 	}
 
-	& [data-level="info" i] {
+	& [data-level="info"] {
 		--_bgcolor: var(--color-bg-ultralight);
 	}
 
-	& [data-level="warning" i] {
+	& [data-level="warning"] {
 		--_bgcolor: var(--color-verylightred);
 	}
 }
