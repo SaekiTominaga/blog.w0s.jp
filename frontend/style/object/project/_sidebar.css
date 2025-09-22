@@ -31,7 +31,7 @@
 	font-size: calc(100% / pow(var(--font-ratio), 2));
 	font-weight: var(--_font-weight);
 
-	&[role="tab"] {
+	&[role="tab" i] {
 		outline-offset: -2px;
 		outline-width: 2px;
 	}
@@ -52,7 +52,7 @@
 		--_bg-color: var(--color-bg-light);
 	}
 
-	&[aria-selected="true"] {
+	&[aria-selected="true" i] {
 		--_padding-block: 0.8em;
 		--_border-radius-top: var(--border-radius-normal);
 		--_bg-color: var(--color-white);

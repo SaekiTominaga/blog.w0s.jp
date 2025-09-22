@@ -63,7 +63,7 @@
 	color: var(--_color);
 	font-weight: var(--font-weight-bold);
 
-	:is(button[type="button"]&):focus:not(:focus-visible) {
+	:is(button[type="button" i]&):focus:not(:focus-visible) {
 		outline: none;
 	}
 
@@ -124,7 +124,7 @@
 			--_bg-color: var(--color-verylightred);
 		}
 
-		&[role="button"] {
+		&[role="button" i] {
 			/* JS 有効時のみ */
 			outline-offset: calc(0px - var(--outline-width));
 			cursor: default;
