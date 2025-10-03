@@ -51,6 +51,6 @@
 		"postcss-import": "^16.1.0",
 		"postcss-nesting": "^13.0.1",
 		"rollup": "^4.37.0",
-		"vfile-message": "^4.0.2"
+		"vfile-message": "^4.0.3"
 	}
 }
