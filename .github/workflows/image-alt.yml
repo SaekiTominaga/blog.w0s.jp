@@ -19,9 +19,9 @@ concurrency:
 jobs:
   check:
     name: Check alt text is set on issue or pull requests
+    if: ${{ !endsWith(github.actor, '[bot]') }}
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    if: ${{ github.event.issue || github.event.pull_request }}
     steps:
       - name: Get action 'github/accessibility-alt-text-bot'
         uses: github/accessibility-alt-text-bot@531a7430c6930a39cae5a0aab2d165284468060f # v1.7.1
