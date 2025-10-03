@@ -6,6 +6,8 @@ on:
       - 'hono/@types/*.d.ts'
       - 'hono/src/**/*.ts'
       - 'hono/eslint.config.js'
+      - 'hono/package.json'
+      - 'package.json'
   workflow_dispatch:
 
 permissions: {}
