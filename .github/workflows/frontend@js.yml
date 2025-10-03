@@ -5,6 +5,8 @@ on:
     paths:
       - 'frontend/script/**/*.ts'
       - 'frontend/eslint.config.js'
+      - 'frontend/package.json'
+      - 'package.json'
   workflow_dispatch:
 
 permissions: {}

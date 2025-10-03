@@ -4,7 +4,9 @@ on:
   pull_request:
     paths:
       - 'frontend/style/**/*.css'
+      - 'frontend/package.json'
       - 'frontend/stylelint.config.js'
+      - 'package.json'
   workflow_dispatch:
 
 permissions: {}
