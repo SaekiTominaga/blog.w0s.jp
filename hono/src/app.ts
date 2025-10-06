@@ -89,7 +89,7 @@ app.get('/favicon.ico', async (context, next) => {
 	const file = await fs.promises.readFile(`${config.static.root}/favicon.ico`);
 
 	res.headers.set('Content-Type', 'image/svg+xml;charset=utf-8');
-	context.body(file);
+	context.body(Buffer.from(file));
 
 	await next();
 });
