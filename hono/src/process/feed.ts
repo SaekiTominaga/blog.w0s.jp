@@ -2,8 +2,6 @@ import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import Log4js from 'log4js';
-import { format, resolveConfig } from 'prettier';
-import xmlFormatter from 'xml-formatter';
 import { env } from '@w0s/env-value-type';
 import configFeed from '../config/feed.ts';
 import configHono from '../config/hono.ts';
@@ -42,26 +40,13 @@ const create = async (): Promise<Process.Result> => {
 			entries: entriesView,
 		});
 
-		let feedHtmlFormatted = feed;
-		const prettierOptions = await resolveConfig('test.html', { editorconfig: true });
-		if (prettierOptions !== null) {
-			feedHtmlFormatted = await format(feed, prettierOptions);
-		}
-
-		const feedXmlFormatted = xmlFormatter(feedHtmlFormatted, {
-			/* https://github.com/chrisbottin/xml-formatter#options */
-			indentation: '\t',
-			collapseContent: true,
-			lineSeparator: '\n',
-		});
-
-		const feedXmlBrotli = await brotliCompressText(feedXmlFormatted);
+		const feedXmlBrotli = await brotliCompressText(feed);
 
 		/* ファイル出力 */
 		const filePath = `${configHono.static.root}/${configFeed.path}`;
 		const brotliFilePath = `${filePath}.br`;
 
-		await Promise.all([fs.promises.writeFile(filePath, feedXmlFormatted), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
+		await Promise.all([fs.promises.writeFile(filePath, feed), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
 		logger.info('Feed file created success', filePath, brotliFilePath);
 
 		return { success: true, message: configFeed.processMessage.success };
