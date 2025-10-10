@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import Log4js from 'log4js';
-import xmlFormatter from 'xml-formatter';
 import { env } from '@w0s/env-value-type';
 import configHono from '../config/hono.ts';
 import configSitemap from '../config/sitemap.ts';
@@ -35,17 +34,10 @@ const create = async (): Promise<Process.Result> => {
 			entries: entriesView,
 		});
 
-		const sitemapXmlFormated = xmlFormatter(sitemapXml, {
-			/* https://github.com/chrisbottin/xml-formatter#options */
-			indentation: '\t',
-			collapseContent: true,
-			lineSeparator: '\n',
-		});
-
 		/* ファイル出力 */
 		const filePath = `${configHono.static.root}/${configSitemap.path}`;
 
-		await fs.promises.writeFile(filePath, sitemapXmlFormated);
+		await fs.promises.writeFile(filePath, sitemapXml);
 
 		logger.info('Sitemap file created success', filePath);
 
