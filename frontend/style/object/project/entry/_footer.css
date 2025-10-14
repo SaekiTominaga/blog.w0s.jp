@@ -21,7 +21,7 @@
 	border: var(--_tag-border-width) solid transparent;
 	padding: var(--_tag-pading-row) 0;
 	line-height: var(--line-height-nowrap);
-	white-space: nowrap;
+	text-wrap-mode: nowrap;
 }
 
 .p-entry-footer-category__list {
@@ -39,7 +39,6 @@
 		padding: var(--_tag-pading-row) var(--_tag-pading-col);
 		text-decoration: none;
 		line-height: var(--line-height-nowrap);
-		white-space: nowrap;
 
 		&:hover {
 			box-shadow: 0 0 3px var(--color-border-light);

@@ -99,12 +99,6 @@
 	inline-size: var(--_icon-size);
 }
 
-.c-button__text {
-	.p-entry-footer-action & {
-		white-space: nowrap; /* for iPad Safari */
-	}
-}
-
 /* ===== 脚注リンク ===== */
 .c-footnote-ref {
 	vertical-align: super;
@@ -192,7 +186,7 @@
 	background: var(--color-powderblue);
 	padding: 0.15em 0.45em;
 	line-height: var(--line-height-nowrap);
-	white-space: nowrap;
+	text-wrap-mode: nowrap;
 	color: var(--color-darkblue);
 	font-size: calc(100% / pow(var(--font-ratio), 4));
 }

@@ -50,7 +50,7 @@ pre {
 	tab-size: 2;
 
 	@media print {
-		white-space: pre-wrap;
+		text-wrap-mode: wrap; /* default value: `white-space: pre` */
 	}
 }
 
