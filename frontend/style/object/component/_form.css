@@ -159,7 +159,7 @@
 	overflow: hidden; /* ripple effect */
 	vertical-align: middle;
 	line-height: var(--line-height-nowrap);
-	white-space: nowrap;
+	text-wrap-mode: nowrap;
 	color: var(--_color);
 	font-family: system-ui, sans-serif; /* Chrome で下側の空きが出てしまう対策 */
 	font-size: var(--_font-size);
@@ -280,7 +280,7 @@
 	background: var(--bg-color);
 	padding: 0.375em 0.5em;
 	line-height: var(--line-height-nowrap);
-	white-space: nowrap;
+	text-wrap-mode: nowrap;
 	color: var(--color);
 	font-size: calc(100% / pow(var(--font-ratio), 3));
 

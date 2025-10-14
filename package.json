@@ -15,7 +15,7 @@
 		"@markuplint/ejs-parser": "^4.6.21",
 		"@w0s/eslint-config": "^9.1.0",
 		"@w0s/markuplint-config": "^3.11.0",
-		"@w0s/stylelint-config": "^4.13.0",
+		"@w0s/stylelint-config": "^4.14.0",
 		"@w0s/tsconfig": "^1.7.0",
 		"eslint": "^9.36.0",
 		"markuplint": "^4.13.1",
