@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xml:base="https://blog.w0s.jp/" xml:lang="ja">
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
 	<title>富永日記帳</title>
 	<subtitle>ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ</subtitle>
 	<id>tag:blog.w0s.jp,2009:/</id>
-	<link href="/" type="text/html" />
-	<link href="/feed" rel="self" type="application/atom+xml" />
+	<link href="https://blog.w0s.jp/" type="text/html" />
+	<link href="https://blog.w0s.jp/feed" rel="self" type="application/atom+xml" />
 	<author>
 		<name>富永冴樹</name>
 	</author>
@@ -17,7 +17,7 @@
 		<summary><%= entry.description %></summary>
 		<%_ } _%>
 		<id>tag:blog.w0s.jp,<%= entry.updatedAt.format('YYYY-MM-DD') %>:/<%= entry.id %></id>
-		<link href="/entry/<%= entry.id %>" type="text/html" />
+		<link href="https://blog.w0s.jp/entry/<%= entry.id %>" type="text/html" />
 		<updated><%= entry.updatedAt.format('YYYY-MM-DDTHH:mm:ssZ') %></updated>
 		<content type="html" xml:base="/<%= entry.id %>"> <![CDATA[ <%- entry.message %> ]]> </content>
 	</entry>
