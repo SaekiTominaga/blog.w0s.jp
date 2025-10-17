@@ -18,7 +18,11 @@ import { topApp, listApp } from './controller/list.ts';
 import { adminApp } from './controller/admin.ts';
 import { previewApp } from './controller/preview.ts';
 import { getAuth } from './util/auth.ts';
-import { csp as cspHeader, reportingEndpoints as reportingEndpointsHeader } from './util/httpHeader.ts';
+import {
+	supportCompressionEncoding as supportCompressEncodingHeader,
+	csp as cspHeader,
+	reportingEndpoints as reportingEndpointsHeader,
+} from './util/httpHeader.ts';
 
 loadEnvFile(process.env['NODE_ENV'] === 'production' ? '../.env.production' : '../.env.development');
 
@@ -84,14 +88,33 @@ config.redirect.forEach((redirect) => {
 
 /* Favicon */
 app.get('/favicon.ico', async (context, next) => {
-	const { res } = context;
-
 	const file = await fs.promises.readFile(`${config.static.root}/favicon.ico`);
 
-	res.headers.set('Content-Type', 'image/svg+xml;charset=utf-8');
+	context.header('Content-Type', 'image/svg+xml;charset=utf-8');
 	context.body(Buffer.from(file));
 
 	await next();
+});
+
+/* Feed */
+app.get('/feed', async (context) => {
+	const { req } = context;
+
+	let compressExtension: string | undefined;
+	let responseContentEncoding: string | undefined;
+
+	if (supportCompressEncodingHeader(req.header('Accept-Encoding'), 'br')) {
+		compressExtension = '.br';
+		responseContentEncoding = 'br';
+	}
+
+	const file = await fs.promises.readFile(`${config.static.root}/feed.atom${compressExtension ?? ''}`);
+
+	context.header('Content-Type', 'application/atom+xml;charset=utf-8');
+	if (responseContentEncoding !== undefined) {
+		context.header('Content-Encoding', responseContentEncoding);
+	}
+	return context.body(Buffer.from(file));
 });
 
 /* Static files */
