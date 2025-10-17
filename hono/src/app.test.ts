@@ -36,6 +36,32 @@ await test('favicon.ico', async () => {
 	assert.equal(res.headers.get('Content-Type'), 'image/svg+xml;charset=utf-8');
 });
 
+await test('feed', async (t) => {
+	await t.test('no compression', async () => {
+		const res = await app.request('/feed');
+
+		assert.equal(res.status, 200);
+		assert.equal(res.headers.get('Content-Type'), 'application/atom+xml;charset=utf-8');
+		assert.equal(res.headers.get('Content-Encoding'), null);
+	});
+
+	await t.test('gzip', async () => {
+		const res = await app.request('/feed', {
+			headers: { 'Accept-Encoding': 'gzip, deflate' },
+		});
+
+		assert.equal(res.headers.get('Content-Encoding'), 'gzip');
+	});
+
+	await t.test('brotli', async () => {
+		const res = await app.request('/feed', {
+			headers: { 'accept-encoding': 'gzip, deflate, br;q=1.0, zstd, *;q=0.5' },
+		});
+
+		assert.equal(res.headers.get('Content-Encoding'), 'br');
+	});
+});
+
 await test('serveStatic', async (t) => {
 	before(() => {
 		process.env['NODE_ENV'] = 'production';
@@ -49,10 +75,6 @@ await test('serveStatic', async (t) => {
 		await t2.test('hono', async () => {
 			assert.equal((await app.request('robots.txt', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'text/plain; charset=utf-8');
 			assert.equal((await app.request('sitemap.xml', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/xml');
-		});
-
-		await t2.test('added', async () => {
-			assert.equal((await app.request('/feed', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/atom+xml; charset=utf-8');
 		});
 
 		await t2.test('node-server#226', async () => {
