@@ -88,9 +88,11 @@ config.redirect.forEach((redirect) => {
 
 /* Favicon */
 app.get('/favicon.ico', async (context, next) => {
+	const { res } = context;
+
 	const file = await fs.promises.readFile(`${config.static.root}/favicon.ico`);
 
-	context.header('Content-Type', 'image/svg+xml;charset=utf-8');
+	res.headers.set('Content-Type', 'image/svg+xml;charset=utf-8'); // `context.header` だと実際には問題ないが、test で落ちる
 	context.body(Buffer.from(file));
 
 	await next();

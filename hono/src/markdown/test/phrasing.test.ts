@@ -61,7 +61,7 @@ await test('link', async (t) => {
 	await t.test('amazon', async () => {
 		const markdown = new Markdown();
 		assert.equal(
-			await format(await markdown.toHtml('text1[link1](amazon:4065199816)text2')),
+			await format(await markdown.toHtml('text1[link1](https://www.amazon.co.jp/dp/4065199816)text2')),
 			`<p>
 	text1<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=w0s.jp-22">link1</a><small class="c-domain"><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" /></small>text2
 </p>`.trim(),

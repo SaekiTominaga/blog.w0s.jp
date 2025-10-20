@@ -15,10 +15,9 @@ const name = 'x-blockquote';
 interface XBlockquote extends Parent {
 	type: typeof name;
 	lang?: string;
-	citetext?: string;
-	citeurl?: string;
-	citeisbn?: string;
-	citeamazon?: string;
+	metaText?: string;
+	metaUrl?: string;
+	metaIsbn?: string;
 	children: (BlockContent | DefinitionContent)[];
 }
 
@@ -62,15 +61,13 @@ const toMdast = (): Plugin => {
 						if (meta.lang !== undefined) {
 							blockquote.lang = meta.lang;
 						} else if (meta.url !== undefined) {
-							blockquote.citeurl = meta.url;
+							blockquote.metaUrl = meta.url;
 						} else if (meta.isbn !== undefined) {
 							if (meta.isbn.valid) {
-								blockquote.citeisbn = meta.isbn.value;
+								blockquote.metaIsbn = meta.isbn.value;
 							}
-						} else if (meta.amazon !== undefined) {
-							blockquote.citeamazon = meta.amazon;
 						} else {
-							blockquote.citetext = metaText;
+							blockquote.metaText = metaText;
 						}
 					});
 

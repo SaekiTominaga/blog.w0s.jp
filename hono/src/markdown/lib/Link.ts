@@ -32,23 +32,28 @@ export default class Link {
 	 */
 	static getInfo(mdContent: string, mdUrl: string): Info {
 		/* 絶対 URL */
-		const absoluteUrlMatchGroups = new RegExp(`^(?<absoluteUrl>${configRemark.regexp.absoluteUrl})$`, 'v').exec(mdUrl)?.groups;
-		if (absoluteUrlMatchGroups !== undefined) {
-			const { absoluteUrl } = absoluteUrlMatchGroups;
+		if (URL.canParse(mdUrl)) {
+			const url = new URL(mdUrl);
 
-			if (absoluteUrl !== undefined) {
-				const url = new URL(mdUrl);
+			const { hostIcon, hostText } = this.#getHostInfo(mdContent, url);
 
-				const { typeIcon } = this.#getTypeInfo(url);
-				const { hostIcon, hostText } = this.#getHostInfo(mdContent, url);
-
+			if (new RegExp(`^https://www.amazon.[a-z]+(.[a-z]+)?/dp/${configRemark.regexp.asin}$`, 'v').test(mdUrl)) {
+				/* Amazon 商品ページ */
 				return {
-					href: mdUrl,
-					typeIcon: typeIcon,
+					href: `${mdUrl}/ref=nosim?tag=${configRemark.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
 					hostIcon: hostIcon,
 					hostText: hostText,
 				};
 			}
+
+			const { typeIcon } = this.#getTypeInfo(url);
+
+			return {
+				href: mdUrl,
+				typeIcon: typeIcon,
+				hostIcon: hostIcon,
+				hostText: hostText,
+			};
 		}
 
 		/* 別記事へのリンク */
@@ -59,19 +64,6 @@ export default class Link {
 			if (entryId !== undefined) {
 				return {
 					href: `/entry/${mdUrl}`,
-				};
-			}
-		}
-
-		/* Amazon 商品ページへのリンク */
-		const amazonMatchGroups = new RegExp(`^amazon:(?<asin>${configRemark.regexp.asin})$`, 'v').exec(mdUrl)?.groups;
-		if (amazonMatchGroups !== undefined) {
-			const { asin } = amazonMatchGroups;
-
-			if (asin !== undefined) {
-				return {
-					href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${configRemark.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
-					hostIcon: { fileName: 'amazon.png', altText: 'Amazon' },
 				};
 			}
 		}
@@ -125,7 +117,7 @@ export default class Link {
 		let hostText: string | undefined;
 
 		/* 絶対 URL 表記でない場合はドメイン情報を記載 */
-		if (!new RegExp(`^${configRemark.regexp.absoluteUrl}$`, 'v').test(content)) {
+		if (!URL.canParse(content)) {
 			const host = url.hostname;
 
 			/* サイトアイコン */

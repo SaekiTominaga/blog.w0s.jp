@@ -493,7 +493,10 @@ await test('blockquote', async (t) => {
 			),
 			`
 <figure>
-	<blockquote class="p-quote" cite="http://example.com"><p>quote</p></blockquote>
+	<blockquote class="p-quote"><p>quote</p></blockquote>
+	<figcaption class="c-caption -meta">
+		<span class="c-caption__text"><a href="http://example.com">http://example.com</a></span>
+	</figcaption>
 </figure>
 `.trim(),
 		);
@@ -507,7 +510,7 @@ await test('blockquote', async (t) => {
 					`
 > quote
 >
->- ?amazon:1111111111
+>- ?https://www.amazon.co.jp/dp/1111111111
 >- ?text
 `,
 				),
@@ -575,7 +578,7 @@ await test('blockquote', async (t) => {
 >
 >- ?en
 >- ?978-4-06-519981-7
->- ?amazon:1111111111
+>- ?https://www.amazon.co.jp/dp/1111111111
 >- ?http://example.com
 >- ?*引用*元
 `,
@@ -583,7 +586,7 @@ await test('blockquote', async (t) => {
 			),
 			`
 <figure>
-	<blockquote class="p-quote" lang="en" cite="http://example.com"><p>quote</p></blockquote>
+	<blockquote class="p-quote" lang="en" cite="urn:ISBN:978-4-06-519981-7"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta">
 		<span class="c-caption__text"><a href="http://example.com">引用元</a><small class="c-domain">(<code>example.com</code>)</small></span>
 	</figcaption>
