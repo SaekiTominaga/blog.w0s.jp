@@ -37,10 +37,10 @@ export default class Link {
 
 			const { hostIcon, hostText } = this.#getHostInfo(mdContent, url);
 
-			if (new RegExp(`^https://www.amazon.[a-z]+(.[a-z]+)?/dp/${configRemark.regexp.asin}/$`, 'v').test(mdUrl)) {
+			if (new RegExp(`^https://www.amazon.[a-z]+(.[a-z]+)?/dp/${configRemark.regexp.asin}$`, 'v').test(mdUrl)) {
 				/* Amazon 商品ページ */
 				return {
-					href: `${mdUrl}ref=nosim?tag=${configRemark.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+					href: `${mdUrl}/ref=nosim?tag=${configRemark.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
 					hostIcon: hostIcon,
 					hostText: hostText,
 				};
