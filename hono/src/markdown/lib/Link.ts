@@ -32,7 +32,7 @@ export default class Link {
 	 */
 	static getInfo(mdContent: string, mdUrl: string): Info {
 		/* 絶対 URL */
-		if (URL.canParse(mdUrl)) {
+		if (new RegExp(`^${configRemark.regexp.absoluteUrl}$`, 'v').test(mdUrl)) {
 			const url = new URL(mdUrl);
 
 			const { hostIcon, hostText } = this.#getHostInfo(mdContent, url);
@@ -117,7 +117,7 @@ export default class Link {
 		let hostText: string | undefined;
 
 		/* 絶対 URL 表記でない場合はドメイン情報を記載 */
-		if (!URL.canParse(content)) {
+		if (!new RegExp(`^${configRemark.regexp.absoluteUrl}$`, 'v').test(content)) {
 			const host = url.hostname;
 
 			/* サイトアイコン */

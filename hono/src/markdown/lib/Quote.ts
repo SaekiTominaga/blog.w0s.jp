@@ -30,7 +30,7 @@ export default class Quote {
 		}
 
 		/* 絶対 URL */
-		if (URL.canParse(meta)) {
+		if (new RegExp(`^${configRemark.regexp.absoluteUrl}$`, 'v').test(meta)) {
 			return {
 				url: meta,
 			};
