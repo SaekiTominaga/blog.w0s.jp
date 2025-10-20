@@ -12,14 +12,13 @@ import configRemark from '../../../config/remark.ts';
 
 interface XBlockquote extends Blockquote {
 	lang?: string;
-	citetext?: string;
-	citeurl?: string;
-	citeisbn?: string;
-	citeamazon?: string;
+	metaText?: string;
+	metaUrl?: string;
+	metaIsbn?: string;
 }
 
 export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementContent | HastElementContent[] | null | undefined => {
-	const { lang, citetext, citeurl, citeisbn, citeamazon } = node;
+	const { lang, metaText, metaUrl, metaIsbn } = node;
 
 	const childElements: HastElementContent[] = [];
 
@@ -75,18 +74,15 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 	if (lang !== undefined && lang !== configRemark.lang) {
 		blockquoteAttribute['lang'] = lang;
 	}
-	if (citeurl !== undefined) {
-		blockquoteAttribute['cite'] = citeurl;
-	} else if (citeisbn !== undefined) {
-		/* URL と ISBN が両方指定されていた場合、ISBN は無視される */
-		blockquoteAttribute['cite'] = `urn:ISBN:${citeisbn}`;
+	if (metaIsbn !== undefined) {
+		blockquoteAttribute['cite'] = `urn:ISBN:${metaIsbn}`;
 	}
 
 	const figcaptionChild: HastElementContent[] = [];
-	if (citetext !== undefined) {
-		const url = citeurl ?? citeamazon;
-		if (url !== undefined) {
-			const { href, typeIcon, hostIcon, hostText } = LinkUtil.getInfo(citetext, url);
+	if (metaText !== undefined) {
+		if (metaUrl !== undefined) {
+			/* URL とテキストが両方指定 */
+			const { href, typeIcon, hostIcon, hostText } = LinkUtil.getInfo(metaText, metaUrl);
 
 			figcaptionChild.push({
 				type: 'element',
@@ -97,17 +93,33 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 				children: [
 					{
 						type: 'text',
-						value: citetext,
+						value: metaText,
 					},
 				],
 			});
 			figcaptionChild.push(...HastUtil.linkInfo(typeIcon, hostIcon ?? hostText));
 		} else {
+			/* テキストのみ指定 */
 			figcaptionChild.push({
 				type: 'text',
-				value: citetext,
+				value: metaText,
 			});
 		}
+	} else if (metaUrl !== undefined) {
+		/* URL のみ指定 */
+		figcaptionChild.push({
+			type: 'element',
+			tagName: 'a',
+			properties: {
+				href: metaUrl,
+			},
+			children: [
+				{
+					type: 'text',
+					value: metaUrl,
+				},
+			],
+		});
 	}
 
 	const figureChild: HastElement[] = [];

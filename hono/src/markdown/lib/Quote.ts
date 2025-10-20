@@ -30,7 +30,7 @@ export default class Quote {
 		}
 
 		/* 絶対 URL */
-		if (new RegExp(`^${configRemark.regexp.absoluteUrl}$`, 'v').test(meta)) {
+		if (URL.canParse(meta)) {
 			return {
 				url: meta,
 			};
@@ -43,13 +43,6 @@ export default class Quote {
 					value: meta,
 					valid: new IsbnVerify(meta, { strict: true }).isValid(),
 				},
-			};
-		}
-
-		/* Amazon 商品ページへのリンク */
-		if (new RegExp(`^amazon:${configRemark.regexp.asin}$`, 'v').test(meta)) {
-			return {
-				amazon: meta,
 			};
 		}
 
