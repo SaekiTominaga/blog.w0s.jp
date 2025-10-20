@@ -510,7 +510,7 @@ await test('blockquote', async (t) => {
 					`
 > quote
 >
->- ?https://www.amazon.co.jp/dp/1111111111/
+>- ?https://www.amazon.co.jp/dp/1111111111
 >- ?text
 `,
 				),
@@ -578,7 +578,7 @@ await test('blockquote', async (t) => {
 >
 >- ?en
 >- ?978-4-06-519981-7
->- ?https://www.amazon.co.jp/dp/1111111111/
+>- ?https://www.amazon.co.jp/dp/1111111111
 >- ?http://example.com
 >- ?*引用*元
 `,
