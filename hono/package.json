@@ -80,7 +80,7 @@
 	},
 	"devDependencies": {
 		"@types/ejs": "^3.1.5",
-		"@types/md5": "^2.3.5",
+		"@types/md5": "^2.3.6",
 		"tsx": "^4.20.6"
 	}
 }
