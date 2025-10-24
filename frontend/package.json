@@ -15,9 +15,9 @@
 		"js-prod": "rollup -c --environment build:production",
 		"postjs-prod": "brotli-cli compress -g ../public/script/*.{js,mjs} -m text",
 		"js-lint": "eslint script/**/*.ts",
-		"presvg": "rimraf ../public/image/**/*.svg ../public/image/**/*.svg.br ../public/favicon.ico ../public/favicon.ico.br -g",
+		"presvg": "rimraf ../public/**/*.svg ../public/**/*.svg.br -g",
 		"svg": "node --experimental-strip-types build/svg.ts -i image -o ../public -c svgo.config.js",
-		"postsvg": "brotli-cli compress -g ../public/image/**/*.svg -g ../public/favicon.ico -m text",
+		"postsvg": "brotli-cli compress -g ../public/**/*.svg -m text",
 		"node-lint": "eslint build/*.ts"
 	},
 	"dependencies": {
