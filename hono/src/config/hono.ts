@@ -74,11 +74,10 @@ export default {
 	static: {
 		root: '../public',
 		index: 'index.html',
-		extensions: ['.html', '.atom'], // URL 上で省略できる拡張子
+		extensions: ['.html'], // URL 上で省略できる拡張子
 		headers: {
 			contentType: {
 				/* hono 公式で規定されていないもの https://github.com/honojs/hono/blob/main/src/utils/mime.ts */
-				'.atom': 'application/atom+xml; charset=utf-8',
 
 				/* Brotli ファイルが存在するもの https://github.com/honojs/node-server/issues/226 */
 				'.json': 'application/json',
