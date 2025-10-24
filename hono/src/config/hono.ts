@@ -89,12 +89,6 @@ export default {
 			},
 			cacheControl: {
 				default: 'max-age=600',
-				path: [
-					{
-						paths: ['/favicon.ico'],
-						value: 'max-age=604800',
-					},
-				],
 				extension: [
 					{
 						extensions: ['.webp', '.jpg', '.jpeg', '.png', '.svg'],

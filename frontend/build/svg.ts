@@ -53,8 +53,7 @@ await Promise.all(
 
 		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 		const outFileParsed = path.parse(filePath.replace(new RegExp(`^${argsParsedValues.inDir}`, 'v'), outDirectory));
-		const outExtension = outFileParsed.dir === outDirectory && outFileParsed.base === 'favicon.svg' ? '.ico' : '.svg'; // favicon.svg のみ favicon.ico にリネームする
-		const outPath = `${outFileParsed.dir}/${outFileParsed.name}${outExtension}`;
+		const outPath = `${outFileParsed.dir}/${outFileParsed.name}.svg`;
 
 		/* 出力 */
 		await fs.promises.writeFile(outPath, optimized.data);

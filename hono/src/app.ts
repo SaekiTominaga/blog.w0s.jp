@@ -87,15 +87,26 @@ config.redirect.forEach((redirect) => {
 });
 
 /* Favicon */
-app.get('/favicon.ico', async (context, next) => {
-	const { res } = context;
+app.get('/favicon.ico', async (context) => {
+	const { req } = context;
 
-	const file = await fs.promises.readFile(`${config.static.root}/favicon.ico`);
+	let compressExtension: string | undefined;
+	let responseContentEncoding: string | undefined;
 
-	res.headers.set('Content-Type', 'image/svg+xml;charset=utf-8'); // `context.header` だと実際には問題ないが、test で落ちる
-	context.body(Buffer.from(file));
+	if (supportCompressEncodingHeader(req.header('Accept-Encoding'), 'br')) {
+		compressExtension = '.br';
+		responseContentEncoding = 'br';
+	}
 
-	await next();
+	const file = await fs.promises.readFile(`${config.static.root}/favicon.svg${compressExtension ?? ''}`);
+
+	context.header('Content-Type', 'image/svg+xml;charset=utf-8');
+	if (responseContentEncoding !== undefined) {
+		context.header('Content-Encoding', responseContentEncoding);
+	}
+	context.header('Content-Length', String(file.byteLength));
+	context.header('Cache-Control', 'max-age=604800');
+	return context.body(Buffer.from(file));
 });
 
 /* Feed */
@@ -152,8 +163,7 @@ app.use(
 			/* Cache-Control */
 			const cacheControl =
 				process.env['NODE_ENV'] === 'production'
-					? (config.static.headers.cacheControl.path.find((ccPath) => ccPath.paths.includes(urlPath))?.value ??
-						config.static.headers.cacheControl.extension.find((ccExt) => ccExt.extensions.includes(urlExtension))?.value ??
+					? (config.static.headers.cacheControl.extension.find((ccExt) => ccExt.extensions.includes(urlExtension))?.value ??
 						config.static.headers.cacheControl.default)
 					: 'no-cache';
 			res.headers.set('Cache-Control', cacheControl);

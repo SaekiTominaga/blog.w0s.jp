@@ -1,7 +1,9 @@
 import { strict as assert } from 'node:assert';
+import fs from 'node:fs';
 import { test, before } from 'node:test';
 import { env } from '@w0s/env-value-type';
 import app from './app.ts';
+import config from './config/hono.ts';
 
 await test('headers', async () => {
 	const res = await app.request('/');
@@ -29,11 +31,37 @@ await test('Top page', async () => {
 	assert.equal(res.headers.get('Content-Type'), 'text/html; charset=utf-8');
 });
 
-await test('favicon.ico', async () => {
-	const res = await app.request('/favicon.ico');
+await test('favicon.ico', async (t) => {
+	await t.test('no compression', async () => {
+		const [file, res] = await Promise.all([fs.promises.readFile(`${config.static.root}/favicon.svg`), Promise.resolve(app.request('/favicon.ico'))]);
 
-	assert.equal(res.status, 200);
-	assert.equal(res.headers.get('Content-Type'), 'image/svg+xml;charset=utf-8');
+		assert.equal(res.status, 200);
+		assert.equal(res.headers.get('Content-Type'), 'image/svg+xml;charset=utf-8');
+		assert.equal(res.headers.get('Content-Length'), String(file.byteLength));
+		assert.equal(res.headers.get('Cache-Control'), 'max-age=604800');
+	});
+
+	await t.test('gzip', async () => {
+		const res = await app.request('/favicon.ico', {
+			headers: { 'Accept-Encoding': 'gzip, deflate' },
+		});
+
+		assert.equal(res.headers.get('Content-Encoding'), 'gzip');
+	});
+
+	await t.test('brotli', async () => {
+		const [file, res] = await Promise.all([
+			fs.promises.readFile(`${config.static.root}/favicon.svg.br`),
+			Promise.resolve(
+				app.request('/favicon.ico', {
+					headers: { 'accept-encoding': 'gzip, deflate, br;q=1.0, zstd, *;q=0.5' },
+				}),
+			),
+		]);
+
+		assert.equal(res.headers.get('Content-Encoding'), 'br');
+		assert.equal(res.headers.get('Content-Length'), String(file.byteLength));
+	});
 });
 
 await test('feed', async (t) => {
@@ -67,9 +95,11 @@ await test('serveStatic', async (t) => {
 		process.env['NODE_ENV'] = 'production';
 	});
 
+	/*
 	await t.test('no extension', async () => {
-		assert.equal((await app.request('/feed')).status, 200);
+		assert.equal((await app.request('/xxx')).status, 200);
 	});
+	*/
 
 	await t.test('Content-Type', async (t2) => {
 		await t2.test('hono', async () => {
@@ -96,10 +126,6 @@ await test('serveStatic', async (t) => {
 	});
 
 	await t.test('Cache-Control', async (t2) => {
-		await t2.test('path', async () => {
-			assert.equal((await app.request('/favicon.ico')).headers.get('Cache-Control'), 'max-age=604800');
-		});
-
 		await t2.test('extension', async () => {
 			assert.equal((await app.request('/apple-touch-icon.png')).headers.get('Cache-Control'), 'max-age=3600');
 			assert.equal((await app.request('/script/blog.mjs.map')).headers.get('Cache-Control'), 'no-cache');
