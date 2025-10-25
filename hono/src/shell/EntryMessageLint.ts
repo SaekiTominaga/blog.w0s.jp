@@ -12,10 +12,6 @@ const argsParsedValues = parseArgs({
 		id: {
 			type: 'string',
 		},
-		dbupdate: {
-			type: 'boolean',
-			default: false,
-		},
 	},
 }).values;
 
@@ -26,10 +22,11 @@ const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) 
 /* DB からデータ取得 */
 const entryiesMessageDto = await dao.getEntriesMessage(entryId);
 
+const markdown = new Markdown({
+	lint: true,
+});
+
 for (const [id, message] of [...entryiesMessageDto]) {
-	const markdown = new Markdown({
-		lint: true,
-	});
 	const { messages: vMessages } = await markdown.toHtml(message);
 
 	if (vMessages.length >= 1) {
