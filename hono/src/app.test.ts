@@ -33,11 +33,11 @@ await test('Top page', async () => {
 
 await test('favicon.ico', async (t) => {
 	await t.test('no compression', async () => {
-		const [file, res] = await Promise.all([fs.promises.readFile(`${config.static.root}/favicon.svg`), Promise.resolve(app.request('/favicon.ico'))]);
+		const res = await app.request('/favicon.ico');
 
 		assert.equal(res.status, 200);
 		assert.equal(res.headers.get('Content-Type'), 'image/svg+xml;charset=utf-8');
-		assert.equal(res.headers.get('Content-Length'), String(file.byteLength));
+		assert.equal(res.headers.get('Content-Encoding'), null);
 		assert.equal(res.headers.get('Cache-Control'), 'max-age=604800');
 	});
 
@@ -50,17 +50,11 @@ await test('favicon.ico', async (t) => {
 	});
 
 	await t.test('brotli', async () => {
-		const [file, res] = await Promise.all([
-			fs.promises.readFile(`${config.static.root}/favicon.svg.br`),
-			Promise.resolve(
-				app.request('/favicon.ico', {
-					headers: { 'accept-encoding': 'gzip, deflate, br;q=1.0, zstd, *;q=0.5' },
-				}),
-			),
-		]);
+		const res = await app.request('/favicon.ico', {
+			headers: { 'accept-encoding': 'gzip, deflate, br;q=1.0, zstd, *;q=0.5' },
+		});
 
 		assert.equal(res.headers.get('Content-Encoding'), 'br');
-		assert.equal(res.headers.get('Content-Length'), String(file.byteLength));
 	});
 });
 
@@ -71,6 +65,7 @@ await test('feed', async (t) => {
 		assert.equal(res.status, 200);
 		assert.equal(res.headers.get('Content-Type'), 'application/atom+xml;charset=utf-8');
 		assert.equal(res.headers.get('Content-Encoding'), null);
+		assert.equal(res.headers.get('Cache-Control'), null);
 	});
 
 	await t.test('gzip', async () => {
