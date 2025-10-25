@@ -104,7 +104,6 @@ app.get('/favicon.ico', async (context) => {
 	if (responseContentEncoding !== undefined) {
 		context.header('Content-Encoding', responseContentEncoding);
 	}
-	context.header('Content-Length', String(file.byteLength));
 	context.header('Cache-Control', 'max-age=604800');
 	return context.body(Buffer.from(file));
 });
