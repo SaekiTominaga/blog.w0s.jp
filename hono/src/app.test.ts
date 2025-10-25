@@ -1,9 +1,7 @@
 import { strict as assert } from 'node:assert';
-import fs from 'node:fs';
 import { test, before } from 'node:test';
 import { env } from '@w0s/env-value-type';
 import app from './app.ts';
-import config from './config/hono.ts';
 
 await test('headers', async () => {
 	const res = await app.request('/');
