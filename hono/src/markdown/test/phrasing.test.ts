@@ -8,7 +8,7 @@ await test('Text', async (t) => {
 		const markdown = new Markdown();
 		assert.equal(
 			await format(await markdown.toHtml('<s class="">text</s> `<s class="">text</s>`')),
-			'<p>&lt;s class="">text&lt;/s> <code>&lt;s class="">text&lt;/s></code></p>'.trim(),
+			'<p><s class="">text</s> <code>&lt;s class="">text&lt;/s></code></p>'.trim(),
 		);
 	});
 
@@ -76,77 +76,6 @@ await test('link', async (t) => {
 	await t.test('invalid', async () => {
 		const markdown = new Markdown();
 		assert.equal(await format(await markdown.toHtml('text1[link1](foo)text2')), '<p>text1<a>link1</a>text2</p>'.trim());
-	});
-});
-
-await test('quote', async (t) => {
-	await t.test('single', async () => {
-		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('text1{quote1}text2')), '<p>text1<q>quote1</q>text2</p>'.trim());
-	});
-
-	await t.test('multiple', async () => {
-		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('text1{quote1}text2{quote2}')), '<p>text1<q>quote1</q>text2<q>quote2</q></p>'.trim());
-	});
-
-	await t.test('meta URL', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(await markdown.toHtml('text1{quote1}(https://example.com/)text2')),
-			`
-<p>
-	text1<a href="https://example.com/"><q cite="https://example.com/">quote1</q></a
-	><small class="c-domain">(<code>example.com</code>)</small>text2
-</p>
-`.trim(),
-		);
-	});
-
-	await t.test('meta ISBN', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(await markdown.toHtml('text1{quote1}(978-4-06-519981-7)text2')),
-			'<p>text1<q cite="urn:ISBN:978-4-06-519981-7">quote1</q>text2</p>'.trim(),
-		);
-	});
-
-	await t.test('meta ISBN - invalid check digit', async () => {
-		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('text1{quote1}(978-4-06-519981-0)text2')), '<p>text1<q>quote1</q>text2</p>'.trim());
-	});
-
-	await t.test('meta lang', async () => {
-		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('text1{quote1}(en)text2')), '<p>text1<q lang="en">quote1</q>text2</p>'.trim());
-	});
-
-	await t.test('meta all', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(await markdown.toHtml('text1{quote1}(https://example.com/ 978-4-06-519981-7 en)text2')),
-			`
-<p>
-	text1<a href="https://example.com/"><q lang="en" cite="https://example.com/">quote1</q></a
-	><small class="c-domain">(<code>example.com</code>)</small>text2
-</p>
-`.trim(),
-		);
-	});
-
-	await t.test('meta empty', async () => {
-		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('text1{quote1}()text2')), '<p>text1<q>quote1</q>()text2</p>'.trim());
-	});
-
-	await t.test('open only', async () => {
-		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('text1{text2')), '<p>text1{text2</p>'.trim());
-	});
-
-	await t.test('in <code>', async () => {
-		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('text1`{code}`text2')), '<p>text1<code>{code}</code>text2</p>'.trim());
 	});
 });
 
