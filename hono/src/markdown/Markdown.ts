@@ -35,7 +35,6 @@ import remarkLintHeadingDepthLimit from './lint/headingDepthLimit.ts';
 import remarkLintNoEmptySections from './lint/noEmptySection.ts';
 import remarkLintNoLinkTitle from './lint/noLinkTitle.ts';
 import remarkLintNoLooseList from './lint/noLooseList.ts';
-import remarkLintNoRecommendedHtml from './lint/noRecommendedHtml.ts';
 import remarkLintNoTypes from './lint/noTypes.ts';
 import { xBlankToHast } from './toHast/block/blank.ts';
 import { xBlockquoteToHast } from './toHast/block/blockquote.ts';
@@ -44,7 +43,6 @@ import { codeToHast } from './toHast/block/code.ts';
 import { defListToHast } from './toHast/block/definitionList.ts';
 import { xEmbeddedMediaToHast, xEmbeddedAmazonToHast, xEmbeddedYouTubeToHast } from './toHast/block/embedded.ts';
 import { headingToHast, xHeadingToHast } from './toHast/block/heading.ts';
-import { htmlToHast } from './toHast/block/html.ts';
 import { listToHast } from './toHast/block/list.ts';
 import { xSectionToHast } from './toHast/block/section.ts';
 import { tableToHast } from './toHast/block/table.ts';
@@ -112,7 +110,6 @@ export default class Markdown {
 			processor.use(remarkLintNoShortcutReferenceLink); // [markdown-style-guide][recommended] 参照リンクでは末尾の [] が必須
 			processor.use(remarkLintEmphasisMarker, '*'); // [markdown-style-guide] <em> 構文
 			processor.use(remarkLintStrongMarker, '*'); // [markdown-style-guide] <strong> 構文
-			processor.use(remarkLintNoRecommendedHtml); // HTML 直書きは非推奨
 		}
 
 		processor.use(remarkParse); // Markdown → mdast
@@ -130,6 +127,7 @@ export default class Markdown {
 		processor.use(quoteMdast);
 
 		processor.use(remarkRehype, {
+			allowDangerousHtml: true,
 			clobberPrefix: '',
 			handlers: {
 				code: codeToHast,
@@ -138,7 +136,6 @@ export default class Markdown {
 				defListTerm: mdastDefListTerm2hast,
 				footnoteReference: footnoteReferenceToHast,
 				heading: headingToHast,
-				html: htmlToHast,
 				link: linkToHast,
 				list: listToHast,
 				'x-blank': xBlankToHast,
@@ -165,6 +162,7 @@ export default class Markdown {
 			entities: {
 				useNamedReferences: true,
 			},
+			allowDangerousHtml: true,
 			closeSelfClosing: true,
 			tightSelfClosing: true,
 		}); // hast → HTML
