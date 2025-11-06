@@ -975,7 +975,7 @@ await test('Image', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-@file.jpg: title<title> title
+@file.jpg: title
 `,
 				),
 			),
@@ -989,7 +989,7 @@ await test('Image', async (t) => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title&lt;title> title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1002,14 +1002,14 @@ await test('Image', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-@file.svg: title<title> title
+@file.svg: title
 `,
 				),
 			),
 			`
 <figure>
 	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="画像" class="p-embed__image" /></div>
-	<figcaption class="c-caption"><span class="c-caption__text">title&lt;title> title</span></figcaption>
+	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
 </figure>
 `.trim(),
 		);
@@ -1021,14 +1021,14 @@ await test('Image', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-@file.mp4: title<title> title
+@file.mp4: title
 `,
 				),
 			),
 			`
 <figure>
 	<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file.mp4" controls class="p-embed__video"></video></div>
-	<figcaption class="c-caption"><span class="c-caption__text">title&lt;title> title</span></figcaption>
+	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
 </figure>
 `.trim(),
 		);
@@ -1040,14 +1040,14 @@ await test('Image', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-@file.xxx: title<title> title
+@file.xxx: title
 `,
 				),
 			),
 			`
 <figure>
 	<div class="p-embed"></div>
-	<figcaption class="c-caption"><span class="c-caption__text">title&lt;title> title</span></figcaption>
+	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
 </figure>
 `.trim(),
 		);
@@ -1124,7 +1124,7 @@ await test('Image', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-@file.jpg: title<title> \`code\`
+@file.jpg: title \`code\`
 `,
 				),
 			),
@@ -1138,7 +1138,7 @@ await test('Image', async (t) => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title&lt;title> <code>code</code></span
+		<span class="c-caption__text">title <code>code</code></span
 		><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
@@ -1152,7 +1152,7 @@ await test('Image', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-@file.jpg: title<title> title <meta>
+@file.jpg: title <meta>
 `,
 				),
 			),
@@ -1166,7 +1166,7 @@ await test('Image', async (t) => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title&lt;title> title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1179,7 +1179,7 @@ await test('Image', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-@file.jpg: title<title> title <10 10>
+@file.jpg: title <10 10>
 `,
 				),
 			),
@@ -1193,7 +1193,7 @@ await test('Image', async (t) => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title&lt;title> title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1224,7 +1224,7 @@ await test('YouTube', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-@youtube: 1234567890 title<title> title
+@youtube: 1234567890 title
 `,
 				),
 			),
@@ -1233,7 +1233,7 @@ await test('YouTube', async (t) => {
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
 	<figcaption class="c-caption">
 		<span class="c-caption__text"
-			><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
+			><a href="https://www.youtube.com/watch?v=1234567890">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
 		></span>
 	</figcaption>
 </figure>
@@ -1247,7 +1247,7 @@ await test('YouTube', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-@youtube: 1234567890 title<title> title <100x150>
+@youtube: 1234567890 title <100x150>
 `,
 				),
 			),
@@ -1256,7 +1256,7 @@ await test('YouTube', async (t) => {
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media;fullscreen;gyroscope;picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe></div>
 	<figcaption class="c-caption">
 		<span class="c-caption__text"
-			><a href="https://www.youtube.com/watch?v=1234567890">title&lt;title> title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
+			><a href="https://www.youtube.com/watch?v=1234567890">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
 		></span>
 	</figcaption>
 </figure>
@@ -1357,7 +1357,7 @@ await test('Amazon', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-- @amazon: 1234567890 title<title> title
+- @amazon: 1234567890 title
 `,
 				),
 			),
@@ -1368,7 +1368,7 @@ await test('Amazon', async (t) => {
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
 				><div class="p-amazon__thumb"><img src="/image/entry/amazon-noimage.svg" alt="" width="113" height="160" class="p-amazon__image" /></div>
-				<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div></a
+				<div class="p-amazon__text"><p class="p-amazon__title">title</p></div></a
 			>
 		</li>
 	</ul>
@@ -1383,7 +1383,7 @@ await test('Amazon', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-- @amazon: 1234567890 title<title> title <abcdef>
+- @amazon: 1234567890 title <abcdef>
 `,
 				),
 			),
@@ -1394,7 +1394,7 @@ await test('Amazon', async (t) => {
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
 				><div class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" class="p-amazon__image" /></div>
-				<div class="p-amazon__text"><p class="p-amazon__title">title&lt;title> title</p></div></a
+				<div class="p-amazon__text"><p class="p-amazon__title">title</p></div></a
 			>
 		</li>
 	</ul>
