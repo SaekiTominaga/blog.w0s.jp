@@ -2,8 +2,8 @@ import type { Properties } from 'hast';
 import type { Blockquote } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
-import HastUtil from '../../lib/HastUtil.ts';
-import LinkUtil from '../../lib/Link.ts';
+import { linkInfo } from '../../lib/hast.ts';
+import { getInfo as getLinkInfo } from '../../lib/link.ts';
 import configRemark from '../../config.ts';
 
 /**
@@ -82,7 +82,7 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 	if (metaText !== undefined) {
 		if (metaUrl !== undefined) {
 			/* URL とテキストが両方指定 */
-			const { href, typeIcon, hostIcon, hostText } = LinkUtil.getInfo(metaText, metaUrl);
+			const { href, typeIcon, hostIcon, hostText } = getLinkInfo(metaText, metaUrl);
 
 			figcaptionChild.push({
 				type: 'element',
@@ -97,7 +97,7 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 					},
 				],
 			});
-			figcaptionChild.push(...HastUtil.linkInfo(typeIcon, hostIcon ?? hostText));
+			figcaptionChild.push(...linkInfo(typeIcon, hostIcon ?? hostText));
 		} else {
 			/* テキストのみ指定 */
 			figcaptionChild.push({

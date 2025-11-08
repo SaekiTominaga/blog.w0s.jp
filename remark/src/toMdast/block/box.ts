@@ -3,8 +3,8 @@ import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { findAllBetween } from 'unist-util-find-between-all';
 import { visit, CONTINUE } from 'unist-util-visit';
-import MdastUtil from '../../lib/MdastUtil.ts';
-import UnistUtil from '../../lib/UnistUtil.ts';
+import { isEmptyParagraph } from '../../lib/mdast.ts';
+import { findAfter } from '../../lib/unist.ts';
 
 /**
  * Box
@@ -46,7 +46,7 @@ const toMdast = (): Plugin => {
 				return CONTINUE;
 			}
 
-			const endNode = UnistUtil.findAfter(parent, parent.children.indexOf(startNode), (node): boolean => {
+			const endNode = findAfter(parent, parent.children.indexOf(startNode), (node): boolean => {
 				if (node.type !== 'paragraph') {
 					return false;
 				}
@@ -73,7 +73,7 @@ const toMdast = (): Plugin => {
 			let replaceSize = 0;
 			const boxChildren: Node[] = [];
 
-			if (!MdastUtil.isEmptyParagraph(startNode)) {
+			if (!isEmptyParagraph(startNode)) {
 				boxChildren.push(startNode);
 			}
 			replaceSize += 1;
@@ -84,7 +84,7 @@ const toMdast = (): Plugin => {
 				boxChildren.push(...between);
 				replaceSize += between.length;
 
-				if (!MdastUtil.isEmptyParagraph(endNode)) {
+				if (!isEmptyParagraph(endNode)) {
 					boxChildren.push(endNode);
 				}
 				replaceSize += 1;

@@ -1,7 +1,7 @@
 import type { Heading } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
-import HastUtil from '../../lib/HastUtil.ts';
+import { hn } from '../../lib/hast.ts';
 
 /**
  * <hn>
@@ -14,7 +14,7 @@ interface XHeading extends Heading {
 export const headingToHast = (state: H, node: Heading): HastElementContent | HastElementContent[] | null | undefined => {
 	const { depth } = node;
 
-	const heading = HastUtil.hn(depth, state.all(node));
+	const heading = hn(depth, state.all(node));
 
 	return heading;
 };
@@ -33,7 +33,7 @@ export const xHeadingToHast = (state: H, node: XHeading): HastElementContent | H
 		};
 	}
 
-	const heading = HastUtil.hn(depth, state.all(node));
+	const heading = hn(depth, state.all(node));
 
 	return {
 		type: 'element',

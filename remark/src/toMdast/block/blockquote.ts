@@ -4,7 +4,7 @@ import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
 import { remove } from 'unist-util-remove';
 import { visit, CONTINUE, EXIT } from 'unist-util-visit';
-import Quote from '../../lib/Quote.ts';
+import { classifyMeta } from '../../lib/quote.ts';
 
 /**
  * <blockquote>
@@ -56,7 +56,7 @@ const toMdast = (): Plugin => {
 						});
 
 						const metaText = toString(listItem);
-						const meta = Quote.classifyMeta(metaText);
+						const meta = classifyMeta(metaText);
 
 						if (meta.lang !== undefined) {
 							blockquote.lang = meta.lang;
