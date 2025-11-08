@@ -23,12 +23,6 @@ export default [
 		},
 	},
 	{
-		files: ['src/toHast/**/*.ts'],
-		rules: {
-			'import/prefer-default-export': 'off',
-		},
-	},
-	{
 		files: ['src/toMdast/**/*.ts'],
 		rules: {
 			'no-invalid-this': 'off',
@@ -36,14 +30,6 @@ export default [
 			'@typescript-eslint/no-unsafe-assignment': 'off',
 			'@typescript-eslint/no-unsafe-call': 'off',
 			'@typescript-eslint/no-unsafe-member-access': 'off',
-		},
-	},
-	{
-		files: ['src/Markdown.ts'],
-		rules: {
-			'lines-between-class-members': 'off',
-			'no-await-in-loop': 'off',
-			'no-continue': 'off',
 		},
 	},
 ];
