@@ -1,4 +1,60 @@
-export default {
+interface HonoConfig {
+	response: {
+		header: {
+			hsts: string;
+			csp: Record<string, string[]>;
+			cspHtml: Record<string, string[]>;
+			csproHtml: Record<string, string[]>;
+			reportingEndpoints: Record<string, string>;
+		};
+		compression: {
+			threshold: number;
+		};
+	};
+	redirect: {
+		from: string;
+		to: string;
+	}[];
+	static: {
+		root: string;
+		index: string;
+		extensions: string[];
+		headers: {
+			contentType: Record<string, string>;
+			cacheControl: {
+				default: string;
+				extension: {
+					extensions: string[];
+					value: string;
+				}[];
+			};
+			sourceMap: string[];
+		};
+	};
+	basicAuth: {
+		unauthorizedMessage: string;
+	};
+	cacheControl: string;
+	errorpage: {
+		unauthorized: string;
+		notfound: string;
+		clientError: string;
+		serverError: string;
+	};
+	extension: {
+		html: string;
+		json: string;
+		brotli: string;
+		map: string;
+	};
+	sidebar: {
+		newly: {
+			maximumNumber: number;
+		};
+	};
+}
+
+const config: HonoConfig = {
 	response: {
 		header: {
 			hsts: 'max-age=31536000',
@@ -78,13 +134,6 @@ export default {
 		headers: {
 			contentType: {
 				/* hono 公式で規定されていないもの https://github.com/honojs/hono/blob/main/src/utils/mime.ts */
-
-				/* Brotli ファイルが存在するもの https://github.com/honojs/node-server/issues/226 */
-				'.json': 'application/json',
-				'.svg': 'image/svg+xml; charset=utf-8',
-				'.css': 'text/css; charset=utf-8',
-				'.js': 'text/javascript; charset=utf-8',
-				'.mjs': 'text/javascript; charset=utf-8',
 			},
 			cacheControl: {
 				default: 'max-age=600',
@@ -124,3 +173,5 @@ export default {
 		},
 	},
 };
+
+export default config;

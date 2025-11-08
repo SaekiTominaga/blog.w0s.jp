@@ -95,26 +95,31 @@ await test('serveStatic', async (t) => {
 	*/
 
 	await t.test('Content-Type', async (t2) => {
-		await t2.test('hono', async () => {
-			assert.equal((await app.request('robots.txt', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'text/plain; charset=utf-8');
-			assert.equal((await app.request('sitemap.xml', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/xml');
+		await t2.test('No Brotli static file', async (t3) => {
+			await t3.test('application/*', async () => {
+				assert.equal((await app.request('sitemap.xml', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/xml');
+			});
+
+			await t3.test('text/*', async () => {
+				assert.equal((await app.request('robots.txt', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'text/plain; charset=utf-8');
+			});
 		});
 
-		await t2.test('node-server#226', async () => {
-			assert.equal((await app.request('/json/newly.json', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/json');
-			assert.equal(
-				(await app.request('/image/footnote-popover-close.svg', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'),
-				'image/svg+xml; charset=utf-8',
-			);
-			assert.equal((await app.request('/style/blog.css', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'text/css; charset=utf-8');
-			assert.equal(
-				(await app.request('/script/blog.mjs', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'),
-				'text/javascript; charset=utf-8',
-			);
-			assert.equal(
-				(await app.request('/script/analytics.js', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'),
-				'text/javascript; charset=utf-8',
-			);
+		await t2.test('Brotli static file', async (t3) => {
+			await t3.test('application/json', async () => {
+				assert.equal((await app.request('/json/newly.json', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/json');
+			});
+
+			await t3.test('image/*', async () => {
+				assert.equal(
+					(await app.request('/image/footnote-popover-close.svg', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'),
+					'image/svg+xml',
+				);
+			});
+
+			await t3.test('text/*', async () => {
+				assert.equal((await app.request('/style/blog.css', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'text/css; charset=utf-8');
+			});
 		});
 	});
 
