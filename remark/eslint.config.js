@@ -17,15 +17,9 @@ export default [
 		},
 	},
 	{
-		files: ['src/**/*.ts'],
+		files: ['src/hast/**/*.ts', 'src/toHast/**/*.ts', 'src/toMdast/**/*.ts'],
 		rules: {
 			'arrow-body-style': 'off',
-		},
-	},
-	{
-		files: ['src/lib/*.ts'],
-		rules: {
-			'@typescript-eslint/no-extraneous-class': 'off',
 		},
 	},
 	{
