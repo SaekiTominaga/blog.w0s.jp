@@ -4,7 +4,7 @@ import type { H } from 'mdast-util-to-hast';
 import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import HastUtil from '../../lib/HastUtil.ts';
 import LinkUtil from '../../lib/Link.ts';
-import configRemark from '../../../config/remark.ts';
+import configRemark from '../../config.ts';
 
 /**
  * <blockquote>

@@ -1,5 +1,6 @@
+// eslint-disable-next-line import/extensions
+import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import BlogDao from '../dao/BlogDao.ts';
-import MarkdownTitle from '../markdown/Title.ts';
 
 interface NewlyEntry {
 	id: number;

@@ -5,10 +5,11 @@ import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { env } from '@w0s/env-value-type';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
+// eslint-disable-next-line import/extensions
+import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import configCategory from '../config/category.ts';
 import configHono from '../config/hono.ts';
 import BlogCategoryDao from '../dao/BlogCategoryDao.ts';
-import MarkdownTitle from '../markdown/Title.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/category.ts';

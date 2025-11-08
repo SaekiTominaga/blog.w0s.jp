@@ -3,7 +3,7 @@ import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { visit, CONTINUE } from 'unist-util-visit';
-import configRemark from '../../../config/remark.ts';
+import configRemark from '../../config.ts';
 
 /**
  * Embedded content

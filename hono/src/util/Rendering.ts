@@ -120,7 +120,7 @@ export default class Rendering {
 		if (supportCompressionEncoding(req.header('Accept-Encoding'), 'br')) {
 			res.headers.set('Content-Encoding', 'br');
 			Rendering.#setHeaders(res.headers);
-			return this.#context.body(brotliData);
+			return this.#context.body(Buffer.from(brotliData));
 		}
 
 		Rendering.#setHeaders(res.headers);
