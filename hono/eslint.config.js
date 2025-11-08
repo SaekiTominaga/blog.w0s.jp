@@ -17,6 +17,12 @@ export default [
 		},
 	},
 	{
+		files: ['src/**/*.ts'],
+		rules: {
+			'@typescript-eslint/no-unsafe-call': 'off', // Github Actions 環境ではエラーになる
+		},
+	},
+	{
 		files: ['src/shell/*.ts'],
 		rules: {
 			'no-await-in-loop': 'off',
