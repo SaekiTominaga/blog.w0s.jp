@@ -49,7 +49,6 @@ import { tableToHast } from './toHast/block/table.ts';
 import { xTocToHast } from './toHast/block/toc.ts';
 import { footnoteReferenceToHast } from './toHast/phrasing/footnote.ts';
 import { linkToHast } from './toHast/phrasing/link.ts';
-import { xQuoteToHast } from './toHast/phrasing/quote.ts';
 import blankToMdast from './toMdast/block/blank.ts';
 import blockquoteToMdast from './toMdast/block/blockquote.ts';
 import boxToMdast from './toMdast/block/box.ts';
@@ -60,7 +59,6 @@ import sectionToMdast from './toMdast/block/section.ts';
 import tableToMdast from './toMdast/block/table.ts';
 import tocToMdast from './toMdast/block/toc.ts';
 import footnoteToMdast from './toMdast/phrasing/footnote.ts';
-import quoteMdast from './toMdast/phrasing/quote.ts';
 
 interface Options {
 	lint?: boolean;
@@ -124,7 +122,6 @@ export default class Markdown {
 		processor.use(footnoteToMdast);
 		processor.use(sectionToMdast, { maxDepth: configRemark.headingDepthLimit });
 		processor.use(tableToMdast);
-		processor.use(quoteMdast);
 
 		processor.use(remarkRehype, {
 			allowDangerousHtml: true,
@@ -148,7 +145,6 @@ export default class Markdown {
 				'x-section': xSectionToHast,
 				'x-table': tableToHast,
 				'x-toc': xTocToHast,
-				'x-quote': xQuoteToHast,
 			},
 		}); // mdast → hast
 
