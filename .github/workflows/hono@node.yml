@@ -28,4 +28,5 @@ jobs:
         with:
           node-version: '24'
       - run: npm ci
+      - run: npm run build -w '@blog.w0s.jp/remark'
       - run: npm run lint -w '@blog.w0s.jp/hono'
