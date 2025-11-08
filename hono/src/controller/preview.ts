@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
-import Markdown from '../markdown/Markdown.ts';
+// eslint-disable-next-line import/extensions
+import Markdown from '@blog.w0s.jp/remark/dist/Markdown.js';
 import { json as validatorJson } from '../validator/preview.ts';
 
 /**

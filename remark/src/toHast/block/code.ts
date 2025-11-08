@@ -3,7 +3,7 @@ import md5 from 'md5';
 import type { Code } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
-import configRemark from '../../../config/remark.ts';
+import configRemark from '../../config.ts';
 
 /**
  * <pre><code>

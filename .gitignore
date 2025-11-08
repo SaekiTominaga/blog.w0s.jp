@@ -20,3 +20,5 @@ log4js.*.json
 /public/json/
 /public/script/
 /public/style/
+
+/remark/dist/

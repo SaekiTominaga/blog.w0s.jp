@@ -17,42 +17,6 @@ export default [
 		},
 	},
 	{
-		files: ['src/markdown/**/*.ts'],
-		rules: {
-			'arrow-body-style': 'off',
-		},
-	},
-	{
-		files: ['src/markdown/lib/*.ts'],
-		rules: {
-			'@typescript-eslint/no-extraneous-class': 'off',
-		},
-	},
-	{
-		files: ['src/markdown/toHast/**/*.ts'],
-		rules: {
-			'import/prefer-default-export': 'off',
-		},
-	},
-	{
-		files: ['src/markdown/toMdast/**/*.ts'],
-		rules: {
-			'no-invalid-this': 'off',
-			'jsdoc/require-jsdoc': 'off',
-			'@typescript-eslint/no-unsafe-assignment': 'off',
-			'@typescript-eslint/no-unsafe-call': 'off',
-			'@typescript-eslint/no-unsafe-member-access': 'off',
-		},
-	},
-	{
-		files: ['src/markdown/Markdown.ts'],
-		rules: {
-			'lines-between-class-members': 'off',
-			'no-await-in-loop': 'off',
-			'no-continue': 'off',
-		},
-	},
-	{
 		files: ['src/shell/*.ts'],
 		rules: {
 			'no-await-in-loop': 'off',

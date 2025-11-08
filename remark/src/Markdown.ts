@@ -29,7 +29,7 @@ import remarkRehype from 'remark-rehype';
 import { type Processor, unified } from 'unified';
 import type { VFile } from 'unified-lint-rule/lib/index.ts';
 import http from 'highlight.js/lib/languages/http';
-import configRemark from '../config/remark.ts';
+import configRemark from './config.ts';
 import footnoteHast from './hast/footnote.ts';
 import remarkLintHeadingDepthLimit from './lint/headingDepthLimit.ts';
 import remarkLintNoEmptySections from './lint/noEmptySection.ts';

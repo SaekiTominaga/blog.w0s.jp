@@ -5,7 +5,7 @@ import type { H } from 'mdast-util-to-hast';
 import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 import type { AmazonImage, Size } from '../../toMdast/block/embedded.ts';
-import configRemark from '../../../config/remark.ts';
+import configRemark from '../../config.ts';
 
 /**
  * Embedded content

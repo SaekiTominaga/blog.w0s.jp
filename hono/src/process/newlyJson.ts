@@ -1,10 +1,11 @@
 import fs from 'node:fs';
 import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
+// eslint-disable-next-line import/extensions
+import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import configHono from '../config/hono.ts';
 import configNewlyJson from '../config/newlyJson.ts';
 import BlogNewlyJsonDao from '../dao/BlogNewlyJsonDao.ts';
-import MarkdownTitle from '../markdown/Title.ts';
 import { brotliCompressText } from '../util/compress.ts';
 
 const logger = Log4js.getLogger('NewlyJson');

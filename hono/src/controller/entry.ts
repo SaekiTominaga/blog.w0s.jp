@@ -3,11 +3,13 @@ import ejs from 'ejs';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { env } from '@w0s/env-value-type';
+// eslint-disable-next-line import/extensions
+import Markdown from '@blog.w0s.jp/remark/dist/Markdown.js';
+// eslint-disable-next-line import/extensions
+import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import configEntry from '../config/entry.ts';
 import configHono from '../config/hono.ts';
 import BlogEntryDao from '../dao/BlogEntryDao.ts';
-import Markdown from '../markdown/Markdown.ts';
-import MarkdownTitle from '../markdown/Title.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/entry.ts';

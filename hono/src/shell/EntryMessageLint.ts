@@ -1,7 +1,8 @@
 import { parseArgs } from 'node:util';
 import { env } from '@w0s/env-value-type';
+// eslint-disable-next-line import/extensions
+import Markdown from '@blog.w0s.jp/remark/dist/Markdown.js';
 import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.ts';
-import Markdown from '../markdown/Markdown.ts';
 
 /**
  * 記事本文の構文チェック
