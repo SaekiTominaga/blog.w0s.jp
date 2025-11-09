@@ -56,10 +56,12 @@ const convert = async (entryId: number, message: string): Promise<string> => {
 	return newLines.join(CRLF);
 };
 
-const dao = new BlogEntryMessageDao(env('SQLITE_BLOG'));
-
 const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
 const dbUpdate = argsParsedValues.update;
+
+const dao = new BlogEntryMessageDao(env('SQLITE_BLOG'), {
+	readOnly: !dbUpdate,
+});
 
 /* DB からデータ取得 */
 const entryiesMessageDto = dao.getEntriesMessage(entryId);
