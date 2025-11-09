@@ -5,7 +5,7 @@ import type { H } from 'mdast-util-to-hast';
 import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 import type { AmazonImage, Size } from '../../toMdast/block/embedded.ts';
-import configRemark from '../../config.ts';
+import config from '../../config.ts';
 
 /**
  * Embedded content
@@ -364,7 +364,7 @@ export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastEle
 					tagName: 'a',
 					properties: {
 						className: ['p-amazon__link'],
-						href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${configRemark.amazonTrackingId}`, // https://affiliate-program.amazon.com/help/node/topic/GP38PJ6EUR6PFBEC
+						href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate-program.amazon.com/help/node/topic/GP38PJ6EUR6PFBEC
 					},
 					children: [
 						{

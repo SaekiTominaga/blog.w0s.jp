@@ -1,4 +1,4 @@
-import configRemark from '../config.ts';
+import config from '../config.ts';
 
 export interface Icon {
 	fileName: string; // アイコンのファイル名
@@ -55,11 +55,11 @@ const getHostInfo = (content: string, url: URL): HostInfo => {
 	let hostText: string | undefined;
 
 	/* 絶対 URL 表記でない場合はドメイン情報を記載 */
-	if (!new RegExp(`^${configRemark.regexp.absoluteUrl}$`, 'v').test(content)) {
+	if (!new RegExp(`^${config.regexp.absoluteUrl}$`, 'v').test(content)) {
 		const host = url.hostname;
 
 		/* サイトアイコン */
-		const hostIconConfig = configRemark.linkHostIcon.find((icon) => icon.host === host);
+		const hostIconConfig = config.linkHostIcon.find((icon) => icon.host === host);
 		if (hostIconConfig !== undefined) {
 			hostIcon = {
 				fileName: hostIconConfig.fileName,
@@ -84,15 +84,15 @@ const getHostInfo = (content: string, url: URL): HostInfo => {
  */
 export const getInfo = (mdContent: string, mdUrl: string): Info => {
 	/* 絶対 URL */
-	if (new RegExp(`^${configRemark.regexp.absoluteUrl}$`, 'v').test(mdUrl)) {
+	if (new RegExp(`^${config.regexp.absoluteUrl}$`, 'v').test(mdUrl)) {
 		const url = new URL(mdUrl);
 
 		const { hostIcon, hostText } = getHostInfo(mdContent, url);
 
-		if (new RegExp(`^https://www.amazon.[a-z]+(.[a-z]+)?/dp/${configRemark.regexp.asin}$`, 'v').test(mdUrl)) {
+		if (new RegExp(`^https://www.amazon.[a-z]+(.[a-z]+)?/dp/${config.regexp.asin}$`, 'v').test(mdUrl)) {
 			/* Amazon 商品ページ */
 			return {
-				href: `${mdUrl}/ref=nosim?tag=${configRemark.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+				href: `${mdUrl}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
 				hostIcon: hostIcon,
 				hostText: hostText,
 			};
@@ -109,7 +109,7 @@ export const getInfo = (mdContent: string, mdUrl: string): Info => {
 	}
 
 	/* 別記事へのリンク */
-	const entryMatchGroups = new RegExp(`^(?<entryId>${configRemark.regexp.entryId}(#.+)?)$`, 'v').exec(mdUrl)?.groups;
+	const entryMatchGroups = new RegExp(`^(?<entryId>${config.regexp.entryId}(#.+)?)$`, 'v').exec(mdUrl)?.groups;
 	if (entryMatchGroups !== undefined) {
 		const { entryId } = entryMatchGroups;
 
