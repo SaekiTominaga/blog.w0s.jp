@@ -1,7 +1,6 @@
 import { parseArgs } from 'node:util';
-import { env } from '@w0s/env-value-type';
 import Markdown from '../Markdown.ts';
-import BlogEntryMessageDao from '../dao/BlogEntryMessageDao.ts';
+import { findMessage as findEntry } from '../db/entry.ts';
 
 /**
  * Markdown の構文チェック
@@ -15,20 +14,16 @@ const argsParsedValues = parseArgs({
 	},
 }).values;
 
-const dao = new BlogEntryMessageDao(env('SQLITE_BLOG'), {
-	readOnly: true,
-});
-
 const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
 
 /* DB からデータ取得 */
-const entryiesMessageDto = dao.getEntriesMessage(entryId);
+const entryiesDto = await findEntry(entryId);
 
 const markdown = new Markdown({
 	lint: true,
 });
 
-const promised = entryiesMessageDto.map(async ({ id, message }) => {
+const promised = entryiesDto.map(async ({ id, message }) => {
 	const { messages: vMessages } = await markdown.toHtml(message);
 
 	if (vMessages.length >= 1) {

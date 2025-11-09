@@ -14,10 +14,12 @@
 		"@w0s/html-escape": "^4.0.2",
 		"@w0s/isbn-verify": "^3.1.2",
 		"@w0s/paapi-item-image-url-parser": "^3.2.3",
+		"better-sqlite3": "^12.4.1",
 		"dayjs": "^1.11.19",
 		"github-slugger": "^2.0.0",
 		"hast-util-select": "^5.0.5",
 		"highlight.js": "^11.11.1",
+		"kysely": "^0.28.8",
 		"md5": "^2.3.0",
 		"mdast-util-definition-list": "^1.4.0",
 		"mdast-util-gfm-footnote": "^1.0.2",
@@ -68,5 +70,8 @@
 		"unist-util-remove": "^3.1.1",
 		"unist-util-select": "^4.0.3",
 		"unist-util-visit": "^4.1.2"
+	},
+	"devDependencies": {
+		"@types/better-sqlite3": "^7.6.13"
 	}
 }
