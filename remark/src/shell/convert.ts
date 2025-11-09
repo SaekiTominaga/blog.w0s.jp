@@ -1,7 +1,9 @@
+import fs from 'node:fs';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { env } from '@w0s/env-value-type';
 import BlogEntryMessageDao from '../dao/BlogEntryMessageDao.ts';
-import { from, to } from './config/convert.ts';
 
 /**
  * Markdown の構文書き換え
@@ -19,9 +21,16 @@ const argsParsedValues = parseArgs({
 	},
 }).values;
 
-const convert = (entryId: number, message: string): string => {
+const convert = async (entryId: number, message: string): Promise<string> => {
 	const CRLF = '\r\n';
 	const LF = '\n';
+
+	const rule = JSON.parse((await fs.promises.readFile(`${dirname(fileURLToPath(import.meta.url))}/config/convert.json`)).toString()) as {
+		from: string;
+		to: string;
+	};
+	const from = new RegExp(rule.from, 'gv');
+	const { to } = rule;
 
 	let exec = false;
 
@@ -59,7 +68,7 @@ if (entryiesMessageDto.size === 0) {
 }
 
 const promised = [...entryiesMessageDto].map(async ([id, message]) => {
-	const converted = convert(id, message);
+	const converted = await convert(id, message);
 	if (dbUpdate) {
 		if (message !== converted) {
 			console.info(id, `記事更新`);
