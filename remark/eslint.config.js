@@ -32,4 +32,10 @@ export default [
 			'@typescript-eslint/no-unsafe-member-access': 'off',
 		},
 	},
+	{
+		files: ['src/shell/*.ts'],
+		rules: {
+			'no-console': 'off',
+		},
+	},
 ];

@@ -1,11 +1,10 @@
 import { parseArgs } from 'node:util';
 import { env } from '@w0s/env-value-type';
-// eslint-disable-next-line import/extensions
-import Markdown from '@blog.w0s.jp/remark/dist/Markdown.js';
-import BlogEntryMessageConvertDao from '../dao/BlogEntryMessageConvertDao.ts';
+import Markdown from '../Markdown.ts';
+import BlogEntryMessageDao from '../dao/BlogEntryMessageDao.ts';
 
 /**
- * 記事本文の構文チェック
+ * Markdown の構文チェック
  */
 
 const argsParsedValues = parseArgs({
@@ -16,7 +15,7 @@ const argsParsedValues = parseArgs({
 	},
 }).values;
 
-const dao = new BlogEntryMessageConvertDao(env('SQLITE_BLOG'));
+const dao = new BlogEntryMessageDao(env('SQLITE_BLOG'));
 
 const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
 
@@ -27,7 +26,7 @@ const markdown = new Markdown({
 	lint: true,
 });
 
-for (const [id, message] of [...entryiesMessageDto]) {
+const promised = [...entryiesMessageDto].map(async ([id, message]) => {
 	const { messages: vMessages } = await markdown.toHtml(message);
 
 	if (vMessages.length >= 1) {
@@ -37,4 +36,5 @@ for (const [id, message] of [...entryiesMessageDto]) {
 			console.warn(id, `${String(line)}:${String(column)} ${reason} <${String(ruleId)}>`);
 		});
 	}
-}
+});
+await Promise.all(promised);

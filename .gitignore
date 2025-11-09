@@ -22,3 +22,4 @@ log4js.*.json
 /public/style/
 
 /remark/dist/
+/remark/src/shell/config/

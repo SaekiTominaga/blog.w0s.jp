@@ -17,14 +17,6 @@ export default [
 		},
 	},
 	{
-		files: ['src/shell/*.ts'],
-		rules: {
-			'no-await-in-loop': 'off',
-			'no-console': 'off',
-			'@typescript-eslint/no-unused-vars': 'off',
-		},
-	},
-	{
 		files: ['src/util/**/*.ts'],
 		rules: {
 			'func-style': [
