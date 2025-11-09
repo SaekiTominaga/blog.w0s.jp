@@ -1,4 +1,3 @@
-import { StatementSync } from 'node:sqlite';
 import BlogDao from './BlogDao.ts';
 
 interface Entry {
@@ -18,17 +17,18 @@ export default class BlogEntryMessageDao extends BlogDao {
 	 * @returns 記事の本文
 	 */
 	getEntriesMessage(id?: number): Entry[] {
-		let stmt: StatementSync;
+		let rows: Entry[];
 		if (id === undefined) {
-			stmt = this.db.prepare(`
+			const stmt = this.db.prepare(`
 				SELECT
 					id,
 					message
 				FROM
 					d_entry
 			`);
+			rows = stmt.all() as unknown as Entry[];
 		} else {
-			stmt = this.db.prepare(`
+			const stmt = this.db.prepare(`
 				SELECT
 					id,
 					message
@@ -37,12 +37,10 @@ export default class BlogEntryMessageDao extends BlogDao {
 				WHERE
 					id = :id
 			`);
-			stmt.run({
+			rows = stmt.all({
 				':id': id,
-			});
+			}) as unknown as Entry[];
 		}
-
-		const rows = stmt.all() as unknown as Entry[];
 
 		return rows;
 	}
