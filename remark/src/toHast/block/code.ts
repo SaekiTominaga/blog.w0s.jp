@@ -3,7 +3,7 @@ import md5 from 'md5';
 import type { Code } from 'mdast';
 import type { H } from 'mdast-util-to-hast';
 import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
-import configRemark from '../../config.ts';
+import config from '../../config.ts';
 
 /**
  * <pre><code>
@@ -24,7 +24,7 @@ export const codeToHast = (_state: H, node: Code): HastElementContent | HastElem
 	const codeProperties: Properties = {
 		id: id,
 	};
-	if (lang !== null && lang !== undefined && configRemark.codeLanguages.includes(lang)) {
+	if (lang !== null && lang !== undefined && config.codeLanguages.includes(lang)) {
 		codeProperties['className'] = [`lang-${lang}`];
 	}
 
