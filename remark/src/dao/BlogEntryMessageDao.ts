@@ -1,26 +1,26 @@
 import BlogDao from './BlogDao.ts';
 
 /**
- * 記事本文の構文書き換え
+ * ブログ記事本文
  */
-export default class BlogEntryMessageConvertDao extends BlogDao {
+export default class BlogEntryMessageDao extends BlogDao {
 	/**
 	 * 記事の本文を取得する
 	 *
 	 * @param entryId - 記事 ID（未指定時は全記事を取得）
 	 *
-	 * @returns 全記事の本文
+	 * @returns 記事の本文
 	 */
 	async getEntriesMessage(entryId?: number): Promise<Map<number, string>> {
+		interface Select {
+			id: number;
+			message: string;
+		}
+
 		const dbh = await this.getDbh();
 
 		const messages = new Map<number, string>();
 		if (entryId === undefined) {
-			interface Select {
-				id: number;
-				message: string;
-			}
-
 			const sth = await dbh.prepare(`
 				SELECT
 					id,
@@ -35,12 +35,9 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 				messages.set(row.id, row.message);
 			}
 		} else {
-			interface Select {
-				message: string;
-			}
-
 			const sth = await dbh.prepare(`
 				SELECT
+					id,
 					message
 				FROM
 					d_entry
@@ -54,7 +51,7 @@ export default class BlogEntryMessageConvertDao extends BlogDao {
 			await sth.finalize();
 
 			if (row !== undefined) {
-				messages.set(entryId, row.message);
+				messages.set(row.id, row.message);
 			}
 		}
 
