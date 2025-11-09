@@ -1,43 +1,16 @@
-import * as sqlite from 'sqlite';
-import sqlite3 from 'sqlite3';
+import { DatabaseSync, type DatabaseSyncOptions } from 'node:sqlite';
 
 /**
  * 日記共通
  */
 export default class BlogDao {
-	#dbh: sqlite.Database | null = null;
-
-	readonly #filepath: string;
+	protected readonly db: DatabaseSync;
 
 	/**
-	 * @param filepath - DB ファイルパス
-	 * @param dbh - DB 接続情報
+	 * @param filePath - DB ファイルパス
+	 * @param options - 構成オプション
 	 */
-	constructor(filepath: string, dbh?: sqlite.Database) {
-		this.#filepath = filepath;
-
-		if (dbh !== undefined) {
-			this.#dbh = dbh;
-		}
-	}
-
-	/**
-	 * DB 接続情報を取得する
-	 *
-	 * @returns DB 接続情報
-	 */
-	async getDbh(): Promise<sqlite.Database> {
-		if (this.#dbh !== null) {
-			return this.#dbh;
-		}
-
-		const dbh = await sqlite.open({
-			filename: this.#filepath,
-			driver: sqlite3.Database,
-		});
-
-		this.#dbh = dbh;
-
-		return dbh;
+	constructor(filePath: string, options?: DatabaseSyncOptions) {
+		this.db = new DatabaseSync(filePath, options);
 	}
 }

@@ -1,5 +1,10 @@
 import BlogDao from './BlogDao.ts';
 
+interface Entry {
+	id: number;
+	message: string;
+}
+
 /**
  * ブログ記事本文
  */
@@ -7,35 +12,23 @@ export default class BlogEntryMessageDao extends BlogDao {
 	/**
 	 * 記事の本文を取得する
 	 *
-	 * @param entryId - 記事 ID（未指定時は全記事を取得）
+	 * @param id - 記事 ID（未指定時は全記事を取得）
 	 *
 	 * @returns 記事の本文
 	 */
-	async getEntriesMessage(entryId?: number): Promise<Map<number, string>> {
-		interface Select {
-			id: number;
-			message: string;
-		}
-
-		const dbh = await this.getDbh();
-
-		const messages = new Map<number, string>();
-		if (entryId === undefined) {
-			const sth = await dbh.prepare(`
+	getEntriesMessage(id?: number): Entry[] {
+		let rows: Entry[];
+		if (id === undefined) {
+			const stmt = this.db.prepare(`
 				SELECT
 					id,
 					message
 				FROM
 					d_entry
 			`);
-			const rows = await sth.all<Select[]>();
-			await sth.finalize();
-
-			for (const row of rows) {
-				messages.set(row.id, row.message);
-			}
+			rows = stmt.all() as unknown as Entry[];
 		} else {
-			const sth = await dbh.prepare(`
+			const stmt = this.db.prepare(`
 				SELECT
 					id,
 					message
@@ -44,49 +37,31 @@ export default class BlogEntryMessageDao extends BlogDao {
 				WHERE
 					id = :id
 			`);
-			await sth.bind({
-				':id': entryId,
-			});
-			const row = await sth.get<Select>();
-			await sth.finalize();
-
-			if (row !== undefined) {
-				messages.set(row.id, row.message);
-			}
+			rows = stmt.all({
+				':id': id,
+			}) as unknown as Entry[];
 		}
 
-		return messages;
+		return rows;
 	}
 
 	/**
 	 * 記事データを修正する
 	 *
-	 * @param entryId - 記事 ID
-	 * @param message - 本文
+	 * @param data - 登録データ
 	 */
-	public async update(entryId: number, message: string): Promise<void> {
-		const dbh = await this.getDbh();
-
-		await dbh.exec('BEGIN');
-		try {
-			const sth = await dbh.prepare(`
-				UPDATE
-					d_entry
-				SET
-					message = :message
-				WHERE
-					id = :id
-			`);
-			await sth.run({
-				':message': message,
-				':id': entryId,
-			});
-			await sth.finalize();
-
-			await dbh.exec('COMMIT');
-		} catch (e) {
-			await dbh.exec('ROLLBACK');
-			throw e;
-		}
+	update(data: Readonly<Entry>): void {
+		const stmt = this.db.prepare(`
+			UPDATE
+				d_entry
+			SET
+				message = :message
+			WHERE
+				id = :id
+		`);
+		stmt.run({
+			':message': data.message,
+			':id': data.id,
+		});
 	}
 }

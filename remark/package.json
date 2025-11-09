@@ -59,8 +59,6 @@
 		"remark-lint-unordered-list-marker-style": "^4.0.1",
 		"remark-parse": "^10.0.2",
 		"remark-rehype": "^10.1.0",
-		"sqlite": "^5.1.1",
-		"sqlite3": "^5.1.7",
 		"unified": "^10.1.2",
 		"unified-lint-rule": "^2.1.2",
 		"unist-util-find-after": "^4.0.1",

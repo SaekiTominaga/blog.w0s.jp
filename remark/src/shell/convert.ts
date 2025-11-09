@@ -56,23 +56,28 @@ const convert = async (entryId: number, message: string): Promise<string> => {
 	return newLines.join(CRLF);
 };
 
-const dao = new BlogEntryMessageDao(env('SQLITE_BLOG'));
-
 const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
 const dbUpdate = argsParsedValues.update;
 
+const dao = new BlogEntryMessageDao(env('SQLITE_BLOG'), {
+	readOnly: !dbUpdate,
+});
+
 /* DB からデータ取得 */
-const entryiesMessageDto = await dao.getEntriesMessage(entryId);
-if (entryiesMessageDto.size === 0) {
+const entryiesMessageDto = dao.getEntriesMessage(entryId);
+if (entryiesMessageDto.length === 0) {
 	console.warn(entryId, `記事が存在しない`);
 }
 
-const promised = [...entryiesMessageDto].map(async ([id, message]) => {
+const promised = entryiesMessageDto.map(async ({ id, message }) => {
 	const converted = await convert(id, message);
 	if (dbUpdate) {
 		if (message !== converted) {
 			console.info(id, `記事更新`);
-			await dao.update(id, converted);
+			dao.update({
+				id: id,
+				message: converted,
+			});
 		}
 	}
 });

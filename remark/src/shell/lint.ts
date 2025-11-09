@@ -15,18 +15,20 @@ const argsParsedValues = parseArgs({
 	},
 }).values;
 
-const dao = new BlogEntryMessageDao(env('SQLITE_BLOG'));
+const dao = new BlogEntryMessageDao(env('SQLITE_BLOG'), {
+	readOnly: true,
+});
 
 const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
 
 /* DB からデータ取得 */
-const entryiesMessageDto = await dao.getEntriesMessage(entryId);
+const entryiesMessageDto = dao.getEntriesMessage(entryId);
 
 const markdown = new Markdown({
 	lint: true,
 });
 
-const promised = [...entryiesMessageDto].map(async ([id, message]) => {
+const promised = entryiesMessageDto.map(async ({ id, message }) => {
 	const { messages: vMessages } = await markdown.toHtml(message);
 
 	if (vMessages.length >= 1) {
