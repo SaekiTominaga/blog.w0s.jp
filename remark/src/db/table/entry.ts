@@ -1,5 +1,5 @@
-import { db } from './@database.ts';
-import type { EntryUpdate } from './@types.ts';
+import { db } from '../database.ts';
+import type { EntryUpdate } from '../../../../db/@types.ts';
 
 /**
  * 本文を取得する

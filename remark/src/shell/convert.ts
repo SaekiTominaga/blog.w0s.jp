@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
-import { findMessage as findEntry, updateMessage as updateEntryMessage } from '../db/entry.ts';
+import { findMessage as findEntry, updateMessage as updateEntryMessage } from '../db/table/entry.ts';
 
 /**
  * Markdown の構文書き換え

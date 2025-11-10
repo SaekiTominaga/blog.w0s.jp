@@ -1,10 +1,9 @@
 import SQLite from 'better-sqlite3';
 import { Kysely, SqliteDialect } from 'kysely';
-import { env } from '@w0s/env-value-type';
-import { type Database } from './@types.ts';
+import { type Database } from '../../../db/@types.ts';
 
 const dialect = new SqliteDialect({
-	database: new SQLite(env('SQLITE_BLOG'), {
+	database: new SQLite(process.env['SQLITE_BLOG'], {
 		fileMustExist: true,
 	}),
 });

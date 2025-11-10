@@ -10,7 +10,6 @@
 		"markdown-lint": "node --env-file=../.env.development src/shell/lint.ts"
 	},
 	"dependencies": {
-		"@w0s/env-value-type": "^1.0.0",
 		"@w0s/html-escape": "^4.0.2",
 		"@w0s/isbn-verify": "^3.1.2",
 		"@w0s/paapi-item-image-url-parser": "^3.2.3",

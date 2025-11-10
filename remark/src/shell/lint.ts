@@ -1,6 +1,6 @@
 import { parseArgs } from 'node:util';
 import Markdown from '../Markdown.ts';
-import { findMessage as findEntry } from '../db/entry.ts';
+import { findMessage as findEntry } from '../db/table/entry.ts';
 
 /**
  * Markdown の構文チェック
