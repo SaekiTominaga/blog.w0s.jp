@@ -15,24 +15,20 @@ export interface DEntry {
 	updated_at: Date | undefined;
 	public: boolean;
 }
-export type DEntrySqlite = { [K in keyof DEntry]: Transform<DEntry[K]> };
 
 export interface DEntryCategory {
 	entry_id: number;
 	category_id: string;
 }
-export type DEntryCategorySqlite = { [K in keyof DEntryCategory]: Transform<DEntryCategory[K]> };
 
 export interface DEntryRelation {
 	entry_id: number;
 	relation_id: string;
 }
-export type DEntryRelationSqlite = { [K in keyof DEntryRelation]: Transform<DEntryRelation[K]> };
 
 export interface DInfo {
 	modified: Date;
 }
-export type DInfoSqlite = { [K in keyof DInfo]: Transform<DInfo[K]> };
 
 export interface MCategory {
 	id: string;
@@ -40,7 +36,6 @@ export interface MCategory {
 	catgroup: string;
 	sort: number;
 }
-export type MCategorySqlite = { [K in keyof MCategory]: Transform<MCategory[K]> };
 
 export interface MCatgroup {
 	id: string;
@@ -48,13 +43,12 @@ export interface MCatgroup {
 	sort: number;
 	file_name: string | undefined;
 }
-export type MCatgroupSqlite = { [K in keyof MCatgroup]: Transform<MCatgroup[K]> };
 
 export interface DB {
-	d_entry: DEntrySqlite;
-	d_entry_category: DEntryCategorySqlite;
-	d_entry_relation: DEntryRelationSqlite;
-	d_info: DInfoSqlite;
-	m_category: MCategorySqlite;
-	m_catgroup: MCatgroupSqlite;
+	d_entry: { [K in keyof DEntry]: Transform<DEntry[K]> };
+	d_entry_category: { [K in keyof DEntryCategory]: Transform<DEntryCategory[K]> };
+	d_entry_relation: { [K in keyof DEntryRelation]: Transform<DEntryRelation[K]> };
+	d_info: { [K in keyof DInfo]: Transform<DInfo[K]> };
+	m_category: { [K in keyof MCategory]: Transform<MCategory[K]> };
+	m_catgroup: { [K in keyof MCatgroup]: Transform<MCatgroup[K]> };
 }
