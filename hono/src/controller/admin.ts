@@ -70,17 +70,17 @@ const rendering = async (
 	requestQuery?: Readonly<RequestQuery>,
 	reviseData?: Readonly<ReviseData>,
 	updateMode?: boolean,
-	validate?: {
+	validate?: Readonly<{
 		select?: string[];
 		post?: string[];
 		update?: string[];
 		upload?: string[];
-	},
-	results?: {
+	}>,
+	results?: Readonly<{
 		post?: Process.Result[];
 		update?: Process.Result[];
 		upload?: Process.UploadResult[];
-	},
+	}>,
 ): Promise<Response> => {
 	const { req, res } = context;
 
