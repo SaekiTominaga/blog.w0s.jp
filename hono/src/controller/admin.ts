@@ -184,14 +184,18 @@ export const adminApp = new Hono()
 			}
 
 			entryId = await dao.insert(
-				requestForm.title,
-				requestForm.description,
-				requestForm.message,
-				requestForm.categories,
-				imageInternal,
-				imageExternal,
-				requestForm.relationIds,
-				requestForm.public,
+				{
+					title: requestForm.title,
+					description: requestForm.description,
+					message: requestForm.message,
+					image_internal: imageInternal,
+					image_external: imageExternal,
+					public: requestForm.public,
+				},
+				{
+					categoryIds: requestForm.categories,
+					relationIds: requestForm.relationIds,
+				},
 			);
 			logger.info('新規記事追加', entryId);
 
@@ -203,16 +207,20 @@ export const adminApp = new Hono()
 			entryId = requestForm.id;
 
 			await dao.update(
-				requestForm.id,
-				requestForm.title,
-				requestForm.description,
-				requestForm.message,
-				requestForm.categories,
-				imageInternal,
-				imageExternal,
-				requestForm.relationIds,
-				requestForm.public,
-				requestForm.timestamp,
+				{
+					id: requestForm.id,
+					title: requestForm.title,
+					description: requestForm.description,
+					message: requestForm.message,
+					image_internal: imageInternal,
+					image_external: imageExternal,
+					public: requestForm.public,
+				},
+				{
+					categoryIds: requestForm.categories,
+					relationIds: requestForm.relationIds,
+					timestampUpdate: requestForm.timestamp,
+				},
 			);
 			logger.info('既存記事更新', requestForm.id);
 

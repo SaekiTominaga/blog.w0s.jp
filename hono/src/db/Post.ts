@@ -1,4 +1,4 @@
-import { sql, type Selectable } from 'kysely';
+import { sql, type Insertable, type Selectable, type Updateable } from 'kysely';
 import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
@@ -91,36 +91,29 @@ export default class extends Database {
 	/**
 	 * 記事データを登録する
 	 *
-	 * @param title - タイトル
-	 * @param description - 概要
-	 * @param message - 本文
-	 * @param categoryIds - カテゴリー ID
-	 * @param imageInternal - 内部画像パス
-	 * @param imageExternal - 外部画像 URL
-	 * @param relationIds - 関連記事 ID
-	 * @param publicFlag - 公開フラグ
+	 * @param entryData - 記事テーブルのデータ
+	 * @param otherData - それ以外のデータ
+	 * @param otherData.categoryIds - カテゴリー ID
+	 * @param otherData.relationIds - 関連記事 ID
 	 *
 	 * @returns 登録した記事 ID
 	 */
 	async insert(
-		title: string,
-		description: string | undefined,
-		message: string,
-		categoryIds: string[] | undefined,
-		imageInternal: string | undefined,
-		imageExternal: URL | undefined,
-		relationIds: string[] | undefined,
-		publicFlag: boolean,
+		entryData: Readonly<Omit<Insertable<DEntry>, 'registed_at' | 'updated_at'>>,
+		otherData: Readonly<{
+			categoryIds: string[] | undefined;
+			relationIds: string[] | undefined;
+		}>,
 	): Promise<number> {
 		let query = this.db.insertInto('d_entry');
 		query = query.values({
-			title: jsToSQLite(title),
-			description: jsToSQLite(description),
-			message: jsToSQLite(message),
-			image_internal: jsToSQLite(imageInternal),
-			image_external: jsToSQLite(imageExternal),
+			title: jsToSQLite(entryData.title),
+			description: jsToSQLite(entryData.description),
+			message: jsToSQLite(entryData.message),
+			image_internal: jsToSQLite(entryData.image_internal),
+			image_external: jsToSQLite(entryData.image_external),
 			registed_at: jsToSQLite(new Date()),
-			public: jsToSQLite(publicFlag),
+			public: jsToSQLite(entryData.public),
 		});
 
 		const result = await query.executeTakeFirst();
@@ -130,10 +123,10 @@ export default class extends Database {
 			throw new Error('Failed to INSERT into `d_entry` table.');
 		}
 
-		if (categoryIds !== undefined && categoryIds.length > 0) {
+		if (otherData.categoryIds !== undefined && otherData.categoryIds.length > 0) {
 			let queryCategory = this.db.insertInto('d_entry_category');
 			queryCategory = queryCategory.values(
-				categoryIds.map((categoryId) => ({
+				otherData.categoryIds.map((categoryId) => ({
 					entry_id: jsToSQLite(Number(entryId)),
 					category_id: jsToSQLite(categoryId),
 				})),
@@ -142,10 +135,10 @@ export default class extends Database {
 			await queryCategory.execute();
 		}
 
-		if (relationIds !== undefined && relationIds.length > 0) {
+		if (otherData.relationIds !== undefined && otherData.relationIds.length > 0) {
 			let queryRelaton = this.db.insertInto('d_entry_relation');
 			queryRelaton = queryRelaton.values(
-				relationIds.map((relationId) => ({
+				otherData.relationIds.map((relationId) => ({
 					entry_id: jsToSQLite(Number(entryId)),
 					relation_id: jsToSQLite(relationId),
 				})),
@@ -160,67 +153,58 @@ export default class extends Database {
 	/**
 	 * 記事データを修正する
 	 *
-	 * @param entryId - 記事 ID
-	 * @param title - タイトル
-	 * @param description - 概要
-	 * @param message - 本文
-	 * @param categoryIds - カテゴリー ID
-	 * @param imageInternal - 内部画像パス
-	 * @param imageExternal - 外部画像 URL
-	 * @param relationIds - 関連記事 ID
-	 * @param publicFlag - 公開フラグ
-	 * @param timestampUpdate - 更新日時を変更する
+	 * @param entryData - 記事テーブルのデータ
+	 * @param otherData - それ以外のデータ
+	 * @param otherData.categoryIds - カテゴリー ID
+	 * @param otherData.relationIds - 関連記事 ID
+	 * @param otherData.timestampUpdate - 更新日時を変更する
 	 */
 	async update(
-		entryId: number,
-		title: string,
-		description: string | undefined,
-		message: string,
-		categoryIds: string[] | undefined,
-		imageInternal: string | undefined,
-		imageExternal: URL | undefined,
-		relationIds: string[] | undefined,
-		publicFlag: boolean,
-		timestampUpdate: boolean,
+		entryData: Readonly<Omit<Required<Updateable<DEntry>>, 'registed_at' | 'updated_at'>>,
+		otherData: Readonly<{
+			categoryIds: string[] | undefined;
+			relationIds: string[] | undefined;
+			timestampUpdate: boolean;
+		}>,
 	): Promise<void> {
 		{
 			let query = this.db.updateTable('d_entry');
-			if (timestampUpdate) {
+			if (otherData.timestampUpdate) {
 				query = query.set({
-					title: jsToSQLite(title),
-					description: jsToSQLite(description),
-					message: jsToSQLite(message),
-					image_internal: jsToSQLite(imageInternal),
-					image_external: jsToSQLite(imageExternal),
+					title: jsToSQLite(entryData.title),
+					description: jsToSQLite(entryData.description),
+					message: jsToSQLite(entryData.message),
+					image_internal: jsToSQLite(entryData.image_internal),
+					image_external: jsToSQLite(entryData.image_external),
 					updated_at: jsToSQLite(new Date()),
-					public: jsToSQLite(publicFlag),
+					public: jsToSQLite(entryData.public),
 				});
 			} else {
 				query = query.set({
-					title: jsToSQLite(title),
-					description: jsToSQLite(description),
-					message: jsToSQLite(message),
-					image_internal: jsToSQLite(imageInternal),
-					image_external: jsToSQLite(imageExternal),
-					public: jsToSQLite(publicFlag),
+					title: jsToSQLite(entryData.title),
+					description: jsToSQLite(entryData.description),
+					message: jsToSQLite(entryData.message),
+					image_internal: jsToSQLite(entryData.image_internal),
+					image_external: jsToSQLite(entryData.image_external),
+					public: jsToSQLite(entryData.public),
 				});
 			}
-			query = query.where('id', '=', jsToSQLite(entryId));
+			query = query.where('id', '=', jsToSQLite(entryData.id));
 
 			await query.executeTakeFirst();
 		}
 
 		{
 			let deleteQuery = this.db.deleteFrom('d_entry_category');
-			deleteQuery = deleteQuery.where('entry_id', '=', entryId);
+			deleteQuery = deleteQuery.where('entry_id', '=', entryData.id);
 
 			await deleteQuery.executeTakeFirst();
 
-			if (categoryIds !== undefined && categoryIds.length > 0) {
+			if (otherData.categoryIds !== undefined && otherData.categoryIds.length > 0) {
 				let insertQuery = this.db.insertInto('d_entry_category');
 				insertQuery = insertQuery.values(
-					categoryIds.map((categoryId) => ({
-						entry_id: jsToSQLite(entryId),
+					otherData.categoryIds.map((categoryId) => ({
+						entry_id: jsToSQLite(entryData.id),
 						category_id: jsToSQLite(categoryId),
 					})),
 				);
@@ -231,15 +215,15 @@ export default class extends Database {
 
 		{
 			let deleteQuery = this.db.deleteFrom('d_entry_relation');
-			deleteQuery = deleteQuery.where('entry_id', '=', entryId);
+			deleteQuery = deleteQuery.where('entry_id', '=', entryData.id);
 
 			await deleteQuery.executeTakeFirst();
 
-			if (relationIds !== undefined && relationIds.length > 0) {
+			if (otherData.relationIds !== undefined && otherData.relationIds.length > 0) {
 				let insertQuery = this.db.insertInto('d_entry_relation');
 				insertQuery = insertQuery.values(
-					relationIds.map((relationId) => ({
-						entry_id: jsToSQLite(entryId),
+					otherData.relationIds.map((relationId) => ({
+						entry_id: jsToSQLite(entryData.id),
 						relation_id: jsToSQLite(relationId),
 					})),
 				);
