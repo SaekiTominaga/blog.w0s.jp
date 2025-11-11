@@ -10,9 +10,11 @@
 		"markdown-lint": "node --env-file=../.env.development src/shell/lint.ts"
 	},
 	"dependencies": {
+		"@w0s/env-value-type": "^1.0.0",
 		"@w0s/html-escape": "^4.0.2",
 		"@w0s/isbn-verify": "^3.1.2",
 		"@w0s/paapi-item-image-url-parser": "^3.2.3",
+		"@w0s/sqlite-utility": "^1.0.2",
 		"better-sqlite3": "^12.4.1",
 		"dayjs": "^1.11.19",
 		"github-slugger": "^2.0.0",

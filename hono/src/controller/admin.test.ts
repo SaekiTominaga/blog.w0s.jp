@@ -2,7 +2,7 @@ import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
-import BlogPostDao from '../dao/BlogPostDao.ts';
+import PostDao from '../db/Post.ts';
 import { getAuth } from '../util/auth.ts';
 
 const auth = await getAuth();
@@ -18,7 +18,7 @@ await test('no param', async () => {
 });
 
 await test('update', async () => {
-	const dao = new BlogPostDao(env('SQLITE_BLOG'));
+	const dao = new PostDao(env('SQLITE_BLOG'));
 	const lastModifiledBefore = await dao.getLastModified();
 
 	const res = await app.request('/admin/update', {

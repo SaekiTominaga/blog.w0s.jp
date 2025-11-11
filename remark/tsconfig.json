@@ -1,6 +1,6 @@
 {
 	"extends": "@w0s/tsconfig",
-	"include": ["src/**/*.ts", "../db/@types.ts"],
+	"include": ["../@types/*.d.ts", "src/**/*.ts"],
 	"compilerOptions": {
 		/* Emit */
 		"declaration": true,

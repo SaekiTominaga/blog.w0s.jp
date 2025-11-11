@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/extensions
 import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
-import BlogDao from '../dao/BlogDao.ts';
+import Dao from '../db/Database.ts';
 
 interface NewlyEntry {
 	id: number;
@@ -16,12 +16,12 @@ interface EntryCountOfCategory {
  * サイドバー
  */
 export default class Sidebar {
-	#dao: BlogDao;
+	readonly #dao: Dao;
 
 	/**
 	 * @param dao - 日記共通 Dao
 	 */
-	constructor(dao: BlogDao) {
+	constructor(dao: Dao) {
 		this.#dao = dao;
 	}
 
@@ -35,12 +35,12 @@ export default class Sidebar {
 
 		const entryCountOfCategoryList = new Map<string, EntryCountOfCategory[]>();
 		for (const entryCountOfCategory of dto) {
-			const countDataList = entryCountOfCategoryList.get(entryCountOfCategory.groupName) ?? [];
+			const countDataList = entryCountOfCategoryList.get(entryCountOfCategory.group_name) ?? [];
 			countDataList.push({
 				categoryName: entryCountOfCategory.name,
 				count: entryCountOfCategory.count,
 			});
-			entryCountOfCategoryList.set(entryCountOfCategory.groupName, countDataList);
+			entryCountOfCategoryList.set(entryCountOfCategory.group_name, countDataList);
 		}
 
 		return entryCountOfCategoryList;

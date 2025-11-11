@@ -1,6 +1,7 @@
 import { parseArgs } from 'node:util';
+import { env } from '@w0s/env-value-type';
 import Markdown from '../Markdown.ts';
-import { findMessage as findEntry } from '../db/table/entry.ts';
+import Dao from '../db/Entry.ts';
 
 /**
  * Markdown の構文チェック
@@ -17,7 +18,11 @@ const argsParsedValues = parseArgs({
 const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
 
 /* DB からデータ取得 */
-const entryiesDto = await findEntry(entryId);
+const dao = new Dao(env('SQLITE_BLOG'), {
+	readonly: false,
+});
+
+const entryiesDto = await dao.findMessage(entryId);
 
 const markdown = new Markdown({
 	lint: true,

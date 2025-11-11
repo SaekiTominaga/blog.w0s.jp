@@ -2,7 +2,8 @@ import fs from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
-import { findMessage as findEntry, updateMessage as updateEntryMessage } from '../db/table/entry.ts';
+import { env } from '@w0s/env-value-type';
+import Dao from '../db/Entry.ts';
 
 /**
  * Markdown の構文書き換え
@@ -59,7 +60,11 @@ const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) 
 const dbUpdate = argsParsedValues.update;
 
 /* DB からデータ取得 */
-const entryiesDto = await findEntry(entryId);
+const dao = new Dao(env('SQLITE_BLOG'), {
+	readonly: !dbUpdate,
+});
+
+const entryiesDto = await dao.findMessage(entryId);
 if (entryiesDto.length === 0) {
 	console.warn(entryId, `記事が存在しない`);
 }
@@ -69,7 +74,7 @@ const promised = entryiesDto.map(async ({ id, message }) => {
 	if (dbUpdate) {
 		if (message !== converted) {
 			console.info(id, `記事更新`);
-			await updateEntryMessage(id, {
+			await dao.updateMessage(id, {
 				message: converted,
 			});
 		}
