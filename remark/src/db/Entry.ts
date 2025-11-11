@@ -1,5 +1,5 @@
 import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
-import type { DEntrySqlite } from '../../../@types/db.d.ts';
+import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
 export default class extends Database {
@@ -30,7 +30,7 @@ export default class extends Database {
 	 * @param id - 記事 ID
 	 * @param updateWith - 変更するデータ
 	 */
-	updateMessage = async (id: number, updateWith: Readonly<Pick<DEntrySqlite, 'message'>>): Promise<void> => {
+	updateMessage = async (id: number, updateWith: Readonly<Pick<DEntry, 'message'>>): Promise<void> => {
 		let query = this.db.updateTable('d_entry');
 		query = query.set(updateWith);
 		query = query.where('id', '=', jsToSQLite(id));
