@@ -7,7 +7,7 @@ import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
 import configHono from '../config/hono.ts';
 import configAdmin from '../config/admin.ts';
-import BlogPostDao, { type ReviseData } from '../dao/BlogPostDao.ts';
+import PostDao, { type ReviseData } from '../db/Post.ts';
 import createFeed from '../process/feed.ts';
 import createNewlyJson from '../process/newlyJson.ts';
 import createSitemap from '../process/sitemap.ts';
@@ -32,7 +32,7 @@ const logger = Log4js.getLogger('entry');
  *
  * @returns 処理結果のメッセージ
  */
-const updateModified = async (dao: BlogPostDao): Promise<Process.Result> => {
+const updateModified = async (dao: PostDao): Promise<Process.Result> => {
 	try {
 		await dao.updateModified();
 
@@ -70,21 +70,23 @@ const rendering = async (
 	requestQuery?: Readonly<RequestQuery>,
 	reviseData?: Readonly<ReviseData>,
 	updateMode?: boolean,
-	validate?: {
+	validate?: Readonly<{
 		select?: string[];
 		post?: string[];
 		update?: string[];
 		upload?: string[];
-	},
-	results?: {
+	}>,
+	results?: Readonly<{
 		post?: Process.Result[];
 		update?: Process.Result[];
 		upload?: Process.UploadResult[];
-	},
+	}>,
 ): Promise<Response> => {
 	const { req, res } = context;
 
-	const dao = new BlogPostDao(env('SQLITE_BLOG'));
+	const dao = new PostDao(env('SQLITE_BLOG'), {
+		readonly: true,
+	});
 
 	/* 初期表示 */
 	const [latestId, categoryMaster] = await Promise.all([
@@ -94,7 +96,7 @@ const rendering = async (
 
 	const categoryMasterView = new Map<string, BlogView.Category[]>();
 	for (const category of categoryMaster) {
-		const { groupName } = category;
+		const { group_name: groupName } = category;
 
 		const categoryOfGroupView = categoryMasterView.get(groupName) ?? [];
 		categoryOfGroupView.push({
@@ -133,7 +135,9 @@ export const adminApp = new Hono()
 
 		const requestQuery = req.valid('query');
 
-		const dao = new BlogPostDao(env('SQLITE_BLOG'));
+		const dao = new PostDao(env('SQLITE_BLOG'), {
+			readonly: true,
+		});
 
 		let reviseData: ReviseData | undefined;
 		if (requestQuery.id !== undefined) {
@@ -155,7 +159,7 @@ export const adminApp = new Hono()
 
 		const requestForm = req.valid('form');
 
-		const dao = new BlogPostDao(env('SQLITE_BLOG'));
+		const dao = new PostDao(env('SQLITE_BLOG'));
 
 		const postResults: Process.Result[] = [];
 		let entryId: number;
@@ -180,14 +184,18 @@ export const adminApp = new Hono()
 			}
 
 			entryId = await dao.insert(
-				requestForm.title,
-				requestForm.description,
-				requestForm.message,
-				requestForm.categories,
-				imageInternal,
-				imageExternal,
-				requestForm.relationIds,
-				requestForm.public,
+				{
+					title: requestForm.title,
+					description: requestForm.description,
+					message: requestForm.message,
+					image_internal: imageInternal,
+					image_external: imageExternal,
+					public: requestForm.public,
+				},
+				{
+					categoryIds: requestForm.categories,
+					relationIds: requestForm.relationIds,
+				},
 			);
 			logger.info('新規記事追加', entryId);
 
@@ -199,16 +207,20 @@ export const adminApp = new Hono()
 			entryId = requestForm.id;
 
 			await dao.update(
-				requestForm.id,
-				requestForm.title,
-				requestForm.description,
-				requestForm.message,
-				requestForm.categories,
-				imageInternal,
-				imageExternal,
-				requestForm.relationIds,
-				requestForm.public,
-				requestForm.timestamp,
+				{
+					id: requestForm.id,
+					title: requestForm.title,
+					description: requestForm.description,
+					message: requestForm.message,
+					image_internal: imageInternal,
+					image_external: imageExternal,
+					public: requestForm.public,
+				},
+				{
+					categoryIds: requestForm.categories,
+					relationIds: requestForm.relationIds,
+					timestampUpdate: requestForm.timestamp,
+				},
 			);
 			logger.info('既存記事更新', requestForm.id);
 
@@ -254,10 +266,10 @@ export const adminApp = new Hono()
 				title: requestForm.title,
 				description: requestForm.description,
 				message: requestForm.message,
-				categoryIds: requestForm.categories ?? [],
-				imageInternal: imageInternal,
-				imageExternal: imageExternal,
-				relationIds: requestForm.relationIds ?? [],
+				category_ids: requestForm.categories ?? [],
+				image_internal: imageInternal,
+				image_external: imageExternal,
+				relation_ids: requestForm.relationIds ?? [],
 				public: requestForm.public,
 			},
 			true,
@@ -269,7 +281,7 @@ export const adminApp = new Hono()
 	})
 	.post('/update', async (context) => {
 		/* View アップデート反映 */
-		const dao = new BlogPostDao(env('SQLITE_BLOG'));
+		const dao = new PostDao(env('SQLITE_BLOG'));
 
 		const [updateModifiedResult, createFeedResult] = await Promise.all([updateModified(dao), createFeed()]);
 

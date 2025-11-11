@@ -17,6 +17,12 @@ export default [
 		},
 	},
 	{
+		files: ['src/db/**/*.ts'],
+		rules: {
+			'@typescript-eslint/no-non-null-assertion': 'off',
+		},
+	},
+	{
 		files: ['src/util/**/*.ts'],
 		rules: {
 			'func-style': [

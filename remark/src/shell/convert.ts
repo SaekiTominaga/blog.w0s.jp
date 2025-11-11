@@ -3,7 +3,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { env } from '@w0s/env-value-type';
-import BlogEntryMessageDao from '../dao/BlogEntryMessageDao.ts';
+import Dao from '../db/Entry.ts';
 
 /**
  * Markdown の構文書き換え
@@ -59,23 +59,22 @@ const convert = async (entryId: number, message: string): Promise<string> => {
 const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) : undefined;
 const dbUpdate = argsParsedValues.update;
 
-const dao = new BlogEntryMessageDao(env('SQLITE_BLOG'), {
-	readOnly: !dbUpdate,
+/* DB からデータ取得 */
+const dao = new Dao(env('SQLITE_BLOG'), {
+	readonly: !dbUpdate,
 });
 
-/* DB からデータ取得 */
-const entryiesMessageDto = dao.getEntriesMessage(entryId);
-if (entryiesMessageDto.length === 0) {
+const entryiesDto = await dao.findMessage(entryId);
+if (entryiesDto.length === 0) {
 	console.warn(entryId, `記事が存在しない`);
 }
 
-const promised = entryiesMessageDto.map(async ({ id, message }) => {
+const promised = entryiesDto.map(async ({ id, message }) => {
 	const converted = await convert(id, message);
 	if (dbUpdate) {
 		if (message !== converted) {
 			console.info(id, `記事更新`);
-			dao.update({
-				id: id,
+			await dao.updateMessage(id, {
 				message: converted,
 			});
 		}

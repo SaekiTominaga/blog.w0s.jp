@@ -7,7 +7,7 @@ import { env } from '@w0s/env-value-type';
 import Markdown from '@blog.w0s.jp/remark/dist/Markdown.js';
 import configFeed from '../config/feed.ts';
 import configHono from '../config/hono.ts';
-import BlogFeedDao from '../dao/BlogFeedDao.ts';
+import FeedDao from '../db/Feed.ts';
 import { brotliCompressText } from '../util/compress.ts';
 
 const logger = Log4js.getLogger('Feed');
@@ -19,7 +19,9 @@ const logger = Log4js.getLogger('Feed');
  */
 const create = async (): Promise<Process.Result> => {
 	try {
-		const dao = new BlogFeedDao(env('SQLITE_BLOG'));
+		const dao = new FeedDao(env('SQLITE_BLOG'), {
+			readonly: true,
+		});
 
 		const entriesDto = await dao.getEntries(configFeed.limit);
 
@@ -30,8 +32,8 @@ const create = async (): Promise<Process.Result> => {
 					title: entry.title,
 					description: entry.description,
 					message: (await new Markdown().toHtml(entry.message)).value.toString(),
-					updatedAt: dayjs(entry.updatedAt ?? entry.registedAt),
-					update: Boolean(entry.updatedAt),
+					updatedAt: dayjs(entry.updated_at ?? entry.registed_at),
+					update: Boolean(entry.updated_at),
 				}),
 			),
 		);

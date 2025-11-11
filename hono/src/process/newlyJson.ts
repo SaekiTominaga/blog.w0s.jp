@@ -5,7 +5,7 @@ import { env } from '@w0s/env-value-type';
 import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import configHono from '../config/hono.ts';
 import configNewlyJson from '../config/newlyJson.ts';
-import BlogNewlyJsonDao from '../dao/BlogNewlyJsonDao.ts';
+import NewlyJson from '../db/NewlyJson.ts';
 import { brotliCompressText } from '../util/compress.ts';
 
 const logger = Log4js.getLogger('NewlyJson');
@@ -17,7 +17,9 @@ const logger = Log4js.getLogger('NewlyJson');
  */
 const create = async (): Promise<Process.Result> => {
 	try {
-		const dao = new BlogNewlyJsonDao(env('SQLITE_BLOG'));
+		const dao = new NewlyJson(env('SQLITE_BLOG'), {
+			readonly: true,
+		});
 
 		const datasCatgroup = new Map<string, BlogView.NewlyEntry[]>();
 

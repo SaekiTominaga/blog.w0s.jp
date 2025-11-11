@@ -9,7 +9,7 @@ import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import configCategory from '../config/category.ts';
 import configHono from '../config/hono.ts';
-import BlogCategoryDao from '../dao/BlogCategoryDao.ts';
+import CategoryDao from '../db/Category.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/category.ts';
@@ -23,7 +23,9 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 
 	const { categoryName } = req.valid('param');
 
-	const dao = new BlogCategoryDao(env('SQLITE_BLOG'));
+	const dao = new CategoryDao(env('SQLITE_BLOG'), {
+		readonly: true,
+	});
 
 	const htmlFilePath = `${env('HTML')}/${configCategory.html.directory}/${filenamify(categoryName)}${configHono.extension.html}`;
 
@@ -50,7 +52,7 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 
 	const entries: BlogView.EntryData[] = [];
 	for (const entryDto of entriesDto) {
-		let { imageExternal } = entryDto;
+		let { image_external: imageExternal } = entryDto;
 		if (imageExternal !== undefined) {
 			switch (imageExternal.origin) {
 				case configCategory.imageExternal.amazon.origin: {
@@ -68,10 +70,10 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 		entries.push({
 			id: entryDto.id,
 			title: new MarkdownTitle(entryDto.title).mark(),
-			imageInternal: entryDto.imageInternal,
+			imageInternal: entryDto.image_internal,
 			imageExternal: imageExternal,
-			registedAt: dayjs(entryDto.registedAt),
-			updatedAt: entryDto.updatedAt !== undefined ? dayjs(entryDto.updatedAt) : undefined,
+			registedAt: dayjs(entryDto.registed_at),
+			updatedAt: entryDto.updated_at !== undefined ? dayjs(entryDto.updated_at) : undefined,
 		});
 	}
 

@@ -8,7 +8,7 @@ import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import configHono from '../config/hono.ts';
 import configList from '../config/list.ts';
-import BlogListDao from '../dao/BlogListDao.ts';
+import ListDao from '../db/List.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/list.ts';
@@ -20,7 +20,9 @@ import { param as validatorParam } from '../validator/list.ts';
 const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 	const { req } = context;
 
-	const dao = new BlogListDao(env('SQLITE_BLOG'));
+	const dao = new ListDao(env('SQLITE_BLOG'), {
+		readonly: true,
+	});
 
 	const htmlFilePath = `${env('HTML')}/${configList.html.directory}/${String(page)}${configHono.extension.html}`;
 
@@ -47,7 +49,7 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 
 	const entries: BlogView.EntryData[] = [];
 	for (const entryDto of entriesDto) {
-		let { imageExternal } = entryDto;
+		let { image_external: imageExternal } = entryDto;
 		if (imageExternal !== undefined) {
 			const url = new URL(imageExternal);
 
@@ -67,10 +69,10 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 		entries.push({
 			id: entryDto.id,
 			title: new MarkdownTitle(entryDto.title).mark(),
-			imageInternal: entryDto.imageInternal,
+			imageInternal: entryDto.image_internal,
 			imageExternal: imageExternal,
-			registedAt: dayjs(entryDto.registedAt),
-			updatedAt: entryDto.updatedAt !== undefined ? dayjs(entryDto.updatedAt) : undefined,
+			registedAt: dayjs(entryDto.registed_at),
+			updatedAt: entryDto.updated_at !== undefined ? dayjs(entryDto.updated_at) : undefined,
 		});
 	}
 

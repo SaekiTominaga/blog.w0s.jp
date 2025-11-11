@@ -9,7 +9,7 @@ import Markdown from '@blog.w0s.jp/remark/dist/Markdown.js';
 import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import configEntry from '../config/entry.ts';
 import configHono from '../config/hono.ts';
-import BlogEntryDao from '../dao/BlogEntryDao.ts';
+import EntryDao from '../db/Entry.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/entry.ts';
@@ -23,7 +23,9 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 
 	const { entryId } = req.valid('param');
 
-	const dao = new BlogEntryDao(env('SQLITE_BLOG'));
+	const dao = new EntryDao(env('SQLITE_BLOG'), {
+		readonly: true,
+	});
 
 	const htmlFilePath = `${env('HTML')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
 
@@ -35,8 +37,8 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 	}
 
 	/* DB からデータ取得 */
-	const entryDto = await dao.getEntry(entryId);
-	if (entryDto === null) {
+	const entryDto = await dao.findEntry(entryId);
+	if (entryDto === undefined) {
 		throw new HTTPException(404, { message: `無効なエントリが指定: ${String(entryId)}` });
 	}
 
@@ -53,10 +55,10 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 	]);
 
 	let imageUrl: URL | undefined;
-	if (entryDto.imageInternal !== undefined) {
-		imageUrl = new URL(`https://media.w0s.jp/image/blog/${entryDto.imageInternal}`);
-	} else if (entryDto.imageExternal !== undefined) {
-		imageUrl = entryDto.imageExternal;
+	if (entryDto.image_internal !== undefined) {
+		imageUrl = new URL(`https://media.w0s.jp/image/blog/${entryDto.image_internal}`);
+	} else if (entryDto.image_external !== undefined) {
+		imageUrl = entryDto.image_external;
 	}
 
 	const relations: BlogView.EntryData[] = [];
@@ -64,17 +66,17 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		relations.push({
 			id: relationData.id,
 			title: new MarkdownTitle(relationData.title).mark(),
-			imageInternal: relationData.imageInternal,
-			imageExternal: relationData.imageExternal,
-			registedAt: dayjs(relationData.registedAt),
+			imageInternal: relationData.image_internal,
+			imageExternal: relationData.image_external,
+			registedAt: dayjs(relationData.registed_at),
 		});
 	}
 
 	const structuredData = {
 		title: entryDto.title,
 		titleMarked: new MarkdownTitle(entryDto.title).mark(),
-		datePublished: dayjs(entryDto.registedAt),
-		dateModified: entryDto.updatedAt !== undefined ? dayjs(entryDto.updatedAt) : undefined,
+		datePublished: dayjs(entryDto.registed_at),
+		dateModified: entryDto.updated_at !== undefined ? dayjs(entryDto.updated_at) : undefined,
 		description: entryDto.description,
 		image: imageUrl,
 	}; // 構造データ
@@ -105,7 +107,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		message: message.value.toString(),
 
 		categoryNames: categoriesDto.map((category) => category.name),
-		categoryFileNames: categoriesDto.map((category) => category.fileName).find((fileName) => fileName !== undefined),
+		categoryFileNames: categoriesDto.map((category) => category.file_name).find((fileName) => fileName !== undefined),
 		relations: relations,
 
 		entryCountOfCategoryList: entryCountOfCategoryList,
