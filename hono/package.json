@@ -22,7 +22,7 @@
 		"better-sqlite3": "^12.4.1",
 		"dayjs": "^1.11.19",
 		"ejs": "^3.1.10",
-		"filenamify": "^7.0.0",
+		"filenamify": "^7.0.1",
 		"hono": "^4.10.4",
 		"kysely": "^0.28.8",
 		"log4js": "^6.9.1",
