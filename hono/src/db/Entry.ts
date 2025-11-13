@@ -1,5 +1,5 @@
 import type { Selectable } from 'kysely';
-import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
+import { jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
@@ -19,8 +19,8 @@ export default class extends Database {
 			.selectFrom('d_entry')
 			.select(['id', 'title', 'description', 'message', 'image_internal', 'image_external', 'registed_at', 'updated_at']);
 
-		query = query.where('id', '=', jsToSQLite(id));
-		query = query.where('public', '=', jsToSQLite(true));
+		query = query.where('id', '=', jsToSQLiteComparison(id));
+		query = query.where('public', '=', jsToSQLiteComparison(true));
 
 		const row = await query.executeTakeFirst();
 
@@ -58,7 +58,7 @@ export default class extends Database {
 			.selectFrom(['d_entry_category as ec', 'm_category as c', 'm_catgroup as cg'])
 			.select(['c.id as id', 'c.name as name', 'cg.file_name as file_name']);
 
-		query = query.where('ec.entry_id', '=', jsToSQLite(entryId));
+		query = query.where('ec.entry_id', '=', jsToSQLiteComparison(entryId));
 		query = query.whereRef('ec.category_id', '=', 'c.id');
 		query = query.whereRef('c.catgroup', '=', 'cg.id');
 		query = query.orderBy('cg.sort');
@@ -93,9 +93,9 @@ export default class extends Database {
 			.selectFrom(['d_entry as e', 'd_entry_relation as er'])
 			.select(['e.id as id', 'e.title as title', 'e.image_internal as image_internal', 'e.image_external as image_external', 'e.registed_at as registed_at']);
 
-		query = query.where('er.entry_id', '=', jsToSQLite(entryId));
+		query = query.where('er.entry_id', '=', jsToSQLiteComparison(entryId));
 		query = query.whereRef('er.relation_id', '=', 'e.id');
-		query = query.where('e.public', '=', jsToSQLite(true));
+		query = query.where('e.public', '=', jsToSQLiteComparison(true));
 		query = query.orderBy('e.registed_at', 'desc');
 
 		const rows = await query.execute();

@@ -1,6 +1,6 @@
 import SQLite from 'better-sqlite3';
 import { Kysely, sql, SqliteDialect } from 'kysely';
-import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
+import { jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DB } from '../../../@types/db.d.ts';
 
 /**
@@ -51,7 +51,7 @@ export default class {
 	async getEntryCount(): Promise<number> {
 		let query = this.db.selectFrom('d_entry').select([sql<number>`COUNT()`.as('count')]);
 
-		query = query.where('public', '=', jsToSQLite(true));
+		query = query.where('public', '=', jsToSQLiteComparison(true));
 
 		const row = await query.executeTakeFirst();
 		if (row === undefined) {
@@ -76,7 +76,7 @@ export default class {
 	> {
 		let query = this.db.selectFrom('d_entry').select(['id', 'title']);
 
-		query = query.where('public', '=', jsToSQLite(true));
+		query = query.where('public', '=', jsToSQLiteComparison(true));
 		query = query.orderBy('registed_at', 'desc');
 		query = query.limit(limit);
 
@@ -107,7 +107,7 @@ export default class {
 		query = query.whereRef('c.catgroup', '=', 'cg.id');
 		query = query.whereRef('c.id', '=', 'ec.category_id');
 		query = query.whereRef('ec.entry_id', '=', 'e.id');
-		query = query.where('e.public', '=', jsToSQLite(true));
+		query = query.where('e.public', '=', jsToSQLiteComparison(true));
 		query = query.groupBy('c.id');
 		query = query.orderBy('cg.sort');
 		query = query.orderBy('c.sort');

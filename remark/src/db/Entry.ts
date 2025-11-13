@@ -1,4 +1,4 @@
-import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
+import { jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
@@ -13,7 +13,7 @@ export default class extends Database {
 	findMessage = async (id?: number) => {
 		let query = this.db.selectFrom('d_entry').select(['id', 'message']);
 		if (id !== undefined) {
-			query = query.where('id', '=', jsToSQLite(id));
+			query = query.where('id', '=', jsToSQLiteComparison(id));
 		}
 
 		const rows = await query.execute();
@@ -33,7 +33,7 @@ export default class extends Database {
 	updateMessage = async (id: number, updateWith: Readonly<Pick<DEntry, 'message'>>): Promise<void> => {
 		let query = this.db.updateTable('d_entry');
 		query = query.set(updateWith);
-		query = query.where('id', '=', jsToSQLite(id));
+		query = query.where('id', '=', jsToSQLiteComparison(id));
 
 		await query.executeTakeFirst();
 	};

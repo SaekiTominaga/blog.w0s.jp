@@ -1,5 +1,5 @@
 import type { Selectable } from 'kysely';
-import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
+import { jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
@@ -21,7 +21,7 @@ export default class extends Database {
 	): Promise<Pick<Selectable<DEntry>, 'id' | 'title' | 'image_internal' | 'image_external' | 'registed_at' | 'updated_at'>[]> {
 		let query = this.db.selectFrom('d_entry').select(['id', 'title', 'image_internal', 'image_external', 'registed_at', 'updated_at']);
 
-		query = query.where('public', '=', jsToSQLite(true));
+		query = query.where('public', '=', jsToSQLiteComparison(true));
 		query = query.orderBy('registed_at', 'desc');
 		query = query.limit(limit);
 		query = query.offset((page - 1) * limit);
