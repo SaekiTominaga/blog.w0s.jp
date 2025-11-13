@@ -1,5 +1,5 @@
 import type { Selectable } from 'kysely';
-import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
+import { jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
@@ -32,7 +32,7 @@ export default class extends Database {
 	async getEntries(limit: number, catgroupId?: string): Promise<Pick<Selectable<DEntry>, 'id' | 'title'>[]> {
 		if (catgroupId === undefined) {
 			let query = this.db.selectFrom('d_entry').select(['id', 'title']);
-			query = query.where('public', '=', jsToSQLite(true));
+			query = query.where('public', '=', jsToSQLiteComparison(true));
 			query = query.orderBy('id', 'desc');
 
 			query = query.limit(limit);
@@ -48,11 +48,11 @@ export default class extends Database {
 		let query = this.db
 			.selectFrom(['d_entry as e', 'd_entry_category as ec', 'm_category as c', 'm_catgroup as cg'])
 			.select(['e.id as id', 'e.title as title']);
-		query = query.where('e.public', '=', jsToSQLite(true));
+		query = query.where('e.public', '=', jsToSQLiteComparison(true));
 		query = query.whereRef('e.id', '=', 'ec.entry_id');
 		query = query.whereRef('ec.category_id', '=', 'c.id');
 		query = query.whereRef('c.catgroup', '=', 'cg.id');
-		query = query.where('cg.file_name', '=', jsToSQLite(catgroupId));
+		query = query.where('cg.file_name', '=', jsToSQLiteComparison(catgroupId));
 		query = query.groupBy('e.id');
 		query = query.orderBy('e.id', 'desc');
 

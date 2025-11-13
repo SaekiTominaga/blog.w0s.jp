@@ -1,5 +1,5 @@
 import type { Selectable } from 'kysely';
-import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
+import { jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
@@ -27,10 +27,10 @@ export default class extends Database {
 				'e.registed_at as registed_at',
 				'e.updated_at as updated_at',
 			]);
-		query = query.where('c.name', '=', jsToSQLite(categoryName));
+		query = query.where('c.name', '=', jsToSQLiteComparison(categoryName));
 		query = query.whereRef('c.id', '=', 'ec.category_id');
 		query = query.whereRef('ec.entry_id', '=', 'e.id');
-		query = query.where('public', '=', jsToSQLite(true));
+		query = query.where('public', '=', jsToSQLiteComparison(true));
 		query = query.orderBy('e.registed_at', 'desc');
 
 		const rows = await query.execute();

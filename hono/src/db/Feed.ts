@@ -1,5 +1,5 @@
 import { sql, type Selectable } from 'kysely';
-import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
+import { jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
@@ -16,7 +16,7 @@ export default class extends Database {
 	 */
 	async getEntries(limit: number): Promise<Pick<Selectable<DEntry>, 'id' | 'title' | 'description' | 'message' | 'registed_at' | 'updated_at'>[]> {
 		let query = this.db.selectFrom('d_entry').select(['id', 'title', 'description', 'message', 'registed_at', 'updated_at']);
-		query = query.where('public', '=', jsToSQLite(true));
+		query = query.where('public', '=', jsToSQLiteComparison(true));
 		query = query.orderBy(
 			sql`
 				CASE

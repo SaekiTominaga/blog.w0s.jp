@@ -1,5 +1,5 @@
 import { sql, type Insertable, type Selectable, type Updateable } from 'kysely';
-import { jsToSQLite, sqliteToJS } from '@w0s/sqlite-utility';
+import { jsToSQLiteAssignment, jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
@@ -36,7 +36,7 @@ export default class extends Database {
 	async updateModified(): Promise<void> {
 		let query = this.db.updateTable('d_info');
 		query = query.set({
-			modified: jsToSQLite(new Date()),
+			modified: jsToSQLiteAssignment(new Date()),
 		});
 
 		await query.executeTakeFirst();
@@ -107,13 +107,13 @@ export default class extends Database {
 	): Promise<number> {
 		let query = this.db.insertInto('d_entry');
 		query = query.values({
-			title: jsToSQLite(entryData.title),
-			description: jsToSQLite(entryData.description),
-			message: jsToSQLite(entryData.message),
-			image_internal: jsToSQLite(entryData.image_internal),
-			image_external: jsToSQLite(entryData.image_external),
-			registed_at: jsToSQLite(new Date()),
-			public: jsToSQLite(entryData.public),
+			title: jsToSQLiteAssignment(entryData.title),
+			description: jsToSQLiteAssignment(entryData.description),
+			message: jsToSQLiteAssignment(entryData.message),
+			image_internal: jsToSQLiteAssignment(entryData.image_internal),
+			image_external: jsToSQLiteAssignment(entryData.image_external),
+			registed_at: jsToSQLiteAssignment(new Date()),
+			public: jsToSQLiteAssignment(entryData.public),
 		});
 
 		const result = await query.executeTakeFirst();
@@ -127,8 +127,8 @@ export default class extends Database {
 			let queryCategory = this.db.insertInto('d_entry_category');
 			queryCategory = queryCategory.values(
 				otherData.categoryIds.map((categoryId) => ({
-					entry_id: jsToSQLite(Number(entryId)),
-					category_id: jsToSQLite(categoryId),
+					entry_id: jsToSQLiteAssignment(Number(entryId)),
+					category_id: jsToSQLiteAssignment(categoryId),
 				})),
 			);
 
@@ -139,8 +139,8 @@ export default class extends Database {
 			let queryRelaton = this.db.insertInto('d_entry_relation');
 			queryRelaton = queryRelaton.values(
 				otherData.relationIds.map((relationId) => ({
-					entry_id: jsToSQLite(Number(entryId)),
-					relation_id: jsToSQLite(relationId),
+					entry_id: jsToSQLiteAssignment(Number(entryId)),
+					relation_id: jsToSQLiteAssignment(relationId),
 				})),
 			);
 
@@ -171,25 +171,25 @@ export default class extends Database {
 			let query = this.db.updateTable('d_entry');
 			if (otherData.timestampUpdate) {
 				query = query.set({
-					title: jsToSQLite(entryData.title),
-					description: jsToSQLite(entryData.description),
-					message: jsToSQLite(entryData.message),
-					image_internal: jsToSQLite(entryData.image_internal),
-					image_external: jsToSQLite(entryData.image_external),
-					updated_at: jsToSQLite(new Date()),
-					public: jsToSQLite(entryData.public),
+					title: jsToSQLiteAssignment(entryData.title),
+					description: jsToSQLiteAssignment(entryData.description),
+					message: jsToSQLiteAssignment(entryData.message),
+					image_internal: jsToSQLiteAssignment(entryData.image_internal),
+					image_external: jsToSQLiteAssignment(entryData.image_external),
+					updated_at: jsToSQLiteAssignment(new Date()),
+					public: jsToSQLiteAssignment(entryData.public),
 				});
 			} else {
 				query = query.set({
-					title: jsToSQLite(entryData.title),
-					description: jsToSQLite(entryData.description),
-					message: jsToSQLite(entryData.message),
-					image_internal: jsToSQLite(entryData.image_internal),
-					image_external: jsToSQLite(entryData.image_external),
-					public: jsToSQLite(entryData.public),
+					title: jsToSQLiteAssignment(entryData.title),
+					description: jsToSQLiteAssignment(entryData.description),
+					message: jsToSQLiteAssignment(entryData.message),
+					image_internal: jsToSQLiteAssignment(entryData.image_internal),
+					image_external: jsToSQLiteAssignment(entryData.image_external),
+					public: jsToSQLiteAssignment(entryData.public),
 				});
 			}
-			query = query.where('id', '=', jsToSQLite(entryData.id));
+			query = query.where('id', '=', jsToSQLiteComparison(entryData.id));
 
 			await query.executeTakeFirst();
 		}
@@ -204,8 +204,8 @@ export default class extends Database {
 				let insertQuery = this.db.insertInto('d_entry_category');
 				insertQuery = insertQuery.values(
 					otherData.categoryIds.map((categoryId) => ({
-						entry_id: jsToSQLite(entryData.id),
-						category_id: jsToSQLite(categoryId),
+						entry_id: jsToSQLiteAssignment(entryData.id),
+						category_id: jsToSQLiteAssignment(categoryId),
 					})),
 				);
 
@@ -223,8 +223,8 @@ export default class extends Database {
 				let insertQuery = this.db.insertInto('d_entry_relation');
 				insertQuery = insertQuery.values(
 					otherData.relationIds.map((relationId) => ({
-						entry_id: jsToSQLite(entryData.id),
-						relation_id: jsToSQLite(relationId),
+						entry_id: jsToSQLiteAssignment(entryData.id),
+						relation_id: jsToSQLiteAssignment(relationId),
 					})),
 				);
 
