@@ -47,8 +47,7 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 		sidebar.getNewlyEntries(configHono.sidebar.newly.maximumNumber),
 	]);
 
-	const entries: BlogView.EntryData[] = [];
-	for (const entryDto of entriesDto) {
+	const entries: BlogView.EntryData[] = entriesDto.map((entryDto) => {
 		let { image_external: imageExternal } = entryDto;
 		if (imageExternal !== undefined) {
 			const url = new URL(imageExternal);
@@ -66,15 +65,15 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 			}
 		}
 
-		entries.push({
+		return {
 			id: entryDto.id,
 			title: new MarkdownTitle(entryDto.title).mark(),
 			imageInternal: entryDto.image_internal,
 			imageExternal: imageExternal,
 			registedAt: dayjs(entryDto.registed_at),
 			updatedAt: entryDto.updated_at !== undefined ? dayjs(entryDto.updated_at) : undefined,
-		});
-	}
+		};
+	});
 
 	const totalPage = Math.ceil(entryCount / configList.maximum);
 

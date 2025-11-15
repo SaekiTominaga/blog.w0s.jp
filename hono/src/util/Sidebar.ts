@@ -56,13 +56,10 @@ export default class Sidebar {
 	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
 		const entriesDto = await this.#dao.getNewlyEntries(limit);
 
-		const entries: BlogView.NewlyEntry[] = [];
-		for (const entryDto of entriesDto) {
-			entries.push({
-				id: entryDto.id,
-				title: new MarkdownTitle(entryDto.title).mark(),
-			});
-		}
+		const entries: BlogView.NewlyEntry[] = entriesDto.map((entryDto) => ({
+			id: entryDto.id,
+			title: new MarkdownTitle(entryDto.title).mark(),
+		}));
 
 		return entries;
 	}

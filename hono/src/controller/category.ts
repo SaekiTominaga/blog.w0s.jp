@@ -50,8 +50,7 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 		sidebar.getNewlyEntries(configHono.sidebar.newly.maximumNumber),
 	]);
 
-	const entries: BlogView.EntryData[] = [];
-	for (const entryDto of entriesDto) {
+	const entries: BlogView.EntryData[] = entriesDto.map((entryDto) => {
 		let { image_external: imageExternal } = entryDto;
 		if (imageExternal !== undefined) {
 			switch (imageExternal.origin) {
@@ -67,15 +66,15 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 			}
 		}
 
-		entries.push({
+		return {
 			id: entryDto.id,
 			title: new MarkdownTitle(entryDto.title).mark(),
 			imageInternal: entryDto.image_internal,
 			imageExternal: imageExternal,
 			registedAt: dayjs(entryDto.registed_at),
 			updatedAt: entryDto.updated_at !== undefined ? dayjs(entryDto.updated_at) : undefined,
-		});
-	}
+		};
+	});
 
 	/* HTML 生成 */
 	const html = await ejs.renderFile(`${env('VIEWS')}/${configCategory.template}`, {
