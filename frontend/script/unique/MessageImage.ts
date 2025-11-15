@@ -18,7 +18,7 @@ export default class MessageImage {
 	/**
 	 * @param options - Option
 	 */
-	constructor(options: Option) {
+	constructor(options: Readonly<Option>) {
 		this.#previewElement = options.preview;
 		this.#selectImageElement = options.image;
 
@@ -69,7 +69,7 @@ export default class MessageImage {
 	 * @param imageNames - 画像ファイル名 or 外部サービス URL
 	 * @param selectedImageName - ラジオボタンで選択された値（画像ファイル名 or 外部サービス URL）
 	 */
-	#displayRadioButtons(imageNames: Set<string>, selectedImageName?: string): void {
+	#displayRadioButtons(imageNames: ReadonlySet<string>, selectedImageName?: string): void {
 		const fragment = document.createDocumentFragment();
 		for (const imageName of imageNames) {
 			const templateElementClone = this.#selectImageElement.content.cloneNode(true) as HTMLElement;

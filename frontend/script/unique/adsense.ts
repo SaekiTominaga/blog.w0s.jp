@@ -12,7 +12,7 @@ declare global {
  */
 const adsense = (
 	targetElementOrElements: NodeListOf<Element> | HTMLCollectionOf<Element> | Element | null,
-	intersectionObserverOptions?: IntersectionObserverInit,
+	intersectionObserverOptions?: Readonly<IntersectionObserverInit>,
 ): void => {
 	if (targetElementOrElements === null) {
 		return;
