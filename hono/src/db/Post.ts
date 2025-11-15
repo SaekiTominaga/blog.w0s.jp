@@ -3,11 +3,6 @@ import { jsToSQLiteAssignment, jsToSQLiteComparison, sqliteToJS } from '@w0s/sql
 import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
-export type ReviseData = Pick<Selectable<DEntry>, 'id' | 'title' | 'description' | 'message' | 'image_internal' | 'image_external' | 'public'> & {
-	category_ids: readonly string[];
-	relation_ids: readonly string[];
-};
-
 /**
  * 記事投稿
  */
@@ -240,7 +235,13 @@ export default class extends Database {
 	 *
 	 * @returns 記事データ
 	 */
-	async getReviseData(id: number): Promise<ReviseData | undefined> {
+	async getReviseData(id: number): Promise<
+		| (Pick<Selectable<DEntry>, 'id' | 'title' | 'description' | 'message' | 'image_internal' | 'image_external' | 'public'> & {
+				category_ids: readonly string[];
+				relation_ids: readonly string[];
+		  })
+		| undefined
+	> {
 		let query = this.db
 			.selectFrom('d_entry as e')
 			.select([
