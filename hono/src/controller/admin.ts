@@ -7,7 +7,7 @@ import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
 import configHono from '../config/hono.ts';
 import configAdmin from '../config/admin.ts';
-import PostDao, { type ReviseData } from '../db/Post.ts';
+import PostDao from '../db/Post.ts';
 import createFeed from '../process/feed.ts';
 import createNewlyJson from '../process/newlyJson.ts';
 import createSitemap from '../process/sitemap.ts';
@@ -19,6 +19,18 @@ import { csp as cspHeader } from '../util/httpHeader.ts';
 import { query as validatorQuery, type RequestQuery } from '../validator/admin.ts';
 import { form as validatorPostForm } from '../validator/adminPost.ts';
 import { form as validatorUploadForm } from '../validator/adminUpload.ts';
+
+interface ReviseData {
+	id: number;
+	title: string;
+	description: string | undefined;
+	message: string;
+	imageInternal: string | undefined;
+	imageExternal: URL | undefined;
+	public: boolean;
+	categoryIds: readonly string[];
+	relationIds: readonly string[];
+}
 
 /**
  * 記事投稿
@@ -139,19 +151,35 @@ export const adminApp = new Hono()
 			readonly: true,
 		});
 
-		let reviseData: ReviseData | undefined;
-		if (requestQuery.id !== undefined) {
-			/* 修正データ選択 */
-			reviseData = await dao.getReviseData(requestQuery.id);
-			if (reviseData === undefined) {
-				/* 存在しない記事 ID を指定した場合 */
-				return await rendering(context, requestQuery, reviseData, undefined, {
-					select: [configAdmin.validator.entryNotFound],
-				});
-			}
+		if (requestQuery.id === undefined) {
+			return await rendering(context, requestQuery);
 		}
 
-		return await rendering(context, requestQuery, reviseData, requestQuery.id !== undefined);
+		/* 修正データ選択 */
+		const reviseData = await dao.getReviseData(requestQuery.id);
+		if (reviseData !== undefined) {
+			return await rendering(
+				context,
+				requestQuery,
+				{
+					id: reviseData.id,
+					title: reviseData.title,
+					description: reviseData.description,
+					message: reviseData.message,
+					imageInternal: reviseData.image_internal,
+					imageExternal: reviseData.image_external,
+					public: reviseData.public,
+					categoryIds: reviseData.category_ids,
+					relationIds: reviseData.relation_ids,
+				},
+				true,
+			);
+		}
+
+		/* 存在しない記事 ID を指定した場合 */
+		return await rendering(context, requestQuery, undefined, undefined, {
+			select: [configAdmin.validator.entryNotFound],
+		});
 	})
 	.post('/post', validatorPostForm, async (context) => {
 		/* 記事投稿 */
