@@ -51,15 +51,19 @@ export default class Preview {
 	}
 
 	/**
-	 * MArkdown 変換に際してのメッセージを表示
+	 * Markdown 変換に際してのメッセージを表示
 	 *
 	 * @param messages - メッセージ
 	 */
 	#messages(messages: VFileMessage[]) {
 		/* いったんクリア */
-		while (this.#messagesElement.nextElementSibling !== null) {
-			this.#messagesElement.nextElementSibling.remove();
-		}
+		Array.from(this.#messagesElement.parentNode?.children ?? []).forEach((element) => {
+			if (element === this.#messagesElement) {
+				return;
+			}
+
+			element.remove();
+		});
 
 		const fragment = document.createDocumentFragment();
 		messages.forEach((message) => {

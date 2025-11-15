@@ -38,9 +38,9 @@ const adsense = (
 	if (targetElementOrElements instanceof Element) {
 		observer.observe(targetElementOrElements);
 	} else {
-		for (const element of targetElementOrElements) {
+		[...targetElementOrElements].forEach((element) => {
 			observer.observe(element);
-		}
+		});
 	}
 };
 export default adsense;
