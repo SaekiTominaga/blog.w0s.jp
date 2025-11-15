@@ -71,15 +71,15 @@ const rendering = async (
 	reviseData?: Readonly<ReviseData>,
 	updateMode?: boolean,
 	validate?: Readonly<{
-		select?: string[];
-		post?: string[];
-		update?: string[];
-		upload?: string[];
+		select?: readonly string[];
+		post?: readonly string[];
+		update?: readonly string[];
+		upload?: readonly string[];
 	}>,
 	results?: Readonly<{
-		post?: Process.Result[];
-		update?: Process.Result[];
-		upload?: Process.UploadResult[];
+		post?: readonly Readonly<Process.Result>[];
+		update?: readonly Readonly<Process.Result>[];
+		upload?: readonly Readonly<Process.UploadResult>[];
 	}>,
 ): Promise<Response> => {
 	const { req, res } = context;

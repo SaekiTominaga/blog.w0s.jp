@@ -4,8 +4,8 @@ import type { DEntry } from '../../../@types/db.d.ts';
 import Database from './Database.ts';
 
 export type ReviseData = Pick<Selectable<DEntry>, 'id' | 'title' | 'description' | 'message' | 'image_internal' | 'image_external' | 'public'> & {
-	category_ids: string[];
-	relation_ids: string[];
+	category_ids: readonly string[];
+	relation_ids: readonly string[];
 };
 
 /**
@@ -101,8 +101,8 @@ export default class extends Database {
 	async insert(
 		entryData: Readonly<Omit<Insertable<DEntry>, 'registed_at' | 'updated_at'>>,
 		otherData: Readonly<{
-			categoryIds: string[] | undefined;
-			relationIds: string[] | undefined;
+			categoryIds: readonly string[] | undefined;
+			relationIds: readonly string[] | undefined;
 		}>,
 	): Promise<number> {
 		let query = this.db.insertInto('d_entry');
@@ -162,8 +162,8 @@ export default class extends Database {
 	async update(
 		entryData: Readonly<Omit<Required<Updateable<DEntry>>, 'registed_at' | 'updated_at'>>,
 		otherData: Readonly<{
-			categoryIds: string[] | undefined;
-			relationIds: string[] | undefined;
+			categoryIds: readonly string[] | undefined;
+			relationIds: readonly string[] | undefined;
 			timestampUpdate: boolean;
 		}>,
 	): Promise<void> {
