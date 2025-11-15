@@ -33,15 +33,15 @@ export default class Sidebar {
 	async getEntryCountOfCategory(): Promise<Map<string, EntryCountOfCategory[]>> {
 		const dto = await this.#dao.getEntryCountOfCategory();
 
-		const entryCountOfCategoryList = new Map<string, EntryCountOfCategory[]>();
-		for (const entryCountOfCategory of dto) {
-			const countDataList = entryCountOfCategoryList.get(entryCountOfCategory.group_name) ?? [];
+		const entryCountOfCategoryList = dto.reduce((map, entryCountOfCategory) => {
+			const countDataList = map.get(entryCountOfCategory.group_name) ?? [];
 			countDataList.push({
 				categoryName: entryCountOfCategory.name,
 				count: entryCountOfCategory.count,
 			});
-			entryCountOfCategoryList.set(entryCountOfCategory.group_name, countDataList);
-		}
+			map.set(entryCountOfCategory.group_name, countDataList);
+			return map;
+		}, new Map<string, EntryCountOfCategory[]>());
 
 		return entryCountOfCategoryList;
 	}
@@ -56,13 +56,10 @@ export default class Sidebar {
 	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
 		const entriesDto = await this.#dao.getNewlyEntries(limit);
 
-		const entries: BlogView.NewlyEntry[] = [];
-		for (const entryDto of entriesDto) {
-			entries.push({
-				id: entryDto.id,
-				title: new MarkdownTitle(entryDto.title).mark(),
-			});
-		}
+		const entries: BlogView.NewlyEntry[] = entriesDto.map((entryDto) => ({
+			id: entryDto.id,
+			title: new MarkdownTitle(entryDto.title).mark(),
+		}));
 
 		return entries;
 	}

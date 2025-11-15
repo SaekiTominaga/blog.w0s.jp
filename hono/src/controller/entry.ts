@@ -61,16 +61,13 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		imageUrl = entryDto.image_external;
 	}
 
-	const relations: BlogView.EntryData[] = [];
-	for (const relationData of relationDataListDto) {
-		relations.push({
-			id: relationData.id,
-			title: new MarkdownTitle(relationData.title).mark(),
-			imageInternal: relationData.image_internal,
-			imageExternal: relationData.image_external,
-			registedAt: dayjs(relationData.registed_at),
-		});
-	}
+	const relations: BlogView.EntryData[] = relationDataListDto.map((relationData) => ({
+		id: relationData.id,
+		title: new MarkdownTitle(relationData.title).mark(),
+		imageInternal: relationData.image_internal,
+		imageExternal: relationData.image_external,
+		registedAt: dayjs(relationData.registed_at),
+	}));
 
 	const structuredData = {
 		title: entryDto.title,

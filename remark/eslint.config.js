@@ -15,6 +15,9 @@ export default [
 				tsconfigRootDir: import.meta.dirname,
 			},
 		},
+		rules: {
+			'functional/no-loop-statements': 'off',
+		},
 	},
 	{
 		files: ['src/hast/**/*.ts', 'src/toHast/**/*.ts', 'src/toMdast/**/*.ts'],

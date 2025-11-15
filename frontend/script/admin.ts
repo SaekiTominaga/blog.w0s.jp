@@ -6,7 +6,7 @@ import Preview from './unique/Preview.ts';
 import MessageImage from './unique/MessageImage.ts';
 
 /* 入力値の変換 */
-for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim')) {
+document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim').forEach((formCtrlElement) => {
 	formCtrlElement.addEventListener(
 		'change',
 		() => {
@@ -16,7 +16,7 @@ for (const formCtrlElement of document.querySelectorAll<HTMLInputElement | HTMLT
 		},
 		{ passive: true },
 	);
-}
+});
 
 /* ファイルアップロードでプレビュー画像を表示 */
 inputFilePreview(document.querySelectorAll('.js-input-file-preview'));

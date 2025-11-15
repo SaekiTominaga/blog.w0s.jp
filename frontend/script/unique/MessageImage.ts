@@ -32,13 +32,18 @@ export default class MessageImage {
 		let selectedImageName: string | undefined;
 
 		/* いったんクリア */
-		while (this.#selectImageElement.nextElementSibling !== null) {
-			const radioCheckedElements = this.#selectImageElement.nextElementSibling.querySelectorAll<HTMLInputElement>('input[type="radio"]:checked');
+		Array.from(this.#selectImageElement.parentNode?.children ?? []).forEach((element) => {
+			if (element === this.#selectImageElement) {
+				return;
+			}
+
+			const radioCheckedElements = element.querySelectorAll<HTMLInputElement>('input[type="radio"]:checked');
 			if (radioCheckedElements.length === 1) {
 				selectedImageName = radioCheckedElements[0]?.value;
 			}
-			this.#selectImageElement.nextElementSibling.remove();
-		}
+
+			element.remove();
+		});
 
 		/* 本文内のテキストから画像パスと ASIN を抜き出す */
 		const preview = this.#previewElement.nextElementSibling;
@@ -71,9 +76,8 @@ export default class MessageImage {
 	 */
 	#displayRadioButtons(imageNames: ReadonlySet<string>, selectedImageName?: string): void {
 		const fragment = document.createDocumentFragment();
-		for (const imageName of imageNames) {
+		imageNames.forEach((imageName) => {
 			const templateElementClone = this.#selectImageElement.content.cloneNode(true) as HTMLElement;
-
 			const radioElement = templateElementClone.querySelector<HTMLInputElement>('input[type="radio"]');
 			if (radioElement !== null) {
 				radioElement.value = imageName;
@@ -98,7 +102,7 @@ export default class MessageImage {
 			}
 
 			fragment.appendChild(templateElementClone);
-		}
+		});
 		this.#selectImageElement.parentNode?.appendChild(fragment);
 	}
 }

@@ -95,7 +95,7 @@ const rendering = async (
 	]);
 
 	const categoryMasterView = new Map<string, BlogView.Category[]>();
-	for (const category of categoryMaster) {
+	categoryMaster.forEach((category) => {
 		const { group_name: groupName } = category;
 
 		const categoryOfGroupView = categoryMasterView.get(groupName) ?? [];
@@ -105,7 +105,7 @@ const rendering = async (
 		});
 
 		categoryMasterView.set(groupName, categoryOfGroupView);
-	}
+	});
 
 	/* レンダリング */
 	const html = await ejs.renderFile(`${env('VIEWS')}/${configAdmin.template}`, {
@@ -266,10 +266,10 @@ export const adminApp = new Hono()
 				title: requestForm.title,
 				description: requestForm.description,
 				message: requestForm.message,
-				category_ids: requestForm.categories ?? [],
-				image_internal: imageInternal,
-				image_external: imageExternal,
-				relation_ids: requestForm.relationIds ?? [],
+				categoryIds: requestForm.categories ?? [],
+				imageInternal: imageInternal,
+				imageExternal: imageExternal,
+				relationIds: requestForm.relationIds ?? [],
 				public: requestForm.public,
 			},
 			true,
