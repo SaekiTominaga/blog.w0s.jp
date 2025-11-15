@@ -9,7 +9,7 @@ interface RequestBody {
 	markdown: string;
 }
 
-export const json = validator('json', (value: Record<string, unknown>): RequestBody => {
+export const json = validator('json', (value: Readonly<Record<string, unknown>>): RequestBody => {
 	const { md: markdown } = value;
 
 	if (typeof markdown !== 'string') {

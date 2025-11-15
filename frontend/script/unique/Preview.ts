@@ -19,7 +19,7 @@ export default class Preview {
 	/**
 	 * @param options - Option
 	 */
-	constructor(options: Option) {
+	constructor(options: Readonly<Option>) {
 		this.#ctrlElement = options.ctrl;
 		this.#messagesElement = options.messages;
 		this.#previewElement = options.preview;
@@ -55,7 +55,7 @@ export default class Preview {
 	 *
 	 * @param messages - メッセージ
 	 */
-	#messages(messages: VFileMessage[]) {
+	#messages(messages: readonly Readonly<VFileMessage>[]) {
 		/* いったんクリア */
 		while (this.#messagesElement.nextElementSibling !== null) {
 			this.#messagesElement.nextElementSibling.remove();

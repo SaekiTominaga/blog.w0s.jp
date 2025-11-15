@@ -3,6 +3,6 @@ declare namespace BlogSocial {
 		url: string;
 		title: string;
 		description: string | undefined;
-		tags: string[] | undefined;
+		tags: readonly string[] | undefined;
 	}
 }
