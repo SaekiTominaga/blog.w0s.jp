@@ -49,7 +49,7 @@
 		"postcss-custom-media": "^11.0.5",
 		"postcss-import": "^16.1.0",
 		"postcss-nesting": "^13.0.1",
-		"rollup": "^4.52.5",
+		"rollup": "^4.53.1",
 		"vfile-message": "^4.0.3"
 	}
 }
