@@ -19,6 +19,7 @@
 		"@w0s/markuplint-config": "^3.11.0",
 		"@w0s/stylelint-config": "^4.14.0",
 		"@w0s/tsconfig": "^1.7.0",
+		"concurrently": "^9.2.1",
 		"eslint": "^9.39.1",
 		"markuplint": "^4.14.0",
 		"prettier": "^3.6.2",

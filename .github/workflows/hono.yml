@@ -1,11 +1,12 @@
-name: CSS files
+name: hono (Backend)
 
 on:
   pull_request:
     paths:
-      - 'frontend/style/**/*.css'
-      - 'frontend/package.json'
-      - 'frontend/stylelint.config.js'
+      - 'hono/@types/*.d.ts'
+      - 'hono/src/**/*.ts'
+      - 'hono/eslint.config.js'
+      - 'hono/package.json'
       - 'package.json'
   workflow_dispatch:
 
@@ -27,4 +28,5 @@ jobs:
         with:
           node-version: '24'
       - run: npm ci
-      - run: npm run css-lint -w '@blog.w0s.jp/frontend'
+      - run: npm run build -w '@blog.w0s.jp/remark'
+      - run: npm run lint -w '@blog.w0s.jp/hono'
