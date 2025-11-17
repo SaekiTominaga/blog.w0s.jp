@@ -3,12 +3,12 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"lint": "conc \"tsc --project script --noEmit\" \"eslint build/**/*.ts script/**/*.ts\" \"stylelint style/**/*.css\"",
+		"predev": "rimraf -g \"../public/{script,style}/*.br\"",
+		"dev": "conc \"postcss style/*.css --base style -d ../public/style -w\" \"rollup -c -w --environment build:development\"",
 		"prebuild": "npm run lint -w @blog.w0s.jp/frontend && rimraf -g \"../public/**/*.{svg,svg.br}\" \"../public/{script,style}/*\"",
 		"build": "conc \"npm run css -w @blog.w0s.jp/frontend\" \"npm run js -w @blog.w0s.jp/frontend\" \"npm run svg -w @blog.w0s.jp/frontend\"",
 		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" && brotli-cli compress -g \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/**/*.svg\" -m text",
-		"predev": "rimraf -g \"../public/{script,style}/*.br\"",
-		"dev": "conc \"postcss style/*.css --base style -d ../public/style -w\" \"rollup -c -w --environment build:development\"",
+		"lint": "conc \"tsc --project script --noEmit\" \"eslint build/**/*.ts script/**/*.ts\" \"stylelint style/**/*.css\"",
 		"css": "postcss style/*.css --base style -d ../public/style",
 		"js": "rollup -c --environment build:production",
 		"svg": "node build/svg.ts -i image -o ../public -c svgo.config.js"
