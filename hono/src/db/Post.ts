@@ -76,7 +76,7 @@ export default class extends Database {
 		if (entryId !== undefined) {
 			query = query.where('id', '!=', entryId);
 		}
-		query = query.where('title', '!=', title);
+		query = query.where('title', '=', title);
 
 		const row = await query.executeTakeFirst();
 
