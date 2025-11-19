@@ -84,7 +84,7 @@
 							</ul>
 							<%_ } _%>
 
-							<p><input type="hidden" name="id" value="<%= requestQuery.id ?? reviseData.id %>" /></p>
+							<p><input type="hidden" name="id" value="<%= requestQuery.id ?? entryData.id %>" /></p>
 
 							<div class="p-form-grid">
 								<div class="p-form-grid__group">
@@ -94,7 +94,7 @@
 										</legend>
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
-												<input class="c-input -full js-convert-trim" name="title" value="<%= reviseData.title %>" id="fc-title" required="" />
+												<input class="c-input -full js-convert-trim" name="title" value="<%= entryData.title %>" id="fc-title" required="" />
 											</div>
 										</div>
 									</fieldset>
@@ -104,7 +104,7 @@
 										<legend class="p-form-grid__legend"><label for="fc-description" class="c-label">概要</label></legend>
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
-												<input class="c-input -full js-convert-trim" name="description" value="<%= reviseData.description %>" id="fc-description" />
+												<input class="c-input -full js-convert-trim" name="description" value="<%= entryData.description %>" id="fc-description" />
 											</div>
 										</div>
 									</fieldset>
@@ -116,7 +116,7 @@
 										</legend>
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
-												<textarea class="c-textarea js-convert-trim" name="message" id="fc-message" required="" style="--block-size: 15em"><%= reviseData.message %></textarea>
+												<textarea class="c-textarea js-convert-trim" name="message" id="fc-message" required="" style="--block-size: 15em"><%= entryData.message %></textarea>
 											</div>
 											<div class="p-post-preview">
 												<table class="p-post-preview__messages" lang="en">
@@ -153,7 +153,7 @@
 											<div class="c-form-controls -checkbox">
 												<%_ for (const category of categories) { _%>
 												<label class="c-label -check">
-													<%_ if (reviseData.categoryIds !== undefined && reviseData.categoryIds.includes(category.id)) { _%>
+													<%_ if (entryData.categoryIds !== undefined && entryData.categoryIds.includes(category.id)) { _%>
 													<input type="checkbox" name="category" value="<%= category.id %>" checked="" />
 													<%_ } else { _%>
 													<input type="checkbox" name="category" value="<%= category.id %>" />
@@ -171,7 +171,7 @@
 										<legend class="p-form-grid__legend" id="label-image">画像</legend>
 										<div class="p-form-grid__contents">
 											<ul class="c-form-controls" role="radiogroup" aria-labelledby="label-image">
-												<template id="select-image" data-selected="<%= reviseData.imageInternal ?? reviseData.imageExternal?.toString() %>">
+												<template id="select-image" data-selected="<%= entryData.imageInternal ?? entryData.imageExternal?.toString() %>">
 													<li class="p-post-select-image">
 														<label>
 															<input type="radio" name="image" value="" />
@@ -189,7 +189,7 @@
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
 												<span>
-													<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= reviseData.relationIds?.join(',') %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" title="記事 ID のカンマ区切り" style="--inline-size: 15em" />
+													<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= entryData.relationIds?.join(',') %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" title="記事 ID のカンマ区切り" style="--inline-size: 15em" />
 													<small>（カンマ区切り）</small>
 												</span>
 											</div>
@@ -202,7 +202,7 @@
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
 												<label class="c-label -check">
-													<%_ if (reviseData.public) { _%>
+													<%_ if (entryData.public) { _%>
 													<input type="checkbox" name="public" value="1" checked="" />
 													<%_ } else { _%>
 													<input type="checkbox" name="public" value="1" />
