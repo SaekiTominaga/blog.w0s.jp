@@ -213,7 +213,16 @@ export const adminApp = new Hono()
 			/* 新規記事追加 */
 			if (await dao.isExistsTitle(requestForm.title)) {
 				return await rendering(context, {
-					updateMode: false,
+					entryData: {
+						title: requestForm.title,
+						description: requestForm.description,
+						message: requestForm.message,
+						categoryIds: requestForm.categories ?? [],
+						imageInternal: imageInternal,
+						imageExternal: imageExternal,
+						relationIds: requestForm.relationIds ?? [],
+						public: requestForm.public,
+					},
 					validate: {
 						entryPost: [configAdmin.validator.titleUnique],
 					},
