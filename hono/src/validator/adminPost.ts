@@ -14,13 +14,13 @@ export interface RequestForm {
 	imagePath: string | URL | undefined;
 	relationIds: string[] | undefined;
 	public: boolean;
-	timestamp: boolean;
 	social: boolean;
 	socialTags: string[] | undefined;
+	timestampUpdate: boolean;
 }
 
 export const form = validator('form', (value): RequestForm => {
-	const { id, title, description, message, category, image: imagePath, relation, public: pub, timestamp, social, social_tag: socialTag } = value;
+	const { id, title, description, message, category, image: imagePath, relation, public: pub, social, social_tag: socialTag, timestamp } = value;
 
 	if (Array.isArray(id)) {
 		throw new HTTPException(400, { message: 'The `id` parameter can only be singular' });
@@ -103,8 +103,8 @@ export const form = validator('form', (value): RequestForm => {
 		imagePath: imagePath !== undefined ? (URL.parse(imagePath) ?? imagePath) : undefined,
 		relationIds: relation?.split(','),
 		public: Boolean(pub),
-		timestamp: Boolean(timestamp),
 		social: Boolean(social),
 		socialTags: socialTag?.split(','),
+		timestampUpdate: Boolean(timestamp),
 	};
 });

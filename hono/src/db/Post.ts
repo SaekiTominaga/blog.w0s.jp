@@ -159,7 +159,7 @@ export default class extends Database {
 		otherData: Readonly<{
 			categoryIds: readonly string[] | undefined;
 			relationIds: readonly string[] | undefined;
-			timestampUpdate: boolean;
+			timestampUpdate: boolean | undefined;
 		}>,
 	): Promise<void> {
 		{
@@ -237,8 +237,8 @@ export default class extends Database {
 	 */
 	async getReviseData(id: number): Promise<
 		| (Pick<Selectable<DEntry>, 'id' | 'title' | 'description' | 'message' | 'image_internal' | 'image_external' | 'public'> & {
-				category_ids: readonly string[];
-				relation_ids: readonly string[];
+				category_ids: readonly string[] | undefined;
+				relation_ids: readonly string[] | undefined;
 		  })
 		| undefined
 	> {
@@ -270,10 +270,10 @@ export default class extends Database {
 			title: sqliteToJS(row.title),
 			description: sqliteToJS(row.description),
 			message: sqliteToJS(row.message),
-			category_ids: sqliteToJS(row.category_ids)?.split(' ') ?? [],
+			category_ids: sqliteToJS(row.category_ids)?.split(' ') ?? undefined,
 			image_internal: sqliteToJS(row.image_internal),
 			image_external: sqliteToJS(row.image_external, 'url'),
-			relation_ids: sqliteToJS(row.relation_ids)?.split(' ') ?? [],
+			relation_ids: sqliteToJS(row.relation_ids)?.split(' ') ?? undefined,
 			public: sqliteToJS(row.public, 'boolean'),
 		};
 	}

@@ -25,11 +25,14 @@ interface EntryData {
 	title: string;
 	description: string | undefined;
 	message: string;
+	categoryIds: readonly string[] | undefined;
 	imageInternal: string | undefined;
 	imageExternal: URL | undefined;
+	relationIds: readonly string[] | undefined;
 	public: boolean;
-	categoryIds: readonly string[];
-	relationIds: readonly string[];
+	social?: boolean;
+	socialTags?: readonly string[] | undefined;
+	timestampUpdate?: boolean;
 }
 
 /**
@@ -38,34 +41,13 @@ interface EntryData {
 const logger = Log4js.getLogger('entry');
 
 /**
- * DB の最終更新日時を更新する
- *
- * @param dao - Dao
- *
- * @returns 処理結果のメッセージ
- */
-const updateModified = async (dao: PostDao): Promise<Process.Result> => {
-	try {
-		await dao.updateModified();
-
-		logger.info('Modified date of DB was recorded');
-	} catch (e) {
-		logger.error(e);
-
-		return { success: false, message: configAdmin.processMessage.dbModified.failure };
-	}
-
-	return { success: true, message: configAdmin.processMessage.dbModified.success };
-};
-
-/**
  * 初期画面表示
  *
  * @param context - Context
  * @param arg1 -
  * @param arg1.requestQuery - URL クエリー情報
  * @param arg1.entryData - 記事データ
- * @param arg1.updateMode - 新規追加 or 修正
+ * @param arg1.entrySubmitMode - 新規追加 or 修正
  * @param arg1.validate - バリデートエラーメッセージ
  * @param arg1.results - 処理結果
  *
@@ -76,13 +58,13 @@ const rendering = async (
 	{
 		requestQuery,
 		entryData,
-		updateMode,
+		entrySubmitMode,
 		validate,
 		results,
 	}: Readonly<{
 		requestQuery?: Readonly<RequestQuery>;
 		entryData?: Readonly<EntryData>;
-		updateMode?: boolean;
+		entrySubmitMode?: 'insert' | 'update';
 		validate?: Readonly<{
 			entrySelect?: readonly string[]; // 記事選択
 			entryPost?: readonly string[]; // 記事投稿
@@ -126,7 +108,7 @@ const rendering = async (
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		requestQuery: requestQuery ?? {},
 		entryData: entryData ?? {},
-		updateMode: updateMode ?? false,
+		entrySubmitMode: entrySubmitMode,
 		selectValidates: validate?.entrySelect ?? [],
 		postValidates: validate?.entryPost ?? [],
 		postResults: results?.entryPost ?? [],
@@ -143,48 +125,73 @@ const rendering = async (
 	return context.html(html);
 };
 
+/**
+ * DB の最終更新日時を更新する
+ *
+ * @param dao - Dao
+ *
+ * @returns 処理結果のメッセージ
+ */
+const updateModified = async (dao: PostDao): Promise<Process.Result> => {
+	try {
+		await dao.updateModified();
+
+		logger.info('Modified date of DB was recorded');
+	} catch (e) {
+		logger.error(e);
+
+		return { success: false, message: configAdmin.processMessage.dbModified.failure };
+	}
+
+	return { success: true, message: configAdmin.processMessage.dbModified.success };
+};
+
 export const adminApp = new Hono()
 	.get(validatorQuery, async (context) => {
 		const { req } = context;
 
 		const requestQuery = req.valid('query');
 
+		if (requestQuery.id === undefined) {
+			/* 初期表示 */
+			return await rendering(context, {
+				requestQuery: requestQuery,
+				entrySubmitMode: 'insert',
+			});
+		}
+
 		const dao = new PostDao(env('SQLITE_BLOG'), {
 			readonly: true,
 		});
 
-		if (requestQuery.id === undefined) {
-			return await rendering(context, {
-				requestQuery: requestQuery,
-			});
-		}
-
 		/* 修正データ選択 */
 		const reviseData = await dao.getReviseData(requestQuery.id);
-		if (reviseData !== undefined) {
+		if (reviseData === undefined) {
+			/* 存在しない記事 ID を指定した場合 */
 			return await rendering(context, {
 				requestQuery: requestQuery,
-				entryData: {
-					id: reviseData.id,
-					title: reviseData.title,
-					description: reviseData.description,
-					message: reviseData.message,
-					imageInternal: reviseData.image_internal,
-					imageExternal: reviseData.image_external,
-					public: reviseData.public,
-					categoryIds: reviseData.category_ids,
-					relationIds: reviseData.relation_ids,
+				entrySubmitMode: 'insert',
+				validate: {
+					entrySelect: [configAdmin.validator.entryNotFound],
 				},
-				updateMode: true,
 			});
 		}
 
-		/* 存在しない記事 ID を指定した場合 */
+		/* 既存記事の修正 */
 		return await rendering(context, {
 			requestQuery: requestQuery,
-			validate: {
-				entrySelect: [configAdmin.validator.entryNotFound],
+			entryData: {
+				id: reviseData.id,
+				title: reviseData.title,
+				description: reviseData.description,
+				message: reviseData.message,
+				categoryIds: reviseData.category_ids,
+				imageInternal: reviseData.image_internal,
+				imageExternal: reviseData.image_external,
+				relationIds: reviseData.relation_ids,
+				public: reviseData.public,
 			},
+			entrySubmitMode: 'update',
 		});
 	})
 	.post('/post', validatorPostForm, async (context) => {
@@ -195,82 +202,89 @@ export const adminApp = new Hono()
 
 		const dao = new PostDao(env('SQLITE_BLOG'));
 
-		const postResults: Process.Result[] = [];
-		let entryId: number;
-		let entryUrl: string;
+		const entryData: EntryData = {
+			title: requestForm.title,
+			description: requestForm.description,
+			message: requestForm.message,
+			categoryIds: requestForm.categories,
+			imageInternal: typeof requestForm.imagePath === 'string' ? requestForm.imagePath : undefined,
+			imageExternal: requestForm.imagePath instanceof URL ? requestForm.imagePath : undefined,
+			relationIds: requestForm.relationIds,
+			public: requestForm.public,
+			social: requestForm.social,
+			socialTags: requestForm.socialTags,
+			timestampUpdate: requestForm.timestampUpdate,
+		};
 
-		let imageInternal: string | undefined;
-		let imageExternal: URL | undefined;
-		if (requestForm.imagePath !== undefined) {
-			if (!(requestForm.imagePath instanceof URL)) {
-				imageInternal = requestForm.imagePath;
-			} else {
-				imageExternal = requestForm.imagePath;
-			}
-		}
+		const postResults: Process.Result[] = [];
+		let entryUrl: string;
 
 		if (requestForm.id === undefined) {
 			/* 新規記事追加 */
 			if (await dao.isExistsTitle(requestForm.title)) {
+				/* 既存記事と同じタイトルが指定された場合 */
 				return await rendering(context, {
-					entryData: {
-						title: requestForm.title,
-						description: requestForm.description,
-						message: requestForm.message,
-						categoryIds: requestForm.categories ?? [],
-						imageInternal: imageInternal,
-						imageExternal: imageExternal,
-						relationIds: requestForm.relationIds ?? [],
-						public: requestForm.public,
-					},
+					entryData: entryData,
+					entrySubmitMode: 'insert',
 					validate: {
 						entryPost: [configAdmin.validator.titleUnique],
 					},
 				});
 			}
 
-			entryId = await dao.insert(
+			entryData.id = await dao.insert(
 				{
-					title: requestForm.title,
-					description: requestForm.description,
-					message: requestForm.message,
-					image_internal: imageInternal,
-					image_external: imageExternal,
-					public: requestForm.public,
+					title: entryData.title,
+					description: entryData.description,
+					message: entryData.message,
+					image_internal: entryData.imageInternal,
+					image_external: entryData.imageExternal,
+					public: entryData.public,
 				},
 				{
-					categoryIds: requestForm.categories,
-					relationIds: requestForm.relationIds,
+					categoryIds: entryData.categoryIds,
+					relationIds: entryData.relationIds,
 				},
 			);
-			logger.info('新規記事追加', entryId);
+			logger.info('新規記事追加', entryData.id);
 
-			entryUrl = getEntryUrl(entryId);
+			entryUrl = getEntryUrl(entryData.id);
 
 			postResults.push({ success: true, message: `${configAdmin.processMessage.insert.success} ${entryUrl}` });
 		} else {
 			/* 既存記事更新 */
-			entryId = requestForm.id;
+			entryData.id = requestForm.id;
+
+			if (await dao.isExistsTitle(requestForm.title, requestForm.id)) {
+				/* 既存記事と同じタイトルが指定された場合 */
+				return await rendering(context, {
+					entryData: entryData,
+					entrySubmitMode: 'update',
+					validate: {
+						entryPost: [configAdmin.validator.titleUnique],
+					},
+				});
+			}
 
 			await dao.update(
 				{
-					id: requestForm.id,
-					title: requestForm.title,
-					description: requestForm.description,
-					message: requestForm.message,
-					image_internal: imageInternal,
-					image_external: imageExternal,
-					public: requestForm.public,
+					id: entryData.id,
+					title: entryData.title,
+					description: entryData.description,
+					message: entryData.message,
+					image_internal: entryData.imageInternal,
+					image_external: entryData.imageExternal,
+					public: entryData.public,
 				},
 				{
-					categoryIds: requestForm.categories,
-					relationIds: requestForm.relationIds,
-					timestampUpdate: requestForm.timestamp,
+					categoryIds: entryData.categoryIds,
+					relationIds: entryData.relationIds,
+					timestampUpdate: entryData.timestampUpdate,
 				},
 			);
-			logger.info('既存記事更新', requestForm.id);
+			logger.info('既存記事更新', entryData.id);
 
-			entryUrl = getEntryUrl(requestForm.id);
+			entryUrl = getEntryUrl(entryData.id);
 
 			postResults.push({ success: true, message: `${configAdmin.processMessage.update.success} ${entryUrl}` });
 		}
@@ -286,18 +300,18 @@ export const adminApp = new Hono()
 		postResults.push(createSitemapResult);
 		postResults.push(createNewlyJsonResult);
 
-		if (requestForm.public && requestForm.social) {
-			const entryData: BlogSocial.EntryData = {
+		if (entryData.public && entryData.social) {
+			const socialEntryData: BlogSocial.EntryData = {
 				url: entryUrl,
-				title: requestForm.title,
-				description: requestForm.description,
-				tags: requestForm.socialTags,
+				title: entryData.title,
+				description: entryData.description,
+				tags: entryData.socialTags,
 			};
 
 			const [postMastodonResult, postBlueskyResult, postMisskeyResult] = await Promise.all([
-				postMastodon(entryData),
-				postBluesky(entryData),
-				postMisskey(entryData),
+				postMastodon(socialEntryData),
+				postBluesky(socialEntryData),
+				postMisskey(socialEntryData),
 			]);
 			postResults.push(postMastodonResult);
 			postResults.push(postBlueskyResult);
@@ -305,18 +319,8 @@ export const adminApp = new Hono()
 		}
 
 		return await rendering(context, {
-			entryData: {
-				id: entryId,
-				title: requestForm.title,
-				description: requestForm.description,
-				message: requestForm.message,
-				categoryIds: requestForm.categories ?? [],
-				imageInternal: imageInternal,
-				imageExternal: imageExternal,
-				relationIds: requestForm.relationIds ?? [],
-				public: requestForm.public,
-			},
-			updateMode: true,
+			entryData: entryData,
+			entrySubmitMode: 'update',
 			results: {
 				entryPost: postResults,
 			},
