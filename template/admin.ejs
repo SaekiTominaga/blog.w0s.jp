@@ -153,7 +153,7 @@
 											<div class="c-form-controls -checkbox">
 												<%_ for (const category of categories) { _%>
 												<label class="c-label -check">
-													<%_ if (entryData.categoryIds !== undefined && entryData.categoryIds.includes(category.id)) { _%>
+													<%_ if (entryData.categoryIds?.includes(category.id)) { _%>
 													<input type="checkbox" name="category" value="<%= category.id %>" checked="" />
 													<%_ } else { _%>
 													<input type="checkbox" name="category" value="<%= category.id %>" />
@@ -213,7 +213,7 @@
 										</div>
 									</fieldset>
 								</div>
-								<%_ if (updateMode) { _%>
+								<%_ if (entrySubmitMode === 'update') { _%>
 								<div class="p-form-grid__group">
 									<fieldset>
 										<legend class="p-form-grid__legend">更新時の処理</legend>
@@ -260,7 +260,7 @@
 							</div>
 
 							<div class="c-form-controls -submit">
-								<%_ if (updateMode) { _%>
+								<%_ if (entrySubmitMode === 'update') { _%>
 								<p><button class="c-submit">修正実行</button></p>
 								<%_ } else { _%>
 								<p><button class="c-submit">新規追加</button></p>
