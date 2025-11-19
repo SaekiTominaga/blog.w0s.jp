@@ -4,7 +4,7 @@ declare namespace Process {
 		message: string;
 	}
 
-	interface UploadResult extends Result {
+	interface MediaResult extends Result {
 		filename: string;
 	}
 }

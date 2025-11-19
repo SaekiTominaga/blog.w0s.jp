@@ -20,8 +20,8 @@ import { query as validatorQuery, type RequestQuery } from '../validator/admin.t
 import { form as validatorPostForm } from '../validator/adminPost.ts';
 import { form as validatorUploadForm } from '../validator/adminUpload.ts';
 
-interface ReviseData {
-	id: number;
+interface EntryData {
+	id?: number;
 	title: string;
 	description: string | undefined;
 	message: string;
@@ -62,36 +62,38 @@ const updateModified = async (dao: PostDao): Promise<Process.Result> => {
  * 初期画面表示
  *
  * @param context - Context
- * @param requestQuery - URL クエリー情報
- * @param reviseData - 修正記事データ
- * @param updateMode - 新規追加 or 修正
- * @param validate - バリデートエラーメッセージ
- * @param validate.select - 記事選択
- * @param validate.post - 記事投稿
- * @param validate.update - View アップデート反映
- * @param validate.upload - メディアアップロード
- * @param results - 処理結果
- * @param results.post - 記事投稿
- * @param results.update - View アップデート反映
- * @param results.upload - メディアアップロード
+ * @param arg1 -
+ * @param arg1.requestQuery - URL クエリー情報
+ * @param arg1.entryData - 記事データ
+ * @param arg1.updateMode - 新規追加 or 修正
+ * @param arg1.validate - バリデートエラーメッセージ
+ * @param arg1.results - 処理結果
  *
  * @returns Response
  */
 const rendering = async (
 	context: Context,
-	requestQuery?: Readonly<RequestQuery>,
-	reviseData?: Readonly<ReviseData>,
-	updateMode?: boolean,
-	validate?: Readonly<{
-		select?: readonly string[];
-		post?: readonly string[];
-		update?: readonly string[];
-		upload?: readonly string[];
-	}>,
-	results?: Readonly<{
-		post?: readonly Readonly<Process.Result>[];
-		update?: readonly Readonly<Process.Result>[];
-		upload?: readonly Readonly<Process.UploadResult>[];
+	{
+		requestQuery,
+		entryData,
+		updateMode,
+		validate,
+		results,
+	}: Readonly<{
+		requestQuery?: Readonly<RequestQuery>;
+		entryData?: Readonly<EntryData>;
+		updateMode?: boolean;
+		validate?: Readonly<{
+			entrySelect?: readonly string[]; // 記事選択
+			entryPost?: readonly string[]; // 記事投稿
+			viewUpdate?: readonly string[]; // View アップデート反映
+			media?: readonly string[]; // メディアアップロード
+		}>;
+		results?: Readonly<{
+			entryPost?: readonly Readonly<Process.Result>[]; // 記事投稿
+			viewUpdate?: readonly Readonly<Process.Result>[]; // View アップデート反映
+			media?: readonly Readonly<Process.MediaResult>[]; // メディアアップロード
+		}>;
 	}>,
 ): Promise<Response> => {
 	const { req, res } = context;
@@ -123,13 +125,13 @@ const rendering = async (
 	const html = await ejs.renderFile(`${env('VIEWS')}/${configAdmin.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		requestQuery: requestQuery ?? {},
-		reviseData: reviseData ?? {},
+		entryData: entryData ?? {},
 		updateMode: updateMode ?? false,
-		selectValidates: validate?.select ?? [],
-		postValidates: validate?.post ?? [],
-		postResults: results?.post ?? [],
-		updateResults: results?.update ?? [],
-		uploadResults: results?.upload ?? [],
+		selectValidates: validate?.entrySelect ?? [],
+		postValidates: validate?.entryPost ?? [],
+		postResults: results?.entryPost ?? [],
+		updateResults: results?.viewUpdate ?? [],
+		uploadResults: results?.media ?? [],
 		latestId: latestId, // 最新記事 ID
 		categoryMaster: categoryMasterView, // カテゴリー情報
 	});
@@ -152,16 +154,17 @@ export const adminApp = new Hono()
 		});
 
 		if (requestQuery.id === undefined) {
-			return await rendering(context, requestQuery);
+			return await rendering(context, {
+				requestQuery: requestQuery,
+			});
 		}
 
 		/* 修正データ選択 */
 		const reviseData = await dao.getReviseData(requestQuery.id);
 		if (reviseData !== undefined) {
-			return await rendering(
-				context,
-				requestQuery,
-				{
+			return await rendering(context, {
+				requestQuery: requestQuery,
+				entryData: {
 					id: reviseData.id,
 					title: reviseData.title,
 					description: reviseData.description,
@@ -172,13 +175,16 @@ export const adminApp = new Hono()
 					categoryIds: reviseData.category_ids,
 					relationIds: reviseData.relation_ids,
 				},
-				true,
-			);
+				updateMode: true,
+			});
 		}
 
 		/* 存在しない記事 ID を指定した場合 */
-		return await rendering(context, requestQuery, undefined, undefined, {
-			select: [configAdmin.validator.entryNotFound],
+		return await rendering(context, {
+			requestQuery: requestQuery,
+			validate: {
+				entrySelect: [configAdmin.validator.entryNotFound],
+			},
 		});
 	})
 	.post('/post', validatorPostForm, async (context) => {
@@ -206,8 +212,11 @@ export const adminApp = new Hono()
 		if (requestForm.id === undefined) {
 			/* 新規記事追加 */
 			if (await dao.isExistsTitle(requestForm.title)) {
-				return await rendering(context, undefined, undefined, false, {
-					post: [configAdmin.validator.titleUnique],
+				return await rendering(context, {
+					updateMode: false,
+					validate: {
+						entryPost: [configAdmin.validator.titleUnique],
+					},
 				});
 			}
 
@@ -286,10 +295,8 @@ export const adminApp = new Hono()
 			postResults.push(postMisskeyResult);
 		}
 
-		return await rendering(
-			context,
-			undefined,
-			{
+		return await rendering(context, {
+			entryData: {
 				id: entryId,
 				title: requestForm.title,
 				description: requestForm.description,
@@ -300,12 +307,11 @@ export const adminApp = new Hono()
 				relationIds: requestForm.relationIds ?? [],
 				public: requestForm.public,
 			},
-			true,
-			undefined,
-			{
-				post: postResults,
+			updateMode: true,
+			results: {
+				entryPost: postResults,
 			},
-		);
+		});
 	})
 	.post('/update', async (context) => {
 		/* View アップデート反映 */
@@ -317,8 +323,10 @@ export const adminApp = new Hono()
 		results.push(updateModifiedResult);
 		results.push(createFeedResult);
 
-		return await rendering(context, undefined, undefined, undefined, undefined, {
-			update: results,
+		return await rendering(context, {
+			results: {
+				viewUpdate: results,
+			},
 		});
 	})
 	.post('/upload', validatorUploadForm, async (context) => {
@@ -342,7 +350,7 @@ export const adminApp = new Hono()
 
 		const endpoint = env('MEDIA_UPLOAD_URL');
 
-		const results: Process.UploadResult[] = [];
+		const results: Process.MediaResult[] = [];
 
 		try {
 			await Promise.all(
@@ -452,7 +460,9 @@ export const adminApp = new Hono()
 			);
 		}
 
-		return await rendering(context, undefined, undefined, undefined, undefined, {
-			upload: results,
+		return await rendering(context, {
+			results: {
+				media: results,
+			},
 		});
 	});
