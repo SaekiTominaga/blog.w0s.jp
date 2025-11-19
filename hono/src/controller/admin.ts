@@ -255,6 +255,17 @@ export const adminApp = new Hono()
 			/* 既存記事更新 */
 			entryData.id = requestForm.id;
 
+			if (await dao.isExistsTitle(requestForm.title, requestForm.id)) {
+				/* 既存記事と同じタイトルが指定された場合 */
+				return await rendering(context, {
+					entryData: entryData,
+					entrySubmitMode: 'update',
+					validate: {
+						entryPost: [configAdmin.validator.titleUnique],
+					},
+				});
+			}
+
 			await dao.update(
 				{
 					id: entryData.id,
