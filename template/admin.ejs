@@ -220,7 +220,7 @@
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
 												<label class="c-label -check">
-													<%_ if (requestQuery.timestamp) { _%>
+													<%_ if (entryData.timestampUpdate) { _%>
 													<input type="checkbox" name="timestamp" value="1" checked="" />
 													<%_ } else { _%>
 													<input type="checkbox" name="timestamp" value="1" />
@@ -238,7 +238,7 @@
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
 												<label class="c-label -check">
-													<%_ if (requestQuery.social) { _%>
+													<%_ if (entryData.social) { _%>
 													<input type="checkbox" name="social" value="1" checked="" />
 													<%_ } else { _%>
 													<input type="checkbox" name="social" value="1" />
@@ -249,7 +249,7 @@
 											<div class="c-form-controls">
 												<label class="c-label -input">
 													<span class="c-label__text">ハッシュタグ</span>
-													<input id="fc-social-tag" class="c-input js-convert-trim" name="social_tag" value="<%= requestQuery.social_tag %>" maxlength="100" style="--inline-size: 15em" />
+													<input id="fc-social-tag" class="c-input js-convert-trim" name="social_tag" value="<%= entryData.socialTags?.join(',') %>" maxlength="100" style="--inline-size: 15em" />
 													<small>（カンマ区切り）</small>
 												</label>
 											</div>
