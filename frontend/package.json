@@ -3,15 +3,12 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"predev": "rimraf -g \"../public/{script,style}/*.br\"",
-		"dev": "conc \"postcss style/*.css --base style -d ../public/style -w\" \"rollup -c -w --environment build:development\"",
+		"predev": "rimraf -g \"../public/**/*.svg.br\" \"../public/{script,style}/*.br\"",
+		"dev": "conc \"postcss style/*.css --base style -d ../public/style -w\" \"rollup -c -w --environment build:development\" \"node build/svg.ts -i image -o ../public -c svgo.config.js -w\"",
 		"prebuild": "npm run lint -w @blog.w0s.jp/frontend && rimraf -g \"../public/**/*.{svg,svg.br}\" \"../public/{script,style}/*\"",
-		"build": "conc \"npm run css -w @blog.w0s.jp/frontend\" \"npm run js -w @blog.w0s.jp/frontend\" \"npm run svg -w @blog.w0s.jp/frontend\"",
+		"build": "conc \"postcss style/*.css --base style -d ../public/style\" \"rollup -c --environment build:production\" \"node build/svg.ts -i image -o ../public -c svgo.config.js\"",
 		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" && brotli-cli compress -g \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/**/*.svg\" -m text",
-		"lint": "conc \"tsc --project script --noEmit\" \"eslint build/**/*.ts script/**/*.ts\" \"stylelint style/**/*.css\"",
-		"css": "postcss style/*.css --base style -d ../public/style",
-		"js": "rollup -c --environment build:production",
-		"svg": "node build/svg.ts -i image -o ../public -c svgo.config.js"
+		"lint": "conc \"tsc --project script --noEmit\" \"eslint build/**/*.ts script/**/*.ts\" \"stylelint style/**/*.css\""
 	},
 	"dependencies": {
 		"@w0s/button-clipboard": "^3.0.1",
@@ -24,6 +21,7 @@
 		"@w0s/report-same-referrer": "^4.0.1",
 		"@w0s/string-convert": "^3.0.2",
 		"@w0s/tab": "^4.4.1",
+		"chokidar": "^4.0.3",
 		"prettier": "^3.5.3",
 		"slash": "^5.1.0",
 		"svgo": "^4.0.0"
