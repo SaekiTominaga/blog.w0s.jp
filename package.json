@@ -23,7 +23,7 @@
 		"eslint": "^9.39.1",
 		"markuplint": "^4.14.0",
 		"prettier": "^3.6.2",
-		"rimraf": "^6.1.0",
+		"rimraf": "^6.1.2",
 		"stylelint": "^16.25.0",
 		"typescript": "^5.9.3"
 	}
