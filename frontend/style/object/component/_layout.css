@@ -25,7 +25,7 @@ Styleguide 1.5.
 
 /* ===== グリッド ===== */
 .c-grid {
-	--_gap-row: 1em;
+	--_gap-row: 50px;
 	--_gap-col: 50px;
 	--_min-inline-size: auto;
 

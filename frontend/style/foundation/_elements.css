@@ -54,7 +54,7 @@ pre {
 	}
 }
 
-:is(cite, em) {
+em {
 	&:lang(ja) {
 		font-weight: var(--font-weight-bold);
 	}

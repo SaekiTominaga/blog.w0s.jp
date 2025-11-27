@@ -37,7 +37,7 @@ pre {
   *
   * https://html.spec.whatwg.org/multipage/rendering.html#phrasing-content-3
   */
-em {
+:is(cite, dfn, em) {
 	&:lang(ja) {
 		font-style: normal;
 	}
