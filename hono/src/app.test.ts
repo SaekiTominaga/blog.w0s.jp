@@ -37,6 +37,7 @@ await test('favicon.ico', async (t) => {
 		assert.equal(res.headers.get('Content-Type'), 'image/svg+xml;charset=utf-8');
 		assert.equal(res.headers.get('Content-Encoding'), null);
 		assert.equal(res.headers.get('Cache-Control'), 'max-age=604800');
+		assert.equal(res.headers.get('Vary'), 'Accept-Encoding');
 	});
 
 	await t.test('gzip', async () => {
@@ -45,6 +46,7 @@ await test('favicon.ico', async (t) => {
 		});
 
 		assert.equal(res.headers.get('Content-Encoding'), 'gzip');
+		assert.equal(res.headers.get('Vary'), 'Accept-Encoding');
 	});
 
 	await t.test('brotli', async () => {
@@ -53,6 +55,7 @@ await test('favicon.ico', async (t) => {
 		});
 
 		assert.equal(res.headers.get('Content-Encoding'), 'br');
+		assert.equal(res.headers.get('Vary'), 'Accept-Encoding');
 	});
 });
 
@@ -64,6 +67,7 @@ await test('feed', async (t) => {
 		assert.equal(res.headers.get('Content-Type'), 'application/atom+xml;charset=utf-8');
 		assert.equal(res.headers.get('Content-Encoding'), null);
 		assert.equal(res.headers.get('Cache-Control'), null);
+		assert.equal(res.headers.get('Vary'), 'Accept-Encoding');
 	});
 
 	await t.test('gzip', async () => {
@@ -72,6 +76,7 @@ await test('feed', async (t) => {
 		});
 
 		assert.equal(res.headers.get('Content-Encoding'), 'gzip');
+		assert.equal(res.headers.get('Vary'), 'Accept-Encoding');
 	});
 
 	await t.test('brotli', async () => {
@@ -80,6 +85,7 @@ await test('feed', async (t) => {
 		});
 
 		assert.equal(res.headers.get('Content-Encoding'), 'br');
+		assert.equal(res.headers.get('Vary'), 'Accept-Encoding');
 	});
 });
 
