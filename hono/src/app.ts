@@ -101,10 +101,9 @@ app.get('/favicon.ico', async (context) => {
 	const file = await fs.promises.readFile(`${config.static.root}/favicon.svg${compressExtension ?? ''}`);
 
 	context.header('Content-Type', 'image/svg+xml;charset=utf-8');
-	if (responseContentEncoding !== undefined) {
-		context.header('Content-Encoding', responseContentEncoding);
-	}
+	context.header('Content-Encoding', responseContentEncoding);
 	context.header('Cache-Control', 'max-age=604800');
+	context.header('Vary', 'Accept-Encoding', { append: true });
 	return context.body(Buffer.from(file));
 });
 
@@ -123,9 +122,8 @@ app.get('/feed', async (context) => {
 	const file = await fs.promises.readFile(`${config.static.root}/feed.atom${compressExtension ?? ''}`);
 
 	context.header('Content-Type', 'application/atom+xml;charset=utf-8');
-	if (responseContentEncoding !== undefined) {
-		context.header('Content-Encoding', responseContentEncoding);
-	}
+	context.header('Content-Encoding', responseContentEncoding);
+	context.header('Vary', 'Accept-Encoding', { append: true });
 	return context.body(Buffer.from(file));
 });
 
