@@ -22,7 +22,6 @@
 		"@w0s/string-convert": "^3.0.2",
 		"@w0s/tab": "^4.4.2",
 		"chokidar": "^4.0.3",
-		"prettier": "^3.5.3",
 		"slash": "^5.1.0",
 		"svgo": "^4.0.0"
 	},
