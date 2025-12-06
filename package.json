@@ -24,7 +24,7 @@
 		"markuplint": "^4.14.0",
 		"prettier": "^3.7.4",
 		"rimraf": "^6.1.2",
-		"stylelint": "^16.26.0",
+		"stylelint": "^16.26.1",
 		"typescript": "^5.9.3"
 	}
 }
