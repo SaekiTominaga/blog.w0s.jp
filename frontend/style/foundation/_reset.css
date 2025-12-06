@@ -144,7 +144,7 @@ iframe {
  */
 a:not(:any-link) {
 	color: inherit;
-} /* for iOS Firefox with Website Dark Mode https://github.com/mozilla-mobile/firefox-ios/issues/29461 */
+} /* for iOS Firefox with Website Dark Mode https://github.com/darkreader/darkreader/issues/9836 */
 
 input,
 select,
