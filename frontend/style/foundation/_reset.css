@@ -1,8 +1,8 @@
 /**
-  * 15.3.2 The page
-  *
-  * https://html.spec.whatwg.org/multipage/rendering.html#the-page
-  */
+ * 15.3.2 The page
+ *
+ * https://html.spec.whatwg.org/multipage/rendering.html#the-page
+ */
 body {
 	margin: 0;
 }
@@ -33,10 +33,10 @@ pre {
 }
 
 /**
-  * 15.3.4 Phrasing content
-  *
-  * https://html.spec.whatwg.org/multipage/rendering.html#phrasing-content-3
-  */
+ * 15.3.4 Phrasing content
+ *
+ * https://html.spec.whatwg.org/multipage/rendering.html#phrasing-content-3
+ */
 :is(cite, dfn, em) {
 	&:lang(ja) {
 		font-style: normal;
@@ -48,10 +48,10 @@ code {
 }
 
 /**
-  * 15.3.6 Sections and headings
-  *
-  * https://html.spec.whatwg.org/multipage/rendering.html#sections-and-headings
-  */
+ * 15.3.6 Sections and headings
+ *
+ * https://html.spec.whatwg.org/multipage/rendering.html#sections-and-headings
+ */
 h1,
 h2,
 h3,
@@ -63,10 +63,10 @@ h6 {
 }
 
 /**
-  * 15.3.7 Lists
-  *
-  * https://html.spec.whatwg.org/multipage/rendering.html#lists
-  */
+ * 15.3.7 Lists
+ *
+ * https://html.spec.whatwg.org/multipage/rendering.html#lists
+ */
 dl,
 ol,
 ul {
@@ -84,10 +84,10 @@ ul {
 }
 
 /**
-  * 15.3.8 Tables
-  *
-  * https://html.spec.whatwg.org/multipage/rendering.html#tables-2
-  */
+ * 15.3.8 Tables
+ *
+ * https://html.spec.whatwg.org/multipage/rendering.html#tables-2
+ */
 table {
 	border-collapse: collapse;
 }
@@ -98,16 +98,16 @@ th {
 }
 
 /**
-  * 15.3.10 Form controls
-  *
-  * https://html.spec.whatwg.org/multipage/rendering.html#form-controls
-  */
+ * 15.3.10 Form controls
+ *
+ * https://html.spec.whatwg.org/multipage/rendering.html#form-controls
+ */
 
 /**
-  * 15.3.11 The hr element
-  *
-  * https://momdo.github.io/html/rendering.html#the-hr-element-2
-  */
+ * 15.3.11 The hr element
+ *
+ * https://momdo.github.io/html/rendering.html#the-hr-element-2
+ */
 hr {
 	margin-block: 0;
 	border: none;
@@ -115,10 +115,10 @@ hr {
 }
 
 /**
-  * 15.3.12 The fieldset and legend elements
-  *
-  * https://html.spec.whatwg.org/multipage/rendering.html#the-fieldset-and-legend-elements
-  */
+ * 15.3.12 The fieldset and legend elements
+ *
+ * https://html.spec.whatwg.org/multipage/rendering.html#the-fieldset-and-legend-elements
+ */
 fieldset {
 	margin-inline: 0;
 	border: none;
@@ -131,20 +131,20 @@ legend {
 }
 
 /**
-  * 15.4.1 Embedded content
-  *
-  * https://html.spec.whatwg.org/multipage/rendering.html#embedded-content-rendering-rules
-  */
+ * 15.4.1 Embedded content
+ *
+ * https://html.spec.whatwg.org/multipage/rendering.html#embedded-content-rendering-rules
+ */
 iframe {
 	border: none;
 }
 
 /**
-  * etc
-  */
+ * etc
+ */
 a:not(:any-link) {
 	color: inherit;
-} /* for iOS Firefox with Website Dark Mode https://github.com/mozilla-mobile/firefox-ios/issues/29461 */
+} /* for iOS Firefox with Website Dark Mode https://github.com/darkreader/darkreader/issues/9836 */
 
 input,
 select,

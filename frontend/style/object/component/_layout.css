@@ -1,8 +1,6 @@
-/*
-レイアウト
-
-Styleguide 1.5.
-*/
+/** ==============================
+ *   レイアウト
+ * ============================== */
 
 /* ===== Stack ===== */
 :is(.l-content__header, .l-content__body, .l-content__footer, .c-stack, .p-section, .p-quote, .p-box) {
