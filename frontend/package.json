@@ -21,7 +21,7 @@
 		"@w0s/report-same-referrer": "^4.0.1",
 		"@w0s/string-convert": "^3.0.2",
 		"@w0s/tab": "^4.4.2",
-		"chokidar": "^4.0.3",
+		"chokidar": "^5.0.0",
 		"slash": "^5.1.0",
 		"svgo": "^4.0.0"
 	},
