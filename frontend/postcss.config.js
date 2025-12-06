@@ -12,7 +12,9 @@ export default {
 			files: ['style/foundation/_@custom-media.css'],
 		}), // `postcss-custom-media` より先に定義する必要がある
 		pluginCustomMedia(),
-		pluginDiscardComments(),
+		pluginDiscardComments({
+			remove: (comment) => comment.startsWith('*') || comment.startsWith('stylelint-') || comment.startsWith('prettylights-syntax-'),
+		}),
 		pluginDiscardEmpty(),
 		pluginImport(),
 		pluginNesting(),
