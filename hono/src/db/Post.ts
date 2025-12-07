@@ -26,18 +26,6 @@ export default class extends Database {
 	}
 
 	/**
-	 * 最終更新日時を記録する
-	 */
-	async updateModified(): Promise<void> {
-		let query = this.db.updateTable('d_info');
-		query = query.set({
-			modified: jsToSQLiteAssignment(new Date()),
-		});
-
-		await query.executeTakeFirst();
-	}
-
-	/**
 	 * カテゴリー情報を取得
 	 *
 	 * @returns カテゴリー情報

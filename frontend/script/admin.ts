@@ -28,36 +28,96 @@ formBeforeUnloadConfirm(document.querySelectorAll('.js-form-beforeunload-confirm
 formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 
 /* 本文プレビュー */
-const messageCtrlElement = document.getElementById('fc-message') as HTMLTextAreaElement | null; // 本文の入力コントロール
-const markdownMessagesElement = document.getElementById('markdown-messages') as HTMLTemplateElement | null; // Markdown 変換結果のメッセージを表示する要素
-const messagePreviewElement = document.getElementById('message-preview') as HTMLTemplateElement | null; // 本文プレビューを表示する要素
-const selectImageElement = document.getElementById('select-image') as HTMLTemplateElement | null;
+{
+	const messageCtrlElement = document.getElementById('fc-message') as HTMLTextAreaElement | null; // 本文の入力コントロール
+	const markdownMessagesElement = document.getElementById('markdown-messages') as HTMLTemplateElement | null; // Markdown 変換結果のメッセージを表示する要素
+	const messagePreviewElement = document.getElementById('message-preview') as HTMLTemplateElement | null; // 本文プレビューを表示する要素
+	const selectImageElement = document.getElementById('select-image') as HTMLTemplateElement | null;
 
-if (messageCtrlElement !== null && markdownMessagesElement !== null && messagePreviewElement !== null && selectImageElement !== null) {
-	const preview = new Preview({
-		ctrl: messageCtrlElement,
-		messages: markdownMessagesElement,
-		preview: messagePreviewElement,
-	});
+	if (messageCtrlElement !== null && markdownMessagesElement !== null && messagePreviewElement !== null && selectImageElement !== null) {
+		const preview = new Preview({
+			ctrl: messageCtrlElement,
+			messages: markdownMessagesElement,
+			preview: messagePreviewElement,
+		});
 
-	const messageImage = new MessageImage({
-		preview: messagePreviewElement,
-		image: selectImageElement,
-	});
+		const messageImage = new MessageImage({
+			preview: messagePreviewElement,
+			image: selectImageElement,
+		});
 
-	const exec = async (): Promise<void> => {
-		await preview.exec();
-		messageImage.exec();
-	};
+		const exec = async (): Promise<void> => {
+			await preview.exec();
+			messageImage.exec();
+		};
 
-	await exec();
-	messageCtrlElement.addEventListener(
-		'change',
-		() => {
-			exec().catch((e: unknown) => {
-				throw e;
+		await exec();
+		messageCtrlElement.addEventListener(
+			'change',
+			() => {
+				exec().catch((e: unknown) => {
+					throw e;
+				});
+			},
+			{ passive: true },
+		);
+	}
+}
+
+/* DSG のキャッシュクリア */
+{
+	const buttonElement = document.getElementById('clear-button') as HTMLButtonElement | null; // 実行結果を表示する要素
+	const resultElement = document.getElementById('clear-result') as HTMLTemplateElement | null; // 実行結果を表示する要素
+
+	if (buttonElement !== null && resultElement !== null) {
+		// eslint-disable-next-line @typescript-eslint/no-misused-promises
+		buttonElement.addEventListener('click', async () => {
+			const response = await fetch('/api/clear', {
+				method: 'POST',
 			});
-		},
-		{ passive: true },
-	);
+
+			/* いったんクリア */
+			Array.from(resultElement.parentNode?.children ?? []).forEach((element) => {
+				if (element === resultElement) {
+					return;
+				}
+
+				element.remove();
+			});
+
+			const hiddenElement = resultElement.closest<HTMLElement>('[hidden]');
+			if (hiddenElement !== null) {
+				hiddenElement.hidden = false;
+			}
+
+			if (response.ok) {
+				const responseJson = (await response.json()) as {
+					success: boolean;
+					message: string;
+				}[];
+
+				const fragment = document.createDocumentFragment();
+				responseJson.forEach((result) => {
+					const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+					const successElement = clone.querySelector<HTMLElement>('.js-success');
+					const errorEessage = clone.querySelector<HTMLElement>('.js-error');
+					if (successElement !== null) {
+						successElement.hidden = !result.success;
+					}
+					if (errorEessage !== null) {
+						errorEessage.hidden = result.success;
+					}
+
+					const message = (result.success ? successElement : errorEessage)?.querySelector<HTMLElement>('.js-message');
+					if (message !== null && message !== undefined) {
+						message.textContent = result.message;
+					}
+
+					fragment.appendChild(clone);
+				});
+				resultElement.parentNode?.appendChild(fragment);
+			}
+		});
+	}
 }

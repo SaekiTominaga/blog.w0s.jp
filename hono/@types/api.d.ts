@@ -5,6 +5,11 @@ declare namespace BlogApi {
 		html: string;
 		messages: object[];
 	}
+
+	interface Clear {
+		success: boolean;
+		message: string;
+	}
 }
 
 /* メディア（media.w0s.jp） */

@@ -1,9 +1,7 @@
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadEnvFile } from 'node:process';
 import { Hono } from 'hono';
-import { basicAuth } from 'hono/basic-auth';
 import { compress } from 'hono/compress';
 import { HTTPException } from 'hono/http-exception';
 import { serve } from '@hono/node-server';
@@ -17,7 +15,8 @@ import { entryApp } from './controller/entry.ts';
 import { topApp, listApp } from './controller/list.ts';
 import { adminApp } from './controller/admin.ts';
 import { previewApp } from './controller/preview.ts';
-import { getAuth } from './util/auth.ts';
+import { clearApp } from './controller/clear.ts';
+import { basicAuth } from './util/auth.ts';
 import {
 	supportCompressionEncoding as supportCompressEncodingHeader,
 	csp as cspHeader,
@@ -190,18 +189,12 @@ app.use(
 );
 
 /* Auth */
-const auth = await getAuth();
-app.use(
-	`/admin/*`,
-	basicAuth({
-		verifyUser: (username, password) => {
-			const passwordHash = crypto.hash('sha256', password);
-			return username === auth.user && passwordHash === auth.password;
-		},
-		realm: auth.realm,
-		invalidUserMessage: config.basicAuth.unauthorizedMessage,
-	}),
-);
+const basicAuthHandler = await basicAuth({
+	authPath: env('AUTH_ADMIN'),
+	invalidUserMessage: config.basicAuth.unauthorizedMessage,
+});
+app.use(`/admin/*`, basicAuthHandler);
+app.use(`/api/clear`, basicAuthHandler);
 
 /* Routes */
 app.route('/', topApp);
@@ -210,6 +203,7 @@ app.route('/entry/', entryApp);
 app.route('/category/', categoryApp);
 app.route('/admin/', adminApp);
 app.route('/api/preview', previewApp);
+app.route('/api/clear', clearApp);
 
 /* Error pages */
 app.notFound(async (context) => {
