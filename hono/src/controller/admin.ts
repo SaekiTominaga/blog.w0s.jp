@@ -8,6 +8,7 @@ import { env } from '@w0s/env-value-type';
 import configHono from '../config/hono.ts';
 import configAdmin from '../config/admin.ts';
 import PostDao from '../db/Post.ts';
+import clear from '../process/dsg.ts';
 import createFeed from '../process/feed.ts';
 import createNewlyJson from '../process/newlyJson.ts';
 import createSitemap from '../process/sitemap.ts';
@@ -123,27 +124,6 @@ const rendering = async (
 	res.headers.set('Referrer-Policy', 'no-referrer');
 
 	return context.html(html);
-};
-
-/**
- * DB の最終更新日時を更新する
- *
- * @param dao - Dao
- *
- * @returns 処理結果のメッセージ
- */
-const updateModified = async (dao: PostDao): Promise<Process.Result> => {
-	try {
-		await dao.updateModified();
-
-		logger.info('Modified date of DB was recorded');
-	} catch (e) {
-		logger.error(e);
-
-		return { success: false, message: configAdmin.processMessage.dbModified.failure };
-	}
-
-	return { success: true, message: configAdmin.processMessage.dbModified.success };
 };
 
 export const adminApp = new Hono()
@@ -289,13 +269,13 @@ export const adminApp = new Hono()
 			postResults.push({ success: true, message: `${configAdmin.processMessage.update.success} ${entryUrl}` });
 		}
 
-		const [updateModifiedResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
-			updateModified(dao),
+		const [cacheClearResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
+			clear(),
 			createFeed(),
 			createSitemap(),
 			createNewlyJson(),
 		]);
-		postResults.push(updateModifiedResult);
+		postResults.push(cacheClearResult);
 		postResults.push(createFeedResult);
 		postResults.push(createSitemapResult);
 		postResults.push(createNewlyJsonResult);
@@ -323,22 +303,6 @@ export const adminApp = new Hono()
 			entrySubmitMode: 'update',
 			results: {
 				entryPost: postResults,
-			},
-		});
-	})
-	.post('/update', async (context) => {
-		/* View アップデート反映 */
-		const dao = new PostDao(env('SQLITE_BLOG'));
-
-		const [updateModifiedResult, createFeedResult] = await Promise.all([updateModified(dao), createFeed()]);
-
-		const results: Process.Result[] = [];
-		results.push(updateModifiedResult);
-		results.push(createFeedResult);
-
-		return await rendering(context, {
-			results: {
-				viewUpdate: results,
 			},
 		});
 	})

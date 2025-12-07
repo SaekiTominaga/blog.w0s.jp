@@ -266,26 +266,19 @@
 						</form>
 					</section>
 
-					<section class="p-section -hdg-a" id="view">
+					<section class="p-section -hdg-a" id="clear">
 						<div class="p-section__hdg">
-							<h2>View アップデート反映</h2>
+							<h2>DSG のキャッシュクリア</h2>
 						</div>
 
-						<form action="/admin/update#view" method="post" class="c-stack js-submit-overlay" data-overlayed-by="form-submit-overlay">
-							<%_ if (updateResults.length > 0) { _%>
-							<ul class="p-form-results">
-								<%_ for (const result of updateResults) { _%><%_ if (result.success) { _%>
-								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<%_ } else { _%>
-								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<%_ } _%> <%_ } _%>
-							</ul>
-							<%_ } _%>
+						<p><button type="button" class="c-submit" id="clear-button">キャッシュクリア</button></p>
 
-							<div class="c-form-controls">
-								<p><button class="c-submit">反映</button></p>
-							</div>
-						</form>
+						<ul class="p-form-results" hidden="">
+							<template id="clear-result">
+								<li class="p-form-results__item -success js-success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message js-message"></span></li>
+								<li class="p-form-results__item -error js-error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message js-message"></span></li>
+							</template>
+						</ul>
 					</section>
 
 					<section class="p-section -hdg-a" id="media">

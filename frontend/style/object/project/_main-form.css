@@ -79,16 +79,17 @@
 }
 
 .p-form-results__item {
-	display: block flex;
-	gap: 0.5em;
-	color: var(--color);
+	&:not([hidden]) {
+		display: block flex;
+		gap: 0.5em;
+	}
 
 	&.-success {
-		--color: var(--color-green);
+		color: var(--color-green);
 	}
 
 	&.-error {
-		--color: var(--color-red);
+		color: var(--color-red);
 	}
 }
 

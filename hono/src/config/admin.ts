@@ -11,10 +11,6 @@ export default {
 		update: {
 			success: '記事の更新に成功',
 		},
-		dbModified: {
-			success: 'DB 最終更新日時の記録に成功',
-			failure: 'DB 最終更新日時の記録に失敗',
-		},
 	},
 	mediaUpload: {
 		apiResponse: {

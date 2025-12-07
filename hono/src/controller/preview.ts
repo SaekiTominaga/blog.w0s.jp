@@ -15,7 +15,7 @@ export const previewApp = new Hono().post(validatorJson, async (context) => {
 	const markdown = new Markdown({ lint: true });
 	const { value, messages } = await markdown.toHtml(requestBody.markdown);
 
-	const responseJson: BlogApi.Preview = {
+	const responseJson: Readonly<BlogApi.Preview> = {
 		html: value.toString(),
 		messages: messages,
 	};

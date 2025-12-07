@@ -4,6 +4,10 @@ declare namespace Process {
 		message: string;
 	}
 
+	interface DSGResult extends Result {
+		date?: Date;
+	}
+
 	interface MediaResult extends Result {
 		filename: string;
 	}
