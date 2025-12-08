@@ -20,6 +20,10 @@ import { csp as cspHeader } from '../util/httpHeader.ts';
 import { query as validatorQuery, type RequestQuery } from '../validator/admin.ts';
 import { form as validatorPostForm } from '../validator/adminPost.ts';
 import { form as validatorUploadForm } from '../validator/adminUpload.ts';
+import type { Upload } from '../../../@types/api.d.ts';
+import type { Normal as ProcessResult, Media as ProcessMediaResult } from '../../@types/process.d.ts';
+import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
+import type { Categories } from '../../@types/view.d.ts';
 
 interface EntryData {
 	id?: number;
@@ -73,9 +77,9 @@ const rendering = async (
 			media?: readonly string[]; // メディアアップロード
 		}>;
 		results?: Readonly<{
-			entryPost?: readonly Readonly<Process.Result>[]; // 記事投稿
-			viewUpdate?: readonly Readonly<Process.Result>[]; // View アップデート反映
-			media?: readonly Readonly<Process.MediaResult>[]; // メディアアップロード
+			entryPost?: readonly ProcessResult[]; // 記事投稿
+			viewUpdate?: readonly ProcessResult[]; // View アップデート反映
+			media?: readonly ProcessMediaResult[]; // メディアアップロード
 		}>;
 	}>,
 ): Promise<Response> => {
@@ -91,7 +95,7 @@ const rendering = async (
 		dao.getCategoryMaster(), // カテゴリー情報
 	]);
 
-	const categoryMasterView = new Map<string, BlogView.Category[]>();
+	const categoryMasterView = new Map<string, Categories>();
 	categoryMaster.forEach((category) => {
 		const { group_name: groupName } = category;
 
@@ -196,7 +200,7 @@ export const adminApp = new Hono()
 			timestampUpdate: requestForm.timestampUpdate,
 		};
 
-		const postResults: Process.Result[] = [];
+		const postResults: ProcessResult[] = [];
 		let entryUrl: string;
 
 		if (requestForm.id === undefined) {
@@ -281,7 +285,7 @@ export const adminApp = new Hono()
 		postResults.push(createNewlyJsonResult);
 
 		if (entryData.public && entryData.social) {
-			const socialEntryData: BlogSocial.EntryData = {
+			const socialEntryData: SocialEntryData = {
 				url: entryUrl,
 				title: entryData.title,
 				description: entryData.description,
@@ -327,7 +331,7 @@ export const adminApp = new Hono()
 
 		const endpoint = env('MEDIA_UPLOAD_URL');
 
-		const results: Process.MediaResult[] = [];
+		const results: ProcessMediaResult[] = [];
 
 		try {
 			await Promise.all(
@@ -360,7 +364,7 @@ export const adminApp = new Hono()
 							return;
 						}
 
-						const responseFile = (await response.json()) as MediaApi.Upload;
+						const responseFile = (await response.json()) as Upload;
 						switch (responseFile.code) {
 							case configAdmin.mediaUpload.apiResponse.success.code:
 								/* 成功 */

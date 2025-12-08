@@ -3,6 +3,8 @@ import ejs from 'ejs';
 import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
 import configBluesky from '../config/bluesky.ts';
+import type { Normal as ProcessResult } from '../../@types/process.d.ts';
+import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
 
 const logger = Log4js.getLogger('Bluesky');
 
@@ -14,7 +16,7 @@ const logger = Log4js.getLogger('Bluesky');
  *
  * @returns 投稿本文
  */
-const getMessage = async (templatePath: string, entryData: Readonly<BlogSocial.EntryData>): Promise<string> =>
+const getMessage = async (templatePath: string, entryData: SocialEntryData): Promise<string> =>
 	(
 		await ejs.renderFile(templatePath, {
 			title: entryData.title,
@@ -37,7 +39,7 @@ const getMessage = async (templatePath: string, entryData: Readonly<BlogSocial.E
  *
  * @returns 処理結果
  */
-const post = async (entryData: Readonly<BlogSocial.EntryData>): Promise<Process.Result> => {
+const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 	try {
 		const agent = new AtpAgent({
 			service: env('BLUESKY_INSTANCE'),

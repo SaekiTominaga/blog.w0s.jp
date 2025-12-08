@@ -13,6 +13,7 @@ import CategoryDao from '../db/Category.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/category.ts';
+import type { Entries } from '../../@types/view.d.ts';
 
 /**
  * カテゴリー
@@ -50,7 +51,7 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 		sidebar.getNewlyEntries(configHono.sidebar.newly.maximumNumber),
 	]);
 
-	const entries: BlogView.EntryData[] = entriesDto.map((entryDto) => {
+	const entries: Entries = entriesDto.map((entryDto) => {
 		let { image_external: imageExternal } = entryDto;
 		if (imageExternal !== undefined) {
 			switch (imageExternal.origin) {

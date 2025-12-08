@@ -4,6 +4,7 @@ import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
 import PostDao from '../db/Post.ts';
 import { getAuth } from '../util/auth.ts';
+import type { Clear } from '../../../@types/api.d.ts';
 
 const auth = await getAuth(env('AUTH_ADMIN'));
 const authorization = `Basic ${Buffer.from(`${auth.user}:${auth.password_orig!}`).toString('base64')}`;
@@ -21,7 +22,7 @@ await test('clear', async () => {
 
 	assert.equal(res.status, 200);
 	assert.equal(
-		((await res.json()) as Process.DSGResult[]).every((result) => result.success),
+		((await res.json()) as Clear).every((result) => result.success),
 		true,
 	);
 	assert.equal(lastModifiledBefore < lastModifiledAfter, true);

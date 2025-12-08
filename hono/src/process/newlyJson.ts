@@ -7,6 +7,8 @@ import configHono from '../config/hono.ts';
 import configNewlyJson from '../config/newlyJson.ts';
 import NewlyJson from '../db/NewlyJson.ts';
 import { brotliCompressText } from '../util/compress.ts';
+import type { Normal as ProcessResult } from '../../@types/process.d.ts';
+import type { NewlyEntry } from '../../@types/view.d.ts';
 
 const logger = Log4js.getLogger('NewlyJson');
 
@@ -15,13 +17,13 @@ const logger = Log4js.getLogger('NewlyJson');
  *
  * @returns ファイル生成情報
  */
-const create = async (): Promise<Process.Result> => {
+const create = async (): Promise<ProcessResult> => {
 	try {
 		const dao = new NewlyJson(env('SQLITE_BLOG'), {
 			readonly: true,
 		});
 
-		const datasCatgroup = new Map<string, BlogView.NewlyEntry[]>();
+		const datasCatgroup = new Map<string, readonly NewlyEntry[]>();
 
 		datasCatgroup.set('', await dao.getEntries(configNewlyJson.limit));
 

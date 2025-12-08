@@ -13,6 +13,7 @@ import EntryDao from '../db/Entry.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/entry.ts';
+import type { Entries } from '../../@types/view.d.ts';
 
 /**
  * 記事
@@ -61,7 +62,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		imageUrl = entryDto.image_external;
 	}
 
-	const relations: BlogView.EntryData[] = relationDataListDto.map((relationData) => ({
+	const relations: Entries = relationDataListDto.map((relationData) => ({
 		id: relationData.id,
 		title: new MarkdownTitle(relationData.title).mark(),
 		imageInternal: relationData.image_internal,

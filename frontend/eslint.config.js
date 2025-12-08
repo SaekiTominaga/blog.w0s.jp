@@ -23,6 +23,17 @@ export default [
 		},
 	},
 	{
+		files: ['script/**/*.ts'],
+		rules: {
+			'@typescript-eslint/no-misused-promises': [
+				'error',
+				{
+					checksVoidReturn: false,
+				},
+			],
+		},
+	},
+	{
 		files: ['script/analytics.ts'],
 		languageOptions: {
 			parserOptions: {
