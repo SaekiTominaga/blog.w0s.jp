@@ -6,7 +6,7 @@ import w0sConfig from '@w0s/eslint-config';
 export default [
 	...w0sConfig,
 	{
-		ignores: ['dist/**/*.js'],
+		ignores: ['dist'],
 	},
 	{
 		files: ['**/*.ts'],

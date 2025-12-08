@@ -1,6 +1,6 @@
 {
 	"extends": "@w0s/tsconfig",
-	"include": ["../../@types/*.d.ts", "**/*.ts"],
+	"include": ["**/*.ts"],
 	"compilerOptions": {
 		/* Modules */
 		"module": "es2022",
