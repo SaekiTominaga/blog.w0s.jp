@@ -6,6 +6,8 @@ import { env } from '@w0s/env-value-type';
 import configHono from '../config/hono.ts';
 import configSitemap from '../config/sitemap.ts';
 import SitemapDao from '../db/Sitemap.ts';
+import type { Normal as ProcessResult } from '../../@types/process.d.ts';
+import type { SitemapEntry } from '../../@types/view.d.ts';
 
 const logger = Log4js.getLogger('Sitemap');
 
@@ -14,7 +16,7 @@ const logger = Log4js.getLogger('Sitemap');
  *
  * @returns 処理結果
  */
-const create = async (): Promise<Process.Result> => {
+const create = async (): Promise<ProcessResult> => {
 	try {
 		const dao = new SitemapDao(env('SQLITE_BLOG'), {
 			readonly: true,
@@ -26,7 +28,7 @@ const create = async (): Promise<Process.Result> => {
 		]);
 
 		const entriesView = entriesDto.map(
-			(entry): BlogView.SitemapEntry => ({
+			(entry): SitemapEntry => ({
 				id: entry.id,
 				updatedAt: dayjs(entry.updated_at ?? entry.registed_at),
 			}),

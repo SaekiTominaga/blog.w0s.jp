@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 // eslint-disable-next-line import/extensions
 import Markdown from '@blog.w0s.jp/remark/dist/Markdown.js';
 import { json as validatorJson } from '../validator/preview.ts';
+import type { Preview } from '../../../@types/api.d.ts';
 
 /**
  * 本文プレビュー
@@ -15,7 +16,7 @@ export const previewApp = new Hono().post(validatorJson, async (context) => {
 	const markdown = new Markdown({ lint: true });
 	const { value, messages } = await markdown.toHtml(requestBody.markdown);
 
-	const responseJson: Readonly<BlogApi.Preview> = {
+	const responseJson: Preview = {
 		html: value.toString(),
 		messages: messages,
 	};

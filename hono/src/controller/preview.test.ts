@@ -1,6 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import app from '../app.ts';
+import type { Preview } from '../../../@types/api.d.ts';
 
 await test('GET', async () => {
 	const res = await app.request('/api/preview');
@@ -37,7 +38,7 @@ await test('no error', async () => {
 		}),
 	});
 
-	const responceBody = (await res.json()) as { html: string; messages: object[] };
+	const responceBody = (await res.json()) as Preview;
 
 	assert.equal(res.status, 200);
 	assert.equal(res.headers.get('Content-Type'), 'application/json');

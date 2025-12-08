@@ -2,6 +2,9 @@ import ejs from 'ejs';
 import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
 import configMisskey from '../config/misskey.ts';
+import type { NotesCreate as MisskeyNotesCreate } from '../../../@types/misskey.d.ts';
+import type { Normal as ProcessResult } from '../../@types/process.d.ts';
+import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
 
 const logger = Log4js.getLogger('Misskey');
 
@@ -13,7 +16,7 @@ const logger = Log4js.getLogger('Misskey');
  *
  * @returns 投稿本文
  */
-const getMessage = async (templatePath: string, entryData: Readonly<BlogSocial.EntryData>): Promise<string> =>
+const getMessage = async (templatePath: string, entryData: SocialEntryData): Promise<string> =>
 	(
 		await ejs.renderFile(templatePath, {
 			title: entryData.title,
@@ -36,7 +39,7 @@ const getMessage = async (templatePath: string, entryData: Readonly<BlogSocial.E
  *
  * @returns 処理結果
  */
-const post = async (entryData: Readonly<BlogSocial.EntryData>): Promise<Process.Result> => {
+const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 	try {
 		const response = await fetch(`${env('MISSKEY_INSTANCE')}/api/notes/create`, {
 			method: 'POST',
@@ -49,7 +52,7 @@ const post = async (entryData: Readonly<BlogSocial.EntryData>): Promise<Process.
 				visibility: process.env['NODE_ENV'] === 'production' ? configMisskey.visibility : 'specified',
 			}), // https://misskey.noellabo.jp/api-doc#tag/notes/POST/notes/create
 		});
-		const responseJson = JSON.parse(await response.text()) as MisskryAPIResponse.NotesCreate;
+		const responseJson = JSON.parse(await response.text()) as MisskeyNotesCreate;
 		if (!response.ok) {
 			throw new Error(responseJson.error.message);
 		}

@@ -2,6 +2,7 @@ import formBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
 import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
+import type { Clear } from '../../@types/api.d.ts';
 import Preview from './unique/Preview.ts';
 import MessageImage from './unique/MessageImage.ts';
 
@@ -64,14 +65,13 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 	}
 }
 
-/* DSG のキャッシュクリア */
+/* DSG キャッシュクリア */
 {
-	const buttonElement = document.getElementById('clear-button') as HTMLButtonElement | null; // 実行結果を表示する要素
+	const buttonElement = document.getElementById('clear-button') as HTMLButtonElement | null; // 実行ボタン
 	const resultElement = document.getElementById('clear-result') as HTMLTemplateElement | null; // 実行結果を表示する要素
 
-	if (buttonElement !== null && resultElement !== null) {
-		// eslint-disable-next-line @typescript-eslint/no-misused-promises
-		buttonElement.addEventListener('click', async () => {
+	if (resultElement !== null) {
+		buttonElement?.addEventListener('click', async () => {
 			const response = await fetch('/api/clear', {
 				method: 'POST',
 			});
@@ -91,10 +91,7 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 			}
 
 			if (response.ok) {
-				const responseJson = (await response.json()) as {
-					success: boolean;
-					message: string;
-				}[];
+				const responseJson = (await response.json()) as Clear;
 
 				const fragment = document.createDocumentFragment();
 				responseJson.forEach((result) => {

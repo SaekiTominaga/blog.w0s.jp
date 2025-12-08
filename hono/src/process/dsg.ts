@@ -2,15 +2,16 @@ import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
 import configDsg from '../config/dsg.ts';
 import DSGDao from '../db/DSG.ts';
+import type { DSG as ProcessDSGResult } from '../../@types/process.d.ts';
 
 const logger = Log4js.getLogger('DSG');
 
 /**
- * DSG のキャッシュクリア
+ * DSG キャッシュクリア
  *
  * @returns 処理結果
  */
-const clear = async (): Promise<Process.DSGResult> => {
+const clear = async (): Promise<ProcessDSGResult> => {
 	try {
 		const dao = new DSGDao(env('SQLITE_BLOG'));
 

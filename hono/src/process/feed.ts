@@ -9,6 +9,8 @@ import configFeed from '../config/feed.ts';
 import configHono from '../config/hono.ts';
 import FeedDao from '../db/Feed.ts';
 import { brotliCompressText } from '../util/compress.ts';
+import type { Normal as ProcessResult } from '../../@types/process.d.ts';
+import type { FeedEntry } from '../../@types/view.d.ts';
 
 const logger = Log4js.getLogger('Feed');
 
@@ -17,7 +19,7 @@ const logger = Log4js.getLogger('Feed');
  *
  * @returns ファイル生成情報
  */
-const create = async (): Promise<Process.Result> => {
+const create = async (): Promise<ProcessResult> => {
 	try {
 		const dao = new FeedDao(env('SQLITE_BLOG'), {
 			readonly: true,
@@ -27,7 +29,7 @@ const create = async (): Promise<Process.Result> => {
 
 		const entriesView = await Promise.all(
 			entriesDto.map(
-				async (entry): Promise<BlogView.FeedEntry> => ({
+				async (entry): Promise<FeedEntry> => ({
 					id: entry.id,
 					title: entry.title,
 					description: entry.description,

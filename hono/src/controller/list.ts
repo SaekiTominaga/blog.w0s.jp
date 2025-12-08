@@ -12,6 +12,7 @@ import ListDao from '../db/List.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/list.ts';
+import type { Entries } from '../../@types/view.d.ts';
 
 /**
  * 記事リスト
@@ -47,7 +48,7 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 		sidebar.getNewlyEntries(configHono.sidebar.newly.maximumNumber),
 	]);
 
-	const entries: BlogView.EntryData[] = entriesDto.map((entryDto) => {
+	const entries: Entries = entriesDto.map((entryDto) => {
 		let { image_external: imageExternal } = entryDto;
 		if (imageExternal !== undefined) {
 			const url = new URL(imageExternal);

@@ -1,14 +1,20 @@
-declare namespace Process {
-	interface Result {
-		success: boolean;
-		message: string;
-	}
+export type Normal = Readonly<_Normal>;
 
-	interface DSGResult extends Result {
-		date?: Date;
-	}
+interface _Normal {
+	success: boolean;
+	message: string;
+}
 
-	interface MediaResult extends Result {
-		filename: string;
-	}
+/* DSG キャッシュクリア */
+export type DSG = Readonly<_DSG>;
+
+interface _DSG extends Normal {
+	date?: Date;
+}
+
+/* メディアアップロード */
+export type Media = Readonly<_Media>;
+
+interface _Media extends Normal {
+	filename: string;
 }

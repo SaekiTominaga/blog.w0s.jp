@@ -1,11 +1,7 @@
 // eslint-disable-next-line import/extensions
 import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import Dao from '../db/Database.ts';
-
-interface NewlyEntry {
-	id: number;
-	title: string;
-}
+import type { NewlyEntry } from '../../@types/view.d.ts';
 
 interface EntryCountOfCategory {
 	categoryName: string;
@@ -30,7 +26,7 @@ export default class Sidebar {
 	 *
 	 * @returns カテゴリ毎の記事件数
 	 */
-	async getEntryCountOfCategory(): Promise<Map<string, EntryCountOfCategory[]>> {
+	async getEntryCountOfCategory(): Promise<Map<string, readonly EntryCountOfCategory[]>> {
 		const dto = await this.#dao.getEntryCountOfCategory();
 
 		const entryCountOfCategoryList = dto.reduce((map, entryCountOfCategory) => {
@@ -53,13 +49,15 @@ export default class Sidebar {
 	 *
 	 * @returns 新着記事
 	 */
-	async getNewlyEntries(limit: number): Promise<NewlyEntry[]> {
+	async getNewlyEntries(limit: number): Promise<readonly NewlyEntry[]> {
 		const entriesDto = await this.#dao.getNewlyEntries(limit);
 
-		const entries: BlogView.NewlyEntry[] = entriesDto.map((entryDto) => ({
-			id: entryDto.id,
-			title: new MarkdownTitle(entryDto.title).mark(),
-		}));
+		const entries = entriesDto.map(
+			(entryDto): NewlyEntry => ({
+				id: entryDto.id,
+				title: new MarkdownTitle(entryDto.title).mark(),
+			}),
+		);
 
 		return entries;
 	}
