@@ -12,7 +12,7 @@ import ListDao from '../db/List.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/list.ts';
-import type { Entries } from '../types/view.ts';
+import type { Entries } from '../../@types/view.ts';
 
 /**
  * 記事リスト

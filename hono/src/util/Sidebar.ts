@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/extensions
 import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
 import Dao from '../db/Database.ts';
-import type { NewlyEntry } from '../types/view.ts';
+import type { NewlyEntry } from '../../@types/view.ts';
 
 interface EntryCountOfCategory {
 	categoryName: string;

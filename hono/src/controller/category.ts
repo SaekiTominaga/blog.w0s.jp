@@ -13,7 +13,7 @@ import CategoryDao from '../db/Category.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/category.ts';
-import type { Entries } from '../types/view.ts';
+import type { Entries } from '../../@types/view.ts';
 
 /**
  * カテゴリー

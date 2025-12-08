@@ -1,8 +1,6 @@
 import type { Dayjs } from 'dayjs';
 
-export type Entries = readonly Readonly<_EntryData>[];
-
-interface _EntryData {
+export type Entries = readonly Readonly<{
 	id: number;
 	title: string;
 	message?: string;
@@ -11,36 +9,28 @@ interface _EntryData {
 	imageExternal: URL | undefined;
 	registedAt: Dayjs;
 	updatedAt?: Dayjs | undefined;
-}
+}>[];
 
-export type Categories = Readonly<_Category>[]; // TODO: readonly 付けたい
-
-interface _Category {
+export type Categories = Readonly<{
 	id: string;
 	name: string;
-}
+}>[]; // TODO: readonly 付けたい
 
-export type FeedEntry = Readonly<_FeedEntry>;
-
-interface _FeedEntry {
+export type FeedEntry = Readonly<{
 	id: number;
 	title: string;
 	description: string | undefined;
 	message: string;
 	updatedAt: Dayjs;
 	update: boolean;
-}
+}>;
 
-export type SitemapEntry = Readonly<_SitemapEntry>;
-
-interface _SitemapEntry {
+export type SitemapEntry = Readonly<{
 	id: number;
 	updatedAt: Dayjs;
-}
+}>;
 
-export type NewlyEntry = Readonly<_NewlyEntry>;
-
-interface _NewlyEntry {
+export type NewlyEntry = Readonly<{
 	id: number;
 	title: string;
-}
+}>;

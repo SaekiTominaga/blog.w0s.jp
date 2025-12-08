@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
 import app from '../app.ts';
-import type { Preview } from '../../../@types/api.ts';
+import type { Preview } from '../../../@types/api.d.ts';
 
 await test('GET', async () => {
 	const res = await app.request('/api/preview');

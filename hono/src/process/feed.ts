@@ -9,8 +9,8 @@ import configFeed from '../config/feed.ts';
 import configHono from '../config/hono.ts';
 import FeedDao from '../db/Feed.ts';
 import { brotliCompressText } from '../util/compress.ts';
-import type { Normal as ProcessResult } from '../types/process.ts';
-import type { FeedEntry } from '../types/view.ts';
+import type { Normal as ProcessResult } from '../../@types/process.ts';
+import type { FeedEntry } from '../../@types/view.ts';
 
 const logger = Log4js.getLogger('Feed');
 

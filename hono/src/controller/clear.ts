@@ -4,7 +4,7 @@ import clear from '../process/dsg.ts';
 import createFeed from '../process/feed.ts';
 import createNewlyJson from '../process/newlyJson.ts';
 import createSitemap from '../process/sitemap.ts';
-import type { Clear } from '../../../@types/api.ts';
+import type { Clear } from '../../../@types/api.d.ts';
 
 /**
  * DSG キャッシュクリア

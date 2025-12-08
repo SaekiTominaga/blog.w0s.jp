@@ -6,8 +6,8 @@ import { env } from '@w0s/env-value-type';
 import configHono from '../config/hono.ts';
 import configSitemap from '../config/sitemap.ts';
 import SitemapDao from '../db/Sitemap.ts';
-import type { Normal as ProcessResult } from '../types/process.ts';
-import type { SitemapEntry } from '../types/view.ts';
+import type { Normal as ProcessResult } from '../../@types/process.ts';
+import type { SitemapEntry } from '../../@types/view.ts';
 
 const logger = Log4js.getLogger('Sitemap');
 

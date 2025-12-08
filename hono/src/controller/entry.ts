@@ -13,7 +13,7 @@ import EntryDao from '../db/Entry.ts';
 import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/entry.ts';
-import type { Entries } from '../types/view.ts';
+import type { Entries } from '../../@types/view.ts';
 
 /**
  * 記事

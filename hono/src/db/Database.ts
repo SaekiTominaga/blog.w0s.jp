@@ -1,7 +1,7 @@
 import SQLite from 'better-sqlite3';
 import { Kysely, sql, SqliteDialect } from 'kysely';
 import { jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
-import type { DB } from '../../../@types/db_blog.ts';
+import type { DB } from '../../../@types/db_blog.d.ts';
 
 /**
  * 日記データーベース

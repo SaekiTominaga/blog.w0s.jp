@@ -7,8 +7,8 @@ import configHono from '../config/hono.ts';
 import configNewlyJson from '../config/newlyJson.ts';
 import NewlyJson from '../db/NewlyJson.ts';
 import { brotliCompressText } from '../util/compress.ts';
-import type { Normal as ProcessResult } from '../types/process.ts';
-import type { NewlyEntry } from '../types/view.ts';
+import type { Normal as ProcessResult } from '../../@types/process.ts';
+import type { NewlyEntry } from '../../@types/view.ts';
 
 const logger = Log4js.getLogger('NewlyJson');
 

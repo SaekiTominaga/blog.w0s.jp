@@ -3,8 +3,8 @@ import ejs from 'ejs';
 import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
 import configBluesky from '../config/bluesky.ts';
-import type { Normal as ProcessResult } from '../types/process.ts';
-import type { EntryData as SocialEntryData } from '../types/social.ts';
+import type { Normal as ProcessResult } from '../../@types/process.ts';
+import type { EntryData as SocialEntryData } from '../../@types/social.ts';
 
 const logger = Log4js.getLogger('Bluesky');
 
