@@ -1,6 +1,6 @@
 import SQLite from 'better-sqlite3';
 import { Kysely, SqliteDialect } from 'kysely';
-import type { DB } from '../../../@types/db.d.ts';
+import type { DB } from '../../../@types/db_blog.ts';
 
 /**
  * 日記データーベース
