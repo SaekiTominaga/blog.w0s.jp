@@ -2,9 +2,9 @@ import ejs from 'ejs';
 import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
 import configMisskey from '../config/misskey.ts';
-import type { NotesCreate as MisskeyNotesCreate } from '../../../@types/misskey.d.ts';
-import type { Normal as ProcessResult } from '../../@types/process.d.ts';
-import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
+import type { NotesCreate as MisskeyNotesCreate } from '../../../@types/misskey.ts';
+import type { Normal as ProcessResult } from '../types/process.ts';
+import type { EntryData as SocialEntryData } from '../types/social.ts';
 
 const logger = Log4js.getLogger('Misskey');
 

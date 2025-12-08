@@ -3,8 +3,8 @@ import Log4js from 'log4js';
 import { createRestAPIClient as mastodonRest } from 'masto';
 import { env } from '@w0s/env-value-type';
 import configMastodon from '../config/mastodon.ts';
-import type { Normal as ProcessResult } from '../../@types/process.d.ts';
-import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
+import type { Normal as ProcessResult } from '../types/process.ts';
+import type { EntryData as SocialEntryData } from '../types/social.ts';
 
 const logger = Log4js.getLogger('Mastodon');
 

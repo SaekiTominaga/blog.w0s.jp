@@ -4,7 +4,7 @@ import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
 import PostDao from '../db/Post.ts';
 import { getAuth } from '../util/auth.ts';
-import type { Clear } from '../../../@types/api.d.ts';
+import type { Clear } from '../../../@types/api.ts';
 
 const auth = await getAuth(env('AUTH_ADMIN'));
 const authorization = `Basic ${Buffer.from(`${auth.user}:${auth.password_orig!}`).toString('base64')}`;

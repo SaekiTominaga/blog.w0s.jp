@@ -1,6 +1,6 @@
 import { sql, type Insertable, type Selectable, type Updateable } from 'kysely';
 import { jsToSQLiteAssignment, jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
-import type { DEntry } from '../../../@types/db.d.ts';
+import type { DEntry } from '../../../@types/db.ts';
 import Database from './Database.ts';
 
 /**

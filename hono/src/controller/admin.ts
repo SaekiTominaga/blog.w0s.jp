@@ -20,10 +20,10 @@ import { csp as cspHeader } from '../util/httpHeader.ts';
 import { query as validatorQuery, type RequestQuery } from '../validator/admin.ts';
 import { form as validatorPostForm } from '../validator/adminPost.ts';
 import { form as validatorUploadForm } from '../validator/adminUpload.ts';
-import type { Upload } from '../../../@types/api.d.ts';
-import type { Normal as ProcessResult, Media as ProcessMediaResult } from '../../@types/process.d.ts';
-import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
-import type { Categories } from '../../@types/view.d.ts';
+import type { Upload } from '../../../@types/api.ts';
+import type { Normal as ProcessResult, Media as ProcessMediaResult } from '../types/process.ts';
+import type { EntryData as SocialEntryData } from '../types/social.ts';
+import type { Categories } from '../types/view.ts';
 
 interface EntryData {
 	id?: number;
