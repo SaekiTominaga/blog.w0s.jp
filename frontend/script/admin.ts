@@ -2,7 +2,7 @@ import formBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
 import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
-import type { Clear } from '../../@types/api.ts';
+import type { Clear } from '../../@types/api.d.ts';
 import Preview from './unique/Preview.ts';
 import MessageImage from './unique/MessageImage.ts';
 
