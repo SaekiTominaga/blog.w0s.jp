@@ -1,0 +1,13 @@
+{
+	"css.validate": false,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"editor.renderControlCharacters": true,
+	"editor.renderWhitespace": "boundary",
+	"eslint.validate": ["typescript"],
+	"search.exclude": {
+		"/node/dist": true,
+		"**/package-lock.json": true
+	},
+	"stylelint.validate": ["css"]
+}
