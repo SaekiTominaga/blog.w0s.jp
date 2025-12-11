@@ -6,7 +6,12 @@
 	"editor.renderWhitespace": "boundary",
 	"eslint.validate": ["typescript"],
 	"search.exclude": {
-		"/node/dist": true,
+		"/hono/dist": true,
+		"/public/**/*.svg": true,
+		"/public/json": true,
+		"/public/script": true,
+		"/public/style": true,
+		"/remark/dist": true,
 		"**/package-lock.json": true
 	},
 	"stylelint.validate": ["css"]
