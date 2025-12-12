@@ -5,8 +5,9 @@
 	"scripts": {
 		"dev": "tsx --watch --tsconfig tsconfig.json src/app.ts",
 		"prebuild": "rimraf dist/* -g",
-		"build": "tsc --project tsconfig.json",
+		"build": "tsc",
 		"lint": "eslint @types/*.d.ts src/**/*.ts",
+		"pretest": "tsc --noEmit",
 		"test": "node --experimental-test-coverage --env-file=../.env.test --test src/app.test.ts src/{controller,util}/**/*.test.ts",
 		"test:process": "node --experimental-test-coverage --env-file=../.env.development --test src/process/**/*.test.ts"
 	},

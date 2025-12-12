@@ -4,9 +4,10 @@
 	"type": "module",
 	"scripts": {
 		"prebuild": "rimraf dist/* -g",
-		"build": "tsc --project tsconfig.json",
+		"build": "tsc",
 		"lint": "eslint src/**/*.ts",
 		"lint:markdown": "node --env-file=../.env.development src/shell/lint.ts",
+		"pretest": "tsc --noEmit",
 		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
 	},
 	"dependencies": {
