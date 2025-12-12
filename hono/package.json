@@ -8,7 +8,7 @@
 		"build": "tsc --project tsconfig.json",
 		"lint": "eslint @types/*.d.ts src/**/*.ts",
 		"test": "node --experimental-test-coverage --env-file=../.env.test --test src/app.test.ts src/{controller,util}/**/*.test.ts",
-		"test-process": "node --experimental-test-coverage --env-file=../.env.development --test src/process/**/*.test.ts"
+		"test:process": "node --experimental-test-coverage --env-file=../.env.development --test src/process/**/*.test.ts"
 	},
 	"dependencies": {
 		"@atproto/api": "^0.18.4",

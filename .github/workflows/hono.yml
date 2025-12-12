@@ -3,10 +3,7 @@ name: hono (Backend)
 on:
   pull_request:
     paths:
-      - 'hono/@types/*.d.ts'
-      - 'hono/src/**/*.ts'
-      - 'hono/eslint.config.js'
-      - 'hono/package.json'
+      - 'hono/**'
       - 'package.json'
   workflow_dispatch:
 

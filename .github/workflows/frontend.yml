@@ -3,9 +3,9 @@ name: Frontend build target files (CSS, JavaScript, SVG)
 on:
   pull_request:
     paths:
-      - 'frontend/build/*.ts'
-      - 'frontend/script/**/*.ts'
-      - 'frontend/style/**/*.css'
+      - 'frontend/build/**'
+      - 'frontend/script/**'
+      - 'frontend/style/**'
       - 'frontend/eslint.config.js'
       - 'frontend/package.json'
       - 'frontend/stylelint.config.js'

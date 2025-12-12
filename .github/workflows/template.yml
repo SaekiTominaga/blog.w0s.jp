@@ -3,9 +3,7 @@ name: Template Files
 on:
   pull_request:
     paths:
-      - 'template/*.ejs'
-      - 'template/*.html'
-      - 'template/_include/*.ejs'
+      - 'template/**'
       - 'markuplint.config.js'
       - 'package.json'
   workflow_dispatch:
@@ -28,4 +26,4 @@ jobs:
         with:
           node-version: '24'
       - run: npm ci
-      - run: npm run template-lint
+      - run: npm run lint:template
