@@ -8,9 +8,8 @@
 	],
 	"type": "module",
 	"scripts": {
-		"format": "prettier -w .",
-		"html-lint": "markuplint .html/**/*.html",
-		"template-lint": "markuplint template/**/*.{ejs,html}"
+		"lint:html": "markuplint .html/**/*.html",
+		"lint:template": "markuplint template/**/*.{ejs,html}"
 	},
 	"devDependencies": {
 		"@markuplint/ejs-parser": "^4.6.22",

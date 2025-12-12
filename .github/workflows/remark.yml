@@ -3,9 +3,7 @@ name: Markdown processor
 on:
   pull_request:
     paths:
-      - 'remark/src/**/*.ts'
-      - 'remark/eslint.config.js'
-      - 'remark/package.json'
+      - 'remark/**'
       - 'package.json'
   workflow_dispatch:
 
