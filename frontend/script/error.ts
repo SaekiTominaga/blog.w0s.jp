@@ -29,11 +29,18 @@ reportJsError({
 });
 
 /* リファラーレポート */
-await reportSameReferrer('https://report.w0s.jp/report/referrer', {
-	fetchParam: {
-		documentURL: 'documentURL',
-		referrer: 'referrer',
+await reportSameReferrer({
+	fetch: {
+		endpoint: 'https://report.w0s.jp/report/referrer',
+		param: {
+			documentURL: 'documentURL',
+			referrer: 'referrer',
+		},
+		contentType: 'application/json',
 	},
-	fetchContentType: 'application/json',
-	same: ['https://w0s.jp'],
+	validate: {
+		referrer: {
+			sames: ['https://w0s.jp'],
+		},
+	},
 });
