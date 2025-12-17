@@ -6,17 +6,26 @@ import reportSameReferrer from '@w0s/report-same-referrer';
  */
 
 /* JS エラーレポート */
-reportJsError('https://report.w0s.jp/report/js', {
-	fetchParam: {
-		documentURL: 'documentURL',
-		message: 'message',
-		filename: 'jsURL',
-		lineno: 'lineNumber',
-		colno: 'columnNumber',
+reportJsError({
+	fetch: {
+		endpoint: 'https://report.w0s.jp/report/js',
+		param: {
+			documentURL: 'documentURL',
+			message: 'message',
+			filename: 'jsURL',
+			lineno: 'lineNumber',
+			colno: 'columnNumber',
+		},
+		contentType: 'application/json',
 	},
-	fetchContentType: 'application/json',
-	allowFilenames: [/^https:\/\/blog\.w0s\.jp\/script\/.+\.m?js$/u],
-	denyUAs: [/Googlebot\/2.1;/u],
+	validate: {
+		filename: {
+			allows: [/^https:\/\/blog\.w0s\.jp\/script\/.+\.js$/u],
+		},
+		ua: {
+			denys: [/Googlebot\/2.1;/u],
+		},
+	},
 });
 
 /* リファラーレポート */
