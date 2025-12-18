@@ -27,7 +27,7 @@
 		"hono": "^4.10.4",
 		"kysely": "^0.28.8",
 		"log4js": "^6.9.1",
-		"masto": "^7.8.0",
+		"masto": "^7.9.0",
 		"prettier": "^3.7.4"
 	},
 	"devDependencies": {
