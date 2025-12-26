@@ -12,7 +12,7 @@
 	},
 	"dependencies": {
 		"@w0s/button-clipboard": "^3.0.3",
-		"@w0s/footnote-reference-popover": "^7.2.1",
+		"@w0s/footnote-reference-popover": "^7.3.0",
 		"@w0s/form-before-unload-confirm": "^3.0.2",
 		"@w0s/form-submit-overlay": "^4.0.3",
 		"@w0s/input-file-preview": "^3.0.5",
