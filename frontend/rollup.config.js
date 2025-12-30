@@ -6,7 +6,6 @@ const inputDir = 'script';
 const outputDir = '../public/script';
 
 const moduleFiles = ['blog.ts', 'error.ts', 'admin.ts'];
-const jsFiles = [];
 const legacyFiles = ['analytics.ts'];
 
 const pluginCommonjs = commonjs();
@@ -16,7 +15,7 @@ const pluginTypeScript = typescript({
 	outputToFilesystem: true,
 });
 
-const moduleConfigurations = moduleFiles.map(
+const moduleConfigs = moduleFiles.map(
 	(file) =>
 		/** @type {import('rollup').RollupOptions} */
 		({
@@ -35,20 +34,6 @@ const moduleConfigurations = moduleFiles.map(
 );
 
 /** @type {import('rollup').RollupOptions} */
-const jsConfig = {
-	input: jsFiles.map((file) => `${inputDir}/${file}`),
-	plugins: [pluginTypeScript],
-	output: {
-		dir: outputDir,
-		format: 'iife',
-		generatedCode: 'es2015',
-		minifyInternalExports: false,
-		sourcemap: 'hidden',
-	},
-	strictDeprecations: true,
-};
-
-/** @type {import('rollup').RollupOptions} */
 const legacyConfig = {
 	input: legacyFiles.map((file) => `${inputDir}/${file}`),
 	plugins: [pluginTypeScript],
@@ -62,4 +47,4 @@ const legacyConfig = {
 	strictDeprecations: true,
 };
 
-export default [...moduleConfigurations, jsConfig, legacyConfig];
+export default [...moduleConfigs, legacyConfig];
