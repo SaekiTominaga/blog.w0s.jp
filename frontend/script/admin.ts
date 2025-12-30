@@ -3,8 +3,12 @@ import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
 import type { Clear } from '../../@types/api.d.ts';
-import Preview from './unique/Preview.ts';
 import MessageImage from './unique/MessageImage.ts';
+import Preview from './unique/Preview.ts';
+import trustedTypes from './util/trustedTypes.ts';
+
+/* Trusted Types */
+trustedTypes();
 
 /* 入力値の変換 */
 document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim').forEach((formCtrlElement) => {
