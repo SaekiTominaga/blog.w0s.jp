@@ -6,7 +6,7 @@ const inputDir = 'script';
 const outputDir = '../public/script';
 
 const moduleFiles = ['blog.ts', 'error.ts', 'admin.ts'];
-const jsFiles = ['trusted-types.ts'];
+const jsFiles = [];
 const legacyFiles = ['analytics.ts'];
 
 const pluginCommonjs = commonjs();

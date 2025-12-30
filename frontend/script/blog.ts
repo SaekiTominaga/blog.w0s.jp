@@ -1,8 +1,9 @@
 import buttonClipboard from '@w0s/button-clipboard';
+import footnoteReferencePopover from '@w0s/footnote-reference-popover';
 import reportJsError from '@w0s/report-js-error';
 import Tab from '@w0s/tab';
-import footnoteReferencePopover from '@w0s/footnote-reference-popover';
 import adsense from './unique/adsense.ts';
+import trustedTypes from './util/trustedTypes.ts';
 
 /* JS エラーレポート */
 reportJsError({
@@ -26,6 +27,9 @@ reportJsError({
 		},
 	},
 });
+
+/* Trusted Types */
+trustedTypes();
 
 /* タブ */
 if (document.querySelector('w0s-tab') !== null) {
