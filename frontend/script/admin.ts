@@ -5,7 +5,11 @@ import { convert } from '@w0s/string-convert';
 import type { Clear } from '../../@types/api.d.ts';
 import MessageImage from './unique/MessageImage.ts';
 import Preview from './unique/Preview.ts';
+import reportJsError from './util/reportJsError.ts';
 import trustedTypes from './util/trustedTypes.ts';
+
+/* JS エラーレポート */
+reportJsError();
 
 /* Trusted Types */
 trustedTypes();
