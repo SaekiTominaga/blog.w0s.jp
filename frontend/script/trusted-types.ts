@@ -14,7 +14,7 @@ if (window.trustedTypes !== undefined) {
 			return inputUrl;
 		},
 		createScriptURL: (inputUrl: string): string => {
-			const ALLOW_URLS: string[] = ['https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'];
+			const ALLOW_URLS: string[] = ['https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3297715785193216'];
 			const ALLOW_ORIGINS: string[] = [];
 			const ALLOW_REGEXPS: RegExp[] = [];
 
