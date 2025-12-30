@@ -26,7 +26,8 @@ const adsense = (
 
 			if (document.getElementById(SCRIPT_ID) === null) {
 				const scriptElement = document.createElement('script');
-				scriptElement.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+				scriptElement.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3297715785193216';
+				scriptElement.crossOrigin = 'anonymous';
 				scriptElement.async = true;
 				scriptElement.id = SCRIPT_ID;
 				document.head.append(scriptElement);
