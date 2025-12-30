@@ -15,7 +15,8 @@ export default (): void => {
 			return inputUrl;
 		},
 		createScriptURL: (inputUrl: string): string => {
-			if (!['https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3297715785193216'].includes(inputUrl)) {
+			const ALLOW_URLS: readonly string[] = ['https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3297715785193216'];
+			if (!ALLOW_URLS.includes(inputUrl)) {
 				throw new TypeError(`[Trusted Types] This script URL is not allowed: ${inputUrl}`);
 			}
 
