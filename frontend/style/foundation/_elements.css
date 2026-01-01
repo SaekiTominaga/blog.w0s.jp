@@ -1,14 +1,16 @@
 :root {
+	@media (prefers-reduced-motion: no-preference) {
+		scroll-behavior: smooth;
+	}
+}
+
+body {
 	--_color: var(--page-color);
 	--_bg-color: var(--page-bg-color);
 
 	background-color: var(--_bg-color);
 	color: var(--_color);
 	font: var(--font-weight-normal) var(--page-font-size) / var(--line-height-wide) sans-serif;
-
-	@media (prefers-reduced-motion: no-preference) {
-		scroll-behavior: smooth;
-	}
 
 	@media print {
 		--_color: var(--color-black);
