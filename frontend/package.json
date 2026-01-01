@@ -14,7 +14,7 @@
 		"@w0s/button-clipboard": "^3.0.4",
 		"@w0s/footnote-reference-popover": "^7.3.1",
 		"@w0s/form-before-unload-confirm": "^3.0.3",
-		"@w0s/form-submit-overlay": "^4.0.3",
+		"@w0s/form-submit-overlay": "^4.0.4",
 		"@w0s/input-file-preview": "^3.0.5",
 		"@w0s/paapi-item-image-url-parser": "^3.2.3",
 		"@w0s/report-js-error": "^4.0.1",
