@@ -1,14 +1,7 @@
 :root {
-	@media (prefers-reduced-motion: no-preference) {
-		scroll-behavior: smooth;
-	}
-}
-
-body {
 	--_color: var(--page-color);
 	--_bg-color: var(--page-bg-color);
 
-	background-color: var(--_bg-color);
 	color: var(--_color);
 	font: var(--font-weight-normal) var(--page-font-size) / var(--line-height-wide) sans-serif;
 
@@ -16,6 +9,16 @@ body {
 		--_color: var(--color-black);
 		--_bg-color: var(--color-white);
 	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		scroll-behavior: smooth;
+	}
+}
+
+head /* for iOS Vialdi 7.7 (Force a dark theme on all websites) */,
+body {
+	background-color: var(--_bg-color);
+	color: inherit;
 }
 
 :focus {
