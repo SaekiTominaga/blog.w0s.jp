@@ -3,6 +3,7 @@
  *
  * https://html.spec.whatwg.org/multipage/rendering.html#the-page
  */
+/* stylelint-disable-next-line plugin/root-colors */
 body {
 	margin: 0;
 }
