@@ -11,6 +11,11 @@ updates:
       - 'dependencies'
 
   - package-ecosystem: 'npm'
+    directories:
+      - '/'
+      - '/frontend'
+      - '/hono'
+      - '/remark'
     directory: '/'
     schedule:
       interval: 'daily'
