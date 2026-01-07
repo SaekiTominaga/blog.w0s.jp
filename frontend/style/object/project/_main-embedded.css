@@ -27,5 +27,5 @@
 	border: var(--entry-embed-border-width) solid var(--color-black);
 	aspect-ratio: var(--aspect-ratio, auto);
 	block-size: auto;
-	max-inline-size: 100%;
+	max-inline-size: calc(100% - var(--entry-embed-border-width) * 2);
 }
