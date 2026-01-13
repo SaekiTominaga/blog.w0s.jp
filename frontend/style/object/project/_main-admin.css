@@ -40,6 +40,7 @@
 	inline-size: 240px;
 
 	& img {
+		box-sizing: revert;
 		display: block flow;
 		position: absolute;
 		inset: 0;

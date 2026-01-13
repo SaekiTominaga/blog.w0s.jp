@@ -94,6 +94,7 @@
 	--_bg-color: var(--color-verylightblue);
 
 	& a {
+		box-sizing: revert;
 		display: block flow;
 		contain: content;
 		outline-offset: -1px;

@@ -8,7 +8,6 @@
 	--_color: var(--color-black);
 	--_bg-color: var(--color-white);
 
-	box-sizing: border-box;
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);
@@ -103,7 +102,6 @@
 	--_color: var(--color-black);
 	--_bg-color: var(--color-white);
 
-	box-sizing: border-box;
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);

@@ -1,3 +1,9 @@
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
 :root {
 	--_color: var(--page-color);
 	--_bg-color: var(--page-bg-color);

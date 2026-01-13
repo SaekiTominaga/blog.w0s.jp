@@ -46,7 +46,6 @@
 	--_background: var(--color-white);
 	--_icon-size: 1.25em;
 
-	box-sizing: border-box;
 	display: inline flex;
 	gap: 0.5em;
 	align-items: center;
