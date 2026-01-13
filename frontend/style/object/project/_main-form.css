@@ -128,9 +128,5 @@
 			object-fit: contain;
 			object-position: 0 0;
 		}
-
-		& code {
-			overflow-wrap: break-word;
-		}
 	}
 }

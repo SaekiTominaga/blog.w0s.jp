@@ -1,9 +1,9 @@
-@layer reset, elements, layout, component, project, utility;
+@layer global-base, base, layout, component, project, utility;
 
 /* Foundation */
 @import url("foundation/_var.css");
-@import url("foundation/_reset.css") layer(reset);
-@import url("foundation/_elements.css") layer(elements);
+@import url("@w0s/base.css") layer(global-base);
+@import url("foundation/_base.css") layer(base);
 
 /* Layout */
 @import url("layout/_error.css") layer(layout);
