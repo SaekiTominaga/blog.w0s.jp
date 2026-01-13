@@ -11,6 +11,7 @@
 		"lint": "conc \"tsc --project script --noEmit\" \"eslint build/**/*.ts script/**/*.ts\" \"stylelint style/**/*.css\""
 	},
 	"dependencies": {
+		"@w0s/base.css": "^1.3.2",
 		"@w0s/button-clipboard": "^3.0.4",
 		"@w0s/footnote-reference-popover": "^7.3.3",
 		"@w0s/form-before-unload-confirm": "^3.0.3",
