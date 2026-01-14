@@ -39,7 +39,6 @@
 	--font-ratio: 1.12;
 	--font-yu-gothic: "YuGothic", "Yu Gothic", sans-serif; /* 遊ゴシック */
 	--font-yu-mincho: "YuMincho", "Yu Mincho", serif; /* 遊明朝 */
-	--font-monospace: monospace, serif; /* 等幅（'serif' 指定は Chrome 13px 対策） */
 	--font-weight-normal: 500; /* Windows + 游ゴシック 対策で 400 より大きな値とする */
 	--font-weight-bold: 700;
 
