@@ -2,30 +2,6 @@
  *   テキスト
  * ============================== */
 
-/* ===== リンク ===== */
-.c-link {
-	--_icon-inline-size: 0.45em;
-	--_icon-block-size: 0.75em;
-	--_icon-color: var(--color-gray);
-
-	&::before {
-		display: inline flow-root;
-		clip-path: var(--shape-link-triangle);
-		margin-inline-end: 0.5em;
-		border-block-start: var(--_icon-block-size) solid var(--_icon-color);
-		inline-size: var(--_icon-inline-size);
-		content: "";
-	}
-
-	&:any-link {
-		--_icon-color: var(--link-color-bullet);
-
-		&:hover {
-			--_icon-color: var(--link-color-hover);
-		}
-	}
-}
-
 /* ===== セルフリンク <a href="#foo">§</a> ===== */
 .c-self-link {
 	display: inline flex;

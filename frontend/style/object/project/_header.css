@@ -40,12 +40,6 @@
 	font-size: calc(100% / pow(var(--font-ratio), 2));
 }
 
-/* ===== ナビゲーション ===== */
-.p-header-nav {
-	display: block flex;
-	gap: 0.5em;
-}
-
 /* ===== サイト内検索 ===== */
 .p-header-search {
 }

@@ -35,16 +35,6 @@
 	&.-wide {
 		--_min-inline-size: 360px;
 	}
-
-	/* 3カラム */
-	&.-medium {
-		--_min-inline-size: 240px;
-	}
-
-	/* 4カラム */
-	&.-narrow {
-		--_min-inline-size: 180px;
-	}
 }
 
 .c-grid__item {
