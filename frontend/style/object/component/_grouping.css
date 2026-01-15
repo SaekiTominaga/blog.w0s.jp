@@ -75,6 +75,7 @@
 
 .c-entry-link__image {
 	box-sizing: revert;
+	display: block flow;
 	border: var(--_image-border-width) solid;
 	background: var(--color-white);
 	/* stylelint-disable plugin/use-logical-properties-and-values */
