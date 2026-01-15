@@ -73,6 +73,10 @@
 			content: "";
 		}
 	}
+
+	& > :is(h2, h3) {
+		text-wrap-style: pretty;
+	}
 }
 
 .p-entry-section__self-link {
