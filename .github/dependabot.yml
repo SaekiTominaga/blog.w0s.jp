@@ -21,6 +21,8 @@ updates:
       interval: 'daily'
     cooldown:
       default-days: 7
+      exclude:
+        - '@w0s/*'
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
