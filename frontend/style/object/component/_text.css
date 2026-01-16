@@ -109,9 +109,11 @@
 
 /* ===== ドメイン表記 ===== */
 .c-domain {
+	--_font-size-ratio: calc(1 / pow(var(--font-ratio), 1));
+
 	word-break: break-all;
 	color: var(--color-gray);
-	font-size: calc(100% / pow(var(--font-ratio), 1));
+	font-size: calc(100% * var(--_font-size-ratio));
 
 	&::before,
 	&::after {
@@ -119,9 +121,9 @@
 	}
 
 	& > img {
-		block-size: 1em;
+		block-size: calc(1em / var(--_font-size-ratio));
 		inline-size: auto;
-		vertical-align: -0.1lh;
+		vertical-align: calc((1cap - 1em) / 2);
 	}
 }
 
