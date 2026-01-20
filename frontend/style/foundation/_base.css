@@ -31,22 +31,25 @@ body {
 
 :any-link {
 	outline-offset: var(--outline-offset);
+
+	/* for iOS Firefox auto link https://github.com/mozilla-mobile/firefox-ios/issues/8511 */
+	&[href^="tel:"] {
+		text-decoration: none;
+		color: inherit;
+		pointer-events: none;
+	}
+
+	&:not([href^="tel:"]):hover {
+		color: var(--link-color-hover);
+	}
 }
 
 :link {
 	color: var(--link-color);
-
-	&:hover {
-		color: var(--link-color-hover);
-	}
 }
 
 :visited {
 	color: var(--link-color-visited);
-
-	&:hover {
-		color: var(--link-color-hover);
-	}
 }
 
 ::placeholder {
