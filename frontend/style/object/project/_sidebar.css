@@ -67,23 +67,54 @@
 
 /* ===== 記事一覧 ===== */
 .p-sidebar-entries {
-	--_heading-offset: calc(-0.5em * var(--line-height-narrow));
+	--_border-width: 1px;
 
-	border: 1px solid var(--color-border-dark);
-	border-radius: var(--border-radius-normal) var(--border-radius-normal) 0 0;
+	display: block grid;
+	grid-template:
+		".       heading .      " 1fr
+		"hleft   heading hright " 1fr
+		"content content content" auto / calc(var(--_border-width) + 0.5em) auto minmax(calc(var(--_border-width) + 0.5em), 1fr);
+
+	&:first-child {
+		margin-block-start: -0.5lh;
+	}
+
+	&::before,
+	&::after,
+	& > :last-child {
+		border: var(--_border-width) solid var(--color-border-dark);
+	}
+
+	&::before,
+	&::after {
+		border-block-end-style: unset;
+		content: "";
+	}
+
+	&::before {
+		grid-area: hleft;
+		border-inline-end-style: unset;
+		border-start-start-radius: var(--border-radius-normal);
+	}
+
+	&::after {
+		grid-area: hright;
+		border-inline-start-style: unset;
+		border-start-end-radius: var(--border-radius-normal);
+	}
+
+	& > :first-child {
+		grid-area: heading;
+		margin-inline: 0.5em;
+	}
+
+	& > :last-child {
+		grid-area: content;
+		border-block-start-style: unset;
+	}
 }
 
 .p-sidebar-entries__hdg {
-	position: relative;
-	inset-block-start: var(--_heading-offset);
-	margin-inline: 10px;
-	background-color: var(--page-bg-color);
-	padding: 0 0.5em;
-	inline-size: fit-content;
-
-	& + * {
-		margin-block-start: var(--_heading-offset);
-	}
 }
 
 /* ===== リンクリスト ===== */
