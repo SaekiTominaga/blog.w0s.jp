@@ -82,24 +82,23 @@
 	&::before,
 	&::after,
 	& > :last-child {
-		border: var(--_border-width) solid var(--color-border-dark);
 	}
 
 	&::before,
 	&::after {
-		border-block-end-style: unset;
+		border-block-start: var(--_border-width) solid var(--color-border-dark);
 		content: "";
 	}
 
 	&::before {
 		grid-area: hleft;
-		border-inline-end-style: unset;
+		border-inline-start: var(--_border-width) solid var(--color-border-dark);
 		border-start-start-radius: var(--border-radius-normal);
 	}
 
 	&::after {
 		grid-area: hright;
-		border-inline-start-style: unset;
+		border-inline-end: var(--_border-width) solid var(--color-border-dark);
 		border-start-end-radius: var(--border-radius-normal);
 	}
 
@@ -110,7 +109,9 @@
 
 	& > :last-child {
 		grid-area: content;
-		border-block-start-style: unset;
+		border-block-end: var(--_border-width) solid var(--color-border-dark);
+		border-inline-start: var(--_border-width) solid var(--color-border-dark);
+		border-inline-end: var(--_border-width) solid var(--color-border-dark);
 	}
 }
 
