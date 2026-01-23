@@ -28,7 +28,7 @@
 		"kysely": "^0.28.9",
 		"log4js": "^6.9.1",
 		"masto": "^7.10.1",
-		"prettier": "^3.7.4"
+		"prettier": "^3.8.0"
 	},
 	"devDependencies": {
 		"@types/better-sqlite3": "^7.6.13",
