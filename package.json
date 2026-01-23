@@ -1,12 +1,12 @@
 {
 	"name": "blog.w0s.jp",
 	"private": true,
+	"type": "module",
 	"workspaces": [
 		"frontend",
 		"hono",
 		"remark"
 	],
-	"type": "module",
 	"scripts": {
 		"lint:html": "markuplint .html/**/*.html",
 		"lint:template": "markuplint template/**/*.{ejs,html}"
