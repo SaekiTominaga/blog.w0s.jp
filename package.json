@@ -11,16 +11,18 @@
 		"lint:html": "markuplint .html/**/*.html",
 		"lint:template": "markuplint template/**/*.{ejs,html}"
 	},
+	"dependencies": {
+		"prettier": "^3.8.1"
+	},
 	"devDependencies": {
-		"@markuplint/ejs-parser": "^4.6.22",
-		"@types/node": "^24.10.0",
-		"@w0s/eslint-config": "^9.4.1",
-		"@w0s/markuplint-config": "^3.12.0",
-		"@w0s/stylelint-config": "^4.17.0",
-		"@w0s/tsconfig": "^1.7.0",
-		"concurrently": "^9.2.1",
-		"prettier": "^3.8.0",
-		"rimraf": "^6.1.2",
-		"typescript": "^5.9.3"
+		"@markuplint/ejs-parser": "4.6.22",
+		"@types/node": "24.10.0",
+		"@w0s/eslint-config": "9.4.1",
+		"@w0s/markuplint-config": "3.12.0",
+		"@w0s/stylelint-config": "4.17.0",
+		"@w0s/tsconfig": "1.7.0",
+		"concurrently": "9.2.1",
+		"rimraf": "6.1.2",
+		"typescript": "5.9.3"
 	}
 }
