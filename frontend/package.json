@@ -40,7 +40,7 @@
 		"postcss-discard-empty": "7.0.1",
 		"postcss-import": "16.1.1",
 		"postcss-nesting": "14.0.0",
-		"rollup": "4.55.1",
+		"rollup": "4.55.2",
 		"vfile-message": "4.0.3"
 	}
 }
