@@ -20,7 +20,7 @@
 		"@w0s/html-escape": "4.0.2",
 		"@w0s/paapi-item-image-url-parser": "3.2.3",
 		"@w0s/sqlite-utility": "2.0.0",
-		"better-sqlite3": "12.6.0",
+		"better-sqlite3": "12.6.2",
 		"dayjs": "1.11.19",
 		"ejs": "3.1.10",
 		"filenamify": "7.0.1",
