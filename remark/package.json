@@ -21,7 +21,7 @@
 		"github-slugger": "2.0.0",
 		"hast-util-select": "5.0.5",
 		"highlight.js": "11.11.1",
-		"kysely": "0.28.9",
+		"kysely": "0.28.10",
 		"md5": "2.3.0",
 		"mdast-util-definition-list": "1.4.0",
 		"mdast-util-gfm-footnote": "1.0.2",
