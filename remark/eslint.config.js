@@ -17,6 +17,12 @@ export default [
 		},
 		rules: {
 			'functional/no-loop-statements': 'off',
+			'import/no-extraneous-dependencies': [
+				'error',
+				{
+					packageDir: ['../', './'],
+				},
+			],
 		},
 	},
 	{

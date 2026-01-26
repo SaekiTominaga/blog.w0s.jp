@@ -27,8 +27,7 @@
 		"hono": "^4.11.4",
 		"kysely": "^0.28.9",
 		"log4js": "^6.9.1",
-		"masto": "^7.10.1",
-		"prettier": "^3.8.0"
+		"masto": "^7.10.1"
 	},
 	"devDependencies": {
 		"@types/better-sqlite3": "^7.6.13",
