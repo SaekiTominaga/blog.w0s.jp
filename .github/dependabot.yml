@@ -16,7 +16,6 @@ updates:
       - '/frontend'
       - '/hono'
       - '/remark'
-    directory: '/'
     schedule:
       interval: 'daily'
     cooldown:
