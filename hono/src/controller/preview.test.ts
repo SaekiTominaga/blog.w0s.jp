@@ -38,10 +38,10 @@ await test('no error', async () => {
 		}),
 	});
 
-	const responceBody = (await res.json()) as Preview;
+	const responseBody = (await res.json()) as Preview;
 
 	assert.equal(res.status, 200);
 	assert.equal(res.headers.get('Content-Type'), 'application/json');
-	assert.equal(responceBody.html, '<p>text<em>em</em></p>');
-	assert.equal(responceBody.messages.length, 0);
+	assert.equal(responseBody.html, '<p>text<em>em</em></p>');
+	assert.equal(responseBody.messages.length, 0);
 });
