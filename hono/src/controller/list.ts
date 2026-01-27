@@ -4,8 +4,7 @@ import { Hono, type Context } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { env } from '@w0s/env-value-type';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
-// eslint-disable-next-line import/extensions
-import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
+import MarkdownTitle from '../../../remark/dist/Title.js';
 import configHono from '../config/hono.ts';
 import configList from '../config/list.ts';
 import ListDao from '../db/List.ts';

@@ -1,4 +1,4 @@
 /.github/ISSUE_TEMPLATE/*.md
 /template/sns/*.ejs
 
-package-lock.json
+pnpm-lock.yaml

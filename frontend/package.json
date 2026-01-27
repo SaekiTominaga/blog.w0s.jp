@@ -1,14 +1,23 @@
 {
-	"name": "@blog.w0s.jp/frontend",
+	"name": "frontend",
 	"private": true,
 	"type": "module",
 	"scripts": {
 		"predev": "rimraf -g \"../public/**/*.svg.br\" \"../public/{script,style}/*.br\"",
-		"dev": "conc \"postcss style/*.css --base style -d ../public/style -w\" \"rollup -c -w --environment build:development\" \"node build/svg.ts -i image -o ../public -c svgo.config.js -w\"",
-		"prebuild": "npm run lint -w @blog.w0s.jp/frontend && rimraf -g \"../public/**/*.{svg,svg.br}\" \"../public/{script,style}/*\"",
-		"build": "conc \"postcss style/*.css --base style -d ../public/style\" \"rollup -c --environment build:production\" \"node build/svg.ts -i image -o ../public -c svgo.config.js\"",
+		"dev": "pnpm run /^dev:.*/",
+		"dev:css": "postcss style/*.css --base style -d ../public/style -w",
+		"dev:js": "rollup -c -w --environment build:development",
+		"dev:svg": "node build/svg.ts -i image -o ../public -c svgo.config.js -w",
+		"prebuild": "pnpm -F frontend lint && rimraf -g \"../public/**/*.{svg,svg.br}\" \"../public/{script,style}/*\"",
+		"build": "pnpm run /^build:.*/",
+		"build:css": "postcss style/*.css --base style -d ../public/style",
+		"build:js": "rollup -c --environment build:production",
+		"build:svg": "node build/svg.ts -i image -o ../public -c svgo.config.js",
 		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" && brotli-cli compress -g \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/**/*.svg\" -m text",
-		"lint": "conc \"tsc --project script --noEmit\" \"eslint build/**/*.ts script/**/*.ts\" \"stylelint style/**/*.css\""
+		"lint": "pnpm run /^lint:.*/",
+		"lint:ts": "tsc --project script --noEmit",
+		"lint:js": "eslint build/**/*.ts script/**/*.ts",
+		"lint:css": "stylelint style/**/*.css"
 	},
 	"dependencies": {
 		"@w0s/base.css": "1.3.2",
@@ -42,5 +51,6 @@
 		"postcss-nesting": "14.0.0",
 		"rollup": "4.55.2",
 		"vfile-message": "4.0.3"
-	}
+	},
+	"packageManager": "pnpm@10.28.1"
 }

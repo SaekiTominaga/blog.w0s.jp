@@ -16,6 +16,21 @@ export default [
 			},
 		},
 		rules: {
+			'import/extensions': [
+				'error',
+				'ignorePackages',
+				{
+					pattern: {
+						js: 'never',
+					},
+					pathGroupOverrides: [
+						{
+							pattern: '../../../remark/dist/**',
+							action: 'ignore',
+						},
+					],
+				},
+			],
 			'import/no-extraneous-dependencies': [
 				'error',
 				{

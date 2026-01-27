@@ -2,11 +2,6 @@
 	"name": "blog.w0s.jp",
 	"private": true,
 	"type": "module",
-	"workspaces": [
-		"frontend",
-		"hono",
-		"remark"
-	],
 	"scripts": {
 		"lint:html": "markuplint .html/**/*.html",
 		"lint:template": "markuplint template/**/*.{ejs,html}"
@@ -21,8 +16,8 @@
 		"@w0s/markuplint-config": "3.12.0",
 		"@w0s/stylelint-config": "4.18.1",
 		"@w0s/tsconfig": "1.7.0",
-		"concurrently": "9.2.1",
 		"rimraf": "6.1.2",
 		"typescript": "5.9.3"
-	}
+	},
+	"packageManager": "pnpm@10.28.1"
 }

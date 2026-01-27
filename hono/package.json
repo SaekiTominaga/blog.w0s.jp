@@ -1,5 +1,5 @@
 {
-	"name": "@blog.w0s.jp/hono",
+	"name": "hono",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -7,13 +7,12 @@
 		"prebuild": "rimraf dist/* -g",
 		"build": "tsc",
 		"lint": "eslint @types/*.d.ts src/**/*.ts",
-		"pretest": "tsc --noEmit",
+		"pretest": "tsc --noEmit && pnpm -F frontend build && pnpm -F remark build",
 		"test": "node --experimental-test-coverage --env-file=../.env.test --test src/app.test.ts src/{controller,util}/**/*.test.ts",
 		"test:process": "node --experimental-test-coverage --env-file=../.env.development --test src/process/**/*.test.ts"
 	},
 	"dependencies": {
 		"@atproto/api": "0.18.16",
-		"@blog.w0s.jp/remark": "*",
 		"@hono/node-server": "1.19.9",
 		"@log4js-node/smtp": "2.0.8",
 		"@w0s/env-value-type": "1.0.1",
@@ -34,5 +33,6 @@
 		"@types/ejs": "3.1.5",
 		"@types/md5": "2.3.6",
 		"tsx": "4.21.0"
-	}
+	},
+	"packageManager": "pnpm@10.28.1"
 }
