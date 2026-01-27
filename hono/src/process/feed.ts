@@ -3,8 +3,7 @@ import dayjs from 'dayjs';
 import ejs from 'ejs';
 import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
-// eslint-disable-next-line import/extensions
-import Markdown from '@blog.w0s.jp/remark/dist/Markdown.js';
+import Markdown from '../../../remark/dist/Markdown.js';
 import configFeed from '../config/feed.ts';
 import configHono from '../config/hono.ts';
 import FeedDao from '../db/Feed.ts';

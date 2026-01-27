@@ -102,7 +102,7 @@ export default class Markdown {
 			/* remark-lint-link-title-style: [style-guide] リンクタイトルは使用禁止設定にしているので不要 */
 			processor.use(remarkLintListItemBulletIndent); // [recommended] リスト項目のインデント禁止
 			processor.use(remarkLintListItemContentIndent); // [style-guide] リスト項目のインデント統一
-			processor.use(remarkLintListItemIndent, 'one'); // [style-guide][recommended] リスト項目のビュレットと内容の間をスペースに統一
+			processor.use(remarkLintListItemIndent, 'space'); // [style-guide][recommended] リスト項目のビュレットと内容の間をスペースに統一
 			/* remark-lint-list-item-spacing: [style-guide] 要検討 */
 			/* remark-lint-maximum-heading-length: [style-guide] 不要 */
 			/* remark-lint-maximum-line-length: [style-guide] 不要 */

@@ -12,7 +12,7 @@
 		"/public/script": true,
 		"/public/style": true,
 		"/remark/dist": true,
-		"**/package-lock.json": true
+		"**/pnpm-lock.yaml": true
 	},
 	"stylelint.validate": ["css"]
 }

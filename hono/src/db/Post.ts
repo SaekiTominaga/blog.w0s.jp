@@ -82,13 +82,14 @@ export default class extends Database {
 	 * @returns 登録した記事 ID
 	 */
 	async insert(
-		entryData: Readonly<Omit<Insertable<DEntry>, 'registed_at' | 'updated_at'>>,
+		entryData: Readonly<Omit<Insertable<DEntry>, 'id' | 'registed_at' | 'updated_at'>>,
 		otherData: Readonly<{
 			categoryIds: readonly string[] | undefined;
 			relationIds: readonly string[] | undefined;
 		}>,
 	): Promise<number> {
 		let query = this.db.insertInto('d_entry');
+		// @ts-expect-error: ts(2345) 将来的に INSERT 文に DEFAULT 値が扱えるようになれば解消可能
 		query = query.values({
 			title: jsToSQLiteAssignment(entryData.title),
 			description: jsToSQLiteAssignment(entryData.description),

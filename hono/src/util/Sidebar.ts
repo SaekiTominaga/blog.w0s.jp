@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/extensions
-import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
+import MarkdownTitle from '../../../remark/dist/Title.js';
 import Dao from '../db/Database.ts';
 import type { NewlyEntry } from '../../@types/view.d.ts';
 

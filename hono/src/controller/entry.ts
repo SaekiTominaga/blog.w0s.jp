@@ -3,10 +3,8 @@ import ejs from 'ejs';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { env } from '@w0s/env-value-type';
-// eslint-disable-next-line import/extensions
-import Markdown from '@blog.w0s.jp/remark/dist/Markdown.js';
-// eslint-disable-next-line import/extensions
-import MarkdownTitle from '@blog.w0s.jp/remark/dist/Title.js';
+import Markdown from '../../../remark/dist/Markdown.js';
+import MarkdownTitle from '../../../remark/dist/Title.js';
 import configEntry from '../config/entry.ts';
 import configHono from '../config/hono.ts';
 import EntryDao from '../db/Entry.ts';
