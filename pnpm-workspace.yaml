@@ -13,6 +13,12 @@ trustPolicyExclude:
   - semver@6.3.1
 blockExoticSubdeps: true
 
+## Dependency Hoisting Settings
+
+publicHoistPattern:
+  - 'eslint'
+  - 'stylelint'
+
 ## Build Settings
 
 strictDepBuilds: true
