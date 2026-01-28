@@ -17,6 +17,7 @@ blockExoticSubdeps: true
 
 publicHoistPattern:
   - 'eslint'
+  - 'markuplint'
   - 'stylelint'
 
 ## Build Settings
