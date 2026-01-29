@@ -19,7 +19,7 @@
 		<id>tag:blog.w0s.jp,<%= entry.updatedAt.format('YYYY-MM-DD') %>:/<%= entry.id %></id>
 		<link href="https://blog.w0s.jp/entry/<%= entry.id %>" type="text/html" />
 		<updated><%= entry.updatedAt.format('YYYY-MM-DDTHH:mm:ssZ') %></updated>
-		<content type="html" xml:base="/<%= entry.id %>"> <![CDATA[ <%- entry.message %> ]]> </content>
+		<content type="html" xml:base="https://blog.w0s.jp/entry/<%= entry.id %>"> <![CDATA[ <%- entry.message %> ]]> </content>
 	</entry>
 	<%_ } _%>
 </feed>
