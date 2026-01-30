@@ -12,7 +12,7 @@
 		"test:process": "node --experimental-test-coverage --env-file=../.env.development --test src/process/**/*.test.ts"
 	},
 	"dependencies": {
-		"@atproto/api": "0.18.16",
+		"@atproto/api": "0.18.17",
 		"@hono/node-server": "1.19.9",
 		"@log4js-node/smtp": "2.0.8",
 		"@w0s/env-value-type": "1.0.1",
