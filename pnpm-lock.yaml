@@ -131,8 +131,8 @@ importers:
   hono:
     dependencies:
       '@atproto/api':
-        specifier: 0.18.17
-        version: 0.18.17
+        specifier: 0.18.18
+        version: 0.18.18
       '@hono/node-server':
         specifier: 1.19.9
         version: 1.19.9(hono@4.11.4)
@@ -396,8 +396,8 @@ importers:
 
 packages:
 
-  '@atproto/api@0.18.17':
-    resolution: {integrity: sha512-TeJkLGPkiK3jblwTDSNTH+CnS6WgaOiHDZeVVzywtxomyyF0FpQVSMz5eP3sDhxyHJqpI3E2AOYD7PO/JSbzJw==}
+  '@atproto/api@0.18.18':
+    resolution: {integrity: sha512-Vg7/sjbwDQZDj8fXtb4E48U4gA+6RC1iSt7onGnH2NyR0E25uds1KnqSKMzqcphdJXrz5GXrgHWc747XPGibzg==}
 
   '@atproto/common-web@0.4.15':
     resolution: {integrity: sha512-A4l9gyqUNez8CjZp/Trypz/D3WIQsNj8dN05WR6+RoBbvwc9JhWjKPrm+WoVYc/F16RPdXHLkE3BEJlGIyYIiA==}
@@ -3638,7 +3638,7 @@ packages:
 
 snapshots:
 
-  '@atproto/api@0.18.17':
+  '@atproto/api@0.18.18':
     dependencies:
       '@atproto/common-web': 0.4.15
       '@atproto/lexicon': 0.6.1
