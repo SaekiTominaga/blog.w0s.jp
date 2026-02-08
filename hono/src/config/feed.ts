@@ -1,6 +1,6 @@
 export default {
 	path: 'feed.atom',
-	template: 'feed/atom.ejs',
+	template: 'xml/feed.ejs',
 	limit: 10,
 	processMessage: {
 		success: 'フィード生成に成功',

@@ -50,7 +50,7 @@ const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 		});
 
 		const richText = new RichText({
-			text: await getMessage(`${env('VIEWS')}/${configBluesky.template}`, entryData),
+			text: await getMessage(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configBluesky.template}`, entryData),
 		});
 		await richText.detectFacets(agent);
 

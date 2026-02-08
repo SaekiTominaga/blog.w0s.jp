@@ -22,11 +22,11 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 
 	const { entryId } = req.valid('param');
 
-	const dao = new EntryDao(env('SQLITE_BLOG'), {
+	const dao = new EntryDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 		readonly: true,
 	});
 
-	const htmlFilePath = `${env('HTML')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
@@ -94,7 +94,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 	}
 
 	/* HTML 生成 */
-	const html = await ejs.renderFile(`${env('VIEWS')}/${configEntry.template}`, {
+	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configEntry.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		entryId: entryId,
 		structuredData: structuredData,

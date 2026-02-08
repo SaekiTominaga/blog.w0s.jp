@@ -85,7 +85,7 @@ const rendering = async (
 ): Promise<Response> => {
 	const { req, res } = context;
 
-	const dao = new PostDao(env('SQLITE_BLOG'), {
+	const dao = new PostDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 		readonly: true,
 	});
 
@@ -109,7 +109,7 @@ const rendering = async (
 	});
 
 	/* レンダリング */
-	const html = await ejs.renderFile(`${env('VIEWS')}/${configAdmin.template}`, {
+	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configAdmin.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		requestQuery: requestQuery ?? {},
 		entryData: entryData ?? {},
@@ -144,7 +144,7 @@ export const adminApp = new Hono()
 			});
 		}
 
-		const dao = new PostDao(env('SQLITE_BLOG'), {
+		const dao = new PostDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 			readonly: true,
 		});
 
@@ -184,7 +184,7 @@ export const adminApp = new Hono()
 
 		const requestForm = req.valid('form');
 
-		const dao = new PostDao(env('SQLITE_BLOG'));
+		const dao = new PostDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`);
 
 		const entryData: EntryData = {
 			title: requestForm.title,
@@ -320,7 +320,7 @@ export const adminApp = new Hono()
 			requestForm.files.map(async (file) => {
 				/* 一時ファイルとしてアップロードする */
 				const tempFileName = crypto.randomBytes(16).toString('hex'); // Multer と同じ処理 https://github.com/expressjs/multer/blob/master/storage/disk.js#L8-L10
-				const tempFilePath = `${env('NODE_TEMP')}/${tempFileName}`;
+				const tempFilePath = `${env('NODE_TEMP_DIR')}/${tempFileName}`;
 
 				await fs.promises.writeFile(tempFilePath, file.stream());
 				logger.info('Temp file upload success', tempFilePath);

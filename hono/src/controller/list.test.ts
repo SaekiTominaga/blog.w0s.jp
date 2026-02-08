@@ -36,7 +36,7 @@ await test('excessive page', async () => {
 
 await test('exist page', async (t) => {
 	const page = 1;
-	const htmlFilePath = `${env('HTML')}/${configList.html.directory}/${String(page)}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configList.html.directory}/${String(page)}${configHono.extension.html}`;
 	const htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
 
 	before(async () => {

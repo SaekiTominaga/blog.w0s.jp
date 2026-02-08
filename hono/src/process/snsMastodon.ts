@@ -47,7 +47,7 @@ const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 		});
 
 		const status = await mastodon.v1.statuses.create({
-			status: await getMessage(`${env('VIEWS')}/${configMastodon.template}`, entryData),
+			status: await getMessage(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configMastodon.template}`, entryData),
 			visibility: process.env['NODE_ENV'] === 'production' ? configMastodon.visibility : 'direct', // https://docs.joinmastodon.org/entities/Status/#visibility
 			language: 'ja',
 		});

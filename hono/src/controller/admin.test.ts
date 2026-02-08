@@ -4,7 +4,7 @@ import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
 import { getAuth } from '../util/auth.ts';
 
-const auth = await getAuth(env('AUTH_ADMIN'));
+const auth = await getAuth(`${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`);
 const authorization = `Basic ${Buffer.from(`${auth.user}:${auth.password_orig!}`).toString('base64')}`;
 
 await test('no param', async () => {

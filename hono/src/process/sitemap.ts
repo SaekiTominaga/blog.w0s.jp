@@ -18,7 +18,7 @@ const logger = Log4js.getLogger('Sitemap');
  */
 const create = async (): Promise<ProcessResult> => {
 	try {
-		const dao = new SitemapDao(env('SQLITE_BLOG'), {
+		const dao = new SitemapDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 			readonly: true,
 		});
 
@@ -33,7 +33,7 @@ const create = async (): Promise<ProcessResult> => {
 				updatedAt: dayjs(entry.updated_at ?? entry.registed_at),
 			}),
 		);
-		const sitemapXml = await ejs.renderFile(`${env('VIEWS')}/${configSitemap.template}`, {
+		const sitemapXml = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configSitemap.template}`, {
 			updatedAt: dayjs(updated),
 			entries: entriesView,
 		});

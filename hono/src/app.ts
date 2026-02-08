@@ -26,7 +26,7 @@ import {
 loadEnvFile(process.env['NODE_ENV'] === 'production' ? '../.env.production' : '../.env.development');
 
 /* Logger 設定 */
-Log4js.configure(env('LOGGER'));
+Log4js.configure(env('LOG4JS_CONF'));
 const logger = Log4js.getLogger();
 
 /* Hono */
@@ -190,7 +190,7 @@ app.use(
 
 /* Auth */
 const basicAuthHandler = await basicAuth({
-	authPath: env('AUTH_ADMIN'),
+	authPath: `${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`,
 	invalidUserMessage: config.basicAuth.unauthorizedMessage,
 });
 app.use(`/admin/*`, basicAuthHandler);
@@ -209,7 +209,7 @@ app.route('/api/clear', clearApp);
 app.notFound(async (context) => {
 	logger.warn(`404 Not Found: ${context.req.method} ${context.req.url}`);
 
-	const html = (await fs.promises.readFile(`${env('VIEWS')}/${config.errorpage.notfound}`)).toString();
+	const html = (await fs.promises.readFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${config.errorpage.notfound}`)).toString();
 	return context.html(html, 404);
 });
 app.onError(async (err, context) => {
@@ -245,14 +245,14 @@ app.onError(async (err, context) => {
 		logger.fatal(err.message);
 	}
 
-	const html = (await fs.promises.readFile(`${env('VIEWS')}/${htmlFilePath}`)).toString();
+	const html = (await fs.promises.readFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${htmlFilePath}`)).toString();
 	const status = err instanceof HTTPException ? err.status : 500;
 
 	return context.html(html, status, Object.fromEntries(headers.entries()));
 });
 
 if (process.env['TEST'] !== 'test') {
-	const port = env('PORT', 'number');
+	const port = env('HONO_PORT', 'number');
 	logger.info(`Server is running on http://localhost:${String(port)}`);
 
 	serve({

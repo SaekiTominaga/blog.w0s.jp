@@ -22,7 +22,7 @@ await test('no exit category', async () => {
 
 await test('exit category', async (t) => {
 	const categoryName = 'HTML';
-	const htmlFilePath = `${env('HTML')}/${configCategory.html.directory}/${categoryName}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configCategory.html.directory}/${categoryName}${configHono.extension.html}`;
 	const htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
 
 	before(async () => {

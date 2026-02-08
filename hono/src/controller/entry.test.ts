@@ -29,7 +29,7 @@ await test('private entry', async () => {
 
 await test('public entry', async (t) => {
 	const entryId = 100;
-	const htmlFilePath = `${env('HTML')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
 	const htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
 
 	before(async () => {
