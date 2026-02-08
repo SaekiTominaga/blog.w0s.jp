@@ -20,7 +20,7 @@ const logger = Log4js.getLogger('Feed');
  */
 const create = async (): Promise<ProcessResult> => {
 	try {
-		const dao = new FeedDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
+		const dao = new FeedDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 			readonly: true,
 		});
 

@@ -60,7 +60,7 @@ const entryId = argsParsedValues.id !== undefined ? Number(argsParsedValues.id) 
 const dbUpdate = argsParsedValues.update;
 
 /* DB からデータ取得 */
-const dao = new Dao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
+const dao = new Dao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 	readonly: !dbUpdate,
 });
 

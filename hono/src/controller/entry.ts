@@ -22,7 +22,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 
 	const { entryId } = req.valid('param');
 
-	const dao = new EntryDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
+	const dao = new EntryDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 		readonly: true,
 	});
 

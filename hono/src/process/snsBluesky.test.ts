@@ -4,7 +4,7 @@ import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
 import post from './snsBluesky.ts';
 
-Log4js.configure(env('LOG4JS_CONF'));
+Log4js.configure(env('HONO_LOG4JS_CONF'));
 
 await test('minimum properties', async () => {
 	const result = await post({
