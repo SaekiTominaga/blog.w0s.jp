@@ -20,11 +20,11 @@ import type { Entries } from '../../@types/view.d.ts';
 const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 	const { req } = context;
 
-	const dao = new ListDao(env('SQLITE_BLOG'), {
+	const dao = new ListDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 		readonly: true,
 	});
 
-	const htmlFilePath = `${env('HTML')}/${configList.html.directory}/${String(page)}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configList.html.directory}/${String(page)}${configHono.extension.html}`;
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
@@ -78,7 +78,7 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 	const totalPage = Math.ceil(entryCount / configList.maximum);
 
 	/* HTML 生成 */
-	const html = await ejs.renderFile(`${env('VIEWS')}/${configList.template}`, {
+	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configList.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		page: page,
 		totalPage: totalPage,

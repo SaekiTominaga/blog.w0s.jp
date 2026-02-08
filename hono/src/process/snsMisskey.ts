@@ -48,7 +48,7 @@ const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 			},
 			body: JSON.stringify({
 				i: env('MISSKEY_ACCESS_TOKEN'),
-				text: await getMessage(`${env('VIEWS')}/${configMisskey.template}`, entryData),
+				text: await getMessage(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configMisskey.template}`, entryData),
 				visibility: process.env['NODE_ENV'] === 'production' ? configMisskey.visibility : 'specified',
 			}), // https://misskey.noellabo.jp/api-doc#tag/notes/POST/notes/create
 		});

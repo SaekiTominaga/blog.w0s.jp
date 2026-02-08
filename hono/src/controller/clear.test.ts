@@ -6,11 +6,11 @@ import PostDao from '../db/Post.ts';
 import { getAuth } from '../util/auth.ts';
 import type { Clear } from '../../../@types/api.d.ts';
 
-const auth = await getAuth(env('AUTH_ADMIN'));
+const auth = await getAuth(`${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`);
 const authorization = `Basic ${Buffer.from(`${auth.user}:${auth.password_orig!}`).toString('base64')}`;
 
 await test('clear', async () => {
-	const dao = new PostDao(env('SQLITE_BLOG'));
+	const dao = new PostDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`);
 	const lastModifiledBefore = await dao.getLastModified();
 
 	const res = await app.request('/api/clear', {

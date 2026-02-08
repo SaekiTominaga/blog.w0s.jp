@@ -13,7 +13,7 @@ const logger = Log4js.getLogger('DSG');
  */
 const clear = async (): Promise<ProcessDSGResult> => {
 	try {
-		const dao = new DSGDao(env('SQLITE_BLOG'));
+		const dao = new DSGDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`);
 
 		const date = await dao.updateModified();
 

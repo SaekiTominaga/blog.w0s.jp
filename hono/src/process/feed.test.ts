@@ -4,7 +4,7 @@ import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
 import create from './feed.ts';
 
-Log4js.configure(env('LOGGER'));
+Log4js.configure(env('LOG4JS_CONF'));
 
 await test('create', async () => {
 	const result = await create();

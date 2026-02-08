@@ -23,11 +23,11 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 
 	const { categoryName } = req.valid('param');
 
-	const dao = new CategoryDao(env('SQLITE_BLOG'), {
+	const dao = new CategoryDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 		readonly: true,
 	});
 
-	const htmlFilePath = `${env('HTML')}/${configCategory.html.directory}/${filenamify(categoryName)}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configCategory.html.directory}/${filenamify(categoryName)}${configHono.extension.html}`;
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
@@ -77,7 +77,7 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 	});
 
 	/* HTML 生成 */
-	const html = await ejs.renderFile(`${env('VIEWS')}/${configCategory.template}`, {
+	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configCategory.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		categoryName: categoryName,
 		count: entries.length,
