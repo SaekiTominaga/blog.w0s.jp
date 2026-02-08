@@ -20,7 +20,7 @@ import type { Entries } from '../../@types/view.d.ts';
 const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 	const { req } = context;
 
-	const dao = new ListDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
+	const dao = new ListDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 		readonly: true,
 	});
 

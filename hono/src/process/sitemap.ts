@@ -18,7 +18,7 @@ const logger = Log4js.getLogger('Sitemap');
  */
 const create = async (): Promise<ProcessResult> => {
 	try {
-		const dao = new SitemapDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
+		const dao = new SitemapDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 			readonly: true,
 		});
 

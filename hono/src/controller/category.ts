@@ -23,7 +23,7 @@ export const categoryApp = new Hono().get('/:categoryName', validatorParam, asyn
 
 	const { categoryName } = req.valid('param');
 
-	const dao = new CategoryDao(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
+	const dao = new CategoryDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 		readonly: true,
 	});
 

@@ -18,7 +18,7 @@ const logger = Log4js.getLogger('NewlyJson');
  */
 const create = async (): Promise<ProcessResult> => {
 	try {
-		const dao = new NewlyJson(`${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
+		const dao = new NewlyJson(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 			readonly: true,
 		});
 

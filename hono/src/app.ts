@@ -26,7 +26,7 @@ import {
 loadEnvFile(process.env['NODE_ENV'] === 'production' ? '../.env.production' : '../.env.development');
 
 /* Logger 設定 */
-Log4js.configure(env('LOG4JS_CONF'));
+Log4js.configure(env('HONO_LOG4JS_CONF'));
 const logger = Log4js.getLogger();
 
 /* Hono */
@@ -190,7 +190,7 @@ app.use(
 
 /* Auth */
 const basicAuthHandler = await basicAuth({
-	authPath: `${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`,
+	authPath: `${env('ROOT')}/${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`,
 	invalidUserMessage: config.basicAuth.unauthorizedMessage,
 });
 app.use(`/admin/*`, basicAuthHandler);
