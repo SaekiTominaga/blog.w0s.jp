@@ -1,5 +1,6 @@
 const config = {
 	singleQuote: true,
+	plugins: ['prettier-plugin-ejs'],
 
 	overrides: [
 		{

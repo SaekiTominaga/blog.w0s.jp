@@ -18,7 +18,8 @@
 
 		<%_ if (structuredData.description !== undefined) { _%>
 		<meta name="description" content="<%= structuredData.description %>" />
-		<%_ } _%> <%_ if (structuredData.image !== undefined) { _%>
+		<%_ } _%>
+		<%_ if (structuredData.image !== undefined) { _%>
 		<meta property="og:title" content="<%= structuredData.title %>" />
 		<meta property="og:type" content="article" />
 		<meta property="og:image" content="<%= structuredData.image.toString() %>" />
@@ -27,7 +28,8 @@
 		<meta property="og:site_name" content="富永日記帳" />
 		<%_ if (structuredData.description !== undefined) { _%>
 		<meta property="og:description" content="<%= structuredData.description %>" />
-		<%_ } _%> <%_ } _%>
+		<%_ } _%>
+		<%_ } _%>
 		<script type="application/ld+json">
 			<%- JSON.stringify(jsonLd, undefined, '\t') %>
 		</script>
@@ -128,7 +130,8 @@
 				</div>
 			</main>
 
-			<%- include('./_include/sidebar') -%> <%_ if (categoryFileNames === 'railway') { _%>
+			<%- include('./_include/sidebar') -%>
+			<%_ if (categoryFileNames === 'railway') { _%>
 			<div id="cm" class="l-cm">
 				<aside class="p-box" aria-labelledby="landmark-cm-label">
 					<h2 class="p-box__hdg" id="landmark-cm-label">著書の紹介</h2>
@@ -198,7 +201,8 @@
 					</div>
 				</aside>
 			</div>
-			<%_ } _%> <%- include('./_include/footer') -%>
+			<%_ } _%>
+			<%- include('./_include/footer') -%>
 		</div>
 	</body>
 </html>

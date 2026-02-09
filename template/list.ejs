@@ -9,7 +9,8 @@
 		<link rel="prev" href="/list/<%= page - 1 %>" title="新しい記事" />
 		<%_ } else if (page === 2) { _%>
 		<link rel="prev" href="/" title="新しい記事" />
-		<%_ } _%> <%_ if (page < totalPage) { _%>
+		<%_ } _%>
+		<%_ if (page < totalPage) { _%>
 		<link rel="next" href="/list/<%= page + 1 %>" title="古い記事" />
 		<%_ } _%>
 
