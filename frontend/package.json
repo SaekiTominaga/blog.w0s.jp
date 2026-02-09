@@ -28,7 +28,7 @@
 		"@w0s/input-file-preview": "3.0.6",
 		"@w0s/paapi-item-image-url-parser": "3.2.3",
 		"@w0s/report-js-error": "4.0.1",
-		"@w0s/report-same-referrer": "5.0.0",
+		"@w0s/report-same-referrer": "5.0.1",
 		"@w0s/string-convert": "3.0.3",
 		"@w0s/tab": "5.0.2",
 		"chokidar": "5.0.0",
