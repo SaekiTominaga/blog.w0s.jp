@@ -34,7 +34,9 @@
 
 						<%_ if (selectValidates.length > 0) { _%>
 						<div class="p-form-errors">
-							<p><strong><%= selectValidates.length %>個のエラーがあります。</strong></p>
+							<p>
+								<strong><%= selectValidates.length %>個のエラーがあります。</strong>
+							</p>
 							<ul class="p-list">
 								<%_ for (const errorMessage of selectValidates) { _%>
 								<li><%= errorMessage %></li>
@@ -64,20 +66,24 @@
 						<form action="/admin/post#post" method="post" class="c-stack js-form-beforeunload-confirm js-submit-overlay" data-overlayed-by="form-submit-overlay">
 							<%_ if (postValidates.length > 0) { _%>
 							<div class="p-form-errors">
-								<p><strong><%= postValidates.length %>個のエラーがあります。</strong></p>
+								<p>
+									<strong><%= postValidates.length %>個のエラーがあります。</strong>
+								</p>
 								<ul class="p-list">
 									<%_ for (const errorMessage of postValidates) { _%>
 									<li><%= errorMessage %></li>
 									<%_ } _%>
 								</ul>
 							</div>
-							<%_ } _%> <%_ if (postResults.length > 0) { _%>
+							<%_ } _%>
+							<%_ if (postResults.length > 0) { _%>
 							<ul class="p-form-results">
 								<%_ for (const result of postResults) { _%><%_ if (result.success) { _%>
 								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %></span></li>
 								<%_ } else { _%>
 								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<%_ } _%> <%_ } _%>
+								<%_ } _%>
+								<%_ } _%>
 							</ul>
 							<%_ } _%>
 
@@ -293,7 +299,8 @@
 								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %>: <%= result.filename %></span></li>
 								<%_ } else { _%>
 								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %>: <%= result.filename %></span></li>
-								<%_ } _%> <%_ } _%>
+								<%_ } _%>
+								<%_ } _%>
 							</ul>
 							<%_ } _%>
 
