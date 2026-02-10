@@ -48,18 +48,20 @@
 									</span>
 								</a>
 								<div class="c-entry-link__date">
-									<dl class="c-entry-meta">
-										<div class="c-entry-meta__group">
-											<dt>投稿</dt>
-											<dd><time datetime="<%= entry.registedAt.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.registedAt.format('YYYY年M月D日') %></time></dd>
-										</div>
+									<div class="c-entry-meta">
+										<p>
+											<span class="c-entry-meta__name">投稿</span>
+											<span class="c-entry-meta__separator">:</span>
+											<time class="c-entry-meta__value" datetime="<%= entry.registedAt.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.registedAt.format('YYYY年M月D日') %></time>
+										</p>
 										<%_ if (entry.updatedAt !== undefined) { _%>
-										<div class="c-entry-meta__group">
-											<dt>最終更新</dt>
-											<dd><time datetime="<%= entry.updatedAt.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.updatedAt.format('YYYY年M月D日') %></time></dd>
-										</div>
+										<p>
+											<span class="c-entry-meta__name">最終更新</span>
+											<span class="c-entry-meta__separator">:</span>
+											<time class="c-entry-meta__value" datetime="<%= entry.updatedAt.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= entry.updatedAt.format('YYYY年M月D日') %></time>
+										</p>
 										<%_ } _%>
-									</dl>
+									</div>
 								</div>
 							</div>
 						</li>

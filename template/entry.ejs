@@ -46,18 +46,22 @@
 								<h1><%- structuredData.titleMarked %></h1>
 							</div>
 
-							<dl class="p-entry-header-date c-entry-meta">
-								<div class="c-entry-meta__group">
-									<dt>投稿</dt>
-									<dd><time datetime="<%= structuredData.datePublished.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= structuredData.datePublished.format('YYYY年M月D日') %></time></dd>
+							<div class="p-entry-header-date">
+								<div class="c-entry-meta">
+									<p>
+										<span class="c-entry-meta__name">投稿</span>
+										<span class="c-entry-meta__separator">:</span>
+										<time class="c-entry-meta__value" datetime="<%= structuredData.datePublished.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= structuredData.datePublished.format('YYYY年M月D日') %></time>
+									</p>
+									<%_ if (structuredData.dateModified !== undefined) { _%>
+									<p>
+										<span class="c-entry-meta__name">最終更新</span>
+										<span class="c-entry-meta__separator">:</span>
+										<time class="c-entry-meta__value" datetime="<%= structuredData.dateModified.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= structuredData.dateModified.format('YYYY年M月D日') %></time>
+									</p>
+									<%_ } _%>
 								</div>
-								<%_ if (structuredData.dateModified !== undefined) { _%>
-								<div class="c-entry-meta__group">
-									<dt>最終更新</dt>
-									<dd><time datetime="<%= structuredData.dateModified.format('YYYY-MM-DDTHH:mm:ssZ') %>"><%= structuredData.dateModified.format('YYYY年M月D日') %></time></dd>
-								</div>
-								<%_ } _%>
-							</dl>
+							</div>
 						</header>
 
 						<div class="p-entry__body"><%- message %></div>
