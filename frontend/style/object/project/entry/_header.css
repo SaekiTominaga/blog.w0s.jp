@@ -12,7 +12,7 @@
 	--_bg-color: #9fc;
 
 	border: var(--_border-width) solid var(--_bg-color);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: calc(15px - var(--_border-width)) calc(var(--_entry-padding-block) - var(--_border-width));
 	color: var(--color-black);
 
@@ -30,5 +30,7 @@
 
 /* 公開日、更新日 */
 .p-entry-header-date {
-	margin-inline: auto var(--_entry-padding-block);
+	margin-inline-start: auto;
+	padding-inline: var(--_entry-padding-block);
+	inline-size: fit-content;
 }

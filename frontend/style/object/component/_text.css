@@ -129,30 +129,23 @@
 
 /* ===== 記事メタデータ ===== */
 .c-entry-meta {
-	display: block table;
+	display: block grid;
+	grid-template-columns: max-content max-content 1fr;
+	gap: 0.125em 0.25em;
 	line-height: var(--line-height-narrow);
+
+	& > * {
+		display: contents;
+	}
 }
 
-.c-entry-meta__group {
-	display: table-row;
+.c-entry-meta__name {
+}
 
-	& > dt,
-	& > dd {
-		display: table-cell;
-	}
+.c-entry-meta__separator {
+}
 
-	& > dd {
-		&::before {
-			margin-inline: 0.25em;
-			content: ":";
-		}
-	}
-
-	&:not(:first-child) {
-		& > :is(dt, dd) {
-			border-block-start: 0.125em solid transparent;
-		}
-	}
+.c-entry-meta__value {
 }
 
 /* ===== 記事件数 ===== */
