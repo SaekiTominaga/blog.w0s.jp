@@ -43,8 +43,8 @@ importers:
   frontend:
     dependencies:
       '@w0s/base.css':
-        specifier: 1.3.2
-        version: 1.3.2
+        specifier: 1.3.3
+        version: 1.3.3
       '@w0s/button-clipboard':
         specifier: 3.0.4
         version: 3.0.4
@@ -1178,8 +1178,8 @@ packages:
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
-  '@w0s/base.css@1.3.2':
-    resolution: {integrity: sha512-poWHXPqolpdwJWHgyVlVZFwVXeTMzZh7Igp0dYyAmJzNCg69RUKKqg73ihCz4NKCu2rjDqznzM+p/UGoq1EwfA==}
+  '@w0s/base.css@1.3.3':
+    resolution: {integrity: sha512-JdMaNNiAq26Tphqa7xhbt+FfhLZaMWC5hGtsyuaLB6sJfnXWeOrnc/2k7XvStXr496hgLNqVukUnqPP0h7vC/w==}
 
   '@w0s/button-clipboard@3.0.4':
     resolution: {integrity: sha512-Rx+XVFh8ore8Wetee3KkDuXHoJpFhPusvWGnHmaMYPcBCpfqhCn3hfqssCx1s/XpZkzJLu5hy6oeNycYCI54eQ==}
@@ -1509,9 +1509,9 @@ packages:
   crypt@0.0.2:
     resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
 
-  css-functions-list@3.2.3:
-    resolution: {integrity: sha512-IQOkD3hbR5KrN93MtcYuad6YPuTSUhntLHDuLEbFWE+ff2/XSZNdZG+LcbbIW5AXKg/WFIfYItIzVoHngHXZzA==}
-    engines: {node: '>=12 || >=16'}
+  css-functions-list@3.3.3:
+    resolution: {integrity: sha512-8HFEBPKhOpJPEPu70wJJetjKta86Gw9+CCyCnB3sui2qQfOvRyqBy4IKLKKAwdMpWb2lHXWk9Wb4Z6AmaUT1Pg==}
+    engines: {node: '>=12'}
 
   css-select@5.2.2:
     resolution: {integrity: sha512-TizTzUddG/xYLA3NXodFM0fSbNizXjOKhqiQQwvhlspadZokn1KDy0NZFS0wuEubIYAV5/c1/lAr0TaaFXEXzw==}
@@ -4466,7 +4466,7 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@w0s/base.css@1.3.2': {}
+  '@w0s/base.css@1.3.3': {}
 
   '@w0s/button-clipboard@3.0.4': {}
 
@@ -4811,7 +4811,7 @@ snapshots:
 
   crypt@0.0.2: {}
 
-  css-functions-list@3.2.3: {}
+  css-functions-list@3.3.3: {}
 
   css-select@5.2.2:
     dependencies:
@@ -7197,7 +7197,7 @@ snapshots:
       balanced-match: 2.0.0
       colord: 2.9.3
       cosmiconfig: 9.0.0(typescript@5.9.3)
-      css-functions-list: 3.2.3
+      css-functions-list: 3.3.3
       css-tree: 3.1.0
       debug: 4.4.3
       fast-glob: 3.3.3
