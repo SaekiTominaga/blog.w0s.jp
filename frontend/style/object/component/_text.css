@@ -80,22 +80,18 @@
 	font-size: calc(100% / pow(var(--font-ratio), 2));
 
 	& > a {
-		--_border-color: transparent;
-		--_bg-color: transparent;
-
-		border: 1px solid var(--_border-color);
-		background: var(--_bg-color);
-		padding: 0.25em;
+		outline-offset: calc(0px - var(--outline-width-bold));
+		outline-width: var(--outline-width-bold);
+		padding: 0.375em;
 		text-decoration-skip-ink: none; /* JS 無効環境向け */
 
 		&:target {
-			--_border-color: var(--color-red);
-			--_bg-color: var(--color-verylightred);
+			border: 1px solid var(--color-red);
+			background-color: var(--color-verylightred);
 		}
 
 		&[role="button" i] {
 			/* JS 有効時のみ */
-			outline-offset: calc(0px - var(--outline-width));
 			cursor: default;
 			text-decoration: none;
 			color: var(--link-color);

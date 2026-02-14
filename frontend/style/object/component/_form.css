@@ -46,28 +46,10 @@
 
 /* ===== ファイル選択（type） ===== */
 .c-input-file {
-	--_border-color: transparent;
-	--_color: var(--color-black);
-	--_bg-color: transparent;
-
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
-	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
-	padding: var(--form-control-padding-block) 0;
-	color: var(--_color);
-
-	&:enabled {
-		&:hover {
-			--_border-color: var(--outline-color);
-		}
-	}
-
-	&:disabled {
-		--_color: var(--color-gray);
-		--_bg-color: var(--color-bg-verydark);
-	}
+	padding-block: var(--form-control-padding-block);
 }
 
 /* ===== プルダウン（select） ===== */
