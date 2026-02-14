@@ -8,37 +8,35 @@
 
 /* カテゴリー */
 .p-entry-footer-category {
+	--_tag-border-width: 1px;
 	--_tag-pading-row: 0.75em;
 	--_tag-pading-col: 0.5em;
-	--_tag-border-width: 1px;
 
 	display: block flex;
-	gap: 0 0.5em;
+	column-gap: 0.5em;
 	justify-content: flex-end;
+	line-height: var(--line-height-nowrap);
 }
 
 .p-entry-footer-category__hdg {
-	border: var(--_tag-border-width) solid transparent;
-	padding: var(--_tag-pading-row) 0;
-	line-height: var(--line-height-nowrap);
+	padding-block: calc(var(--_tag-border-width) + var(--_tag-pading-row));
 	text-wrap-mode: nowrap;
 }
 
 .p-entry-footer-category__list {
 	display: block flex;
 	flex-flow: wrap;
-	gap: 8px;
+	gap: 0.5em;
 
 	& a {
 		display: inline flow-root;
-		outline-offset: -1px;
+		outline-offset: calc(0px - var(--_tag-border-width));
 		outline-width: var(--outline-width-bold);
 		border: var(--_tag-border-width) solid var(--color-border-light);
 		border-radius: var(--border-radius-normal);
-		background: var(--color-white);
+		background-color: var(--color-white);
 		padding: var(--_tag-pading-row) var(--_tag-pading-col);
 		text-decoration: none;
-		line-height: var(--line-height-nowrap);
 
 		&:hover {
 			box-shadow: 0 0 3px var(--color-border-light);
