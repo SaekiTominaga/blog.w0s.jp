@@ -3,20 +3,15 @@
  * ============================== */
 
 .p-entry {
-	--_entry-padding-block: 3%; /* 左右の余白 */
-	--_entry-box-shadow: 0 0 3px var(--color-border-light);
-	--_entry-color: var(--color-darkgray);
-	--_entry-bg-color: var(--color-bg-ultralight);
+	--_entry-padding-block: 0;
 
-	box-shadow: var(--_entry-box-shadow);
-	background: var(--_entry-bg-color);
-	color: var(--_entry-color);
 	font-family: arial, sans-serif;
 
-	@media print {
-		--_entry-padding-block: 0;
-		--_entry-box-shadow: none;
-		--_entry-color: inherit;
-		--_entry-bg-color: transparent;
+	@media not print {
+		--_entry-padding-block: 3%; /* 左右の余白 */
+
+		box-shadow: 0 0 3px var(--color-border-light);
+		background-color: var(--color-bg-ultralight);
+		color: var(--color-darkgray);
 	}
 }

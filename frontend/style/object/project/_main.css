@@ -26,7 +26,7 @@
 		outline-offset: -1px;
 		border: 1px solid var(--_border-color);
 		border-radius: var(--border-radius-normal);
-		background: var(--color-white);
+		background-color: var(--color-white);
 		padding: 15px;
 		max-inline-size: min(30em, 100%);
 		color: var(--color-black);
@@ -50,26 +50,26 @@
 	}
 
 	&::part(hide-button) {
-		--_border-color: var(--color-white);
 		--_background-color: transparent;
 
 		position: absolute;
 		inset-block-start: 1px;
 		inset-inline-end: 1px;
 		outline-offset: -1px;
-		border: 1px solid var(--_border-color);
+		border-style: none;
 		border-radius: var(--border-radius-normal);
-		background: var(--_background-color);
+		background-color: var(--_background-color);
 		padding: var(--_hide-button-padding);
+	}
+
+	&::part(hide-button):hover {
+		--_background-color: var(--color-bg-superlight);
+
+		outline: 1px solid var(--color-bg-light);
 	}
 
 	&::part(hide-button):focus {
 		outline: var(--outline-width-bold) solid var(--outline-color);
-	}
-
-	&::part(hide-button):hover {
-		--_border-color: var(--color-bg-light);
-		--_background-color: var(--color-bg-superlight);
 	}
 }
 

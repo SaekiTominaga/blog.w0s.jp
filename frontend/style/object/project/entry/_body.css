@@ -56,9 +56,8 @@
 	line-height: var(--line-height-narrow);
 
 	.p-entry-section.-hdg1 > & {
-		border-block-start: 1px solid transparent;
 		border-block-end: 1px solid var(--color-border-dark);
-		padding-block: 0.25em;
+		padding-block-end: 0.375em;
 		font-size: calc(100% * pow(var(--font-ratio), 5));
 	}
 
