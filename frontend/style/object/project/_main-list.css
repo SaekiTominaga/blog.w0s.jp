@@ -23,9 +23,27 @@
 
 /* ===== 番号リスト ===== */
 .p-list-num {
+	margin-inline-start: calc(var(--_digit) + 2ch);
+
+	&[data-digit="1"] {
+		--_digit: 1ch;
+	}
+
+	&[data-digit="2"] {
+		--_digit: 2ch;
+	}
+
+	&[data-digit="3"] {
+		--_digit: 3ch;
+	}
+
 	& > li {
-		margin-inline-start: 1em;
-		list-style-type: decimal;
+		counter-increment: item;
+
+		&::marker {
+			font-family: monospace;
+			content: counter(item) ". ";
+		}
 
 		& + li {
 			margin-block-start: 0.5em;
