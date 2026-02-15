@@ -15,6 +15,7 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 	if (node.ordered) {
 		const attributes: Properties = {
 			className: ['p-list-num'],
+			'data-digit': listItems.length.toString().length,
 		};
 		if (node.start !== null && node.start !== undefined && node.start !== 1) {
 			attributes['start'] = node.start;

@@ -181,7 +181,7 @@ await test('unordered list', async (t) => {
 });
 
 await test('ordered list', async (t) => {
-	await t.test('normal', async () => {
+	await t.test('digit=1', async () => {
 		const markdown = new Markdown();
 		assert.equal(
 			await format(
@@ -189,13 +189,63 @@ await test('ordered list', async (t) => {
 					`
 1. list1
 1. list2
+1. list3
+1. list4
+1. list5
+1. list6
+1. list7
+1. list8
+1. list9
 `,
 				),
 			),
 			`
-<ol class="p-list-num">
+<ol class="p-list-num" data-digit="1">
 	<li>list1</li>
 	<li>list2</li>
+	<li>list3</li>
+	<li>list4</li>
+	<li>list5</li>
+	<li>list6</li>
+	<li>list7</li>
+	<li>list8</li>
+	<li>list9</li>
+</ol>
+`.trim(),
+		);
+	});
+
+	await t.test('digit=2', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+1. list1
+1. list2
+1. list3
+1. list4
+1. list5
+1. list6
+1. list7
+1. list8
+1. list9
+1. list10
+`,
+				),
+			),
+			`
+<ol class="p-list-num" data-digit="2">
+	<li>list1</li>
+	<li>list2</li>
+	<li>list3</li>
+	<li>list4</li>
+	<li>list5</li>
+	<li>list6</li>
+	<li>list7</li>
+	<li>list8</li>
+	<li>list9</li>
+	<li>list10</li>
 </ol>
 `.trim(),
 		);
@@ -213,7 +263,7 @@ await test('ordered list', async (t) => {
 				),
 			),
 			`
-<ol class="p-list-num" start="2">
+<ol class="p-list-num" data-digit="1" start="2">
 	<li>list1</li>
 	<li>list2</li>
 </ol>
