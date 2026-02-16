@@ -1,3 +1,11 @@
+import highlightCss from 'highlight.js/lib/languages/css';
+import highlightDiff from 'highlight.js/lib/languages/diff';
+import highlightHttp from 'highlight.js/lib/languages/http';
+import highlightJavascript from 'highlight.js/lib/languages/javascript';
+import highlightJson from 'highlight.js/lib/languages/json';
+import highlightMarkdown from 'highlight.js/lib/languages/markdown';
+import highlightTypescript from 'highlight.js/lib/languages/typescript';
+import highlightXml from 'highlight.js/lib/languages/xml';
 import { mdastDefListTerm2hast, mdastDefListDescription2hast } from 'mdast-util-definition-list';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeStringify from 'rehype-stringify';
@@ -30,8 +38,7 @@ import remarkLintTablePipes from 'remark-lint-table-pipes';
 import remarkLintUnorderedListMarkerStyle from 'remark-lint-unordered-list-marker-style';
 import remarkRehype from 'remark-rehype';
 import { type Processor, unified } from 'unified';
-import type { VFile } from 'unified-lint-rule/lib/index.ts';
-import http from 'highlight.js/lib/languages/http';
+import type { VFile } from 'vfile';
 import config from './config.ts';
 import footnoteHast from './hast/footnote.ts';
 import remarkLintHeadingDepthLimit from './lint/headingDepthLimit.ts';
@@ -74,7 +81,7 @@ export default class Markdown {
 	/**
 	 * @param options - Option
 	 */
-	constructor(options?: Options) {
+	constructor(options?: Readonly<Options>) {
 		const lint = options?.lint ?? false;
 
 		const processor = unified();
@@ -102,7 +109,7 @@ export default class Markdown {
 			/* remark-lint-link-title-style: [style-guide] リンクタイトルは使用禁止設定にしているので不要 */
 			processor.use(remarkLintListItemBulletIndent); // [recommended] リスト項目のインデント禁止
 			processor.use(remarkLintListItemContentIndent); // [style-guide] リスト項目のインデント統一
-			processor.use(remarkLintListItemIndent, 'space'); // [style-guide][recommended] リスト項目のビュレットと内容の間をスペースに統一
+			processor.use(remarkLintListItemIndent, 'one'); // [style-guide][recommended] リスト項目のビュレットと内容の間をスペースに統一
 			/* remark-lint-list-item-spacing: [style-guide] 要検討 */
 			/* remark-lint-maximum-heading-length: [style-guide] 不要 */
 			/* remark-lint-maximum-line-length: [style-guide] 不要 */
@@ -181,15 +188,24 @@ export default class Markdown {
 
 		processor.use(footnoteHast);
 		processor.use(rehypeHighlight, {
-			languages: { http: http },
+			languages: {
+				css: highlightCss,
+				diff: highlightDiff,
+				http: highlightHttp,
+				javascript: highlightJavascript,
+				json: highlightJson,
+				markdown: highlightMarkdown,
+				typescript: highlightTypescript,
+				xml: highlightXml,
+			},
 			prefix: 'hljs-',
 		});
 
 		processor.use(rehypeStringify, {
-			entities: {
+			allowDangerousHtml: true,
+			characterReferences: {
 				useNamedReferences: true,
 			},
-			allowDangerousHtml: true,
 			closeSelfClosing: true,
 			tightSelfClosing: true,
 		}); // hast → HTML

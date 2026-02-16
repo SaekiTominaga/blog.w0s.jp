@@ -1,14 +1,13 @@
 import dayjs from 'dayjs';
-import type { Properties } from 'hast-util-select/lib/types.ts';
+import type { ElementContent, Properties } from 'hast';
 import type { Literal, List, Paragraph } from 'mdast';
-import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { State } from 'mdast-util-to-hast';
 
 /**
  * <ol>, <ul>
  */
 
-export const listToHast = (state: H, node: List): HastElementContent | HastElementContent[] | null | undefined => {
+export const listToHast = (state: State, node: List): ElementContent | ElementContent[] | undefined => {
 	const listItems = node.children;
 
 	/* Ordered list */
@@ -76,7 +75,7 @@ export const listToHast = (state: H, node: List): HastElementContent | HastEleme
 		return childFirstNode?.type === 'text' && INSERT_PATTERN.test(childFirstNode.value);
 	}); // 順不同リストの先頭がすべて `YYYY-MM-DD: ` で始まる場合
 	if (insertList) {
-		const insertElements: HastElementContent[] = [];
+		const insertElements: ElementContent[] = [];
 		listItems.forEach((listItem) => {
 			const childNodes = (listItem.children.at(0) as Paragraph).children;
 			const childFirstTextNode = childNodes.at(0) as Literal;

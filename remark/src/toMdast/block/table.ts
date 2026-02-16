@@ -1,9 +1,8 @@
 import type { Table, AlignType, TableContent } from 'mdast';
+import type { Extension as FromMarkdownExtension } from 'mdast-util-from-markdown';
 import { gfmTableFromMarkdown } from 'mdast-util-gfm-table';
-import type { FromMarkdownExtension } from 'mdast-util-gfm-table/lib/index.ts';
 import { gfmTable } from 'micromark-extension-gfm-table';
 import type { Extension } from 'micromark-util-types';
-import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
 import { visit, CONTINUE } from 'unist-util-visit';
 
@@ -20,7 +19,7 @@ interface XTable extends Parent {
 	children: TableContent[];
 }
 
-export default function toMdast(): Plugin {
+export default function toMdast() {
 	const FIRST_ROW_HEADER_SIGN = '~'; // 一行目の一列目のセル（もっとも左上のセル）がこの記号文字で始まっていたら全行の一列目をヘッダーセル（<th>）にする
 
 	// @ts-expect-error: ts(2683)
@@ -32,8 +31,8 @@ export default function toMdast(): Plugin {
 		list.push(value);
 	};
 
-	add('micromarkExtensions', gfmTable);
-	add('fromMarkdownExtensions', gfmTableFromMarkdown);
+	add('micromarkExtensions', gfmTable());
+	add('fromMarkdownExtensions', gfmTableFromMarkdown());
 
 	return (tree: Parent): void => {
 		visit(tree, 'table', (node: Table, index: number | null, parent: Parent | null): boolean => {

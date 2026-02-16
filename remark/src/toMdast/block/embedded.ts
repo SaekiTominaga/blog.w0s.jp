@@ -1,4 +1,4 @@
-import type { List, Paragraph, PhrasingContent } from 'mdast';
+import type { List, Paragraph, PhrasingContent, Root } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
@@ -60,7 +60,7 @@ interface Structured {
 	};
 }
 
-const toMdast = (): Plugin => {
+const toMdast: Plugin<[], Root> = () => {
 	const EMBEDDED_START = '@';
 	const SERVICE_YOUTUBE = 'youtube';
 	const SERVICE_AMAZON = 'amazon';

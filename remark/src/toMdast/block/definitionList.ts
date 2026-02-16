@@ -19,7 +19,7 @@ interface FromMarkdownExtension {
 	};
 }
 
-export default function toMdast(): void {
+export default function toMdast() {
 	// @ts-expect-error: ts(2683)
 	const data = this.data();
 

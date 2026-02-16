@@ -1,4 +1,4 @@
-import type { Heading } from 'mdast';
+import type { Heading, Root } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { findAfter } from 'unist-util-find-after';
@@ -21,7 +21,7 @@ interface Options {
 	maxDepth?: Heading['depth'];
 }
 
-const toMdast = (options?: Options): Plugin => {
+const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
 	const maxDepth = options?.maxDepth ?? 6;
 
 	return (tree: Parent): void => {
@@ -47,7 +47,7 @@ const toMdast = (options?: Options): Plugin => {
 					}
 				});
 
-				const sectionCloseIndex = afterSectionNode !== null ? parent.children.indexOf(afterSectionNode) : -1;
+				const sectionCloseIndex = afterSectionNode !== undefined ? parent.children.indexOf(afterSectionNode) : -1;
 
 				const sectionChildren = parent.children.slice(index, sectionCloseIndex > 0 ? sectionCloseIndex : undefined);
 				const section: XSection = {

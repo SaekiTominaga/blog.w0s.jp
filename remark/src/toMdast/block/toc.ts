@@ -1,3 +1,4 @@
+import type { Root } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
 import { selectAll } from 'unist-util-select';
@@ -14,7 +15,7 @@ interface XToc extends Parent {
 	children: XHeading[];
 }
 
-const toMdast = (): Plugin => {
+const toMdast: Plugin<[], Root> = () => {
 	return (tree: Parent): void => {
 		const heading1s = (selectAll(nameHeading, tree) as XHeading[]).filter((node) => node.depth === 1 && node.id !== undefined);
 

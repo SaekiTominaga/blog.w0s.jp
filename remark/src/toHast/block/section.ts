@@ -1,6 +1,6 @@
+import type { ElementContent } from 'hast';
 import type { Root } from 'mdast';
-import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { State } from 'mdast-util-to-hast';
 
 /**
  * <section>
@@ -11,8 +11,8 @@ interface XSection extends Root {
 	id: string;
 }
 
-export const xSectionToHast = (state: H, node: XSection): HastElementContent | HastElementContent[] | null | undefined => {
-	const element: HastElementContent = {
+export const xSectionToHast = (state: State, node: XSection): ElementContent | ElementContent[] | undefined => {
+	const element: ElementContent = {
 		type: 'element',
 		tagName: 'section',
 		properties: {

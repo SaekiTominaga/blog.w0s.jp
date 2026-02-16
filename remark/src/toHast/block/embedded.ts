@@ -1,8 +1,7 @@
 import path from 'node:path';
-import type { Properties } from 'hast-util-select/lib/types.ts';
+import type { Element, ElementContent, Properties } from 'hast';
 import type { Root } from 'mdast';
-import type { H } from 'mdast-util-to-hast';
-import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { State } from 'mdast-util-to-hast';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 import type { AmazonImage, Size } from '../../toMdast/block/embedded.ts';
 import config from '../../config.ts';
@@ -38,12 +37,12 @@ const IMAGE_MAX_SIZE = { width: 640, height: 480 };
 const YOUTUBE_BASE_SIZE = { width: 640, height: 360 };
 const AMAZON_IMAGE_SIZE = 160;
 
-export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElementContent | HastElementContent[] | null | undefined => {
+export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): ElementContent | ElementContent[] | undefined => {
 	const { filename, size } = node;
 
 	const extension = path.extname(filename);
 
-	const media: HastElementContent[] = [];
+	const media: ElementContent[] = [];
 	switch (extension) {
 		case '.jpg':
 		case '.jpeg':
@@ -63,6 +62,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 			media.push({
 				type: 'element',
 				tagName: 'picture',
+				properties: {},
 				children: [
 					{
 						type: 'element',
@@ -140,7 +140,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 		default:
 	}
 
-	const caption: HastElementContent[] = [
+	const caption: ElementContent[] = [
 		{
 			type: 'element',
 			tagName: 'span',
@@ -187,6 +187,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 	return {
 		type: 'element',
 		tagName: 'figure',
+		properties: {},
 		children: [
 			{
 				type: 'element',
@@ -208,7 +209,7 @@ export const xEmbeddedMediaToHast = (state: H, node: XEmbeddedMedia): HastElemen
 	};
 };
 
-export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastElementContent | HastElementContent[] | null | undefined => {
+export const xEmbeddedYouTubeToHast = (_state: State, node: XEmbeddedYouTube): ElementContent | ElementContent[] | undefined => {
 	const { id, title, size, start, end } = node;
 
 	const width = size?.width ?? YOUTUBE_BASE_SIZE.width;
@@ -232,6 +233,7 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 	return {
 		type: 'element',
 		tagName: 'figure',
+		properties: {},
 		children: [
 			{
 				type: 'element',
@@ -316,8 +318,8 @@ export const xEmbeddedYouTubeToHast = (_state: H, node: XEmbeddedYouTube): HastE
 	};
 };
 
-export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastElementContent | HastElementContent[] | null | undefined => {
-	const items = node.children.map((item): HastElement => {
+export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): ElementContent | ElementContent[] | undefined => {
+	const items = node.children.map((item): Element => {
 		const { asin, title, image } = item;
 
 		const imageElementProperties: Properties = {};
@@ -358,6 +360,7 @@ export const xEmbeddedAmazonToHast = (_state: H, node: XEmbeddedAmazon): HastEle
 		return {
 			type: 'element',
 			tagName: 'li',
+			properties: {},
 			children: [
 				{
 					type: 'element',

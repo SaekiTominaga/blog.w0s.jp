@@ -1,7 +1,6 @@
-import type { Properties } from 'hast';
+import type { Element, ElementContent, Properties } from 'hast';
 import type { Blockquote } from 'mdast';
-import type { H } from 'mdast-util-to-hast';
-import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { State } from 'mdast-util-to-hast';
 import { linkInfo } from '../../lib/hast.ts';
 import { getInfo as getLinkInfo } from '../../lib/link.ts';
 import config from '../../config.ts';
@@ -17,10 +16,10 @@ interface XBlockquote extends Blockquote {
 	metaIsbn?: string;
 }
 
-export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementContent | HastElementContent[] | null | undefined => {
+export const xBlockquoteToHast = (state: State, node: XBlockquote): ElementContent | ElementContent[] | undefined => {
 	const { lang, metaText, metaUrl, metaIsbn } = node;
 
-	const childElements: HastElementContent[] = [];
+	const childElements: ElementContent[] = [];
 
 	node.children.forEach((child) => {
 		if (child.type === 'paragraph') {
@@ -39,6 +38,7 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 					childElements.push({
 						type: 'element',
 						tagName: 'p',
+						properties: {},
 						children: [
 							{
 								type: 'element',
@@ -58,8 +58,9 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 			}
 		}
 
+		// @ts-expect-error: ts(2345)
 		const childElement = state.one(child, node);
-		if (childElement !== null && childElement !== undefined) {
+		if (childElement !== undefined) {
 			if (Array.isArray(childElement)) {
 				childElement.forEach((element) => childElements.push(element));
 			} else {
@@ -78,7 +79,7 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 		blockquoteAttribute['cite'] = `urn:ISBN:${metaIsbn}`;
 	}
 
-	const figcaptionChild: HastElementContent[] = [];
+	const figcaptionChild: ElementContent[] = [];
 	if (metaText !== undefined) {
 		if (metaUrl !== undefined) {
 			/* URL とテキストが両方指定 */
@@ -122,7 +123,7 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 		});
 	}
 
-	const figureChild: HastElement[] = [];
+	const figureChild: Element[] = [];
 	figureChild.push({
 		type: 'element',
 		tagName: 'blockquote',
@@ -152,6 +153,7 @@ export const xBlockquoteToHast = (state: H, node: XBlockquote): HastElementConte
 	return {
 		type: 'element',
 		tagName: 'figure',
+		properties: {},
 		children: figureChild,
 	};
 };
