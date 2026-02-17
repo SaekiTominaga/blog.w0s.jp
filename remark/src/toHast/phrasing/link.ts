@@ -1,6 +1,6 @@
+import type { ElementContent } from 'hast';
 import type { Link } from 'mdast';
-import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { State } from 'mdast-util-to-hast';
 import { toString } from 'mdast-util-to-string';
 import { linkInfo } from '../../lib/hast.ts';
 import { getInfo } from '../../lib/link.ts';
@@ -9,18 +9,19 @@ import { getInfo } from '../../lib/link.ts';
  * <a href>
  */
 
-export const linkToHast = (state: H, node: Link): HastElementContent | HastElementContent[] | null | undefined => {
+export const linkToHast = (state: State, node: Link): ElementContent | ElementContent[] | undefined => {
 	const { href, typeIcon, hostIcon, hostText } = getInfo(toString(node), node.url);
 
 	if (href === undefined) {
 		return {
 			type: 'element',
 			tagName: 'a',
+			properties: {},
 			children: state.all(node),
 		};
 	}
 
-	const link: HastElementContent[] = [
+	const link: ElementContent[] = [
 		{
 			type: 'element',
 			tagName: 'a',

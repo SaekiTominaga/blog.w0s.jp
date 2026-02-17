@@ -1,5 +1,5 @@
 import { format } from 'prettier';
-import type { VFile } from 'unified-lint-rule/lib/index.ts';
+import type { VFile } from 'vfile';
 
 export default async (vFile: VFile): Promise<string> => {
 	const value = vFile.value.toString();

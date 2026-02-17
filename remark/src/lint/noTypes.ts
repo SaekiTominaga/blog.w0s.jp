@@ -4,12 +4,12 @@ import { visit, CONTINUE } from 'unist-util-visit';
 import { generated } from 'unist-util-generated';
 import type { VFile } from 'vfile';
 
-const noTypes = lintRule('remark-lint:no-types', (tree: Parent, file: VFile, option: string[]) => {
-	visit(tree, (node: Node, index: number | null, parent: Parent | null): boolean => {
+const noTypes = lintRule('remark-lint:no-types', (tree: Parent, file: VFile, option: readonly string[]) => {
+	visit(tree, (node: Node, index: number | undefined, parent: Parent | undefined): boolean => {
 		if (generated(node)) {
 			return CONTINUE;
 		}
-		if (index === null || parent === null) {
+		if (index === undefined || parent === undefined) {
 			return CONTINUE;
 		}
 

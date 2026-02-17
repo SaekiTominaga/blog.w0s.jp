@@ -1,5 +1,5 @@
 import GithubSlugger from 'github-slugger';
-import type { Heading, PhrasingContent } from 'mdast';
+import type { Heading, PhrasingContent, Root } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
@@ -22,7 +22,7 @@ interface Options {
 	maxDepth?: Heading['depth'];
 }
 
-const toMdast = (options?: Options): Plugin => {
+const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
 	const maxDepth = options?.maxDepth ?? 6;
 
 	const slugger = new GithubSlugger();

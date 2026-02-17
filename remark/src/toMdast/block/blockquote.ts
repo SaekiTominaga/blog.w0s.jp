@@ -1,4 +1,4 @@
-import type { BlockContent, Blockquote, DefinitionContent, Text } from 'mdast';
+import type { BlockContent, Blockquote, DefinitionContent, Root, Text } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
@@ -21,7 +21,7 @@ interface XBlockquote extends Parent {
 	children: (BlockContent | DefinitionContent)[];
 }
 
-const toMdast = (): Plugin => {
+const toMdast: Plugin<[], Root> = () => {
 	const META_START = '?';
 
 	return (tree: Parent): void => {

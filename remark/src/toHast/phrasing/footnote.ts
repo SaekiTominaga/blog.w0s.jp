@@ -1,28 +1,33 @@
+import type { ElementContent } from 'hast';
 import type { FootnoteReference } from 'mdast';
-import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { State } from 'mdast-util-to-hast';
 import { normalizeUri } from 'micromark-util-sanitize-uri';
 
 /**
  * Footnote
+ *
+ * @see https://github.com/syntax-tree/mdast-util-to-hast/blob/main/lib/handlers/footnote-reference.js
  */
 
-export const footnoteReferenceToHast = (state: H, node: FootnoteReference): HastElementContent | HastElementContent[] | null | undefined => {
+export const footnoteReferenceToHast = (state: State, node: FootnoteReference): ElementContent | ElementContent[] | undefined => {
+	const clobberPrefix = typeof state.options.clobberPrefix === 'string' ? state.options.clobberPrefix : 'user-content-';
 	const id = node.identifier.toUpperCase();
 	const safeId = normalizeUri(id.toLowerCase());
 	const index = state.footnoteOrder.indexOf(id);
 
 	let counter: number;
-	if (index === -1) {
+
+	let reuseCounter = state.footnoteCounts.get(id);
+	if (reuseCounter === undefined) {
+		reuseCounter = 0;
 		state.footnoteOrder.push(id);
-		state.footnoteCounts[id] = 1;
 		counter = state.footnoteOrder.length;
 	} else {
-		state.footnoteCounts[id] = (state.footnoteCounts[id] ?? 0) + 1;
 		counter = index + 1;
 	}
 
-	const reuseCounter = state.footnoteCounts[id] ?? 0;
+	reuseCounter += 1;
+	state.footnoteCounts.set(id, reuseCounter);
 
 	return {
 		type: 'element',
@@ -35,8 +40,8 @@ export const footnoteReferenceToHast = (state: H, node: FootnoteReference): Hast
 				type: 'element',
 				tagName: 'a',
 				properties: {
-					href: `#${state.clobberPrefix}fn-${safeId}`,
-					id: `${state.clobberPrefix}fnref-${safeId}${reuseCounter > 1 ? `-${String(reuseCounter)}` : ''}`,
+					href: `#${clobberPrefix}fn-${safeId}`,
+					id: `${clobberPrefix}fnref-${safeId}${reuseCounter > 1 ? `-${String(reuseCounter)}` : ''}`,
 					className: ['js-footnote-reference-popover'],
 					'data-popover-label': '脚注',
 					'data-popover-class': 'p-footnote-popover',

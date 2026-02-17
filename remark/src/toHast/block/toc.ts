@@ -1,6 +1,6 @@
+import type { Element, ElementContent } from 'hast';
 import type { Heading, Root } from 'mdast';
-import type { H } from 'mdast-util-to-hast';
-import type { HastElement, HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { State } from 'mdast-util-to-hast';
 import { select } from 'unist-util-select';
 import { name as nameXHeading } from '../../toMdast/block/heading.ts';
 
@@ -16,13 +16,13 @@ interface XToc extends Root {
 	children: XHeading[];
 }
 
-export const xTocToHast = (state: H, node: XToc): HastElementContent | HastElementContent[] | null | undefined => {
+export const xTocToHast = (state: State, node: XToc): ElementContent | ElementContent[] | undefined => {
 	const { children } = node;
 	if (children.length <= 1) {
 		return undefined;
 	}
 
-	const element: HastElement = {
+	const element: Element = {
 		type: 'element',
 		tagName: 'nav',
 		properties: {
@@ -33,9 +33,10 @@ export const xTocToHast = (state: H, node: XToc): HastElementContent | HastEleme
 			{
 				type: 'element',
 				tagName: 'ol',
-				children: children.map((childNode): HastElementContent => {
+				properties: {},
+				children: children.map((childNode): ElementContent => {
 					const heading = select(nameXHeading, childNode);
-					if (heading === null) {
+					if (heading === undefined) {
 						return {
 							type: 'text',
 							value: '',
@@ -45,6 +46,7 @@ export const xTocToHast = (state: H, node: XToc): HastElementContent | HastEleme
 					return {
 						type: 'element',
 						tagName: 'li',
+						properties: {},
 						children: [
 							{
 								type: 'element',

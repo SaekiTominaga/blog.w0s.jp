@@ -1,4 +1,4 @@
-import type { Paragraph, Text } from 'mdast';
+import type { Paragraph, Root, Text } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { findAllBetween } from 'unist-util-find-between-all';
@@ -17,7 +17,7 @@ interface XBox extends Parent {
 	name: string;
 }
 
-const toMdast = (): Plugin => {
+const toMdast: Plugin<[], Root> = () => {
 	const BOX_OPEN = ':::';
 	const BOX_CLOSE = ':::';
 

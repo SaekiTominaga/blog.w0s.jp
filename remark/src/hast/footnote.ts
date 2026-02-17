@@ -1,16 +1,15 @@
+import type { ElementContent, Root } from 'hast';
 import { select, selectAll } from 'hast-util-select';
-import type { Node } from 'hast-util-select/lib/types.ts';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import type { Plugin } from 'unified';
 
 /**
  * 脚注
  */
 
-const hast = (): Plugin => {
-	return (tree: Node): void => {
+const hast: Plugin<[], Root> = () => {
+	return (tree: Root): void => {
 		const footnote = select('[data-footnotes]', tree);
-		if (footnote === null) {
+		if (footnote === undefined) {
 			return;
 		}
 		footnote.properties = {
@@ -18,7 +17,7 @@ const hast = (): Plugin => {
 		};
 
 		const heading = select('#footnote-label', footnote);
-		if (heading !== null) {
+		if (heading !== undefined) {
 			heading.properties = {
 				className: ['p-footnote__hdg'],
 			};
@@ -31,7 +30,7 @@ const hast = (): Plugin => {
 		}
 
 		const list = select(':scope > ol', footnote);
-		if (list === null) {
+		if (list === undefined) {
 			return;
 		}
 		list.tagName = 'ul';
@@ -40,7 +39,7 @@ const hast = (): Plugin => {
 		};
 
 		selectAll(':scope > li', list).forEach((listItem, index) => {
-			const id = listItem.properties?.['id'];
+			const { id } = listItem.properties;
 			listItem.properties = {};
 
 			listItem.children.splice(1, 0, {
@@ -58,12 +57,12 @@ const hast = (): Plugin => {
 			});
 
 			const content = select(':scope > p', listItem);
-			if (content !== null) {
+			if (content !== undefined) {
 				content.properties = {
 					className: ['p-footnote__content'],
 				};
 
-				const contentChildren: HastElementContent[] = [];
+				const contentChildren: ElementContent[] = [];
 				contentChildren.push({
 					type: 'element',
 					tagName: 'span',
@@ -78,8 +77,8 @@ const hast = (): Plugin => {
 				});
 
 				const backref = select(':scope > [data-footnote-backref]', content);
-				if (backref !== null) {
-					const href = backref.properties?.['href'];
+				if (backref !== undefined) {
+					const { href } = backref.properties;
 
 					contentChildren.push({
 						type: 'element',

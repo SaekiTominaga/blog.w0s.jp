@@ -1,9 +1,9 @@
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { ElementContent } from 'hast';
 
 /**
  * Blank paragraph
  */
 
-export const xBlankToHast = (): HastElementContent | HastElementContent[] | null | undefined => {
-	return null;
+export const xBlankToHast = (): ElementContent | ElementContent[] | undefined => {
+	return undefined;
 };

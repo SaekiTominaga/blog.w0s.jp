@@ -1,15 +1,14 @@
-import type { Properties } from 'hast';
+import type { ElementContent, Properties } from 'hast';
 import md5 from 'md5';
 import type { Code } from 'mdast';
-import type { H } from 'mdast-util-to-hast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
+import type { State } from 'mdast-util-to-hast';
 import config from '../../config.ts';
 
 /**
  * <pre><code>
  */
 
-export const codeToHast = (_state: H, node: Code): HastElementContent | HastElementContent[] | null | undefined => {
+export const codeToHast = (_state: State, node: Code): ElementContent | ElementContent[] | undefined => {
 	const { value, position, lang } = node;
 
 	let positionString = ''; // コードの位置情報（position プロパティ）を文字列化する
@@ -28,7 +27,7 @@ export const codeToHast = (_state: H, node: Code): HastElementContent | HastElem
 		codeProperties['className'] = [`lang-${lang}`];
 	}
 
-	const codeChildren: HastElementContent[] = [];
+	const codeChildren: ElementContent[] = [];
 	if (value.includes('\n')) {
 		/* 複数行の場合はクリップボードボタンを表示 */
 		codeChildren.push({

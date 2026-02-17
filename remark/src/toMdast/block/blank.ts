@@ -1,4 +1,4 @@
-import type { Paragraph } from 'mdast';
+import type { Paragraph, Root } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { visit, CONTINUE } from 'unist-util-visit';
@@ -13,7 +13,7 @@ interface XBlank extends Node {
 	type: typeof name;
 }
 
-const toMdast = (): Plugin => {
+const toMdast: Plugin<[], Root> = () => {
 	const BLANK_SIGN = '␣';
 
 	return (tree: Parent): void => {

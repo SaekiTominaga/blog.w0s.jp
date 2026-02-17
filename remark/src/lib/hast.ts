@@ -1,5 +1,5 @@
+import type { Element, ElementContent } from 'hast';
 import type { Heading } from 'mdast';
-import type { HastElementContent } from 'mdast-util-to-hast/lib/state.ts';
 import type { Icon as LinkIcon } from './link.ts';
 
 /**
@@ -10,14 +10,15 @@ import type { Icon as LinkIcon } from './link.ts';
  *
  * @returns Heading element
  */
-export const hn = (depth: Heading['depth'], children: HastElementContent[]): HastElementContent => {
+export const hn = (depth: Heading['depth'], children: ElementContent[]): ElementContent => {
 	const START_LEVEL = 2;
 
 	const level = depth + (START_LEVEL - 1);
 
-	const heading: HastElementContent = {
+	const heading: Element = {
 		type: 'element',
 		tagName: `h${String(level)}`,
+		properties: {},
 		children: children,
 	};
 	if (level > 6) {
@@ -39,8 +40,8 @@ export const hn = (depth: Heading['depth'], children: HastElementContent[]): Has
  *
  * @returns Element representing the host information of the link
  */
-export const linkInfo = (typeInfo: LinkIcon | undefined, hostInfo: LinkIcon | string | undefined): HastElementContent[] => {
-	const info: HastElementContent[] = [];
+export const linkInfo = (typeInfo: LinkIcon | undefined, hostInfo: LinkIcon | string | undefined): ElementContent[] => {
+	const info: ElementContent[] = [];
 
 	if (typeInfo !== undefined) {
 		info.push({
@@ -73,6 +74,7 @@ export const linkInfo = (typeInfo: LinkIcon | undefined, hostInfo: LinkIcon | st
 					{
 						type: 'element',
 						tagName: 'code',
+						properties: {},
 						children: [
 							{
 								type: 'text',
