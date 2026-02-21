@@ -1,9 +1,8 @@
 {
-	"extends": "@w0s/tsconfig",
+	"extends": "@w0s/tsconfig/bundler",
 	"include": ["**/*.ts"],
 	"compilerOptions": {
-		/* Modules */
-		"module": "es2022",
-		"moduleResolution": "node"
+		/* Emit */
+		"noEmit": true
 	}
 }

@@ -1,5 +1,5 @@
 {
-	"extends": "@w0s/tsconfig",
+	"extends": "@w0s/tsconfig/node",
 	"include": ["**/*.ts"],
 	"compilerOptions": {
 		"lib": ["ESNext.Array"]

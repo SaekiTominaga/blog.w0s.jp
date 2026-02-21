@@ -15,7 +15,7 @@
 		"build:svg": "node build/svg.ts -i image -o ../public -c svgo.config.js",
 		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" && brotli-cli compress -g \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/**/*.svg\" -m text",
 		"lint": "pnpm run /^lint:.*/",
-		"lint:ts": "tsc --project script --noEmit",
+		"lint:ts": "tsc --project script",
 		"lint:js": "eslint build/**/*.ts script/**/*.ts",
 		"lint:css": "stylelint style/**/*.css"
 	},
