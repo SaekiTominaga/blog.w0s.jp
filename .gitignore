@@ -2,12 +2,12 @@
 .env
 .env.*
 log4js.*.json
+*.tsbuildinfo
 
 /.html
 /.vscode/launch.json
 
 /frontend/.rollup.cache
-/frontend/script/tsconfig.tsbuildinfo
 
 /hono/dist
 

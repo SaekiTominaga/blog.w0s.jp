@@ -15,7 +15,7 @@
 		"@w0s/eslint-config": "9.4.1",
 		"@w0s/markuplint-config": "3.12.0",
 		"@w0s/stylelint-config": "4.18.1",
-		"@w0s/tsconfig": "1.7.0",
+		"@w0s/tsconfig": "2.0.1",
 		"prettier-plugin-ejs": "1.0.3",
 		"rimraf": "6.1.2",
 		"typescript": "5.9.3"
