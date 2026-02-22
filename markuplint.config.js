@@ -4,7 +4,7 @@ export default {
 	parser: {
 		'.ejs$': '@markuplint/ejs-parser',
 	},
-	excludeFiles: ['template/feed', 'template/sns', 'template/xml'],
+	excludeFiles: ['template/sns', 'template/xml'],
 	rules: {
 		'disallowed-element': ['base', 'style', 'h5', 'h6', 's', 'i', 'u', 'wbr', 'area'],
 		'class-naming': [
