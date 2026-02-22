@@ -6,7 +6,7 @@ export default {
 	},
 	excludeFiles: ['template/feed', 'template/sns', 'template/xml'],
 	rules: {
-		'disallowed-element': ['base', 'style', 'h5', 'h6', 's', 'i', 'u', 'wbr', 'area'],
+		'disallowed-element': ['noscript', 'embed', 'base', 'style', 'h5', 'h6', 's', 'i', 'u', 'wbr', 'area'],
 		'class-naming': [
 			'/^[lcpu]-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$/',
 			'/^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/',
