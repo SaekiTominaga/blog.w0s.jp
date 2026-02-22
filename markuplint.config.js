@@ -28,6 +28,22 @@ export default {
 			},
 		},
 		{
+			selector: 'button > svg[role="img"]',
+			rules: {
+				'wai-aria': {
+					options: {
+						checkingPresentationalChildren: false,
+					},
+				},
+			},
+		},
+		{
+			selector: '.p-book-item__link > a',
+			rules: {
+				'redundant-accessible-name': false,
+			},
+		},
+		{
 			selector: '.p-entry__body dl',
 			rules: {
 				'required-element': false,
@@ -43,6 +59,12 @@ export default {
 			selector: '.p-post-preview__messages',
 			rules: {
 				'wai-aria': false,
+			},
+		},
+		{
+			selector: 'label:has(> span) > input',
+			rules: {
+				'require-accessible-name': false /* https://github.com/markuplint/markuplint/issues/3283 */,
 			},
 		},
 	],
