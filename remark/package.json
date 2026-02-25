@@ -65,7 +65,7 @@
 		"unified": "11.0.5",
 		"unified-lint-rule": "3.0.1",
 		"unist-util-find-after": "5.0.0",
-		"unist-util-find-between-all": "1.1.3",
+		"unist-util-find-between-all": "1.1.6",
 		"unist-util-generated": "3.0.0",
 		"unist-util-is": "6.0.1",
 		"unist-util-remove": "4.0.0",
