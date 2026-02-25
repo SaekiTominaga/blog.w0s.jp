@@ -61,12 +61,6 @@ export default {
 				'wai-aria': false,
 			},
 		},
-		{
-			selector: 'label:has(> span) > input',
-			rules: {
-				'require-accessible-name': false /* https://github.com/markuplint/markuplint/issues/3283 */,
-			},
-		},
 	],
 	childNodeRules: [
 		{
