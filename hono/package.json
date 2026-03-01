@@ -4,7 +4,6 @@
 	"type": "module",
 	"scripts": {
 		"dev": "tsx --watch --tsconfig tsconfig.json src/app.ts",
-		"prebuild": "rimraf dist/* -g",
 		"build": "tsc",
 		"lint": "eslint @types/*.d.ts src/**/*.ts",
 		"pretest": "tsc --noEmit && pnpm -F frontend build && pnpm -F remark build",
