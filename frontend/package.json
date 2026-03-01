@@ -17,7 +17,7 @@
 		"lint": "pnpm run /^lint:.*/",
 		"lint:ts": "tsc --project script",
 		"lint:js": "eslint build/**/*.ts script/**/*.ts",
-		"lint:css": "stylelint style/**/*.css"
+		"lint:css": "stylelint -f verbose style/**/*.css"
 	},
 	"dependencies": {
 		"@w0s/base.css": "1.3.3",
