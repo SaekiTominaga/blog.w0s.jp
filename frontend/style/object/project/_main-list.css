@@ -42,6 +42,7 @@
 	}
 
 	& > li {
+		list-style-type: decimal; /* for Safari https://bugs.webkit.org/show_bug.cgi?id=204163 */
 		counter-increment: item;
 
 		&::marker {
