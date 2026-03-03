@@ -58,8 +58,8 @@ importers:
         specifier: 4.0.4
         version: 4.0.4
       '@w0s/input-file-preview':
-        specifier: 3.0.6
-        version: 3.0.6
+        specifier: 3.0.7
+        version: 3.0.7
       '@w0s/paapi-item-image-url-parser':
         specifier: 3.2.3
         version: 3.2.3
@@ -1232,8 +1232,8 @@ packages:
   '@w0s/html-escape@4.0.2':
     resolution: {integrity: sha512-zCHeJa8CgyBXK6+ywov6nnju/dagTeLVM68oEVSi6uap2UtT4d9RUQ5BGeh3t2cH37Ngcdr0sHadKGA4tRGprQ==}
 
-  '@w0s/input-file-preview@3.0.6':
-    resolution: {integrity: sha512-Rp4ADG2VWKFSoP+LSL5q5pgW//ln1DAXvR3v0fVQxhNMVj+9yfhnCGtodXqeEiLAL2o643VOr3PB+NIrSK2dUw==}
+  '@w0s/input-file-preview@3.0.7':
+    resolution: {integrity: sha512-aDKl1swGXm+uZA41Y08A2cYJ3o7rMI5OZAPQS65EyATgqvTaLMoTW09g6cD5ErCxJQW9Fx31G1JodaiNCPYIlQ==}
 
   '@w0s/isbn-verify@3.1.2':
     resolution: {integrity: sha512-BO+GkoYNCNLkG3Vx31/+vPI/ev9BYBzFI1p7HV1Ll70X10ZVJYF4QXjWMGK3Qb3Sd1oomzeiQYRj+LnFysnKyA==}
@@ -3610,6 +3610,10 @@ packages:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
     engines: {node: '>=18'}
 
+  whatwg-mimetype@5.0.0:
+    resolution: {integrity: sha512-sXcNcHOC51uPGF0P/D4NVtrkjSU2fNsm9iog4ZvZJsL3rjoDAzXZhkm2MWt1y+PUdggKAYVoMAIYcs78wJ51Cw==}
+    engines: {node: '>=20'}
+
   which-boxed-primitive@1.1.1:
     resolution: {integrity: sha512-TbX3mj8n0odCBFVlY8AxkqcHASw3L60jIuF8jFP78az3C2YhmGvqbHBpAjTRH2/xqYunrJ9g1jSyjCjpoWzIAA==}
     engines: {node: '>= 0.4'}
@@ -4559,10 +4563,10 @@ snapshots:
 
   '@w0s/html-escape@4.0.2': {}
 
-  '@w0s/input-file-preview@3.0.6':
+  '@w0s/input-file-preview@3.0.7':
     dependencies:
       '@w0s/html-escape': 4.0.2
-      whatwg-mimetype: 4.0.0
+      whatwg-mimetype: 5.0.0
 
   '@w0s/isbn-verify@3.1.2': {}
 
@@ -7635,6 +7639,8 @@ snapshots:
       vfile-message: 4.0.3
 
   whatwg-mimetype@4.0.0: {}
+
+  whatwg-mimetype@5.0.0: {}
 
   which-boxed-primitive@1.1.1:
     dependencies:
