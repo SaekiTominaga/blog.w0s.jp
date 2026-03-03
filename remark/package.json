@@ -78,7 +78,7 @@
 		"@types/md5": "2.3.6",
 		"@types/mdast": "4.0.4",
 		"@types/unist": "3.0.3",
-		"mdast-util-from-markdown": "2.0.2",
+		"mdast-util-from-markdown": "2.0.3",
 		"micromark-util-types": "2.0.2"
 	},
 	"packageManager": "pnpm@10.28.1"
