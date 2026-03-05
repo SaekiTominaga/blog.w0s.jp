@@ -33,7 +33,7 @@
 		"@w0s/tab": "5.0.2",
 		"chokidar": "5.0.0",
 		"slash": "5.1.0",
-		"svgo": "4.0.0"
+		"svgo": "4.0.1"
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "4.0.0",
