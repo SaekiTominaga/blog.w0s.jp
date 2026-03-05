@@ -12,7 +12,7 @@
 	},
 	"dependencies": {
 		"@atproto/api": "0.19.0",
-		"@hono/node-server": "1.19.9",
+		"@hono/node-server": "1.19.10",
 		"@log4js-node/smtp": "2.0.8",
 		"@w0s/env-value-type": "1.0.1",
 		"@w0s/html-escape": "4.0.2",
