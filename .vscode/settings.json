@@ -6,6 +6,7 @@
 	"editor.renderWhitespace": "boundary",
 	"eslint.validate": ["typescript"],
 	"search.exclude": {
+		"/frontend/.rollup.cache": true,
 		"/hono/dist": true,
 		"/public/**/*.svg": true,
 		"/public/json": true,
