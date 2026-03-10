@@ -3,7 +3,7 @@ import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
 import type { Clear } from '../../@types/api.d.ts';
-import MessageImage from './unique/MessageImage.ts';
+import messageImage from './unique/messageImage.ts';
 import Preview from './unique/Preview.ts';
 import reportJsError from './util/reportJsError.ts';
 import trustedTypes from './util/trustedTypes.ts';
@@ -50,14 +50,12 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 			preview: messagePreviewElement,
 		});
 
-		const messageImage = new MessageImage({
-			preview: messagePreviewElement,
-			image: selectImageElement,
-		});
-
 		const exec = async (): Promise<void> => {
 			await preview.exec();
-			messageImage.exec();
+			messageImage({
+				preview: messagePreviewElement,
+				image: selectImageElement,
+			});
 		};
 
 		await exec();
