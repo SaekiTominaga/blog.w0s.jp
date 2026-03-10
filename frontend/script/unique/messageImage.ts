@@ -28,15 +28,15 @@ const pre = (selectImageTemplate: HTMLTemplateElement): string | undefined => {
 /**
  * 記事を解析して画像情報を抜粋する
  *
- * @param options - Option
+ * @param element - HTML 要素
  */
 const messageImage = (
-	options: Readonly<{
+	element: Readonly<{
 		preview: HTMLTemplateElement; // 本文プレビューを表示する要素
 		image: HTMLTemplateElement; // 選択画像を表示する要素
 	}>,
 ) => {
-	const { preview: previewTemplate, image: selectImageTemplate } = options;
+	const { preview: previewTemplate, image: selectImageTemplate } = element;
 
 	const selectedImage = pre(selectImageTemplate);
 
