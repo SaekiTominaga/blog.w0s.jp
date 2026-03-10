@@ -46,15 +46,15 @@ const messageImage = (
 	}
 
 	/* 本文内のテキストから画像情報を抜き出す */
-	const imageFileNames = [...previewElement.querySelectorAll<HTMLImageElement>('img[src^="https://media.w0s.jp/thumbimage/blog/"]')].map((element) => {
-		const { pathname } = new URL(element.src);
+	const imageFileNames = [...previewElement.querySelectorAll<HTMLImageElement>('img[src^="https://media.w0s.jp/thumbimage/blog/"]')].map((image) => {
+		const { pathname } = new URL(image.src);
 		return pathname.substring(pathname.lastIndexOf('/') + 1);
 	});
 	const youtubeImageUrls = [...previewElement.querySelectorAll<HTMLAnchorElement>('a[href^="https://www.youtube.com/watch?v="]')].map(
-		(element) => `https://i1.ytimg.com/vi/${new URL(element.href).searchParams.get('v') ?? ''}/hqdefault.jpg`,
+		(anchor) => `https://i1.ytimg.com/vi/${new URL(anchor.href).searchParams.get('v') ?? ''}/hqdefault.jpg`,
 	);
-	const amazonImageUrls = [...previewElement.querySelectorAll<HTMLImageElement>('img[src^="https://m.media-amazon.com/images/"]')].map((element) => {
-		const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(element.src));
+	const amazonImageUrls = [...previewElement.querySelectorAll<HTMLImageElement>('img[src^="https://m.media-amazon.com/images/"]')].map((image) => {
+		const paapiItemImageUrlParser = new PaapiItemImageUrlParser(new URL(image.src));
 		paapiItemImageUrlParser.removeSize();
 		return paapiItemImageUrlParser.toString();
 	});
