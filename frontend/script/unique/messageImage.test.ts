@@ -1,9 +1,11 @@
 import { strict as assert } from 'node:assert';
-import { test } from 'node:test';
+import { before, test } from 'node:test';
 import { JSDOM } from 'jsdom';
 import messageImage from './messageImage.ts';
 
-global.document = new JSDOM().window.document;
+before(() => {
+	global.document = new JSDOM().window.document;
+});
 
 await test('init clear', () => {
 	const { document } = new JSDOM(`
@@ -22,12 +24,12 @@ await test('init clear', () => {
 
 	assert.equal(document.querySelectorAll('#target').length, 1);
 
-	const preview = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-	const selectImage = document.querySelector<HTMLTemplateElement>('#select-image')!;
+	const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+	const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 	messageImage({
-		preview: preview,
-		image: selectImage,
+		preview: previewTemplate,
+		image: selectImageTemplate,
 	});
 
 	assert.equal(document.querySelectorAll('#target').length, 0);
@@ -52,15 +54,15 @@ await test('message analysis', async (t) => {
 </div>
 `).window;
 
-		const preview = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImage = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: preview,
-			image: selectImage,
+			preview: previewTemplate,
+			image: selectImageTemplate,
 		});
 
-		const parent = selectImage.parentElement!;
+		const parent = selectImageTemplate.parentElement!;
 		const radio = parent.querySelector<HTMLInputElement>('input[type=radio]')!;
 		const image = parent.querySelector<HTMLImageElement>('img')!;
 
@@ -88,15 +90,15 @@ await test('message analysis', async (t) => {
 </div>
 `).window;
 
-		const preview = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImage = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: preview,
-			image: selectImage,
+			preview: previewTemplate,
+			image: selectImageTemplate,
 		});
 
-		const parent = selectImage.parentElement!;
+		const parent = selectImageTemplate.parentElement!;
 		const radio = parent.querySelector<HTMLInputElement>('input[type=radio]')!;
 		const image = parent.querySelector<HTMLImageElement>('img')!;
 
@@ -124,15 +126,15 @@ await test('message analysis', async (t) => {
 </div>
 `).window;
 
-		const preview = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImage = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: preview,
-			image: selectImage,
+			preview: previewTemplate,
+			image: selectImageTemplate,
 		});
 
-		const parent = selectImage.parentElement!;
+		const parent = selectImageTemplate.parentElement!;
 		const radio = parent.querySelector<HTMLInputElement>('input[type=radio]')!;
 		const image = parent.querySelector<HTMLImageElement>('img')!;
 
@@ -162,15 +164,15 @@ await test('selected', async (t) => {
 </div>
 `).window;
 
-		const preview = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImage = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: preview,
-			image: selectImage,
+			preview: previewTemplate,
+			image: selectImageTemplate,
 		});
 
-		const radio = selectImage.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
+		const radio = selectImageTemplate.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
 
 		assert.equal(radio.value, 'foo.jpg');
 		assert.equal(radio.checked, false);
@@ -194,15 +196,15 @@ await test('selected', async (t) => {
 </div>
 `).window;
 
-		const preview = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImage = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: preview,
-			image: selectImage,
+			preview: previewTemplate,
+			image: selectImageTemplate,
 		});
 
-		const radio = selectImage.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
+		const radio = selectImageTemplate.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
 
 		assert.equal(radio.value, 'foo.jpg');
 		assert.equal(radio.checked, true);
@@ -229,15 +231,15 @@ await test('selected', async (t) => {
 </div>
 `).window;
 
-		const preview = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImage = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: preview,
-			image: selectImage,
+			preview: previewTemplate,
+			image: selectImageTemplate,
 		});
 
-		const radio = selectImage.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
+		const radio = selectImageTemplate.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
 
 		assert.equal(radio.value, 'foo.jpg');
 		assert.equal(radio.checked, true);

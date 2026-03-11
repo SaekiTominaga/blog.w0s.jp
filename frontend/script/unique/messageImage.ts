@@ -3,15 +3,15 @@ import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 /**
  * 本処理前に行う処理
  *
- * @param selectImageTemplate - 選択画像を表示する要素
+ * @param template - 選択画像を表示する要素
  *
  * @returns ラジオボタンで選択された値（画像ファイル名 or 外部サービス URL）
  */
-const pre = (selectImageTemplate: HTMLTemplateElement): string | undefined => {
+const pre = (template: HTMLTemplateElement): string | undefined => {
 	let selectedImage: string | undefined;
 
-	Array.from(selectImageTemplate.parentNode?.children ?? [])
-		.filter((element) => element !== selectImageTemplate)
+	Array.from(template.parentNode?.children ?? [])
+		.filter((element) => element !== template)
 		.forEach((element) => {
 			const radioCheckedElement = element.querySelector<HTMLInputElement>('input[type="radio"]:checked');
 			if (radioCheckedElement !== null) {
