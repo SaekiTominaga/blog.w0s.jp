@@ -4,7 +4,7 @@ import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
 import type { Clear } from '../../@types/api.d.ts';
 import messageImage from './unique/messageImage.ts';
-import Preview from './unique/Preview.ts';
+import preview from './unique/preview.ts';
 import reportJsError from './util/reportJsError.ts';
 import trustedTypes from './util/trustedTypes.ts';
 
@@ -44,14 +44,12 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 	const selectImageElement = document.getElementById('select-image') as HTMLTemplateElement | null;
 
 	if (messageCtrlElement !== null && markdownMessagesElement !== null && messagePreviewElement !== null && selectImageElement !== null) {
-		const preview = new Preview({
-			ctrl: messageCtrlElement,
-			messages: markdownMessagesElement,
-			preview: messagePreviewElement,
-		});
-
 		const exec = async (): Promise<void> => {
-			await preview.exec();
+			await preview({
+				ctrl: messageCtrlElement,
+				messages: markdownMessagesElement,
+				preview: messagePreviewElement,
+			});
 			messageImage({
 				preview: messagePreviewElement,
 				image: selectImageElement,
