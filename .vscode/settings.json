@@ -6,14 +6,15 @@
 	"editor.renderWhitespace": "boundary",
 	"eslint.validate": ["typescript"],
 	"search.exclude": {
+		"**/pnpm-lock.yaml": true,
+		"**/tsconfig.tsbuildinfo": true,
 		"/frontend/.rollup.cache": true,
 		"/hono/dist": true,
 		"/public/**/*.svg": true,
 		"/public/json": true,
 		"/public/script": true,
 		"/public/style": true,
-		"/remark/dist": true,
-		"**/pnpm-lock.yaml": true
+		"/remark/dist": true
 	},
 	"stylelint.validate": ["css"]
 }
