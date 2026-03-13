@@ -140,8 +140,8 @@ importers:
   hono:
     dependencies:
       '@atproto/api':
-        specifier: 0.19.1
-        version: 0.19.1
+        specifier: 0.19.3
+        version: 0.19.3
       '@hono/node-server':
         specifier: 1.19.10
         version: 1.19.10(hono@4.11.4)
@@ -421,8 +421,8 @@ packages:
   '@asamuzakjp/nwsapi@2.3.9':
     resolution: {integrity: sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==}
 
-  '@atproto/api@0.19.1':
-    resolution: {integrity: sha512-GE94kx6PBsBAUcFne+cX3c77ZVr3/pvfeeG+GtZ1QFE8U9brrXoCoN6qwtOg6PfZk8UvpyCxLyWNfiC2GfCSJg==}
+  '@atproto/api@0.19.3':
+    resolution: {integrity: sha512-G8YpBpRouHdTAIagi/QQIUZOhGd1jfBQWkJy9QfxAzjjEpPvaVOSk4e1S85QzGLm/xbzVONzGkmdtiOSfP6wVg==}
 
   '@atproto/common-web@0.4.18':
     resolution: {integrity: sha512-ilImzP+9N/mtse440kN60pGrEzG7wi4xsV13nGeLrS+Zocybc/ISOpKlbZM13o+twPJ+Q7veGLw9CtGg0GAFoQ==}
@@ -3874,7 +3874,7 @@ snapshots:
 
   '@asamuzakjp/nwsapi@2.3.9': {}
 
-  '@atproto/api@0.19.1':
+  '@atproto/api@0.19.3':
     dependencies:
       '@atproto/common-web': 0.4.18
       '@atproto/lexicon': 0.6.2
