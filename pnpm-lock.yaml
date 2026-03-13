@@ -143,8 +143,8 @@ importers:
         specifier: 0.19.3
         version: 0.19.3
       '@hono/node-server':
-        specifier: 1.19.10
-        version: 1.19.10(hono@4.11.4)
+        specifier: 1.19.11
+        version: 1.19.11(hono@4.11.4)
       '@log4js-node/smtp':
         specifier: 2.0.8
         version: 2.0.8
@@ -769,8 +769,8 @@ packages:
   '@ezez/utils@1.9.0':
     resolution: {integrity: sha512-pIuKqUxf+U13Xc49x9k9WbIpGSVqzgmvTrNHEMOKS1XUpwT2F/dDxUjadJmwRLprXRmkDfTtOBU03v9b0+WqAw==}
 
-  '@hono/node-server@1.19.10':
-    resolution: {integrity: sha512-hZ7nOssGqRgyV3FVVQdfi+U4q02uB23bpnYpdvNXkYTRRyWx84b7yf1ans+dnJ/7h41sGL3CeQTfO+ZGxuO+Iw==}
+  '@hono/node-server@1.19.11':
+    resolution: {integrity: sha512-dr8/3zEaB+p0D2n/IUrlPF1HZm586qgJNXK1a9fhg/PzdtkK7Ksd5l312tJX2yBuALqDYBlG20QEbayqPyxn+g==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
@@ -4148,7 +4148,7 @@ snapshots:
 
   '@ezez/utils@1.9.0': {}
 
-  '@hono/node-server@1.19.10(hono@4.11.4)':
+  '@hono/node-server@1.19.11(hono@4.11.4)':
     dependencies:
       hono: 4.11.4
 
