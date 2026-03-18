@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { Hono } from 'hono';
+import type { Variables } from '../app.ts';
 import clear from '../process/dsg.ts';
 import createFeed from '../process/feed.ts';
 import createNewlyJson from '../process/newlyJson.ts';
@@ -9,7 +10,7 @@ import type { Clear } from '../../../@types/api.d.ts';
 /**
  * DSG キャッシュクリア
  */
-export const clearApp = new Hono().post(async (context) => {
+export const clearApp = new Hono<{ Variables: Variables }>().post(async (context) => {
 	const [clearDSGResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
 		clear(),
 		createFeed(),

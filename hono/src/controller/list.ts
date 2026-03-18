@@ -4,7 +4,7 @@ import { Hono, type Context } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { env } from '@w0s/env-value-type';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
-import MarkdownTitle from '../../../remark/dist/Title.js';
+import type { Variables } from '../app.ts';
 import configHono from '../config/hono.ts';
 import configList from '../config/list.ts';
 import ListDao from '../db/List.ts';
@@ -12,12 +12,13 @@ import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/list.ts';
 import type { Entries } from '../../@types/view.d.ts';
+import MarkdownTitle from '../../../remark/dist/Title.js';
 
 /**
  * 記事リスト
  */
 
-const commonProcess = async (context: Context, page = 1): Promise<Response> => {
+const commonProcess = async (context: Context<{ Variables: Variables }>, page = 1): Promise<Response> => {
 	const { req } = context;
 
 	const dao = new ListDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
@@ -91,9 +92,9 @@ const commonProcess = async (context: Context, page = 1): Promise<Response> => {
 	return await rendering.generation(html);
 };
 
-export const topApp = new Hono().get('/', async (context) => commonProcess(context));
+export const topApp = new Hono<{ Variables: Variables }>().get('/', async (context) => commonProcess(context));
 
-export const listApp = new Hono().get('/:page{[1-9][0-9]*}', validatorParam, async (context) => {
+export const listApp = new Hono<{ Variables: Variables }>().get('/:page{[1-9][0-9]*}', validatorParam, async (context) => {
 	const { req } = context;
 
 	const { page } = req.valid('param');

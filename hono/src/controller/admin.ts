@@ -3,8 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import ejs from 'ejs';
 import { Hono, type Context } from 'hono';
-import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
+import type { Variables } from '../app.ts';
 import configHono from '../config/hono.ts';
 import configAdmin from '../config/admin.ts';
 import PostDao from '../db/Post.ts';
@@ -43,7 +43,6 @@ interface EntryData {
 /**
  * 記事投稿
  */
-const logger = Log4js.getLogger('entry');
 
 /**
  * 初期画面表示
@@ -130,7 +129,7 @@ const rendering = async (
 	return context.html(html);
 };
 
-export const adminApp = new Hono()
+export const adminApp = new Hono<{ Variables: Variables }>()
 	.get(validatorQuery, async (context) => {
 		const { req } = context;
 
@@ -181,6 +180,7 @@ export const adminApp = new Hono()
 	.post('/post', validatorPostForm, async (context) => {
 		/* 記事投稿 */
 		const { req } = context;
+		const logger = context.get('logger');
 
 		const requestForm = req.valid('form');
 
@@ -230,7 +230,7 @@ export const adminApp = new Hono()
 					relationIds: entryData.relationIds,
 				},
 			);
-			logger.info('新規記事追加', entryData.id);
+			logger.info(`新規記事追加: ${String(entryData.id)}`);
 
 			entryUrl = getEntryUrl(entryData.id);
 
@@ -266,7 +266,7 @@ export const adminApp = new Hono()
 					timestampUpdate: entryData.timestampUpdate,
 				},
 			);
-			logger.info('既存記事更新', entryData.id);
+			logger.info(`既存記事更新: ${String(entryData.id)}`);
 
 			entryUrl = getEntryUrl(entryData.id);
 
@@ -313,6 +313,7 @@ export const adminApp = new Hono()
 	.post('/upload', validatorUploadForm, async (context) => {
 		/* メディアアップロード */
 		const { req } = context;
+		const logger = context.get('logger');
 
 		const requestForm = req.valid('form');
 
@@ -323,7 +324,7 @@ export const adminApp = new Hono()
 				const tempFilePath = `${env('ROOT')}/${env('NODE_TEMP_DIR')}/${tempFileName}`;
 
 				await fs.promises.writeFile(tempFilePath, file.stream());
-				logger.info('Temp file upload success', tempFilePath);
+				logger.info(`Temp file upload success: ${tempFilePath}`);
 
 				return { file, tempFilePath };
 			}),
@@ -343,7 +344,7 @@ export const adminApp = new Hono()
 						temp: path.resolve(tempFilePath),
 						overwrite: requestForm.overwrite,
 					};
-					logger.info('Fetch', endpoint, file.name);
+					logger.info(`Fetch: ${endpoint} ${file.name}`);
 
 					try {
 						const response = await fetch(endpoint, {
@@ -354,7 +355,7 @@ export const adminApp = new Hono()
 							body: JSON.stringify(bodyObject),
 						});
 						if (!response.ok) {
-							logger.error('Fetch error', endpoint);
+							logger.error(`Fetch error: ${endpoint}`);
 
 							results.push({
 								success: false,
@@ -368,7 +369,7 @@ export const adminApp = new Hono()
 						switch (responseFile.code) {
 							case configAdmin.mediaUpload.apiResponse.success.code:
 								/* 成功 */
-								logger.info('File upload success', responseFile.name);
+								logger.info(`File upload success: ${responseFile.name}`);
 
 								results.push({
 									success: true,
@@ -378,7 +379,7 @@ export const adminApp = new Hono()
 								break;
 							case configAdmin.mediaUpload.apiResponse.type.code:
 								/* MIME エラー */
-								logger.warn('File upload failure', responseFile.name);
+								logger.warn(`File upload failure: ${responseFile.name}`);
 
 								results.push({
 									success: false,
@@ -388,7 +389,7 @@ export const adminApp = new Hono()
 								break;
 							case configAdmin.mediaUpload.apiResponse.overwrite.code:
 								/* 上書きエラー */
-								logger.warn('File upload failure', responseFile.name);
+								logger.warn(`File upload failure: ${responseFile.name}`);
 
 								results.push({
 									success: false,
@@ -398,7 +399,7 @@ export const adminApp = new Hono()
 								break;
 							case configAdmin.mediaUpload.apiResponse.size.code:
 								/* サイズ超過エラー */
-								logger.warn('File upload failure', responseFile.name);
+								logger.warn(`File upload failure: ${responseFile.name}`);
 
 								results.push({
 									success: false,
@@ -407,7 +408,7 @@ export const adminApp = new Hono()
 								});
 								break;
 							default:
-								logger.warn('File upload failure', responseFile.name);
+								logger.warn(`File upload failure: ${responseFile.name}`);
 
 								results.push({
 									success: false,
@@ -431,12 +432,12 @@ export const adminApp = new Hono()
 				uploadFiles.map(async ({ tempFilePath }) => {
 					/* 一時ファイルを削除する */
 					if (!fs.existsSync(tempFilePath)) {
-						logger.info('Temp file have already been deleted', tempFilePath);
+						logger.info(`Temp file have already been deleted: ${tempFilePath}`);
 						return;
 					}
 
 					await fs.promises.unlink(tempFilePath);
-					logger.info('Temp file delete success', tempFilePath);
+					logger.info(`Temp file delete success: ${tempFilePath}`);
 				}),
 			);
 		}

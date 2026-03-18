@@ -1,12 +1,12 @@
 import ejs from 'ejs';
-import Log4js from 'log4js';
 import { createRestAPIClient as mastodonRest } from 'masto';
 import { env } from '@w0s/env-value-type';
+import { getLogger } from '../logger.ts';
 import configMastodon from '../config/mastodon.ts';
 import type { Normal as ProcessResult } from '../../@types/process.d.ts';
 import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
 
-const logger = Log4js.getLogger('Mastodon');
+const logger = getLogger('Mastodon');
 
 /**
  * 投稿本文を組み立てる
@@ -54,7 +54,7 @@ const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 
 		const url = status.url ?? status.uri;
 
-		logger.info('Mastodon posted success', url);
+		logger.info(`Mastodon posted success: ${url}`);
 
 		return { success: true, message: `${configMastodon.processMessage.success} ${url}` };
 	} catch (e) {

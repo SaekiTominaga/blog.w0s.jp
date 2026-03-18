@@ -40,6 +40,12 @@ export default [
 		},
 	},
 	{
+		files: ['src/logger.ts'],
+		rules: {
+			'no-console': 'off',
+		},
+	},
+	{
 		files: ['src/db/**/*.ts'],
 		rules: {
 			'@typescript-eslint/no-non-null-assertion': 'off',
