@@ -14,7 +14,7 @@
 		"@w0s/html-escape": "4.0.2",
 		"@w0s/isbn-verify": "3.1.2",
 		"@w0s/paapi-item-image-url-parser": "3.2.3",
-		"@w0s/sqlite-utility": "2.0.0",
+		"@w0s/sqlite-utility": "2.0.1",
 		"better-sqlite3": "12.6.2",
 		"dayjs": "1.11.19",
 		"github-slugger": "2.0.0",
