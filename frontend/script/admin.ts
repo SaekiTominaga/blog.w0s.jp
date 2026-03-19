@@ -2,7 +2,7 @@ import formBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
 import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
-import type { Clear } from '../../@types/api.d.ts';
+import type { Clear, Media } from '../../@types/api.d.ts';
 import messageImage from './unique/messageImage.ts';
 import preview from './unique/preview.ts';
 import reportJsError from './util/reportJsError.ts';
@@ -69,15 +69,36 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 	}
 }
 
-/* DSG キャッシュクリア */
+/* メディア登録 */
 {
-	const buttonElement = document.getElementById('clear-button') as HTMLButtonElement | null; // 実行ボタン
-	const resultElement = document.getElementById('clear-result') as HTMLTemplateElement | null; // 実行結果を表示する要素
+	const formElement = document.getElementById('media-form') as HTMLFormElement | null; // 送信フォーム
+	const resultElement = document.getElementById('media-result') as HTMLTemplateElement | null; // 実行結果を表示する要素
 
 	if (resultElement !== null) {
-		buttonElement?.addEventListener('click', async () => {
-			const response = await fetch('/api/clear', {
+		formElement?.addEventListener('submit', async (ev: SubmitEvent) => {
+			ev.preventDefault();
+
+			const elements = (ev.target as HTMLFormElement).elements;
+
+			const filesElement = elements.namedItem('files');
+			const overwriteElement = elements.namedItem('overwrite');
+
+			const files = filesElement instanceof HTMLInputElement ? filesElement.files : null;
+			const overwrite = overwriteElement instanceof HTMLInputElement && overwriteElement.checked;
+
+			const formData = new FormData();
+			if (files !== null) {
+				for (const file of files) {
+					formData.append('files', file);
+				}
+			}
+			if (overwrite) {
+				formData.append('overwrite', 'on');
+			}
+
+			const response = await fetch('/api/media', {
 				method: 'POST',
+				body: formData,
 			});
 
 			/* いったんクリア */
@@ -95,7 +116,7 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 			}
 
 			if (response.ok) {
-				const responseJson = (await response.json()) as Clear;
+				const responseJson = (await response.json()) as Media;
 
 				const fragment = document.createDocumentFragment();
 				responseJson.forEach((result) => {
@@ -115,10 +136,73 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 						message.textContent = result.message;
 					}
 
+					const filename = (result.success ? successElement : errorEessage)?.querySelector<HTMLElement>('.js-filename');
+					if (filename !== null && filename !== undefined) {
+						filename.textContent = result.filename;
+					}
+
 					fragment.appendChild(clone);
 				});
 				resultElement.parentNode?.appendChild(fragment);
 			}
 		});
+	}
+}
+
+/* DSG キャッシュクリア */
+{
+	const buttonElement = document.getElementById('clear-button') as HTMLButtonElement | null; // 実行ボタン
+	const resultElement = document.getElementById('clear-result') as HTMLTemplateElement | null; // 実行結果を表示する要素
+
+	if (resultElement !== null) {
+		buttonElement?.addEventListener(
+			'click',
+			async () => {
+				const response = await fetch('/api/clear', {
+					method: 'POST',
+				});
+
+				/* いったんクリア */
+				Array.from(resultElement.parentNode?.children ?? []).forEach((element) => {
+					if (element === resultElement) {
+						return;
+					}
+
+					element.remove();
+				});
+
+				const hiddenElement = resultElement.closest<HTMLElement>('[hidden]');
+				if (hiddenElement !== null) {
+					hiddenElement.hidden = false;
+				}
+
+				if (response.ok) {
+					const responseJson = (await response.json()) as Clear;
+
+					const fragment = document.createDocumentFragment();
+					responseJson.forEach((result) => {
+						const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+						const successElement = clone.querySelector<HTMLElement>('.js-success');
+						const errorEessage = clone.querySelector<HTMLElement>('.js-error');
+						if (successElement !== null) {
+							successElement.hidden = !result.success;
+						}
+						if (errorEessage !== null) {
+							errorEessage.hidden = result.success;
+						}
+
+						const message = (result.success ? successElement : errorEessage)?.querySelector<HTMLElement>('.js-message');
+						if (message !== null && message !== undefined) {
+							message.textContent = result.message;
+						}
+
+						fragment.appendChild(clone);
+					});
+					resultElement.parentNode?.appendChild(fragment);
+				}
+			},
+			{ passive: true },
+		);
 	}
 }

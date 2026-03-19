@@ -272,47 +272,21 @@
 						</form>
 					</section>
 
-					<section class="p-section -hdg-a" id="clear">
-						<div class="p-section__hdg">
-							<h2>DSG のキャッシュクリア</h2>
-						</div>
-
-						<p><button type="button" class="c-submit" id="clear-button">キャッシュクリア</button></p>
-
-						<ul class="p-form-results" hidden="">
-							<template id="clear-result">
-								<li class="p-form-results__item -success js-success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message js-message"></span></li>
-								<li class="p-form-results__item -error js-error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message js-message"></span></li>
-							</template>
-						</ul>
-					</section>
-
 					<section class="p-section -hdg-a" id="media">
 						<div class="p-section__hdg">
-							<h2>画像、動画登録</h2>
+							<h2>メディア登録</h2>
 						</div>
 
-						<form action="/admin/upload#media" method="post" enctype="multipart/form-data" class="c-stack js-submit-overlay" data-overlayed-by="form-submit-overlay">
-							<%_ if (uploadResults.length > 0) { _%>
-							<ul class="p-form-results">
-								<%_ for (const result of uploadResults) { _%><%_ if (result.success) { _%>
-								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %>: <%= result.filename %></span></li>
-								<%_ } else { _%>
-								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %>: <%= result.filename %></span></li>
-								<%_ } _%>
-								<%_ } _%>
-							</ul>
-							<%_ } _%>
-
+						<form method="post" enctype="multipart/form-data" class="c-stack" id="media-form">
 							<div class="p-form-grid">
 								<div class="p-form-grid__group">
 									<fieldset>
 										<legend class="p-form-grid__legend"><label for="c-input-media" class="c-label">ファイル</label></legend>
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
-												<p><input type="file" class="c-input-file js-input-file-preview" id="c-input-media" name="media" accept="image/*,video/*" required="" multiple="" data-preview="image-preview" /></p>
+												<p><input type="file" class="c-input-file js-input-file-preview" id="c-input-media" name="files" accept="image/*,video/*" required="" multiple="" data-preview="image-preview" /></p>
 												<p>
-													<label class="c-label -check"><input type="checkbox" name="overwrite" value="1" /><span class="c-label__text">上書き許可</span></label>
+													<label class="c-label -check"><input type="checkbox" name="overwrite" /><span class="c-label__text">上書き許可</span></label>
 												</p>
 											</div>
 											<div class="c-form-controls">
@@ -333,6 +307,34 @@
 								<p><button class="c-submit">ファイル送信</button></p>
 							</div>
 						</form>
+
+						<ul class="p-form-results" hidden="">
+							<template id="media-result">
+								<li class="p-form-results__item -success js-success">
+									<span class="p-form-results__mark">✔</span>
+									<span class="p-form-results__message"><span class="js-message"></span>: <code class="js-filename"></code></span>
+								</li>
+								<li class="p-form-results__item -error js-error">
+									<span class="p-form-results__mark">⚠</span>
+									<span class="p-form-results__message"><span class="js-message"></span>: <code class="js-filename"></code></span>
+								</li>
+							</template>
+						</ul>
+					</section>
+
+					<section class="p-section -hdg-a" id="clear">
+						<div class="p-section__hdg">
+							<h2>DSG のキャッシュクリア</h2>
+						</div>
+
+						<p><button type="button" class="c-submit" id="clear-button">キャッシュクリア</button></p>
+
+						<ul class="p-form-results" hidden="">
+							<template id="clear-result">
+								<li class="p-form-results__item -success js-success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message js-message"></span></li>
+								<li class="p-form-results__item -error js-error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message js-message"></span></li>
+							</template>
+						</ul>
 					</section>
 
 					<section class="p-section -hdg-a">

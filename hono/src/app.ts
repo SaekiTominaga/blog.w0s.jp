@@ -10,12 +10,13 @@ import { env } from '@w0s/env-value-type';
 import { escape } from '@w0s/html-escape';
 import { getLogger } from './logger.ts';
 import config from './config/hono.ts';
-import { categoryApp } from './controller/category.ts';
-import { entryApp } from './controller/entry.ts';
-import { topApp, listApp } from './controller/list.ts';
 import { adminApp } from './controller/admin.ts';
-import { previewApp } from './controller/preview.ts';
+import { categoryApp } from './controller/category.ts';
 import { clearApp } from './controller/clear.ts';
+import { entryApp } from './controller/entry.ts';
+import { listApp, topApp } from './controller/list.ts';
+import { mediaApp } from './controller/media.ts';
+import { previewApp } from './controller/preview.ts';
 import { basicAuth } from './util/auth.ts';
 import {
 	supportCompressionEncoding as supportCompressEncodingHeader,
@@ -199,6 +200,7 @@ const basicAuthHandler = await basicAuth({
 });
 app.use(`/admin/*`, basicAuthHandler);
 app.use(`/api/clear`, basicAuthHandler);
+app.use(`/api/media`, basicAuthHandler);
 
 /* Routes */
 app.route('/', topApp);
@@ -207,6 +209,7 @@ app.route('/entry/', entryApp);
 app.route('/category/', categoryApp);
 app.route('/admin/', adminApp);
 app.route('/api/preview', previewApp);
+app.route('/api/media', mediaApp);
 app.route('/api/clear', clearApp);
 
 /* Error pages */

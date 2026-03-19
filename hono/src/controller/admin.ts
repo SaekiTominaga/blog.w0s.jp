@@ -1,6 +1,3 @@
-import crypto from 'node:crypto';
-import fs from 'node:fs';
-import path from 'node:path';
 import ejs from 'ejs';
 import { Hono, type Context } from 'hono';
 import { env } from '@w0s/env-value-type';
@@ -19,9 +16,7 @@ import { getEntryUrl } from '../util/blogUrl.ts';
 import { csp as cspHeader } from '../util/httpHeader.ts';
 import { query as validatorQuery, type RequestQuery } from '../validator/admin.ts';
 import { form as validatorPostForm } from '../validator/adminPost.ts';
-import { form as validatorUploadForm } from '../validator/adminUpload.ts';
-import type { Upload } from '../../../@types/api.d.ts';
-import type { Normal as ProcessResult, Media as ProcessMediaResult } from '../../@types/process.d.ts';
+import type { Normal as ProcessResult } from '../../@types/process.d.ts';
 import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
 import type { Categories } from '../../@types/view.d.ts';
 
@@ -72,13 +67,9 @@ const rendering = async (
 		validate?: Readonly<{
 			entrySelect?: readonly string[]; // 記事選択
 			entryPost?: readonly string[]; // 記事投稿
-			viewUpdate?: readonly string[]; // View アップデート反映
-			media?: readonly string[]; // メディアアップロード
 		}>;
 		results?: Readonly<{
 			entryPost?: readonly ProcessResult[]; // 記事投稿
-			viewUpdate?: readonly ProcessResult[]; // View アップデート反映
-			media?: readonly ProcessMediaResult[]; // メディアアップロード
 		}>;
 	}>,
 ): Promise<Response> => {
@@ -116,8 +107,6 @@ const rendering = async (
 		selectValidates: validate?.entrySelect ?? [],
 		postValidates: validate?.entryPost ?? [],
 		postResults: results?.entryPost ?? [],
-		updateResults: results?.viewUpdate ?? [],
-		uploadResults: results?.media ?? [],
 		latestId: latestId, // 最新記事 ID
 		categoryMaster: categoryMasterView, // カテゴリー情報
 	});
@@ -307,144 +296,6 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 			entrySubmitMode: 'update',
 			results: {
 				entryPost: postResults,
-			},
-		});
-	})
-	.post('/upload', validatorUploadForm, async (context) => {
-		/* メディアアップロード */
-		const { req } = context;
-		const logger = context.get('logger');
-
-		const requestForm = req.valid('form');
-
-		const uploadFiles = await Promise.all(
-			requestForm.files.map(async (file) => {
-				/* 一時ファイルとしてアップロードする */
-				const tempFileName = crypto.randomBytes(16).toString('hex'); // Multer と同じ処理 https://github.com/expressjs/multer/blob/master/storage/disk.js#L8-L10
-				const tempFilePath = `${env('ROOT')}/${env('NODE_TEMP_DIR')}/${tempFileName}`;
-
-				await fs.promises.writeFile(tempFilePath, file.stream());
-				logger.info(`Temp file upload success: ${tempFilePath}`);
-
-				return { file, tempFilePath };
-			}),
-		);
-
-		const endpoint = env('MEDIA_UPLOAD_URL');
-
-		const results: ProcessMediaResult[] = [];
-
-		try {
-			await Promise.all(
-				uploadFiles.map(async ({ file, tempFilePath }) => {
-					const bodyObject: Readonly<Record<string, string | number | boolean>> = {
-						name: file.name,
-						size: file.size,
-						type: file.type,
-						temp: path.resolve(tempFilePath),
-						overwrite: requestForm.overwrite,
-					};
-					logger.info(`Fetch: ${endpoint} ${file.name}`);
-
-					try {
-						const response = await fetch(endpoint, {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(bodyObject),
-						});
-						if (!response.ok) {
-							logger.error(`Fetch error: ${endpoint}`);
-
-							results.push({
-								success: false,
-								message: configAdmin.mediaUpload.apiResponse.otherMessageFailure,
-								filename: file.name,
-							});
-							return;
-						}
-
-						const responseFile = (await response.json()) as Upload;
-						switch (responseFile.code) {
-							case configAdmin.mediaUpload.apiResponse.success.code:
-								/* 成功 */
-								logger.info(`File upload success: ${responseFile.name}`);
-
-								results.push({
-									success: true,
-									message: configAdmin.mediaUpload.apiResponse.success.message,
-									filename: file.name,
-								});
-								break;
-							case configAdmin.mediaUpload.apiResponse.type.code:
-								/* MIME エラー */
-								logger.warn(`File upload failure: ${responseFile.name}`);
-
-								results.push({
-									success: false,
-									message: configAdmin.mediaUpload.apiResponse.type.message,
-									filename: file.name,
-								});
-								break;
-							case configAdmin.mediaUpload.apiResponse.overwrite.code:
-								/* 上書きエラー */
-								logger.warn(`File upload failure: ${responseFile.name}`);
-
-								results.push({
-									success: false,
-									message: configAdmin.mediaUpload.apiResponse.overwrite.message,
-									filename: file.name,
-								});
-								break;
-							case configAdmin.mediaUpload.apiResponse.size.code:
-								/* サイズ超過エラー */
-								logger.warn(`File upload failure: ${responseFile.name}`);
-
-								results.push({
-									success: false,
-									message: configAdmin.mediaUpload.apiResponse.size.message,
-									filename: file.name,
-								});
-								break;
-							default:
-								logger.warn(`File upload failure: ${responseFile.name}`);
-
-								results.push({
-									success: false,
-									message: configAdmin.mediaUpload.apiResponse.otherMessageFailure,
-									filename: file.name,
-								});
-						}
-					} catch (e) {
-						logger.warn(e);
-
-						results.push({
-							success: false,
-							message: configAdmin.mediaUpload.apiResponse.otherMessageFailure,
-							filename: file.name,
-						});
-					}
-				}),
-			);
-		} finally {
-			await Promise.all(
-				uploadFiles.map(async ({ tempFilePath }) => {
-					/* 一時ファイルを削除する */
-					if (!fs.existsSync(tempFilePath)) {
-						logger.info(`Temp file have already been deleted: ${tempFilePath}`);
-						return;
-					}
-
-					await fs.promises.unlink(tempFilePath);
-					logger.info(`Temp file delete success: ${tempFilePath}`);
-				}),
-			);
-		}
-
-		return await rendering(context, {
-			results: {
-				media: results,
 			},
 		});
 	});

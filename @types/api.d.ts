@@ -4,6 +4,13 @@ export type Preview = Readonly<{
 	messages: readonly object[];
 }>;
 
+/* メディア登録 */
+export type Media = readonly Readonly<{
+	success: boolean;
+	message: string;
+	filename: string;
+}>[];
+
 /* DSG キャッシュクリア */
 export type Clear = readonly Readonly<{
 	success: boolean;
