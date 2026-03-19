@@ -1,17 +1,17 @@
 import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
-import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
-import Markdown from '../../../remark/dist/Markdown.js';
+import { getLogger } from '../logger.ts';
 import configFeed from '../config/feed.ts';
 import configHono from '../config/hono.ts';
 import FeedDao from '../db/Feed.ts';
 import { brotliCompressText } from '../util/compress.ts';
 import type { Normal as ProcessResult } from '../../@types/process.d.ts';
 import type { FeedEntry } from '../../@types/view.d.ts';
+import Markdown from '../../../remark/dist/Markdown.js';
 
-const logger = Log4js.getLogger('Feed');
+const logger = getLogger('Feed');
 
 /**
  * フィード生成
@@ -51,7 +51,7 @@ const create = async (): Promise<ProcessResult> => {
 		const brotliFilePath = `${filePath}.br`;
 
 		await Promise.all([fs.promises.writeFile(filePath, feed), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
-		logger.info('Feed file created success', filePath, brotliFilePath);
+		logger.info(`Feed file created success: ${filePath} ${brotliFilePath}`);
 
 		return { success: true, message: configFeed.processMessage.success };
 	} catch (e) {

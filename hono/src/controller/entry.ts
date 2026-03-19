@@ -3,8 +3,7 @@ import ejs from 'ejs';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { env } from '@w0s/env-value-type';
-import Markdown from '../../../remark/dist/Markdown.js';
-import MarkdownTitle from '../../../remark/dist/Title.js';
+import type { Variables } from '../app.ts';
 import configEntry from '../config/entry.ts';
 import configHono from '../config/hono.ts';
 import EntryDao from '../db/Entry.ts';
@@ -12,12 +11,14 @@ import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/entry.ts';
 import type { Entries } from '../../@types/view.d.ts';
+import Markdown from '../../../remark/dist/Markdown.js';
+import MarkdownTitle from '../../../remark/dist/Title.js';
 
 /**
  * 記事
  */
 
-export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam, async (context) => {
+export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9][0-9]*}', validatorParam, async (context) => {
 	const { req } = context;
 
 	const { entryId } = req.valid('param');

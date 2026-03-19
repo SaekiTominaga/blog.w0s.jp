@@ -1,12 +1,12 @@
 import { AtpAgent, RichText } from '@atproto/api';
 import ejs from 'ejs';
-import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
+import { getLogger } from '../logger.ts';
 import configBluesky from '../config/bluesky.ts';
 import type { Normal as ProcessResult } from '../../@types/process.d.ts';
 import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
 
-const logger = Log4js.getLogger('Bluesky');
+const logger = getLogger('Bluesky');
 
 /**
  * 投稿本文を組み立てる

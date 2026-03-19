@@ -1,14 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadEnvFile } from 'node:process';
 import { Hono } from 'hono';
 import { compress } from 'hono/compress';
 import { HTTPException } from 'hono/http-exception';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
-import Log4js from 'log4js';
+import type { Logger } from 'pino';
 import { env } from '@w0s/env-value-type';
 import { escape } from '@w0s/html-escape';
+import { getLogger } from './logger.ts';
 import config from './config/hono.ts';
 import { categoryApp } from './controller/category.ts';
 import { entryApp } from './controller/entry.ts';
@@ -23,14 +23,17 @@ import {
 	reportingEndpoints as reportingEndpointsHeader,
 } from './util/httpHeader.ts';
 
-loadEnvFile(process.env['NODE_ENV'] === 'production' ? '../.env.production' : '../.env.development');
-
-/* Logger 設定 */
-Log4js.configure(env('HONO_LOG4JS_CONF'));
-const logger = Log4js.getLogger();
+export interface Variables {
+	logger: Logger;
+}
 
 /* Hono */
-const app = new Hono();
+const app = new Hono<{ Variables: Variables }>();
+
+app.use(async (context, next) => {
+	context.set('logger', getLogger(context.req.path.substring(1)));
+	await next();
+});
 
 app.use(
 	compress({
@@ -62,6 +65,7 @@ config.redirect.forEach((redirect) => {
 
 	app.get(redirect.from, (context) => {
 		const { req } = context;
+		const logger = context.get('logger');
 
 		let redirectPath = redirect.to;
 		Object.entries(req.param()).forEach(([, paramValue], index) => {
@@ -207,12 +211,16 @@ app.route('/api/clear', clearApp);
 
 /* Error pages */
 app.notFound(async (context) => {
+	const logger = context.get('logger');
+
 	logger.warn(`404 Not Found: ${context.req.method} ${context.req.url}`);
 
 	const html = (await fs.promises.readFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${config.errorpage.notfound}`)).toString();
 	return context.html(html, 404);
 });
 app.onError(async (err, context) => {
+	const logger = context.get('logger');
+
 	let htmlFilePath = config.errorpage.serverError;
 	const headers = new Headers();
 	if (err instanceof HTTPException) {
@@ -235,7 +243,7 @@ app.onError(async (err, context) => {
 				}
 				default: {
 					htmlFilePath = config.errorpage.clientError;
-					logger.info(err.status, err.message);
+					logger.info(`${String(err.status)} ${err.message}`);
 				}
 			}
 		} else {
@@ -252,13 +260,17 @@ app.onError(async (err, context) => {
 });
 
 if (process.env['TEST'] !== 'test') {
-	const port = env('HONO_PORT', 'number');
-	logger.info(`Server is running on http://localhost:${String(port)}`);
+	const logger = getLogger(path.basename(import.meta.url));
 
-	serve({
-		fetch: app.fetch,
-		port: port,
-	});
+	serve(
+		{
+			fetch: app.fetch,
+			port: env('HONO_PORT', 'number'),
+		},
+		(info) => {
+			logger.info(`Server is running on http://localhost:${String(info.port)}`);
+		},
+	);
 }
 
 export default app;

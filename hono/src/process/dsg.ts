@@ -1,10 +1,10 @@
-import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
+import { getLogger } from '../logger.ts';
 import configDsg from '../config/dsg.ts';
 import DSGDao from '../db/DSG.ts';
 import type { DSG as ProcessDSGResult } from '../../@types/process.d.ts';
 
-const logger = Log4js.getLogger('DSG');
+const logger = getLogger('DSG');
 
 /**
  * DSG キャッシュクリア

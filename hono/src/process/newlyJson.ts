@@ -1,15 +1,15 @@
 import fs from 'node:fs';
-import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
-import MarkdownTitle from '../../../remark/dist/Title.js';
+import { getLogger } from '../logger.ts';
 import configHono from '../config/hono.ts';
 import configNewlyJson from '../config/newlyJson.ts';
 import NewlyJson from '../db/NewlyJson.ts';
 import { brotliCompressText } from '../util/compress.ts';
 import type { Normal as ProcessResult } from '../../@types/process.d.ts';
 import type { NewlyEntry } from '../../@types/view.d.ts';
+import MarkdownTitle from '../../../remark/dist/Title.js';
 
-const logger = Log4js.getLogger('NewlyJson');
+const logger = getLogger('NewlyJson');
 
 /**
  * 新着 JSON ファイル生成
@@ -50,7 +50,7 @@ const create = async (): Promise<ProcessResult> => {
 				const brotliFilePath = `${filePath}${configHono.extension.brotli}`;
 
 				await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
-				logger.info('JSON file created success', filePath, brotliFilePath);
+				logger.info(`JSON file created success: ${filePath} ${brotliFilePath}`);
 			}),
 		);
 

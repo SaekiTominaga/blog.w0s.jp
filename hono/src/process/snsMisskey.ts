@@ -1,12 +1,12 @@
 import ejs from 'ejs';
-import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
+import { getLogger } from '../logger.ts';
 import configMisskey from '../config/misskey.ts';
-import type { NotesCreate as MisskeyNotesCreate } from '../../../@types/misskey.d.ts';
 import type { Normal as ProcessResult } from '../../@types/process.d.ts';
 import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
+import type { NotesCreate as MisskeyNotesCreate } from '../../../@types/misskey.d.ts';
 
-const logger = Log4js.getLogger('Misskey');
+const logger = getLogger('Misskey');
 
 /**
  * 投稿本文を組み立てる
@@ -61,7 +61,7 @@ const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 
 		const url = `${env('MISSKEY_INSTANCE')}/notes/${createdNote.id}`;
 
-		logger.info('Misskey posted success', url);
+		logger.info(`Misskey posted success: ${url}`);
 
 		return { success: true, message: `${configMisskey.processMessage.success} ${url}` };
 	} catch (e) {

@@ -1,15 +1,15 @@
 import fs from 'node:fs';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
-import Log4js from 'log4js';
 import { env } from '@w0s/env-value-type';
+import { getLogger } from '../logger.ts';
 import configHono from '../config/hono.ts';
 import configSitemap from '../config/sitemap.ts';
 import SitemapDao from '../db/Sitemap.ts';
 import type { Normal as ProcessResult } from '../../@types/process.d.ts';
 import type { SitemapEntry } from '../../@types/view.d.ts';
 
-const logger = Log4js.getLogger('Sitemap');
+const logger = getLogger('Sitemap');
 
 /**
  * サイトマップ生成
@@ -43,7 +43,7 @@ const create = async (): Promise<ProcessResult> => {
 
 		await fs.promises.writeFile(filePath, sitemapXml);
 
-		logger.info('Sitemap file created success', filePath);
+		logger.info(`Sitemap file created success: ${filePath}`);
 
 		return { success: true, message: configSitemap.processMessage.success };
 	} catch (e) {

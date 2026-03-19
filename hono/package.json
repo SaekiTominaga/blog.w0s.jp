@@ -3,17 +3,16 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "tsx --watch --tsconfig tsconfig.json src/app.ts",
+		"dev": "tsx --watch --env-file=../.env.development --tsconfig tsconfig.json src/app.ts",
 		"build": "tsc",
 		"lint": "eslint @types/*.d.ts src/**/*.ts",
 		"pretest": "tsc --noEmit && pnpm -F frontend build && pnpm -F remark build",
-		"test": "node --experimental-test-coverage --env-file=../.env.test --test src/app.test.ts src/{controller,util}/**/*.test.ts",
+		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/app.test.ts src/{controller,util}/**/*.test.ts",
 		"test:process": "node --experimental-test-coverage --env-file=../.env.development --test src/process/**/*.test.ts"
 	},
 	"dependencies": {
 		"@atproto/api": "0.19.3",
 		"@hono/node-server": "1.19.11",
-		"@log4js-node/smtp": "2.0.8",
 		"@w0s/env-value-type": "1.0.1",
 		"@w0s/html-escape": "4.0.2",
 		"@w0s/paapi-item-image-url-parser": "3.2.3",
@@ -24,13 +23,16 @@
 		"filenamify": "7.0.1",
 		"hono": "4.11.4",
 		"kysely": "0.28.11",
-		"log4js": "6.9.1",
-		"masto": "7.10.2"
+		"masto": "7.10.2",
+		"nodemailer": "8.0.2",
+		"pino": "10.3.1",
+		"pino-pretty": "13.1.3"
 	},
 	"devDependencies": {
 		"@types/better-sqlite3": "7.6.13",
 		"@types/ejs": "3.1.5",
 		"@types/md5": "2.3.6",
+		"@types/nodemailer": "7.0.11",
 		"tsx": "4.21.0"
 	},
 	"packageManager": "pnpm@10.28.1"
