@@ -16,7 +16,7 @@
 		"@w0s/paapi-item-image-url-parser": "3.2.3",
 		"@w0s/sqlite-utility": "2.0.1",
 		"better-sqlite3": "12.6.2",
-		"dayjs": "1.11.19",
+		"dayjs": "1.11.20",
 		"github-slugger": "2.0.0",
 		"hast-util-select": "6.0.4",
 		"highlight.js": "11.11.1",
