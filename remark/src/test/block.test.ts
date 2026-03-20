@@ -683,7 +683,7 @@ code*2*
 			`
 <div class="p-code">
 	<div class="p-code__clipboard">
-		<button type="button" class="p-code__clipboard-button js-button-clipboard" data-target="code-3247df396b0e96d79af9ae67b7500fea"><img src="/image/entry/copy.svg" alt="コピー" width="16" height="16" /></button>
+		<button type="button" class="p-code__clipboard-button js-button-clipboard" data-target="code-3247df396b0e96d79af9ae67b7500fea"><img src="/image/copy.svg" alt="コピー" width="16" height="16" /></button>
 	</div>
 	<pre class="p-code__code"><code id="code-3247df396b0e96d79af9ae67b7500fea">code1
 code*2*</code></pre>
@@ -708,7 +708,7 @@ code*2*</code></pre>
 			`
 <div class="p-code">
 	<div class="p-code__clipboard">
-		<button type="button" class="p-code__clipboard-button js-button-clipboard" data-target="code-e29e42be83cd7ab3e69a92ec404915c8"><img src="/image/entry/copy.svg" alt="コピー" width="16" height="16" /></button>
+		<button type="button" class="p-code__clipboard-button js-button-clipboard" data-target="code-e29e42be83cd7ab3e69a92ec404915c8"><img src="/image/copy.svg" alt="コピー" width="16" height="16" /></button>
 	</div>
 	<pre class="p-code__code"><code id="code-e29e42be83cd7ab3e69a92ec404915c8" class="hljs lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>></span>code1<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>></span>
 <span class="hljs-tag">&lt;<span class="hljs-name">p</span>></span>code*2*<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>></span></code></pre>
@@ -1039,7 +1039,7 @@ await test('Image', async (t) => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1123,7 +1123,7 @@ await test('Image', async (t) => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1189,7 +1189,7 @@ await test('Image', async (t) => {
 	</div>
 	<figcaption class="c-caption">
 		<span class="c-caption__text">title <code>code</code></span
-		><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1216,7 +1216,7 @@ await test('Image', async (t) => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1243,7 +1243,7 @@ await test('Image', async (t) => {
 		/></picture>
 	</div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/entry/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1413,11 +1413,11 @@ await test('Amazon', async (t) => {
 			),
 			`
 <div class="p-amazon">
-	<p class="p-amazon__label"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
+	<p class="p-amazon__label"><img src="/image/amazon-buy.png" srcset="/image/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
-				><div class="p-amazon__thumb"><img src="/image/entry/amazon-noimage.svg" alt="" width="113" height="160" class="p-amazon__image" /></div>
+				><div class="p-amazon__thumb"><img src="/image/amazon-noimage.svg" alt="" width="113" height="160" class="p-amazon__image" /></div>
 				<div class="p-amazon__text"><p class="p-amazon__title">title</p></div></a
 			>
 		</li>
@@ -1439,7 +1439,7 @@ await test('Amazon', async (t) => {
 			),
 			`
 <div class="p-amazon">
-	<p class="p-amazon__label"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
+	<p class="p-amazon__label"><img src="/image/amazon-buy.png" srcset="/image/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
@@ -1465,7 +1465,7 @@ await test('Amazon', async (t) => {
 			),
 			`
 <div class="p-amazon">
-	<p class="p-amazon__label"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
+	<p class="p-amazon__label"><img src="/image/amazon-buy.png" srcset="/image/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
@@ -1491,7 +1491,7 @@ await test('Amazon', async (t) => {
 			),
 			`
 <div class="p-amazon">
-	<p class="p-amazon__label"><img src="/image/entry/amazon-buy.png" srcset="/image/entry/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
+	<p class="p-amazon__label"><img src="/image/amazon-buy.png" srcset="/image/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></p>
 	<ul class="p-amazon__list">
 		<li>
 			<a class="p-amazon__link" href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
