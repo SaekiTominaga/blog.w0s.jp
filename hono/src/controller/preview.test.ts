@@ -7,14 +7,7 @@ await test('GET', async () => {
 	const res = await app.request('/api/preview');
 
 	assert.equal(res.status, 404);
-});
-
-await test('not JSON', async () => {
-	const res = await app.request('/api/preview', {
-		method: 'post',
-	});
-
-	assert.equal(res.status, 400); // TODO: 本来はレスポンスボディのチェックもすべきだが、現在は仮で HTML が返るためテスト不可
+	assert.equal(res.headers.get('Content-Type')?.startsWith('text/html'), true);
 });
 
 await test('invalid paramater', async () => {
@@ -26,7 +19,32 @@ await test('invalid paramater', async () => {
 		}),
 	});
 
-	assert.equal(res.status, 400); // TODO: 本来はレスポンスボディのチェックもすべきだが、現在は仮で HTML が返るためテスト不可
+	assert.equal(res.status, 400);
+
+	const json = (await res.json()) as Preview;
+
+	assert.equal('error' in json, true);
+	if ('error' in json) {
+		assert.equal(json.error.message, 'The `md` parameter is invalid');
+	}
+});
+
+await test('not JSON', async () => {
+	const res = await app.request('/api/preview', {
+		method: 'post',
+		body: JSON.stringify({
+			md: `text`,
+		}),
+	});
+
+	assert.equal(res.status, 400);
+
+	const json = (await res.json()) as Preview;
+
+	assert.equal('error' in json, true);
+	if ('error' in json) {
+		assert.equal(json.error.message, 'The `md` parameter is invalid');
+	}
 });
 
 await test('no error', async () => {
@@ -38,10 +56,14 @@ await test('no error', async () => {
 		}),
 	});
 
-	const responseBody = (await res.json()) as Preview;
-
 	assert.equal(res.status, 200);
 	assert.equal(res.headers.get('Content-Type'), 'application/json');
-	assert.equal('data' in responseBody && responseBody.data.html, '<p>text<em>em</em></p>');
-	assert.equal('data' in responseBody && responseBody.data.messages.length, 0);
+
+	const json = (await res.json()) as Preview;
+
+	assert.equal('data' in json, true);
+	if ('data' in json) {
+		assert.equal(json.data.html, '<p>text<em>em</em></p>');
+		assert.equal(json.data.messages.length, 0);
+	}
 });

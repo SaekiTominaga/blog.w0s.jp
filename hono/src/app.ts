@@ -272,7 +272,7 @@ app.onError(async (err, context) => {
 		return context.json(
 			{
 				error: {
-					message: message ?? title,
+					message: message !== undefined && message !== '' ? message : title,
 				},
 			} as ApiResponseError,
 			status,
