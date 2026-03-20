@@ -27,11 +27,3 @@ export type ClearProcess = {
 	message: string;
 };
 export type Clear = { processes: ClearProcess[] } | Error;
-
-/* アップロード（media.w0s.jp） */
-export type Upload = {
-	name: string;
-	size: number;
-	code: number;
-	message: string;
-};

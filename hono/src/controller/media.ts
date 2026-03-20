@@ -1,143 +1,111 @@
-import crypto from 'node:crypto';
 import fs from 'node:fs';
-import path from 'node:path';
-import { Hono } from 'hono';
+import { Hono, type Context } from 'hono';
+import { MIMEType } from 'whatwg-mimetype';
 import { env } from '@w0s/env-value-type';
 import type { Variables } from '../app.ts';
-import configAdmin from '../config/admin.ts';
+import config from '../config/media.ts';
 import { form as validatorForm } from '../validator/media.ts';
-import type { Media as Result, MediaResult as FileResult, Upload } from '../../../@types/api.d.ts';
+import type { Media as Result, MediaResult as FileResult } from '../../../@types/api.d.ts';
+import { createThumbnailImage } from '../process/media.ts';
 
 /**
  * メディア登録
  */
+
+/**
+ * ファイルアップロード（書き込み）を実行する
+ *
+ * @param context - Context
+ * @param file - アップロードするファイル
+ * @param option - オプション
+ * @param option.dir - アップロード先ディレクトリ
+ * @param option.limit - ファイルサイズの上限
+ * @param option.overwrite - 上書きを許可するか
+ *
+ * @returns 処理結果
+ */
+const upload = async (
+	context: Context<{ Variables: Variables }>,
+	file: File,
+	option: Readonly<{ dir: string; limit: number; overwrite: boolean }>,
+): Promise<FileResult> => {
+	const logger = context.get('logger');
+
+	const filePath = `${env('ROOT')}/${config.image.dir}/${file.name}`;
+
+	if (!option.overwrite && fs.existsSync(filePath)) {
+		/* 同名ファイル存在 */
+		return {
+			success: false,
+			message: config.message.overwrite,
+			filename: file.name,
+		};
+	}
+
+	if (file.size > option.limit) {
+		/* ファイルサイズ超過 */
+		return {
+			success: false,
+			message: config.message.size,
+			filename: file.name,
+		};
+	}
+
+	await fs.promises.writeFile(filePath, file.stream());
+	logger.info(`ファイルアップロード: ${filePath}`);
+
+	return {
+		success: true,
+		message: config.message.success,
+		filename: file.name,
+	};
+};
 export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm, async (context) => {
 	const { req } = context;
 	const logger = context.get('logger');
 
 	const requestBody = req.valid('form');
 
-	const { files: requestFiles, overwrite } = requestBody;
+	const { files, overwrite } = requestBody;
 
-	const uploadFiles = await Promise.all(
-		requestFiles.map(async (file) => {
-			/* 一時ファイルとしてアップロードする */
-			const tempFileName = crypto.randomBytes(16).toString('hex'); // Multer と同じ処理 https://github.com/expressjs/multer/blob/6bb35124dea3d7cc6e5781962d76cccf1c40bd2d/storage/disk.js#L7-L9
-			const tempFilePath = `${env('ROOT')}/${env('NODE_TEMP_DIR')}/${tempFileName}`;
-
-			await fs.promises.writeFile(tempFilePath, file.stream());
-			logger.info(`Temp file uploaded: ${tempFilePath}`);
-
-			return { file, tempFilePath };
-		}),
-	);
-
-	const endpoint = env('MEDIA_UPLOAD_URL');
-
-	let fileResults: FileResult[]; // ファイルごとの処理結果
-
-	try {
-		fileResults = await Promise.all(
-			uploadFiles.map(async ({ file, tempFilePath }): Promise<FileResult> => {
-				const bodyObject: Readonly<Record<string, string | number | boolean>> = {
-					name: file.name,
-					size: file.size,
-					type: file.type,
-					temp: path.resolve(tempFilePath),
-					overwrite: overwrite,
-				};
-				logger.info(`Fetch: ${endpoint} ${file.name}`);
-
-				try {
-					const response = await fetch(endpoint, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(bodyObject),
+	const fileResults = await Promise.all(
+		files.map(async (file): Promise<FileResult> => {
+			switch (new MIMEType(file.type).type) {
+				case 'image': {
+					const fileResult = await upload(context, file, {
+						dir: config.image.dir,
+						limit: config.image.limit,
+						overwrite: overwrite,
 					});
-					if (!response.ok) {
-						logger.error(`Fetch error: ${endpoint}`);
 
-						return {
-							success: false,
-							message: configAdmin.mediaUpload.apiResponse.otherMessageFailure,
-							filename: file.name,
-						};
-					}
+					const created = await createThumbnailImage(
+						{
+							dir: `${env('ROOT')}/${config.image.dir}`,
+							fileName: file.name,
+						},
+						`${env('ROOT')}/${config.image.thumbDir}`,
+					);
+					logger.info(created, 'サムネイルファイル生成');
 
-					const responseFile = (await response.json()) as Upload;
-					switch (responseFile.code) {
-						case configAdmin.mediaUpload.apiResponse.success.code:
-							/* 成功 */
-							logger.info(`File upload success: ${responseFile.name}`);
-
-							return {
-								success: true,
-								message: configAdmin.mediaUpload.apiResponse.success.message,
-								filename: file.name,
-							};
-						case configAdmin.mediaUpload.apiResponse.type.code:
-							/* MIME エラー */
-							logger.warn(`File upload failure: ${responseFile.name}`);
-
-							return {
-								success: false,
-								message: configAdmin.mediaUpload.apiResponse.type.message,
-								filename: file.name,
-							};
-						case configAdmin.mediaUpload.apiResponse.overwrite.code:
-							/* 上書きエラー */
-							logger.warn(`File upload failure: ${responseFile.name}`);
-
-							return {
-								success: false,
-								message: configAdmin.mediaUpload.apiResponse.overwrite.message,
-								filename: file.name,
-							};
-						case configAdmin.mediaUpload.apiResponse.size.code:
-							/* サイズ超過エラー */
-							logger.warn(`File upload failure: ${responseFile.name}`);
-
-							return {
-								success: false,
-								message: configAdmin.mediaUpload.apiResponse.size.message,
-								filename: file.name,
-							};
-						default:
-							logger.warn(`File upload failure: ${responseFile.name}`);
-
-							return {
-								success: false,
-								message: configAdmin.mediaUpload.apiResponse.otherMessageFailure,
-								filename: file.name,
-							};
-					}
-				} catch (e) {
-					logger.warn(e);
-
+					return fileResult;
+				}
+				case 'video': {
+					return upload(context, file, {
+						dir: config.video.dir,
+						limit: config.video.limit,
+						overwrite: overwrite,
+					});
+				}
+				default: {
 					return {
 						success: false,
-						message: configAdmin.mediaUpload.apiResponse.otherMessageFailure,
+						message: config.message.type,
 						filename: file.name,
 					};
 				}
-			}),
-		);
-	} finally {
-		await Promise.all(
-			uploadFiles.map(async ({ tempFilePath }) => {
-				/* 一時ファイルを削除する */
-				if (!fs.existsSync(tempFilePath)) {
-					logger.info(`Temp file have already been deleted: ${tempFilePath}`);
-					return;
-				}
-
-				await fs.promises.unlink(tempFilePath);
-				logger.info(`Temp file deleted: ${tempFilePath}`);
-			}),
-		);
-	}
+			}
+		}),
+	);
 
 	return context.json({
 		results: fileResults,
