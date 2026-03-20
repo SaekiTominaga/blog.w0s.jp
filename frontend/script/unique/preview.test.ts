@@ -50,6 +50,7 @@ await test('fetch error', async () => {
 				url: 'http://example.com/sample',
 				status: 404,
 				statusText: 'Not Found',
+				json: () => Promise.resolve({ error: { message: 'message' } }),
 			}),
 		);
 	});
@@ -66,7 +67,7 @@ await test('fetch error', async () => {
 
 	const parent = previewTemplate.parentElement!;
 
-	assert.equal(parent.querySelector(':scope > div')?.innerHTML, '<strong><code>http://example.com/sample</code> is 404 Not Found</strong>');
+	assert.equal(parent.querySelector(':scope > div')?.innerHTML, '<strong>404 Not Found: message</strong>');
 });
 
 await test('preview HTML', async (t) => {
@@ -75,7 +76,7 @@ await test('preview HTML', async (t) => {
 		global.fetch = mock.fn(() =>
 			Promise.resolve({
 				ok: true,
-				json: () => Promise.resolve({ html: '<p>text</p>', messages: [] }),
+				json: () => Promise.resolve({ data: { html: '<p>text</p>', messages: [] } }),
 			}),
 		);
 	});
@@ -104,15 +105,17 @@ await test('messages', async (t) => {
 					ok: true,
 					json: () =>
 						Promise.resolve({
-							html: '<p>text</p>',
-							messages: [
-								{
-									line: 1,
-									column: 2,
-									ruleId: 'no-recommended-foo',
-									reason: 'Reason',
-								},
-							],
+							data: {
+								html: '<p>text</p>',
+								messages: [
+									{
+										line: 1,
+										column: 2,
+										ruleId: 'no-recommended-foo',
+										reason: 'Reason',
+									},
+								],
+							},
 						}),
 				}),
 			);
@@ -148,16 +151,18 @@ await test('messages', async (t) => {
 					ok: true,
 					json: () =>
 						Promise.resolve({
-							html: '<p>text</p>',
-							messages: [
-								{
-									line: 1,
-									column: 2,
-									ruleId: 'no-foo',
-									reason: 'Reason',
-									url: 'http://example.com/',
-								},
-							],
+							data: {
+								html: '<p>text</p>',
+								messages: [
+									{
+										line: 1,
+										column: 2,
+										ruleId: 'no-foo',
+										reason: 'Reason',
+										url: 'http://example.com/',
+									},
+								],
+							},
 						}),
 				}),
 			);

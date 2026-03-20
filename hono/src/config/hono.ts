@@ -52,6 +52,10 @@ interface HonoConfig {
 			maximumNumber: number;
 		};
 	};
+	api: {
+		dir: string;
+		allowMethods: string[];
+	};
 }
 
 const config: HonoConfig = {
@@ -171,6 +175,10 @@ const config: HonoConfig = {
 		newly: {
 			maximumNumber: 8,
 		},
+	},
+	api: {
+		dir: 'api', // API を示すディレクトリ
+		allowMethods: ['POST'],
 	},
 };
 

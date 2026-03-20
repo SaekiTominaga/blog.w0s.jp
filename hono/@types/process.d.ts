@@ -9,10 +9,3 @@ export type DSG = Readonly<
 		date?: Date;
 	}
 >;
-
-/* メディアアップロード */
-export type Media = Readonly<
-	Normal & {
-		filename: string;
-	}
->;

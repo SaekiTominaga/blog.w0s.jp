@@ -1,4 +1,5 @@
 import type { VFileMessage } from 'vfile-message';
+import type { Preview as ApiResponsePreview } from '../../../@types/api.d.ts';
 
 /**
  * Markdown 変換に際してのメッセージを表示
@@ -93,9 +94,7 @@ const setPreview = (template: HTMLTemplateElement, html: string): void => {
 	const clone = template.content.cloneNode(true) as HTMLElement;
 
 	const previewElement = clone.querySelector('div');
-	if (previewElement !== null) {
-		previewElement.setHTMLUnsafe(html);
-	}
+	previewElement?.setHTMLUnsafe(html);
 
 	fragment.appendChild(clone);
 	template.parentNode?.appendChild(fragment);
@@ -123,17 +122,14 @@ const preview = async (
 		}),
 	});
 
-	if (!response.ok) {
-		setPreview(previewTemplate, `<strong><code>${response.url}</code> is ${String(response.status)} ${response.statusText}</strong>`);
-		return;
+	const responseJson = (await response.json()) as ApiResponsePreview;
+
+	if ('error' in responseJson) {
+		setPreview(previewTemplate, `<strong>${String(response.status)} ${response.statusText}: ${responseJson.error.message}</strong>`);
 	}
-
-	const responseJson = (await response.json()) as {
-		html: string;
-		messages: VFileMessage[];
-	};
-
-	setMessages(messagesTemplate, responseJson.messages);
-	setPreview(previewTemplate, responseJson.html);
+	if ('data' in responseJson) {
+		setMessages(messagesTemplate, responseJson.data.messages);
+		setPreview(previewTemplate, responseJson.data.html);
+	}
 };
 export default preview;
