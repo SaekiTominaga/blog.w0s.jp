@@ -11,7 +11,7 @@ const logger = getLogger('DSG');
  *
  * @returns 処理結果
  */
-const clear = async (): Promise<ProcessDSGResult> => {
+export const clear = async (): Promise<ProcessDSGResult> => {
 	try {
 		const dao = new DSGDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`);
 
@@ -26,5 +26,3 @@ const clear = async (): Promise<ProcessDSGResult> => {
 		return { success: false, message: configDsg.processMessage.failure };
 	}
 };
-
-export default clear;

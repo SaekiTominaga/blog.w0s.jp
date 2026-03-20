@@ -39,7 +39,7 @@ const getMessage = async (templatePath: string, entryData: SocialEntryData): Pro
  *
  * @returns 処理結果
  */
-const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
+export const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 	try {
 		const mastodon = mastodonRest({
 			url: env('MASTODON_INSTANCE'),
@@ -63,5 +63,3 @@ const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 		return { success: false, message: configMastodon.processMessage.failure };
 	}
 };
-
-export default post;

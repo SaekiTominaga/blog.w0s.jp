@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import { Hono } from 'hono';
 import type { Variables } from '../app.ts';
-import clear from '../process/dsg.ts';
-import createFeed from '../process/feed.ts';
-import createNewlyJson from '../process/newlyJson.ts';
-import createSitemap from '../process/sitemap.ts';
+import { clear } from '../process/dsg.ts';
+import { create as createFeed } from '../process/feed.ts';
+import { create as createNewlyJson } from '../process/newlyJson.ts';
+import { create as createSitemap } from '../process/sitemap.ts';
 import type { Clear as Result, ClearProcess as ProcessResult } from '../../../@types/api.d.ts';
 
 /**
