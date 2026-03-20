@@ -5,7 +5,7 @@ import clear from '../process/dsg.ts';
 import createFeed from '../process/feed.ts';
 import createNewlyJson from '../process/newlyJson.ts';
 import createSitemap from '../process/sitemap.ts';
-import type { Clear } from '../../../@types/api.d.ts';
+import type { Clear as Result, ClearProcess as ProcessResult } from '../../../@types/api.d.ts';
 
 /**
  * DSG キャッシュクリア
@@ -18,7 +18,7 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 		createNewlyJson(),
 	]);
 
-	const responseJson: Clear = [
+	const results: ProcessResult[] = [
 		{
 			success: clearDSGResult.success,
 			message: `${clearDSGResult.message}${clearDSGResult.date !== undefined ? dayjs(clearDSGResult.date).format(' <HH:mm:ss>') : ''}`,
@@ -28,5 +28,7 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 		createNewlyJsonResult,
 	];
 
-	return context.json(responseJson);
+	return context.json({
+		processes: results,
+	} as Result);
 });

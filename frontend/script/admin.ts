@@ -2,7 +2,7 @@ import formBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
 import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
-import type { Clear, Media } from '../../@types/api.d.ts';
+import type { Media as ApiResponseMedia, Clear as ApiResponseClear } from '../../@types/api.d.ts';
 import messageImage from './unique/messageImage.ts';
 import preview from './unique/preview.ts';
 import reportJsError from './util/reportJsError.ts';
@@ -78,7 +78,7 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 		formElement?.addEventListener('submit', async (ev: SubmitEvent) => {
 			ev.preventDefault();
 
-			const elements = (ev.target as HTMLFormElement).elements;
+			const { elements } = ev.target as HTMLFormElement;
 
 			const filesElement = elements.namedItem('files');
 			const overwriteElement = elements.namedItem('overwrite');
@@ -88,9 +88,9 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 
 			const formData = new FormData();
 			if (files !== null) {
-				for (const file of files) {
+				Array.from(files).forEach((file) => {
 					formData.append('files', file);
-				}
+				});
 			}
 			if (overwrite) {
 				formData.append('overwrite', 'on');
@@ -115,36 +115,48 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 				hiddenElement.hidden = false;
 			}
 
-			if (response.ok) {
-				const responseJson = (await response.json()) as Media;
+			const responseJson = (await response.json()) as ApiResponseMedia;
 
-				const fragment = document.createDocumentFragment();
-				responseJson.forEach((result) => {
+			const fragment = document.createDocumentFragment();
+			if ('error' in responseJson) {
+				const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+				const successElement = clone.querySelector<HTMLElement>('.js-success');
+				if (successElement !== null) {
+					successElement.hidden = true;
+				}
+
+				const errorElement = clone.querySelector<HTMLElement>('.js-error');
+				if (errorElement !== null) {
+					const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
+					if (messageElement !== null) {
+						messageElement.textContent = responseJson.error.message;
+					}
+				}
+
+				fragment.appendChild(clone);
+			}
+			if ('results' in responseJson) {
+				responseJson.results.forEach((result) => {
 					const clone = resultElement.content.cloneNode(true) as HTMLElement;
 
 					const successElement = clone.querySelector<HTMLElement>('.js-success');
-					const errorEessage = clone.querySelector<HTMLElement>('.js-error');
 					if (successElement !== null) {
 						successElement.hidden = !result.success;
 					}
-					if (errorEessage !== null) {
-						errorEessage.hidden = result.success;
+
+					const errorElement = clone.querySelector<HTMLElement>('.js-error');
+					if (errorElement !== null) {
+						errorElement.hidden = result.success;
 					}
 
-					const message = (result.success ? successElement : errorEessage)?.querySelector<HTMLElement>('.js-message');
-					if (message !== null && message !== undefined) {
-						message.textContent = result.message;
-					}
-
-					const filename = (result.success ? successElement : errorEessage)?.querySelector<HTMLElement>('.js-filename');
-					if (filename !== null && filename !== undefined) {
-						filename.textContent = result.filename;
-					}
+					const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
+					messageElement?.setHTMLUnsafe(`${result.message}: <code>${result.filename}</code>`);
 
 					fragment.appendChild(clone);
 				});
-				resultElement.parentNode?.appendChild(fragment);
 			}
+			resultElement.parentNode?.appendChild(fragment);
 		});
 	}
 }
@@ -176,31 +188,50 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 					hiddenElement.hidden = false;
 				}
 
-				if (response.ok) {
-					const responseJson = (await response.json()) as Clear;
+				const responseJson = (await response.json()) as ApiResponseClear;
 
-					const fragment = document.createDocumentFragment();
-					responseJson.forEach((result) => {
+				const fragment = document.createDocumentFragment();
+				if ('error' in responseJson) {
+					const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+					const successElement = clone.querySelector<HTMLElement>('.js-success');
+					if (successElement !== null) {
+						successElement.hidden = true;
+					}
+
+					const errorElement = clone.querySelector<HTMLElement>('.js-error');
+					if (errorElement !== null) {
+						const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
+						if (messageElement !== null) {
+							messageElement.textContent = responseJson.error.message;
+						}
+					}
+
+					fragment.appendChild(clone);
+				}
+				if ('processes' in responseJson) {
+					responseJson.processes.forEach((result) => {
 						const clone = resultElement.content.cloneNode(true) as HTMLElement;
 
 						const successElement = clone.querySelector<HTMLElement>('.js-success');
-						const errorEessage = clone.querySelector<HTMLElement>('.js-error');
 						if (successElement !== null) {
 							successElement.hidden = !result.success;
 						}
-						if (errorEessage !== null) {
-							errorEessage.hidden = result.success;
+
+						const errorElement = clone.querySelector<HTMLElement>('.js-error');
+						if (errorElement !== null) {
+							errorElement.hidden = result.success;
 						}
 
-						const message = (result.success ? successElement : errorEessage)?.querySelector<HTMLElement>('.js-message');
-						if (message !== null && message !== undefined) {
-							message.textContent = result.message;
+						const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
+						if (messageElement !== null && messageElement !== undefined) {
+							messageElement.textContent = result.message;
 						}
 
 						fragment.appendChild(clone);
 					});
-					resultElement.parentNode?.appendChild(fragment);
 				}
+				resultElement.parentNode?.appendChild(fragment);
 			},
 			{ passive: true },
 		);

@@ -16,14 +16,8 @@ export const form = validator('form', (value): RequestBody => {
 	if (files === undefined) {
 		throw new HTTPException(400, { message: 'The `files` parameter is required' });
 	}
-	if (!Array.isArray(files)) {
-		if (typeof files !== 'object') {
-			throw new HTTPException(400, { message: 'The `files` parameter is invalid' });
-		}
-	} else {
-		if (!files.every((file) => typeof file === 'object')) {
-			throw new HTTPException(400, { message: 'The `files` parameter is invalid' });
-		}
+	if ((!Array.isArray(files) && typeof files !== 'object') || (Array.isArray(files) && !files.every((file) => typeof file === 'object'))) {
+		throw new HTTPException(400, { message: 'The `files` parameter is invalid' });
 	}
 
 	if (Array.isArray(overwrite)) {

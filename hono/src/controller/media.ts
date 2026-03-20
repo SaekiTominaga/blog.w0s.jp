@@ -6,8 +6,7 @@ import { env } from '@w0s/env-value-type';
 import type { Variables } from '../app.ts';
 import configAdmin from '../config/admin.ts';
 import { form as validatorForm } from '../validator/media.ts';
-import type { Upload } from '../../../@types/api.js';
-import type { Media as ProcessMediaResult } from '../../@types/process.d.ts';
+import type { Media as Result, MediaResult as FileResult, Upload } from '../../../@types/api.d.ts';
 
 /**
  * メディア登録
@@ -35,11 +34,11 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 
 	const endpoint = env('MEDIA_UPLOAD_URL');
 
-	let results: ProcessMediaResult[];
+	let fileResults: FileResult[]; // ファイルごとの処理結果
 
 	try {
-		results = await Promise.all(
-			uploadFiles.map(async ({ file, tempFilePath }): Promise<ProcessMediaResult> => {
+		fileResults = await Promise.all(
+			uploadFiles.map(async ({ file, tempFilePath }): Promise<FileResult> => {
 				const bodyObject: Readonly<Record<string, string | number | boolean>> = {
 					name: file.name,
 					size: file.size,
@@ -140,5 +139,7 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 		);
 	}
 
-	return context.json(results);
+	return context.json({
+		results: fileResults,
+	} as Result);
 });

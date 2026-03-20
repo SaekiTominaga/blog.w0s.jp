@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import type { Variables } from '../app.ts';
 import { json as validatorJson } from '../validator/preview.ts';
-import type { Preview } from '../../../@types/api.d.ts';
+import type { Preview as Result, PreviewData } from '../../../@types/api.d.ts';
 import Markdown from '../../../remark/dist/Markdown.js';
 
 /**
@@ -16,10 +16,12 @@ export const previewApp = new Hono<{ Variables: Variables }>().post(validatorJso
 	const markdown = new Markdown({ lint: true });
 	const { value, messages } = await markdown.toHtml(requestBody.markdown);
 
-	const responseJson: Preview = {
+	const previewData: PreviewData = {
 		html: value.toString(),
 		messages: messages,
 	};
 
-	return context.json(responseJson);
+	return context.json({
+		data: previewData,
+	} as Result);
 });

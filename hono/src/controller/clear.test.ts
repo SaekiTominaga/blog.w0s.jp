@@ -20,10 +20,9 @@ await test('clear', async () => {
 
 	const lastModifiledAfter = await dao.getLastModified();
 
+	const json = (await res.json()) as Clear;
+
 	assert.equal(res.status, 200);
-	assert.equal(
-		((await res.json()) as Clear).every((result) => result.success),
-		true,
-	);
+	assert.equal('processes' in json && json.processes.every((result) => result.success), true);
 	assert.equal(lastModifiledBefore < lastModifiledAfter, true);
 });

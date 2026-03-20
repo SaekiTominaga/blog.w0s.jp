@@ -42,6 +42,6 @@ await test('no error', async () => {
 
 	assert.equal(res.status, 200);
 	assert.equal(res.headers.get('Content-Type'), 'application/json');
-	assert.equal(responseBody.html, '<p>text<em>em</em></p>');
-	assert.equal(responseBody.messages.length, 0);
+	assert.equal('data' in responseBody && responseBody.data.html, '<p>text<em>em</em></p>');
+	assert.equal('data' in responseBody && responseBody.data.messages.length, 0);
 });

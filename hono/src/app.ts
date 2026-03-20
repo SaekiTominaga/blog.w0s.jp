@@ -8,6 +8,7 @@ import { serveStatic } from '@hono/node-server/serve-static';
 import type { Logger } from 'pino';
 import { env } from '@w0s/env-value-type';
 import { escape } from '@w0s/html-escape';
+import type { Error as ApiResponseError } from '../../@types/api.d.ts';
 import { getLogger } from './logger.ts';
 import config from './config/hono.ts';
 import { adminApp } from './controller/admin.ts';
@@ -23,6 +24,7 @@ import {
 	csp as cspHeader,
 	reportingEndpoints as reportingEndpointsHeader,
 } from './util/httpHeader.ts';
+import { isApi } from './util/request.ts';
 
 export interface Variables {
 	logger: Logger;
@@ -199,8 +201,8 @@ const basicAuthHandler = await basicAuth({
 	invalidUserMessage: config.basicAuth.unauthorizedMessage,
 });
 app.use(`/admin/*`, basicAuthHandler);
-app.use(`/api/clear`, basicAuthHandler);
-app.use(`/api/media`, basicAuthHandler);
+app.use(`/${config.api.dir}/clear`, basicAuthHandler);
+app.use(`/${config.api.dir}/media`, basicAuthHandler);
 
 /* Routes */
 app.route('/', topApp);
@@ -208,9 +210,9 @@ app.route('/list/', listApp);
 app.route('/entry/', entryApp);
 app.route('/category/', categoryApp);
 app.route('/admin/', adminApp);
-app.route('/api/preview', previewApp);
-app.route('/api/media', mediaApp);
-app.route('/api/clear', clearApp);
+app.route(`/${config.api.dir}/preview`, previewApp);
+app.route(`/${config.api.dir}/media`, mediaApp);
+app.route(`/${config.api.dir}/clear`, clearApp);
 
 /* Error pages */
 app.notFound(async (context) => {
@@ -226,8 +228,15 @@ app.onError(async (err, context) => {
 
 	let htmlFilePath = config.errorpage.serverError;
 	const headers = new Headers();
+
+	const TITLE_4XX = 'Client error';
+	const TITLE_5XX = 'Server error';
+
+	let title = TITLE_5XX;
 	if (err instanceof HTTPException) {
 		if (err.status >= 400 && err.status < 500) {
+			title = TITLE_4XX;
+
 			switch (err.status) {
 				case 401: {
 					htmlFilePath = config.errorpage.unauthorized;
@@ -256,9 +265,22 @@ app.onError(async (err, context) => {
 		logger.fatal(err.message);
 	}
 
-	const html = (await fs.promises.readFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${htmlFilePath}`)).toString();
 	const status = err instanceof HTTPException ? err.status : 500;
+	const message = err instanceof HTTPException ? err.message : undefined;
 
+	if (isApi(context)) {
+		return context.json(
+			{
+				error: {
+					message: message ?? title,
+				},
+			} as ApiResponseError,
+			status,
+			Object.fromEntries(headers.entries()),
+		);
+	}
+
+	const html = (await fs.promises.readFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${htmlFilePath}`)).toString();
 	return context.html(html, status, Object.fromEntries(headers.entries()));
 });
 
