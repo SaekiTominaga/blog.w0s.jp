@@ -50,7 +50,7 @@ export const codeToHast = (_state: State, node: Code): ElementContent | ElementC
 							type: 'element',
 							tagName: 'img',
 							properties: {
-								src: '/image/entry/copy.svg',
+								src: '/image/copy.svg',
 								alt: 'コピー',
 								width: '16',
 								height: '16',

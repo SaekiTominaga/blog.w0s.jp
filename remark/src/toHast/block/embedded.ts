@@ -166,7 +166,7 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 						type: 'element',
 						tagName: 'img',
 						properties: {
-							src: '/image/entry/media-expansion.svg',
+							src: '/image/media-expansion.svg',
 							alt: '',
 							width: '16',
 							height: '16',
@@ -350,7 +350,7 @@ export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): Ele
 				imageElementProperties['height'] = String(height);
 			}
 		} else {
-			imageElementProperties['src'] = '/image/entry/amazon-noimage.svg';
+			imageElementProperties['src'] = '/image/amazon-noimage.svg';
 			imageElementProperties['alt'] = '';
 			imageElementProperties['width'] = '113';
 			imageElementProperties['height'] = '160';
@@ -431,8 +431,8 @@ export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): Ele
 						type: 'element',
 						tagName: 'img',
 						properties: {
-							src: '/image/entry/amazon-buy.png',
-							srcset: '/image/entry/amazon-buy@2x.png 2x',
+							src: '/image/amazon-buy.png',
+							srcset: '/image/amazon-buy@2x.png 2x',
 							alt: 'Amazon で買う',
 							width: '127',
 							height: '26',
