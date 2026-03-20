@@ -39,7 +39,7 @@ const getMessage = async (templatePath: string, entryData: SocialEntryData): Pro
  *
  * @returns 処理結果
  */
-const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
+export const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 	try {
 		const response = await fetch(`${env('MISSKEY_INSTANCE')}/api/notes/create`, {
 			method: 'POST',
@@ -70,5 +70,3 @@ const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 		return { success: false, message: configMisskey.processMessage.failure };
 	}
 };
-
-export default post;

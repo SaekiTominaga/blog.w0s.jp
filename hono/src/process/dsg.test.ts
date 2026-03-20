@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import { test } from 'node:test';
-import clear from './dsg.ts';
+import { clear } from './dsg.ts';
 
 await test('clear', async () => {
 	const result = await clear();

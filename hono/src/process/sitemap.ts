@@ -16,7 +16,7 @@ const logger = getLogger('Sitemap');
  *
  * @returns 処理結果
  */
-const create = async (): Promise<ProcessResult> => {
+export const create = async (): Promise<ProcessResult> => {
 	try {
 		const dao = new SitemapDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`, {
 			readonly: true,
@@ -52,5 +52,3 @@ const create = async (): Promise<ProcessResult> => {
 		return { success: false, message: configSitemap.processMessage.failure };
 	}
 };
-
-export default create;

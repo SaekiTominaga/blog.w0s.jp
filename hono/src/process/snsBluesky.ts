@@ -39,7 +39,7 @@ const getMessage = async (templatePath: string, entryData: SocialEntryData): Pro
  *
  * @returns 処理結果
  */
-const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
+export const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 	try {
 		const agent = new AtpAgent({
 			service: env('BLUESKY_INSTANCE'),
@@ -69,5 +69,3 @@ const post = async (entryData: SocialEntryData): Promise<ProcessResult> => {
 		return { success: false, message: configBluesky.processMessage.failure };
 	}
 };
-
-export default post;
