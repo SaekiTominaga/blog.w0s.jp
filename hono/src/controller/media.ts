@@ -4,9 +4,9 @@ import { MIMEType } from 'whatwg-mimetype';
 import { env } from '@w0s/env-value-type';
 import type { Variables } from '../app.ts';
 import config from '../config/media.ts';
+import { createThumbnailImage } from '../process/media.ts';
 import { form as validatorForm } from '../validator/media.ts';
 import type { Media as Result, MediaResult as FileResult } from '../../../@types/api.d.ts';
-import { createThumbnailImage } from '../process/media.ts';
 
 /**
  * メディア登録
@@ -15,25 +15,25 @@ import { createThumbnailImage } from '../process/media.ts';
 /**
  * ファイルアップロード（書き込み）を実行する
  *
- * @param context - Context
+ * @param context - Hono Context
  * @param file - アップロードするファイル
- * @param option - オプション
- * @param option.dir - アップロード先ディレクトリ
- * @param option.limit - ファイルサイズの上限
- * @param option.overwrite - 上書きを許可するか
+ * @param arg1 -
+ * @param arg1.dir - アップロード先ディレクトリ
+ * @param arg1.limit - ファイルサイズの上限
+ * @param arg1.overwrite - 上書きを許可するか
  *
  * @returns 処理結果
  */
 const upload = async (
 	context: Context<{ Variables: Variables }>,
 	file: File,
-	option: Readonly<{ dir: string; limit: number; overwrite: boolean }>,
+	{ dir, limit, overwrite }: Readonly<{ dir: string; limit: number; overwrite: boolean }>,
 ): Promise<FileResult> => {
 	const logger = context.get('logger');
 
-	const filePath = `${env('ROOT')}/${config.image.dir}/${file.name}`;
+	const filePath = `${dir}/${file.name}`;
 
-	if (!option.overwrite && fs.existsSync(filePath)) {
+	if (!overwrite && fs.existsSync(filePath)) {
 		/* 同名ファイル存在 */
 		return {
 			success: false,
@@ -42,7 +42,7 @@ const upload = async (
 		};
 	}
 
-	if (file.size > option.limit) {
+	if (file.size > limit) {
 		/* ファイルサイズ超過 */
 		return {
 			success: false,
@@ -60,6 +60,7 @@ const upload = async (
 		filename: file.name,
 	};
 };
+
 export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm, async (context) => {
 	const { req } = context;
 	const logger = context.get('logger');
@@ -73,10 +74,14 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 			switch (new MIMEType(file.type).type) {
 				case 'image': {
 					const fileResult = await upload(context, file, {
-						dir: config.image.dir,
+						dir: `${env('ROOT')}/${config.image.dir}`,
 						limit: config.image.limit,
 						overwrite: overwrite,
 					});
+
+					if (!fileResult.success) {
+						return fileResult;
+					}
 
 					const created = await createThumbnailImage(
 						{
@@ -91,7 +96,7 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 				}
 				case 'video': {
 					return upload(context, file, {
-						dir: config.video.dir,
+						dir: `${env('ROOT')}/${config.video.dir}`,
 						limit: config.video.limit,
 						overwrite: overwrite,
 					});
