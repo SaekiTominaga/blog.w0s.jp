@@ -234,7 +234,7 @@ await test('image', async (t) => {
 		}).jpeg({ quality: 1 });
 
 		const formData = new FormData();
-		formData.append('files', new File([await image.toBuffer()], fileName, { type: 'image/foo' }));
+		formData.append('files', new File([(await image.toBuffer()) as BlobPart], fileName, { type: 'image/foo' }));
 
 		assert.equal(fs.existsSync(filePath), false);
 
