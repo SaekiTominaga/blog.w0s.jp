@@ -247,6 +247,7 @@ await test('image', async (t) => {
 				assert.equal(json.results.length, 1);
 				assert.equal(json.results.at(0)?.success, true);
 				assert.equal(json.results.at(0)?.message, config.message.success);
+				assert.equal(json.results.at(0)?.thumbnails, undefined);
 				assert.equal(fs.existsSync(filePath), true);
 			}
 		});
@@ -284,6 +285,7 @@ await test('image', async (t) => {
 				assert.equal(json.results.length, 1);
 				assert.equal(json.results.at(0)?.success, true);
 				assert.equal(json.results.at(0)?.message, config.message.success);
+				assert.equal((json.results.at(0)?.thumbnails as string[]).length, 4);
 				assert.equal(fs.existsSync(filePath), true);
 			}
 		});

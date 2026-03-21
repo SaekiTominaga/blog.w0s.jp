@@ -151,7 +151,9 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 					}
 
 					const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
-					messageElement?.setHTMLUnsafe(`${result.message}: <code>${result.filename}</code>`);
+					messageElement?.setHTMLUnsafe(
+						`${result.message}: <code>${result.filename}</code> ${result.thumbnails !== undefined ? `（サムネイル生成 ${String(result.thumbnails.length)} 件）` : ''}`,
+					);
 
 					fragment.appendChild(clone);
 				});

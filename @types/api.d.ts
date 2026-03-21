@@ -18,6 +18,7 @@ export type MediaResult = {
 	success: boolean;
 	message: string;
 	filename: string;
+	thumbnails?: string[];
 };
 export type Media = { results: MediaResult[] } | Error;
 

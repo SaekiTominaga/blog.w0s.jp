@@ -28,7 +28,7 @@ const upload = async (
 	context: Context<{ Variables: Variables }>,
 	file: File,
 	{ dir, limit, overwrite }: Readonly<{ dir: string; limit: number; overwrite: boolean }>,
-): Promise<FileResult> => {
+): Promise<Omit<FileResult, 'thumbnails'>> => {
 	const logger = context.get('logger');
 
 	const filePath = `${dir}/${file.name}`;
@@ -93,7 +93,7 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 					);
 					logger.info(created, 'サムネイルファイル生成');
 
-					return fileResult;
+					return { ...fileResult, ...{ thumbnails: created } };
 				}
 				case 'video': {
 					return upload(context, file, {
