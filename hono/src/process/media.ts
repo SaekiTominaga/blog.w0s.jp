@@ -8,77 +8,6 @@ import { getDimensions as getThumbImageDimensions, getFileName as getThumbImageF
 const logger = getLogger('Media');
 
 /**
- * 画像ファイル生成
- *
- * @param base - 元画像のオプション
- * @param base.dir - 格納ディレクトリ
- * @param base.fileName - ファイル名
- * @param thumb - サムネイル画像
- * @param thumb.dir - 格納ディレクトリ
- * @param thumb.maxWidth - 最大幅
- * @param thumb.maxHeight - 最大高さ
- * @param thumb.density - 密度（1x, 2x, ...）
- * @param thumb.quality - 画質（1–100）
- *
- * @returns 生成した画像ファイル名
- */
-const create = async (
-	base: Readonly<{
-		dir: string;
-		fileName: string;
-	}>,
-	thumb: Readonly<{
-		dir: string;
-		maxWidth: number;
-		maxHeight: number;
-		density?: number;
-		quality?: number;
-	}>,
-): Promise<string> => {
-	const baseFilePath = `${base.dir}/${base.fileName}`;
-
-	const image = sharp(baseFilePath);
-
-	const imageMetadata = await image.metadata();
-	const thumbDimensions = getThumbImageDimensions(
-		{
-			width: imageMetadata.width,
-			height: imageMetadata.height,
-		},
-		{
-			maxWidth: thumb.maxWidth,
-			maxHeight: thumb.maxHeight,
-			density: thumb.density,
-		},
-	);
-
-	image.resize(thumbDimensions);
-	image.avif({
-		quality: thumb.quality,
-	});
-
-	const thumbData = await image.toBuffer();
-
-	const thumbFileName = getThumbImageFileName(base.fileName, {
-		width: thumb.maxWidth,
-		height: thumb.maxHeight,
-		density: thumb.density,
-		quality: thumb.quality,
-		extension: '.avif',
-	});
-
-	await fs.promises.writeFile(`${thumb.dir}/${thumbFileName}`, thumbData);
-
-	/* 生成後の処理 */
-	const baseSize = iec((await fs.promises.stat(baseFilePath)).size, { digits: 1 });
-	const createdSize = iec(thumbData.byteLength, { digits: 1 });
-
-	logger.info(`画像生成完了: ${thumbFileName} (${baseSize} → ${createdSize})`);
-
-	return thumbFileName;
-};
-
-/**
  * サムネイル画像を生成
  *
  * @param base - 元画像のオプション
@@ -103,20 +32,58 @@ export const createThumbnailImage = async (
 	const densityQualities = [
 		{ density: 1, quality: 60 },
 		{ density: 2, quality: 30 },
-	]; // 密度と画質の関係値
+	]; // 密度（1x, 2x, ...）と画質（1–100）の関係値
 
-	const thumbValiations = dimensions.flatMap((dimension) => densityQualities.map((densityQuality) => ({ ...dimension, ...densityQuality })));
+	const thumbValiations = dimensions.flatMap((dimension) =>
+		densityQualities.map((densityQuality) => ({ ...{ dir: thumbDir }, ...dimension, ...densityQuality })),
+	);
+
+	const baseFilePath = `${base.dir}/${base.fileName}`;
+	const baseFileStats = await fs.promises.stat(baseFilePath);
+
+	const image = sharp(baseFilePath);
+
+	const imageMetadata = await image.metadata();
 
 	const thumbFileNames = await Promise.all(
-		thumbValiations.map((thumb) =>
-			create(base, {
-				dir: thumbDir,
-				maxWidth: thumb.maxWidth,
-				maxHeight: thumb.maxHeight,
+		thumbValiations.map(async (thumb) => {
+			const thumbDimensions = getThumbImageDimensions(
+				{
+					width: imageMetadata.width,
+					height: imageMetadata.height,
+				},
+				{
+					maxWidth: thumb.maxWidth,
+					maxHeight: thumb.maxHeight,
+					density: thumb.density,
+				},
+			);
+
+			image.resize(thumbDimensions);
+			image.avif({
+				quality: thumb.quality,
+			});
+
+			const thumbData = await image.toBuffer();
+
+			const thumbFileName = getThumbImageFileName(base.fileName, {
+				width: thumb.maxWidth,
+				height: thumb.maxHeight,
 				density: thumb.density,
 				quality: thumb.quality,
-			}),
-		),
+				extension: '.avif',
+			});
+
+			await fs.promises.writeFile(`${thumb.dir}/${thumbFileName}`, thumbData);
+
+			/* 生成後の処理 */
+			const baseFileSize = iec(baseFileStats.size, { digits: 1 });
+			const createdFileSize = iec(thumbData.byteLength, { digits: 1 });
+
+			logger.info(`サムネイル画像生成: ${thumbFileName} (${baseFileSize} → ${createdFileSize})`);
+
+			return thumbFileName;
+		}),
 	);
 
 	return thumbFileNames;
