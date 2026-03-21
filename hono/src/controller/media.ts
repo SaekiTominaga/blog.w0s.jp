@@ -52,7 +52,7 @@ const upload = async (
 	}
 
 	await fs.promises.writeFile(filePath, file.stream());
-	logger.info(`ファイルアップロード: ${filePath}`);
+	logger.info(`ファイルアップロード: ${file.name}`);
 
 	return {
 		success: true,
@@ -63,7 +63,6 @@ const upload = async (
 
 export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm, async (context) => {
 	const { req } = context;
-	const logger = context.get('logger');
 
 	const requestBody = req.valid('form');
 
@@ -91,7 +90,6 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 						},
 						`${env('ROOT')}/${config.image.thumbDir}`,
 					);
-					logger.info(created, 'サムネイルファイル生成');
 
 					return { ...fileResult, ...{ thumbnails: created } };
 				}
