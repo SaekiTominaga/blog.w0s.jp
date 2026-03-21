@@ -125,10 +125,10 @@ await test('getFilename', async (t) => {
 	});
 
 	await t.test('最小パラメーター', () => {
-		assert.equal(getFileName('path/to.jpg', { width: 10, height: 8, extension: '.avif' }), 'path/to.jpg@s=10x8.avif');
+		assert.equal(getFileName('path/to.jpg', { width: 10, height: 8, extension: '.avif' }), 'path/to.jpg@d=10x8.avif');
 	});
 
 	await t.test('全パラメーター', () => {
-		assert.equal(getFileName('path/to.jpg', { width: 10, height: 8, density: 2, quality: 10, extension: '.avif' }), 'path/to.jpg@s=20x16;q=10.avif');
+		assert.equal(getFileName('path/to.jpg', { width: 10, height: 8, density: 2, quality: 10, extension: '.avif' }), 'path/to.jpg@d=20x16;q=10.avif');
 	});
 });

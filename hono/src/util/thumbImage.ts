@@ -79,8 +79,8 @@ export const getFileName = (
 		throw new Error('The value of the `extension` must begin with a period');
 	}
 
-	const paramSize = `s=${String(thumb.width * (thumb.density ?? 1))}x${String(thumb.height * (thumb.density ?? 1))}`;
+	const paramDimensions = `d=${String(thumb.width * (thumb.density ?? 1))}x${String(thumb.height * (thumb.density ?? 1))}`;
 	const paramQuality = thumb.quality !== undefined ? `q=${String(thumb.quality)}` : undefined;
 
-	return `${baseFileName}@${[paramSize, paramQuality].filter((param) => param !== undefined).join(';')}${thumb.extension}`; // e.g `path/to.jpg@s=100x200;q=80.avif`
+	return `${baseFileName}@${[paramDimensions, paramQuality].filter((param) => param !== undefined).join(';')}${thumb.extension}`; // e.g `path/to.jpg@d=100x200;q=80.avif`
 };
