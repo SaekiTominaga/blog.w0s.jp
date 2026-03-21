@@ -4,7 +4,7 @@ import config from '../config/hono.ts';
 /**
  * API 機能へのリクエストかどうか
  *
- * @param context - Context
+ * @param context - Hono Context
  *
  * @returns API 機能へのリクエストなら true
  */

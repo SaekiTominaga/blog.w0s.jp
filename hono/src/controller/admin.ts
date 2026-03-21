@@ -42,7 +42,7 @@ interface EntryData {
 /**
  * 初期画面表示
  *
- * @param context - Context
+ * @param context - Hono Context
  * @param arg1 -
  * @param arg1.requestQuery - URL クエリー情報
  * @param arg1.entryData - 記事データ

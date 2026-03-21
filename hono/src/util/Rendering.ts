@@ -16,7 +16,7 @@ export default class Rendering {
 	readonly #htmlBrotliFilePath: string;
 
 	/**
-	 * @param context - Context
+	 * @param context - Hono Context
 	 * @param lastModified - 今回のアクセスに対して発行する最終更新日時
 	 * @param htmlFilePath - HTML ファイルパス
 	 */
