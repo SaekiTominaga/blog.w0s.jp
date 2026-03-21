@@ -1031,15 +1031,9 @@ await test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed">
-		<picture
-			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" crossorigin="" class="p-embed__image"
-		/></picture>
-	</div>
+	<div class="p-embed"><img src="/entry/image/thumb/file.jpg@d=640x480;q=60.avif" srcset="/entry/image/thumb/file.jpg@d=1280x960;q=30.avif 2x" alt="サムネイル画像" class="p-embed__image" /></div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="/entry/image/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1058,7 +1052,7 @@ await test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="画像" class="p-embed__image" /></div>
+	<div class="p-embed"><img src="/entry/image/file.svg" alt="画像" class="p-embed__image" /></div>
 	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
 </figure>
 `.trim(),
@@ -1077,7 +1071,7 @@ await test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file.mp4" controls class="p-embed__video"></video></div>
+	<div class="p-embed"><video src="/entry/video/file.mp4" controls class="p-embed__video"></video></div>
 	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
 </figure>
 `.trim(),
@@ -1115,15 +1109,9 @@ await test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed">
-		<picture
-			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" width="640" height="427" crossorigin="" class="p-embed__image"
-		/></picture>
-	</div>
+	<div class="p-embed"><img src="/entry/image/thumb/file.jpg@d=640x480;q=60.avif" srcset="/entry/image/thumb/file.jpg@d=1280x960;q=30.avif 2x" alt="サムネイル画像" width="640" height="427" class="p-embed__image" /></div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="/entry/image/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1142,7 +1130,7 @@ await test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed"><img src="https://media.w0s.jp/image/blog/file.svg" alt="画像" width="1920" height="1280" class="p-embed__image" /></div>
+	<div class="p-embed"><img src="/entry/image/file.svg" alt="画像" width="1920" height="1280" class="p-embed__image" /></div>
 	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
 </figure>
 `.trim(),
@@ -1161,7 +1149,7 @@ await test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed"><video src="https://media.w0s.jp/video/blog/file.mp4" controls width="1920" height="1280" class="p-embed__video"></video></div>
+	<div class="p-embed"><video src="/entry/video/file.mp4" controls width="1920" height="1280" class="p-embed__video"></video></div>
 	<figcaption class="c-caption"><span class="c-caption__text">title</span></figcaption>
 </figure>
 `.trim(),
@@ -1180,16 +1168,10 @@ await test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed">
-		<picture
-			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" crossorigin="" class="p-embed__image"
-		/></picture>
-	</div>
+	<div class="p-embed"><img src="/entry/image/thumb/file.jpg@d=640x480;q=60.avif" srcset="/entry/image/thumb/file.jpg@d=1280x960;q=30.avif 2x" alt="サムネイル画像" class="p-embed__image" /></div>
 	<figcaption class="c-caption">
 		<span class="c-caption__text">title <code>code</code></span
-		><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		><a href="/entry/image/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1208,15 +1190,9 @@ await test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed">
-		<picture
-			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" crossorigin="" class="p-embed__image"
-		/></picture>
-	</div>
+	<div class="p-embed"><img src="/entry/image/thumb/file.jpg@d=640x480;q=60.avif" srcset="/entry/image/thumb/file.jpg@d=1280x960;q=30.avif 2x" alt="サムネイル画像" class="p-embed__image" /></div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="/entry/image/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),
@@ -1235,15 +1211,9 @@ await test('Image', async (t) => {
 			),
 			`
 <figure>
-	<div class="p-embed">
-		<picture
-			><source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=avif;w=1280;h=960;quality=30 2x" />
-			<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=640;h=480;quality=60, https://media.w0s.jp/thumbimage/blog/file.jpg?type=webp;w=1280;h=960;quality=30 2x" />
-			<img src="https://media.w0s.jp/thumbimage/blog/file.jpg?type=jpeg;w=640;h=480;quality=60" alt="サムネイル画像" crossorigin="" class="p-embed__image"
-		/></picture>
-	</div>
+	<div class="p-embed"><img src="/entry/image/thumb/file.jpg@d=640x480;q=60.avif" srcset="/entry/image/thumb/file.jpg@d=1280x960;q=30.avif 2x" alt="サムネイル画像" class="p-embed__image" /></div>
 	<figcaption class="c-caption">
-		<span class="c-caption__text">title</span><a href="https://media.w0s.jp/image/blog/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
+		<span class="c-caption__text">title</span><a href="/entry/image/file.jpg" class="c-caption__media-expansion"><img src="/image/media-expansion.svg" alt="" width="16" height="16" />オリジナル画像</a>
 	</figcaption>
 </figure>
 `.trim(),

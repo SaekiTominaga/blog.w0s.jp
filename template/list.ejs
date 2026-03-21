@@ -53,11 +53,7 @@
 									<span class="c-entry-link__title"><%- entry.title %></span>
 									<span class="c-entry-link__thumb">
 										<%_ if (entry.imageInternal !== undefined) { _%>
-										<picture>
-											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=avif;w=360;h=240;quality=30 2x" />
-											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=webp;w=360;h=240;quality=30 2x" />
-											<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
-										</picture>
+										<img src="/entry/image/thumb/<%= entry.imageInternal %>@d=180x120;q=60.avif" srcset="/entry/image/thumb/<%= entry.imageInternal %>@d=360x240;q=30.avif" alt="" class="c-entry-link__image" />
 										<%_ } else if (entry.imageExternal !== undefined) { _%>
 										<img src="<%= entry.imageExternal.toString() %>" alt="" class="c-entry-link__image" />
 										<%_ } else { _%>
