@@ -262,7 +262,7 @@ app.onError(async (err, context) => {
 			logger.error(err.message);
 		}
 	} else {
-		logger.fatal(err.message);
+		logger.fatal(err.stack);
 	}
 
 	const status = err instanceof HTTPException ? err.status : 500;
