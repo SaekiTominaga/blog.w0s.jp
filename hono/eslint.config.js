@@ -52,6 +52,12 @@ export default [
 		},
 	},
 	{
+		files: ['src/shell/**/*.ts'],
+		rules: {
+			'no-console': 'off',
+		},
+	},
+	{
 		files: ['src/util/**/*.ts'],
 		rules: {
 			'func-style': [
