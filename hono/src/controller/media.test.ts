@@ -1,7 +1,10 @@
 import { strict as assert } from 'node:assert';
-import { test } from 'node:test';
+import fs from 'node:fs';
+import { after, before, test } from 'node:test';
+import sharp from 'sharp';
 import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
+import config from '../config/media.ts';
 import { getAuth } from '../util/auth.ts';
 import type { Media } from '../../../@types/api.d.ts';
 
@@ -18,7 +21,7 @@ await test('GET', async () => {
 });
 
 await test('no auth', async () => {
-	const res = await app.request('/api/clear', {
+	const res = await app.request('/api/media', {
 		method: 'post',
 	});
 
@@ -32,7 +35,7 @@ await test('no auth', async () => {
 	}
 });
 
-await test('invalid paramater', async (t) => {
+await test('validator', async (t) => {
 	await t.test('no paramater', async () => {
 		const res = await app.request('/api/media', {
 			method: 'post',
@@ -72,7 +75,7 @@ await test('invalid paramater', async (t) => {
 
 		await t2.test('array, not every File', async () => {
 			const formData = new FormData();
-			formData.append('files', new File(['blob'], 'file'));
+			formData.append('files', new File([], 'file'));
 			formData.append('files', 'foo');
 
 			const res = await app.request('/api/media', {
@@ -95,7 +98,7 @@ await test('invalid paramater', async (t) => {
 	await t.test('overwrite', async (t2) => {
 		await t2.test('array', async () => {
 			const formData = new FormData();
-			formData.append('files', new File(['blob'], 'file'));
+			formData.append('files', new File([], 'file'));
 			formData.append('overwrite', '');
 			formData.append('overwrite', '');
 
@@ -117,8 +120,8 @@ await test('invalid paramater', async (t) => {
 
 		await t2.test('object', async () => {
 			const formData = new FormData();
-			formData.append('files', new File(['blob'], 'file'));
-			formData.append('overwrite', new File(['blob'], 'file'));
+			formData.append('files', new File([], 'file'));
+			formData.append('overwrite', new File([], 'file'));
 
 			const res = await app.request('/api/media', {
 				method: 'post',
@@ -138,10 +141,171 @@ await test('invalid paramater', async (t) => {
 	});
 });
 
-await test('no error', async () => {
+await test('image', async (t) => {
+	const fileNamePrefix = '_test';
+
+	after(async () => {
+		const filePaths = [
+			...(await fs.promises.readdir(`${env('ROOT')}/${config.image.dir}`, { withFileTypes: true }))
+				.filter((resource) => resource.isFile() && resource.name.startsWith(fileNamePrefix))
+				.map((file) => `${env('ROOT')}/${config.image.dir}/${file.name}`),
+			...(await fs.promises.readdir(`${env('ROOT')}/${config.image.thumbDir}`, { withFileTypes: true }))
+				.filter((resource) => resource.isFile() && resource.name.startsWith(fileNamePrefix))
+				.map((file) => `${env('ROOT')}/${config.image.thumbDir}/${file.name}`),
+		];
+
+		await Promise.all(filePaths.map((filePath) => fs.promises.unlink(filePath)));
+	});
+
+	await t.test('overwrite', async () => {
+		const fileName = `${fileNamePrefix}0001.jpg`;
+		const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
+
+		before(async () => {
+			await fs.promises.writeFile(filePath, '');
+		});
+		after(async () => {
+			await fs.promises.unlink(filePath);
+		});
+
+		const formData = new FormData();
+		formData.append('files', new File([], fileName, { type: 'image/foo' }));
+
+		assert.equal(fs.existsSync(filePath), true);
+
+		const res = await app.request('/api/media', {
+			method: 'post',
+			headers: { Authorization: authorization },
+			body: formData,
+		});
+
+		assert.equal(res.status, 200);
+		assert.equal(res.headers.get('Content-Type'), 'application/json');
+
+		const json = (await res.json()) as Media;
+
+		assert.equal('results' in json, true);
+		if ('results' in json) {
+			assert.equal(json.results.length, 1);
+			assert.equal(json.results.at(0)?.success, false);
+			assert.equal(json.results.at(0)?.message, config.message.overwrite);
+		}
+	});
+
+	await t.test('size', async () => {
+		const fileName = `${fileNamePrefix}0002.jpg`;
+		const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
+
+		const formData = new FormData();
+		formData.append('files', new File(['x'.repeat(config.image.limit + 1)], fileName, { type: 'image/foo' }));
+
+		assert.equal(fs.existsSync(filePath), false);
+
+		const res = await app.request('/api/media', {
+			method: 'post',
+			headers: { Authorization: authorization },
+			body: formData,
+		});
+
+		assert.equal(res.status, 200);
+		assert.equal(res.headers.get('Content-Type'), 'application/json');
+
+		const json = (await res.json()) as Media;
+
+		assert.equal('results' in json, true);
+		if ('results' in json) {
+			assert.equal(json.results.length, 1);
+			assert.equal(json.results.at(0)?.success, false);
+			assert.equal(json.results.at(0)?.message, config.message.size);
+			assert.equal(fs.existsSync(filePath), false);
+		}
+	});
+
+	await t.test('success', async () => {
+		const fileName = `${fileNamePrefix}0003.jpg`;
+		const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
+
+		const image = sharp({
+			text: {
+				text: 'Hello, world!',
+				width: 1920,
+				height: 1280,
+			},
+		}).jpeg({ quality: 1 });
+
+		const formData = new FormData();
+		formData.append('files', new File([await image.toBuffer()], fileName, { type: 'image/foo' }));
+
+		assert.equal(fs.existsSync(filePath), false);
+
+		const res = await app.request('/api/media', {
+			method: 'post',
+			headers: { Authorization: authorization },
+			body: formData,
+		});
+
+		assert.equal(res.status, 200);
+		assert.equal(res.headers.get('Content-Type'), 'application/json');
+
+		const json = (await res.json()) as Media;
+
+		assert.equal('results' in json, true);
+		if ('results' in json) {
+			assert.equal(json.results.length, 1);
+			assert.equal(json.results.at(0)?.success, true);
+			assert.equal(json.results.at(0)?.message, config.message.success);
+			assert.equal(fs.existsSync(filePath), true);
+		}
+	});
+});
+
+await test('video', async (t) => {
+	const fileNamePrefix = '_test';
+
+	after(async () => {
+		const filePaths = (await fs.promises.readdir(`${env('ROOT')}/${config.video.dir}`, { withFileTypes: true }))
+			.filter((resource) => resource.isFile() && resource.name.startsWith(fileNamePrefix))
+			.map((file) => `${env('ROOT')}/${config.video.dir}/${file.name}`);
+
+		await Promise.all(filePaths.map((filePath) => fs.promises.unlink(filePath)));
+	});
+
+	await t.test('success', async () => {
+		const fileName = `${fileNamePrefix}0001.mp4`;
+		const filePath = `${env('ROOT')}/${config.video.dir}/${fileName}`;
+
+		const formData = new FormData();
+		formData.append('files', new File(['videoblob'], fileName, { type: 'video/foo' }));
+
+		assert.equal(fs.existsSync(filePath), false);
+
+		const res = await app.request('/api/media', {
+			method: 'post',
+			headers: { Authorization: authorization },
+			body: formData,
+		});
+
+		assert.equal(res.status, 200);
+		assert.equal(res.headers.get('Content-Type'), 'application/json');
+
+		const json = (await res.json()) as Media;
+
+		assert.equal('results' in json, true);
+		if ('results' in json) {
+			assert.equal(json.results.length, 1);
+			assert.equal(json.results.at(0)?.success, true);
+			assert.equal(json.results.at(0)?.message, config.message.success);
+			assert.equal(fs.existsSync(filePath), true);
+		}
+	});
+});
+
+await test('text', async () => {
+	const fileNamePrefix = '_test';
+
 	const formData = new FormData();
-	formData.append('files', new File(['blob'], 'file'));
-	formData.append('overwrite', 'foo');
+	formData.append('files', new File([], `${fileNamePrefix}0001.txt`, { type: 'text/foo' }));
+	formData.append('files', new File([], `${fileNamePrefix}0002.txt`, { type: 'text/bar' }));
 
 	const res = await app.request('/api/media', {
 		method: 'post',
@@ -156,9 +320,8 @@ await test('no error', async () => {
 
 	assert.equal('results' in json, true);
 	if ('results' in json) {
-		assert.equal(
-			json.results.every((result) => !result.success), // media.w0s.jp のローカル環境を起動していない限りエラーになる
-			true,
-		);
+		assert.equal(json.results.length, 2);
+		assert.equal(json.results.at(0)?.success, false);
+		assert.equal(json.results.at(0)?.message, config.message.type);
 	}
 });
