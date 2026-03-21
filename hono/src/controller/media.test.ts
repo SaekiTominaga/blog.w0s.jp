@@ -221,41 +221,72 @@ await test('image', async (t) => {
 		}
 	});
 
-	await t.test('success', async () => {
-		const fileName = `${fileNamePrefix}0003.jpg`;
-		const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
+	await t.test('success', async (t2) => {
+		await t2.test('svg', async () => {
+			const fileName = `${fileNamePrefix}0003.svg`;
+			const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
 
-		const image = sharp({
-			text: {
-				text: 'Hello, world!',
-				width: 1920,
-				height: 1280,
-			},
-		}).jpeg({ quality: 1 });
+			const formData = new FormData();
+			formData.append('files', new File([], fileName, { type: 'image/svg+xml' }));
 
-		const formData = new FormData();
-		formData.append('files', new File([(await image.toBuffer()) as BlobPart], fileName, { type: 'image/foo' }));
+			assert.equal(fs.existsSync(filePath), false);
 
-		assert.equal(fs.existsSync(filePath), false);
+			const res = await app.request('/api/media', {
+				method: 'post',
+				headers: { Authorization: authorization },
+				body: formData,
+			});
 
-		const res = await app.request('/api/media', {
-			method: 'post',
-			headers: { Authorization: authorization },
-			body: formData,
+			assert.equal(res.status, 200);
+			assert.equal(res.headers.get('Content-Type'), 'application/json');
+
+			const json = (await res.json()) as Media;
+
+			assert.equal('results' in json, true);
+			if ('results' in json) {
+				assert.equal(json.results.length, 1);
+				assert.equal(json.results.at(0)?.success, true);
+				assert.equal(json.results.at(0)?.message, config.message.success);
+				assert.equal(fs.existsSync(filePath), true);
+			}
 		});
 
-		assert.equal(res.status, 200);
-		assert.equal(res.headers.get('Content-Type'), 'application/json');
+		await t2.test('thumbnail create', async () => {
+			const fileName = `${fileNamePrefix}0004.jpg`;
+			const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
 
-		const json = (await res.json()) as Media;
+			const image = sharp({
+				text: {
+					text: 'Hello, world!',
+					width: 1920,
+					height: 1280,
+				},
+			}).jpeg({ quality: 1 });
 
-		assert.equal('results' in json, true);
-		if ('results' in json) {
-			assert.equal(json.results.length, 1);
-			assert.equal(json.results.at(0)?.success, true);
-			assert.equal(json.results.at(0)?.message, config.message.success);
-			assert.equal(fs.existsSync(filePath), true);
-		}
+			const formData = new FormData();
+			formData.append('files', new File([(await image.toBuffer()) as BlobPart], fileName, { type: 'image/foo' }));
+
+			assert.equal(fs.existsSync(filePath), false);
+
+			const res = await app.request('/api/media', {
+				method: 'post',
+				headers: { Authorization: authorization },
+				body: formData,
+			});
+
+			assert.equal(res.status, 200);
+			assert.equal(res.headers.get('Content-Type'), 'application/json');
+
+			const json = (await res.json()) as Media;
+
+			assert.equal('results' in json, true);
+			if ('results' in json) {
+				assert.equal(json.results.length, 1);
+				assert.equal(json.results.at(0)?.success, true);
+				assert.equal(json.results.at(0)?.message, config.message.success);
+				assert.equal(fs.existsSync(filePath), true);
+			}
+		});
 	});
 });
 

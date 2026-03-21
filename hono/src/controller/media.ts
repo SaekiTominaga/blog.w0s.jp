@@ -71,7 +71,8 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 
 	const fileResults = await Promise.all(
 		files.map(async (file): Promise<FileResult> => {
-			switch (new MIMEType(file.type).type) {
+			const mimeType = new MIMEType(file.type);
+			switch (mimeType.type) {
 				case 'image': {
 					const fileResult = await upload(context, file, {
 						dir: `${env('ROOT')}/${config.image.dir}`,
@@ -79,7 +80,7 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 						overwrite: overwrite,
 					});
 
-					if (!fileResult.success) {
+					if (!fileResult.success || ['svg+xml'].includes(mimeType.subtype)) {
 						return fileResult;
 					}
 
