@@ -1,11 +1,11 @@
 export default {
 	image: {
-		dir: 'public/image/entry',
-		thumbDir: 'public/image/entry/thumb',
+		dir: 'public/entry/image',
+		thumbDir: 'public/entry/image/thumb',
 		limit: 3072000,
 	},
 	video: {
-		dir: 'public/video/entry',
+		dir: 'public/entry/video',
 		limit: 30720000,
 	},
 	message: {

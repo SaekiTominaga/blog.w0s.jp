@@ -15,7 +15,7 @@
 /public/**/*.svg
 /public/favicon.ico
 /public/sitemap.xml
-/public/image/entry
+/public/entry
 /public/json
 /public/script
 /public/style
