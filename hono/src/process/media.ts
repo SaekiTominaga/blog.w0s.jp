@@ -39,18 +39,17 @@ export const createThumbnailImage = async (
 	);
 
 	const baseFilePath = `${base.dir}/${base.fileName}`;
-	const baseFileStats = await fs.promises.stat(baseFilePath);
 
 	const image = sharp(baseFilePath);
 
-	const imageMetadata = await image.metadata();
+	const [baseStats, baseMetadata] = await Promise.all([fs.promises.stat(baseFilePath), image.metadata()]);
 
 	const thumbFileNames = await Promise.all(
 		thumbValiations.map(async (thumb) => {
 			const thumbDimensions = getThumbImageDimensions(
 				{
-					width: imageMetadata.width,
-					height: imageMetadata.height,
+					width: baseMetadata.width,
+					height: baseMetadata.height,
 				},
 				{
 					maxWidth: thumb.maxWidth,
@@ -77,7 +76,7 @@ export const createThumbnailImage = async (
 			await fs.promises.writeFile(`${thumb.dir}/${thumbFileName}`, thumbData);
 
 			/* 生成後の処理 */
-			const baseFileSize = iec(baseFileStats.size, { digits: 1 });
+			const baseFileSize = iec(baseStats.size, { digits: 1 });
 			const createdFileSize = iec(thumbData.byteLength, { digits: 1 });
 
 			logger.info(`サムネイル画像生成: ${thumbFileName} (${baseFileSize} → ${createdFileSize})`);
@@ -85,6 +84,8 @@ export const createThumbnailImage = async (
 			return thumbFileName;
 		}),
 	);
+
+	image.destroy();
 
 	return thumbFileNames;
 };
