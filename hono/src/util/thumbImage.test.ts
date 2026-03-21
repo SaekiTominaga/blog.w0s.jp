@@ -3,34 +3,74 @@ import { test } from 'node:test';
 import { getDimensions, getFileName } from './thumbImage.ts';
 
 await test('getDimensions', async (t) => {
-	await t.test('オリジナル画像より幅、高さとも小さい', () => {
-		const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 50, maxHeight: 50 });
-		assert.equal(width, 50);
-		assert.equal(height, 25);
+	await t.test('オリジナル画像より幅、高さとも小さい', async (t2) => {
+		await t2.test('x1', () => {
+			const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 50, maxHeight: 50, density: undefined });
+			assert.equal(width, 50);
+			assert.equal(height, 25);
+		});
+
+		await t2.test('x2', () => {
+			const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 50, maxHeight: 50, density: 2 });
+			assert.equal(width, 100);
+			assert.equal(height, 50);
+		});
 	});
 
-	await t.test('オリジナル画像より幅のみが小さい', () => {
-		const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 150, maxHeight: 150 });
-		assert.equal(width, 150);
-		assert.equal(height, 75);
+	await t.test('オリジナル画像より幅のみが小さい', async (t2) => {
+		await t2.test('x1', () => {
+			const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 150, maxHeight: 150, density: undefined });
+			assert.equal(width, 150);
+			assert.equal(height, 75);
+		});
+
+		await t2.test('x2', () => {
+			const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 150, maxHeight: 150, density: 2 });
+			assert.equal(width, 200);
+			assert.equal(height, 100);
+		});
 	});
 
-	await t.test('オリジナル画像より高さのみが小さい', () => {
-		const { width, height } = getDimensions({ width: 100, height: 200 }, { maxWidth: 150, maxHeight: 150 });
-		assert.equal(width, 75);
-		assert.equal(height, 150);
+	await t.test('オリジナル画像より高さのみが小さい', async (t2) => {
+		await t2.test('x1', () => {
+			const { width, height } = getDimensions({ width: 100, height: 200 }, { maxWidth: 150, maxHeight: 150, density: undefined });
+			assert.equal(width, 75);
+			assert.equal(height, 150);
+		});
+
+		await t2.test('x2', () => {
+			const { width, height } = getDimensions({ width: 100, height: 200 }, { maxWidth: 150, maxHeight: 150, density: 2 });
+			assert.equal(width, 100);
+			assert.equal(height, 200);
+		});
 	});
 
-	await t.test('オリジナル画像と同じ大きさ', () => {
-		const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 200, maxHeight: 100 });
-		assert.equal(width, 200);
-		assert.equal(height, 100);
+	await t.test('オリジナル画像と同じ大きさ', async (t2) => {
+		await t2.test('x1', () => {
+			const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 200, maxHeight: 100, density: undefined });
+			assert.equal(width, 200);
+			assert.equal(height, 100);
+		});
+
+		await t2.test('x2', () => {
+			const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 200, maxHeight: 100, density: 2 });
+			assert.equal(width, 200);
+			assert.equal(height, 100);
+		});
 	});
 
-	await t.test('オリジナル画像より大きい', () => {
-		const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 201, maxHeight: 101 });
-		assert.equal(width, 200);
-		assert.equal(height, 100);
+	await t.test('オリジナル画像より大きい', async (t2) => {
+		await t2.test('x1', () => {
+			const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 201, maxHeight: 101, density: undefined });
+			assert.equal(width, 200);
+			assert.equal(height, 100);
+		});
+
+		await t2.test('x2', () => {
+			const { width, height } = getDimensions({ width: 200, height: 100 }, { maxWidth: 201, maxHeight: 101, density: 2 });
+			assert.equal(width, 200);
+			assert.equal(height, 100);
+		});
 	});
 });
 

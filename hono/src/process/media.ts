@@ -48,16 +48,9 @@ const create = async (
 		{
 			maxWidth: thumb.maxWidth,
 			maxHeight: thumb.maxHeight,
+			density: thumb.density,
 		},
 	);
-
-	const thumbFileName = getThumbImageFileName(base.fileName, {
-		width: thumbDimensions.width,
-		height: thumbDimensions.height,
-		density: thumb.density,
-		quality: thumb.quality,
-		extension: '.avif',
-	});
 
 	image.resize(thumbDimensions);
 	image.avif({
@@ -65,6 +58,14 @@ const create = async (
 	});
 
 	const thumbData = await image.toBuffer();
+
+	const thumbFileName = getThumbImageFileName(base.fileName, {
+		width: thumb.maxWidth,
+		height: thumb.maxHeight,
+		density: thumb.density,
+		quality: thumb.quality,
+		extension: '.avif',
+	});
 
 	await fs.promises.writeFile(`${thumb.dir}/${thumbFileName}`, thumbData);
 

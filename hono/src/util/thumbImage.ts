@@ -8,16 +8,19 @@
  */
 export const getDimensions = (
 	base: Readonly<{ width: number; height: number }>,
-	thumb: Readonly<{ maxWidth: number; maxHeight: number }>,
+	thumb: Readonly<{ maxWidth: number; maxHeight: number; density: number | undefined }>,
 ): { width: number; height: number } => {
 	const newDimensions = {
 		width: base.width,
 		height: base.height,
 	};
 
-	if (thumb.maxWidth < base.width || thumb.maxHeight < base.height) {
+	const thumbDensity = thumb.density ?? 1;
+	const thumbMaxWidth = thumb.maxWidth * thumbDensity;
+	const thumbMaxHeight = thumb.maxHeight * thumbDensity;
+	if (thumbMaxWidth < base.width || thumbMaxHeight < base.height) {
 		/* 幅か高さ、どちらかより縮小割合が大きい方を基準に縮小する */
-		const reductionRatio = Math.min(thumb.maxWidth / base.width, thumb.maxHeight / base.height);
+		const reductionRatio = Math.min(thumbMaxWidth / base.width, thumbMaxHeight / base.height);
 
 		newDimensions.width = Math.round(base.width * reductionRatio);
 		newDimensions.height = Math.round(base.height * reductionRatio);
