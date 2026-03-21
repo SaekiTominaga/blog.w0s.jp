@@ -14,13 +14,13 @@ export type PreviewData = {
 export type Preview = { data: PreviewData } | Error;
 
 /* メディア登録 */
-export type MediaResult = {
+export type MediaUploadResult = {
 	success: boolean;
 	message: string;
 	filename: string;
 	thumbnails?: string[];
 };
-export type Media = { results: MediaResult[] } | Error;
+export type MediaUpload = { results: MediaUploadResult[] } | Error;
 
 /* DSG のキャッシュクリア */
 export type ClearProcess = {

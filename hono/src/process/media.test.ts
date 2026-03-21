@@ -2,7 +2,7 @@ import { strict as assert } from 'node:assert';
 import fs from 'node:fs';
 import { after, before, test } from 'node:test';
 import sharp from 'sharp';
-import { createThumbnailImage, cleanThumbnailImages } from './media.ts';
+import { createThumbnailImage, regenerateThumbnailImages } from './media.ts';
 
 const tempBaseDirNamePrefix = '.temp-base-';
 const tempThumbDirNamePrefix = '.temp-thumb-';
@@ -39,7 +39,7 @@ await test('createThumbnailImage', async (t) => {
 	});
 });
 
-await test('cleanThumbnailImages', async (t) => {
+await test('regenerateThumbnailImages', async (t) => {
 	let tempBaseDir: string;
 	let tempThumbDir: string;
 	before(async () => {
@@ -69,7 +69,7 @@ await test('cleanThumbnailImages', async (t) => {
 	});
 
 	await t.test('正常系', async () => {
-		const thumbFileNames = await cleanThumbnailImages(tempBaseDir, tempThumbDir);
+		const thumbFileNames = await regenerateThumbnailImages(tempBaseDir, tempThumbDir);
 
 		assert.equal(thumbFileNames.length, 2);
 		assert.equal(

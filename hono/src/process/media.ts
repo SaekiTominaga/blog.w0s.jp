@@ -96,7 +96,7 @@ export const createThumbnailImage = async (
  *
  * @returns 生成した画像ファイル名（元画像ごとの配列）
  */
-export const cleanThumbnailImages = async (baseDir: string, thumbDir: string): Promise<string[][]> => {
+export const regenerateThumbnailImages = async (baseDir: string, thumbDir: string): Promise<string[][]> => {
 	const deleted = await clearFiles(thumbDir); // 既存のサムネイル画像をクリア
 	logger.debug(`\`${thumbDir}\` ディレクトリから ${String(deleted.length)} 件のファイルを削除`);
 

@@ -6,7 +6,7 @@ import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
 import config from '../config/media.ts';
 import { getAuth } from '../util/auth.ts';
-import type { Media } from '../../../@types/api.d.ts';
+import type { MediaUpload } from '../../../@types/api.d.ts';
 
 const auth = await getAuth(`${env('ROOT')}/${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`);
 const authorization = `Basic ${Buffer.from(`${auth.user}:${auth.password_orig!}`).toString('base64')}`;
@@ -27,7 +27,7 @@ await test('no auth', async () => {
 
 	assert.equal(res.status, 401);
 
-	const json = (await res.json()) as Media;
+	const json = (await res.json()) as MediaUpload;
 
 	assert.equal('error' in json, true);
 	if ('error' in json) {
@@ -44,7 +44,7 @@ await test('validator', async (t) => {
 
 		assert.equal(res.status, 400);
 
-		const json = (await res.json()) as Media;
+		const json = (await res.json()) as MediaUpload;
 
 		assert.equal('error' in json, true);
 		if ('error' in json) {
@@ -65,7 +65,7 @@ await test('validator', async (t) => {
 
 			assert.equal(res.status, 400);
 
-			const json = (await res.json()) as Media;
+			const json = (await res.json()) as MediaUpload;
 
 			assert.equal('error' in json, true);
 			if ('error' in json) {
@@ -86,7 +86,7 @@ await test('validator', async (t) => {
 
 			assert.equal(res.status, 400);
 
-			const json = (await res.json()) as Media;
+			const json = (await res.json()) as MediaUpload;
 
 			assert.equal('error' in json, true);
 			if ('error' in json) {
@@ -110,7 +110,7 @@ await test('validator', async (t) => {
 
 			assert.equal(res.status, 400);
 
-			const json = (await res.json()) as Media;
+			const json = (await res.json()) as MediaUpload;
 
 			assert.equal('error' in json, true);
 			if ('error' in json) {
@@ -131,7 +131,7 @@ await test('validator', async (t) => {
 
 			assert.equal(res.status, 400);
 
-			const json = (await res.json()) as Media;
+			const json = (await res.json()) as MediaUpload;
 
 			assert.equal('error' in json, true);
 			if ('error' in json) {
@@ -182,7 +182,7 @@ await test('image', async (t) => {
 		assert.equal(res.status, 200);
 		assert.equal(res.headers.get('Content-Type'), 'application/json');
 
-		const json = (await res.json()) as Media;
+		const json = (await res.json()) as MediaUpload;
 
 		assert.equal('results' in json, true);
 		if ('results' in json) {
@@ -210,7 +210,7 @@ await test('image', async (t) => {
 		assert.equal(res.status, 200);
 		assert.equal(res.headers.get('Content-Type'), 'application/json');
 
-		const json = (await res.json()) as Media;
+		const json = (await res.json()) as MediaUpload;
 
 		assert.equal('results' in json, true);
 		if ('results' in json) {
@@ -240,7 +240,7 @@ await test('image', async (t) => {
 			assert.equal(res.status, 200);
 			assert.equal(res.headers.get('Content-Type'), 'application/json');
 
-			const json = (await res.json()) as Media;
+			const json = (await res.json()) as MediaUpload;
 
 			assert.equal('results' in json, true);
 			if ('results' in json) {
@@ -278,7 +278,7 @@ await test('image', async (t) => {
 			assert.equal(res.status, 200);
 			assert.equal(res.headers.get('Content-Type'), 'application/json');
 
-			const json = (await res.json()) as Media;
+			const json = (await res.json()) as MediaUpload;
 
 			assert.equal('results' in json, true);
 			if ('results' in json) {
@@ -321,7 +321,7 @@ await test('video', async (t) => {
 		assert.equal(res.status, 200);
 		assert.equal(res.headers.get('Content-Type'), 'application/json');
 
-		const json = (await res.json()) as Media;
+		const json = (await res.json()) as MediaUpload;
 
 		assert.equal('results' in json, true);
 		if ('results' in json) {
@@ -349,7 +349,7 @@ await test('text', async () => {
 	assert.equal(res.status, 200);
 	assert.equal(res.headers.get('Content-Type'), 'application/json');
 
-	const json = (await res.json()) as Media;
+	const json = (await res.json()) as MediaUpload;
 
 	assert.equal('results' in json, true);
 	if ('results' in json) {

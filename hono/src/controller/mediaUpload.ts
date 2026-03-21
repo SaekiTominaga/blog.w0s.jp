@@ -3,10 +3,10 @@ import { Hono, type Context } from 'hono';
 import { MIMEType } from 'whatwg-mimetype';
 import { env } from '@w0s/env-value-type';
 import type { Variables } from '../app.ts';
-import config from '../config/media.ts';
+import configMedia from '../config/media.ts';
 import { createThumbnailImage } from '../process/media.ts';
-import { form as validatorForm } from '../validator/media.ts';
-import type { Media as Result, MediaResult as FileResult } from '../../../@types/api.d.ts';
+import { form as validatorForm } from '../validator/mediaUpload.ts';
+import type { MediaUpload as Result, MediaUploadResult as FileResult } from '../../../@types/api.d.ts';
 
 /**
  * メディア登録
@@ -39,7 +39,7 @@ const upload = async (
 		/* 同名ファイル存在 */
 		return {
 			success: false,
-			message: config.message.overwrite,
+			message: configMedia.message.overwrite,
 			filename: file.name,
 		};
 	}
@@ -48,7 +48,7 @@ const upload = async (
 		/* ファイルサイズ超過 */
 		return {
 			success: false,
-			message: config.message.size,
+			message: configMedia.message.size,
 			filename: file.name,
 		};
 	}
@@ -63,12 +63,12 @@ const upload = async (
 
 	return {
 		success: true,
-		message: config.message.success,
+		message: configMedia.message.success,
 		filename: file.name,
 	};
 };
 
-export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm, async (context) => {
+export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validatorForm, async (context) => {
 	const { req } = context;
 
 	const requestBody = req.valid('form');
@@ -81,8 +81,8 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 			switch (mimeType.type) {
 				case 'image': {
 					const fileResult = await upload(context, file, {
-						dir: `${env('ROOT')}/${config.image.dir}`,
-						limit: config.image.limit,
+						dir: `${env('ROOT')}/${configMedia.image.dir}`,
+						limit: configMedia.image.limit,
 						overwrite: overwrite,
 					});
 
@@ -95,22 +95,22 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 							buffer: Buffer.from(await file.arrayBuffer()),
 							fileName: file.name,
 						},
-						`${env('ROOT')}/${config.image.thumbDir}`,
+						`${env('ROOT')}/${configMedia.image.thumbDir}`,
 					);
 
 					return { ...fileResult, ...{ thumbnails: created } };
 				}
 				case 'video': {
 					return upload(context, file, {
-						dir: `${env('ROOT')}/${config.video.dir}`,
-						limit: config.video.limit,
+						dir: `${env('ROOT')}/${configMedia.video.dir}`,
+						limit: configMedia.video.limit,
 						overwrite: overwrite,
 					});
 				}
 				default: {
 					return {
 						success: false,
-						message: config.message.type,
+						message: configMedia.message.type,
 						filename: file.name,
 					};
 				}
