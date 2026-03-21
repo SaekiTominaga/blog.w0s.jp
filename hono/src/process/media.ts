@@ -11,7 +11,7 @@ const logger = getLogger('Media');
  * サムネイル画像を生成
  *
  * @param base - 元画像のオプション
- * @param base.dir - 格納ディレクトリ
+ * @param base.buffer - Buffer
  * @param base.fileName - ファイル名
  * @param thumbDir - サムネイル画像の格納ディレクトリ
  *
@@ -19,7 +19,7 @@ const logger = getLogger('Media');
  */
 export const createThumbnailImage = async (
 	base: Readonly<{
-		dir: string;
+		buffer: Buffer<ArrayBuffer>;
 		fileName: string;
 	}>,
 	thumbDir: string,
@@ -38,11 +38,9 @@ export const createThumbnailImage = async (
 		densityQualities.map((densityQuality) => ({ ...{ dir: thumbDir }, ...dimension, ...densityQuality })),
 	);
 
-	const baseFilePath = `${base.dir}/${base.fileName}`;
+	const image = sharp(base.buffer);
 
-	const image = sharp(baseFilePath);
-
-	const [baseStats, baseMetadata] = await Promise.all([fs.promises.stat(baseFilePath), image.metadata()]);
+	const baseMetadata = await image.metadata();
 
 	const thumbFileNames = await Promise.all(
 		thumbValiations.map(async (thumb) => {
@@ -76,7 +74,7 @@ export const createThumbnailImage = async (
 			await fs.promises.writeFile(`${thumb.dir}/${thumbFileName}`, thumbData);
 
 			/* 生成後の処理 */
-			const baseFileSize = iec(baseStats.size, { digits: 1 });
+			const baseFileSize = iec(base.buffer.length, { digits: 1 });
 			const createdFileSize = iec(thumbData.byteLength, { digits: 1 });
 
 			logger.info(`サムネイル画像生成: ${thumbFileName} (${baseFileSize} → ${createdFileSize})`);
@@ -105,15 +103,17 @@ export const cleanThumbnailImages = async (baseDir: string, thumbDir: string): P
 	const baseFileNames = await getFileNames(baseDir); // 元画像
 
 	const created = await Promise.all(
-		baseFileNames.map((baseFileName) =>
-			createThumbnailImage(
+		baseFileNames.map(async (baseFileName) => {
+			const baseFile = await fs.promises.readFile(`${baseDir}/${baseFileName}`);
+
+			return createThumbnailImage(
 				{
-					dir: baseDir,
+					buffer: baseFile,
 					fileName: baseFileName,
 				},
 				thumbDir,
-			),
-		),
+			);
+		}),
 	);
 	logger.debug(`\`${thumbDir}\` ディレクトリに ${String(created.reduce((acc, cur) => acc + cur.length, 0))} 件のファイルを生成`);
 

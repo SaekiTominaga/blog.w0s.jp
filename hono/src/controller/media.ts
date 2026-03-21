@@ -92,7 +92,7 @@ export const mediaApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 
 					const created = await createThumbnailImage(
 						{
-							dir: `${env('ROOT')}/${config.image.dir}`,
+							buffer: Buffer.from(await file.arrayBuffer()),
 							fileName: file.name,
 						},
 						`${env('ROOT')}/${config.image.thumbDir}`,
