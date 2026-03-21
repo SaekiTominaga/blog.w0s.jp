@@ -39,7 +39,7 @@ const upload = async (
 		/* 同名ファイル存在 */
 		return {
 			success: false,
-			message: configMedia.message.overwrite,
+			message: configMedia.processMessageUpload.overwrite,
 			filename: file.name,
 		};
 	}
@@ -48,7 +48,7 @@ const upload = async (
 		/* ファイルサイズ超過 */
 		return {
 			success: false,
-			message: configMedia.message.size,
+			message: configMedia.processMessageUpload.size,
 			filename: file.name,
 		};
 	}
@@ -63,7 +63,7 @@ const upload = async (
 
 	return {
 		success: true,
-		message: configMedia.message.success,
+		message: configMedia.processMessageUpload.success,
 		filename: file.name,
 	};
 };
@@ -110,7 +110,7 @@ export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validato
 				default: {
 					return {
 						success: false,
-						message: configMedia.message.type,
+						message: configMedia.processMessageUpload.type,
 						filename: file.name,
 					};
 				}

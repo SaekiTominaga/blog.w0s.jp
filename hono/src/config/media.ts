@@ -8,8 +8,8 @@ export default {
 		dir: 'public/entry/video',
 		limit: 30720000,
 	},
-	message: {
-		success: 'ファイルアップロードが成功しました。',
+	processMessageUpload: {
+		success: 'ファイルアップロードに成功しました。',
 		type: '指定されたファイルはサポートされていない種類です。',
 		overwrite: '同じ名前のファイルが既に存在します。',
 		size: 'ファイルサイズが大きすぎます。',

@@ -188,7 +188,7 @@ await test('image', async (t) => {
 		if ('results' in json) {
 			assert.equal(json.results.length, 1);
 			assert.equal(json.results.at(0)?.success, false);
-			assert.equal(json.results.at(0)?.message, config.message.overwrite);
+			assert.equal(json.results.at(0)?.message, config.processMessageUpload.overwrite);
 		}
 	});
 
@@ -216,7 +216,7 @@ await test('image', async (t) => {
 		if ('results' in json) {
 			assert.equal(json.results.length, 1);
 			assert.equal(json.results.at(0)?.success, false);
-			assert.equal(json.results.at(0)?.message, config.message.size);
+			assert.equal(json.results.at(0)?.message, config.processMessageUpload.size);
 			assert.equal(fs.existsSync(filePath), false);
 		}
 	});
@@ -246,7 +246,7 @@ await test('image', async (t) => {
 			if ('results' in json) {
 				assert.equal(json.results.length, 1);
 				assert.equal(json.results.at(0)?.success, true);
-				assert.equal(json.results.at(0)?.message, config.message.success);
+				assert.equal(json.results.at(0)?.message, config.processMessageUpload.success);
 				assert.equal(json.results.at(0)?.thumbnails, undefined);
 				assert.equal(fs.existsSync(filePath), true);
 			}
@@ -284,8 +284,8 @@ await test('image', async (t) => {
 			if ('results' in json) {
 				assert.equal(json.results.length, 1);
 				assert.equal(json.results.at(0)?.success, true);
-				assert.equal(json.results.at(0)?.message, config.message.success);
-				assert.equal((json.results.at(0)?.thumbnails as string[]).length, 4);
+				assert.equal(json.results.at(0)?.message, config.processMessageUpload.success);
+				assert.equal(json.results.at(0)?.thumbnails?.length, 4);
 				assert.equal(fs.existsSync(filePath), true);
 			}
 		});
@@ -327,7 +327,7 @@ await test('video', async (t) => {
 		if ('results' in json) {
 			assert.equal(json.results.length, 1);
 			assert.equal(json.results.at(0)?.success, true);
-			assert.equal(json.results.at(0)?.message, config.message.success);
+			assert.equal(json.results.at(0)?.message, config.processMessageUpload.success);
 			assert.equal(fs.existsSync(filePath), true);
 		}
 	});
@@ -355,6 +355,6 @@ await test('text', async () => {
 	if ('results' in json) {
 		assert.equal(json.results.length, 2);
 		assert.equal(json.results.at(0)?.success, false);
-		assert.equal(json.results.at(0)?.message, config.message.type);
+		assert.equal(json.results.at(0)?.message, config.processMessageUpload.type);
 	}
 });
