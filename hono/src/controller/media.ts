@@ -33,7 +33,9 @@ const upload = async (
 
 	const filePath = `${dir}/${file.name}`;
 
-	if (!overwrite && fs.existsSync(filePath)) {
+	const exist = fs.existsSync(filePath);
+
+	if (!overwrite && exist) {
 		/* 同名ファイル存在 */
 		return {
 			success: false,
@@ -51,8 +53,13 @@ const upload = async (
 		};
 	}
 
+	if (exist) {
+		await fs.promises.unlink(filePath); // Windows でファイルロックされるための対策
+		logger.info(`既存ファイル削除: ${filePath}`);
+	}
+
 	await fs.promises.writeFile(filePath, file.stream());
-	logger.info(`ファイルアップロード: ${file.name}`);
+	logger.info(`ファイルアップロード: ${filePath}`);
 
 	return {
 		success: true,
