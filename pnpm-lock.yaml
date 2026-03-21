@@ -173,8 +173,8 @@ importers:
         specifier: 4.11.4
         version: 4.11.4
       kysely:
-        specifier: 0.28.12
-        version: 0.28.12
+        specifier: 0.28.14
+        version: 0.28.14
       masto:
         specifier: 7.10.2
         version: 7.10.2
@@ -237,8 +237,8 @@ importers:
         specifier: 11.11.1
         version: 11.11.1
       kysely:
-        specifier: 0.28.12
-        version: 0.28.12
+        specifier: 0.28.14
+        version: 0.28.14
       md5:
         specifier: 2.3.0
         version: 2.3.0
@@ -2597,8 +2597,8 @@ packages:
   known-css-properties@0.37.0:
     resolution: {integrity: sha512-JCDrsP4Z1Sb9JwG0aJ8Eo2r7k4Ou5MwmThS/6lcIe1ICyb7UBJKGRIUUdqc2ASdE/42lgz6zFUnzAIhtXnBVrQ==}
 
-  kysely@0.28.12:
-    resolution: {integrity: sha512-kWiueDWXhbCchgiotwXkwdxZE/6h56IHAeFWg4euUfW0YsmO9sxbAxzx1KLLv2lox15EfuuxHQvgJ1qIfZuHGw==}
+  kysely@0.28.14:
+    resolution: {integrity: sha512-SU3lgh0rPvq7upc6vvdVrCsSMUG1h3ChvHVOY7wJ2fw4C9QEB7X3d5eyYEyULUX7UQtxZJtZXGuT6U2US72UYA==}
     engines: {node: '>=20.0.0'}
 
   lcid@3.1.1:
@@ -6290,7 +6290,7 @@ snapshots:
 
   known-css-properties@0.37.0: {}
 
-  kysely@0.28.12: {}
+  kysely@0.28.14: {}
 
   lcid@3.1.1:
     dependencies:
