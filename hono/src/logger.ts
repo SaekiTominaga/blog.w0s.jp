@@ -1,8 +1,17 @@
+import { execSync, spawnSync } from 'node:child_process';
 import nodemailer from 'nodemailer';
 import pino, { type Logger } from 'pino';
 import { env } from '@w0s/env-value-type';
 
 const development = process.env['NODE_ENV'] !== 'production';
+
+const init = (): void => {
+	/* Windows での文字化け対策 */
+	const result = spawnSync('where', ['chcp']);
+	if (result.status === 0) {
+		execSync('chcp 65001');
+	}
+};
 
 const sendErrorMail = async (message: string): Promise<void> => {
 	const transporter = nodemailer.createTransport({
@@ -23,6 +32,8 @@ const sendErrorMail = async (message: string): Promise<void> => {
 };
 
 export const getLogger = (name: string): Logger => {
+	init();
+
 	const logger = pino({
 		name: name,
 		level: development ? 'trace' : 'info',
