@@ -26,3 +26,4 @@ strictDepBuilds: true
 onlyBuiltDependencies:
   - better-sqlite3
   - esbuild
+  - sharp

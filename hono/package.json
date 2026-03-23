@@ -14,6 +14,7 @@
 		"@atproto/api": "0.19.3",
 		"@hono/node-server": "1.19.11",
 		"@w0s/env-value-type": "1.0.1",
+		"@w0s/file-size-format": "3.0.2",
 		"@w0s/html-escape": "4.0.2",
 		"@w0s/paapi-item-image-url-parser": "3.2.3",
 		"@w0s/sqlite-utility": "2.0.1",
@@ -26,13 +27,16 @@
 		"masto": "7.10.2",
 		"nodemailer": "8.0.2",
 		"pino": "10.3.1",
-		"pino-pretty": "13.1.3"
+		"pino-pretty": "13.1.3",
+		"sharp": "0.34.5",
+		"whatwg-mimetype": "5.0.0"
 	},
 	"devDependencies": {
 		"@types/better-sqlite3": "7.6.13",
 		"@types/ejs": "3.1.5",
 		"@types/md5": "2.3.6",
 		"@types/nodemailer": "7.0.11",
+		"@types/whatwg-mimetype": "5.0.0",
 		"tsx": "4.21.0"
 	},
 	"packageManager": "pnpm@10.28.1"

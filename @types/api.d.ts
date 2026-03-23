@@ -14,12 +14,13 @@ export type PreviewData = {
 export type Preview = { data: PreviewData } | Error;
 
 /* メディア登録 */
-export type MediaResult = {
+export type MediaUploadResult = {
 	success: boolean;
 	message: string;
 	filename: string;
+	thumbnails?: string[];
 };
-export type Media = { results: MediaResult[] } | Error;
+export type MediaUpload = { results: MediaUploadResult[] } | Error;
 
 /* DSG のキャッシュクリア */
 export type ClearProcess = {
@@ -27,11 +28,3 @@ export type ClearProcess = {
 	message: string;
 };
 export type Clear = { processes: ClearProcess[] } | Error;
-
-/* アップロード（media.w0s.jp） */
-export type Upload = {
-	name: string;
-	size: number;
-	code: number;
-	message: string;
-};

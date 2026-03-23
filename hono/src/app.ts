@@ -16,7 +16,7 @@ import { categoryApp } from './controller/category.ts';
 import { clearApp } from './controller/clear.ts';
 import { entryApp } from './controller/entry.ts';
 import { listApp, topApp } from './controller/list.ts';
-import { mediaApp } from './controller/media.ts';
+import { mediaUploadApp } from './controller/mediaUpload.ts';
 import { previewApp } from './controller/preview.ts';
 import { basicAuth } from './util/auth.ts';
 import {
@@ -211,7 +211,7 @@ app.route('/entry/', entryApp);
 app.route('/category/', categoryApp);
 app.route('/admin/', adminApp);
 app.route(`/${config.api.dir}/preview`, previewApp);
-app.route(`/${config.api.dir}/media`, mediaApp);
+app.route(`/${config.api.dir}/media`, mediaUploadApp);
 app.route(`/${config.api.dir}/clear`, clearApp);
 
 /* Error pages */

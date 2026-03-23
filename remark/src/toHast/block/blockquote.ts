@@ -58,7 +58,6 @@ export const xBlockquoteToHast = (state: State, node: XBlockquote): ElementConte
 			}
 		}
 
-		// @ts-expect-error: ts(2345)
 		const childElement = state.one(child, node);
 		if (childElement !== undefined) {
 			if (Array.isArray(childElement)) {

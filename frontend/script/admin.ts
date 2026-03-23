@@ -2,7 +2,7 @@ import formBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
 import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
-import type { Media as ApiResponseMedia, Clear as ApiResponseClear } from '../../@types/api.d.ts';
+import type { MediaUpload as ApiResponseMediaUpload, Clear as ApiResponseClear } from '../../@types/api.d.ts';
 import messageImage from './unique/messageImage.ts';
 import preview from './unique/preview.ts';
 import reportJsError from './util/reportJsError.ts';
@@ -115,7 +115,7 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 				hiddenElement.hidden = false;
 			}
 
-			const responseJson = (await response.json()) as ApiResponseMedia;
+			const responseJson = (await response.json()) as ApiResponseMediaUpload;
 
 			const fragment = document.createDocumentFragment();
 			if ('error' in responseJson) {
@@ -151,7 +151,9 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 					}
 
 					const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
-					messageElement?.setHTMLUnsafe(`${result.message}: <code>${result.filename}</code>`);
+					messageElement?.setHTMLUnsafe(
+						`${result.message}: <code>${result.filename}</code> ${result.thumbnails !== undefined ? `（サムネイル生成 ${String(result.thumbnails.length)} 件）` : ''}`,
+					);
 
 					fragment.appendChild(clone);
 				});

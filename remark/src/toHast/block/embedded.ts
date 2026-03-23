@@ -61,49 +61,16 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 
 			media.push({
 				type: 'element',
-				tagName: 'picture',
-				properties: {},
-				children: [
-					{
-						type: 'element',
-						tagName: 'source',
-						properties: {
-							type: 'image/avif',
-							srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${String(IMAGE_MAX_SIZE.width)};h=${String(
-								IMAGE_MAX_SIZE.height,
-							)};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=avif;w=${String(IMAGE_MAX_SIZE.width * 2)};h=${String(
-								IMAGE_MAX_SIZE.height * 2,
-							)};quality=30 2x`,
-						},
-						children: [],
-					},
-					{
-						type: 'element',
-						tagName: 'source',
-						properties: {
-							type: 'image/webp',
-							srcset: `https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${String(IMAGE_MAX_SIZE.width)};h=${String(
-								IMAGE_MAX_SIZE.height,
-							)};quality=60, https://media.w0s.jp/thumbimage/blog/${filename}?type=webp;w=${String(IMAGE_MAX_SIZE.width * 2)};h=${String(
-								IMAGE_MAX_SIZE.height * 2,
-							)};quality=30 2x`,
-						},
-						children: [],
-					},
-					{
-						type: 'element',
-						tagName: 'img',
-						properties: {
-							src: `https://media.w0s.jp/thumbimage/blog/${filename}?type=jpeg;w=${String(IMAGE_MAX_SIZE.width)};h=${String(IMAGE_MAX_SIZE.height)};quality=60`,
-							alt: 'サムネイル画像',
-							width: width,
-							height: height,
-							crossorigin: '',
-							className: ['p-embed__image'],
-						},
-						children: [],
-					},
-				],
+				tagName: 'img',
+				properties: {
+					src: `/entry/image/thumb/${filename}@d=${String(IMAGE_MAX_SIZE.width)}x${String(IMAGE_MAX_SIZE.height)};q=60.avif`,
+					srcset: `/entry/image/thumb/${filename}@d=${String(IMAGE_MAX_SIZE.width * 2)}x${String(IMAGE_MAX_SIZE.height * 2)};q=30.avif 2x`,
+					alt: 'サムネイル画像',
+					width: width,
+					height: height,
+					className: ['p-embed__image'],
+				},
+				children: [],
 			});
 			break;
 		}
@@ -112,7 +79,7 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 				type: 'element',
 				tagName: 'img',
 				properties: {
-					src: `https://media.w0s.jp/image/blog/${filename}`,
+					src: `/entry/image/${filename}`,
 					alt: '画像',
 					width: size?.width,
 					height: size?.height,
@@ -127,7 +94,7 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 				type: 'element',
 				tagName: 'video',
 				properties: {
-					src: `https://media.w0s.jp/video/blog/${filename}`,
+					src: `/entry/video/${filename}`,
 					controls: true,
 					width: size?.width,
 					height: size?.height,
@@ -158,7 +125,7 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 				type: 'element',
 				tagName: 'a',
 				properties: {
-					href: `https://media.w0s.jp/image/blog/${filename}`,
+					href: `/entry/image/${filename}`,
 					class: 'c-caption__media-expansion',
 				},
 				children: [
