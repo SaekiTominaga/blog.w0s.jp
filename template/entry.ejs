@@ -108,7 +108,7 @@
 												<span class="c-entry-link__title"><%- relation.title %></span>
 												<span class="c-entry-link__thumb">
 													<%_ if (relation.imageInternal !== undefined) { _%>
-													<img src="/entry/image/thumb/<%= relation.imageInternal %>@d=180x120;q=60.avif" src="/entry/image/thumb/<%= relation.imageInternal %>@d=360x240;q=30.avif 2x" alt="" class="c-entry-link__image" />
+													<img src="/entry/image/thumb/<%= relation.imageInternal %>@d=180x120;q=60.avif" srcset="/entry/image/thumb/<%= relation.imageInternal %>@d=360x240;q=30.avif 2x" alt="" class="c-entry-link__image" />
 													<%_ } else if (relation.imageExternal !== undefined) { _%>
 													<img src="<%= relation.imageExternal.toString() %>" alt="" class="c-entry-link__image" />
 													<%_ } else { _%>
