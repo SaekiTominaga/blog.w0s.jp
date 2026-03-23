@@ -53,7 +53,7 @@
 									<span class="c-entry-link__title"><%- entry.title %></span>
 									<span class="c-entry-link__thumb">
 										<%_ if (entry.imageInternal !== undefined) { _%>
-										<img src="/entry/image/thumb/<%= entry.imageInternal %>@d=180x120;q=60.avif" srcset="/entry/image/thumb/<%= entry.imageInternal %>@d=360x240;q=30.avif" alt="" class="c-entry-link__image" />
+										<img src="/entry/image/thumb/<%= entry.imageInternal %>@d=180x120;q=60.avif" srcset="/entry/image/thumb/<%= entry.imageInternal %>@d=360x240;q=30.avif 2x" alt="" class="c-entry-link__image" />
 										<%_ } else if (entry.imageExternal !== undefined) { _%>
 										<img src="<%= entry.imageExternal.toString() %>" alt="" class="c-entry-link__image" />
 										<%_ } else { _%>
