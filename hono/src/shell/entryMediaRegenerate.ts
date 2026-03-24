@@ -7,46 +7,59 @@ import { clearFiles, getFileNames } from '../util/file.ts';
 import { getLogger } from '../logger.ts';
 
 /**
- * サムネイル画像全生成
+ * 本文用サムネイル画像全生成
  */
 const startTime = Date.now();
 
 const logger = getLogger('entryMediaRegenerate');
 
 const baseDir = `${env('ROOT')}/${configProcess.media.image.dir}`; // 元画像の格納ディレクトリ
-const thumbDir = `${env('ROOT')}/${configProcess.media.image.thumbDir}`; // サムネイル画像の格納ディレクトリ
+const thumbDir = `${env('ROOT')}/${configProcess.media.image.thumb.dir}`; // サムネイル画像の格納ディレクトリ
 
 const deleted = await clearFiles(thumbDir); // 既存のサムネイル画像をクリア
-logger.info(`\`${configProcess.media.image.thumbDir}\` ディレクトリから ${String(deleted.length)} 件のファイルを削除`);
+logger.info(`\`${configProcess.media.image.thumb.dir}\` ディレクトリから ${String(deleted.length)} 件のファイルを削除`);
 
 const baseFileNames = await getFileNames(baseDir); // 元画像
 
-const createdList: string[][] = []; // 生成した画像ファイル名（元画像ごとの配列）
+const createdList = await Promise.all(
+	baseFileNames.map(async (baseFileName) => {
+		const baseFile = await fs.promises.readFile(`${baseDir}/${baseFileName}`);
 
-// eslint-disable-next-line functional/no-loop-statements
-for (const baseFileName of baseFileNames) {
-	// eslint-disable-next-line no-await-in-loop
-	const baseFile = await fs.promises.readFile(`${baseDir}/${baseFileName}`);
+		const createdFiles = await createThumbnailImage(
+			{
+				buffer: baseFile,
+				fileName: baseFileName,
+			},
+			{
+				dir: thumbDir,
+				dimensions: configProcess.media.image.thumb.dimensions,
+				densityQualities: configProcess.media.image.thumb.densityQualities,
+			},
+		);
 
-	// eslint-disable-next-line no-await-in-loop
-	const createdFiles = await createThumbnailImage(
-		{
-			buffer: baseFile,
-			fileName: baseFileName,
-		},
-		thumbDir,
-	);
+		const baseFileSize = baseFile.buffer.byteLength;
 
-	const baseFileSize = baseFile.buffer.byteLength;
-
-	createdList.push(
-		createdFiles.map((createdFile) => {
+		return createdFiles.map((createdFile) => {
 			logger.info(`サムネイル画像生成: ${createdFile.name} (${iec(baseFileSize, { digits: 1 })} → ${iec(createdFile.size, { digits: 1 })})`);
 			return createdFile.name;
-		}),
-	);
-}
+		});
+	}),
+);
 
 const createdSize = createdList.reduce((acc, cur) => acc + cur.length, 0);
 const processTime = Date.now() - startTime;
-logger.info(`${new Intl.NumberFormat().format(createdSize)} 件のファイルを生成（${String(Math.round(processTime / 1000))}秒）`);
+const processTimeSecond = Math.round(processTime / 1000);
+
+logger.info(
+	// @ts-expect-error: ts(2339)
+	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-call
+	`${new Intl.NumberFormat().format(createdSize)}件のファイルを生成（${new Intl.DurationFormat('ja')
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		.format({
+			hours: Math.floor(processTimeSecond / 3600),
+			minutes: Math.floor((processTimeSecond % 3600) / 60),
+			seconds: processTimeSecond % 60,
+		})
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		.replaceAll(' ', '')}）`,
+);
