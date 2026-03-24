@@ -44,4 +44,18 @@ const createdList = await Promise.all(
 
 const createdSize = createdList.reduce((acc, cur) => acc + cur.length, 0);
 const processTime = Date.now() - startTime;
-logger.info(`${new Intl.NumberFormat().format(createdSize)} 件のファイルを生成（${String(Math.round(processTime / 1000))}秒）`);
+
+const processTimeSecond = Math.round(processTime / 1000);
+logger.info(
+	// @ts-expect-error: ts(2339)
+	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-call
+	`${new Intl.NumberFormat().format(createdSize)}件のファイルを生成（${new Intl.DurationFormat('ja')
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		.format({
+			hours: Math.floor(processTimeSecond / 3600),
+			minutes: Math.floor((processTimeSecond % 3600) / 60),
+			seconds: processTimeSecond % 60,
+		})
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		.replaceAll(' ', '')}）`,
+);
