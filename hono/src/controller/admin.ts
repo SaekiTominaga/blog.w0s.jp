@@ -1,37 +1,43 @@
+import dayjs from 'dayjs';
 import ejs from 'ejs';
 import { Hono, type Context } from 'hono';
 import { env } from '@w0s/env-value-type';
 import type { Variables } from '../app.ts';
 import configHono from '../config/hono.ts';
-import configAdmin from '../config/admin.ts';
+import configProcess from '../config/process.ts';
+import configSns from '../config/sns.ts';
 import PostDao from '../db/Post.ts';
 import { clear } from '../process/dsg.ts';
 import { create as createFeed } from '../process/feed.ts';
 import { create as createNewlyJson } from '../process/newlyJson.ts';
 import { create as createSitemap } from '../process/sitemap.ts';
-import { post as postBluesky } from '../process/snsBluesky.ts';
-import { post as postMastodon } from '../process/snsMastodon.ts';
-import { post as postMisskey } from '../process/snsMisskey.ts';
+import { post as postBluesky } from '../sns/bluesky.ts';
+import { post as postMastodon } from '../sns/mastodon.ts';
+import { post as postMisskey } from '../sns/misskey.ts';
 import { getEntryUrl } from '../util/blogUrl.ts';
 import { csp as cspHeader } from '../util/httpHeader.ts';
 import { query as validatorQuery, type RequestQuery } from '../validator/admin.ts';
 import { form as validatorPostForm } from '../validator/adminPost.ts';
-import type { Normal as ProcessResult } from '../../@types/process.d.ts';
-import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
+import type { EntryData as SocialEntryData } from '../../@types/sns.d.ts';
 import type { Categories } from '../../@types/view.d.ts';
+
+interface ProcessResult {
+	success: boolean;
+	message: string;
+}
 
 interface EntryData {
 	id?: number;
 	title: string;
 	description: string | undefined;
 	message: string;
-	categoryIds: readonly string[] | undefined;
+	categoryIds: string[] | undefined;
 	imageInternal: string | undefined;
 	imageExternal: URL | undefined;
-	relationIds: readonly string[] | undefined;
+	relationIds: string[] | undefined;
 	public: boolean;
 	social?: boolean;
-	socialTags?: readonly string[] | undefined;
+	socialTags?: string[] | undefined;
 	timestampUpdate?: boolean;
 }
 
@@ -65,11 +71,11 @@ const rendering = async (
 		entryData?: Readonly<EntryData>;
 		entrySubmitMode?: 'insert' | 'update';
 		validate?: Readonly<{
-			entrySelect?: readonly string[]; // 記事選択
-			entryPost?: readonly string[]; // 記事投稿
+			entrySelect?: string[]; // 記事選択
+			entryPost?: string[]; // 記事投稿
 		}>;
 		results?: Readonly<{
-			entryPost?: readonly ProcessResult[]; // 記事投稿
+			entryPost?: ProcessResult[]; // 記事投稿
 		}>;
 	}>,
 ): Promise<Response> => {
@@ -99,7 +105,7 @@ const rendering = async (
 	});
 
 	/* レンダリング */
-	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configAdmin.template}`, {
+	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configProcess.post.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		requestQuery: requestQuery ?? {},
 		entryData: entryData ?? {},
@@ -144,7 +150,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 				requestQuery: requestQuery,
 				entrySubmitMode: 'insert',
 				validate: {
-					entrySelect: [configAdmin.validator.entryNotFound],
+					entrySelect: [configProcess.post.validator.entryNotFound],
 				},
 			});
 		}
@@ -200,7 +206,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 					entryData: entryData,
 					entrySubmitMode: 'insert',
 					validate: {
-						entryPost: [configAdmin.validator.titleUnique],
+						entryPost: [configProcess.post.validator.titleUnique],
 					},
 				});
 			}
@@ -223,7 +229,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 
 			entryUrl = getEntryUrl(entryData.id);
 
-			postResults.push({ success: true, message: `${configAdmin.processMessage.insert.success} ${entryUrl}` });
+			postResults.push({ success: true, message: `${configProcess.post.processMessage.insert.success} ${entryUrl}` });
 		} else {
 			/* 既存記事更新 */
 			entryData.id = requestForm.id;
@@ -234,7 +240,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 					entryData: entryData,
 					entrySubmitMode: 'update',
 					validate: {
-						entryPost: [configAdmin.validator.titleUnique],
+						entryPost: [configProcess.post.validator.titleUnique],
 					},
 				});
 			}
@@ -259,36 +265,88 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 
 			entryUrl = getEntryUrl(entryData.id);
 
-			postResults.push({ success: true, message: `${configAdmin.processMessage.update.success} ${entryUrl}` });
+			postResults.push({ success: true, message: `${configProcess.post.processMessage.update.success} ${entryUrl}` });
 		}
 
-		const [cacheClearResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
+		const [clearDSGResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.allSettled([
 			clear(),
 			createFeed(),
 			createSitemap(),
 			createNewlyJson(),
 		]);
-		postResults.push(cacheClearResult);
-		postResults.push(createFeedResult);
-		postResults.push(createSitemapResult);
-		postResults.push(createNewlyJsonResult);
+
+		if (clearDSGResult.status === 'fulfilled') {
+			logger.info(`Modified date of DB was recorded: ${clearDSGResult.value.toString()}`);
+			postResults.push({ success: true, message: `${configProcess.dsg.processMessage.success} <${dayjs(clearDSGResult.value).format('HH:mm:ss')}>` });
+		} else {
+			logger.error(clearDSGResult.reason);
+			postResults.push({ success: false, message: `${configProcess.dsg.processMessage.failure}: ${String(clearDSGResult.reason)}` });
+		}
+
+		if (createFeedResult.status === 'fulfilled') {
+			logger.info(createFeedResult.value, `Feed file created:`);
+			postResults.push({ success: true, message: `${configProcess.feed.processMessage.success}（${String(createFeedResult.value.length)}ファイル）` });
+		} else {
+			logger.error(createFeedResult.reason);
+			postResults.push({ success: false, message: `${configProcess.feed.processMessage.failure}: ${String(createFeedResult.reason)}` });
+		}
+
+		if (createSitemapResult.status === 'fulfilled') {
+			logger.info(createSitemapResult.value, `Sitemap file created:`);
+			postResults.push({ success: true, message: `${configProcess.sitemap.processMessage.success}（${String(createSitemapResult.value.length)}ファイル）` });
+		} else {
+			logger.error(createSitemapResult.reason);
+			postResults.push({ success: false, message: `${configProcess.sitemap.processMessage.failure}: ${String(createSitemapResult.reason)}` });
+		}
+
+		if (createNewlyJsonResult.status === 'fulfilled') {
+			logger.info(createNewlyJsonResult.value, `JSON file created:`);
+			postResults.push({
+				success: true,
+				message: `${configProcess.newlyJson.processMessage.success}（${String(createNewlyJsonResult.value.length)}ファイル）`,
+			});
+		} else {
+			logger.error(createNewlyJsonResult.reason);
+			postResults.push({ success: false, message: `${configProcess.newlyJson.processMessage.failure}: ${String(createNewlyJsonResult.reason)}` });
+		}
 
 		if (entryData.public && entryData.social) {
-			const socialEntryData: SocialEntryData = {
+			const socialEntryData: Readonly<SocialEntryData> = {
 				url: entryUrl,
 				title: entryData.title,
 				description: entryData.description,
 				tags: entryData.socialTags,
 			};
 
-			const [postMastodonResult, postBlueskyResult, postMisskeyResult] = await Promise.all([
+			const [postMastodonResult, postBlueskyResult, postMisskeyResult] = await Promise.allSettled([
 				postMastodon(socialEntryData),
 				postBluesky(socialEntryData),
 				postMisskey(socialEntryData),
 			]);
-			postResults.push(postMastodonResult);
-			postResults.push(postBlueskyResult);
-			postResults.push(postMisskeyResult);
+
+			if (postMastodonResult.status === 'fulfilled') {
+				logger.info(`Mastodon posted success: ${postMastodonResult.value}`);
+				postResults.push({ success: true, message: `${configSns.mastodon.processMessage.success} <${postMastodonResult.value}>` });
+			} else {
+				logger.error(postMastodonResult.reason);
+				postResults.push({ success: false, message: `${configSns.mastodon.processMessage.failure}: ${String(postMastodonResult.reason)}` });
+			}
+
+			if (postBlueskyResult.status === 'fulfilled') {
+				logger.info(`Bluesky posted success: ${postBlueskyResult.value}`);
+				postResults.push({ success: true, message: `${configSns.bluesky.processMessage.success} <${postBlueskyResult.value}>` });
+			} else {
+				logger.error(postBlueskyResult.reason);
+				postResults.push({ success: false, message: `${configSns.bluesky.processMessage.failure}: ${String(postBlueskyResult.reason)}` });
+			}
+
+			if (postMisskeyResult.status === 'fulfilled') {
+				logger.info(`Misskey posted success: ${postMisskeyResult.value}`);
+				postResults.push({ success: true, message: `${configSns.misskey.processMessage.success} <${postMisskeyResult.value}>` });
+			} else {
+				logger.error(postMisskeyResult.reason);
+				postResults.push({ success: false, message: `${configSns.misskey.processMessage.failure}: ${String(postMisskeyResult.reason)}` });
+			}
 		}
 
 		return await rendering(context, {

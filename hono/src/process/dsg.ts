@@ -1,28 +1,15 @@
 import { env } from '@w0s/env-value-type';
-import { getLogger } from '../logger.ts';
-import configDsg from '../config/dsg.ts';
 import DSGDao from '../db/DSG.ts';
-import type { DSG as ProcessDSGResult } from '../../@types/process.d.ts';
-
-const logger = getLogger('DSG');
 
 /**
- * DSG キャッシュクリア
+ * Deferred Static Generation キャッシュクリア
  *
- * @returns 処理結果
+ * @returns 設定した日時
  */
-export const clear = async (): Promise<ProcessDSGResult> => {
-	try {
-		const dao = new DSGDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`);
+export const clear = async (): Promise<Date> => {
+	const dao = new DSGDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`);
 
-		const date = await dao.updateModified();
+	const modified = await dao.updateModified();
 
-		logger.info(`Modified date of DB was recorded: ${date.toString()}`);
-
-		return { success: true, message: configDsg.processMessage.success, date: date };
-	} catch (e) {
-		logger.error(e);
-
-		return { success: false, message: configDsg.processMessage.failure };
-	}
+	return modified;
 };

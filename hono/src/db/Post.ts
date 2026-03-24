@@ -226,8 +226,8 @@ export default class extends Database {
 	 */
 	async getReviseData(id: number): Promise<
 		| (Pick<Selectable<DEntry>, 'id' | 'title' | 'description' | 'message' | 'image_internal' | 'image_external' | 'public'> & {
-				category_ids: readonly string[] | undefined;
-				relation_ids: readonly string[] | undefined;
+				category_ids: string[] | undefined;
+				relation_ids: string[] | undefined;
 		  })
 		| undefined
 	> {

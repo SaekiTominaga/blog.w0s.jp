@@ -11,6 +11,16 @@
 			"runtimeArgs": ["--watch", "--tsconfig", "tsconfig.json", "src/app.ts"],
 			"envFile": "${workspaceFolder}/.env.development",
 			"outputCapture": "std"
+		},
+		{
+			"name": "entryMediaRegenerate",
+			"type": "node",
+			"request": "launch",
+			"cwd": "${workspaceFolder}/hono",
+			"skipFiles": ["<node_internals>/**"],
+			"program": "src/shell/entryMediaRegenerate.ts",
+			"envFile": "${workspaceFolder}/.env.development",
+			"outputCapture": "std"
 		}
 	]
 }
