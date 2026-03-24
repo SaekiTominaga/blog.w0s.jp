@@ -32,7 +32,23 @@ await test('createThumbnailImage', async (t) => {
 	await t.test('正常系', async () => {
 		const baseFile = await fs.promises.readFile(`${tempBaseDir}/${testFileName}`);
 
-		const createdFiles = await createThumbnailImage({ buffer: baseFile, fileName: testFileName }, tempThumbDir);
+		const createdFiles = await createThumbnailImage(
+			{
+				buffer: baseFile,
+				fileName: testFileName,
+			},
+			{
+				dir: tempThumbDir,
+				dimensions: [
+					{ maxWidth: 200, maxHeight: 100 },
+					{ maxWidth: 100, maxHeight: 200 },
+				],
+				densityQualities: [
+					{ density: 1, quality: 20 },
+					{ density: 2, quality: 10 },
+				],
+			},
+		);
 
 		assert.equal(createdFiles.length, 4);
 	});

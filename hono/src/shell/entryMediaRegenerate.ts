@@ -7,17 +7,17 @@ import { clearFiles, getFileNames } from '../util/file.ts';
 import { getLogger } from '../logger.ts';
 
 /**
- * サムネイル画像全生成
+ * 本文用サムネイル画像全生成
  */
 const startTime = Date.now();
 
 const logger = getLogger('entryMediaRegenerate');
 
 const baseDir = `${env('ROOT')}/${configProcess.media.image.dir}`; // 元画像の格納ディレクトリ
-const thumbDir = `${env('ROOT')}/${configProcess.media.image.thumbDir}`; // サムネイル画像の格納ディレクトリ
+const thumbDir = `${env('ROOT')}/${configProcess.media.image.thumb.dir}`; // サムネイル画像の格納ディレクトリ
 
 const deleted = await clearFiles(thumbDir); // 既存のサムネイル画像をクリア
-logger.info(`\`${configProcess.media.image.thumbDir}\` ディレクトリから ${String(deleted.length)} 件のファイルを削除`);
+logger.info(`\`${configProcess.media.image.thumb.dir}\` ディレクトリから ${String(deleted.length)} 件のファイルを削除`);
 
 const baseFileNames = await getFileNames(baseDir); // 元画像
 
@@ -30,7 +30,11 @@ const createdList = await Promise.all(
 				buffer: baseFile,
 				fileName: baseFileName,
 			},
-			thumbDir,
+			{
+				dir: thumbDir,
+				dimensions: configProcess.media.image.thumb.dimensions,
+				densityQualities: configProcess.media.image.thumb.densityQualities,
+			},
 		);
 
 		const baseFileSize = baseFile.buffer.byteLength;
@@ -44,8 +48,8 @@ const createdList = await Promise.all(
 
 const createdSize = createdList.reduce((acc, cur) => acc + cur.length, 0);
 const processTime = Date.now() - startTime;
-
 const processTimeSecond = Math.round(processTime / 1000);
+
 logger.info(
 	// @ts-expect-error: ts(2339)
 	// eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-call

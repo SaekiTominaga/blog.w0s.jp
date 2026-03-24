@@ -17,8 +17,18 @@ export default {
 	media: {
 		image: {
 			dir: 'public/entry/image',
-			thumbDir: 'public/entry/image/thumb',
 			limit: 3072000,
+			thumb: {
+				dir: 'public/entry/image/thumb',
+				dimensions: [
+					{ maxWidth: 640, maxHeight: 480 }, // 記事本文
+					{ maxWidth: 180, maxHeight: 120 }, // 記事リスト、関連記事
+				], // 寸法
+				densityQualities: [
+					{ density: 1, quality: 60 },
+					{ density: 2, quality: 30 },
+				], // 密度（1x, 2x, ...）と画質（1–100）の関係値
+			},
 		},
 		video: {
 			dir: 'public/entry/video',

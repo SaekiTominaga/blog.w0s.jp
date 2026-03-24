@@ -5,10 +5,11 @@ import { getDimensions as getThumbImageDimensions, getFileName as getThumbImageF
 /**
  * サムネイル画像を生成
  *
- * @param base - 元画像のオプション
+ * @param base - 元画像
  * @param base.buffer - Buffer
  * @param base.fileName - ファイル名
- * @param thumbDir - サムネイル画像の格納ディレクトリ
+ * @param thumb - サムネイル画像
+ * @param thumb.dir - 格納ディレクトリ
  *
  * @returns 生成した画像情報
  */
@@ -17,59 +18,53 @@ export const createThumbnailImage = async (
 		buffer: Buffer<ArrayBuffer>;
 		fileName: string;
 	}>,
-	thumbDir: string,
+	thumb: Readonly<{
+		dir: string;
+		dimensions: readonly Readonly<{ maxWidth: number; maxHeight: number }>[];
+		densityQualities: readonly Readonly<{ density: number; quality: number }>[];
+	}>,
 ): Promise<
 	{
 		name: string;
 		size: number;
 	}[]
 > => {
-	const dimensions = [
-		{ maxWidth: 640, maxHeight: 480 }, // 記事本文
-		{ maxWidth: 180, maxHeight: 120 }, // 記事リスト、関連記事
-	]; // 寸法
-
-	const densityQualities = [
-		{ density: 1, quality: 60 },
-		{ density: 2, quality: 30 },
-	]; // 密度（1x, 2x, ...）と画質（1–100）の関係値
-
-	const thumbValiations = dimensions.flatMap((dimension) => densityQualities.map((densityQuality) => ({ ...dimension, ...densityQuality })));
+	const thumbValiations = thumb.dimensions.flatMap((dimension) => thumb.densityQualities.map((densityQuality) => ({ ...dimension, ...densityQuality })));
 
 	const image = sharp(base.buffer);
 
 	const baseMetadata = await image.metadata();
 
 	const thumbFiles = await Promise.all(
-		thumbValiations.map(async (thumb) => {
+		thumbValiations.map(async (thumbValiation) => {
 			const thumbDimensions = getThumbImageDimensions(
 				{
 					width: baseMetadata.width,
 					height: baseMetadata.height,
 				},
 				{
-					maxWidth: thumb.maxWidth,
-					maxHeight: thumb.maxHeight,
-					density: thumb.density,
+					maxWidth: thumbValiation.maxWidth,
+					maxHeight: thumbValiation.maxHeight,
+					density: thumbValiation.density,
 				},
 			);
 
 			image.resize(thumbDimensions);
 			image.avif({
-				quality: thumb.quality,
+				quality: thumbValiation.quality,
 			});
 
 			const thumbData = await image.toBuffer();
 
 			const thumbFileName = getThumbImageFileName(base.fileName, {
-				width: thumb.maxWidth,
-				height: thumb.maxHeight,
-				density: thumb.density,
-				quality: thumb.quality,
+				width: thumbValiation.maxWidth,
+				height: thumbValiation.maxHeight,
+				density: thumbValiation.density,
+				quality: thumbValiation.quality,
 				extension: '.avif',
 			});
 
-			await fs.promises.writeFile(`${thumbDir}/${thumbFileName}`, thumbData);
+			await fs.promises.writeFile(`${thumb.dir}/${thumbFileName}`, thumbData);
 
 			return {
 				name: thumbFileName,

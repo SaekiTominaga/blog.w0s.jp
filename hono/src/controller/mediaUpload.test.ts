@@ -149,9 +149,9 @@ await test('image', async (t) => {
 			...(await fs.promises.readdir(`${env('ROOT')}/${configProcess.media.image.dir}`, { withFileTypes: true }))
 				.filter((resource) => resource.isFile() && resource.name.startsWith(fileNamePrefix))
 				.map((file) => `${env('ROOT')}/${configProcess.media.image.dir}/${file.name}`),
-			...(await fs.promises.readdir(`${env('ROOT')}/${configProcess.media.image.thumbDir}`, { withFileTypes: true }))
+			...(await fs.promises.readdir(`${env('ROOT')}/${configProcess.media.image.thumb.dir}`, { withFileTypes: true }))
 				.filter((resource) => resource.isFile() && resource.name.startsWith(fileNamePrefix))
-				.map((file) => `${env('ROOT')}/${configProcess.media.image.thumbDir}/${file.name}`),
+				.map((file) => `${env('ROOT')}/${configProcess.media.image.thumb.dir}/${file.name}`),
 		];
 
 		await Promise.all(filePaths.map((filePath) => fs.promises.unlink(filePath)));

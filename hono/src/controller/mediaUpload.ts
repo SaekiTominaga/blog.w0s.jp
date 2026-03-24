@@ -97,7 +97,11 @@ export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validato
 							buffer: Buffer.from(await file.arrayBuffer()),
 							fileName: file.name,
 						},
-						`${env('ROOT')}/${configProcess.media.image.thumbDir}`,
+						{
+							dir: `${env('ROOT')}/${configProcess.media.image.thumb.dir}`,
+							dimensions: configProcess.media.image.thumb.dimensions,
+							densityQualities: configProcess.media.image.thumb.densityQualities,
+						},
 					);
 					const createdFileNames = createdFiles.map((createdFile) => {
 						logger.info(`サムネイル画像生成: ${createdFile.name} (${iec(file.size, { digits: 1 })} → ${iec(createdFile.size, { digits: 1 })})`);
