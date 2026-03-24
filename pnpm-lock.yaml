@@ -22,8 +22,8 @@ importers:
         specifier: 9.4.1
         version: 9.4.1(@eslint/js@9.39.4)(eslint-plugin-functional@9.0.4(eslint@9.39.4)(typescript@5.9.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4)(typescript@5.9.3))(eslint@9.39.4))(eslint-plugin-jsdoc@61.7.1(eslint@9.39.4))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.4))(eslint@9.39.4)(globals@17.4.0)(typescript-eslint@8.57.1(eslint@9.39.4)(typescript@5.9.3))
       '@w0s/markuplint-config':
-        specifier: 3.12.0
-        version: 3.12.0(markuplint@4.14.1(typescript@5.9.3))
+        specifier: 3.13.0
+        version: 3.13.0(markuplint@4.14.1(typescript@5.9.3))
       '@w0s/stylelint-config':
         specifier: 4.18.1
         version: 4.18.1(stylelint-attribute-case-sensitivity@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-concentric-order@5.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-standard@39.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-display-multi-keyword@2.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-no-default-viewport@2.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-plugin-logical-css@1.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-root-colors@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint@16.26.1(typescript@5.9.3))
@@ -1459,10 +1459,10 @@ packages:
   '@w0s/isbn-verify@3.1.2':
     resolution: {integrity: sha512-BO+GkoYNCNLkG3Vx31/+vPI/ev9BYBzFI1p7HV1Ll70X10ZVJYF4QXjWMGK3Qb3Sd1oomzeiQYRj+LnFysnKyA==}
 
-  '@w0s/markuplint-config@3.12.0':
-    resolution: {integrity: sha512-H8w53sXTZ+yzV8qNYnF+Fv380AR85RPAQLOQV8T4XHTVk6bdYVajblduKfp0uObROh0uWDgCx8sxqFKDV/eA2Q==}
+  '@w0s/markuplint-config@3.13.0':
+    resolution: {integrity: sha512-jWnTI04EL2CBzblMloz2+NfXQE9yzzHA8KCcoHmI+wdLEs5Wakh8LfnmGMViEPIdlM3oCS8ijlxLLhYkn4tkrg==}
     peerDependencies:
-      markuplint: ^4.8.1
+      markuplint: ^4.14.1
 
   '@w0s/paapi-item-image-url-parser@3.2.3':
     resolution: {integrity: sha512-vBOObfjsX1IR2qRvyNdYVew//zODL02SsOcDTdokwW7SwhkwIMeh8/xQYB8TlrNGRbWlYDWp1t51NWaekLKaeg==}
@@ -4997,7 +4997,7 @@ snapshots:
 
   '@w0s/isbn-verify@3.1.2': {}
 
-  '@w0s/markuplint-config@3.12.0(markuplint@4.14.1(typescript@5.9.3))':
+  '@w0s/markuplint-config@3.13.0(markuplint@4.14.1(typescript@5.9.3))':
     dependencies:
       markuplint: 4.14.1(typescript@5.9.3)
 
