@@ -21,31 +21,26 @@ logger.info(`\`${configProcess.media.image.thumbDir}\` ディレクトリから 
 
 const baseFileNames = await getFileNames(baseDir); // 元画像
 
-const createdList: string[][] = []; // 生成した画像ファイル名（元画像ごとの配列）
+const createdList = await Promise.all(
+	baseFileNames.map(async (baseFileName) => {
+		const baseFile = await fs.promises.readFile(`${baseDir}/${baseFileName}`);
 
-// eslint-disable-next-line functional/no-loop-statements
-for (const baseFileName of baseFileNames) {
-	// eslint-disable-next-line no-await-in-loop
-	const baseFile = await fs.promises.readFile(`${baseDir}/${baseFileName}`);
+		const createdFiles = await createThumbnailImage(
+			{
+				buffer: baseFile,
+				fileName: baseFileName,
+			},
+			thumbDir,
+		);
 
-	// eslint-disable-next-line no-await-in-loop
-	const createdFiles = await createThumbnailImage(
-		{
-			buffer: baseFile,
-			fileName: baseFileName,
-		},
-		thumbDir,
-	);
+		const baseFileSize = baseFile.buffer.byteLength;
 
-	const baseFileSize = baseFile.buffer.byteLength;
-
-	createdList.push(
-		createdFiles.map((createdFile) => {
+		return createdFiles.map((createdFile) => {
 			logger.info(`サムネイル画像生成: ${createdFile.name} (${iec(baseFileSize, { digits: 1 })} → ${iec(createdFile.size, { digits: 1 })})`);
 			return createdFile.name;
-		}),
-	);
-}
+		});
+	}),
+);
 
 const createdSize = createdList.reduce((acc, cur) => acc + cur.length, 0);
 const processTime = Date.now() - startTime;
