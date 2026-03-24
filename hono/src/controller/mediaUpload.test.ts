@@ -4,7 +4,7 @@ import { after, before, test } from 'node:test';
 import sharp from 'sharp';
 import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
-import config from '../config/media.ts';
+import configProcess from '../config/process.ts';
 import { getAuth } from '../util/auth.ts';
 import type { MediaUpload } from '../../../@types/api.d.ts';
 
@@ -146,12 +146,12 @@ await test('image', async (t) => {
 
 	after(async () => {
 		const filePaths = [
-			...(await fs.promises.readdir(`${env('ROOT')}/${config.image.dir}`, { withFileTypes: true }))
+			...(await fs.promises.readdir(`${env('ROOT')}/${configProcess.media.image.dir}`, { withFileTypes: true }))
 				.filter((resource) => resource.isFile() && resource.name.startsWith(fileNamePrefix))
-				.map((file) => `${env('ROOT')}/${config.image.dir}/${file.name}`),
-			...(await fs.promises.readdir(`${env('ROOT')}/${config.image.thumbDir}`, { withFileTypes: true }))
+				.map((file) => `${env('ROOT')}/${configProcess.media.image.dir}/${file.name}`),
+			...(await fs.promises.readdir(`${env('ROOT')}/${configProcess.media.image.thumbDir}`, { withFileTypes: true }))
 				.filter((resource) => resource.isFile() && resource.name.startsWith(fileNamePrefix))
-				.map((file) => `${env('ROOT')}/${config.image.thumbDir}/${file.name}`),
+				.map((file) => `${env('ROOT')}/${configProcess.media.image.thumbDir}/${file.name}`),
 		];
 
 		await Promise.all(filePaths.map((filePath) => fs.promises.unlink(filePath)));
@@ -159,7 +159,7 @@ await test('image', async (t) => {
 
 	await t.test('overwrite', async () => {
 		const fileName = `${fileNamePrefix}0001.jpg`;
-		const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
+		const filePath = `${env('ROOT')}/${configProcess.media.image.dir}/${fileName}`;
 
 		before(async () => {
 			await fs.promises.writeFile(filePath, '');
@@ -188,16 +188,16 @@ await test('image', async (t) => {
 		if ('results' in json) {
 			assert.equal(json.results.length, 1);
 			assert.equal(json.results.at(0)?.success, false);
-			assert.equal(json.results.at(0)?.message, config.processMessageUpload.overwrite);
+			assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.overwrite);
 		}
 	});
 
 	await t.test('size', async () => {
 		const fileName = `${fileNamePrefix}0002.jpg`;
-		const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
+		const filePath = `${env('ROOT')}/${configProcess.media.image.dir}/${fileName}`;
 
 		const formData = new FormData();
-		formData.append('files', new File(['x'.repeat(config.image.limit + 1)], fileName, { type: 'image/foo' }));
+		formData.append('files', new File(['x'.repeat(configProcess.media.image.limit + 1)], fileName, { type: 'image/foo' }));
 
 		assert.equal(fs.existsSync(filePath), false);
 
@@ -216,7 +216,7 @@ await test('image', async (t) => {
 		if ('results' in json) {
 			assert.equal(json.results.length, 1);
 			assert.equal(json.results.at(0)?.success, false);
-			assert.equal(json.results.at(0)?.message, config.processMessageUpload.size);
+			assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.size);
 			assert.equal(fs.existsSync(filePath), false);
 		}
 	});
@@ -224,7 +224,7 @@ await test('image', async (t) => {
 	await t.test('success', async (t2) => {
 		await t2.test('svg', async () => {
 			const fileName = `${fileNamePrefix}0003.svg`;
-			const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
+			const filePath = `${env('ROOT')}/${configProcess.media.image.dir}/${fileName}`;
 
 			const formData = new FormData();
 			formData.append('files', new File([], fileName, { type: 'image/svg+xml' }));
@@ -246,7 +246,7 @@ await test('image', async (t) => {
 			if ('results' in json) {
 				assert.equal(json.results.length, 1);
 				assert.equal(json.results.at(0)?.success, true);
-				assert.equal(json.results.at(0)?.message, config.processMessageUpload.success);
+				assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.success);
 				assert.equal(json.results.at(0)?.thumbnails, undefined);
 				assert.equal(fs.existsSync(filePath), true);
 			}
@@ -254,7 +254,7 @@ await test('image', async (t) => {
 
 		await t2.test('thumbnail create', async () => {
 			const fileName = `${fileNamePrefix}0004.jpg`;
-			const filePath = `${env('ROOT')}/${config.image.dir}/${fileName}`;
+			const filePath = `${env('ROOT')}/${configProcess.media.image.dir}/${fileName}`;
 
 			const image = sharp({
 				text: {
@@ -284,7 +284,7 @@ await test('image', async (t) => {
 			if ('results' in json) {
 				assert.equal(json.results.length, 1);
 				assert.equal(json.results.at(0)?.success, true);
-				assert.equal(json.results.at(0)?.message, config.processMessageUpload.success);
+				assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.success);
 				assert.equal(json.results.at(0)?.thumbnails?.length, 4);
 				assert.equal(fs.existsSync(filePath), true);
 			}
@@ -296,16 +296,16 @@ await test('video', async (t) => {
 	const fileNamePrefix = '_test';
 
 	after(async () => {
-		const filePaths = (await fs.promises.readdir(`${env('ROOT')}/${config.video.dir}`, { withFileTypes: true }))
+		const filePaths = (await fs.promises.readdir(`${env('ROOT')}/${configProcess.media.video.dir}`, { withFileTypes: true }))
 			.filter((resource) => resource.isFile() && resource.name.startsWith(fileNamePrefix))
-			.map((file) => `${env('ROOT')}/${config.video.dir}/${file.name}`);
+			.map((file) => `${env('ROOT')}/${configProcess.media.video.dir}/${file.name}`);
 
 		await Promise.all(filePaths.map((filePath) => fs.promises.unlink(filePath)));
 	});
 
 	await t.test('success', async () => {
 		const fileName = `${fileNamePrefix}0001.mp4`;
-		const filePath = `${env('ROOT')}/${config.video.dir}/${fileName}`;
+		const filePath = `${env('ROOT')}/${configProcess.media.video.dir}/${fileName}`;
 
 		const formData = new FormData();
 		formData.append('files', new File(['videoblob'], fileName, { type: 'video/foo' }));
@@ -327,7 +327,7 @@ await test('video', async (t) => {
 		if ('results' in json) {
 			assert.equal(json.results.length, 1);
 			assert.equal(json.results.at(0)?.success, true);
-			assert.equal(json.results.at(0)?.message, config.processMessageUpload.success);
+			assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.success);
 			assert.equal(fs.existsSync(filePath), true);
 		}
 	});
@@ -355,6 +355,6 @@ await test('text', async () => {
 	if ('results' in json) {
 		assert.equal(json.results.length, 2);
 		assert.equal(json.results.at(0)?.success, false);
-		assert.equal(json.results.at(0)?.message, config.processMessageUpload.type);
+		assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.type);
 	}
 });

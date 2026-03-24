@@ -2,8 +2,9 @@ import fs from 'node:fs';
 import { Hono, type Context } from 'hono';
 import { MIMEType } from 'whatwg-mimetype';
 import { env } from '@w0s/env-value-type';
+import { iec } from '@w0s/file-size-format';
 import type { Variables } from '../app.ts';
-import configMedia from '../config/media.ts';
+import configProcess from '../config/process.ts';
 import { createThumbnailImage } from '../process/media.ts';
 import { form as validatorForm } from '../validator/mediaUpload.ts';
 import type { MediaUpload as Result, MediaUploadResult as FileResult } from '../../../@types/api.d.ts';
@@ -39,7 +40,7 @@ const upload = async (
 		/* 同名ファイル存在 */
 		return {
 			success: false,
-			message: configMedia.processMessageUpload.overwrite,
+			message: configProcess.media.processMessageUpload.overwrite,
 			filename: file.name,
 		};
 	}
@@ -48,7 +49,7 @@ const upload = async (
 		/* ファイルサイズ超過 */
 		return {
 			success: false,
-			message: configMedia.processMessageUpload.size,
+			message: configProcess.media.processMessageUpload.size,
 			filename: file.name,
 		};
 	}
@@ -63,13 +64,14 @@ const upload = async (
 
 	return {
 		success: true,
-		message: configMedia.processMessageUpload.success,
+		message: configProcess.media.processMessageUpload.success,
 		filename: file.name,
 	};
 };
 
 export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validatorForm, async (context) => {
 	const { req } = context;
+	const logger = context.get('logger');
 
 	const requestBody = req.valid('form');
 
@@ -81,8 +83,8 @@ export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validato
 			switch (mimeType.type) {
 				case 'image': {
 					const fileResult = await upload(context, file, {
-						dir: `${env('ROOT')}/${configMedia.image.dir}`,
-						limit: configMedia.image.limit,
+						dir: `${env('ROOT')}/${configProcess.media.image.dir}`,
+						limit: configProcess.media.image.limit,
 						overwrite: overwrite,
 					});
 
@@ -90,27 +92,31 @@ export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validato
 						return fileResult;
 					}
 
-					const created = await createThumbnailImage(
+					const createdFiles = await createThumbnailImage(
 						{
 							buffer: Buffer.from(await file.arrayBuffer()),
 							fileName: file.name,
 						},
-						`${env('ROOT')}/${configMedia.image.thumbDir}`,
+						`${env('ROOT')}/${configProcess.media.image.thumbDir}`,
 					);
+					const createdFileNames = createdFiles.map((createdFile) => {
+						logger.info(`サムネイル画像生成: ${createdFile.name} (${iec(file.size, { digits: 1 })} → ${iec(createdFile.size, { digits: 1 })})`);
+						return createdFile.name;
+					});
 
-					return { ...fileResult, ...{ thumbnails: created } };
+					return { ...fileResult, ...{ thumbnails: createdFileNames } };
 				}
 				case 'video': {
 					return upload(context, file, {
-						dir: `${env('ROOT')}/${configMedia.video.dir}`,
-						limit: configMedia.video.limit,
+						dir: `${env('ROOT')}/${configProcess.media.video.dir}`,
+						limit: configProcess.media.video.limit,
 						overwrite: overwrite,
 					});
 				}
 				default: {
 					return {
 						success: false,
-						message: configMedia.processMessageUpload.type,
+						message: configProcess.media.processMessageUpload.type,
 						filename: file.name,
 					};
 				}

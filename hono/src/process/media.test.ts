@@ -32,8 +32,8 @@ await test('createThumbnailImage', async (t) => {
 	await t.test('正常系', async () => {
 		const baseFile = await fs.promises.readFile(`${tempBaseDir}/${testFileName}`);
 
-		const thumbFileNames = await createThumbnailImage({ buffer: baseFile, fileName: testFileName }, tempThumbDir);
+		const createdFiles = await createThumbnailImage({ buffer: baseFile, fileName: testFileName }, tempThumbDir);
 
-		assert.equal(thumbFileNames.length, 4);
+		assert.equal(createdFiles.length, 4);
 	});
 });
