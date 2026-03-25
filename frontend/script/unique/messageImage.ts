@@ -46,9 +46,9 @@ const messageImage = (
 	}
 
 	/* 本文内のテキストから画像情報を抜き出す */
-	const imageFileNames = [...previewElement.querySelectorAll<HTMLImageElement>('img[src^="https://media.w0s.jp/thumbimage/blog/"]')].map((image) => {
+	const imageFileNames = [...previewElement.querySelectorAll<HTMLImageElement>('img[src^="/entry/image/thumb/"]')].map((image) => {
 		const { pathname } = new URL(image.src);
-		return pathname.substring(pathname.lastIndexOf('/') + 1);
+		return pathname.substring(pathname.lastIndexOf('/') + 1, pathname.lastIndexOf('@')); // path/to/foo.jpg@d=640x480;q=60.avif → foo.jpg を抜き出す
 	});
 	const youtubeImageUrls = [...previewElement.querySelectorAll<HTMLAnchorElement>('a[href^="https://www.youtube.com/watch?v="]')].map(
 		(anchor) => `https://i1.ytimg.com/vi/${new URL(anchor.href).searchParams.get('v') ?? ''}/hqdefault.jpg`,
@@ -78,7 +78,7 @@ const messageImage = (
 			if (image.startsWith('https://')) {
 				imageElement.src = image;
 			} else {
-				imageElement.src = `https://media.w0s.jp/thumbimage/blog/${image}?type=webp;w=360;h=360;quality=30`;
+				imageElement.src = `/entry/image/thumb/${image}@d=1280x960;q=30.avif`;
 			}
 			imageElement.alt = image;
 			imageElement.title = image;
