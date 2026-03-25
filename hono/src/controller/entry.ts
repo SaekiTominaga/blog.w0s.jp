@@ -56,7 +56,7 @@ export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9
 
 	let imageUrl: URL | undefined;
 	if (entryDto.image_internal !== undefined) {
-		imageUrl = new URL(`https://media.w0s.jp/image/blog/${entryDto.image_internal}`);
+		imageUrl = new URL(`https://blog.w0s.jp/entry/image/${entryDto.image_internal}`);
 	} else if (entryDto.image_external !== undefined) {
 		imageUrl = entryDto.image_external;
 	}
