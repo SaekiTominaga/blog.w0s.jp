@@ -20,6 +20,21 @@ export default [
 		files: ['build/**/*.ts'],
 		rules: {
 			'no-console': 'off',
+			'import/extensions': [
+				'error',
+				'ignorePackages',
+				{
+					pattern: {
+						js: 'never',
+					},
+					pathGroupOverrides: [
+						{
+							pattern: '../../media/dist/**',
+							action: 'ignore',
+						},
+					],
+				},
+			],
 		},
 	},
 	{

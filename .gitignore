@@ -9,16 +9,9 @@
 
 /hono/dist
 
-/public/**/*.atom
-/public/**/*.br
-/public/**/*.map
-/public/**/*.svg
-/public/favicon.ico
-/public/sitemap.xml
-/public/entry
-/public/json
-/public/script
-/public/style
+/media/dist
+
+/public
 
 /remark/dist
 /remark/src/shell/config

@@ -1,6 +1,7 @@
 packages:
   - frontend
   - hono
+  - media
   - remark
 
 # Settings <https://pnpm.io/settings>

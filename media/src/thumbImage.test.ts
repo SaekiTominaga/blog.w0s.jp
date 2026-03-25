@@ -2,7 +2,7 @@ import { strict as assert } from 'node:assert';
 import fs from 'node:fs';
 import { after, before, test } from 'node:test';
 import sharp from 'sharp';
-import { createThumbnailImage } from './media.ts';
+import { create } from './thumbImage.ts';
 
 const tempBaseDirNamePrefix = '.temp-base-';
 const tempThumbDirNamePrefix = '.temp-thumb-';
@@ -32,7 +32,7 @@ await test('createThumbnailImage', async (t) => {
 	await t.test('正常系', async () => {
 		const baseFile = await fs.promises.readFile(`${tempBaseDir}/${testFileName}`);
 
-		const createdFiles = await createThumbnailImage(
+		const createdFiles = await create(
 			{
 				buffer: baseFile,
 				fileName: testFileName,

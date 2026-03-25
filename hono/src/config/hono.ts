@@ -96,13 +96,12 @@ const config: HonoConfig = {
 				'img-src': [
 					"'self'",
 					'data:',
-					'https://media.w0s.jp',
 					'https://m.media-amazon.com',
 					'https://*.ytimg.com',
 					'https://pagead2.googlesyndication.com',
 					'https://ep1.adtrafficquality.google',
 				],
-				'media-src': ["'self'", 'https://media.w0s.jp'],
+				'media-src': ["'self'"],
 				'script-src-elem': [
 					"'self'",
 					'https://analytics.w0s.jp',

@@ -25,6 +25,10 @@ export default [
 					},
 					pathGroupOverrides: [
 						{
+							pattern: '../../../media/dist/**',
+							action: 'ignore',
+						},
+						{
 							pattern: '../../../remark/dist/**',
 							action: 'ignore',
 						},

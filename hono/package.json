@@ -6,7 +6,7 @@
 		"dev": "tsx --watch --env-file=../.env.development --tsconfig tsconfig.json src/app.ts",
 		"build": "tsc",
 		"lint": "eslint @types/*.d.ts src/**/*.ts",
-		"pretest": "tsc --noEmit && pnpm -F frontend build && pnpm -F remark build",
+		"pretest": "tsc --noEmit && pnpm -F frontend build && pnpm -F media build && pnpm -F remark build",
 		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/app.test.ts src/{controller,process,util}/**/*.test.ts",
 		"test:sns": "node --experimental-test-coverage --env-file=../.env.development --test src/sns/**/*.test.ts"
 	},

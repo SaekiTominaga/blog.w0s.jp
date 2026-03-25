@@ -1,0 +1,15 @@
+{
+	"name": "media",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"lint": "eslint src/**/*.ts",
+		"pretest": "tsc --noEmit",
+		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
+	},
+	"dependencies": {
+		"sharp": "0.34.5"
+	},
+	"packageManager": "pnpm@10.28.1"
+}
