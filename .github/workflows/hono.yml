@@ -31,7 +31,10 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
-      - name: Run build
+      - name: Run build (media)
+        run: pnpm -F media build
+
+      - name: Run build (remark)
         run: pnpm -F remark build
 
       - name: Run lint
