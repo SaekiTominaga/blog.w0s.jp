@@ -185,8 +185,8 @@ importers:
         specifier: 7.10.2
         version: 7.10.2
       nodemailer:
-        specifier: 8.0.2
-        version: 8.0.2
+        specifier: 8.0.3
+        version: 8.0.3
       pino:
         specifier: 10.3.1
         version: 10.3.1
@@ -2991,8 +2991,8 @@ packages:
     resolution: {integrity: sha512-6u9UwL0HlAl21+agMN3YAMXcKByMqwGx+pq+P76vii5f7hTPtKDp08/H9py6DY+cfDw7kQNTGEj/rly3IgbNQA==}
     engines: {node: '>=10'}
 
-  nodemailer@8.0.2:
-    resolution: {integrity: sha512-zbj002pZAIkWQFxyAaqoxvn+zoIwRnS40hgjqTXudKOOJkiFFgBeNqjgD3/YCR12sZnrghWYBY+yP1ZucdDRpw==}
+  nodemailer@8.0.3:
+    resolution: {integrity: sha512-JQNBqvK+bj3NMhUFR3wmCl3SYcOeMotDiwDBvIoCuQdF0PvlIY0BH+FJ2CG7u4cXKPChplE78oowlH/Otsc4ZQ==}
     engines: {node: '>=6.0.0'}
 
   normalize-path@3.0.0:
@@ -3118,6 +3118,10 @@ packages:
 
   picomatch@4.0.3:
     resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
+    engines: {node: '>=12'}
+
+  picomatch@4.0.4:
+    resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
   pify@2.3.0:
@@ -6896,7 +6900,7 @@ snapshots:
     dependencies:
       semver: 7.7.4
 
-  nodemailer@8.0.2: {}
+  nodemailer@8.0.3: {}
 
   normalize-path@3.0.0: {}
 
@@ -7034,6 +7038,8 @@ snapshots:
   picomatch@2.3.1: {}
 
   picomatch@4.0.3: {}
+
+  picomatch@4.0.4: {}
 
   pify@2.3.0: {}
 
@@ -8008,7 +8014,7 @@ snapshots:
 
   ts-declaration-location@1.0.7(typescript@5.9.3):
     dependencies:
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       typescript: 5.9.3
 
   ts-dedent@2.2.0: {}
