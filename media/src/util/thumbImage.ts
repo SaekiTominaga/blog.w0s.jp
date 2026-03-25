@@ -10,11 +10,6 @@ export const getDimensions = (
 	base: Readonly<{ width: number; height: number }>,
 	thumb: Readonly<{ maxWidth: number; maxHeight: number; density: number | undefined }>,
 ): { width: number; height: number } => {
-	const newDimensions = {
-		width: base.width,
-		height: base.height,
-	};
-
 	const thumbDensity = thumb.density ?? 1;
 	const thumbMaxWidth = thumb.maxWidth * thumbDensity;
 	const thumbMaxHeight = thumb.maxHeight * thumbDensity;
@@ -22,11 +17,16 @@ export const getDimensions = (
 		/* 幅か高さ、どちらかより縮小割合が大きい方を基準に縮小する */
 		const reductionRatio = Math.min(thumbMaxWidth / base.width, thumbMaxHeight / base.height);
 
-		newDimensions.width = Math.round(base.width * reductionRatio);
-		newDimensions.height = Math.round(base.height * reductionRatio);
+		return {
+			width: Math.round(base.width * reductionRatio),
+			height: Math.round(base.height * reductionRatio),
+		};
 	}
 
-	return newDimensions;
+	return {
+		width: base.width,
+		height: base.height,
+	};
 };
 
 /**

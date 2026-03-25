@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import sharp from 'sharp';
-import { getDimensions as getThumbImageDimensions, getFileName as getThumbImageFileName } from '../util/thumbImage.ts';
+import { getDimensions as getThumbImageDimensions, getFileName as getThumbImageFileName } from './util/thumbImage.ts';
 
 /**
  * サムネイル画像を生成
@@ -13,7 +13,7 @@ import { getDimensions as getThumbImageDimensions, getFileName as getThumbImageF
  *
  * @returns 生成した画像情報
  */
-export const createThumbnailImage = async (
+export const create = async (
 	base: Readonly<{
 		buffer: Buffer<ArrayBuffer>;
 		fileName: string;

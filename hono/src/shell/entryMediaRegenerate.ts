@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 import { env } from '@w0s/env-value-type';
 import { iec } from '@w0s/file-size-format';
+import { create as createThumbImage } from '../../../media/dist/thumbImage.js';
 import configProcess from '../config/process.ts';
-import { createThumbnailImage } from '../process/media.ts';
 import { clearFiles, getFileNames } from '../util/file.ts';
 import { getLogger } from '../logger.ts';
 
@@ -25,7 +25,7 @@ const createdList = await Promise.all(
 	baseFileNames.map(async (baseFileName) => {
 		const baseFile = await fs.promises.readFile(`${baseDir}/${baseFileName}`);
 
-		const createdFiles = await createThumbnailImage(
+		const createdFiles = await createThumbImage(
 			{
 				buffer: baseFile,
 				fileName: baseFileName,

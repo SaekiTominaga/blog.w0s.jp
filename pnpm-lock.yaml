@@ -48,6 +48,9 @@ importers:
       '@w0s/button-clipboard':
         specifier: 3.0.4
         version: 3.0.4
+      '@w0s/file-size-format':
+        specifier: 3.0.2
+        version: 3.0.2
       '@w0s/footnote-reference-popover':
         specifier: 7.3.3
         version: 7.3.3
@@ -215,6 +218,12 @@ importers:
       tsx:
         specifier: 4.21.0
         version: 4.21.0
+
+  media:
+    dependencies:
+      sharp:
+        specifier: 0.34.5
+        version: 0.34.5
 
   remark:
     dependencies:
