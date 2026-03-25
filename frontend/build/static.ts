@@ -5,6 +5,8 @@ import { parseArgs } from 'node:util';
 import { watch as chokidarWatch } from 'chokidar';
 import slash from 'slash';
 import { loadConfig as svgoLoadConfig, optimize as svgOptimize, type Output as SvgoOutput } from 'svgo';
+import { iec } from '@w0s/file-size-format';
+import { create as createThumbImage } from '../../media/dist/thumbImage.js';
 
 /**
  * SVG ビルド
@@ -45,16 +47,42 @@ const { srcDir, distDir, svgoConfig: svgoConfigFilePath, watch } = argsParsedVal
 
 const svgoConfig = await svgoLoadConfig(svgoConfigFilePath);
 
-const exec = async (srcFilePath: string): Promise<void> => {
-	const distFilePath = srcFilePath.replace(new RegExp(`^${srcDir}`, 'v'), distDir);
-	const distFileDirectory = path.dirname(distFilePath);
+const getDistFilePath = (srcFilePath: string): string => srcFilePath.replace(new RegExp(`^${srcDir}`, 'v'), distDir);
 
-	if (!fs.existsSync(distFileDirectory)) {
-		await fs.promises.mkdir(distFileDirectory, { recursive: true });
-		console.info(`Directory created: ${distFileDirectory}`);
-	}
+const exec = async (srcFilePath: string): Promise<void> => {
+	const distFilePath = getDistFilePath(srcFilePath);
 
 	switch (path.extname(srcFilePath)) {
+		case '.jpg': {
+			const srcFileData = await fs.promises.readFile(srcFilePath);
+
+			await fs.promises.copyFile(srcFilePath, distFilePath);
+			console.info(`JPEG file copyed: ${distFilePath}`);
+
+			const createdThumbImages = await createThumbImage(
+				{
+					buffer: srcFileData,
+					fileName: path.basename(srcFilePath),
+				},
+				{
+					dir: path.dirname(distFilePath),
+					dimensions: [
+						{ maxWidth: 160, maxHeight: 160 }, // Amazon 商品画像
+					],
+					densityQualities: [
+						{ density: 1, quality: 60 },
+						{ density: 2, quality: 30 },
+					],
+				},
+			);
+			createdThumbImages.forEach((createdFile) => {
+				console.info(
+					`JPEG thumbnail file created: ${createdFile.name} (${iec(srcFileData.byteLength, { digits: 1 })} → ${iec(createdFile.size, { digits: 1 })})`,
+				);
+			});
+
+			break;
+		}
 		case '.svg': {
 			/* ファイル読み込み */
 			const srcFileData = await fs.promises.readFile(srcFilePath);
@@ -91,29 +119,50 @@ const exec = async (srcFilePath: string): Promise<void> => {
 	}
 };
 
-const srcFilePaths = (await Array.fromAsync(fs.promises.glob(`${srcDir}/**`, { withFileTypes: true })))
-	.filter((resource) => resource.isFile())
-	.map((file) => slash(path.relative(process.cwd(), `${file.parentPath}/${file.name}`)));
-
 if (watch) {
-	chokidarWatch(srcFilePaths).on('change', (srcFilePath) => {
-		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		exec(srcFilePath);
-	});
+	{
+		const removePaths = await Array.fromAsync(fs.promises.glob([`${distDir}/image/*.svg.br`, `${distDir}/*.svg.br`]));
+
+		await Promise.all(removePaths.map((removePath) => fs.promises.rm(removePath, { recursive: true })));
+		console.info(`Files removed`, removePaths);
+	}
+
+	chokidarWatch(srcDir)
+		.on('add', (srcFilePath) => {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			exec(srcFilePath);
+		})
+		.on('change', (srcFilePath) => {
+			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			exec(srcFilePath);
+		});
 } else {
-	const excludePaths = ['entry', 'json', 'script', 'style', 'feed.atom', 'feed.atom.br', 'sitemap.xml']; // 別のスクリプトで自動生成するディレクトリ、ファイル
+	{
+		const distExcludePaths = ['entry', 'json', 'script', 'style', 'feed.atom', 'feed.atom.br', 'sitemap.xml']; // 別のスクリプトで自動生成するディレクトリ、ファイル
 
-	const removePaths = (
-		await Array.fromAsync(
-			fs.promises.glob(`${distDir}/*`, {
-				exclude: excludePaths.map((excludePath) => `${distDir}/${excludePath}`),
-				withFileTypes: true,
-			}),
-		)
-	).map((resource) => slash(path.relative(process.cwd(), `${resource.parentPath}/${resource.name}`)));
+		const removePaths = (
+			await Array.fromAsync(
+				fs.promises.glob(`${distDir}/*`, {
+					exclude: distExcludePaths.map((excludePath) => `${distDir}/${excludePath}`),
+					withFileTypes: true,
+				}),
+			)
+		).map((resource) => slash(path.relative(process.cwd(), `${resource.parentPath}/${resource.name}`)));
 
-	await Promise.all(removePaths.map((removePath) => fs.promises.rm(removePath, { recursive: true })));
-	console.info(`Directories and files removed`, removePaths);
+		await Promise.all(removePaths.map((removePath) => fs.promises.rm(removePath, { recursive: true })));
+		console.info(`Directories and files removed`, removePaths);
+	}
+
+	const srcFilePaths = (await Array.fromAsync(fs.promises.glob(`${srcDir}/**`, { withFileTypes: true })))
+		.filter((resource) => resource.isFile())
+		.map((file) => slash(path.relative(process.cwd(), `${file.parentPath}/${file.name}`)));
+
+	const distNoExistDirectories = [...new Set(srcFilePaths.map((srcFilePath) => path.dirname(getDistFilePath(srcFilePath))))].filter(
+		(dir) => !fs.existsSync(dir),
+	);
+
+	await Promise.all(distNoExistDirectories.map(async (distNoExistDirectory) => fs.promises.mkdir(distNoExistDirectory, { recursive: true })));
+	console.info(`Directory created:`, distNoExistDirectories);
 
 	await Promise.all(
 		srcFilePaths.map(async (filePath) => {
