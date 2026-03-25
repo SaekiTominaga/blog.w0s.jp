@@ -37,12 +37,13 @@ await test('init clear', () => {
 
 await test('message analysis', async (t) => {
 	await t.test('image file', () => {
-		const { document } = new JSDOM(`
+		const { document } = new JSDOM(
+			`
 <!DOCTYPE html>
 <div>
 	<template id="message-preview"></template>
 	<div>
-		<img src="https://media.w0s.jp/thumbimage/blog/foo.jpg" />
+		<img src="/entry/image/thumb/foo.jpg@d=640x480;q=60.avif" />
 	</div>
 </div>
 
@@ -52,7 +53,9 @@ await test('message analysis', async (t) => {
 		<img />
 	</template>
 </div>
-`).window;
+`,
+			{ url: 'http://example.com' },
+		).window;
 
 		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
@@ -67,7 +70,7 @@ await test('message analysis', async (t) => {
 		const image = parent.querySelector<HTMLImageElement>('img')!;
 
 		assert.equal(radio.value, 'foo.jpg');
-		assert.equal(image.src, 'https://media.w0s.jp/thumbimage/blog/foo.jpg?type=webp;w=360;h=360;quality=30');
+		assert.equal(image.src, 'http://example.com/entry/image/thumb/foo.jpg@d=1280x960;q=30.avif');
 		assert.equal(image.alt, 'foo.jpg');
 		assert.equal(image.title, 'foo.jpg');
 	});
@@ -147,12 +150,13 @@ await test('message analysis', async (t) => {
 
 await test('selected', async (t) => {
 	await t.test('different file name', () => {
-		const { document } = new JSDOM(`
+		const { document } = new JSDOM(
+			`
 <!DOCTYPE html>
 <div>
 	<template id="message-preview"></template>
 	<div>
-		<img src="https://media.w0s.jp/thumbimage/blog/foo.jpg" />
+		<img src="/entry/image/thumb/foo.jpg@d=640x480;q=60.avif" />
 	</div>
 </div>
 
@@ -162,7 +166,9 @@ await test('selected', async (t) => {
 		<img />
 	</template>
 </div>
-`).window;
+`,
+			{ url: 'http://example.com' },
+		).window;
 
 		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
@@ -179,12 +185,13 @@ await test('selected', async (t) => {
 	});
 
 	await t.test('same file name', () => {
-		const { document } = new JSDOM(`
+		const { document } = new JSDOM(
+			`
 <!DOCTYPE html>
 <div>
 	<template id="message-preview"></template>
 	<div>
-		<img src="https://media.w0s.jp/thumbimage/blog/foo.jpg" />
+		<img src="/entry/image/thumb/foo.jpg@d=640x480;q=60.avif" />
 	</div>
 </div>
 
@@ -194,7 +201,9 @@ await test('selected', async (t) => {
 		<img />
 	</template>
 </div>
-`).window;
+`,
+			{ url: 'http://example.com' },
+		).window;
 
 		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
@@ -211,12 +220,13 @@ await test('selected', async (t) => {
 	});
 
 	await t.test('same file name', () => {
-		const { document } = new JSDOM(`
+		const { document } = new JSDOM(
+			`
 <!DOCTYPE html>
 <div>
 	<template id="message-preview"></template>
 	<div>
-		<img src="https://media.w0s.jp/thumbimage/blog/foo.jpg" />
+		<img src="/entry/image/thumb/foo.jpg@d=640x480;q=60.avif" />
 	</div>
 </div>
 
@@ -229,7 +239,9 @@ await test('selected', async (t) => {
 		<input type="radio" value="foo.jpg" checked="" />
 	</div>
 </div>
-`).window;
+`,
+			{ url: 'http://example.com' },
+		).window;
 
 		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
