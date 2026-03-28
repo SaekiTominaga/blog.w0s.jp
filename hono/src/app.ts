@@ -30,20 +30,25 @@ export interface Variables {
 	logger: Logger;
 }
 
-/* Hono */
 const app = new Hono<{ Variables: Variables }>();
 
-app.use(async (context, next) => {
-	context.set('logger', getLogger(context.req.path.substring(1)));
-	await next();
+/* Auth */
+const basicAuthHandler = await basicAuth({
+	authPath: `${env('ROOT')}/${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`,
+	invalidUserMessage: config.basicAuth.unauthorizedMessage,
 });
+app.use(`/admin/*`, basicAuthHandler);
+app.use(`/${config.api.dir}/clear`, basicAuthHandler);
+app.use(`/${config.api.dir}/media`, basicAuthHandler);
 
+/* Compress */
 app.use(
 	compress({
 		threshold: config.response.compression.threshold,
 	}),
 );
 
+/* Headers */
 app.use(async (context, next) => {
 	/* HSTS */
 	context.header('Strict-Transport-Security', config.response.header.hsts);
@@ -58,38 +63,6 @@ app.use(async (context, next) => {
 	context.header('X-Content-Type-Options', 'nosniff');
 
 	await next();
-});
-
-/* Redirect */
-config.redirect.forEach((redirect) => {
-	if (!redirect.to.startsWith('/')) {
-		throw new Error('The path to the redirect must begin with a U+002F slash');
-	}
-
-	app.get(redirect.from, (context) => {
-		const { req } = context;
-		const logger = context.get('logger');
-
-		let redirectPath = redirect.to;
-		Object.entries(req.param()).forEach(([, paramValue], index) => {
-			if (typeof paramValue !== 'string') {
-				throw new Error('Parameter value is not of type `string`');
-			}
-			redirectPath = redirectPath.replace(`$${String(index + 1)}`, paramValue);
-		});
-
-		logger.debug(`redirect: ${req.url} → ${redirectPath}`);
-
-		return context.html(
-			`<!DOCTYPE html>
-<html lang=ja>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>ページ移動</title>
-<p>このページは <a href="${escape(redirectPath)}"><code>${escape(redirectPath)}</code></a> に移動しました。`,
-			301,
-			{ Location: redirectPath },
-		);
-	});
 });
 
 /* Favicon */
@@ -195,14 +168,43 @@ app.use(
 	}),
 );
 
-/* Auth */
-const basicAuthHandler = await basicAuth({
-	authPath: `${env('ROOT')}/${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`,
-	invalidUserMessage: config.basicAuth.unauthorizedMessage,
+/* Logger */
+app.use(async (context, next) => {
+	context.set('logger', getLogger(context.req.path.substring(1)));
+	await next();
 });
-app.use(`/admin/*`, basicAuthHandler);
-app.use(`/${config.api.dir}/clear`, basicAuthHandler);
-app.use(`/${config.api.dir}/media`, basicAuthHandler);
+
+/* Redirect */
+config.redirect.forEach((redirect) => {
+	if (!redirect.to.startsWith('/')) {
+		throw new Error('The path to the redirect must begin with a U+002F slash');
+	}
+
+	app.get(redirect.from, (context) => {
+		const { req } = context;
+		const logger = context.get('logger');
+
+		let redirectPath = redirect.to;
+		Object.entries(req.param()).forEach(([, paramValue], index) => {
+			if (typeof paramValue !== 'string') {
+				throw new Error('Parameter value is not of type `string`');
+			}
+			redirectPath = redirectPath.replace(`$${String(index + 1)}`, paramValue);
+		});
+
+		logger.debug(`redirect: ${req.url} → ${redirectPath}`);
+
+		return context.html(
+			`<!DOCTYPE html>
+<html lang=ja>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>ページ移動</title>
+<p>このページは <a href="${escape(redirectPath)}"><code>${escape(redirectPath)}</code></a> に移動しました。`,
+			301,
+			{ Location: redirectPath },
+		);
+	});
+});
 
 /* Routes */
 app.route('/', topApp);
