@@ -50,9 +50,13 @@ export const create = async (
 			);
 
 			image.resize(thumbDimensions);
-			image.avif({
-				quality: thumbValiation.quality,
-			});
+			image.avif(
+				/* https://sharp.pixelplumbing.com/api-output/#avif */
+				{
+					quality: thumbValiation.quality,
+					chromaSubsampling: '4:2:0',
+				},
+			);
 
 			const thumbData = await image.toBuffer();
 
