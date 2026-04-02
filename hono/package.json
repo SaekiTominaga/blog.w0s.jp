@@ -11,7 +11,7 @@
 		"test:sns": "node --experimental-test-coverage --env-file=../.env.development --test src/sns/**/*.test.ts"
 	},
 	"dependencies": {
-		"@atproto/api": "0.19.4",
+		"@atproto/api": "0.19.5",
 		"@hono/node-server": "1.19.11",
 		"@w0s/env-value-type": "1.0.1",
 		"@w0s/file-size-format": "3.0.2",
