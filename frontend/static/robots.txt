@@ -1,4 +1,5 @@
 User-agent: ClaudeBot
+User-agent: Claude-SearchBot
 Disallow: /entry/image/thumb/
 
 Sitemap: https://blog.w0s.jp/sitemap.xml
