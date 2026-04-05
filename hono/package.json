@@ -7,11 +7,9 @@
 		"build": "tsc",
 		"lint": "eslint @types/*.d.ts src/**/*.ts",
 		"pretest": "tsc --noEmit && pnpm -F frontend build && pnpm -F media build && pnpm -F remark build",
-		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/app.test.ts src/{controller,process,util}/**/*.test.ts",
-		"test:sns": "node --experimental-test-coverage --env-file=../.env.development --test src/sns/**/*.test.ts"
+		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/**/*.test.ts"
 	},
 	"dependencies": {
-		"@atproto/api": "0.19.4",
 		"@hono/node-server": "1.19.11",
 		"@w0s/env-value-type": "1.0.1",
 		"@w0s/file-size-format": "3.0.2",
@@ -24,7 +22,6 @@
 		"filenamify": "7.0.1",
 		"hono": "4.11.4",
 		"kysely": "0.28.14",
-		"masto": "7.10.2",
 		"nodemailer": "8.0.4",
 		"pino": "10.3.1",
 		"pino-pretty": "13.1.3",

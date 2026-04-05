@@ -52,6 +52,56 @@ export default class extends Database {
 	}
 
 	/**
+	 * 修正する記事データを取得する
+	 *
+	 * @param id - 記事 ID
+	 *
+	 * @returns 記事データ
+	 */
+	async getReviseData(id: number): Promise<
+		| (Pick<Selectable<DEntry>, 'id' | 'title' | 'description' | 'message' | 'image_internal' | 'image_external' | 'public'> & {
+				category_ids: string[] | undefined;
+				relation_ids: string[] | undefined;
+		  })
+		| undefined
+	> {
+		let query = this.db
+			.selectFrom('d_entry as e')
+			.select([
+				'e.title',
+				'e.description',
+				'e.message',
+				sql<string | null>`(SELECT group_concat(ec.category_id, ' ') FROM d_entry_category ec WHERE e.id = ec.entry_id ORDER BY ec.category_id)`.as(
+					'category_ids',
+				),
+				'e.image_internal',
+				'e.image_external',
+				sql<string | null>`(SELECT group_concat(er.relation_id, ' ') FROM d_entry_relation er WHERE e.id = er.entry_id ORDER BY er.relation_id)`.as(
+					'relation_ids',
+				),
+				'e.public',
+			]);
+		query = query.where('e.id', '=', id);
+
+		const row = await query.executeTakeFirst();
+		if (row === undefined) {
+			return undefined;
+		}
+
+		return {
+			id: sqliteToJS(id),
+			title: sqliteToJS(row.title),
+			description: sqliteToJS(row.description),
+			message: sqliteToJS(row.message),
+			category_ids: sqliteToJS(row.category_ids)?.split(' ') ?? undefined,
+			image_internal: sqliteToJS(row.image_internal),
+			image_external: sqliteToJS(row.image_external, 'url'),
+			relation_ids: sqliteToJS(row.relation_ids)?.split(' ') ?? undefined,
+			public: sqliteToJS(row.public, 'boolean'),
+		};
+	}
+
+	/**
 	 * 記事タイトル重複チェック
 	 *
 	 * @param title - 記事タイトル
@@ -218,52 +268,24 @@ export default class extends Database {
 	}
 
 	/**
-	 * 修正する記事データを取得する
+	 * SNS 投稿のキューを登録する
 	 *
-	 * @param id - 記事 ID
+	 * @param entryId - 記事 ID
+	 * @param tags - ハッシュタグ
 	 *
-	 * @returns 記事データ
+	 * @returns 記事 ID
 	 */
-	async getReviseData(id: number): Promise<
-		| (Pick<Selectable<DEntry>, 'id' | 'title' | 'description' | 'message' | 'image_internal' | 'image_external' | 'public'> & {
-				category_ids: string[] | undefined;
-				relation_ids: string[] | undefined;
-		  })
-		| undefined
-	> {
-		let query = this.db
-			.selectFrom('d_entry as e')
-			.select([
-				'e.title',
-				'e.description',
-				'e.message',
-				sql<string | null>`(SELECT group_concat(ec.category_id, ' ') FROM d_entry_category ec WHERE e.id = ec.entry_id ORDER BY ec.category_id)`.as(
-					'category_ids',
-				),
-				'e.image_internal',
-				'e.image_external',
-				sql<string | null>`(SELECT group_concat(er.relation_id, ' ') FROM d_entry_relation er WHERE e.id = er.entry_id ORDER BY er.relation_id)`.as(
-					'relation_ids',
-				),
-				'e.public',
-			]);
-		query = query.where('e.id', '=', id);
+	async insertSNSQueue(entryId: number, tags: string[] | undefined): Promise<bigint | undefined> {
+		const query = this.db.insertInto('d_sns_queue').values({
+			entry_id: jsToSQLiteAssignment(entryId),
+			tags: sql`jsonb(${JSON.stringify(tags)})`,
+			mastodon: jsToSQLiteAssignment(false),
+			bluesky: jsToSQLiteAssignment(false),
+			misskey: jsToSQLiteAssignment(false),
+		});
 
-		const row = await query.executeTakeFirst();
-		if (row === undefined) {
-			return undefined;
-		}
+		const result = await query.executeTakeFirst();
 
-		return {
-			id: sqliteToJS(id),
-			title: sqliteToJS(row.title),
-			description: sqliteToJS(row.description),
-			message: sqliteToJS(row.message),
-			category_ids: sqliteToJS(row.category_ids)?.split(' ') ?? undefined,
-			image_internal: sqliteToJS(row.image_internal),
-			image_external: sqliteToJS(row.image_external, 'url'),
-			relation_ids: sqliteToJS(row.relation_ids)?.split(' ') ?? undefined,
-			public: sqliteToJS(row.public, 'boolean'),
-		};
+		return result.insertId;
 	}
 }
