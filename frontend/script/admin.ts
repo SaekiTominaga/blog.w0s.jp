@@ -262,6 +262,3 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 		);
 	}
 }
-function clickEvent(ev: MouseEvent, course: any, checkbox: any) {
-	throw new Error('Function not implemented.');
-}
