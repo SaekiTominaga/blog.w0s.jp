@@ -1,5 +1,5 @@
+import crypto from 'node:crypto';
 import type { ElementContent, Properties } from 'hast';
-import md5 from 'md5';
 import type { Code } from 'mdast';
 import type { State } from 'mdast-util-to-hast';
 import config from '../../config.ts';
@@ -18,7 +18,9 @@ export const codeToHast = (_state: State, node: Code): ElementContent | ElementC
 		positionString = `${String(start.line)}${String(start.column)}${String(start.offset)}${String(end.line)}${String(end.column)}${String(end.offset)}`;
 	}
 
-	const id = `code-${md5(`${positionString}${value}`)}`; // コード ID（記事内でのユニークさを保つためにコード文字列と位置情報を組み合わせた文字列を元にする）
+	const hash = crypto.createHash('md5');
+	hash.update(`${positionString}${value}`);
+	const id = `code-${hash.digest('hex')}`; // コード ID（記事内でのユニークさを保つためにコード文字列と位置情報を組み合わせた文字列を元にする）
 
 	const codeProperties: Properties = {
 		id: id,
