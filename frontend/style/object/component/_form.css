@@ -35,12 +35,12 @@
 
 	&:disabled {
 		--_color: var(--color-gray);
-		--_bg-color: var(--color-bg-verydark);
+		--_bg-color: var(--color-bg-dark);
 	}
 
 	&:read-only {
 		--_color: var(--color-gray);
-		--_bg-color: var(--color-bg-verydark);
+		--_bg-color: var(--color-bg-dark);
 	}
 }
 
@@ -74,7 +74,7 @@
 
 	&:disabled {
 		--_color: var(--color-gray);
-		--_bg-color: var(--color-bg-verydark);
+		--_bg-color: var(--color-bg-dark);
 	}
 }
 
@@ -106,12 +106,12 @@
 
 	&:disabled {
 		--_color: var(--color-gray);
-		--_bg-color: var(--color-bg-verydark);
+		--_bg-color: var(--color-bg-dark);
 	}
 
 	&:read-only {
 		--_color: var(--color-gray);
-		--_bg-color: var(--color-bg-verydark);
+		--_bg-color: var(--color-bg-dark);
 	}
 }
 
@@ -173,7 +173,7 @@
 
 	&:disabled {
 		--_color: var(--color-gray);
-		--_bg-color: var(--color-bg-verydark);
+		--_bg-color: var(--color-bg-dark);
 	}
 
 	/* コンパクトなボタン */
@@ -213,12 +213,17 @@
 		margin-block: calc(var(--form-control-padding-block) / 2);
 		border: 1px solid var(--_border-color);
 		border-radius: var(--border-radius-normal);
-		background: var(--_bg-color);
+		background-color: var(--_bg-color);
 		padding: calc(var(--form-control-padding-block) / 2) 0.25em;
 
 		&:hover {
 			--_border-color: var(--color-superlightblue);
 			--_bg-color: var(--color-superlightblue);
+
+			:disabled & {
+				--_border-color: transparent;
+				--_bg-color: transparent;
+			}
 		}
 
 		&:focus-within {

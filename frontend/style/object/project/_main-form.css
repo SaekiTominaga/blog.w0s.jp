@@ -18,8 +18,8 @@
 	grid-template-columns: subgrid;
 	grid-column: legend / contents;
 
-	@supports not (grid-template-columns: subgrid) {
-		display: contents; /* for Chrome, Safari, Edge */
+	&:has(> :disabled) {
+		opacity: 0.5;
 	}
 
 	/* 複雑なフォームは区切り線を付ける */
