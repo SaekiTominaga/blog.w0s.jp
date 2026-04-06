@@ -36,6 +36,29 @@ formBeforeUnloadConfirm(document.querySelectorAll('.js-form-beforeunload-confirm
 /* 送信ボタン2度押し防止 */
 formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 
+/* disabled 制御 */
+document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((element) => {
+	const targetIds = element.dataset['targets']?.split(' ');
+
+	element.addEventListener(
+		'change',
+		() => {
+			targetIds?.forEach((targetId) => {
+				(
+					document.getElementById(targetId) as
+						| HTMLButtonElement
+						| HTMLFieldSetElement
+						| HTMLInputElement
+						| HTMLOptGroupElement
+						| HTMLSelectElement
+						| HTMLTextAreaElement
+				).disabled = !element.checked;
+			});
+		},
+		{ passive: true },
+	);
+});
+
 /* 本文プレビュー */
 {
 	const messageCtrlElement = document.getElementById('fc-message') as HTMLTextAreaElement | null; // 本文の入力コントロール
@@ -238,4 +261,7 @@ formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 			{ passive: true },
 		);
 	}
+}
+function clickEvent(ev: MouseEvent, course: any, checkbox: any) {
+	throw new Error('Function not implemented.');
 }

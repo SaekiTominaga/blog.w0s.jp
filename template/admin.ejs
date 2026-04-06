@@ -206,9 +206,9 @@
 											<div class="c-form-controls">
 												<label class="c-label -check">
 													<%_ if (entryData.public) { _%>
-													<input type="checkbox" name="public" value="1" checked="" />
+													<input type="checkbox" name="public" value="1" class="js-disabled-control" data-targets="fc-external" checked="" />
 													<%_ } else { _%>
-													<input type="checkbox" name="public" value="1" />
+													<input type="checkbox" name="public" value="1" class="js-disabled-control" data-targets="fc-external" />
 													<%_ } _%>
 													<span class="c-label__text">公開状態</span>
 												</label>
@@ -236,15 +236,15 @@
 								</div>
 								<%_ } else { _%>
 								<div class="p-form-grid__group">
-									<fieldset>
+									<fieldset id="fc-external" disabled="">
 										<legend class="p-form-grid__legend">外部サービス</legend>
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
 												<label class="c-label -check">
 													<%_ if (entryData.social) { _%>
-													<input type="checkbox" name="social" value="1" checked="" />
+													<input type="checkbox" name="social" value="1" checked="" class="js-disabled-control" data-targets="fc-social-tag" />
 													<%_ } else { _%>
-													<input type="checkbox" name="social" value="1" />
+													<input type="checkbox" name="social" value="1" class="js-disabled-control" data-targets="fc-social-tag" />
 													<%_ } _%>
 													<span class="c-label__text">ソーシャルサービスへ投稿</span>
 												</label>
@@ -252,7 +252,7 @@
 											<div class="c-form-controls">
 												<label class="c-label -input">
 													<span class="c-label__text">ハッシュタグ</span>
-													<input id="fc-social-tag" class="c-input js-convert-trim" name="social_tag" value="<%= entryData.socialTags?.join(',') %>" maxlength="100" style="--inline-size: 15em" />
+													<input id="fc-social-tag" class="c-input js-convert-trim" name="social_tag" value="<%= entryData.socialTags?.join(',') %>" maxlength="100" style="--inline-size: 15em" disabled="" />
 													<small>（カンマ区切り）</small>
 												</label>
 											</div>
