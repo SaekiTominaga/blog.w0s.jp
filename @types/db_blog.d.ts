@@ -24,6 +24,14 @@ export interface DEntryRelation {
 	relation_id: string;
 }
 
+export interface DSnsQueue {
+	entry_id: number;
+	tags: string | undefined;
+	mastodon: boolean;
+	bluesky: boolean;
+	misskey: boolean;
+}
+
 export interface DInfo {
 	modified: Date;
 }
@@ -46,6 +54,7 @@ export interface DB {
 	d_entry: { [K in keyof DEntry]: Transform<DEntry[K]> };
 	d_entry_category: { [K in keyof DEntryCategory]: Transform<DEntryCategory[K]> };
 	d_entry_relation: { [K in keyof DEntryRelation]: Transform<DEntryRelation[K]> };
+	d_sns_queue: { [K in keyof DSnsQueue]: Transform<DSnsQueue[K]> };
 	d_info: { [K in keyof DInfo]: Transform<DInfo[K]> };
 	m_category: { [K in keyof MCategory]: Transform<MCategory[K]> };
 	m_catgroup: { [K in keyof MCatgroup]: Transform<MCatgroup[K]> };

@@ -12,6 +12,10 @@ export default {
 			update: {
 				success: '記事の更新に成功',
 			},
+			insertSNSQueue: {
+				success: 'SNS 投稿キュー登録に成功',
+				failure: 'SNS 投稿キュー登録に失敗',
+			},
 		},
 	},
 	media: {

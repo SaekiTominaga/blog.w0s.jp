@@ -104,7 +104,7 @@ export const form = validator('form', (value): RequestForm => {
 		relationIds: relation?.split(','),
 		public: Boolean(pub),
 		social: Boolean(social),
-		socialTags: socialTag?.split(','),
+		socialTags: socialTag !== '' ? socialTag?.split(',') : undefined,
 		timestampUpdate: Boolean(timestamp),
 	};
 });
