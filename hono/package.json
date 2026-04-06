@@ -31,7 +31,6 @@
 	"devDependencies": {
 		"@types/better-sqlite3": "7.6.13",
 		"@types/ejs": "3.1.5",
-		"@types/md5": "2.3.6",
 		"@types/nodemailer": "7.0.11",
 		"@types/whatwg-mimetype": "5.0.0",
 		"tsx": "4.21.0"
