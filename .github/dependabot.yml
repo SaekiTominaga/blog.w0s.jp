@@ -18,6 +18,9 @@ updates:
       default-days: 7
       exclude:
         - '@w0s/*'
+    groups:
+      monorepo-dependencies:
+        group-by: dependency-name
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
