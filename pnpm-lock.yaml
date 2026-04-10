@@ -25,8 +25,8 @@ importers:
         specifier: 3.13.0
         version: 3.13.0(markuplint@4.14.1(typescript@5.9.3))
       '@w0s/stylelint-config':
-        specifier: 4.18.1
-        version: 4.18.1(stylelint-attribute-case-sensitivity@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-concentric-order@5.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-standard@39.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-display-multi-keyword@2.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-no-default-viewport@2.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-plugin-logical-css@1.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-root-colors@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint@16.26.1(typescript@5.9.3))
+        specifier: 4.19.1
+        version: 4.19.1(stylelint-attribute-case-sensitivity@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-concentric-order@5.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-standard@39.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-no-default-viewport@2.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-plugin-logical-css@1.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-root-colors@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint@16.26.1(typescript@5.9.3))
       '@w0s/tsconfig':
         specifier: 2.0.1
         version: 2.0.1(typescript@5.9.3)
@@ -1457,16 +1457,15 @@ packages:
   '@w0s/string-convert@3.0.3':
     resolution: {integrity: sha512-+CqqbMWtJRzCL9pvObsrdKQ8HjmNZARHVUJMDn9uj1+K5UB6+svYAT3m5vlP20VHvhWLCKlRX2H3rWblrK0GXg==}
 
-  '@w0s/stylelint-config@4.18.1':
-    resolution: {integrity: sha512-l3vr9JChr+KNu+8SUs6p6nUSQgm+c16GvdmmotJfbU6Ip7r+9BEYdOEyekER3w+t4U887RKkHpcpArm2Lsn0IQ==}
+  '@w0s/stylelint-config@4.19.1':
+    resolution: {integrity: sha512-//lTahaujIPCzQEycIq96kv7ozPNP+GkQ4pKHnKFqDsDmf0E37cOqQ97efrvdn+LK/ksWY9fGZ60dgfUPkgwUQ==}
     peerDependencies:
-      stylelint: ^16.23.0
+      stylelint: ^17.1.1
       stylelint-attribute-case-sensitivity: ^3.0.0
-      stylelint-config-concentric-order: ^5.2.0
-      stylelint-config-standard: ^39.0.0
-      stylelint-display-multi-keyword: ^2.0.0
+      stylelint-config-concentric-order: ^5.3.0
+      stylelint-config-standard: ^40.0.0
       stylelint-no-default-viewport: ^2.0.0
-      stylelint-plugin-logical-css: ^1.2.0
+      stylelint-plugin-logical-css: ^2.0.2
       stylelint-root-colors: ^3.0.0
 
   '@w0s/tab@5.0.2':
@@ -1646,8 +1645,8 @@ packages:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
     engines: {node: '>= 0.4'}
 
-  call-bind@1.0.8:
-    resolution: {integrity: sha512-oKlSFMcMwpUg2ednkhQ454wfWiU/ul3CkJe/PEHcTKuiX6RpbehUiFMXu13HalGZxfUwCQzZG747YXBn1im9ww==}
+  call-bind@1.0.9:
+    resolution: {integrity: sha512-a/hy+pNsFUTR+Iz8TCJvXudKVLAnz/DyeSUo10I5yvFDQJBFU2s9uqQpoSrJlroHUKoKqzg+epxyP9lqFdzfBQ==}
     engines: {node: '>= 0.4'}
 
   call-bound@1.0.4:
@@ -3183,6 +3182,10 @@ packages:
     resolution: {integrity: sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==}
     engines: {node: ^10 || ^12 || >=14}
 
+  postcss@8.5.9:
+    resolution: {integrity: sha512-7a70Nsot+EMX9fFU3064K/kdHWZqGVY+BADLyXc8Dfv+mTLLVl6JzJpPaCZ2kQL9gIJvKXSLMHhqdRRjwQeFtw==}
+    engines: {node: ^10 || ^12 || >=14}
+
   prebuild-install@7.1.3:
     resolution: {integrity: sha512-8Mf2cbV7x1cXPUILADGI3wuhfqWvtiLA1iclTDbFRZkgRQS0NqsPZphna9V+HyTEadheuPmjaJMsbzKQFOzLug==}
     engines: {node: '>=10'}
@@ -3611,12 +3614,6 @@ packages:
     engines: {node: '>=18.12.0'}
     peerDependencies:
       stylelint: ^16.23.0
-
-  stylelint-display-multi-keyword@2.0.1:
-    resolution: {integrity: sha512-c7STVQJdzVs16mGvgfzSL1kx6Y1aIaa9HdyLxsymqXAQo/co7dhz1hjINNgOLewnIPBqUnco71tTZQOxGrX6dg==}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
-    peerDependencies:
-      stylelint: ^16.0.0 || ^17.0.0
 
   stylelint-no-default-viewport@2.0.1:
     resolution: {integrity: sha512-CGC8aDJtbnn9hZUi7KJMvclnTE628CG9vJJN1bDOlw1wWcriIwpF7mvYgEZCvJyGD75pSTARG5eIyl5g9/OdIQ==}
@@ -4735,8 +4732,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.57.1(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.58.1(typescript@5.9.3)
-      '@typescript-eslint/types': 8.58.1
+      '@typescript-eslint/tsconfig-utils': 8.57.1(typescript@5.9.3)
+      '@typescript-eslint/types': 8.57.1
       debug: 4.4.3
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -4909,13 +4906,12 @@ snapshots:
 
   '@w0s/string-convert@3.0.3': {}
 
-  '@w0s/stylelint-config@4.18.1(stylelint-attribute-case-sensitivity@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-concentric-order@5.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-standard@39.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-display-multi-keyword@2.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-no-default-viewport@2.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-plugin-logical-css@1.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-root-colors@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint@16.26.1(typescript@5.9.3))':
+  '@w0s/stylelint-config@4.19.1(stylelint-attribute-case-sensitivity@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-concentric-order@5.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-config-standard@39.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-no-default-viewport@2.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint-plugin-logical-css@1.3.0(stylelint@16.26.1(typescript@5.9.3)))(stylelint-root-colors@3.0.1(stylelint@16.26.1(typescript@5.9.3)))(stylelint@16.26.1(typescript@5.9.3))':
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
       stylelint-attribute-case-sensitivity: 3.0.1(stylelint@16.26.1(typescript@5.9.3))
       stylelint-config-concentric-order: 5.3.0(stylelint@16.26.1(typescript@5.9.3))
       stylelint-config-standard: 39.0.1(stylelint@16.26.1(typescript@5.9.3))
-      stylelint-display-multi-keyword: 2.0.1(stylelint@16.26.1(typescript@5.9.3))
       stylelint-no-default-viewport: 2.0.1(stylelint@16.26.1(typescript@5.9.3))
       stylelint-plugin-logical-css: 1.3.0(stylelint@16.26.1(typescript@5.9.3))
       stylelint-root-colors: 3.0.1(stylelint@16.26.1(typescript@5.9.3))
@@ -4974,7 +4970,7 @@ snapshots:
 
   array-includes@3.1.9:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-abstract: 1.24.2
@@ -4987,7 +4983,7 @@ snapshots:
 
   array.prototype.findlastindex@1.2.6:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-abstract: 1.24.2
@@ -4997,14 +4993,14 @@ snapshots:
 
   array.prototype.flat@1.3.3:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-abstract: 1.24.2
       es-shim-unscopables: 1.1.0
 
   array.prototype.flatmap@1.3.3:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-abstract: 1.24.2
       es-shim-unscopables: 1.1.0
@@ -5012,7 +5008,7 @@ snapshots:
   arraybuffer.prototype.slice@1.0.4:
     dependencies:
       array-buffer-byte-length: 1.0.2
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-abstract: 1.24.2
       es-errors: 1.3.0
@@ -5118,7 +5114,7 @@ snapshots:
       es-errors: 1.3.0
       function-bind: 1.1.2
 
-  call-bind@1.0.8:
+  call-bind@1.0.9:
     dependencies:
       call-bind-apply-helpers: 1.0.2
       es-define-property: 1.0.1
@@ -5410,7 +5406,7 @@ snapshots:
       array-buffer-byte-length: 1.0.2
       arraybuffer.prototype.slice: 1.0.4
       available-typed-arrays: 1.0.7
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       data-view-buffer: 1.0.2
       data-view-byte-length: 1.0.2
@@ -5796,7 +5792,7 @@ snapshots:
 
   function.prototype.name@1.1.8:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       functions-have-names: 1.2.3
@@ -5855,7 +5851,7 @@ snapshots:
 
   glob@13.0.1:
     dependencies:
-      minimatch: 10.2.5
+      minimatch: 10.1.2
       minipass: 7.1.3
       path-scurry: 2.0.2
 
@@ -6074,7 +6070,7 @@ snapshots:
 
   is-array-buffer@3.0.5:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       get-intrinsic: 1.3.0
 
@@ -6783,7 +6779,7 @@ snapshots:
 
   object.assign@4.1.7:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
@@ -6792,27 +6788,27 @@ snapshots:
 
   object.entries@1.1.9:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
 
   object.fromentries@2.0.8:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-abstract: 1.24.2
       es-object-atoms: 1.1.1
 
   object.groupby@1.0.3:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-abstract: 1.24.2
 
   object.values@1.2.1:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
@@ -7022,22 +7018,28 @@ snapshots:
 
   postcss-resolve-nested-selector@0.1.6: {}
 
-  postcss-safe-parser@7.0.1(postcss@8.5.8):
+  postcss-safe-parser@7.0.1(postcss@8.5.9):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.9
 
   postcss-selector-parser@7.1.1:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-sorting@9.1.0(postcss@8.5.8):
+  postcss-sorting@9.1.0(postcss@8.5.9):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.9
 
   postcss-value-parser@4.2.0: {}
 
   postcss@8.5.8:
+    dependencies:
+      nanoid: 3.3.11
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
+
+  postcss@8.5.9:
     dependencies:
       nanoid: 3.3.11
       picocolors: 1.1.1
@@ -7121,7 +7123,7 @@ snapshots:
 
   reflect.getprototypeof@1.0.10:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-abstract: 1.24.2
       es-errors: 1.3.0
@@ -7132,7 +7134,7 @@ snapshots:
 
   regexp.prototype.flags@1.5.4:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-errors: 1.3.0
       get-proto: 1.0.1
@@ -7492,7 +7494,7 @@ snapshots:
 
   safe-array-concat@1.1.3:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       get-intrinsic: 1.3.0
       has-symbols: 1.1.0
@@ -7666,7 +7668,7 @@ snapshots:
 
   string.prototype.trim@1.2.10:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-data-property: 1.1.4
       define-properties: 1.2.1
@@ -7676,14 +7678,14 @@ snapshots:
 
   string.prototype.trimend@1.0.9:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
 
   string.prototype.trimstart@1.0.8:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
 
@@ -7734,18 +7736,14 @@ snapshots:
       stylelint: 16.26.1(typescript@5.9.3)
       stylelint-config-recommended: 17.0.0(stylelint@16.26.1(typescript@5.9.3))
 
-  stylelint-display-multi-keyword@2.0.1(stylelint@16.26.1(typescript@5.9.3)):
-    dependencies:
-      stylelint: 16.26.1(typescript@5.9.3)
-
   stylelint-no-default-viewport@2.0.1(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
 
   stylelint-order@7.0.1(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
-      postcss: 8.5.8
-      postcss-sorting: 9.1.0(postcss@8.5.8)
+      postcss: 8.5.9
+      postcss-sorting: 9.1.0(postcss@8.5.9)
       stylelint: 16.26.1(typescript@5.9.3)
 
   stylelint-plugin-logical-css@1.3.0(stylelint@16.26.1(typescript@5.9.3)):
@@ -7786,9 +7784,9 @@ snapshots:
       micromatch: 4.0.8
       normalize-path: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.8
+      postcss: 8.5.9
       postcss-resolve-nested-selector: 0.1.6
-      postcss-safe-parser: 7.0.1(postcss@8.5.8)
+      postcss-safe-parser: 7.0.1(postcss@8.5.9)
       postcss-selector-parser: 7.1.1
       postcss-value-parser: 4.2.0
       resolve-from: 5.0.0
@@ -7938,7 +7936,7 @@ snapshots:
 
   typed-array-byte-length@1.0.3:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       for-each: 0.3.5
       gopd: 1.2.0
       has-proto: 1.2.0
@@ -7947,7 +7945,7 @@ snapshots:
   typed-array-byte-offset@1.0.4:
     dependencies:
       available-typed-arrays: 1.0.7
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       for-each: 0.3.5
       gopd: 1.2.0
       has-proto: 1.2.0
@@ -7956,7 +7954,7 @@ snapshots:
 
   typed-array-length@1.0.7:
     dependencies:
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       for-each: 0.3.5
       gopd: 1.2.0
       is-typed-array: 1.1.15
@@ -8141,7 +8139,7 @@ snapshots:
   which-typed-array@1.1.20:
     dependencies:
       available-typed-arrays: 1.0.7
-      call-bind: 1.0.8
+      call-bind: 1.0.9
       call-bound: 1.0.4
       for-each: 0.3.5
       get-proto: 1.0.1
