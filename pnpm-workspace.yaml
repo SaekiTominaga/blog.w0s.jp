@@ -9,9 +9,6 @@ packages:
 ## Dependency Resolution
 
 trustPolicy: no-downgrade
-trustPolicyExclude:
-  - chokidar@4.0.3
-  - semver@6.3.1
 blockExoticSubdeps: true
 
 ## Dependency Hoisting Settings
