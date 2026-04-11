@@ -98,7 +98,7 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 	const resultElement = document.getElementById('media-result') as HTMLTemplateElement | null; // 実行結果を表示する要素
 
 	if (resultElement !== null) {
-		formElement?.addEventListener('submit', async (ev: SubmitEvent) => {
+		formElement?.addEventListener('submit', (ev: SubmitEvent) => {
 			ev.preventDefault();
 
 			const { elements } = ev.target as HTMLFormElement;
@@ -119,69 +119,73 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 				formData.append('overwrite', 'on');
 			}
 
-			const response = await fetch('/api/media', {
+			fetch('/api/media', {
 				method: 'POST',
 				body: formData,
-			});
+			})
+				.then(async (response) => {
+					/* いったんクリア */
+					Array.from(resultElement.parentNode?.children ?? []).forEach((element) => {
+						if (element === resultElement) {
+							return;
+						}
 
-			/* いったんクリア */
-			Array.from(resultElement.parentNode?.children ?? []).forEach((element) => {
-				if (element === resultElement) {
-					return;
-				}
+						element.remove();
+					});
 
-				element.remove();
-			});
-
-			const hiddenElement = resultElement.closest<HTMLElement>('[hidden]');
-			if (hiddenElement !== null) {
-				hiddenElement.hidden = false;
-			}
-
-			const responseJson = (await response.json()) as ApiResponseMediaUpload;
-
-			const fragment = document.createDocumentFragment();
-			if ('error' in responseJson) {
-				const clone = resultElement.content.cloneNode(true) as HTMLElement;
-
-				const successElement = clone.querySelector<HTMLElement>('.js-success');
-				if (successElement !== null) {
-					successElement.hidden = true;
-				}
-
-				const errorElement = clone.querySelector<HTMLElement>('.js-error');
-				if (errorElement !== null) {
-					const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
-					if (messageElement !== null) {
-						messageElement.textContent = responseJson.error.message;
-					}
-				}
-
-				fragment.appendChild(clone);
-			}
-			if ('results' in responseJson) {
-				responseJson.results.forEach((result) => {
-					const clone = resultElement.content.cloneNode(true) as HTMLElement;
-
-					const successElement = clone.querySelector<HTMLElement>('.js-success');
-					if (successElement !== null) {
-						successElement.hidden = !result.success;
+					const hiddenElement = resultElement.closest<HTMLElement>('[hidden]');
+					if (hiddenElement !== null) {
+						hiddenElement.hidden = false;
 					}
 
-					const errorElement = clone.querySelector<HTMLElement>('.js-error');
-					if (errorElement !== null) {
-						errorElement.hidden = result.success;
+					const responseJson = (await response.json()) as ApiResponseMediaUpload;
+
+					const fragment = document.createDocumentFragment();
+					if ('error' in responseJson) {
+						const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+						const successElement = clone.querySelector<HTMLElement>('.js-success');
+						if (successElement !== null) {
+							successElement.hidden = true;
+						}
+
+						const errorElement = clone.querySelector<HTMLElement>('.js-error');
+						if (errorElement !== null) {
+							const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
+							if (messageElement !== null) {
+								messageElement.textContent = responseJson.error.message;
+							}
+						}
+
+						fragment.appendChild(clone);
 					}
+					if ('results' in responseJson) {
+						responseJson.results.forEach((result) => {
+							const clone = resultElement.content.cloneNode(true) as HTMLElement;
 
-					const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
-					messageElement?.setHTMLUnsafe(
-						`${result.message}: <code>${result.filename}</code> ${result.thumbnails !== undefined ? `（サムネイル生成 ${String(result.thumbnails.length)} 件）` : ''}`,
-					);
+							const successElement = clone.querySelector<HTMLElement>('.js-success');
+							if (successElement !== null) {
+								successElement.hidden = !result.success;
+							}
 
-					fragment.appendChild(clone);
+							const errorElement = clone.querySelector<HTMLElement>('.js-error');
+							if (errorElement !== null) {
+								errorElement.hidden = result.success;
+							}
+
+							const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
+							messageElement?.setHTMLUnsafe(
+								`${result.message}: <code>${result.filename}</code> ${result.thumbnails !== undefined ? `（サムネイル生成 ${String(result.thumbnails.length)} 件）` : ''}`,
+							);
+
+							fragment.appendChild(clone);
+						});
+					}
+					resultElement.parentNode?.appendChild(fragment);
+				})
+				.catch((e: unknown) => {
+					throw e;
 				});
-			}
-			resultElement.parentNode?.appendChild(fragment);
 		});
 	}
 }
@@ -194,69 +198,73 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 	if (resultElement !== null) {
 		buttonElement?.addEventListener(
 			'click',
-			async () => {
-				const response = await fetch('/api/clear', {
+			() => {
+				fetch('/api/clear', {
 					method: 'POST',
-				});
+				})
+					.then(async (response) => {
+						/* いったんクリア */
+						Array.from(resultElement.parentNode?.children ?? []).forEach((element) => {
+							if (element === resultElement) {
+								return;
+							}
 
-				/* いったんクリア */
-				Array.from(resultElement.parentNode?.children ?? []).forEach((element) => {
-					if (element === resultElement) {
-						return;
-					}
+							element.remove();
+						});
 
-					element.remove();
-				});
-
-				const hiddenElement = resultElement.closest<HTMLElement>('[hidden]');
-				if (hiddenElement !== null) {
-					hiddenElement.hidden = false;
-				}
-
-				const responseJson = (await response.json()) as ApiResponseClear;
-
-				const fragment = document.createDocumentFragment();
-				if ('error' in responseJson) {
-					const clone = resultElement.content.cloneNode(true) as HTMLElement;
-
-					const successElement = clone.querySelector<HTMLElement>('.js-success');
-					if (successElement !== null) {
-						successElement.hidden = true;
-					}
-
-					const errorElement = clone.querySelector<HTMLElement>('.js-error');
-					if (errorElement !== null) {
-						const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
-						if (messageElement !== null) {
-							messageElement.textContent = responseJson.error.message;
-						}
-					}
-
-					fragment.appendChild(clone);
-				}
-				if ('processes' in responseJson) {
-					responseJson.processes.forEach((result) => {
-						const clone = resultElement.content.cloneNode(true) as HTMLElement;
-
-						const successElement = clone.querySelector<HTMLElement>('.js-success');
-						if (successElement !== null) {
-							successElement.hidden = !result.success;
+						const hiddenElement = resultElement.closest<HTMLElement>('[hidden]');
+						if (hiddenElement !== null) {
+							hiddenElement.hidden = false;
 						}
 
-						const errorElement = clone.querySelector<HTMLElement>('.js-error');
-						if (errorElement !== null) {
-							errorElement.hidden = result.success;
-						}
+						const responseJson = (await response.json()) as ApiResponseClear;
 
-						const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
-						if (messageElement !== null && messageElement !== undefined) {
-							messageElement.textContent = result.message;
-						}
+						const fragment = document.createDocumentFragment();
+						if ('error' in responseJson) {
+							const clone = resultElement.content.cloneNode(true) as HTMLElement;
 
-						fragment.appendChild(clone);
+							const successElement = clone.querySelector<HTMLElement>('.js-success');
+							if (successElement !== null) {
+								successElement.hidden = true;
+							}
+
+							const errorElement = clone.querySelector<HTMLElement>('.js-error');
+							if (errorElement !== null) {
+								const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
+								if (messageElement !== null) {
+									messageElement.textContent = responseJson.error.message;
+								}
+							}
+
+							fragment.appendChild(clone);
+						}
+						if ('processes' in responseJson) {
+							responseJson.processes.forEach((result) => {
+								const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+								const successElement = clone.querySelector<HTMLElement>('.js-success');
+								if (successElement !== null) {
+									successElement.hidden = !result.success;
+								}
+
+								const errorElement = clone.querySelector<HTMLElement>('.js-error');
+								if (errorElement !== null) {
+									errorElement.hidden = result.success;
+								}
+
+								const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
+								if (messageElement !== null && messageElement !== undefined) {
+									messageElement.textContent = result.message;
+								}
+
+								fragment.appendChild(clone);
+							});
+						}
+						resultElement.parentNode?.appendChild(fragment);
+					})
+					.catch((e: unknown) => {
+						throw e;
 					});
-				}
-				resultElement.parentNode?.appendChild(fragment);
 			},
 			{ passive: true },
 		);
