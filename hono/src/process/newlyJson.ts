@@ -34,6 +34,8 @@ export const create = async (): Promise<string[]> => {
 					id: data.id,
 					title: new MarkdownTitle(data.title).mark(),
 				})),
+				undefined,
+				'\t',
 			);
 
 			const newlyJsonBrotli = await brotliCompressText(newlyJson);
