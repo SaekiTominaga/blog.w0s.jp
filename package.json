@@ -15,7 +15,7 @@
 		"@w0s/eslint-config": "9.5.1",
 		"@w0s/markuplint-config": "3.13.0",
 		"@w0s/stylelint-config": "4.20.0",
-		"@w0s/tsconfig": "2.0.1",
+		"@w0s/tsconfig": "3.0.0",
 		"eslint": "9.39.4",
 		"eslint-plugin-functional": "9.0.4",
 		"eslint-plugin-import": "2.32.0",
@@ -31,7 +31,7 @@
 		"stylelint-no-default-viewport": "2.0.1",
 		"stylelint-plugin-logical-css": "2.1.0",
 		"stylelint-root-colors": "3.0.1",
-		"typescript": "5.9.3",
+		"typescript": "6.0.2",
 		"typescript-eslint": "8.58.2"
 	},
 	"packageManager": "pnpm@10.28.1"
