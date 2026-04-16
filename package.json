@@ -16,6 +16,12 @@
 		"@w0s/markuplint-config": "3.13.0",
 		"@w0s/stylelint-config": "4.20.0",
 		"@w0s/tsconfig": "2.0.1",
+		"eslint": "9.39.4",
+		"eslint-plugin-functional": "9.0.4",
+		"eslint-plugin-import": "2.32.0",
+		"eslint-plugin-jsdoc": "62.9.0",
+		"eslint-plugin-safely-storage": "1.1.0",
+		"globals": "17.5.0",
 		"prettier-plugin-ejs": "1.0.3",
 		"rimraf": "6.1.3",
 		"stylelint": "17.8.0",
@@ -25,7 +31,8 @@
 		"stylelint-no-default-viewport": "2.0.1",
 		"stylelint-plugin-logical-css": "2.1.0",
 		"stylelint-root-colors": "3.0.1",
-		"typescript": "5.9.3"
+		"typescript": "5.9.3",
+		"typescript-eslint": "8.58.2"
 	},
 	"packageManager": "pnpm@10.28.1"
 }

@@ -61,7 +61,9 @@ export const xBlockquoteToHast = (state: State, node: XBlockquote): ElementConte
 		const childElement = state.one(child, node);
 		if (childElement !== undefined) {
 			if (Array.isArray(childElement)) {
-				childElement.forEach((element) => childElements.push(element));
+				childElement.forEach((element) => {
+					childElements.push(element);
+				});
 			} else {
 				childElements.push(childElement);
 			}
