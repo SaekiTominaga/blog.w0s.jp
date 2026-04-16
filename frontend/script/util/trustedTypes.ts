@@ -2,6 +2,8 @@
  * Trusted Types
  */
 export default (): void => {
+	// @ts-expect-error: ts(2339)
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 	window.trustedTypes?.createPolicy('default', {
 		createHTML: (inputText: string): string => inputText,
 		createURL: (inputUrl: string): string => {
