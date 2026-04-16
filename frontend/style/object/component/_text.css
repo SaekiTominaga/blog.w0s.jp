@@ -92,9 +92,9 @@
 
 		&[role="button" i] {
 			/* JS 有効時のみ */
-			cursor: default;
 			text-decoration: none;
 			color: var(--link-color);
+			cursor: default;
 
 			&:focus:not(:focus-visible) {
 				outline: none;

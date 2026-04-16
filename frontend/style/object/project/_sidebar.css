@@ -148,10 +148,10 @@
 
 			&::after {
 				position: absolute;
-				clip-path: var(--shape-link-arrow);
 				inset-block-start: calc(50% - var(--_icon-block-size) / 2);
 				inset-inline-end: var(--_padding-inline);
 				border-block-start: var(--_icon-block-size) solid var(--_icon-color);
+				clip-path: var(--shape-link-arrow);
 				inline-size: var(--_icon-inline-size);
 				content: "";
 			}

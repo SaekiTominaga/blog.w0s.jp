@@ -11,7 +11,7 @@
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 	--_image-border-width: 1px;
-	/* stylelint-disable-next-line plugin/use-logical-units */
+	/* stylelint-disable-next-line logical-css/require-logical-units */
 	--_image-width: min(180px, 30dvw);
 	--_image-height: 120px;
 	--_padding-inline-start: calc(var(--_image-width) + var(--_image-border-width) * 2 + var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
@@ -19,7 +19,7 @@
 
 	contain: layout;
 	padding-inline: var(--_padding-inline-start) var(--_padding-inline-end);
-	/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+	/* stylelint-disable-next-line property-layout-mappings */
 	min-height: calc(var(--_image-height) + var(--_image-border-width) * 2);
 	line-height: var(--line-height-narrow);
 	font-size: calc(100% * var(--_title-font-expand-ratio));
@@ -52,9 +52,9 @@
 
 	&::before {
 		display: inline flow-root;
-		clip-path: var(--shape-link-triangle);
 		margin-inline-end: var(--_bullet-gap);
 		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
+		clip-path: var(--shape-link-triangle);
 		inline-size: var(--_bullet-inline-size);
 		content: "";
 	}
@@ -68,7 +68,7 @@
 	inset-block-start: 0;
 	inset-inline: var(--_inset-inline);
 	justify-content: center;
-	/* stylelint-disable-next-line plugin/use-logical-properties-and-values */
+	/* stylelint-disable-next-line property-layout-mappings */
 	width: calc(var(--_image-width) + var(--_image-border-width) * 2);
 	pointer-events: none;
 }
@@ -78,11 +78,11 @@
 	display: block flow;
 	border: var(--_image-border-width) solid;
 	background: var(--color-white);
-	/* stylelint-disable plugin/use-logical-properties-and-values */
+	/* stylelint-disable property-layout-mappings */
 	max-width: var(--_image-width);
 	height: auto;
 	max-height: var(--_image-height);
-	/* stylelint-enable plugin/use-logical-properties-and-values */
+	/* stylelint-enable property-layout-mappings */
 	color: var(--color-black);
 	pointer-events: auto;
 

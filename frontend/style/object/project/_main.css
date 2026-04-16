@@ -160,9 +160,9 @@
 
 	&::before {
 		display: inline flow-root;
-		clip-path: var(--shape-link-triangle);
 		margin-inline-end: var(--_bullet-gap);
 		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
+		clip-path: var(--shape-link-triangle);
 		inline-size: var(--_bullet-inline-size);
 		content: "";
 	}

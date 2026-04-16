@@ -56,17 +56,17 @@
 	}
 
 	&.-start::before {
-		clip-path: polygon(50% 0, 0 50%, 50% 100%, 60% 90%, 20% 50%, 60% 10%, 50% 0, 90% 0, 40% 50%, 90% 100%, 100% 90%, 60% 50%, 100% 10%, 90% 0);
 		margin-inline-end: var(--_gap);
+		clip-path: polygon(50% 0, 0 50%, 50% 100%, 60% 90%, 20% 50%, 60% 10%, 50% 0, 90% 0, 40% 50%, 90% 100%, 100% 90%, 60% 50%, 100% 10%, 90% 0);
 	}
 
 	&.-prev::before {
-		clip-path: polygon(50% 0, 0 50%, 50% 100%, 60% 90%, 20% 50%, 60% 10%);
 		margin-inline-end: calc(var(--_gap) - var(--_icon-size) * 0.4);
+		clip-path: polygon(50% 0, 0 50%, 50% 100%, 60% 90%, 20% 50%, 60% 10%);
 	}
 
 	&.-next::after {
-		clip-path: polygon(50% 0, 100% 50%, 50% 100%, 40% 90%, 80% 50%, 40% 10%);
 		margin-inline-start: calc(var(--_gap) - var(--_icon-size) * 0.4);
+		clip-path: polygon(50% 0, 100% 50%, 50% 100%, 40% 90%, 80% 50%, 40% 10%);
 	}
 }
