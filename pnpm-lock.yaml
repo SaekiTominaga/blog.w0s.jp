@@ -88,8 +88,8 @@ importers:
         specifier: 1.3.3
         version: 1.3.3
       '@w0s/button-clipboard':
-        specifier: 3.0.4
-        version: 3.0.4
+        specifier: 3.0.5
+        version: 3.0.5
       '@w0s/file-size-format':
         specifier: 3.0.2
         version: 3.0.2
@@ -1418,8 +1418,8 @@ packages:
   '@w0s/base.css@1.3.3':
     resolution: {integrity: sha512-JdMaNNiAq26Tphqa7xhbt+FfhLZaMWC5hGtsyuaLB6sJfnXWeOrnc/2k7XvStXr496hgLNqVukUnqPP0h7vC/w==}
 
-  '@w0s/button-clipboard@3.0.4':
-    resolution: {integrity: sha512-Rx+XVFh8ore8Wetee3KkDuXHoJpFhPusvWGnHmaMYPcBCpfqhCn3hfqssCx1s/XpZkzJLu5hy6oeNycYCI54eQ==}
+  '@w0s/button-clipboard@3.0.5':
+    resolution: {integrity: sha512-HIFPpHUP/S2KvSkrs4c5Ieh6YKvvRVaeYGKyvFCPdXrCGpv63n7fWEtf4LKuFCZtdGPSJo4+nDWxYF5F9iIvJw==}
 
   '@w0s/env-value-type@1.0.1':
     resolution: {integrity: sha512-CzkIXgXFlFlL9JNXH5+/nDtmy70X1J00UGc7B0v98brSaZfbyVqTJujO3M5FxNC58CjFPbuQ/sWM3k8kOKBWIg==}
@@ -4863,7 +4863,7 @@ snapshots:
 
   '@w0s/base.css@1.3.3': {}
 
-  '@w0s/button-clipboard@3.0.4': {}
+  '@w0s/button-clipboard@3.0.5': {}
 
   '@w0s/env-value-type@1.0.1': {}
 
