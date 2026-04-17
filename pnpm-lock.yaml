@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       prettier:
-        specifier: 3.8.1
-        version: 3.8.1
+        specifier: 3.8.2
+        version: 3.8.2
     devDependencies:
       '@markuplint/ejs-parser':
         specifier: 4.6.23
@@ -50,7 +50,7 @@ importers:
         version: 17.5.0
       prettier-plugin-ejs:
         specifier: 1.0.3
-        version: 1.0.3(prettier@3.8.1)
+        version: 1.0.3(prettier@3.8.2)
       rimraf:
         specifier: 6.1.3
         version: 6.1.3
@@ -3212,8 +3212,8 @@ packages:
     peerDependencies:
       prettier: 2.x - 3.x
 
-  prettier@3.8.1:
-    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
+  prettier@3.8.2:
+    resolution: {integrity: sha512-8c3mgTe0ASwWAJK+78dpviD+A8EqhndQPUBpNUIPt6+xWlIigCwfN01lWr9MAede4uqXGTEKeQWTvzb3vjia0Q==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -3827,6 +3827,7 @@ packages:
 
   unist-util-find-between-all@1.1.6:
     resolution: {integrity: sha512-KTlYGJMu3waM/UiDoyJ374VzIvRRfw5yO/DLuy2vkzTfjJ41HDgAO/Tukzga7imk9l3W688arso3kE+5b+IW6g==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   unist-util-generated@3.0.0:
     resolution: {integrity: sha512-yUjV3LueHK6gH74UKRwZ/Frc43/Mil9oYBHgiQp3z+v0+yS43pJ+Ye8RvZtApW0Xnx1cdWR0z4f3OZhSruF0/Q==}
@@ -5844,7 +5845,7 @@ snapshots:
 
   glob@13.0.1:
     dependencies:
-      minimatch: 10.2.5
+      minimatch: 10.1.2
       minipass: 7.1.3
       path-scurry: 2.0.2
 
@@ -7049,11 +7050,11 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-ejs@1.0.3(prettier@3.8.1):
+  prettier-plugin-ejs@1.0.3(prettier@3.8.2):
     dependencies:
-      prettier: 3.8.1
+      prettier: 3.8.2
 
-  prettier@3.8.1: {}
+  prettier@3.8.2: {}
 
   pretty-hrtime@1.0.3: {}
 
