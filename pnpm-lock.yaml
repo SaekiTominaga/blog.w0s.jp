@@ -218,8 +218,8 @@ importers:
         specifier: 4.11.4
         version: 4.11.4
       kysely:
-        specifier: 0.28.15
-        version: 0.28.15
+        specifier: 0.28.16
+        version: 0.28.16
       nodemailer:
         specifier: 8.0.5
         version: 8.0.5
@@ -291,8 +291,8 @@ importers:
         specifier: 11.11.1
         version: 11.11.1
       kysely:
-        specifier: 0.28.15
-        version: 0.28.15
+        specifier: 0.28.16
+        version: 0.28.16
       mdast-util-definition-list:
         specifier: 2.0.0
         version: 2.0.0
@@ -2693,8 +2693,8 @@ packages:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
 
-  kysely@0.28.15:
-    resolution: {integrity: sha512-r2clcf7HLWvDXaVUEvQymXJY4i3bSOIV3xsL/Upy3ZfSv5HeKsk9tsqbBptLvth5qHEIhxeHTA2jNLyQABkLBA==}
+  kysely@0.28.16:
+    resolution: {integrity: sha512-3i5pmOiZvMDj00qhrIVbH0AnioVTx22DMP7Vn5At4yJO46iy+FM8Y/g61ltenLVSo3fiO8h8Q3QOFgf/gQ72ww==}
     engines: {node: '>=20.0.0'}
 
   lcid@3.1.1:
@@ -3827,6 +3827,7 @@ packages:
 
   unist-util-find-between-all@1.1.6:
     resolution: {integrity: sha512-KTlYGJMu3waM/UiDoyJ374VzIvRRfw5yO/DLuy2vkzTfjJ41HDgAO/Tukzga7imk9l3W688arso3kE+5b+IW6g==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   unist-util-generated@3.0.0:
     resolution: {integrity: sha512-yUjV3LueHK6gH74UKRwZ/Frc43/Mil9oYBHgiQp3z+v0+yS43pJ+Ye8RvZtApW0Xnx1cdWR0z4f3OZhSruF0/Q==}
@@ -6297,7 +6298,7 @@ snapshots:
 
   kind-of@6.0.3: {}
 
-  kysely@0.28.15: {}
+  kysely@0.28.16: {}
 
   lcid@3.1.1:
     dependencies:
