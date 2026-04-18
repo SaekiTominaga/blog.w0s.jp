@@ -2,7 +2,7 @@ import type { Paragraph, Root, Text } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { findAllBetween } from 'unist-util-find-between-all';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { CONTINUE, visit } from 'unist-util-visit';
 import { isEmptyParagraph } from '../../lib/mdast.ts';
 import { findAfter } from '../../lib/unist.ts';
 

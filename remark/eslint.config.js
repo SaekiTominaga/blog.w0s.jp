@@ -16,6 +16,12 @@ export default [
 			},
 		},
 		rules: {
+			'sort-imports': [
+				'error',
+				{
+					ignoreDeclarationSort: true,
+				},
+			],
 			'functional/no-loop-statements': 'off',
 			'import/no-extraneous-dependencies': [
 				'error',

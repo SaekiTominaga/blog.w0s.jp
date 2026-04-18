@@ -2,7 +2,7 @@ import formBeforeUnloadConfirm from '@w0s/form-before-unload-confirm';
 import formSubmitOverlay from '@w0s/form-submit-overlay';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
-import type { MediaUpload as ApiResponseMediaUpload, Clear as ApiResponseClear } from '../../@types/api.d.ts';
+import type { Clear as ApiResponseClear, MediaUpload as ApiResponseMediaUpload } from '../../@types/api.d.ts';
 import messageImage from './unique/messageImage.ts';
 import preview from './unique/preview.ts';
 import reportJsError from './util/reportJsError.ts';

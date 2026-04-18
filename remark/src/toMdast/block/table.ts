@@ -1,10 +1,10 @@
-import type { Table, AlignType, TableContent } from 'mdast';
+import type { AlignType, Table, TableContent } from 'mdast';
 import type { Extension as FromMarkdownExtension } from 'mdast-util-from-markdown';
 import { gfmTableFromMarkdown } from 'mdast-util-gfm-table';
 import { gfmTable } from 'micromark-extension-gfm-table';
 import type { Extension } from 'micromark-util-types';
 import type { Parent } from 'unist';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { CONTINUE, visit } from 'unist-util-visit';
 
 /**
  * <table>

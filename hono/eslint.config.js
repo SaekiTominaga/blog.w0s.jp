@@ -16,6 +16,12 @@ export default [
 			},
 		},
 		rules: {
+			'sort-imports': [
+				'error',
+				{
+					ignoreDeclarationSort: true,
+				},
+			],
 			'import/extensions': [
 				'error',
 				'ignorePackages',

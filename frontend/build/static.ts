@@ -4,7 +4,7 @@ import process from 'node:process';
 import { parseArgs } from 'node:util';
 import { watch as chokidarWatch } from 'chokidar';
 import slash from 'slash';
-import { loadConfig as svgoLoadConfig, optimize as svgOptimize, type Output as SvgoOutput } from 'svgo';
+import { type Output as SvgoOutput, optimize as svgOptimize, loadConfig as svgoLoadConfig } from 'svgo';
 import { iec } from '@w0s/file-size-format';
 import { create as createThumbImage } from '../../media/dist/thumbImage.js';
 

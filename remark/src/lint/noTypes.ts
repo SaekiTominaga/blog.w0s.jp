@@ -1,6 +1,6 @@
 import { lintRule } from 'unified-lint-rule';
 import type { Node, Parent } from 'unist';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { CONTINUE, visit } from 'unist-util-visit';
 import { generated } from 'unist-util-generated';
 import type { VFile } from 'vfile';
 

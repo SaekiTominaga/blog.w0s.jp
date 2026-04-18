@@ -2,7 +2,7 @@ import type { Heading, Root } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
 import { findAfter } from 'unist-util-find-after';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { CONTINUE, visit } from 'unist-util-visit';
 import type { XHeading } from './heading.ts';
 
 /**

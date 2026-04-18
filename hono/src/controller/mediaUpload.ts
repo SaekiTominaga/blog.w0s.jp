@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { Hono, type Context } from 'hono';
+import { type Context, Hono } from 'hono';
 import { MIMEType } from 'whatwg-mimetype';
 import { env } from '@w0s/env-value-type';
 import { iec } from '@w0s/file-size-format';
@@ -7,7 +7,7 @@ import { create as createThumbImage } from '../../../media/dist/thumbImage.js';
 import type { Variables } from '../app.ts';
 import configProcess from '../config/process.ts';
 import { form as validatorForm } from '../validator/mediaUpload.ts';
-import type { MediaUpload as Result, MediaUploadResult as FileResult } from '../../../@types/api.d.ts';
+import type { MediaUploadResult as FileResult, MediaUpload as Result } from '../../../@types/api.d.ts';
 
 /**
  * メディア登録
