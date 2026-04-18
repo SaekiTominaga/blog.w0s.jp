@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import { strict as assert } from 'node:assert';
-import { test, before } from 'node:test';
+import { before, test } from 'node:test';
 import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
 import configHono from '../config/hono.ts';

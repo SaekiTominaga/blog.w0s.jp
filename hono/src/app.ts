@@ -20,9 +20,9 @@ import { mediaUploadApp } from './controller/mediaUpload.ts';
 import { previewApp } from './controller/preview.ts';
 import { basicAuth } from './util/auth.ts';
 import {
-	supportCompressionEncoding as supportCompressEncodingHeader,
 	csp as cspHeader,
 	reportingEndpoints as reportingEndpointsHeader,
+	supportCompressionEncoding as supportCompressEncodingHeader,
 } from './util/httpHeader.ts';
 import { isApi } from './util/request.ts';
 

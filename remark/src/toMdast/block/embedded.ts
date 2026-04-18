@@ -2,7 +2,7 @@ import type { List, Paragraph, PhrasingContent, Root } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { CONTINUE, visit } from 'unist-util-visit';
 import config from '../../config.ts';
 
 /**

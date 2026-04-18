@@ -1,5 +1,5 @@
 import type { Node, Parent } from 'unist';
-import { convert, type Test } from 'unist-util-is';
+import { type Test, convert } from 'unist-util-is';
 
 /**
  * Searches for a node at or after the specified position.

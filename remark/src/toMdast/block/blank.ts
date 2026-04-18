@@ -1,7 +1,7 @@
 import type { Paragraph, Root } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { CONTINUE, visit } from 'unist-util-visit';
 
 /**
  * Blank paragraph

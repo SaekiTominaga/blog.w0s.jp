@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import type { ElementContent, Properties } from 'hast';
-import type { Literal, List, Paragraph } from 'mdast';
+import type { List, Literal, Paragraph } from 'mdast';
 import type { State } from 'mdast-util-to-hast';
 
 /**

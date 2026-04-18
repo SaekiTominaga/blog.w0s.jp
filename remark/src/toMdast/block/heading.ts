@@ -3,7 +3,7 @@ import type { Heading, PhrasingContent, Root } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { CONTINUE, visit } from 'unist-util-visit';
 
 /**
  * <hn>

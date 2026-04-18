@@ -19,8 +19,8 @@ importers:
         specifier: 24.10.0
         version: 24.10.0
       '@w0s/eslint-config':
-        specifier: 9.5.1
-        version: 9.5.1(@eslint/js@9.39.4)(eslint-plugin-functional@9.0.4(eslint@9.39.4)(typescript@6.0.2))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.2(eslint@9.39.4)(typescript@6.0.2))(eslint@9.39.4))(eslint-plugin-jsdoc@62.9.0(eslint@9.39.4))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.4))(eslint@9.39.4)(globals@17.5.0)(typescript-eslint@8.58.2(eslint@9.39.4)(typescript@6.0.2))
+        specifier: 9.6.0
+        version: 9.6.0(@eslint/js@9.39.4)(eslint-plugin-functional@9.0.4(eslint@9.39.4)(typescript@6.0.2))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.2(eslint@9.39.4)(typescript@6.0.2))(eslint@9.39.4))(eslint-plugin-jsdoc@62.9.0(eslint@9.39.4))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.4))(eslint@9.39.4)(globals@17.5.0)(typescript-eslint@8.58.2(eslint@9.39.4)(typescript@6.0.2))
       '@w0s/markuplint-config':
         specifier: 3.13.0
         version: 3.13.0(markuplint@4.14.1(typescript@6.0.2))
@@ -1424,8 +1424,8 @@ packages:
   '@w0s/env-value-type@1.0.1':
     resolution: {integrity: sha512-CzkIXgXFlFlL9JNXH5+/nDtmy70X1J00UGc7B0v98brSaZfbyVqTJujO3M5FxNC58CjFPbuQ/sWM3k8kOKBWIg==}
 
-  '@w0s/eslint-config@9.5.1':
-    resolution: {integrity: sha512-UBvSM3spvN1E4hKxucpo7l2339RcVHJuNgh+m7jPcmBivz4VhTbxvSTgo+KQZoIAGikPxUOe9x1PUzmGFPxHfg==}
+  '@w0s/eslint-config@9.6.0':
+    resolution: {integrity: sha512-fh3GTpSiIG75Kv5GnkR3Q1QM0STm0gQauafnuSCzVxK0MPBN7qtRBOh2F7+mTPLjEXE79M9suSjeaIKdi84x+w==}
     peerDependencies:
       '@eslint/js': ^9.35.0
       eslint: ^9.35.0
@@ -4864,7 +4864,7 @@ snapshots:
 
   '@w0s/env-value-type@1.0.1': {}
 
-  '@w0s/eslint-config@9.5.1(@eslint/js@9.39.4)(eslint-plugin-functional@9.0.4(eslint@9.39.4)(typescript@6.0.2))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.2(eslint@9.39.4)(typescript@6.0.2))(eslint@9.39.4))(eslint-plugin-jsdoc@62.9.0(eslint@9.39.4))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.4))(eslint@9.39.4)(globals@17.5.0)(typescript-eslint@8.58.2(eslint@9.39.4)(typescript@6.0.2))':
+  '@w0s/eslint-config@9.6.0(@eslint/js@9.39.4)(eslint-plugin-functional@9.0.4(eslint@9.39.4)(typescript@6.0.2))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.58.2(eslint@9.39.4)(typescript@6.0.2))(eslint@9.39.4))(eslint-plugin-jsdoc@62.9.0(eslint@9.39.4))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.4))(eslint@9.39.4)(globals@17.5.0)(typescript-eslint@8.58.2(eslint@9.39.4)(typescript@6.0.2))':
     dependencies:
       '@eslint/js': 9.39.4
       eslint: 9.39.4

@@ -6,7 +6,7 @@ import { clear } from '../process/dsg.ts';
 import { create as createFeed } from '../process/feed.ts';
 import { create as createNewlyJson } from '../process/newlyJson.ts';
 import { create as createSitemap } from '../process/sitemap.ts';
-import type { Clear as Result, ClearProcess as ProcessResult } from '../../../@types/api.d.ts';
+import type { ClearProcess as ProcessResult, Clear as Result } from '../../../@types/api.d.ts';
 
 /**
  * Deferred Static Generation キャッシュクリア
