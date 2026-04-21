@@ -15,13 +15,5 @@ export default [
 				tsconfigRootDir: import.meta.dirname,
 			},
 		},
-		rules: {
-			'sort-imports': [
-				'error',
-				{
-					ignoreDeclarationSort: true,
-				},
-			],
-		},
 	},
 ];
