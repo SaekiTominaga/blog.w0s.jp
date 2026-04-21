@@ -10,7 +10,7 @@
 		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/**/*.test.ts"
 	},
 	"dependencies": {
-		"@hono/node-server": "1.19.13",
+		"@hono/node-server": "1.19.14",
 		"@w0s/env-value-type": "1.0.1",
 		"@w0s/file-size-format": "3.0.2",
 		"@w0s/html-escape": "4.0.2",
