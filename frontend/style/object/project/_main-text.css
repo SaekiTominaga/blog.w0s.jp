@@ -25,7 +25,7 @@
 }
 
 .p-insert__text {
-	text-decoration: none;
+	text-decoration-line: none;
 	font-size: calc(100% / pow(var(--font-ratio), 1));
 }
 

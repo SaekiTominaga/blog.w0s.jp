@@ -144,7 +144,7 @@
 			--_icon-gap: 0.75em; /* テキストとアイコンの間隔 */
 
 			padding-inline-end: calc(var(--_icon-gap) + var(--_icon-inline-size) + var(--_padding-inline));
-			text-decoration: none;
+			text-decoration-line: none;
 
 			&::after {
 				position: absolute;

@@ -28,7 +28,7 @@
 		outline-width: var(--outline-width-bold);
 		border-radius: var(--border-radius-small); /* outline を柔らかくする */
 		padding: var(--_padding);
-		text-decoration: none;
+		text-decoration-line: none;
 		color: inherit;
 
 		&:hover {

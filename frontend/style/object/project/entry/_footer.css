@@ -37,7 +37,7 @@
 		border-radius: var(--border-radius-normal);
 		background-color: var(--color-white);
 		padding: var(--_tag-pading-row) var(--_tag-pading-col);
-		text-decoration: none;
+		text-decoration-line: none;
 
 		&:hover {
 			box-shadow: 0 0 3px var(--color-border-light);

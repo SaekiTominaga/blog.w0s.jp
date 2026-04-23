@@ -9,7 +9,7 @@
 	justify-content: center;
 	outline-width: var(--outline-width-bold);
 	min-inline-size: var(--self-link-size);
-	text-decoration: none;
+	text-decoration-line: none;
 	font-family: var(--font-yu-gothic);
 }
 
@@ -35,7 +35,7 @@
 	background-color: var(--_bg-color);
 	padding: var(--_padding-block) var(--_padding-inline);
 	inline-size: var(--_inline-size);
-	text-decoration: none;
+	text-decoration-line: none;
 	line-height: var(--line-height-narrow);
 	color: var(--_color);
 	font-weight: var(--font-weight-bold);
@@ -94,7 +94,7 @@
 
 		&[role="button" i] {
 			/* JS 有効時のみ */
-			text-decoration: none;
+			text-decoration-line: none;
 			color: var(--link-color);
 			cursor: default;
 

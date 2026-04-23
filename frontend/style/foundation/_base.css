@@ -37,7 +37,7 @@ body {
 
 	/* for iOS Firefox auto link https://github.com/mozilla-mobile/firefox-ios/issues/8511 */
 	&[href^="tel:"] {
-		text-decoration: none;
+		text-decoration-line: none;
 		color: inherit;
 		pointer-events: none;
 	}
