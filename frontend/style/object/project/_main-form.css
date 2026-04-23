@@ -113,7 +113,7 @@
 /* ===== 投稿画像プレビュー ===== */
 .p-image-preview {
 	display: block flex;
-	flex-flow: wrap;
+	flex-wrap: wrap;
 	gap: 10px;
 
 	& > li {

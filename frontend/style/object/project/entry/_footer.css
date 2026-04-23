@@ -26,7 +26,7 @@
 
 .p-entry-footer-category__list {
 	display: block flex;
-	flex-flow: wrap;
+	flex-wrap: wrap;
 	gap: 0.5em;
 
 	& a {

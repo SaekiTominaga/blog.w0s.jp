@@ -303,7 +303,7 @@
 	--_gap-col: 1em;
 
 	display: block flex;
-	flex-flow: wrap;
+	flex-wrap: wrap;
 	gap: var(--_gap-row) var(--_gap-col);
 	align-items: center;
 
