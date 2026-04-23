@@ -104,9 +104,8 @@
 	display: block grid;
 	grid-template-areas: "image gap text";
 	grid-template-columns: min(40%, 160px) 15px 1fr;
-	transition:
-		border-color var(--link-hover-transition-duration),
-		background-color var(--link-hover-transition-duration);
+	transition-duration: var(--link-hover-transition-duration);
+	transition-property: border-color, background-color;
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_bg-color);
@@ -133,7 +132,8 @@
 /* 商品画像 */
 .p-amazon__image {
 	display: block flow;
-	transition: box-shadow var(--link-hover-transition-duration);
+	transition-duration: var(--link-hover-transition-duration);
+	transition-property: box-shadow;
 	margin: auto;
 	block-size: auto;
 	max-inline-size: 100%;
@@ -214,7 +214,7 @@
 		position: absolute;
 		inset: 0;
 		transform: scale(4);
-		transition: var(--_ripple-transition-duration);
+		transition-duration: var(--_ripple-transition-duration);
 		opacity: 0;
 		background-image: radial-gradient(circle, var(--_ripple-color) 25%, transparent 0);
 		block-size: 100%;
@@ -225,7 +225,7 @@
 	/* ripple effect */
 	&:active::before {
 		transform: scale(0);
-		transition: initial;
+		transition-duration: initial;
 		opacity: var(--_ripple-opacity);
 	}
 

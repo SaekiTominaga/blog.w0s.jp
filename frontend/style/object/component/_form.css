@@ -155,7 +155,7 @@
 			position: absolute;
 			inset: 0;
 			transform: scale(4);
-			transition: var(--_ripple-transition-duration);
+			transition-duration: var(--_ripple-transition-duration);
 			opacity: 0;
 			background-image: radial-gradient(circle, var(--_ripple-color) 25%, transparent 0);
 			block-size: 100%;
@@ -166,7 +166,7 @@
 		/* ripple effect */
 		&:active::before {
 			transform: scale(0);
-			transition: initial;
+			transition-duration: initial;
 			opacity: var(--_ripple-opacity);
 		}
 	}

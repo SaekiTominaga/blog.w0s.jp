@@ -24,7 +24,8 @@
 	--_margin-block: var(--stack-margin-base);
 
 	&:target {
-		animation: entry-section-target 1s;
+		animation-name: entry-section-target;
+		animation-duration: 1s;
 	}
 
 	.p-entry & {

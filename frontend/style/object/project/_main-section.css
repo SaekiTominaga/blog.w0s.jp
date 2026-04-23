@@ -20,7 +20,8 @@
 	--_margin-block: 1rem;
 
 	&:target {
-		animation: section-target 1s;
+		animation-name: section-target;
+		animation-duration: 1s;
 	}
 
 	&:not(:first-child) {
