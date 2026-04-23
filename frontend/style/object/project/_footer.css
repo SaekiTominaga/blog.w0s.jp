@@ -43,7 +43,8 @@
 }
 
 .p-footer-social__image {
-	display: inline flow-root;
+	display: inline flex;
+	flex-wrap: nowrap;
 	padding-block-end: 0.5em;
 }
 
