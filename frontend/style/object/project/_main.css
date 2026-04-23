@@ -83,9 +83,12 @@
 }
 
 .p-amazon__label {
-	display: block flex;
 	margin-block-start: -16px;
 	margin-inline-start: -16px;
+
+	& > img {
+		display: block flow;
+	}
 }
 
 .p-amazon__list {
@@ -290,6 +293,7 @@
 
 	&[open] {
 		display: block flex;
+		flex-wrap: nowrap;
 	}
 
 	&::backdrop {

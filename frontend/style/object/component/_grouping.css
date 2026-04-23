@@ -67,6 +67,7 @@
 	position: absolute;
 	inset-block-start: 0;
 	inset-inline: var(--_inset-inline);
+	flex-wrap: nowrap;
 	justify-content: center;
 	/* stylelint-disable-next-line property-layout-mappings */
 	width: calc(var(--_image-width) + var(--_image-border-width) * 2);
@@ -175,6 +176,7 @@
 	--_image-size: 0.8lh;
 
 	display: block flex;
+	flex-wrap: nowrap;
 	column-gap: 0.25em;
 
 	& > img {

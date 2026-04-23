@@ -32,6 +32,7 @@
 	--_gap: 0.75em;
 
 	display: inline flex;
+	flex-wrap: nowrap;
 	align-items: center;
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);

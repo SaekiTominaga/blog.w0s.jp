@@ -48,6 +48,7 @@
 
 .p-section__hdg {
 	display: block flex;
+	flex-wrap: nowrap;
 	gap: 0.5em;
 	line-height: var(--line-height-narrow);
 

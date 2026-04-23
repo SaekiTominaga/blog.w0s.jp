@@ -7,11 +7,12 @@
 	--_border-color: var(--color-lightgray);
 
 	display: block flex;
+	flex-wrap: wrap;
 	align-items: center;
 	outline-offset: -1px;
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-small);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	color: var(--color-darkgray);
 
 	&:focus-within {

@@ -13,6 +13,7 @@
 	--_tag-pading-col: 0.5em;
 
 	display: block flex;
+	flex-wrap: nowrap;
 	column-gap: 0.5em;
 	justify-content: flex-end;
 	line-height: var(--line-height-nowrap);

@@ -71,18 +71,21 @@
 
 /* ===== 送信結果 ===== */
 .p-form-results {
+	display: block grid;
+	grid-template-columns: auto 1fr;
+	gap: 0.5em;
 	border: 1px solid;
 	border-radius: var(--border-radius-large);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	padding: 1em;
+	line-height: var(--line-height-narrow);
 	color: var(--color-black);
 }
 
 .p-form-results__item {
-	&:not([hidden]) {
-		display: block flex;
-		gap: 0.5em;
-	}
+	display: block grid;
+	grid-template-columns: subgrid;
+	grid-column: 1 / -1;
 
 	&.-success {
 		color: var(--color-green);

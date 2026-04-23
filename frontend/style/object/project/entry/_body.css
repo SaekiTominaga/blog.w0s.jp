@@ -52,6 +52,7 @@
 
 .p-entry-section__hdg {
 	display: block flex;
+	flex-wrap: nowrap;
 	gap: 0.5em;
 	line-height: var(--line-height-narrow);
 
@@ -80,6 +81,7 @@
 
 .p-entry-section__self-link {
 	display: block flex;
+	flex-wrap: nowrap;
 	align-items: center;
 	font-size: calc(100% / pow(var(--font-ratio), 3));
 }
