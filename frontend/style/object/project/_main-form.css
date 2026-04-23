@@ -71,21 +71,26 @@
 
 /* ===== 送信結果 ===== */
 .p-form-results {
-	display: block grid;
-	grid-template-columns: auto 1fr;
-	gap: 0.5em;
 	border: 1px solid;
 	border-radius: var(--border-radius-large);
 	background-color: var(--color-white);
 	padding: 1em;
 	line-height: var(--line-height-narrow);
 	color: var(--color-black);
+
+	&:not([hidden]) {
+		display: block grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.5em;
+	}
 }
 
 .p-form-results__item {
-	display: block grid;
-	grid-template-columns: subgrid;
-	grid-column: 1 / -1;
+	&:not([hidden]) {
+		display: block grid;
+		grid-template-columns: subgrid;
+		grid-column: 1 / -1;
+	}
 
 	&.-success {
 		color: var(--color-green);
