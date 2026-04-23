@@ -13,6 +13,7 @@
 	--_tag-pading-col: 0.5em;
 
 	display: block flex;
+	flex-wrap: nowrap;
 	column-gap: 0.5em;
 	justify-content: flex-end;
 	line-height: var(--line-height-nowrap);
@@ -25,7 +26,7 @@
 
 .p-entry-footer-category__list {
 	display: block flex;
-	flex-flow: wrap;
+	flex-wrap: wrap;
 	gap: 0.5em;
 
 	& a {
@@ -36,7 +37,7 @@
 		border-radius: var(--border-radius-normal);
 		background-color: var(--color-white);
 		padding: var(--_tag-pading-row) var(--_tag-pading-col);
-		text-decoration: none;
+		text-decoration-line: none;
 
 		&:hover {
 			box-shadow: 0 0 3px var(--color-border-light);

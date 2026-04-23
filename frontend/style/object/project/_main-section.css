@@ -20,7 +20,8 @@
 	--_margin-block: 1rem;
 
 	&:target {
-		animation: section-target 1s;
+		animation-name: section-target;
+		animation-duration: 1s;
 	}
 
 	&:not(:first-child) {
@@ -48,6 +49,7 @@
 
 .p-section__hdg {
 	display: block flex;
+	flex-wrap: nowrap;
 	gap: 0.5em;
 	line-height: var(--line-height-narrow);
 
@@ -60,7 +62,7 @@
 			transform: scaleY(75%);
 			border: 0.125em solid var(--color-gray);
 			border-radius: var(--border-radius-full);
-			background: var(--color-gray); /* for Chrome */
+			background-color: var(--color-gray); /* for Chrome */
 			content: "";
 		}
 
@@ -76,7 +78,7 @@
 			transform: scaleY(75%);
 			border: 0.125em solid var(--color-lightgray);
 			border-radius: var(--border-radius-full);
-			background: var(--color-lightgray); /* for Chrome */
+			background-color: var(--color-lightgray); /* for Chrome */
 			content: "";
 		}
 	}

@@ -24,7 +24,8 @@
 	--_margin-block: var(--stack-margin-base);
 
 	&:target {
-		animation: entry-section-target 1s;
+		animation-name: entry-section-target;
+		animation-duration: 1s;
 	}
 
 	.p-entry & {
@@ -52,6 +53,7 @@
 
 .p-entry-section__hdg {
 	display: block flex;
+	flex-wrap: nowrap;
 	gap: 0.5em;
 	line-height: var(--line-height-narrow);
 
@@ -68,7 +70,7 @@
 			transform: scaleY(80%);
 			border: 0.125em solid var(--color-border-dark);
 			border-radius: var(--border-radius-full);
-			background: var(--color-border-dark); /* for Chrome */
+			background-color: var(--color-border-dark); /* for Chrome */
 			content: "";
 		}
 	}
@@ -80,6 +82,7 @@
 
 .p-entry-section__self-link {
 	display: block flex;
+	flex-wrap: nowrap;
 	align-items: center;
 	font-size: calc(100% / pow(var(--font-ratio), 3));
 }

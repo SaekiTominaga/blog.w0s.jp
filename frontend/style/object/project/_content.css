@@ -9,7 +9,7 @@
 	& > h1 {
 		border: 1px solid;
 		border-radius: var(--border-radius-small);
-		background: linear-gradient(var(--color-white), var(--color-bg-dark));
+		background-image: linear-gradient(var(--color-white), var(--color-bg-dark));
 		padding: 0.75em 1.5%;
 		text-shadow: 1px 1px 1px var(--color-lightgray);
 		text-wrap-style: pretty;
@@ -20,7 +20,7 @@
 /* ===== ページ送り ===== */
 .p-page-nav {
 	display: block flex;
-	flex-flow: wrap;
+	flex-wrap: wrap;
 	gap: 0.5em 5%;
 	justify-content: center;
 	line-height: var(--line-height-narrow);
@@ -32,14 +32,15 @@
 	--_gap: 0.75em;
 
 	display: inline flex;
+	flex-wrap: nowrap;
 	align-items: center;
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--color-border-light);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: 0.75em 1em;
-	text-decoration: none;
+	text-decoration-line: none;
 
 	&:hover {
 		--_bg-color: var(--color-bg-superlight);
@@ -49,7 +50,7 @@
 	&.-prev::before,
 	&.-next::after {
 		display: inline flow-root;
-		background: currentColor;
+		background-color: currentColor;
 		block-size: var(--_icon-size);
 		inline-size: var(--_icon-size);
 		content: "";

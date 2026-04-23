@@ -7,11 +7,12 @@
 	--_border-color: var(--color-lightgray);
 
 	display: block flex;
+	flex-wrap: wrap;
 	align-items: center;
 	outline-offset: -1px;
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-small);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	color: var(--color-darkgray);
 
 	&:focus-within {
@@ -29,15 +30,15 @@
 
 /* キーワード入力欄 */
 .c-search__query {
-	flex: 1;
+	flex-basis: 0;
+	flex-grow: 1;
 
 	& > input {
-		all: initial;
+		all: unset;
 		box-sizing: revert;
 		display: block flow;
 		padding: 0.25em;
 		inline-size: 100%;
-		font: inherit;
 	}
 }
 
@@ -46,7 +47,7 @@
 	& > button {
 		--_color: hsl(220deg 70% 45%);
 
-		all: initial;
+		all: unset;
 		box-sizing: revert;
 		display: block flow;
 		margin: var(--outline-width-bold);
@@ -54,7 +55,6 @@
 		block-size: 2em;
 		inline-size: 2em;
 		color: var(--_color);
-		font: inherit;
 		fill: currentColor; /* SVG */
 
 		&:focus-visible {

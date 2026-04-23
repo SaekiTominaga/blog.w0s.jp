@@ -12,7 +12,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: var(--form-control-padding-block);
 	inline-size: var(--inline-size, auto);
 	max-inline-size: 100%;
@@ -62,7 +62,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: calc(var(--form-control-padding-block) * 1.25) var(--form-control-padding-block);
 	color: var(--_color);
 
@@ -88,7 +88,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: var(--form-control-padding-block);
 	min-block-size: var(--block-size, auto);
 	inline-size: 100%;
@@ -134,7 +134,7 @@
 	contain: layout; /* ripple effect */
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: var(--_padding-block) var(--_padding-inline);
 	overflow: hidden; /* ripple effect */
 	vertical-align: middle;
@@ -155,7 +155,7 @@
 			position: absolute;
 			inset: 0;
 			transform: scale(4);
-			transition: var(--_ripple-transition-duration);
+			transition-duration: var(--_ripple-transition-duration);
 			opacity: 0;
 			background-image: radial-gradient(circle, var(--_ripple-color) 25%, transparent 0);
 			block-size: 100%;
@@ -166,7 +166,7 @@
 		/* ripple effect */
 		&:active::before {
 			transform: scale(0);
-			transition: initial;
+			transition-duration: initial;
 			opacity: var(--_ripple-opacity);
 		}
 	}
@@ -262,7 +262,7 @@
 	display: inline flow-root;
 	border: 1px solid var(--bg-color);
 	border-radius: var(--border-radius-large);
-	background: var(--bg-color);
+	background-color: var(--bg-color);
 	padding: 0.375em 0.5em;
 	line-height: var(--line-height-nowrap);
 	text-wrap-mode: nowrap;
@@ -303,7 +303,7 @@
 	--_gap-col: 1em;
 
 	display: block flex;
-	flex-flow: wrap;
+	flex-wrap: wrap;
 	gap: var(--_gap-row) var(--_gap-col);
 	align-items: center;
 

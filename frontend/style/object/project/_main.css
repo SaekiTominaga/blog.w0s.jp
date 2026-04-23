@@ -6,7 +6,7 @@
 .p-box {
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	padding: 1em;
 }
 
@@ -77,15 +77,18 @@
 .p-amazon {
 	border: 1px solid var(--color-amazon-dark);
 	border-radius: var(--border-radius-large);
-	background: linear-gradient(var(--color-amazon-light), var(--color-white));
+	background-image: linear-gradient(var(--color-amazon-light), var(--color-white));
 	padding: 15px;
 	color: var(--color-black);
 }
 
 .p-amazon__label {
-	display: block flex;
 	margin-block-start: -16px;
 	margin-inline-start: -16px;
+
+	& > img {
+		display: block flow;
+	}
 }
 
 .p-amazon__list {
@@ -101,14 +104,13 @@
 	display: block grid;
 	grid-template-areas: "image gap text";
 	grid-template-columns: min(40%, 160px) 15px 1fr;
-	transition:
-		border-color var(--link-hover-transition-duration),
-		background-color var(--link-hover-transition-duration);
+	transition-duration: var(--link-hover-transition-duration);
+	transition-property: border-color, background-color;
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_bg-color);
 	border-radius: var(--border-radius-large);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: 14px;
 	text-decoration-line: none;
 	line-height: var(--line-height-narrow);
@@ -130,7 +132,8 @@
 /* 商品画像 */
 .p-amazon__image {
 	display: block flow;
-	transition: box-shadow var(--link-hover-transition-duration);
+	transition-duration: var(--link-hover-transition-duration);
+	transition-property: box-shadow;
 	margin: auto;
 	block-size: auto;
 	max-inline-size: 100%;
@@ -197,7 +200,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--color-border-light);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: 0.5em;
 	overflow: hidden; /* ripple effect */
 	color: var(--color-black);
@@ -211,7 +214,7 @@
 		position: absolute;
 		inset: 0;
 		transform: scale(4);
-		transition: var(--_ripple-transition-duration);
+		transition-duration: var(--_ripple-transition-duration);
 		opacity: 0;
 		background-image: radial-gradient(circle, var(--_ripple-color) 25%, transparent 0);
 		block-size: 100%;
@@ -222,7 +225,7 @@
 	/* ripple effect */
 	&:active::before {
 		transform: scale(0);
-		transition: initial;
+		transition-duration: initial;
 		opacity: var(--_ripple-opacity);
 	}
 
@@ -235,7 +238,7 @@
 
 .p-code__code {
 	border: 1px solid var(--color-border-light);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	padding: 1em;
 	overflow-x: auto;
 	line-height: var(--line-height-narrow);
@@ -281,7 +284,7 @@
 	align-items: center;
 	justify-content: center;
 	margin: 0;
-	background: transparent;
+	background-color: transparent;
 	padding: 1em;
 	block-size: 100dvb;
 	inline-size: 100dvi;
@@ -290,9 +293,10 @@
 
 	&[open] {
 		display: block flex;
+		flex-wrap: nowrap;
 	}
 
 	&::backdrop {
-		background: rgb(0 0 0 / 80%);
+		background-color: rgb(0 0 0 / 80%);
 	}
 }

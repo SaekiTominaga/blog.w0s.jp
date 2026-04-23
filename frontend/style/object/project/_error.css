@@ -23,7 +23,7 @@
 	order: -1;
 	border: 1px solid;
 	border-radius: var(--border-radius-normal);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	padding: 0.5em 0.75em;
 	font-size: calc(100% * pow(var(--font-ratio), 2));
 }

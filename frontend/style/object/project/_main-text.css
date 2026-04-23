@@ -25,7 +25,7 @@
 }
 
 .p-insert__text {
-	text-decoration: none;
+	text-decoration-line: none;
 	font-size: calc(100% / pow(var(--font-ratio), 1));
 }
 
@@ -35,7 +35,7 @@
 	border-style: solid;
 	border-radius: var(--border-radius-large);
 	border-color: var(--color-green);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	padding: 1em min(1dvi, 1em);
 }
 

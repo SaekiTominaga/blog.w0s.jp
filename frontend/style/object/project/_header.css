@@ -12,9 +12,12 @@
 /* サイト名 */
 .p-header-site__name {
 	text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
+	line-height: var(--line-height-narrow);
 	color: #f00;
-	font: 700 2rem / var(--line-height-narrow) var(--font-yu-mincho);
+	font-family: var(--font-yu-mincho);
 	font-feature-settings: "palt";
+	font-size: 2rem;
+	font-weight: 700;
 
 	& :any-link {
 		--_padding: 0.05em;
@@ -25,7 +28,7 @@
 		outline-width: var(--outline-width-bold);
 		border-radius: var(--border-radius-small); /* outline を柔らかくする */
 		padding: var(--_padding);
-		text-decoration: none;
+		text-decoration-line: none;
 		color: inherit;
 
 		&:hover {

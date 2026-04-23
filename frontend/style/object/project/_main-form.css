@@ -65,7 +65,7 @@
 	outline: none;
 	border: 1px solid var(--color-red);
 	border-radius: var(--border-radius-large);
-	background: var(--color-verylightred);
+	background-color: var(--color-verylightred);
 	padding: 1em;
 }
 
@@ -73,15 +73,23 @@
 .p-form-results {
 	border: 1px solid;
 	border-radius: var(--border-radius-large);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	padding: 1em;
+	line-height: var(--line-height-narrow);
 	color: var(--color-black);
+
+	&:not([hidden]) {
+		display: block grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.5em;
+	}
 }
 
 .p-form-results__item {
 	&:not([hidden]) {
-		display: block flex;
-		gap: 0.5em;
+		display: block grid;
+		grid-template-columns: subgrid;
+		grid-column: 1 / -1;
 	}
 
 	&.-success {
@@ -105,7 +113,7 @@
 /* ===== 投稿画像プレビュー ===== */
 .p-image-preview {
 	display: block flex;
-	flex-flow: wrap;
+	flex-wrap: wrap;
 	gap: 10px;
 
 	& > li {

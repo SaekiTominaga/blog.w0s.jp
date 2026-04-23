@@ -6,8 +6,11 @@
 	--_color: var(--page-color);
 	--_bg-color: var(--page-bg-color);
 
+	line-height: var(--line-height-wide);
 	color: var(--_color);
-	font: var(--font-weight-normal) var(--page-font-size) / var(--line-height-wide) sans-serif;
+	font-family: sans-serif;
+	font-size: var(--page-font-size);
+	font-weight: var(--font-weight-normal);
 
 	@media print {
 		--_color: var(--color-black);
@@ -34,7 +37,7 @@ body {
 
 	/* for iOS Firefox auto link https://github.com/mozilla-mobile/firefox-ios/issues/8511 */
 	&[href^="tel:"] {
-		text-decoration: none;
+		text-decoration-line: none;
 		color: inherit;
 		pointer-events: none;
 	}
@@ -105,7 +108,7 @@ code {
 }
 
 q {
-	background: linear-gradient(transparent, transparent 75%, var(--color-yellow) 75%);
+	background-image: linear-gradient(transparent, transparent 75%, var(--color-yellow) 75%);
 	quotes: "\201C" "\201D" "\2018" "\2019";
 
 	&::before {
