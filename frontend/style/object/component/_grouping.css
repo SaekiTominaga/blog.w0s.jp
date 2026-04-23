@@ -78,7 +78,7 @@
 	box-sizing: revert;
 	display: block flow;
 	border: var(--_image-border-width) solid;
-	background: var(--color-white);
+	background-color: var(--color-white);
 	/* stylelint-disable property-layout-mappings */
 	max-width: var(--_image-width);
 	height: auto;

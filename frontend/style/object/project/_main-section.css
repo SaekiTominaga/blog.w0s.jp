@@ -61,7 +61,7 @@
 			transform: scaleY(75%);
 			border: 0.125em solid var(--color-gray);
 			border-radius: var(--border-radius-full);
-			background: var(--color-gray); /* for Chrome */
+			background-color: var(--color-gray); /* for Chrome */
 			content: "";
 		}
 
@@ -77,7 +77,7 @@
 			transform: scaleY(75%);
 			border: 0.125em solid var(--color-lightgray);
 			border-radius: var(--border-radius-full);
-			background: var(--color-lightgray); /* for Chrome */
+			background-color: var(--color-lightgray); /* for Chrome */
 			content: "";
 		}
 	}

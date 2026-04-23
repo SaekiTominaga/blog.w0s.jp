@@ -123,7 +123,7 @@
 	margin-block-start: 80px;
 	border: solid var(--color-border-light);
 	border-width: 1px 0;
-	background: var(--color-bg-superlight);
+	background-color: var(--color-bg-superlight);
 	padding: 50px 0;
 	line-height: var(--line-height-narrow);
 }

@@ -9,7 +9,7 @@
 	& > h1 {
 		border: 1px solid;
 		border-radius: var(--border-radius-small);
-		background: linear-gradient(var(--color-white), var(--color-bg-dark));
+		background-image: linear-gradient(var(--color-white), var(--color-bg-dark));
 		padding: 0.75em 1.5%;
 		text-shadow: 1px 1px 1px var(--color-lightgray);
 		text-wrap-style: pretty;
@@ -38,7 +38,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--color-border-light);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: 0.75em 1em;
 	text-decoration: none;
 
@@ -50,7 +50,7 @@
 	&.-prev::before,
 	&.-next::after {
 		display: inline flow-root;
-		background: currentColor;
+		background-color: currentColor;
 		block-size: var(--_icon-size);
 		inline-size: var(--_icon-size);
 		content: "";

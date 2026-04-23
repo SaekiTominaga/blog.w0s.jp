@@ -12,7 +12,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: var(--form-control-padding-block);
 	inline-size: var(--inline-size, auto);
 	max-inline-size: 100%;
@@ -62,7 +62,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: calc(var(--form-control-padding-block) * 1.25) var(--form-control-padding-block);
 	color: var(--_color);
 
@@ -88,7 +88,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: var(--form-control-padding-block);
 	min-block-size: var(--block-size, auto);
 	inline-size: 100%;
@@ -134,7 +134,7 @@
 	contain: layout; /* ripple effect */
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: var(--_padding-block) var(--_padding-inline);
 	overflow: hidden; /* ripple effect */
 	vertical-align: middle;
@@ -262,7 +262,7 @@
 	display: inline flow-root;
 	border: 1px solid var(--bg-color);
 	border-radius: var(--border-radius-large);
-	background: var(--bg-color);
+	background-color: var(--bg-color);
 	padding: 0.375em 0.5em;
 	line-height: var(--line-height-nowrap);
 	text-wrap-mode: nowrap;

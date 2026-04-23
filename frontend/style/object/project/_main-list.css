@@ -142,7 +142,7 @@
 
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal);
-	background: var(--color-bg-superlight);
+	background-color: var(--color-bg-superlight);
 	padding: 1.25em min(1.25dvi, 1.25em);
 	line-height: var(--line-height-narrow);
 
@@ -190,7 +190,7 @@
 .p-footnote {
 	border: 1px solid var(--color-bg-light);
 	border-radius: var(--border-radius-large);
-	background: var(--color-bg-light);
+	background-color: var(--color-bg-light);
 	padding: 1em;
 	font-size: calc(100% / pow(var(--font-ratio), 1));
 

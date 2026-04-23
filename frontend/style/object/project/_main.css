@@ -6,7 +6,7 @@
 .p-box {
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	padding: 1em;
 }
 
@@ -77,7 +77,7 @@
 .p-amazon {
 	border: 1px solid var(--color-amazon-dark);
 	border-radius: var(--border-radius-large);
-	background: linear-gradient(var(--color-amazon-light), var(--color-white));
+	background-image: linear-gradient(var(--color-amazon-light), var(--color-white));
 	padding: 15px;
 	color: var(--color-black);
 }
@@ -111,7 +111,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_bg-color);
 	border-radius: var(--border-radius-large);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: 14px;
 	text-decoration-line: none;
 	line-height: var(--line-height-narrow);
@@ -200,7 +200,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--color-border-light);
 	border-radius: var(--border-radius-normal);
-	background: var(--_bg-color);
+	background-color: var(--_bg-color);
 	padding: 0.5em;
 	overflow: hidden; /* ripple effect */
 	color: var(--color-black);
@@ -238,7 +238,7 @@
 
 .p-code__code {
 	border: 1px solid var(--color-border-light);
-	background: var(--color-white);
+	background-color: var(--color-white);
 	padding: 1em;
 	overflow-x: auto;
 	line-height: var(--line-height-narrow);
@@ -284,7 +284,7 @@
 	align-items: center;
 	justify-content: center;
 	margin: 0;
-	background: transparent;
+	background-color: transparent;
 	padding: 1em;
 	block-size: 100dvb;
 	inline-size: 100dvi;
@@ -297,6 +297,6 @@
 	}
 
 	&::backdrop {
-		background: rgb(0 0 0 / 80%);
+		background-color: rgb(0 0 0 / 80%);
 	}
 }

@@ -69,7 +69,7 @@
 			transform: scaleY(80%);
 			border: 0.125em solid var(--color-border-dark);
 			border-radius: var(--border-radius-full);
-			background: var(--color-border-dark); /* for Chrome */
+			background-color: var(--color-border-dark); /* for Chrome */
 			content: "";
 		}
 	}

@@ -20,7 +20,7 @@
 	--_border-color: var(--color-border-dark);
 	--_inline-size: auto;
 	--_color: var(--color-black);
-	--_background: var(--color-white);
+	--_bg-color: var(--color-white);
 	--_icon-size: 1.25em;
 
 	display: inline flex;
@@ -32,7 +32,7 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--_border-color);
 	border-radius: var(--border-radius-normal);
-	background: var(--_background);
+	background-color: var(--_bg-color);
 	padding: var(--_padding-block) var(--_padding-inline);
 	inline-size: var(--_inline-size);
 	text-decoration: none;
@@ -61,13 +61,13 @@
 	&.-feed {
 		--_border-color: hsl(41deg 100% 53%);
 		--_color: var(--color-darkgray);
-		--_background: hsl(41deg 100% 93%);
+		--_bg-color: hsl(41deg 100% 93%);
 	}
 
 	/* GitHub */
 	&.-github {
 		--_border-color: var(--color-black);
-		--_background: var(--color-white);
+		--_bg-color: var(--color-white);
 	}
 }
 
@@ -153,7 +153,7 @@
 	display: inline flow-root;
 	border: 1px solid var(--color-powderblue);
 	border-radius: var(--border-radius-large);
-	background: var(--color-powderblue);
+	background-color: var(--color-powderblue);
 	padding: 0.15em 0.45em;
 	line-height: var(--line-height-nowrap);
 	text-wrap-mode: nowrap;

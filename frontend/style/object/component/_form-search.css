@@ -33,12 +33,11 @@
 	flex: 1;
 
 	& > input {
-		all: initial;
+		all: unset;
 		box-sizing: revert;
 		display: block flow;
 		padding: 0.25em;
 		inline-size: 100%;
-		font: inherit;
 	}
 }
 
@@ -47,7 +46,7 @@
 	& > button {
 		--_color: hsl(220deg 70% 45%);
 
-		all: initial;
+		all: unset;
 		box-sizing: revert;
 		display: block flow;
 		margin: var(--outline-width-bold);
@@ -55,7 +54,6 @@
 		block-size: 2em;
 		inline-size: 2em;
 		color: var(--_color);
-		font: inherit;
 		fill: currentColor; /* SVG */
 
 		&:focus-visible {
