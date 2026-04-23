@@ -153,7 +153,7 @@ if (watch) {
 		console.info(`Directories and files removed`, removePaths);
 	}
 
-	const srcFilePaths = (await Array.fromAsync(fs.promises.glob(`${srcDir}/**`, { withFileTypes: true })))
+	const srcFilePaths = (await Array.fromAsync(fs.promises.glob([`${srcDir}/**`, `${srcDir}/.well-known/**`], { withFileTypes: true })))
 		.filter((resource) => resource.isFile())
 		.map((file) => slash(path.relative(process.cwd(), `${file.parentPath}/${file.name}`)));
 

@@ -1,0 +1,10 @@
+{
+	"feed-menu": "blog.w0s.jp",
+	"items": [
+		{
+			"feed-title": "富永日記帳",
+			"description": "ウェブ技術や東急電車、久米田康治作品の話を中心としたブログ",
+			"atom": "/feed"
+		}
+	]
+}
