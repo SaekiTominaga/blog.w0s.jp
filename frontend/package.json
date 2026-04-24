@@ -13,7 +13,7 @@
 		"build:css": "postcss style/*.css --base style -d ../public/style",
 		"build:js": "rollup -c --environment build:production",
 		"build:static": "node build/static.ts -s static -d ../public --svgoConfig svgo.config.js",
-		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" && brotli-cli compress -g \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/image/**/*.svg\" \"../public/*.svg\" -m text",
+		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" && brotli-cli compress -g \"../public/.well-known/*.json\" \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/image/**/*.svg\" \"../public/*.svg\" -m text",
 		"lint": "pnpm run /^lint:.*/",
 		"lint:ts": "tsc --project build & tsc --project script",
 		"lint:js": "eslint build/**/*.ts script/**/*.ts",
