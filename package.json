@@ -14,7 +14,7 @@
 		"@types/node": "24.10.0",
 		"@w0s/eslint-config": "9.7.0",
 		"@w0s/markuplint-config": "3.13.0",
-		"@w0s/stylelint-config": "4.21.0",
+		"@w0s/stylelint-config": "4.22.0",
 		"@w0s/tsconfig": "3.0.0",
 		"eslint": "9.39.4",
 		"eslint-plugin-functional": "9.0.4",
