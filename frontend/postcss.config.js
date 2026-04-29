@@ -13,7 +13,8 @@ export default {
 		}), // `postcss-custom-media` より先に定義する必要がある
 		pluginCustomMedia(),
 		pluginDiscardComments({
-			remove: (comment) => comment.startsWith('*') || comment.startsWith('stylelint-') || comment.startsWith('prettylights-syntax-'),
+			remove: (comment) =>
+				comment.startsWith('*') || comment.startsWith('TODO:') || comment.startsWith('stylelint-') || comment.startsWith('prettylights-syntax-'),
 		}),
 		pluginDiscardEmpty(),
 		pluginImport(),

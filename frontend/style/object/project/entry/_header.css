@@ -9,7 +9,7 @@
 /* 記事タイトル */
 .p-entry-header-title {
 	--_border-width: 1px;
-	--_bg-color: #9fc;
+	--_bg-color: oklch(92.386% 0.1198 161.05deg);
 
 	border: var(--_border-width) solid var(--_bg-color);
 	background-color: var(--_bg-color);
@@ -21,7 +21,7 @@
 	}
 
 	& > h1 {
-		text-shadow: 0 0 0.05em var(--color-border-light);
+		text-shadow: oklch(from currentColor l c h / 25%) 0 0 0.05em;
 		text-wrap-style: pretty;
 		line-height: var(--line-height-narrow);
 		font-size: clamp(calc(100% * pow(var(--font-ratio), 3)), 5svi, calc(100% * pow(var(--font-ratio), 5)));

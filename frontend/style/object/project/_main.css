@@ -63,9 +63,9 @@
 	}
 
 	&::part(hide-button):hover {
-		--_background-color: var(--color-bg-superlight);
+		--_background-color: var(--color-bg-light);
 
-		outline: 1px solid var(--color-bg-light);
+		outline: 1px solid var(--color-border-light);
 	}
 
 	&::part(hide-button):focus {
@@ -188,7 +188,7 @@
 }
 
 .p-code__clipboard-button {
-	--_bg-color: var(--color-bg-superlight);
+	--_bg-color: var(--color-bg-light);
 	--_ripple-color: var(--color-black);
 	--_ripple-opacity: 0.25;
 	--_ripple-transition-duration: 0.5s;
@@ -252,6 +252,7 @@
 	}
 
 	& > code {
+		/* stylelint-disable-next-line color-no-hex */
 		color: #24292e; /* https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css */
 	}
 }
@@ -296,6 +297,6 @@
 	}
 
 	&::backdrop {
-		background-color: rgb(0 0 0 / 80%);
+		background-color: oklch(0% 0 0deg / 80%);
 	}
 }
