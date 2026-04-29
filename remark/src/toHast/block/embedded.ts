@@ -1,5 +1,5 @@
 import path from 'node:path';
-import type { Element, ElementContent, Properties } from 'hast';
+import type { ElementContent, Properties } from 'hast';
 import type { Root } from 'mdast';
 import type { State } from 'mdast-util-to-hast';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
@@ -23,14 +23,10 @@ interface XEmbeddedYouTube {
 	end: number | undefined;
 }
 
-interface XAmazonItem {
+interface XEmbeddedAmazon {
 	asin: string;
 	title: string;
 	image: AmazonImage | undefined;
-}
-
-interface XEmbeddedAmazon {
-	children: XAmazonItem[];
 }
 
 const IMAGE_MAX_SIZE = { width: 640, height: 480 };
@@ -286,99 +282,42 @@ export const xEmbeddedYouTubeToHast = (_state: State, node: XEmbeddedYouTube): E
 };
 
 export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): ElementContent | ElementContent[] | undefined => {
-	const items = node.children.map((item): Element => {
-		const { asin, title, image } = item;
+	const { asin, title, image } = node;
 
-		const imageElementProperties: Properties = {};
-		if (image !== undefined) {
-			const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(`https://m.media-amazon.com/images/I/${image.id}.jpg`));
-			paapi5ItemImageUrlParser.setSize(AMAZON_IMAGE_SIZE);
+	const imageElementProperties: Properties = {};
+	if (image !== undefined) {
+		const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(`https://m.media-amazon.com/images/I/${image.id}.jpg`));
+		paapi5ItemImageUrlParser.setSize(AMAZON_IMAGE_SIZE);
 
-			const url1x = paapi5ItemImageUrlParser.getURL();
-			paapi5ItemImageUrlParser.setSizeMultiply(2);
-			const url2x = paapi5ItemImageUrlParser.getURL();
+		const url1x = paapi5ItemImageUrlParser.getURL();
+		paapi5ItemImageUrlParser.setSizeMultiply(2);
+		const url2x = paapi5ItemImageUrlParser.getURL();
 
-			imageElementProperties['src'] = url1x.toString();
-			imageElementProperties['srcset'] = `${url2x.toString()} 2x`;
-			imageElementProperties['alt'] = '';
+		imageElementProperties['src'] = url1x.toString();
+		imageElementProperties['srcset'] = `${url2x.toString()} 2x`;
+		imageElementProperties['alt'] = '';
 
-			if (image.size !== undefined) {
-				let width: number;
-				let height: number;
-				if (image.size.width > image.size.height) {
-					width = AMAZON_IMAGE_SIZE;
-					height = Math.round((image.size.height * AMAZON_IMAGE_SIZE) / image.size.width);
-				} else {
-					width = Math.round((image.size.width * AMAZON_IMAGE_SIZE) / image.size.height);
-					height = AMAZON_IMAGE_SIZE;
-				}
-
-				imageElementProperties['width'] = String(width);
-				imageElementProperties['height'] = String(height);
+		if (image.size !== undefined) {
+			let width: number;
+			let height: number;
+			if (image.size.width > image.size.height) {
+				width = AMAZON_IMAGE_SIZE;
+				height = Math.round((image.size.height * AMAZON_IMAGE_SIZE) / image.size.width);
+			} else {
+				width = Math.round((image.size.width * AMAZON_IMAGE_SIZE) / image.size.height);
+				height = AMAZON_IMAGE_SIZE;
 			}
-		} else {
-			imageElementProperties['src'] = '/image/amazon-noimage.svg';
-			imageElementProperties['alt'] = '';
-			imageElementProperties['width'] = '113';
-			imageElementProperties['height'] = '160';
-		}
-		imageElementProperties['className'] = ['p-amazon__image'];
 
-		return {
-			type: 'element',
-			tagName: 'li',
-			properties: {},
-			children: [
-				{
-					type: 'element',
-					tagName: 'a',
-					properties: {
-						className: ['p-amazon__link'],
-						href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate-program.amazon.com/help/node/topic/GP38PJ6EUR6PFBEC
-					},
-					children: [
-						{
-							type: 'element',
-							tagName: 'div',
-							properties: {
-								className: ['p-amazon__thumb'],
-							},
-							children: [
-								{
-									type: 'element',
-									tagName: 'img',
-									properties: imageElementProperties,
-									children: [],
-								},
-							],
-						},
-						{
-							type: 'element',
-							tagName: 'div',
-							properties: {
-								className: ['p-amazon__text'],
-							},
-							children: [
-								{
-									type: 'element',
-									tagName: 'p',
-									properties: {
-										className: ['p-amazon__title'],
-									},
-									children: [
-										{
-											type: 'text',
-											value: title,
-										},
-									],
-								},
-							],
-						},
-					],
-				},
-			],
-		};
-	});
+			imageElementProperties['width'] = String(width);
+			imageElementProperties['height'] = String(height);
+		}
+	} else {
+		imageElementProperties['src'] = '/image/amazon-noimage.svg';
+		imageElementProperties['alt'] = '';
+		imageElementProperties['width'] = '113';
+		imageElementProperties['height'] = '160';
+	}
+	imageElementProperties['className'] = ['p-amazon__image'];
 
 	return {
 		type: 'element',
@@ -389,7 +328,7 @@ export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): Ele
 		children: [
 			{
 				type: 'element',
-				tagName: 'p',
+				tagName: 'div',
 				properties: {
 					className: ['p-amazon__label'],
 				},
@@ -410,11 +349,49 @@ export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): Ele
 			},
 			{
 				type: 'element',
-				tagName: 'ul',
+				tagName: 'p',
 				properties: {
-					className: ['p-amazon__list'],
+					className: ['p-amazon__item'],
 				},
-				children: items,
+				children: [
+					{
+						type: 'element',
+						tagName: 'a',
+						properties: {
+							href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate-program.amazon.com/help/node/topic/GP38PJ6EUR6PFBEC
+						},
+						children: [
+							{
+								type: 'element',
+								tagName: 'span',
+								properties: {
+									className: ['p-amazon__thumb'],
+								},
+								children: [
+									{
+										type: 'element',
+										tagName: 'img',
+										properties: imageElementProperties,
+										children: [],
+									},
+								],
+							},
+							{
+								type: 'element',
+								tagName: 'span',
+								properties: {
+									className: ['p-amazon__title'],
+								},
+								children: [
+									{
+										type: 'text',
+										value: title,
+									},
+								],
+							},
+						],
+					},
+				],
 			},
 		],
 	};

@@ -1,4 +1,4 @@
-import type { List, Paragraph, PhrasingContent, Root } from 'mdast';
+import type { Paragraph, PhrasingContent, Root } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
@@ -12,7 +12,6 @@ import config from '../../config.ts';
 const nameMedia = 'x-embedded-media';
 const nameYouTube = 'x-embedded-youtube';
 const nameAmazon = 'x-embedded-amazon';
-const nameAmazonItem = 'x-embedded-amazon-item';
 
 export interface Size {
 	width: number;
@@ -40,16 +39,11 @@ interface XEmbeddedYouTube extends Node {
 	end: number | undefined;
 }
 
-interface XAmazonItem extends Node {
-	type: typeof nameAmazonItem;
+interface XEmbeddedAmazon extends Node {
+	type: typeof nameAmazon;
 	asin: string;
 	title: string;
 	image: AmazonImage | undefined;
-}
-
-interface XEmbeddedAmazon extends Parent {
-	type: typeof nameAmazon;
-	children: XAmazonItem[];
 }
 
 interface Structured {
@@ -230,80 +224,41 @@ const toMdast: Plugin<[], Root> = () => {
 					end: end,
 				};
 				parent.children.splice(index, 1, embedded);
-			}
+			} else if (structured.name === SERVICE_AMAZON) {
+				const { require: metaRequire, option: metaOption } = structured.meta;
 
-			return CONTINUE;
-		});
+				const metaRequireString = toString(metaRequire);
 
-		visit(tree, 'list', (node: List, index: number | null, parent: Parent | null): boolean => {
-			if (index === null || parent === null) {
-				return CONTINUE;
-			}
+				const requireSeparator1Index = metaRequireString.indexOf(META_SEPARATOR);
+				const asin = metaRequireString.substring(0, requireSeparator1Index);
+				const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
 
-			const items: XAmazonItem[] = [];
-
-			const allClear = node.children.every((listItem): boolean => {
-				const listItemChild = listItem.children.at(0);
-				if (listItemChild?.type !== 'paragraph') {
+				if (!new RegExp(`^${config.regexp.asin}$`, 'v').test(asin)) {
 					return false;
 				}
 
-				const structured = parse(listItemChild);
-				if (structured === null) {
-					return false;
-				}
-
-				if (structured.name === SERVICE_AMAZON) {
-					const { require: metaRequire, option: metaOption } = structured.meta;
-
-					const metaRequireString = toString(metaRequire);
-
-					const requireSeparator1Index = metaRequireString.indexOf(META_SEPARATOR);
-					const asin = metaRequireString.substring(0, requireSeparator1Index);
-					const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
-
-					if (!new RegExp(`^${config.regexp.asin}$`, 'v').test(asin)) {
-						return false;
+				let imageId: string | undefined;
+				let imageSize: Size | undefined;
+				metaOption?.split(META_SEPARATOR).forEach((meta) => {
+					if (/^[1-9][0-9]{1,3}x[1-9][0-9]{1,3}$/v.test(meta)) {
+						/* 画像サイズ */
+						const sizes = meta.split('x');
+						imageSize = {
+							width: Number(sizes.at(0)),
+							height: Number(sizes.at(1)),
+						};
+					} else if (new RegExp(`^${config.regexp.amazonImageId}$`, 'v').test(meta)) {
+						/* 画像ID */
+						imageId = meta;
 					}
+				});
 
-					let imageId: string | undefined;
-					let imageSize: Size | undefined;
-					metaOption?.split(META_SEPARATOR).forEach((meta) => {
-						if (/^[1-9][0-9]{1,3}x[1-9][0-9]{1,3}$/v.test(meta)) {
-							/* 画像サイズ */
-							const sizes = meta.split('x');
-							imageSize = {
-								width: Number(sizes.at(0)),
-								height: Number(sizes.at(1)),
-							};
-						} else if (new RegExp(`^${config.regexp.amazonImageId}$`, 'v').test(meta)) {
-							/* 画像ID */
-							imageId = meta;
-						}
-					});
-
-					const item: XAmazonItem = {
-						type: nameAmazonItem,
-						asin: asin,
-						title: title,
-						image: imageId !== undefined ? { id: imageId, size: imageSize } : undefined,
-					};
-
-					items.push(item);
-
-					return true;
-				}
-
-				return false;
-			});
-
-			if (allClear) {
-				/* リスト内の全てが Amazon 形式だった場合のみ */
 				const embedded: XEmbeddedAmazon = {
 					type: nameAmazon,
-					children: items,
+					asin: asin,
+					title: title,
+					image: imageId !== undefined ? { id: imageId, size: imageSize } : undefined,
 				};
-
 				parent.children.splice(index, 1, embedded);
 			}
 
