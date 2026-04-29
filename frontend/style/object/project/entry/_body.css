@@ -4,11 +4,11 @@
 
 @keyframes entry-section-target {
 	0% {
-		background-color: var(--color-verylightred);
+		background-color: var(--color-lightred-bg);
 	}
 
 	50% {
-		background-color: var(--color-verylightred);
+		background-color: var(--color-lightred-bg);
 	}
 
 	100% {

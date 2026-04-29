@@ -59,9 +59,9 @@
 
 	/* Feed */
 	&.-feed {
-		--_border-color: hsl(41deg 100% 53%);
+		--_border-color: var(--color-orange);
 		--_color: var(--color-darkgray);
-		--_bg-color: hsl(41deg 100% 93%);
+		--_bg-color: oklch(100% 0.051 70.67deg); /* TODO: iOS Firefox 強制ダークモード oklch(from var(--color-orange) 100% calc(c - 0.12) h) */
 	}
 
 	/* GitHub */
@@ -89,7 +89,7 @@
 
 		&:target {
 			border: 1px solid var(--color-red);
-			background-color: var(--color-verylightred);
+			background-color: var(--color-lightred-bg);
 		}
 
 		&[role="button" i] {
@@ -151,13 +151,13 @@
 /* ===== 記事件数 ===== */
 .c-entry-count {
 	display: inline flow-root;
-	border: 1px solid var(--color-powderblue);
+	border: 1px solid oklch(90% 0.03 240deg);
 	border-radius: var(--border-radius-large);
-	background-color: var(--color-powderblue);
+	background-color: oklch(90% 0.03 240deg);
 	padding: 0.15em 0.45em;
 	line-height: var(--line-height-nowrap);
 	text-wrap-mode: nowrap;
-	color: var(--color-darkblue);
+	color: var(--color-black);
 	font-size: calc(100% / pow(var(--font-ratio), 4));
 }
 
@@ -167,7 +167,7 @@
 }
 
 /* ===== コードハイライト https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css ===== */
-/* stylelint-disable selector-class-pattern */
+/* stylelint-disable color-no-hex, selector-class-pattern */
 .hljs-doctag,
 .hljs-keyword,
 .hljs-template-tag,
@@ -275,4 +275,4 @@
 .hljs-tag {
 	/* purposely ignored */
 }
-/* stylelint-enable selector-class-pattern */
+/* stylelint-enable color-no-hex, selector-class-pattern */

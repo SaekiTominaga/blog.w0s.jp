@@ -6,34 +6,34 @@
 	--border-radius-full: 1em;
 
 	/* ===== 色 ===== */
-	--color-white: #fff;
-	--color-lightgray: #999;
-	--color-gray: #666;
-	--color-darkgray: #333;
-	--color-black: #000;
-	--color-verylightred: #fee;
-	--color-red: #e00; /* --page-bg-color に対してコントラスト比 4.5:1 を満たす限界値 */
-	--color-darkred: #df0000; /* --color-verylightred に対してコントラスト比 4.5:1 を満たす限界値 */
-	--color-ultralightgreen: #f9fff9;
-	--color-green: #008900; /* --page-bg-color, --color-ultralightgreen に対してコントラスト比 4.5:1 を満たす限界値 */
-	--color-lightyellow: #ffc;
-	--color-yellow: #ff6;
-	--color-superlightblue: #eff;
-	--color-verylightblue: #dff;
-	--color-powderblue: #cde;
-	--color-skyblue: #006aff; /* --page-bg-color, --color-superlightblue に対してコントラスト比 4.5:1 を満たす限界値 */
-	--color-darkblue: #00008b;
-	--color-border-light: #ccc;
-	--color-border-dark: #999;
-	--color-bg-ultralight: #fcfcfc;
-	--color-bg-superlight: #f9f9f9;
-	--color-bg-light: #eee;
-	--color-bg-dark: #ddd;
-	--color-note: #960;
+	--color-white: oklch(100% 0 0deg);
+	--color-lightgray: oklch(calc(100% / 4 * 3) 0 0deg);
+	--color-gray: oklch(calc(100% / 4 * 2) 0 0deg);
+	--color-darkgray: oklch(calc(100% / 4 * 1) 0 0deg);
+	--color-black: oklch(0% 0 0deg);
+	--color-border-light: oklch(calc(100% / 8 * 7) 0 0deg);
+	--color-border-dark: oklch(calc(100% / 8 * 6) 0 0deg);
+	--color-bg-light: oklch(calc(100% / 32 * 31) 0 0deg);
+	--color-bg-dark: oklch(calc(100% / 32 * 30) 0 0deg);
+
+	--color-red: oklch(62.8% 0.258 29.234deg);
+	--color-yellow: oklch(96.798% 0.211 109.77deg);
+	--color-orange: oklch(79.269% 0.171 70.67deg);
+	--color-green: oklch(51.975% 0.1769 142.5deg);
+	--color-blue: oklch(45.201% 0.3132 264.05deg);
+
+	--color-lightred-bg: color-mix(in oklch, var(--color-red) 5%, var(--color-white));
+	--color-red-bg: color-mix(in oklch, var(--color-red) 94.99%, var(--color-black)); /* 白文字に対してコントラスト比 4.5:1 を満たす限界値 */
+	--color-red-text: color-mix(in oklch, var(--color-red) 94.99%, var(--color-black)); /* --page-bg-color に対してコントラスト比 4.5:1 を満たす限界値 */
+
+	--color-entry-note: color-mix(in oklch, var(--color-yellow) 50%, var(--color-black));
+
+	/* stylelint-disable function-disallowed-list */
 	--color-amazon: hsl(30deg 100% 87%);
 	--color-amazon-light: hsl(30deg 100% 92%);
 	--color-amazon-dark: hsl(30deg 100% 84%);
 	--color-amazon-verydark: hsl(30deg 100% 60%);
+	/* stylelint-enable function-disallowed-list */
 
 	/* ===== フォント ===== */
 	--font-ratio: 1.12;
@@ -49,22 +49,23 @@
 	--line-height-nowrap: 1; /* 改行しない文の行高さ */
 
 	/* ===== リンク ===== */
-	--link-color: #00f; /* 未訪問リンクの文字色 */
-	--link-color-visited: #800080; /* 既訪問リンクの文字色 */
-	--link-color-bullet: #0bb; /* ビュレット色 */
-	--link-color-hover: #d00; /* マウスオーバー時の文字色 */
+	--link-color: var(--color-blue); /* 未訪問リンクの文字色 */
+	--link-color-visited: oklch(41.973% 0.1929 328.36deg); /* 既訪問リンクの文字色 */
+	--link-color-hover: oklch(from var(--color-red) 50% c h); /* マウスオーバー時の文字色 */
+	--link-color-bullet: oklch(70.742% 0.1208 194.77deg); /* ビュレット色 */
 	--link-hover-transition-duration: 0.2s; /* マウスオーバー時の変化時間 */
 
 	/* ===== フォーカスリング ===== */
 	--outline-width: 1px;
 	--outline-width-bold: 2px;
-	--outline-color: #4d90fe;
+	--outline-color: oklch(67.471% 0.1726 259.49deg);
 	--outline-offset: 1px;
 	--outline-offset-linkonly: 0.125em;
 
 	/* ===== フォーム ===== */
 	--form-control-padding-block: 0.5em;
-	--invalid-border-color: var(--color-red);
+	--form-control-theme-color: oklch(58.851% 0.1602 248.45deg);
+	--form-control-disabled-bgcolor: oklch(90% 0 0deg);
 
 	/* ===== Stack ===== */
 	--stack-margin-base: 1.5rem;
@@ -83,8 +84,8 @@
 	--page-content-sidebar-gap: 26px; /* コンテンツエリアとサイドバーの横間隔 */
 	--page-padding-inline: 10px; /* ページの左右の余白 */
 	--page-margin-inline: calc((100% - var(--page-max-width)) / 2 - var(--page-padding-inline)); /* ページの左右の余白 */
-	--page-color: #000; /* ページ文字色 */
-	--page-bg-color: #fffff9; /* ページ背景色 */
+	--page-color: var(--color-black); /* ページ文字色 */
+	--page-bg-color: oklch(99.836% 0.0079 106.54deg); /* ページ背景色 */ /* TODO: iOS Vivaldi 強制ダークモード oklch(from var(--color-yellow) l c h / 2.5%) */
 	--page-font-size: 100%; /* デフォルトのフォントサイズ 12px=75%, 13px=81.3%, 14px=87.5%, 15px=93.8%, 16px=100%, 17px=106.3%, 18px=112.5% */
 
 	/* ===== 記事 ===== */

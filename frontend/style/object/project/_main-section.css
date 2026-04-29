@@ -4,11 +4,11 @@
 
 @keyframes section-target {
 	0% {
-		background-color: var(--color-verylightred);
+		background-color: var(--color-lightred-bg);
 	}
 
 	50% {
-		background-color: var(--color-verylightred);
+		background-color: var(--color-lightred-bg);
 	}
 
 	100% {
@@ -69,21 +69,5 @@
 		& + * {
 			margin-block-start: 2rem;
 		}
-	}
-
-	.p-section.-hdg-b > & {
-		font-size: calc(100% * pow(var(--font-ratio), 4));
-
-		&::before {
-			transform: scaleY(75%);
-			border: 0.125em solid var(--color-lightgray);
-			border-radius: var(--border-radius-full);
-			background-color: var(--color-lightgray); /* for Chrome */
-			content: "";
-		}
-	}
-
-	.p-section.-hdg-c > & {
-		font-size: calc(100% * pow(var(--font-ratio), 2));
 	}
 }

@@ -9,9 +9,9 @@
 	& > h1 {
 		border: 1px solid;
 		border-radius: var(--border-radius-small);
-		background-image: linear-gradient(var(--color-white), var(--color-bg-dark));
+		background-color: var(--color-bg-light);
 		padding: 0.75em 1.5%;
-		text-shadow: 1px 1px 1px var(--color-lightgray);
+		text-shadow: oklch(from currentColor l c h / 25%) 0 0 0.05em;
 		text-wrap-style: pretty;
 		font-size: clamp(calc(100% * pow(var(--font-ratio), 1)), 7svi, calc(100% * pow(var(--font-ratio), 5)));
 	}
@@ -43,7 +43,7 @@
 	text-decoration-line: none;
 
 	&:hover {
-		--_bg-color: var(--color-bg-superlight);
+		--_bg-color: var(--color-bg-light);
 	}
 
 	&.-start::before,

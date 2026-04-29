@@ -4,7 +4,7 @@
 
 /* ===== サイト内検索 ===== */
 .c-search {
-	--_border-color: var(--color-lightgray);
+	--_border-color: var(--color-border-dark);
 
 	display: block flex;
 	flex-wrap: wrap;
@@ -45,8 +45,6 @@
 /* 送信ボタン */
 .c-search__submit {
 	& > button {
-		--_color: hsl(220deg 70% 45%);
-
 		all: unset;
 		box-sizing: revert;
 		display: block flow;
@@ -54,7 +52,7 @@
 		padding: 0.25em;
 		block-size: 2em;
 		inline-size: 2em;
-		color: var(--_color);
+		color: var(--color-gray);
 		fill: currentColor; /* SVG */
 
 		&:focus-visible {
@@ -62,11 +60,7 @@
 		}
 
 		&:hover {
-			--_color: hsl(220deg 70% 55%);
-		}
-
-		&:focus:not(:focus-visible) {
-			--_color: hsl(220deg 70% 35%);
+			color: var(--color-darkgray);
 		}
 
 		& > svg {
