@@ -28,13 +28,6 @@
 
 	--color-entry-note: color-mix(in oklch, var(--color-yellow) 50%, var(--color-black));
 
-	/* stylelint-disable function-disallowed-list */
-	--color-amazon: hsl(30deg 100% 87%);
-	--color-amazon-light: hsl(30deg 100% 92%);
-	--color-amazon-dark: hsl(30deg 100% 84%);
-	--color-amazon-verydark: hsl(30deg 100% 60%);
-	/* stylelint-enable function-disallowed-list */
-
 	/* ===== フォント ===== */
 	--font-ratio: 1.12;
 	--font-yu-gothic: "YuGothic", "Yu Gothic", sans-serif; /* 遊ゴシック */
