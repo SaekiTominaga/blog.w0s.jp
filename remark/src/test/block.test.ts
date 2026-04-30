@@ -56,12 +56,12 @@ text
 			`
 <p>text</p>
 <nav aria-label="目次" class="p-toc">
-	<ol>
+	<ul>
 		<li><a href="#%E8%A6%8B%E5%87%BA%E3%81%971">見出し1</a></li>
 		<li>
 			<a href="#%E8%A6%8B%E5%87%BA%E3%81%971-1">見出し<em>1</em></a>
 		</li>
-	</ol>
+	</ul>
 </nav>
 <section class="p-entry-section -hdg1" id="見出し1">
 	<div class="p-entry-section__hdg">
