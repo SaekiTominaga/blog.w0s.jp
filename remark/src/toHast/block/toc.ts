@@ -32,7 +32,7 @@ export const xTocToHast = (state: State, node: XToc): ElementContent | ElementCo
 		children: [
 			{
 				type: 'element',
-				tagName: 'ol',
+				tagName: 'ul',
 				properties: {},
 				children: children.map((childNode): ElementContent => {
 					const heading = select(nameXHeading, childNode);

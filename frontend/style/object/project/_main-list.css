@@ -156,7 +156,7 @@
 		}
 	}
 
-	& > ol {
+	& > ul {
 		margin-inline-start: calc(var(--_icon-inline-size) + var(--_icon-gap));
 		font-size: calc(100% * pow(var(--font-ratio), 1));
 
