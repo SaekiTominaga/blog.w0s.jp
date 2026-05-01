@@ -12,7 +12,44 @@ export const paragraphToHast = (state: State, node: Paragraph): ElementContent |
 	const firstChild = childNodes.at(0);
 
 	if (node.position?.start.column === 1 && firstChild?.type === 'text') {
+		const NOTE_PREFIX = 'note: ';
 		const INSERT_PATTERN = /^\+[0-9]{4}-[0-9]{2}-[0-9]{2}: /v; // +YYYY-MM-DD:␣
+
+		/* Note */
+		if (firstChild.value.startsWith(NOTE_PREFIX)) {
+			firstChild.value = firstChild.value.substring(NOTE_PREFIX.length);
+
+			return {
+				type: 'element',
+				tagName: 'p',
+				properties: {
+					className: ['p-note'],
+				},
+				children: [
+					{
+						type: 'element',
+						tagName: 'span',
+						properties: {
+							className: ['p-note__sign'],
+						},
+						children: [
+							{
+								type: 'text',
+								value: '※',
+							},
+						],
+					},
+					{
+						type: 'element',
+						tagName: 'span',
+						properties: {
+							className: ['p-note__text'],
+						},
+						children: state.all(node),
+					},
+				],
+			};
+		}
 
 		/* Insert */
 		if (INSERT_PATTERN.test(firstChild.value)) {

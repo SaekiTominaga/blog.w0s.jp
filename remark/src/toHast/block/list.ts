@@ -1,5 +1,5 @@
 import type { ElementContent, Properties } from 'hast';
-import type { List, Literal, Paragraph } from 'mdast';
+import type { List, Paragraph } from 'mdast';
 import type { State } from 'mdast-util-to-hast';
 
 /**
@@ -38,29 +38,6 @@ export const listToHast = (state: State, node: List): ElementContent | ElementCo
 			tagName: 'ul',
 			properties: {
 				className: ['p-links'],
-			},
-			children: state.all(node),
-		};
-	}
-
-	/* Note list */
-	const NOTE_START = 'note: ';
-
-	const noteList = listItems.every((listItem) => {
-		const childFirstNode = (listItem.children as Paragraph[]).at(0)?.children.at(0);
-		return childFirstNode?.type === 'text' && childFirstNode.value.startsWith(NOTE_START);
-	}); // 順不同リストの先頭がすべて `note: ` で始まる場合
-	if (noteList) {
-		listItems.forEach((listItem) => {
-			const childFirstTextNode = (listItem.children.at(0) as Paragraph).children.at(0) as Literal;
-			childFirstTextNode.value = childFirstTextNode.value.substring(NOTE_START.length);
-		});
-
-		return {
-			type: 'element',
-			tagName: 'ul',
-			properties: {
-				className: ['p-notes'],
 			},
 			children: state.all(node),
 		};

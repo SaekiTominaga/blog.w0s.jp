@@ -2,6 +2,30 @@
  *   汎用テキスト
  * ============================== */
 
+/* ===== 注釈リスト ===== */
+.p-note {
+	display: block grid;
+	grid-template-columns: auto 1fr;
+	column-gap: 0.25em;
+	color: var(--color-darkgray);
+	font-size: calc(100% / pow(var(--font-ratio), 1));
+
+	.p-entry & {
+		margin-inline: 1em;
+		color: var(--color-note);
+
+		& + & {
+			margin-block-start: 1em;
+		}
+	}
+}
+
+.p-note__sign {
+}
+
+.p-note__text {
+}
+
 /* ===== 追記 ===== */
 .p-insert {
 	display: block flex;
