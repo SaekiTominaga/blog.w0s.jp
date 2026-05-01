@@ -323,37 +323,31 @@ await test('note', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-- note: note1
-- note: note*2*
+note: note*1*
 `,
 				),
 			),
 			`
-<ul class="p-notes">
-	<li>note1</li>
-	<li>note<em>2</em></li>
-</ul>
+<p class="p-note">
+	<span class="p-note__sign">※</span><span class="p-note__text">note<em>1</em></span>
+</p>
 `.trim(),
 		);
 	});
 
-	await t.test('mix', async () => {
+	await t.test('in list', async () => {
 		const markdown = new Markdown();
 		assert.equal(
 			await format(
 				await markdown.toHtml(
 					`
-- note: note1
-- note: note*2*
-- note3
+- note: note*1*
 `,
 				),
 			),
 			`
 <ul class="p-list">
-	<li>note: note1</li>
-	<li>note: note<em>2</em></li>
-	<li>note3</li>
+	<li>note: note<em>1</em></li>
 </ul>
 `.trim(),
 		);
