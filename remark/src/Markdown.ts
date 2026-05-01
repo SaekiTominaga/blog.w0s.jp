@@ -46,7 +46,6 @@ import remarkLintNoEmptySections from './lint/noEmptySection.ts';
 import remarkLintNoLinkTitle from './lint/noLinkTitle.ts';
 import remarkLintNoLooseList from './lint/noLooseList.ts';
 import remarkLintNoTypes from './lint/noTypes.ts';
-import { xBlankToHast } from './toHast/block/blank.ts';
 import { xBlockquoteToHast } from './toHast/block/blockquote.ts';
 import { xBoxToHast } from './toHast/block/box.ts';
 import { codeToHast } from './toHast/block/code.ts';
@@ -60,7 +59,6 @@ import { tableToHast } from './toHast/block/table.ts';
 import { xTocToHast } from './toHast/block/toc.ts';
 import { footnoteReferenceToHast } from './toHast/phrasing/footnote.ts';
 import { linkToHast } from './toHast/phrasing/link.ts';
-import blankToMdast from './toMdast/block/blank.ts';
 import blockquoteToMdast from './toMdast/block/blockquote.ts';
 import boxToMdast from './toMdast/block/box.ts';
 import defListToMdast from './toMdast/block/definitionList.ts';
@@ -153,7 +151,6 @@ export default class Markdown {
 
 		processor.use(headingToMdast, { maxDepth: config.headingDepthLimit }); // toc 処理より前に実行する必要がある
 		processor.use(tocToMdast); // section 処理より前に実行する必要がある
-		processor.use(blankToMdast);
 		processor.use(blockquoteToMdast);
 		processor.use(boxToMdast);
 		processor.use(defListToMdast);
@@ -175,7 +172,6 @@ export default class Markdown {
 				link: linkToHast,
 				list: listToHast,
 				paragraph: paragraphToHast,
-				'x-blank': xBlankToHast,
 				'x-blockquote': xBlockquoteToHast,
 				'x-box': xBoxToHast,
 				'x-embedded-media': xEmbeddedMediaToHast,

@@ -125,11 +125,6 @@ await test('paragraph', async (t) => {
 		const markdown = new Markdown();
 		assert.equal(await format(await markdown.toHtml('text')), '<p>text</p>'.trim());
 	});
-
-	await t.test('blank', async () => {
-		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('␣')), ''.trim());
-	});
 });
 
 await test('unordered list', async (t) => {
