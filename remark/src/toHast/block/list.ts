@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import type { ElementContent, Properties } from 'hast';
 import type { List, Literal, Paragraph } from 'mdast';
 import type { State } from 'mdast-util-to-hast';
@@ -65,62 +64,6 @@ export const listToHast = (state: State, node: List): ElementContent | ElementCo
 			},
 			children: state.all(node),
 		};
-	}
-
-	/* Insert list */
-	const INSERT_PATTERN = /^[0-9]{4}-[0-9]{2}-[0-9]{2}: /v;
-
-	const insertList = listItems.every((listItem) => {
-		const childFirstNode = (listItem.children as Paragraph[]).at(0)?.children.at(0);
-		return childFirstNode?.type === 'text' && INSERT_PATTERN.test(childFirstNode.value);
-	}); // 順不同リストの先頭がすべて `YYYY-MM-DD: ` で始まる場合
-	if (insertList) {
-		const insertElements: ElementContent[] = [];
-		listItems.forEach((listItem) => {
-			const childNodes = (listItem.children.at(0) as Paragraph).children;
-			const childFirstTextNode = childNodes.at(0) as Literal;
-
-			const date = dayjs(childFirstTextNode.value.substring(0, 10));
-
-			childFirstTextNode.value = childFirstTextNode.value.substring(12);
-
-			insertElements.push({
-				type: 'element',
-				tagName: 'p',
-				properties: {
-					className: ['p-insert'],
-				},
-				children: [
-					{
-						type: 'element',
-						tagName: 'span',
-						properties: {
-							className: ['p-insert__date'],
-						},
-						children: [
-							{
-								type: 'text',
-								value: `${date.format('YYYY年M月D日')}追記`,
-							},
-						],
-					},
-					{
-						type: 'element',
-						tagName: 'ins',
-						properties: {
-							datetime: date.format('YYYY-MM-DD'),
-							className: ['p-insert__text'],
-						},
-						children: state.all({
-							type: 'root',
-							children: childNodes,
-						}),
-					},
-				],
-			});
-		});
-
-		return insertElements;
 	}
 
 	/* Unordered list */

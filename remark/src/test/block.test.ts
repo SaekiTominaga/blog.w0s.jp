@@ -367,16 +367,32 @@ await test('ins', async (t) => {
 			await format(
 				await markdown.toHtml(
 					`
-- 2023-01-01: ins1
-- 2023-01-02: ins*2*
++2023-01-01: ins*1*
 `,
 				),
 			),
 			`
-<p class="p-insert"><span class="p-insert__date">2023年1月1日追記</span><ins datetime="2023-01-01" class="p-insert__text">ins1</ins></p>
 <p class="p-insert">
-	<span class="p-insert__date">2023年1月2日追記</span><ins datetime="2023-01-02" class="p-insert__text">ins<em>2</em></ins>
+	<span class="p-insert__date">2023年1月1日追記</span><ins datetime="2023-01-01" class="p-insert__text">ins<em>1</em></ins>
 </p>
+`.trim(),
+		);
+	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- +2023-01-01: ins*1*
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>+2023-01-01: ins<em>1</em></li>
+</ul>
 `.trim(),
 		);
 	});

@@ -54,6 +54,7 @@ import { defListToHast } from './toHast/block/definitionList.ts';
 import { xEmbeddedAmazonToHast, xEmbeddedMediaToHast, xEmbeddedYouTubeToHast } from './toHast/block/embedded.ts';
 import { headingToHast, xHeadingToHast } from './toHast/block/heading.ts';
 import { listToHast } from './toHast/block/list.ts';
+import { paragraphToHast } from './toHast/block/paragraph.ts';
 import { xSectionToHast } from './toHast/block/section.ts';
 import { tableToHast } from './toHast/block/table.ts';
 import { xTocToHast } from './toHast/block/toc.ts';
@@ -173,6 +174,7 @@ export default class Markdown {
 				heading: headingToHast,
 				link: linkToHast,
 				list: listToHast,
+				paragraph: paragraphToHast,
 				'x-blank': xBlankToHast,
 				'x-blockquote': xBlockquoteToHast,
 				'x-box': xBoxToHast,
