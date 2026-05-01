@@ -71,26 +71,6 @@
 	}
 }
 
-/* ===== 注釈リスト ===== */
-.p-notes {
-	color: var(--color-darkgray);
-
-	.p-entry & {
-		margin-inline: 1em;
-		color: var(--color-note);
-	}
-
-	& > li {
-		margin-inline-start: 1.25em;
-		list-style-type: "※ ";
-		font-size: calc(100% / pow(var(--font-ratio), 1));
-
-		& + li {
-			margin-block-start: 0.75em;
-		}
-	}
-}
-
 /* ===== リンクリスト ===== */
 .p-links {
 	--_icon-clip-path: var(--shape-link-triangle);
