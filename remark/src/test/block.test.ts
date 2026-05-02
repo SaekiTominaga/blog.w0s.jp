@@ -311,82 +311,6 @@ await test('link list', async (t) => {
 	});
 });
 
-await test('note', async (t) => {
-	await t.test('normal', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-note: note*1*
-`,
-				),
-			),
-			`
-<p class="p-note">
-	<span class="p-note__sign">※</span><span class="p-note__text">note<em>1</em></span>
-</p>
-`.trim(),
-		);
-	});
-
-	await t.test('in list', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- note: note*1*
-`,
-				),
-			),
-			`
-<ul class="p-list">
-	<li>note: note<em>1</em></li>
-</ul>
-`.trim(),
-		);
-	});
-});
-
-await test('ins', async (t) => {
-	await t.test('normal', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-+2023-01-01: ins*1*
-`,
-				),
-			),
-			`
-<p class="p-insert">
-	<span class="p-insert__date">2023年1月1日追記</span><ins datetime="2023-01-01" class="p-insert__text">ins<em>1</em></ins>
-</p>
-`.trim(),
-		);
-	});
-
-	await t.test('in list', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- +2023-01-01: ins*1*
-`,
-				),
-			),
-			`
-<ul class="p-list">
-	<li>+2023-01-01: ins<em>1</em></li>
-</ul>
-`.trim(),
-		);
-	});
-});
-
 await test('definition list', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
@@ -1023,6 +947,82 @@ text1
 	});
 });
 
+await test('Note', async (t) => {
+	await t.test('normal', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+note: note*1*
+`,
+				),
+			),
+			`
+<p class="p-note">
+	<span class="p-note__sign">※</span><span class="p-note__text">note<em>1</em></span>
+</p>
+`.trim(),
+		);
+	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- note: note*1*
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>note: note<em>1</em></li>
+</ul>
+`.trim(),
+		);
+	});
+});
+
+await test('Insert', async (t) => {
+	await t.test('normal', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
++2023-01-01: ins*1*
+`,
+				),
+			),
+			`
+<p class="p-insert">
+	<span class="p-insert__date">2023年1月1日追記</span><ins datetime="2023-01-01" class="p-insert__text">ins<em>1</em></ins>
+</p>
+`.trim(),
+		);
+	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- +2023-01-01: ins*1*
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>+2023-01-01: ins<em>1</em></li>
+</ul>
+`.trim(),
+		);
+	});
+});
+
 await test('Image', async (t) => {
 	await t.test('JPEG', async () => {
 		const markdown = new Markdown();
@@ -1240,6 +1240,24 @@ await test('Image', async (t) => {
 `.trim(),
 		);
 	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- @file.jpg: title
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>@file.jpg: title</li>
+</ul>
+`.trim(),
+		);
+	});
 });
 
 await test('YouTube', async (t) => {
@@ -1373,6 +1391,24 @@ await test('YouTube', async (t) => {
 `.trim(),
 		);
 	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- @youtube: 1234567890 title
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>@youtube: 1234567890 title</li>
+</ul>
+`.trim(),
+		);
+	});
 });
 
 await test('Amazon', async (t) => {
@@ -1480,6 +1516,24 @@ await test('Amazon', async (t) => {
 			),
 			`
 <p>@amazon: 1234 title</p>
+`.trim(),
+		);
+	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- @amazon: 1234567890 title
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>@amazon: 1234567890 title</li>
+</ul>
 `.trim(),
 		);
 	});
