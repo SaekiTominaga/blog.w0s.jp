@@ -52,8 +52,9 @@ import { codeToHast } from './toHast/block/code.ts';
 import { defListToHast } from './toHast/block/definitionList.ts';
 import { xEmbeddedAmazonToHast, xEmbeddedMediaToHast, xEmbeddedYouTubeToHast } from './toHast/block/embedded.ts';
 import { headingToHast, xHeadingToHast } from './toHast/block/heading.ts';
+import { xInsertToHast } from './toHast/block/insert.ts';
 import { listToHast } from './toHast/block/list.ts';
-import { paragraphToHast } from './toHast/block/paragraph.ts';
+import { xNoteToHast } from './toHast/block/note.ts';
 import { xSectionToHast } from './toHast/block/section.ts';
 import { tableToHast } from './toHast/block/table.ts';
 import { xTocToHast } from './toHast/block/toc.ts';
@@ -62,8 +63,8 @@ import { linkToHast } from './toHast/phrasing/link.ts';
 import blockquoteToMdast from './toMdast/block/blockquote.ts';
 import boxToMdast from './toMdast/block/box.ts';
 import defListToMdast from './toMdast/block/definitionList.ts';
-import embeddedToMdast from './toMdast/block/embedded.ts';
 import headingToMdast from './toMdast/block/heading.ts';
+import paragraphRootToMdast from './toMdast/block/paragraphRoot.ts';
 import sectionToMdast from './toMdast/block/section.ts';
 import tableToMdast from './toMdast/block/table.ts';
 import tocToMdast from './toMdast/block/toc.ts';
@@ -154,8 +155,8 @@ export default class Markdown {
 		processor.use(blockquoteToMdast);
 		processor.use(boxToMdast);
 		processor.use(defListToMdast);
-		processor.use(embeddedToMdast);
 		processor.use(footnoteToMdast);
+		processor.use(paragraphRootToMdast);
 		processor.use(sectionToMdast, { maxDepth: config.headingDepthLimit });
 		processor.use(tableToMdast);
 
@@ -171,13 +172,14 @@ export default class Markdown {
 				heading: headingToHast,
 				link: linkToHast,
 				list: listToHast,
-				paragraph: paragraphToHast,
 				'x-blockquote': xBlockquoteToHast,
 				'x-box': xBoxToHast,
 				'x-embedded-media': xEmbeddedMediaToHast,
 				'x-embedded-amazon': xEmbeddedAmazonToHast,
 				'x-embedded-youtube': xEmbeddedYouTubeToHast,
 				'x-heading': xHeadingToHast,
+				'x-insert': xInsertToHast,
+				'x-note': xNoteToHast,
 				'x-section': xSectionToHast,
 				'x-table': tableToHast,
 				'x-toc': xTocToHast,

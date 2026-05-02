@@ -3,7 +3,7 @@ import type { ElementContent, Properties } from 'hast';
 import type { Root } from 'mdast';
 import type { State } from 'mdast-util-to-hast';
 import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
-import type { AmazonImage, Size } from '../../toMdast/block/embedded.ts';
+import type { AmazonImage, Dimensions } from '../../toMdast/block/paragraphRoot.ts';
 import config from '../../config.ts';
 
 /**
@@ -12,13 +12,13 @@ import config from '../../config.ts';
 
 interface XEmbeddedMedia extends Root {
 	filename: string;
-	size: Size | undefined;
+	dimensions: Dimensions | undefined;
 }
 
 interface XEmbeddedYouTube {
 	id: string;
 	title: string;
-	size: Size | undefined;
+	dimensions: Dimensions | undefined;
 	start: number | undefined;
 	end: number | undefined;
 }
@@ -29,12 +29,12 @@ interface XEmbeddedAmazon {
 	image: AmazonImage | undefined;
 }
 
-const IMAGE_MAX_SIZE = { width: 640, height: 480 };
-const YOUTUBE_BASE_SIZE = { width: 640, height: 360 };
-const AMAZON_IMAGE_SIZE = 160;
+const IMAGE_MAX_DIMENSIONS = { width: 640, height: 480 };
+const YOUTUBE_BASE_DIMENSIONS = { width: 640, height: 360 };
+const AMAZON_IMAGE_DIMENSIONS = 160;
 
 export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): ElementContent | ElementContent[] | undefined => {
-	const { filename, size } = node;
+	const { filename, dimensions } = node;
 
 	const extension = path.extname(filename);
 
@@ -43,15 +43,15 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 		case '.jpg':
 		case '.jpeg':
 		case '.png': {
-			let width = size?.width;
-			let height = size?.height;
-			if (size !== undefined) {
+			let width = dimensions?.width;
+			let height = dimensions?.height;
+			if (dimensions !== undefined) {
 				/* ThumbImageUtil.getThumbSize() と同一の処理 */
-				if (IMAGE_MAX_SIZE.width < size.width || IMAGE_MAX_SIZE.height < size.height) {
-					const reductionRatio = Math.min(IMAGE_MAX_SIZE.width / size.width, IMAGE_MAX_SIZE.height / size.height);
+				if (IMAGE_MAX_DIMENSIONS.width < dimensions.width || IMAGE_MAX_DIMENSIONS.height < dimensions.height) {
+					const reductionRatio = Math.min(IMAGE_MAX_DIMENSIONS.width / dimensions.width, IMAGE_MAX_DIMENSIONS.height / dimensions.height);
 
-					width = Math.round(size.width * reductionRatio);
-					height = Math.round(size.height * reductionRatio);
+					width = Math.round(dimensions.width * reductionRatio);
+					height = Math.round(dimensions.height * reductionRatio);
 				}
 			}
 
@@ -59,8 +59,8 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 				type: 'element',
 				tagName: 'img',
 				properties: {
-					src: `/entry/image/thumb/${filename}@d=${String(IMAGE_MAX_SIZE.width)}x${String(IMAGE_MAX_SIZE.height)};q=60.avif`,
-					srcset: `/entry/image/thumb/${filename}@d=${String(IMAGE_MAX_SIZE.width * 2)}x${String(IMAGE_MAX_SIZE.height * 2)};q=30.avif 2x`,
+					src: `/entry/image/thumb/${filename}@d=${String(IMAGE_MAX_DIMENSIONS.width)}x${String(IMAGE_MAX_DIMENSIONS.height)};q=60.avif`,
+					srcset: `/entry/image/thumb/${filename}@d=${String(IMAGE_MAX_DIMENSIONS.width * 2)}x${String(IMAGE_MAX_DIMENSIONS.height * 2)};q=30.avif 2x`,
 					alt: 'サムネイル画像',
 					width: width,
 					height: height,
@@ -77,8 +77,8 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 				properties: {
 					src: `/entry/image/${filename}`,
 					alt: '画像',
-					width: size?.width,
-					height: size?.height,
+					width: dimensions?.width,
+					height: dimensions?.height,
 					className: ['p-embed__image'],
 				},
 				children: [],
@@ -92,8 +92,8 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 				properties: {
 					src: `/entry/video/${filename}`,
 					controls: true,
-					width: size?.width,
-					height: size?.height,
+					width: dimensions?.width,
+					height: dimensions?.height,
 					className: ['p-embed__video'],
 				},
 				children: [],
@@ -173,10 +173,10 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 };
 
 export const xEmbeddedYouTubeToHast = (_state: State, node: XEmbeddedYouTube): ElementContent | ElementContent[] | undefined => {
-	const { id, title, size, start, end } = node;
+	const { id, title, dimensions, start, end } = node;
 
-	const width = size?.width ?? YOUTUBE_BASE_SIZE.width;
-	const height = size?.height ?? YOUTUBE_BASE_SIZE.height;
+	const width = dimensions?.width ?? YOUTUBE_BASE_DIMENSIONS.width;
+	const height = dimensions?.height ?? YOUTUBE_BASE_DIMENSIONS.height;
 
 	const embeddedSearchParams = new URLSearchParams(); // https://developers.google.com/youtube/player_parameters?hl=ja#Parameters
 	embeddedSearchParams.set('cc_load_policy', '1');
@@ -287,7 +287,7 @@ export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): Ele
 	const imageElementProperties: Properties = {};
 	if (image !== undefined) {
 		const paapi5ItemImageUrlParser = new PaapiItemImageUrlParser(new URL(`https://m.media-amazon.com/images/I/${image.id}.jpg`));
-		paapi5ItemImageUrlParser.setSize(AMAZON_IMAGE_SIZE);
+		paapi5ItemImageUrlParser.setSize(AMAZON_IMAGE_DIMENSIONS);
 
 		const url1x = paapi5ItemImageUrlParser.getURL();
 		paapi5ItemImageUrlParser.setSizeMultiply(2);
@@ -297,15 +297,15 @@ export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): Ele
 		imageElementProperties['srcset'] = `${url2x.toString()} 2x`;
 		imageElementProperties['alt'] = '';
 
-		if (image.size !== undefined) {
+		if (image.dimensions !== undefined) {
 			let width: number;
 			let height: number;
-			if (image.size.width > image.size.height) {
-				width = AMAZON_IMAGE_SIZE;
-				height = Math.round((image.size.height * AMAZON_IMAGE_SIZE) / image.size.width);
+			if (image.dimensions.width > image.dimensions.height) {
+				width = AMAZON_IMAGE_DIMENSIONS;
+				height = Math.round((image.dimensions.height * AMAZON_IMAGE_DIMENSIONS) / image.dimensions.width);
 			} else {
-				width = Math.round((image.size.width * AMAZON_IMAGE_SIZE) / image.size.height);
-				height = AMAZON_IMAGE_SIZE;
+				width = Math.round((image.dimensions.width * AMAZON_IMAGE_DIMENSIONS) / image.dimensions.height);
+				height = AMAZON_IMAGE_DIMENSIONS;
 			}
 
 			imageElementProperties['width'] = String(width);

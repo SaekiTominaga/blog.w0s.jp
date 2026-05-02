@@ -23,7 +23,7 @@ const toMdast: Plugin<[], Root> = () => {
 
 	return (tree: Parent): void => {
 		visit(tree, 'paragraph', (startNode: Paragraph, index: number | null, parent: Parent | null): boolean => {
-			if (index === null || parent === null) {
+			if (index === null || parent?.type !== 'root') {
 				return CONTINUE;
 			}
 
