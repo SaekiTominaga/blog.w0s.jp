@@ -32,7 +32,7 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 	}
 
 	if (createFeedResult.status === 'fulfilled') {
-		logger.info(createFeedResult.value, `Feed file created:`);
+		logger.info(`Feed file created: ${createFeedResult.value.join(', ')}`);
 		results.push({ success: true, message: `${configProcess.feed.processMessage.success}（${String(createFeedResult.value.length)}ファイル）` });
 	} else {
 		logger.error(createFeedResult.reason);
@@ -40,7 +40,7 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 	}
 
 	if (createSitemapResult.status === 'fulfilled') {
-		logger.info(createSitemapResult.value, `Sitemap file created:`);
+		logger.info(`Sitemap file created: ${createSitemapResult.value.join(', ')}`);
 		results.push({ success: true, message: `${configProcess.sitemap.processMessage.success}（${String(createSitemapResult.value.length)}ファイル）` });
 	} else {
 		logger.error(createSitemapResult.reason);
@@ -48,7 +48,7 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 	}
 
 	if (createNewlyJsonResult.status === 'fulfilled') {
-		logger.info(createNewlyJsonResult.value, `JSON file created:`);
+		logger.info(`JSON file created: ${createNewlyJsonResult.value.join(', ')}`);
 		results.push({ success: true, message: `${configProcess.newlyJson.processMessage.success}（${String(createNewlyJsonResult.value.length)}ファイル）` });
 	} else {
 		logger.error(createNewlyJsonResult.reason);
