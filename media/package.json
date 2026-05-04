@@ -3,6 +3,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
+		"dev": "tsc -w",
 		"build": "tsc",
 		"lint": "eslint src",
 		"pretest": "tsc --noEmit",
