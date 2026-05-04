@@ -1,96 +1,74 @@
-import { execSync, spawnSync } from 'node:child_process';
 import nodemailer from 'nodemailer';
-import pino, { type Logger } from 'pino';
+import winston from 'winston';
+import TransportStream from 'winston-transport';
 import { env } from '@w0s/env-value-type';
 
 const development = process.env['NODE_ENV'] !== 'production';
 
-const init = (): void => {
-	/* Windows での文字化け対策 */
-	const result = spawnSync('where', ['chcp']);
-	if (result.status === 0) {
-		execSync('chcp 65001');
-	}
-};
+class EmailTransport extends TransportStream {
+	readonly #transporter: nodemailer.Transporter;
 
-const sendErrorMail = async (message: string): Promise<void> => {
-	const transporter = nodemailer.createTransport({
-		port: env('MAIL_PORT', 'number'),
-		host: env('MAIL_SMTP'),
-		auth: {
-			user: env('MAIL_USER'),
-			pass: env('MAIL_PASSWORD'),
-		},
-	});
+	constructor(options: TransportStream.TransportStreamOptions) {
+		super(options);
 
-	await transporter.sendMail({
-		from: env('MAIL_FROM'),
-		to: env('LOGGER_MAIL_TO'),
-		subject: env('LOGGER_MAIL_TITLE'),
-		text: message,
-	});
-};
-
-export const getLogger = (name: string): Logger => {
-	init();
-
-	const logger = pino({
-		name: name,
-		level: development ? 'trace' : 'info',
-		transport: {
-			targets: development
-				? [
-						{
-							/* 標準出力 */
-							target: 'pino-pretty',
-							options: {
-								colorize: true,
-								translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l',
-								ignore: 'pid,hostname',
-								destination: 1,
-							},
-						},
-					]
-				: [
-						{
-							/* ファイル書き込み */
-							target: 'pino-pretty',
-							options: {
-								colorize: false,
-								translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l',
-								ignore: 'pid,hostname',
-								destination: `${env('ROOT')}/${env('LOGGER_FILE_HONO')}`,
-								mkdir: true,
-							},
-						},
-					],
-		},
-		hooks: {
-			logMethod(args, method, level) {
-				if (!development && level >= 50 /* https://getpino.io/#/docs/api?id=logger-level */) {
-					/* メール送信 */
-					const message = args
-						.map((arg) => {
-							if (arg instanceof Error) {
-								return arg.stack;
-							}
-
-							if (arg !== null && typeof arg === 'object') {
-								return `{ ${Object.entries(arg)
-									.map(([key, value]) => `${key}: ${String(value)}`)
-									.join(', ')} }`;
-							}
-
-							return arg;
-						})
-						.join(' ');
-
-					sendErrorMail(message).catch(console.error);
-				}
-				method.apply(this, args);
+		this.#transporter = nodemailer.createTransport({
+			port: env('MAIL_PORT', 'number'),
+			host: env('MAIL_SMTP'),
+			auth: {
+				user: env('MAIL_USER'),
+				pass: env('MAIL_PASSWORD'),
 			},
-		},
-	});
+		});
+	}
+
+	override async log(info: winston.LogEntry, next: () => void): Promise<void> {
+		this.emit('logged', info);
+
+		// @ts-expect-error: ts(2538)
+		const text = info[Symbol.for('message')] as string;
+
+		await this.#transporter.sendMail({
+			from: env('MAIL_FROM'),
+			to: env('LOGGER_MAIL_TO'),
+			subject: env('LOGGER_MAIL_TITLE'),
+			text: text,
+		});
+
+		next();
+	}
+}
+
+export const getLogger = (name: string): winston.Logger => {
+	const logger = winston.createLogger(
+		development
+			? {
+					level: 'silly',
+					format: winston.format.combine(
+						winston.format.colorize(),
+						winston.format.label({ label: name }),
+						winston.format.printf(({ level, label, message }) => `[${level}] ${String(label)} - ${String(message)}`),
+					),
+					transports: [new winston.transports.Console()],
+				}
+			: {
+					level: 'info',
+					format: winston.format.combine(
+						winston.format.label({ label: name }),
+						winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
+						winston.format.printf(
+							({ timestamp, level, label, message }) => `${String(timestamp)} [${level.toUpperCase()}] ${String(label)} - ${String(message)}`,
+						),
+					),
+					transports: [
+						new winston.transports.File({
+							filename: `${env('ROOT')}/${env('LOGGER_FILE_HONO')}`,
+						}),
+						new EmailTransport({
+							level: 'error',
+						}),
+					],
+				},
+	);
 
 	return logger;
 };
