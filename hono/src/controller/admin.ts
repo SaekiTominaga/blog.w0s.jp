@@ -290,7 +290,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 		}
 
 		if (createFeedResult.status === 'fulfilled') {
-			logger.info(createFeedResult.value, `Feed file created:`);
+			logger.info(`Feed file created: ${createFeedResult.value.join(', ')}`);
 			postResults.push({ success: true, message: `${configProcess.feed.processMessage.success}（${String(createFeedResult.value.length)}ファイル）` });
 		} else {
 			logger.error(createFeedResult.reason);
@@ -298,7 +298,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 		}
 
 		if (createSitemapResult.status === 'fulfilled') {
-			logger.info(createSitemapResult.value, `Sitemap file created:`);
+			logger.info(`Sitemap file created: ${createSitemapResult.value.join(', ')}`);
 			postResults.push({ success: true, message: `${configProcess.sitemap.processMessage.success}（${String(createSitemapResult.value.length)}ファイル）` });
 		} else {
 			logger.error(createSitemapResult.reason);
@@ -306,7 +306,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 		}
 
 		if (createNewlyJsonResult.status === 'fulfilled') {
-			logger.info(createNewlyJsonResult.value, `JSON file created:`);
+			logger.info(`JSON file created: ${createNewlyJsonResult.value.join(', ')}`);
 			postResults.push({
 				success: true,
 				message: `${configProcess.newlyJson.processMessage.success}（${String(createNewlyJsonResult.value.length)}ファイル）`,
