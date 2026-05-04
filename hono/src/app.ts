@@ -5,7 +5,7 @@ import { compress } from 'hono/compress';
 import { HTTPException } from 'hono/http-exception';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
-import type { Logger } from 'pino';
+import type { Logger } from 'winston';
 import { env } from '@w0s/env-value-type';
 import { escape } from '@w0s/html-escape';
 import { getLogger } from './logger.ts';
@@ -263,7 +263,7 @@ app.onError(async (err, context) => {
 			logger.error(err.message);
 		}
 	} else {
-		logger.fatal(err.stack);
+		logger.error(err.stack);
 	}
 
 	const status = err instanceof HTTPException ? err.status : 500;
