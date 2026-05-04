@@ -276,7 +276,7 @@ app.onError(async (err, context) => {
 				error: {
 					message: message !== undefined && message !== '' ? message : title,
 				},
-			} as ApiResponseError,
+			},
 			status,
 			Object.fromEntries(headers.entries()),
 		);
