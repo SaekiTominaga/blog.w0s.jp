@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc",
-		"lint": "eslint src/**/*.ts",
+		"lint": "eslint src",
 		"lint:markdown": "node --env-file=../.env.development src/shell/lint.ts",
 		"pretest": "tsc --noEmit",
 		"test": "node --experimental-test-coverage --test src/**/*.test.ts"

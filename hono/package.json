@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "tsx --watch --env-file=../.env.development --tsconfig tsconfig.json src/app.ts",
 		"build": "tsc",
-		"lint": "eslint @types/*.d.ts src/**/*.ts",
+		"lint": "eslint @types src",
 		"pretest": "tsc --noEmit && pnpm -F frontend build && pnpm -F media build && pnpm -F remark build",
 		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/**/*.test.ts"
 	},

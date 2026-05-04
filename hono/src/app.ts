@@ -8,7 +8,6 @@ import { serveStatic } from '@hono/node-server/serve-static';
 import type { Logger } from 'pino';
 import { env } from '@w0s/env-value-type';
 import { escape } from '@w0s/html-escape';
-import type { Error as ApiResponseError } from '../../@types/api.d.ts';
 import { getLogger } from './logger.ts';
 import config from './config/hono.ts';
 import { adminApp } from './controller/admin.ts';
@@ -276,7 +275,7 @@ app.onError(async (err, context) => {
 				error: {
 					message: message !== undefined && message !== '' ? message : title,
 				},
-			} as ApiResponseError,
+			},
 			status,
 			Object.fromEntries(headers.entries()),
 		);
