@@ -7,6 +7,7 @@ import messageImage from './unique/messageImage.ts';
 import preview from './unique/preview.ts';
 import reportJsError from './util/reportJsError.ts';
 import trustedTypes from './util/trustedTypes.ts';
+import { clear as templateClear, update as updateTemplate } from './util/template.ts';
 
 /* JS エラーレポート */
 reportJsError();
@@ -94,51 +95,130 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 
 /* メディア登録 */
 {
-	const formElement = document.getElementById('media-form') as HTMLFormElement | null; // 送信フォーム
-	const resultElement = document.getElementById('media-result') as HTMLTemplateElement | null; // 実行結果を表示する要素
+	const formElement = document.getElementById('media-form'); // 送信フォーム
+	if (!(formElement instanceof HTMLFormElement)) {
+		throw new Error('`#media-form` is not HTMLButtonElement');
+	}
 
-	if (resultElement !== null) {
-		formElement?.addEventListener('submit', (ev: SubmitEvent) => {
-			ev.preventDefault();
+	const resultElement = document.getElementById('media-result'); // 実行結果を表示する要素
+	if (!(resultElement instanceof HTMLTemplateElement)) {
+		throw new Error('`#media-result` is not HTMLTemplateElement');
+	}
 
-			const { elements } = ev.target as HTMLFormElement;
+	formElement.addEventListener('submit', (ev: SubmitEvent) => {
+		ev.preventDefault();
 
-			const filesElement = elements.namedItem('files');
-			const overwriteElement = elements.namedItem('overwrite');
+		/* いったんクリア */
+		templateClear(resultElement);
 
-			const files = filesElement instanceof HTMLInputElement ? filesElement.files : null;
-			const overwrite = overwriteElement instanceof HTMLInputElement && overwriteElement.checked;
+		const { elements } = ev.target as HTMLFormElement;
 
-			const formData = new FormData();
-			if (files !== null) {
-				Array.from(files).forEach((file) => {
-					formData.append('files', file);
-				});
-			}
-			if (overwrite) {
-				formData.append('overwrite', 'on');
-			}
+		const filesElement = elements.namedItem('files');
+		const overwriteElement = elements.namedItem('overwrite');
 
-			fetch('/api/media', {
-				method: 'POST',
-				body: formData,
-			})
-				.then(async (response) => {
-					/* いったんクリア */
-					Array.from(resultElement.parentNode?.children ?? []).forEach((element) => {
-						if (element === resultElement) {
-							return;
+		const files = filesElement instanceof HTMLInputElement ? filesElement.files : null;
+		const overwrite = overwriteElement instanceof HTMLInputElement && overwriteElement.checked;
+
+		const formData = new FormData();
+		if (files !== null) {
+			Array.from(files).forEach((file) => {
+				formData.append('files', file);
+			});
+		}
+		if (overwrite) {
+			formData.append('overwrite', 'on');
+		}
+
+		fetch('/api/media', {
+			method: 'POST',
+			body: formData,
+		})
+			.then(async (response) => {
+				const hiddenElement = resultElement.closest<HTMLElement>('[hidden]');
+				if (hiddenElement !== null) {
+					hiddenElement.hidden = false;
+				}
+
+				const responseJson = (await response.json()) as ApiResponseMediaUpload;
+
+				const fragment = document.createDocumentFragment();
+				if ('error' in responseJson) {
+					const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+					const successElement = clone.querySelector<HTMLElement>('.js-success');
+					if (successElement !== null) {
+						successElement.hidden = true;
+					}
+
+					const errorElement = clone.querySelector<HTMLElement>('.js-error');
+					if (errorElement !== null) {
+						const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
+						if (messageElement !== null) {
+							messageElement.textContent = responseJson.error.message;
+						}
+					}
+
+					fragment.appendChild(clone);
+				}
+				if ('results' in responseJson) {
+					responseJson.results.forEach((result) => {
+						const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+						const successElement = clone.querySelector<HTMLElement>('.js-success');
+						if (successElement !== null) {
+							successElement.hidden = !result.success;
 						}
 
-						element.remove();
-					});
+						const errorElement = clone.querySelector<HTMLElement>('.js-error');
+						if (errorElement !== null) {
+							errorElement.hidden = result.success;
+						}
 
+						const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
+						messageElement?.setHTMLUnsafe(
+							`${result.message}: <code>${result.filename}</code> ${result.thumbnails !== undefined ? `（サムネイル生成 ${String(result.thumbnails.length)} 件）` : ''}`,
+						);
+
+						fragment.appendChild(clone);
+					});
+				}
+
+				updateTemplate(resultElement, fragment);
+			})
+			.catch((e: unknown) => {
+				throw e;
+			});
+	});
+}
+
+/* DSG キャッシュクリア */
+{
+	const buttonElement = document.getElementById('clear-button'); // 実行ボタン
+	if (!(buttonElement instanceof HTMLButtonElement)) {
+		throw new Error('`#clear-button` is not HTMLButtonElement');
+	}
+
+	const resultElement = document.getElementById('clear-result'); // 実行結果を表示する要素
+	if (!(resultElement instanceof HTMLTemplateElement)) {
+		throw new Error('`#clear-result` is not HTMLTemplateElement');
+	}
+
+	buttonElement.addEventListener(
+		'click',
+		() => {
+			/* いったんクリア */
+			templateClear(resultElement);
+
+			fetch('/api/clear', {
+				method: 'POST',
+			})
+				.then(async (response) => {
 					const hiddenElement = resultElement.closest<HTMLElement>('[hidden]');
 					if (hiddenElement !== null) {
 						hiddenElement.hidden = false;
 					}
 
-					const responseJson = (await response.json()) as ApiResponseMediaUpload;
+					const responseJson = (await response.json()) as ApiResponseClear;
 
 					const fragment = document.createDocumentFragment();
 					if ('error' in responseJson) {
@@ -159,8 +239,8 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 
 						fragment.appendChild(clone);
 					}
-					if ('results' in responseJson) {
-						responseJson.results.forEach((result) => {
+					if ('processes' in responseJson) {
+						responseJson.processes.forEach((result) => {
 							const clone = resultElement.content.cloneNode(true) as HTMLElement;
 
 							const successElement = clone.querySelector<HTMLElement>('.js-success');
@@ -174,99 +254,20 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 							}
 
 							const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
-							messageElement?.setHTMLUnsafe(
-								`${result.message}: <code>${result.filename}</code> ${result.thumbnails !== undefined ? `（サムネイル生成 ${String(result.thumbnails.length)} 件）` : ''}`,
-							);
+							if (messageElement !== null && messageElement !== undefined) {
+								messageElement.textContent = result.message;
+							}
 
 							fragment.appendChild(clone);
 						});
 					}
-					resultElement.parentNode?.appendChild(fragment);
+
+					updateTemplate(resultElement, fragment);
 				})
 				.catch((e: unknown) => {
 					throw e;
 				});
-		});
-	}
-}
-
-/* DSG キャッシュクリア */
-{
-	const buttonElement = document.getElementById('clear-button') as HTMLButtonElement | null; // 実行ボタン
-	const resultElement = document.getElementById('clear-result') as HTMLTemplateElement | null; // 実行結果を表示する要素
-
-	if (resultElement !== null) {
-		buttonElement?.addEventListener(
-			'click',
-			() => {
-				fetch('/api/clear', {
-					method: 'POST',
-				})
-					.then(async (response) => {
-						/* いったんクリア */
-						Array.from(resultElement.parentNode?.children ?? []).forEach((element) => {
-							if (element === resultElement) {
-								return;
-							}
-
-							element.remove();
-						});
-
-						const hiddenElement = resultElement.closest<HTMLElement>('[hidden]');
-						if (hiddenElement !== null) {
-							hiddenElement.hidden = false;
-						}
-
-						const responseJson = (await response.json()) as ApiResponseClear;
-
-						const fragment = document.createDocumentFragment();
-						if ('error' in responseJson) {
-							const clone = resultElement.content.cloneNode(true) as HTMLElement;
-
-							const successElement = clone.querySelector<HTMLElement>('.js-success');
-							if (successElement !== null) {
-								successElement.hidden = true;
-							}
-
-							const errorElement = clone.querySelector<HTMLElement>('.js-error');
-							if (errorElement !== null) {
-								const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
-								if (messageElement !== null) {
-									messageElement.textContent = responseJson.error.message;
-								}
-							}
-
-							fragment.appendChild(clone);
-						}
-						if ('processes' in responseJson) {
-							responseJson.processes.forEach((result) => {
-								const clone = resultElement.content.cloneNode(true) as HTMLElement;
-
-								const successElement = clone.querySelector<HTMLElement>('.js-success');
-								if (successElement !== null) {
-									successElement.hidden = !result.success;
-								}
-
-								const errorElement = clone.querySelector<HTMLElement>('.js-error');
-								if (errorElement !== null) {
-									errorElement.hidden = result.success;
-								}
-
-								const messageElement = (result.success ? successElement : errorElement)?.querySelector<HTMLElement>('.js-message');
-								if (messageElement !== null && messageElement !== undefined) {
-									messageElement.textContent = result.message;
-								}
-
-								fragment.appendChild(clone);
-							});
-						}
-						resultElement.parentNode?.appendChild(fragment);
-					})
-					.catch((e: unknown) => {
-						throw e;
-					});
-			},
-			{ passive: true },
-		);
-	}
+		},
+		{ passive: true },
+	);
 }
