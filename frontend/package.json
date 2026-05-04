@@ -16,8 +16,8 @@
 		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" && brotli-cli compress -g \"../public/.well-known/*.json\" \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/image/**/*.svg\" \"../public/*.svg\" -m text",
 		"lint": "pnpm run /^lint:.*/",
 		"lint:ts": "tsc --project build & tsc --project script",
-		"lint:js": "eslint build/**/*.ts script/**/*.ts",
-		"lint:css": "stylelint -f verbose style/**/*.css",
+		"lint:js": "eslint build script",
+		"lint:css": "stylelint -f verbose style",
 		"test": "node --experimental-test-coverage --test script/**/*.test.ts"
 	},
 	"dependencies": {
