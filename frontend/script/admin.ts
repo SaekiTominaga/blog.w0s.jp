@@ -105,6 +105,28 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 		throw new Error('`#media-result` is not HTMLTemplateElement');
 	}
 
+	const error = (message: string): void => {
+		const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+		const successElement = clone.querySelector<HTMLElement>('.js-success');
+		if (successElement !== null) {
+			successElement.hidden = true;
+		}
+
+		const errorElement = clone.querySelector<HTMLElement>('.js-error');
+		if (errorElement !== null) {
+			const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
+			if (messageElement !== null) {
+				messageElement.textContent = message;
+			}
+		}
+
+		const fragment = document.createDocumentFragment();
+		fragment.appendChild(clone);
+
+		updateTemplate(resultElement, fragment);
+	};
+
 	formElement.addEventListener('submit', (ev: SubmitEvent) => {
 		ev.preventDefault();
 
@@ -139,26 +161,16 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 					hiddenElement.hidden = false;
 				}
 
+				if (!response.ok) {
+					error(`${String(response.status)} ${response.statusText}`);
+					return;
+				}
+
 				const responseJson = (await response.json()) as ApiResponseMediaUpload;
 
-				const fragment = document.createDocumentFragment();
 				if ('error' in responseJson) {
-					const clone = resultElement.content.cloneNode(true) as HTMLElement;
-
-					const successElement = clone.querySelector<HTMLElement>('.js-success');
-					if (successElement !== null) {
-						successElement.hidden = true;
-					}
-
-					const errorElement = clone.querySelector<HTMLElement>('.js-error');
-					if (errorElement !== null) {
-						const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
-						if (messageElement !== null) {
-							messageElement.textContent = responseJson.error.message;
-						}
-					}
-
-					fragment.appendChild(clone);
+					error(response.statusText);
+					return;
 				}
 				if ('results' in responseJson) {
 					responseJson.results.forEach((result) => {
@@ -179,11 +191,12 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 							`${result.message}: <code>${result.filename}</code> ${result.thumbnails !== undefined ? `（サムネイル生成 ${String(result.thumbnails.length)} 件）` : ''}`,
 						);
 
+						const fragment = document.createDocumentFragment();
 						fragment.appendChild(clone);
+
+						updateTemplate(resultElement, fragment);
 					});
 				}
-
-				updateTemplate(resultElement, fragment);
 			})
 			.catch((e: unknown) => {
 				throw e;
@@ -203,6 +216,28 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 		throw new Error('`#clear-result` is not HTMLTemplateElement');
 	}
 
+	const error = (message: string): void => {
+		const clone = resultElement.content.cloneNode(true) as HTMLElement;
+
+		const successElement = clone.querySelector<HTMLElement>('.js-success');
+		if (successElement !== null) {
+			successElement.hidden = true;
+		}
+
+		const errorElement = clone.querySelector<HTMLElement>('.js-error');
+		if (errorElement !== null) {
+			const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
+			if (messageElement !== null) {
+				messageElement.textContent = message;
+			}
+		}
+
+		const fragment = document.createDocumentFragment();
+		fragment.appendChild(clone);
+
+		updateTemplate(resultElement, fragment);
+	};
+
 	buttonElement.addEventListener(
 		'click',
 		() => {
@@ -218,26 +253,16 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 						hiddenElement.hidden = false;
 					}
 
+					if (!response.ok) {
+						error(`${String(response.status)} ${response.statusText}`);
+						return;
+					}
+
 					const responseJson = (await response.json()) as ApiResponseClear;
 
-					const fragment = document.createDocumentFragment();
 					if ('error' in responseJson) {
-						const clone = resultElement.content.cloneNode(true) as HTMLElement;
-
-						const successElement = clone.querySelector<HTMLElement>('.js-success');
-						if (successElement !== null) {
-							successElement.hidden = true;
-						}
-
-						const errorElement = clone.querySelector<HTMLElement>('.js-error');
-						if (errorElement !== null) {
-							const messageElement = errorElement.querySelector<HTMLElement>('.js-message');
-							if (messageElement !== null) {
-								messageElement.textContent = responseJson.error.message;
-							}
-						}
-
-						fragment.appendChild(clone);
+						error(responseJson.error.message);
+						return;
 					}
 					if ('processes' in responseJson) {
 						responseJson.processes.forEach((result) => {
@@ -258,11 +283,12 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 								messageElement.textContent = result.message;
 							}
 
+							const fragment = document.createDocumentFragment();
 							fragment.appendChild(clone);
+
+							updateTemplate(resultElement, fragment);
 						});
 					}
-
-					updateTemplate(resultElement, fragment);
 				})
 				.catch((e: unknown) => {
 					throw e;
