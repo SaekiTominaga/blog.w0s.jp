@@ -23,7 +23,7 @@
 		"filenamify": "7.0.1",
 		"hono": "4.11.4",
 		"kysely": "0.28.16",
-		"nodemailer": "8.0.6",
+		"nodemailer": "8.0.7",
 		"sharp": "0.34.5",
 		"whatwg-mimetype": "5.0.0",
 		"winston": "3.19.0",
