@@ -1,3 +1,4 @@
+import { inspect } from 'node:util';
 import dayjs from 'dayjs';
 import ejs from 'ejs';
 import { type Context, Hono } from 'hono';
@@ -290,7 +291,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 		}
 
 		if (createFeedResult.status === 'fulfilled') {
-			logger.info(`Feed file created: ${createFeedResult.value.join(', ')}`);
+			logger.info(`Feed file created: ${inspect(createFeedResult.value)}`);
 			postResults.push({ success: true, message: `${configProcess.feed.processMessage.success}（${String(createFeedResult.value.length)}ファイル）` });
 		} else {
 			logger.error(createFeedResult.reason);
@@ -298,7 +299,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 		}
 
 		if (createSitemapResult.status === 'fulfilled') {
-			logger.info(`Sitemap file created: ${createSitemapResult.value.join(', ')}`);
+			logger.info(`Sitemap file created: ${inspect(createSitemapResult.value)}`);
 			postResults.push({ success: true, message: `${configProcess.sitemap.processMessage.success}（${String(createSitemapResult.value.length)}ファイル）` });
 		} else {
 			logger.error(createSitemapResult.reason);
@@ -306,7 +307,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 		}
 
 		if (createNewlyJsonResult.status === 'fulfilled') {
-			logger.info(`JSON file created: ${createNewlyJsonResult.value.join(', ')}`);
+			logger.info(`JSON file created: ${inspect(createNewlyJsonResult.value)}`);
 			postResults.push({
 				success: true,
 				message: `${configProcess.newlyJson.processMessage.success}（${String(createNewlyJsonResult.value.length)}ファイル）`,
