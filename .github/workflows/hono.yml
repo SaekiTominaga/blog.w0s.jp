@@ -56,5 +56,8 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
-      - name: Run lint
+      - name: Run build
+        run: pnpm -F media build && pnpm -F remark build
+
+      - name: Run tsc
         run: pnpm -F hono exec tsc --noEmit
