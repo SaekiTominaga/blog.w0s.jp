@@ -98,7 +98,7 @@
 	--_bullet-block-size: 0.75em;
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
-	/* stylelint-disable-next-line logical-css/require-logical-units */
+	/* stylelint-disable-next-line unit-layout-mappings */
 	--_image-width: min(160px, 30dvw);
 	--_image-height: 160px;
 

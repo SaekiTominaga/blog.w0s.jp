@@ -11,7 +11,7 @@
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
 	--_image-border-width: 1px;
-	/* stylelint-disable-next-line logical-css/require-logical-units */
+	/* stylelint-disable-next-line unit-layout-mappings */
 	--_image-width: min(180px, 30dvw);
 	--_image-height: 120px;
 	--_padding-inline-start: calc(var(--_image-width) + var(--_image-border-width) * 2 + var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
