@@ -25,8 +25,8 @@ importers:
         specifier: 3.13.0
         version: 3.13.0(markuplint@4.18.1(typescript@6.0.3))
       '@w0s/stylelint-config':
-        specifier: 4.22.0
-        version: 4.22.0(stylelint-attribute-case-sensitivity@3.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-config-concentric-order@5.5.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-config-standard@40.0.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-no-default-viewport@2.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-plugin-defensive-css@2.9.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-plugin-logical-css@2.1.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-root-colors@3.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint@17.10.0(typescript@6.0.3))
+        specifier: 4.23.0
+        version: 4.23.0(stylelint-attribute-case-sensitivity@3.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-config-concentric-order@5.5.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-config-standard@40.0.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-no-default-viewport@2.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-plugin-defensive-css@2.9.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-root-colors@3.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint@17.10.0(typescript@6.0.3))
       '@w0s/tsconfig':
         specifier: 3.0.0
         version: 3.0.0(typescript@6.0.3)
@@ -72,9 +72,6 @@ importers:
       stylelint-plugin-defensive-css:
         specifier: 2.9.1
         version: 2.9.1(stylelint@17.10.0(typescript@6.0.3))
-      stylelint-plugin-logical-css:
-        specifier: 2.1.0
-        version: 2.1.0(stylelint@17.10.0(typescript@6.0.3))
       stylelint-root-colors:
         specifier: 3.0.1
         version: 3.0.1(stylelint@17.10.0(typescript@6.0.3))
@@ -1446,16 +1443,15 @@ packages:
     resolution: {integrity: sha512-DIB7EnpCUmvpW7GyFmpbSWza493vjcj98AUA0lveWQKabmiDJkDMi0OlRVnWzVXGyXUNBraD08Sbcxneq7DuWw==}
     engines: {node: '>=22'}
 
-  '@w0s/stylelint-config@4.22.0':
-    resolution: {integrity: sha512-Io3dkTCF88BlO/w4idvE9mFYOF3AHu1JVOv9z9P72xCKypwwVtPkGCvL7lgNu3fbpBMSj31cQ95da7ScoH4kzQ==}
+  '@w0s/stylelint-config@4.23.0':
+    resolution: {integrity: sha512-fX/oT3LT0E5MyAzJ725YMWbqF9r+a3oq1ocDJwXum7PIHLghAOg39zXKmW+bhh4Ycj0rPWlKimt/TixpIG55EQ==}
     peerDependencies:
-      stylelint: ^17.8.0
+      stylelint: ^17.10.0
       stylelint-attribute-case-sensitivity: ^3.0.0
       stylelint-config-concentric-order: ^5.3.0
       stylelint-config-standard: ^40.0.0
       stylelint-no-default-viewport: ^2.0.0
       stylelint-plugin-defensive-css: ^2.9.1
-      stylelint-plugin-logical-css: ^2.0.2
       stylelint-root-colors: ^3.0.0
 
   '@w0s/tab@5.0.3':
@@ -3557,11 +3553,6 @@ packages:
     peerDependencies:
       stylelint: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
-  stylelint-plugin-logical-css@2.1.0:
-    resolution: {integrity: sha512-625OT+p5y2kkGBaRV7uTYscuH0m1UueMXh0WcidrXgwF2DOnKov+un9tvuyNG+SUC07W0ibcn+fZvQs/keskww==}
-    peerDependencies:
-      stylelint: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-
   stylelint-root-colors@3.0.1:
     resolution: {integrity: sha512-SRBI4X0sON9NQV+2OIoZYpxOd3LW3g0zuYs1DOTbMoOIiRdH31a+JSdf636bcUuDjXqzvBUi6YICEY+J47vTvA==}
     peerDependencies:
@@ -4782,7 +4773,7 @@ snapshots:
 
   '@w0s/string-convert@4.0.0': {}
 
-  '@w0s/stylelint-config@4.22.0(stylelint-attribute-case-sensitivity@3.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-config-concentric-order@5.5.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-config-standard@40.0.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-no-default-viewport@2.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-plugin-defensive-css@2.9.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-plugin-logical-css@2.1.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-root-colors@3.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint@17.10.0(typescript@6.0.3))':
+  '@w0s/stylelint-config@4.23.0(stylelint-attribute-case-sensitivity@3.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-config-concentric-order@5.5.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-config-standard@40.0.0(stylelint@17.10.0(typescript@6.0.3)))(stylelint-no-default-viewport@2.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-plugin-defensive-css@2.9.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint-root-colors@3.0.1(stylelint@17.10.0(typescript@6.0.3)))(stylelint@17.10.0(typescript@6.0.3))':
     dependencies:
       stylelint: 17.10.0(typescript@6.0.3)
       stylelint-attribute-case-sensitivity: 3.0.1(stylelint@17.10.0(typescript@6.0.3))
@@ -4790,7 +4781,6 @@ snapshots:
       stylelint-config-standard: 40.0.0(stylelint@17.10.0(typescript@6.0.3))
       stylelint-no-default-viewport: 2.0.1(stylelint@17.10.0(typescript@6.0.3))
       stylelint-plugin-defensive-css: 2.9.1(stylelint@17.10.0(typescript@6.0.3))
-      stylelint-plugin-logical-css: 2.1.0(stylelint@17.10.0(typescript@6.0.3))
       stylelint-root-colors: 3.0.1(stylelint@17.10.0(typescript@6.0.3))
 
   '@w0s/tab@5.0.3': {}
@@ -7546,10 +7536,6 @@ snapshots:
       stylelint: 17.10.0(typescript@6.0.3)
 
   stylelint-plugin-defensive-css@2.9.1(stylelint@17.10.0(typescript@6.0.3)):
-    dependencies:
-      stylelint: 17.10.0(typescript@6.0.3)
-
-  stylelint-plugin-logical-css@2.1.0(stylelint@17.10.0(typescript@6.0.3)):
     dependencies:
       stylelint: 17.10.0(typescript@6.0.3)
 
