@@ -16,8 +16,8 @@ importers:
         specifier: 4.18.0
         version: 4.18.0
       '@types/node':
-        specifier: 25.9.1
-        version: 25.9.1
+        specifier: 24.12.4
+        version: 24.12.4
       '@w0s/eslint-config':
         specifier: 9.7.0
         version: 9.7.0(@eslint/js@9.39.4)(eslint-plugin-functional@9.0.4(eslint@9.39.4)(typescript@6.0.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.59.2(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4))(eslint-plugin-jsdoc@62.9.0(eslint@9.39.4))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.4))(eslint@9.39.4)(globals@17.6.0)(typescript-eslint@8.59.2(eslint@9.39.4)(typescript@6.0.3))
@@ -1283,8 +1283,8 @@ packages:
   '@types/mustache@4.2.6':
     resolution: {integrity: sha512-t+8/QWTAhOFlrF1IVZqKnMRJi84EgkIK5Kh0p2JV4OLywUvCwJPFxbJAl7XAow7DVIHsF+xW9f1MVzg0L6Szjw==}
 
-  '@types/node@24.10.0':
-    resolution: {integrity: sha512-qzQZRBqkFsYyaSWXuEHc2WR9c0a0CXwiE5FWUvn7ZM+vdy1uZLfCunD38UzhuB7YN/J11ndbDBcTmOdxJo9Q7A==}
+  '@types/node@24.12.4':
+    resolution: {integrity: sha512-GUUEShf+PBCGW2KaXwcIt3Yk+e3pkKwWKb9GSyM9WQVE+ep2jzmHdGsHzu4wgcZy5fN9FBdVzjpBQsYlpfpgLA==}
 
   '@types/node@25.9.1':
     resolution: {integrity: sha512-xfrlY7UD5rMJk3ZVJP8BNzS28J36YJg+xp+LPXV1TdWxr8uMH5A860QNxYDGQe/ylDSgjxE52Q9VnO7p75tJxg==}
@@ -4639,7 +4639,7 @@ snapshots:
 
   '@types/better-sqlite3@7.6.13':
     dependencies:
-      '@types/node': 24.10.0
+      '@types/node': 25.9.1
 
   '@types/css-tree@2.3.11': {}
 
@@ -4663,7 +4663,7 @@ snapshots:
 
   '@types/jsdom@28.0.0':
     dependencies:
-      '@types/node': 24.10.0
+      '@types/node': 25.9.1
       '@types/tough-cookie': 4.0.5
       parse5: 7.3.0
       undici-types: 7.25.0
@@ -4680,7 +4680,7 @@ snapshots:
 
   '@types/mustache@4.2.6': {}
 
-  '@types/node@24.10.0':
+  '@types/node@24.12.4':
     dependencies:
       undici-types: 7.16.0
 
@@ -4690,7 +4690,7 @@ snapshots:
 
   '@types/nodemailer@8.0.0':
     dependencies:
-      '@types/node': 24.10.0
+      '@types/node': 25.9.1
 
   '@types/resolve@1.20.2': {}
 
