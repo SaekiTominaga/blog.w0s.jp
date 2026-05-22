@@ -80,5 +80,5 @@
 		"mdast-util-from-markdown": "2.0.3",
 		"micromark-util-types": "2.0.2"
 	},
-	"packageManager": "pnpm@11.2.2"
+	"packageManager": "pnpm@11.1.2"
 }
