@@ -11,7 +11,7 @@
 	},
 	"devDependencies": {
 		"@markuplint/ejs-parser": "4.18.0",
-		"@types/node": "24.10.0",
+		"@types/node": "25.9.1",
 		"@w0s/eslint-config": "9.7.0",
 		"@w0s/markuplint-config": "3.13.0",
 		"@w0s/stylelint-config": "4.23.0",
@@ -34,5 +34,5 @@
 		"typescript": "6.0.3",
 		"typescript-eslint": "8.59.2"
 	},
-	"packageManager": "pnpm@10.28.1"
+	"packageManager": "pnpm@11.2.2"
 }
