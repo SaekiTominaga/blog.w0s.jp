@@ -16,7 +16,7 @@
 		"@w0s/isbn-verify": "4.0.0",
 		"@w0s/paapi-item-image-url-parser": "4.0.0",
 		"@w0s/sqlite-utility": "3.0.0",
-		"better-sqlite3": "12.9.0",
+		"better-sqlite3": "12.10.0",
 		"dayjs": "1.11.20",
 		"github-slugger": "2.0.0",
 		"hast-util-select": "6.0.4",
@@ -80,5 +80,5 @@
 		"mdast-util-from-markdown": "2.0.3",
 		"micromark-util-types": "2.0.2"
 	},
-	"packageManager": "pnpm@10.28.1"
+	"packageManager": "pnpm@11.2.2"
 }
