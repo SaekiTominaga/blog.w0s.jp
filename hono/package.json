@@ -11,7 +11,7 @@
 		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/**/*.test.ts"
 	},
 	"dependencies": {
-		"@hono/node-server": "1.19.14",
+		"@hono/node-server": "2.0.3",
 		"@w0s/env-value-type": "2.0.0",
 		"@w0s/file-size-format": "4.0.0",
 		"@w0s/html-escape": "5.0.0",
@@ -21,7 +21,7 @@
 		"dayjs": "1.11.20",
 		"ejs": "4.0.1",
 		"filenamify": "7.0.1",
-		"hono": "4.11.4",
+		"hono": "4.12.22",
 		"kysely": "0.28.17",
 		"nodemailer": "8.0.7",
 		"sharp": "0.34.5",

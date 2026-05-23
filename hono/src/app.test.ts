@@ -103,7 +103,10 @@ await test('serveStatic', async (t) => {
 	await t.test('Content-Type', async (t2) => {
 		await t2.test('No Brotli static file', async (t3) => {
 			await t3.test('application/*', async () => {
-				assert.equal((await app.request('sitemap.xml', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'), 'application/xml');
+				assert.equal(
+					(await app.request('sitemap.xml', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'),
+					'application/xml; charset=utf-8',
+				);
 			});
 
 			await t3.test('text/*', async () => {
@@ -119,7 +122,7 @@ await test('serveStatic', async (t) => {
 			await t3.test('image/*', async () => {
 				assert.equal(
 					(await app.request('/image/footnote-popover-close.svg', { headers: { 'Accept-Encoding': 'br' } })).headers.get('Content-Type'),
-					'image/svg+xml',
+					'image/svg+xml; charset=utf-8',
 				);
 			});
 
