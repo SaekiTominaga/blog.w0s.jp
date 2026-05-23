@@ -75,6 +75,9 @@ importers:
       stylelint-root-colors:
         specifier: 3.0.1
         version: 3.0.1(stylelint@17.10.0(typescript@6.0.3))
+      tslib:
+        specifier: ^2.8.1
+        version: 2.8.1
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -7835,8 +7838,7 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tslib@2.8.1:
-    optional: true
+  tslib@2.8.1: {}
 
   tsx@4.21.0:
     dependencies:
