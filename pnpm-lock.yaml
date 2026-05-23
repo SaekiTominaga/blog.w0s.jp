@@ -419,9 +419,9 @@ importers:
       unist-util-find-after:
         specifier: 5.0.0
         version: 5.0.0
-      unist-util-find-between-all:
-        specifier: 1.1.6
-        version: 1.1.6
+      unist-util-find-between:
+        specifier: ^1.2.1
+        version: 1.2.1
       unist-util-generated:
         specifier: 3.0.0
         version: 3.0.0
@@ -3797,9 +3797,8 @@ packages:
   unist-util-find-after@5.0.0:
     resolution: {integrity: sha512-amQa0Ep2m6hE2g72AugUItjbuM8X8cGQnFoHk0pGfrFeT9GZhzN5SW8nRsiGKK7Aif4CrACPENkA6P/Lw6fHGQ==}
 
-  unist-util-find-between-all@1.1.6:
-    resolution: {integrity: sha512-KTlYGJMu3waM/UiDoyJ374VzIvRRfw5yO/DLuy2vkzTfjJ41HDgAO/Tukzga7imk9l3W688arso3kE+5b+IW6g==}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+  unist-util-find-between@1.2.1:
+    resolution: {integrity: sha512-40W6SCvWk8MO+OyAzM1Ap6nKawyM7klSapiKGZQAgyZNbyIFibKAjMk+fct9nC6GcIPRfthBh6udKYrggjnGhQ==}
 
   unist-util-generated@3.0.0:
     resolution: {integrity: sha512-yUjV3LueHK6gH74UKRwZ/Frc43/Mil9oYBHgiQp3z+v0+yS43pJ+Ye8RvZtApW0Xnx1cdWR0z4f3OZhSruF0/Q==}
@@ -7947,7 +7946,7 @@ snapshots:
       '@types/unist': 3.0.3
       unist-util-is: 6.0.1
 
-  unist-util-find-between-all@1.1.6:
+  unist-util-find-between@1.2.1:
     dependencies:
       '@types/unist': 3.0.3
       unist-util-is: 6.0.1
