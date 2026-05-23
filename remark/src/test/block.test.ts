@@ -908,6 +908,28 @@ text1
 		);
 	});
 
+	await t.test('Note', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+:::normal
+note: note*1*
+:::
+`,
+				),
+			),
+			`
+<div class="p-box -normal">
+	<p class="p-note">
+		<span class="p-note__sign">※</span><span class="p-note__text">note<em>1</em></span>
+	</p>
+</div>
+`.trim(),
+		);
+	});
+
 	await t.test('no name', async () => {
 		const markdown = new Markdown();
 		assert.equal(

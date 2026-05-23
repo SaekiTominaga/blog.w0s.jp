@@ -275,7 +275,7 @@ const parseEmbedded = (node: Readonly<Paragraph>, firstChildValue: string): XEmb
 const toMdast: Plugin<[], Root> = () => {
 	return (tree: Parent): void => {
 		visit(tree, 'paragraph', (node: Paragraph, index: number | null, parent: Parent | null): boolean => {
-			if (index === null || parent?.type !== 'root') {
+			if (index === null || parent === null || !['root', 'x-box'].includes(parent.type)) {
 				return CONTINUE;
 			}
 
