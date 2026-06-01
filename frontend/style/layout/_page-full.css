@@ -8,7 +8,10 @@
 		"margin-left padding-left cm      cm                  cm      padding-right margin-right"
 		"footer      footer       footer  footer              footer  footer        footer      ";
 	grid-template-columns:
-		var(--page-margin-inline) var(--page-padding-inline) 1fr var(--page-content-sidebar-gap) var(--page-sidebar-width) var(--page-padding-inline)
+		var(--page-margin-inline) var(--page-padding-inline) 1fr calc((var(--page-max-width) - var(--page-content-width)) / 8) calc(
+			(var(--page-max-width) - var(--page-content-width)) / 8 * 7
+		)
+		var(--page-padding-inline)
 		var(--page-margin-inline);
 }
 
