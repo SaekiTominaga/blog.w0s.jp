@@ -45,15 +45,24 @@
 
 /* ===== サイト内検索 ===== */
 .p-header-search {
+	display: block grid;
+	grid-template-areas:
+		"legend"
+		"ctrl  ";
+	gap: 0.25em;
+	line-height: var(--line-height-narrow);
+
+	& > fieldset {
+		display: contents;
+	}
 }
 
 .p-header-search__legend {
+	grid-area: legend;
 	font-size: calc(100% / pow(var(--font-ratio), 1));
 	font-weight: var(--font-weight-bold);
 }
 
 .p-header-search__ctrl {
-	.p-header-search__legend + & {
-		margin-block-start: 0.1em;
-	}
+	grid-area: ctrl;
 }
