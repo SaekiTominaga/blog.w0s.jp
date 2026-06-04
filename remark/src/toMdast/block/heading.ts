@@ -19,10 +19,12 @@ export interface XHeading extends Parent {
 }
 
 interface Options {
+	minDepth?: Heading['depth'];
 	maxDepth?: Heading['depth'];
 }
 
 const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
+	const minDepth = options?.minDepth ?? 1;
 	const maxDepth = options?.maxDepth ?? 6;
 
 	const slugger = new GithubSlugger();
@@ -32,7 +34,7 @@ const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
 			if (index === null || parent === null) {
 				return CONTINUE;
 			}
-			if (node.depth > maxDepth) {
+			if (node.depth < minDepth || node.depth > maxDepth) {
 				return CONTINUE;
 			}
 

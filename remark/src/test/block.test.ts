@@ -4,33 +4,6 @@ import Markdown from '../Markdown.ts';
 import format from './util/format.ts';
 
 await test('heaging', async (t) => {
-	await t.test('h1', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-text
-
-# 見出し1
-
-text
-`,
-				),
-			),
-			`
-<p>text</p>
-<section class="p-entry-section -hdg1" id="見出し1">
-	<div class="p-entry-section__hdg">
-		<h2>見出し1</h2>
-		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%971" class="c-self-link">§</a></p>
-	</div>
-	<p>text</p>
-</section>
-`.trim(),
-		);
-	});
-
 	await t.test('h2', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -39,15 +12,42 @@ text
 					`
 text
 
-# 見出し1
+## 見出し2
 
+text
+`,
+				),
+			),
+			`
+<p>text</p>
+<section class="p-entry-section -hdg1" id="見出し2">
+	<div class="p-entry-section__hdg">
+		<h2>見出し2</h2>
+		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%972" class="c-self-link">§</a></p>
+	</div>
+	<p>text</p>
+</section>
+`.trim(),
+		);
+	});
+
+	await t.test('h3', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
 text
 
 ## 見出し2
 
 text
 
-# 見出し*1*
+### 見出し3
+
+text
+
+## 見出し*2*
 
 text
 `,
@@ -57,30 +57,30 @@ text
 <p>text</p>
 <nav aria-label="目次" class="p-toc">
 	<ul>
-		<li><a href="#%E8%A6%8B%E5%87%BA%E3%81%971">見出し1</a></li>
+		<li><a href="#%E8%A6%8B%E5%87%BA%E3%81%972">見出し2</a></li>
 		<li>
-			<a href="#%E8%A6%8B%E5%87%BA%E3%81%971-1">見出し<em>1</em></a>
+			<a href="#%E8%A6%8B%E5%87%BA%E3%81%972-1">見出し<em>2</em></a>
 		</li>
 	</ul>
 </nav>
-<section class="p-entry-section -hdg1" id="見出し1">
+<section class="p-entry-section -hdg1" id="見出し2">
 	<div class="p-entry-section__hdg">
-		<h2>見出し1</h2>
-		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%971" class="c-self-link">§</a></p>
+		<h2>見出し2</h2>
+		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%972" class="c-self-link">§</a></p>
 	</div>
 	<p>text</p>
-	<section class="p-entry-section -hdg2" id="見出し2">
+	<section class="p-entry-section -hdg2" id="見出し3">
 		<div class="p-entry-section__hdg">
-			<h3>見出し2</h3>
-			<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%972" class="c-self-link">§</a></p>
+			<h3>見出し3</h3>
+			<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%973" class="c-self-link">§</a></p>
 		</div>
 		<p>text</p>
 	</section>
 </section>
-<section class="p-entry-section -hdg1" id="見出し1-1">
+<section class="p-entry-section -hdg1" id="見出し2-1">
 	<div class="p-entry-section__hdg">
-		<h2>見出し<em>1</em></h2>
-		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%971-1" class="c-self-link">§</a></p>
+		<h2>見出し<em>2</em></h2>
+		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%972-1" class="c-self-link">§</a></p>
 	</div>
 	<p>text</p>
 </section>
@@ -88,14 +88,31 @@ text
 		);
 	});
 
-	await t.test('h3 or higher', async () => {
+	await t.test('h1', async () => {
 		const markdown = new Markdown();
 		assert.equal(
 			await format(
 				await markdown.toHtml(
 					`
-### 見出し3
+# 見出し1
 
+text
+`,
+				),
+			),
+			`
+<h1>見出し1</h1>
+<p>text</p>
+`.trim(),
+		);
+	});
+
+	await t.test('over h6', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
 #### 見出し4
 
 ##### 見出し5
@@ -109,10 +126,9 @@ text
 				),
 			),
 			`
-<h4>見出し3</h4>
-<h5>見出し4</h5>
-<h6>見出し5</h6>
-<p role="heading" aria-level="7">見出し6</p>
+<h4>見出し4</h4>
+<h5>見出し5</h5>
+<h6>見出し6</h6>
 <p>####### 見出し7</p>
 <p>text</p>
 `.trim(),

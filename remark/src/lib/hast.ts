@@ -1,36 +1,5 @@
-import type { Element, ElementContent } from 'hast';
-import type { Heading } from 'mdast';
+import type { ElementContent } from 'hast';
 import type { Icon as LinkIcon } from './link.ts';
-
-/**
- * Generating heading element (<h1>, <h2>...)
- *
- * @param depth - Heading depth
- * @param children - Child Elements of Heading Element
- *
- * @returns Heading element
- */
-export const hn = (depth: Heading['depth'], children: ElementContent[]): ElementContent => {
-	const START_LEVEL = 2;
-
-	const level = depth + (START_LEVEL - 1);
-
-	const heading: Element = {
-		type: 'element',
-		tagName: `h${String(level)}`,
-		properties: {},
-		children: children,
-	};
-	if (level > 6) {
-		heading.tagName = 'p';
-		heading.properties = {
-			role: 'heading',
-			'aria-level': level,
-		};
-	}
-
-	return heading;
-};
 
 /**
  * Generating an element representing the host information of the link
