@@ -7,7 +7,7 @@
 		"build": "tsc",
 		"prelint": "pnpm -F media build && pnpm -F remark build",
 		"lint": "eslint @types src",
-		"pretest": "tsc --noEmit && pnpm -F media build && pnpm -F remark build",
+		"pretest": "tsc --noEmit && pnpm -F frontend build && pnpm -F media build && pnpm -F remark build",
 		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/**/*.test.ts"
 	},
 	"dependencies": {
