@@ -5,12 +5,12 @@ import { CONTINUE, visit } from 'unist-util-visit';
 import { generated } from 'unist-util-generated';
 import type { VFile } from 'vfile';
 
-const headingDepthRange = lintRule(
-	'remark-lint:heading-depth-range',
+const headingLevelRange = lintRule(
+	'remark-lint:heading-level-range',
 	(
 		tree: Parent,
 		file: VFile,
-		option: {
+		options: {
 			min: Heading['depth'];
 			max: Heading['depth'];
 		},
@@ -20,16 +20,16 @@ const headingDepthRange = lintRule(
 				return CONTINUE;
 			}
 
-			if (node.depth < option.min) {
-				file.message(`Heading depth must be \`${String(option.min)}\` or higher`, node);
+			if (node.depth < options.min) {
+				file.message(`Heading level must be \`${String(options.min)}\` or higher`, node);
 			}
 
-			if (node.depth > option.max) {
-				file.message(`Heading depth must be \`${String(option.max)}\` or lower`, node);
+			if (node.depth > options.max) {
+				file.message(`Heading level must be \`${String(options.max)}\` or lower`, node);
 			}
 
 			return CONTINUE;
 		});
 	},
 );
-export default headingDepthRange;
+export default headingLevelRange;

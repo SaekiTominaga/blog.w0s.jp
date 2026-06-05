@@ -41,7 +41,7 @@ import { type Processor, unified } from 'unified';
 import type { VFile } from 'vfile';
 import config from './config.ts';
 import footnoteHast from './hast/footnote.ts';
-import remarkLintHeadingDepthRange from './lint/headingDepthRange.ts';
+import remarkLintHeadingLevelRange from './lint/headingLevelRange.ts';
 import remarkLintNoEmptySections from './lint/noEmptySection.ts';
 import remarkLintNoLinkTitle from './lint/noLinkTitle.ts';
 import remarkLintNoLooseList from './lint/noLooseList.ts';
@@ -101,9 +101,9 @@ export default class Markdown {
 			/* remark-lint-file-extension: [style-guide] ファイルからの読み込みは使用していないので不要 */
 			/* remark-lint-final-definition: [style-guide] 要検討 */
 			/* remark-lint-final-newline: [recommended] 最終行の空白はむしろ JavaScript で除去しているので競合してしまう */
-			processor.use(remarkLintFirstHeadingLevel, 1); // 最初の見出しは 1
+			processor.use(remarkLintFirstHeadingLevel, config.headingDepth.min); // 最初の見出し
 			/* remark-lint-hard-break-spaces: [style-guide][recommended] break は使用禁止設定にしているので不要 */
-			processor.use(remarkLintHeadingDepthRange, {
+			processor.use(remarkLintHeadingLevelRange, {
 				min: config.headingDepth.min,
 				max: config.headingDepth.max,
 			}); // 見出しレベルの最大値
