@@ -194,21 +194,21 @@
 	--_ripple-transition-duration: 0.5s;
 
 	display: block flow;
-	contain: layout; /* ripple effect */
+	contain: layout; /* Ripple effect */
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--color-border-light);
 	border-radius: var(--border-radius-normal);
 	background-color: var(--_bg-color);
 	padding: 0.5em;
-	overflow: hidden; /* ripple effect */
+	overflow: hidden; /* Ripple effect */
 	color: var(--color-black);
 
 	&:hover {
 		--_bg-color: var(--color-white);
 	}
 
-	/* ripple effect */
+	/* Ripple effect */
 	&::before {
 		position: absolute;
 		inset: 0;
@@ -221,7 +221,7 @@
 		content: "";
 	}
 
-	/* ripple effect */
+	/* Ripple effect */
 	&:active::before {
 		transform: scale(0);
 		transition-duration: initial;

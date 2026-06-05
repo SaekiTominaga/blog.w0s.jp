@@ -142,7 +142,7 @@ await test('validator', async (t) => {
 });
 
 await test('image', async (t) => {
-	const fileNamePrefix = '_test';
+	const fileNamePrefix = '__test__';
 
 	after(async () => {
 		const filePaths = [
@@ -162,10 +162,7 @@ await test('image', async (t) => {
 		const filePath = `${env('ROOT')}/${configProcess.media.image.dir}/${fileName}`;
 
 		before(async () => {
-			await fs.promises.writeFile(filePath, '');
-		});
-		after(async () => {
-			await fs.promises.unlink(filePath);
+			await fs.promises.writeFile(filePath, '1234');
 		});
 
 		const formData = new FormData();
@@ -184,11 +181,11 @@ await test('image', async (t) => {
 
 		const json = (await res.json()) as MediaUpload;
 
-		assert.equal('results' in json, true);
-		if ('results' in json) {
-			assert.equal(json.results.length, 1);
-			assert.equal(json.results.at(0)?.success, false);
-			assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.overwrite);
+		assert.equal(Array.isArray(json), true);
+		if (Array.isArray(json)) {
+			assert.equal(json.length, 1);
+			assert.equal(json.at(0)?.success, false);
+			assert.equal(json.at(0)?.message, configProcess.media.processMessageUpload.overwrite);
 		}
 	});
 
@@ -212,11 +209,11 @@ await test('image', async (t) => {
 
 		const json = (await res.json()) as MediaUpload;
 
-		assert.equal('results' in json, true);
-		if ('results' in json) {
-			assert.equal(json.results.length, 1);
-			assert.equal(json.results.at(0)?.success, false);
-			assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.size);
+		assert.equal(Array.isArray(json), true);
+		if (Array.isArray(json)) {
+			assert.equal(json.length, 1);
+			assert.equal(json.at(0)?.success, false);
+			assert.equal(json.at(0)?.message, configProcess.media.processMessageUpload.size);
 			assert.equal(fs.existsSync(filePath), false);
 		}
 	});
@@ -242,12 +239,12 @@ await test('image', async (t) => {
 
 			const json = (await res.json()) as MediaUpload;
 
-			assert.equal('results' in json, true);
-			if ('results' in json) {
-				assert.equal(json.results.length, 1);
-				assert.equal(json.results.at(0)?.success, true);
-				assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.success);
-				assert.equal(json.results.at(0)?.thumbnails, undefined);
+			assert.equal(Array.isArray(json), true);
+			if (Array.isArray(json)) {
+				assert.equal(json.length, 1);
+				assert.equal(json.at(0)?.success, true);
+				assert.equal(json.at(0)?.message, configProcess.media.processMessageUpload.success);
+				assert.equal(json.at(0)?.thumbnails, undefined);
 				assert.equal(fs.existsSync(filePath), true);
 			}
 		});
@@ -280,12 +277,12 @@ await test('image', async (t) => {
 
 			const json = (await res.json()) as MediaUpload;
 
-			assert.equal('results' in json, true);
-			if ('results' in json) {
-				assert.equal(json.results.length, 1);
-				assert.equal(json.results.at(0)?.success, true);
-				assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.success);
-				assert.equal(json.results.at(0)?.thumbnails?.length, 4);
+			assert.equal(Array.isArray(json), true);
+			if (Array.isArray(json)) {
+				assert.equal(json.length, 1);
+				assert.equal(json.at(0)?.success, true);
+				assert.equal(json.at(0)?.message, configProcess.media.processMessageUpload.success);
+				assert.equal(json.at(0)?.thumbnails?.length, 4);
 				assert.equal(fs.existsSync(filePath), true);
 			}
 		});
@@ -293,7 +290,7 @@ await test('image', async (t) => {
 });
 
 await test('video', async (t) => {
-	const fileNamePrefix = '_test';
+	const fileNamePrefix = '__test__';
 
 	after(async () => {
 		const filePaths = (await fs.promises.readdir(`${env('ROOT')}/${configProcess.media.video.dir}`, { withFileTypes: true }))
@@ -323,18 +320,18 @@ await test('video', async (t) => {
 
 		const json = (await res.json()) as MediaUpload;
 
-		assert.equal('results' in json, true);
-		if ('results' in json) {
-			assert.equal(json.results.length, 1);
-			assert.equal(json.results.at(0)?.success, true);
-			assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.success);
+		assert.equal(Array.isArray(json), true);
+		if (Array.isArray(json)) {
+			assert.equal(json.length, 1);
+			assert.equal(json.at(0)?.success, true);
+			assert.equal(json.at(0)?.message, configProcess.media.processMessageUpload.success);
 			assert.equal(fs.existsSync(filePath), true);
 		}
 	});
 });
 
 await test('text', async () => {
-	const fileNamePrefix = '_test';
+	const fileNamePrefix = '__test__';
 
 	const formData = new FormData();
 	formData.append('files', new File([], `${fileNamePrefix}0001.txt`, { type: 'text/foo' }));
@@ -351,10 +348,10 @@ await test('text', async () => {
 
 	const json = (await res.json()) as MediaUpload;
 
-	assert.equal('results' in json, true);
-	if ('results' in json) {
-		assert.equal(json.results.length, 2);
-		assert.equal(json.results.at(0)?.success, false);
-		assert.equal(json.results.at(0)?.message, configProcess.media.processMessageUpload.type);
+	assert.equal(Array.isArray(json), true);
+	if (Array.isArray(json)) {
+		assert.equal(json.length, 2);
+		assert.equal(json.at(0)?.success, false);
+		assert.equal(json.at(0)?.message, configProcess.media.processMessageUpload.type);
 	}
 });

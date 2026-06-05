@@ -105,6 +105,9 @@ importers:
       '@w0s/form-submit-overlay':
         specifier: 4.0.4
         version: 4.0.4
+      '@w0s/html-escape':
+        specifier: 5.0.0
+        version: 5.0.0
       '@w0s/input-file-preview':
         specifier: 3.0.7
         version: 3.0.7

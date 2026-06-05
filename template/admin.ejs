@@ -310,18 +310,17 @@
 							</div>
 
 							<div class="c-form-controls -submit">
-								<p><button class="c-submit">ファイル送信</button></p>
+								<p><button class="c-submit">アップロード</button></p>
 							</div>
 						</form>
 
 						<ul class="p-form-results" hidden="">
 							<template id="media-result">
-								<li class="p-form-results__item -success js-success">
-									<span class="p-form-results__mark">✔</span>
-									<span class="p-form-results__message js-message"></span>
-								</li>
-								<li class="p-form-results__item -error js-error">
-									<span class="p-form-results__mark">⚠</span>
+								<li class="p-form-results__item">
+									<span class="p-form-results__mark">
+										<span class="c-form-result-mark -success js-success">✔</span>
+										<span class="c-form-result-mark -error js-error">⚠</span>
+									</span>
 									<span class="p-form-results__message js-message"></span>
 								</li>
 							</template>
@@ -330,19 +329,22 @@
 
 					<section class="p-section -hdg-a" id="clear">
 						<div class="p-section__hdg">
-							<h2>DSG のキャッシュクリア</h2>
+							<h2>キャッシュクリア</h2>
 						</div>
 
-						<p><button type="button" class="c-submit" id="clear-button">キャッシュクリア</button></p>
+						<form method="post" class="c-stack" id="clear-form">
+							<div class="c-form-controls -submit">
+								<p><button class="c-submit">クリア</button></p>
+							</div>
+						</form>
 
 						<ul class="p-form-results" hidden="">
 							<template id="clear-result">
-								<li class="p-form-results__item -success js-success">
-									<span class="p-form-results__mark">✔</span>
-									<span class="p-form-results__message js-message"></span>
-								</li>
-								<li class="p-form-results__item -error js-error">
-									<span class="p-form-results__mark">⚠</span>
+								<li class="p-form-results__item">
+									<span class="p-form-results__mark">
+										<span class="c-form-result-mark -success js-success">✔</span>
+										<span class="c-form-result-mark -error js-error">⚠</span>
+									</span>
 									<span class="p-form-results__message js-message"></span>
 								</li>
 							</template>

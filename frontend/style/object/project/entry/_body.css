@@ -2,20 +2,6 @@
  *   記事本体
  * ============================== */
 
-@keyframes entry-section-target {
-	0% {
-		background-color: var(--color-verylightred);
-	}
-
-	50% {
-		background-color: var(--color-verylightred);
-	}
-
-	100% {
-		background-color: transparent;
-	}
-}
-
 .p-entry__body {
 	padding: 30px var(--_entry-padding-block);
 }
