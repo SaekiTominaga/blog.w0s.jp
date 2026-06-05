@@ -1,4 +1,9 @@
 export const clear = (template: HTMLTemplateElement): void => {
+	const { parentElement } = template;
+	if (parentElement !== null) {
+		parentElement.hidden = true;
+	}
+
 	Array.from(template.parentNode?.children ?? [])
 		.filter((element) => element !== template)
 		.forEach((element) => {
@@ -11,4 +16,9 @@ export const update = (template: HTMLTemplateElement, templateFragment: HTMLElem
 	fragment.appendChild(templateFragment);
 
 	template.parentNode?.appendChild(fragment);
+
+	const { parentElement } = template;
+	if (parentElement !== null) {
+		parentElement.hidden = false;
+	}
 };

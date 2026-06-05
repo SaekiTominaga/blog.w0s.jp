@@ -109,6 +109,12 @@ const formSubmitHook = <T extends ApiPostData>(options: {
 	endpoint: string;
 	successMessageCallback?: (response: Readonly<T>) => string;
 }): void => {
+	const submitterStatus = (submitterElement: HTMLElement | null, status?: 'loading'): void => {
+		if (submitterElement !== null) {
+			submitterElement.dataset['status'] = status ?? '';
+		}
+	};
+
 	const error = (template: HTMLTemplateElement, message: string): void => {
 		const templateFragment = template.content.cloneNode(true) as HTMLElement;
 
@@ -138,21 +144,20 @@ const formSubmitHook = <T extends ApiPostData>(options: {
 	formElement.addEventListener('submit', (ev: SubmitEvent) => {
 		ev.preventDefault();
 
+		const targetElement = ev.target as HTMLFormElement;
+		const submitterElement = ev.submitter;
+
+		/* submit イベントを発生させた要素のステータスを変更 */
+		submitterStatus(submitterElement, 'loading');
+
 		/* いったんクリア */
 		templateClear(resultTemplate);
-
-		const targetElement = ev.target as HTMLFormElement;
 
 		fetch(options.endpoint, {
 			method: targetElement.method,
 			body: new FormData(targetElement),
 		})
 			.then(async (response) => {
-				const hiddenElement = resultTemplate.closest<HTMLElement>('[hidden]');
-				if (hiddenElement !== null) {
-					hiddenElement.hidden = false;
-				}
-
 				if (!response.ok) {
 					error(resultTemplate, `${String(response.status)} ${response.statusText}`.trim());
 					return;
@@ -184,8 +189,12 @@ const formSubmitHook = <T extends ApiPostData>(options: {
 					updateTemplate(resultTemplate, templateFragment);
 				});
 			})
-			.catch((e: unknown) => {
-				throw e;
+			.catch((err: unknown) => {
+				throw err;
+			})
+			.finally(() => {
+				/* submit イベントを発生させた要素のステータスをリセットする */
+				submitterStatus(submitterElement);
 			});
 	});
 };
