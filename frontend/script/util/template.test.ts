@@ -44,10 +44,7 @@ await test('update', () => {
 
 	assert.equal(templateParentChildren?.length, 1);
 
-	const fragment = document.createDocumentFragment();
-	fragment.appendChild(template.content.cloneNode(true));
-
-	update(template, fragment);
+	update(template, template.content.cloneNode(true) as HTMLElement);
 
 	assert.equal(templateParentChildren.length, 3);
 	assert.equal(templateParentChildren.item(0)?.tagName, 'TEMPLATE');

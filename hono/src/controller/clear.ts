@@ -7,7 +7,7 @@ import { clear } from '../process/dsg.ts';
 import { create as createFeed } from '../process/feed.ts';
 import { create as createNewlyJson } from '../process/newlyJson.ts';
 import { create as createSitemap } from '../process/sitemap.ts';
-import type { ClearProcess as ProcessResult, Clear as Result } from '../../../@types/api.d.ts';
+import type { Post as ApiResponse } from '../../../@types/api.d.ts';
 
 /**
  * Deferred Static Generation キャッシュクリア
@@ -22,7 +22,7 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 		createNewlyJson(),
 	]);
 
-	const results: ProcessResult[] = [];
+	const results: ApiResponse = [];
 
 	if (clearDSGResult.status === 'fulfilled') {
 		logger.info(`Modified date of DB was recorded: ${clearDSGResult.value.toString()}`);
@@ -56,7 +56,5 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 		results.push({ success: false, message: `${configProcess.newlyJson.processMessage.failure}: ${String(createNewlyJsonResult.reason)}` });
 	}
 
-	return context.json({
-		processes: results,
-	} as Result);
+	return context.json(results as ApiResponse);
 });

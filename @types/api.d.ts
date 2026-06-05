@@ -13,18 +13,16 @@ export type PreviewData = {
 };
 export type Preview = { data: PreviewData } | Error;
 
-/* メディア登録 */
-export type MediaUploadResult = {
+/* POST 送信の共通オブジェクト */
+export type PostData = {
 	success: boolean;
 	message: string;
+};
+export type Post = PostData[] | Error;
+
+/* メディア登録 */
+export type MediaUploadData = PostData & {
 	filename: string;
 	thumbnails?: string[];
 };
-export type MediaUpload = { results: MediaUploadResult[] } | Error;
-
-/* DSG のキャッシュクリア */
-export type ClearProcess = {
-	success: boolean;
-	message: string;
-};
-export type Clear = { processes: ClearProcess[] } | Error;
+export type MediaUpload = MediaUploadData[] | Error;

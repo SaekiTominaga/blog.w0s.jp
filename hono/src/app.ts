@@ -31,6 +31,12 @@ export interface Variables {
 
 const app = new Hono<{ Variables: Variables }>();
 
+/* Logger */
+app.use(async (context, next) => {
+	context.set('logger', getLogger(context.req.path.substring(1)));
+	await next();
+});
+
 /* Auth */
 const basicAuthHandler = await basicAuth({
 	authPath: `${env('ROOT')}/${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`,
@@ -166,12 +172,6 @@ app.use(
 		},
 	}),
 );
-
-/* Logger */
-app.use(async (context, next) => {
-	context.set('logger', getLogger(context.req.path.substring(1)));
-	await next();
-});
 
 /* Redirect */
 config.redirect.forEach((redirect) => {
