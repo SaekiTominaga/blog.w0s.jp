@@ -18,14 +18,16 @@ interface XSection extends Parent {
 }
 
 interface Options {
+	minDepth?: Heading['depth'];
 	maxDepth?: Heading['depth'];
 }
 
 const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
+	const minDepth = options?.minDepth ?? 1;
 	const maxDepth = options?.maxDepth ?? 6;
 
 	return (tree: Parent): void => {
-		for (let depth = 1; depth <= maxDepth; depth += 1) {
+		for (let depth = minDepth; depth <= maxDepth; depth += 1) {
 			visit(tree, 'x-heading', (node: XHeading, index: number | null, parent: Parent | null): boolean => {
 				if (index === null || parent === null) {
 					return CONTINUE;
