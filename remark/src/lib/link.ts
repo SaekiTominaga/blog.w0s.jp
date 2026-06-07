@@ -4,7 +4,7 @@ import config from '../config.ts';
 
 interface Icon {
 	fileName: string; // アイコンのファイル名
-	altText: string; // アイコンの代替テキスト
+	alt: string; // アイコンの代替テキスト
 }
 
 interface TypeInfo {
@@ -15,18 +15,23 @@ interface TypeInfo {
 type HostInfo = Icon | string;
 
 /**
- * リソースタイプによるアイコン情報を取得する
+ * リソースタイプ情報を取得
  *
  * @param url - リンク URL
  *
- * @returns リソースタイプによるアイコン情報
+ * @returns リソースタイプ情報
  */
 const getTypeInfo = (url: URL): TypeInfo | undefined => {
+	const { pathname } = url;
+
 	/* PDFアイコン */
-	if (url.pathname.endsWith('.pdf')) {
+	if (pathname.endsWith('.pdf')) {
 		return {
 			mimeType: 'application/pdf',
-			icon: { fileName: 'pdf.png', altText: 'PDF' },
+			icon: {
+				fileName: 'pdf.png',
+				alt: 'PDF',
+			},
 		};
 	}
 
@@ -34,32 +39,31 @@ const getTypeInfo = (url: URL): TypeInfo | undefined => {
 };
 
 /**
- * ホスト名によるアイコン情報を取得する
+ * ホスト情報を取得
  *
  * @param url - リンク URL
  * @param content - リンクテキスト
  *
- * @returns ホスト名によるアイコン情報
+ * @returns ホスト情報
  */
 const getHostInfo = (url: URL, content: string): HostInfo | undefined => {
-	/* 絶対 URL 表記でない場合はドメイン情報を記載 */
-	if (!new RegExp(`^${config.regexp.absoluteUrl}$`, 'v').test(content)) {
-		const host = url.hostname;
-
-		/* サイトアイコン */
-		const hostIconConfig = config.linkHostIcon.find((icon) => icon.host === host);
-		if (hostIconConfig !== undefined) {
-			return {
-				fileName: hostIconConfig.fileName,
-				altText: hostIconConfig.alt,
-			};
-		}
-
-		/* サイトアイコンがない場合はホスト名をテキストで表記 */
-		return host;
+	/* 絶対 URL 表記の場合は必要ない */
+	if (new RegExp(`^${config.regexp.absoluteUrl}$`, 'v').test(content)) {
+		return undefined;
 	}
 
-	return undefined;
+	const { hostname } = url;
+
+	/* 外部サイトアイコン */
+	const hostIcon = config.linkHostIcon.find((icon) => icon.host === hostname);
+	if (hostIcon !== undefined) {
+		return {
+			fileName: hostIcon.fileName,
+			alt: hostIcon.alt,
+		};
+	}
+
+	return hostname;
 };
 
 /**
@@ -76,6 +80,7 @@ const getInfo = (
 ):
 	| {
 			href: string; // `href` 属性値
+			external?: boolean; // 外部サイトか否か
 			type?: TypeInfo | undefined; // リソースタイプ
 			host?: HostInfo | undefined; // ホスト情報
 	  }
@@ -88,6 +93,7 @@ const getInfo = (
 			/* Amazon 商品ページ */
 			return {
 				href: `${mdPath}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+				external: true,
 				host: getHostInfo(url, mdContent),
 			};
 		}
@@ -95,6 +101,7 @@ const getInfo = (
 		return {
 			href: mdPath,
 			type: getTypeInfo(url),
+			external: !['w0s.jp', 'blog.w0s.jp'].includes(url.hostname),
 			host: getHostInfo(url, mdContent),
 		};
 	}
@@ -143,6 +150,7 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 			tagName: 'a',
 			properties: {
 				href: info?.href,
+				rel: info?.external ? 'external' : undefined,
 				type: info?.type?.mimeType,
 			},
 			children:
@@ -163,7 +171,7 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 			tagName: 'img',
 			properties: {
 				src: `/image/icon/${info.type.icon.fileName}`,
-				alt: `(${info.type.icon.altText})`,
+				alt: `(${info.type.icon.alt})`,
 				width: '16',
 				height: '16',
 				className: 'c-link-icon',
@@ -172,7 +180,7 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 		});
 	}
 
-	if (info?.host !== undefined) {
+	if (info?.external && info.host !== undefined) {
 		if (typeof info.host === 'string') {
 			elements.push({
 				type: 'element',
@@ -215,7 +223,7 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 						tagName: 'img',
 						properties: {
 							src: `/image/icon/${info.host.fileName}`,
-							alt: `(${info.host.altText})`,
+							alt: `(${info.host.alt})`,
 							width: '16',
 							height: '16',
 						},

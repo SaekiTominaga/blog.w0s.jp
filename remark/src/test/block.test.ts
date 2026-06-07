@@ -297,8 +297,8 @@ await test('link list', async (t) => {
 			),
 			`
 <ul class="p-links">
-	<li><a href="http://example.com">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li><a href="http://example.com">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
+	<li><a href="http://example.com" rel="external">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
+	<li><a href="http://example.com" rel="external">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
 </ul>
 `.trim(),
 		);
@@ -318,8 +318,8 @@ await test('link list', async (t) => {
 			),
 			`
 <ul class="p-list">
-	<li><a href="http://example.com">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li><a href="http://example.com">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
+	<li><a href="http://example.com" rel="external">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
+	<li><a href="http://example.com" rel="external">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
 	<li>list3</li>
 </ul>
 `.trim(),
@@ -490,7 +490,7 @@ await test('blockquote', async (t) => {
 <figure>
 	<blockquote class="p-quote"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta">
-		<span class="c-caption__text"><a href="http://example.com">http://example.com</a></span>
+		<span class="c-caption__text"><a href="http://example.com" rel="external">http://example.com</a></span>
 	</figcaption>
 </figure>
 `.trim(),
@@ -515,7 +515,7 @@ await test('blockquote', async (t) => {
 	<blockquote class="p-quote"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta">
 		<span class="c-caption__text"
-			><a href="https://www.amazon.co.jp/dp/1111111111/ref=nosim?tag=w0s.jp-22">text</a><small class="c-domain"><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" /></small
+			><a href="https://www.amazon.co.jp/dp/1111111111/ref=nosim?tag=w0s.jp-22" rel="external">text</a><small class="c-domain"><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" /></small
 		></span>
 	</figcaption>
 </figure>
@@ -583,7 +583,7 @@ await test('blockquote', async (t) => {
 <figure>
 	<blockquote class="p-quote" lang="en" cite="urn:ISBN:978-4-06-519981-7"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta">
-		<span class="c-caption__text"><a href="http://example.com">引用元</a><small class="c-domain">(<code>example.com</code>)</small></span>
+		<span class="c-caption__text"><a href="http://example.com" rel="external">引用元</a><small class="c-domain">(<code>example.com</code>)</small></span>
 	</figcaption>
 </figure>
 `.trim(),
