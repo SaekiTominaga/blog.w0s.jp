@@ -1,8 +1,7 @@
 import type { Element, ElementContent, Properties } from 'hast';
 import type { Blockquote } from 'mdast';
 import type { State } from 'mdast-util-to-hast';
-import { linkInfo } from '../../lib/hast.ts';
-import { getInfo as getLinkInfo } from '../../lib/link.ts';
+import { getLinkElements } from '../../lib/link.ts';
 import config from '../../config.ts';
 
 /**
@@ -80,48 +79,17 @@ export const xBlockquoteToHast = (state: State, node: XBlockquote): ElementConte
 		blockquoteAttribute['cite'] = `urn:ISBN:${metaIsbn}`;
 	}
 
-	const figcaptionChild: ElementContent[] = [];
-	if (metaText !== undefined) {
-		if (metaUrl !== undefined) {
-			/* URL とテキストが両方指定 */
-			const { href, typeIcon, hostIcon, hostText } = getLinkInfo(metaText, metaUrl);
-
-			figcaptionChild.push({
-				type: 'element',
-				tagName: 'a',
-				properties: {
-					href: href,
-				},
-				children: [
-					{
-						type: 'text',
-						value: metaText,
-					},
-				],
-			});
-			figcaptionChild.push(...linkInfo(typeIcon, hostIcon ?? hostText));
-		} else {
-			/* テキストのみ指定 */
-			figcaptionChild.push({
+	let figcaptionChild: ElementContent[] | undefined;
+	if (metaUrl !== undefined) {
+		figcaptionChild = getLinkElements(metaText ?? metaUrl, metaUrl);
+	} else if (metaText !== undefined) {
+		/* テキストのみ指定 */
+		figcaptionChild = [
+			{
 				type: 'text',
 				value: metaText,
-			});
-		}
-	} else if (metaUrl !== undefined) {
-		/* URL のみ指定 */
-		figcaptionChild.push({
-			type: 'element',
-			tagName: 'a',
-			properties: {
-				href: metaUrl,
 			},
-			children: [
-				{
-					type: 'text',
-					value: metaUrl,
-				},
-			],
-		});
+		];
 	}
 
 	const figureChild: Element[] = [];
@@ -131,7 +99,7 @@ export const xBlockquoteToHast = (state: State, node: XBlockquote): ElementConte
 		properties: blockquoteAttribute,
 		children: childElements,
 	});
-	if (figcaptionChild.length >= 1) {
+	if (figcaptionChild !== undefined) {
 		figureChild.push({
 			type: 'element',
 			tagName: 'figcaption',
