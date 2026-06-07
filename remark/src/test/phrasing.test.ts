@@ -49,7 +49,7 @@ await test('link', async (t) => {
 		const markdown = new Markdown();
 		assert.equal(
 			await format(await markdown.toHtml('text1[link1](https://example.com/foo.pdf)text2')),
-			'<p>text1<a href="https://example.com/foo.pdf">link1</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon" /><small class="c-domain">(<code>example.com</code>)</small>text2</p>'.trim(),
+			'<p>text1<a href="https://example.com/foo.pdf" type="application/pdf">link1</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon" /><small class="c-domain">(<code>example.com</code>)</small>text2</p>'.trim(),
 		);
 	});
 

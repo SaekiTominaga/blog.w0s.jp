@@ -7,6 +7,13 @@ interface Icon {
 	altText: string; // アイコンの代替テキスト
 }
 
+interface TypeInfo {
+	mimeType: string;
+	icon: Icon;
+}
+
+type HostInfo = Icon | string;
+
 /**
  * リソースタイプによるアイコン情報を取得する
  *
@@ -14,12 +21,12 @@ interface Icon {
  *
  * @returns リソースタイプによるアイコン情報
  */
-const getTypeInfo = (url: URL): Icon | undefined => {
+const getTypeInfo = (url: URL): TypeInfo | undefined => {
 	/* PDFアイコン */
 	if (url.pathname.endsWith('.pdf')) {
 		return {
-			fileName: 'pdf.png',
-			altText: 'PDF',
+			mimeType: 'application/pdf',
+			icon: { fileName: 'pdf.png', altText: 'PDF' },
 		};
 	}
 
@@ -34,7 +41,7 @@ const getTypeInfo = (url: URL): Icon | undefined => {
  *
  * @returns ホスト名によるアイコン情報
  */
-const getHostInfo = (url: URL, content: string): Icon | string | undefined => {
+const getHostInfo = (url: URL, content: string): HostInfo | undefined => {
 	/* 絶対 URL 表記でない場合はドメイン情報を記載 */
 	if (!new RegExp(`^${config.regexp.absoluteUrl}$`, 'v').test(content)) {
 		const host = url.hostname;
@@ -69,8 +76,8 @@ const getInfo = (
 ):
 	| {
 			href: string; // `href` 属性値
-			type?: Icon | undefined; // リソースタイプ
-			host?: string | Icon | undefined; // ホスト情報
+			type?: TypeInfo | undefined; // リソースタイプ
+			host?: HostInfo | undefined; // ホスト情報
 	  }
 	| undefined => {
 	/* 絶対 URL */
@@ -136,6 +143,7 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 			tagName: 'a',
 			properties: {
 				href: info?.href,
+				type: info?.type?.mimeType,
 			},
 			children:
 				typeof content === 'string'
@@ -154,8 +162,8 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 			type: 'element',
 			tagName: 'img',
 			properties: {
-				src: `/image/icon/${info.type.fileName}`,
-				alt: `(${info.type.altText})`,
+				src: `/image/icon/${info.type.icon.fileName}`,
+				alt: `(${info.type.icon.altText})`,
 				width: '16',
 				height: '16',
 				className: 'c-link-icon',
