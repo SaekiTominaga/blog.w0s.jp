@@ -1,24 +1,10 @@
+import type { ElementContent } from 'hast';
+import { toString } from 'mdast-util-to-string';
 import config from '../config.ts';
 
-export interface Icon {
+interface Icon {
 	fileName: string; // アイコンのファイル名
 	altText: string; // アイコンの代替テキスト
-}
-
-interface Info {
-	href?: string; // `href` 属性値
-	typeIcon?: Icon | undefined; // リソースタイプによるアイコン
-	hostIcon?: Icon | undefined; // ホスト名によるアイコン
-	hostText?: string | undefined; // ホスト名
-}
-
-interface TypeInfo {
-	typeIcon: Icon | undefined;
-}
-
-interface HostInfo {
-	hostIcon: Icon | undefined;
-	hostText: string | undefined;
 }
 
 /**
@@ -28,32 +14,27 @@ interface HostInfo {
  *
  * @returns リソースタイプによるアイコン情報
  */
-const getTypeInfo = (url: URL): TypeInfo => {
-	let typeIcon: Icon | undefined;
-
+const getTypeInfo = (url: URL): Icon | undefined => {
 	/* PDFアイコン */
 	if (url.pathname.endsWith('.pdf')) {
-		typeIcon = {
+		return {
 			fileName: 'pdf.png',
 			altText: 'PDF',
 		};
 	}
 
-	return { typeIcon: typeIcon };
+	return undefined;
 };
 
 /**
  * ホスト名によるアイコン情報を取得する
  *
- * @param content - リンクテキスト
  * @param url - リンク URL
+ * @param content - リンクテキスト
  *
  * @returns ホスト名によるアイコン情報
  */
-const getHostInfo = (content: string, url: URL): HostInfo => {
-	let hostIcon: Icon | undefined;
-	let hostText: string | undefined;
-
+const getHostInfo = (url: URL, content: string): Icon | string | undefined => {
 	/* 絶対 URL 表記でない場合はドメイン情報を記載 */
 	if (!new RegExp(`^${config.regexp.absoluteUrl}$`, 'v').test(content)) {
 		const host = url.hostname;
@@ -61,76 +42,181 @@ const getHostInfo = (content: string, url: URL): HostInfo => {
 		/* サイトアイコン */
 		const hostIconConfig = config.linkHostIcon.find((icon) => icon.host === host);
 		if (hostIconConfig !== undefined) {
-			hostIcon = {
+			return {
 				fileName: hostIconConfig.fileName,
 				altText: hostIconConfig.alt,
 			};
-		} else {
-			/* サイトアイコンがない場合はホスト名をテキストで表記 */
-			hostText = host;
 		}
+
+		/* サイトアイコンがない場合はホスト名をテキストで表記 */
+		return host;
 	}
 
-	return { hostIcon: hostIcon, hostText: hostText };
+	return undefined;
 };
 
 /**
- * リンクに付随する情報を取得する
+ * リンク情報を取得する
  *
  * @param mdContent - Markdown に書かれたリンクテキスト
- * @param mdUrl - Markdown に書かれた URL
+ * @param mdPath - Markdown に書かれたリンクパス
  *
- * @returns リンクに付随する情報
+ * @returns リンク情報
  */
-export const getInfo = (mdContent: string, mdUrl: string): Info => {
+const getInfo = (
+	mdContent: string,
+	mdPath: string,
+):
+	| {
+			href: string; // `href` 属性値
+			type?: Icon | undefined; // リソースタイプ
+			host?: string | Icon | undefined; // ホスト情報
+	  }
+	| undefined => {
 	/* 絶対 URL */
-	if (new RegExp(`^${config.regexp.absoluteUrl}$`, 'v').test(mdUrl)) {
-		const url = new URL(mdUrl);
+	if (new RegExp(`^${config.regexp.absoluteUrl}$`, 'v').test(mdPath)) {
+		const url = new URL(mdPath);
 
-		const { hostIcon, hostText } = getHostInfo(mdContent, url);
-
-		if (new RegExp(`^https://www.amazon.[a-z]+(.[a-z]+)?/dp/${config.regexp.asin}$`, 'v').test(mdUrl)) {
+		if (new RegExp(`^https://www.amazon.[a-z]+(.[a-z]+)?/dp/${config.regexp.asin}$`, 'v').test(mdPath)) {
 			/* Amazon 商品ページ */
 			return {
-				href: `${mdUrl}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
-				hostIcon: hostIcon,
-				hostText: hostText,
+				href: `${mdPath}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate.amazon.co.jp/help/node/topic/GP38PJ6EUR6PFBEC
+				host: getHostInfo(url, mdContent),
 			};
 		}
 
-		const { typeIcon } = getTypeInfo(url);
-
 		return {
-			href: mdUrl,
-			typeIcon: typeIcon,
-			hostIcon: hostIcon,
-			hostText: hostText,
+			href: mdPath,
+			type: getTypeInfo(url),
+			host: getHostInfo(url, mdContent),
 		};
 	}
 
 	/* 別記事へのリンク */
-	const entryMatchGroups = new RegExp(`^(?<entryId>${config.regexp.entryId}(#.+)?)$`, 'v').exec(mdUrl)?.groups;
+	const entryMatchGroups = new RegExp(`^(?<entryId>${config.regexp.entryId}(#.+)?)$`, 'v').exec(mdPath)?.groups;
 	if (entryMatchGroups !== undefined) {
 		const { entryId } = entryMatchGroups;
 
 		if (entryId !== undefined) {
 			return {
-				href: `/entry/${mdUrl}`,
+				href: `/entry/${mdPath}`,
 			};
 		}
 	}
 
 	/* ページ内リンク */
-	const pageLinkMatchGroups = /^#(?<id>.+)/v.exec(mdUrl)?.groups;
+	const pageLinkMatchGroups = /^#(?<id>.+)/v.exec(mdPath)?.groups;
 	if (pageLinkMatchGroups !== undefined) {
 		const { id } = pageLinkMatchGroups;
 
 		if (id !== undefined) {
 			return {
-				href: mdUrl,
+				href: mdPath,
 			};
 		}
 	}
 
-	return {};
+	return undefined;
+};
+
+/**
+ * リンク要素を組み立てる
+ *
+ * @param content - リンクテキスト
+ * @param mdPath - Markdown に書かれたパス
+ *
+ * @returns リンク要素
+ */
+export const getLinkElements = (content: Readonly<ElementContent>[] | string, mdPath: string): ElementContent[] => {
+	const info = getInfo(typeof content === 'string' ? content : toString(content), mdPath);
+
+	const elements: ElementContent[] = [
+		{
+			type: 'element',
+			tagName: 'a',
+			properties: {
+				href: info?.href,
+			},
+			children:
+				typeof content === 'string'
+					? [
+							{
+								type: 'text',
+								value: content,
+							},
+						]
+					: content,
+		},
+	];
+
+	if (info?.type !== undefined) {
+		elements.push({
+			type: 'element',
+			tagName: 'img',
+			properties: {
+				src: `/image/icon/${info.type.fileName}`,
+				alt: `(${info.type.altText})`,
+				width: '16',
+				height: '16',
+				className: 'c-link-icon',
+			},
+			children: [],
+		});
+	}
+
+	if (info?.host !== undefined) {
+		if (typeof info.host === 'string') {
+			elements.push({
+				type: 'element',
+				tagName: 'small',
+				properties: {
+					className: 'c-domain',
+				},
+				children: [
+					{
+						type: 'text',
+						value: '(',
+					},
+					{
+						type: 'element',
+						tagName: 'code',
+						properties: {},
+						children: [
+							{
+								type: 'text',
+								value: info.host,
+							},
+						],
+					},
+					{
+						type: 'text',
+						value: ')',
+					},
+				],
+			});
+		} else {
+			elements.push({
+				type: 'element',
+				tagName: 'small',
+				properties: {
+					className: 'c-domain',
+				},
+				children: [
+					{
+						type: 'element',
+						tagName: 'img',
+						properties: {
+							src: `/image/icon/${info.host.fileName}`,
+							alt: `(${info.host.altText})`,
+							width: '16',
+							height: '16',
+						},
+						children: [],
+					},
+				],
+			});
+		}
+	}
+
+	return elements;
 };

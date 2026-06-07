@@ -1,8 +1,7 @@
 import type { Element, ElementContent, Properties } from 'hast';
 import type { Blockquote } from 'mdast';
 import type { State } from 'mdast-util-to-hast';
-import { linkInfo } from '../../lib/hast.ts';
-import { getInfo as getLinkInfo } from '../../lib/link.ts';
+import { getLinkElements } from '../../lib/link.ts';
 import config from '../../config.ts';
 
 /**
@@ -84,22 +83,7 @@ export const xBlockquoteToHast = (state: State, node: XBlockquote): ElementConte
 	if (metaText !== undefined) {
 		if (metaUrl !== undefined) {
 			/* URL とテキストが両方指定 */
-			const { href, typeIcon, hostIcon, hostText } = getLinkInfo(metaText, metaUrl);
-
-			figcaptionChild.push({
-				type: 'element',
-				tagName: 'a',
-				properties: {
-					href: href,
-				},
-				children: [
-					{
-						type: 'text',
-						value: metaText,
-					},
-				],
-			});
-			figcaptionChild.push(...linkInfo(typeIcon, hostIcon ?? hostText));
+			figcaptionChild.push(...getLinkElements(metaText, metaUrl));
 		} else {
 			/* テキストのみ指定 */
 			figcaptionChild.push({
