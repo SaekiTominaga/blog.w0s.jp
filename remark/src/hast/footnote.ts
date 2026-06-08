@@ -1,22 +1,45 @@
-import type { ElementContent, Root } from 'hast';
+import type { Root } from 'hast';
 import { select, selectAll } from 'hast-util-select';
 import type { Plugin } from 'unified';
 
 /**
  * 脚注
+ *
+ * <section data-footnotes="" class="footnotes">
+ * 	<h2 class="sr-only" id="footnote-label">Footnotes</h2>
+ * 	<ol>
+ * 		<li id="fn-1">
+ * 			<p>Footnote text. <a href="#fnref-1" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+ * 		</li>
+ * 	</ol>
+ * </section>
+ *
+ * ↓
+ *
+ * <section class="p-footnote">
+ * 	<h2 class="p-footnote__hdg">脚注</h2>
+ * 	<ul class="p-footnote__list">
+ * 		<li>
+ * 			<span class="p-footnote__no">1.</span>
+ * 			<div id="fn-1" class="p-footnote__content">
+ * 				<p>Footnote text. <a href="#fnref-1" class="p-footnote__backref">↩ 戻る</a></p>
+ * 			</div>
+ * 		</li>
+ * 	</ul>
+ * </section>
  */
 
 const hast: Plugin<[], Root> = () => {
 	return (tree: Root): void => {
-		const footnote = select('[data-footnotes]', tree);
-		if (footnote === undefined) {
+		const section = select('[data-footnotes]', tree);
+		if (section === undefined) {
 			return;
 		}
-		footnote.properties = {
+		section.properties = {
 			className: ['p-footnote'],
 		};
 
-		const heading = select('#footnote-label', footnote);
+		const heading = select('#footnote-label', section);
 		if (heading !== undefined) {
 			heading.properties = {
 				className: ['p-footnote__hdg'],
@@ -29,81 +52,58 @@ const hast: Plugin<[], Root> = () => {
 			];
 		}
 
-		const list = select(':scope > ol', footnote);
-		if (list === undefined) {
-			return;
+		const list = select(':scope > ol', section);
+		if (list !== undefined) {
+			list.tagName = 'ul';
+			list.properties = {
+				className: ['p-footnote__list'],
+			};
 		}
-		list.tagName = 'ul';
-		list.properties = {
-			className: ['p-footnote__list'],
-		};
 
 		selectAll(':scope > li', list).forEach((listItem, index) => {
-			const { id } = listItem.properties;
+			const { children, properties } = listItem;
+			const { id } = properties;
+
 			listItem.properties = {};
-
-			listItem.children.splice(1, 0, {
-				type: 'element',
-				tagName: 'span',
-				properties: {
-					className: ['p-footnote__no'],
-				},
-				children: [
-					{
-						type: 'text',
-						value: `${String(index + 1)}.`,
-					},
-				],
-			});
-
-			const content = select(':scope > p', listItem);
-			if (content !== undefined) {
-				content.properties = {
-					className: ['p-footnote__content'],
-				};
-
-				const contentChildren: ElementContent[] = [];
-				contentChildren.push({
+			listItem.children = [
+				{
 					type: 'element',
 					tagName: 'span',
 					properties: {
-						id: id,
+						className: ['p-footnote__no'],
 					},
-					children: content.children,
-				});
-				contentChildren.push({
-					type: 'text',
-					value: ' ',
-				});
-
-				const backref = select(':scope > [data-footnote-backref]', content);
-				if (backref !== undefined) {
-					const { href } = backref.properties;
-
-					contentChildren.push({
-						type: 'element',
-						tagName: 'a',
-						properties: {
-							href: href,
-							className: ['p-footnote__backref'],
+					children: [
+						{
+							type: 'text',
+							value: `${String(index + 1)}.`,
 						},
-						children: [
-							{
-								type: 'text',
-								value: '↩ 戻る',
-							},
-						],
-					});
+					],
+				},
+				{
+					type: 'element',
+					tagName: 'div',
+					properties: {
+						id: id,
+						className: ['p-footnote__content'],
+					},
+					children: children,
+				},
+			];
 
-					content.children.splice(content.children.indexOf(backref), 1);
+			const backref = select('[data-footnote-backref]', listItem);
+			if (backref !== undefined) {
+				const { href } = backref.properties;
 
-					const lastChild = content.children.at(-1);
-					if (lastChild?.type === 'text') {
-						lastChild.value = lastChild.value.trim(); // content.children の末尾の [data-footnote-backref] の前にある空白文字を削除する
-					}
-				}
-
-				content.children = contentChildren;
+				backref.properties = {
+					href: href,
+					className: ['p-footnote__backref'],
+				};
+				backref.children = [
+					{
+						type: 'text',
+						value: '↩ 戻る',
+					},
+				];
 			}
 		});
 	};

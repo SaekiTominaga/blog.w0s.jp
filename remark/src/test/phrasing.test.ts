@@ -98,7 +98,7 @@ text[^1]text
 				),
 			),
 			`<p>
-	text<span class="c-footnote-ref"><a href="#fn-1" id="fnref-1" class="js-footnote-reference-popover" data-popover-label="脚注" data-popover-class="p-footnote-popover" data-popover-hide-text="閉じる" data-popover-hide-image-src="/image/footnote-popover-close.svg" data-popover-hide-image-width="24" data-popover-hide-image-height="24">[1]</a></span
+	text<span class="c-footnote-ref"><a href="#fn-1" id="fnref-1" class="js-footnote-reference-popover" data-ignore=".p-footnote__backref" data-popover-label="脚注" data-popover-class="p-footnote-popover" data-popover-hide-text="閉じる" data-popover-hide-image-src="/image/footnote-popover-close.svg" data-popover-hide-image-width="24" data-popover-hide-image-height="24">[1]</a></span
 	>text
 </p>
 <section class="p-footnote">
@@ -106,7 +106,9 @@ text[^1]text
 	<ul class="p-footnote__list">
 		<li>
 			<span class="p-footnote__no">1.</span>
-			<p class="p-footnote__content"><span id="fn-1">ref1</span> <a href="#fnref-1" class="p-footnote__backref">↩ 戻る</a></p>
+			<div id="fn-1" class="p-footnote__content">
+				<p>ref1 <a href="#fnref-1" class="p-footnote__backref">↩ 戻る</a></p>
+			</div>
 		</li>
 	</ul>
 </section>`,

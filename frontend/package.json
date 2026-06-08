@@ -24,7 +24,7 @@
 		"@w0s/base.css": "1.4.0",
 		"@w0s/button-clipboard": "3.0.6",
 		"@w0s/file-size-format": "4.0.0",
-		"@w0s/footnote-reference-popover": "7.3.3",
+		"@w0s/footnote-reference-popover": "7.4.0",
 		"@w0s/form-before-unload-confirm": "3.0.3",
 		"@w0s/form-submit-overlay": "4.0.4",
 		"@w0s/html-escape": "5.0.0",

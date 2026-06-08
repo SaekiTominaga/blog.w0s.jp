@@ -210,6 +210,9 @@
 }
 
 .p-footnote__backref {
-	margin-inline-start: 0.5em;
 	font-size: calc(100% / pow(var(--font-ratio), 2));
+
+	&:not(.p-footnote__content > &) {
+		margin-inline-start: 0.5em;
+	}
 }
