@@ -97,6 +97,7 @@
 				border-block-start: var(--_icon-block-size) solid var(--_icon-color);
 				clip-path: var(--_icon-clip-path);
 				inline-size: var(--_icon-inline-size);
+				vertical-align: calc((1cap - var(--_icon-block-size)) / 2);
 				content: "";
 			}
 		}
