@@ -55,8 +55,9 @@ text
 			),
 			`
 <p>text</p>
-<nav aria-label="目次" class="p-toc">
-	<ul>
+<nav class="p-toc" aria-labelledby="toc">
+	<h2 id="toc">目次</h2>
+	<ul class="p-toc__list">
 		<li><a href="#%E8%A6%8B%E5%87%BA%E3%81%972">見出し2</a></li>
 		<li>
 			<a href="#%E8%A6%8B%E5%87%BA%E3%81%972-1">見出し<em>2</em></a>
