@@ -7,15 +7,19 @@ import { clear } from '../process/dsg.ts';
 import { create as createFeed } from '../process/feed.ts';
 import { create as createNewlyJson } from '../process/newlyJson.ts';
 import { create as createSitemap } from '../process/sitemap.ts';
+import { form as validatorForm } from '../validator/clear.ts';
 import type { Post as ApiResponse } from '../../../@types/api.d.ts';
 
 /**
- * Deferred Static Generation キャッシュクリア
+ * キャッシュクリア
  */
-export const clearApp = new Hono<{ Variables: Variables }>().post(async (context) => {
+export const clearApp = new Hono<{ Variables: Variables }>().post(validatorForm, async (context) => {
+	const { req } = context;
 	const logger = context.get('logger');
 
-	const [clearDSGResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.allSettled([
+	const { response } = req.valid('form');
+
+	const [clearResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.allSettled([
 		clear(),
 		createFeed(),
 		createSitemap(),
@@ -24,12 +28,12 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 
 	const results: ApiResponse = [];
 
-	if (clearDSGResult.status === 'fulfilled') {
-		logger.info(`Modified date of DB was recorded: ${clearDSGResult.value.toString()}`);
-		results.push({ success: true, message: `${configProcess.dsg.processMessage.success} <${dayjs(clearDSGResult.value).format('HH:mm:ss')}>` });
+	if (clearResult.status === 'fulfilled') {
+		logger.info(`Modified date of DB was recorded: ${clearResult.value.toString()}`);
+		results.push({ success: true, message: `${configProcess.dsg.processMessage.success} <${dayjs(clearResult.value).format('HH:mm:ss')}>` });
 	} else {
-		logger.error(clearDSGResult.reason);
-		results.push({ success: false, message: `${configProcess.dsg.processMessage.failure}: ${String(clearDSGResult.reason)}` });
+		logger.error(clearResult.reason);
+		results.push({ success: false, message: `${configProcess.dsg.processMessage.failure}: ${String(clearResult.reason)}` });
 	}
 
 	if (createFeedResult.status === 'fulfilled') {
@@ -54,6 +58,10 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 	} else {
 		logger.error(createNewlyJsonResult.reason);
 		results.push({ success: false, message: `${configProcess.newlyJson.processMessage.failure}: ${String(createNewlyJsonResult.reason)}` });
+	}
+
+	if (response === 'text') {
+		return context.text(results.map((result) => `${result.success ? '✅' : '❌'} ${result.message}`).join('\n'));
 	}
 
 	return context.json(results as ApiResponse);
