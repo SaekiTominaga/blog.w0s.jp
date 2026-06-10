@@ -61,7 +61,7 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 	}
 
 	if (response === 'text') {
-		return context.text(results.map((result) => `${result.success ? '✅' : '❌'} ${result.message}`).join('\n'));
+		return context.text(`${results.map((result) => `${result.success ? '✅' : '❌'} ${result.message}`).join('\n')}\n\n`);
 	}
 
 	return context.json(results as ApiResponse);
