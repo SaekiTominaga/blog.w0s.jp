@@ -30,10 +30,6 @@
 	--color-bg-light: #eee;
 	--color-bg-dark: #ddd;
 	--color-note: #960;
-	--color-amazon: hsl(30deg 100% 87%);
-	--color-amazon-light: hsl(30deg 100% 92%);
-	--color-amazon-dark: hsl(30deg 100% 84%);
-	--color-amazon-verydark: hsl(30deg 100% 60%);
 
 	/* ===== フォント ===== */
 	--font-ratio: 1.12;
