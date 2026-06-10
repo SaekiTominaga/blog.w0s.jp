@@ -73,9 +73,7 @@ export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validato
 	const { req } = context;
 	const logger = context.get('logger');
 
-	const requestBody = req.valid('form');
-
-	const { files, overwrite } = requestBody;
+	const { files, overwrite } = req.valid('form');
 
 	const fileResults = await Promise.all(
 		files.map(async (file): Promise<ApiResponseData> => {

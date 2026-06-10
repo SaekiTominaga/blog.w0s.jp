@@ -1,6 +1,6 @@
 import { strict as assert } from 'node:assert';
 import fs from 'node:fs';
-import { after, before, test } from 'node:test';
+import { after, test } from 'node:test';
 import sharp from 'sharp';
 import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
@@ -161,9 +161,7 @@ await test('image', async (t) => {
 		const fileName = `${fileNamePrefix}0001.jpg`;
 		const filePath = `${env('ROOT')}/${configProcess.media.image.dir}/${fileName}`;
 
-		before(async () => {
-			await fs.promises.writeFile(filePath, '1234');
-		});
+		await fs.promises.writeFile(filePath, '1234');
 
 		const formData = new FormData();
 		formData.append('files', new File([], fileName, { type: 'image/foo' }));
