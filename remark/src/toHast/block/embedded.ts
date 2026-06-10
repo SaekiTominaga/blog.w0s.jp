@@ -334,16 +334,8 @@ export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): Ele
 				},
 				children: [
 					{
-						type: 'element',
-						tagName: 'img',
-						properties: {
-							src: '/image/amazon-buy.png',
-							srcset: '/image/amazon-buy@2x.png 2x',
-							alt: 'Amazon で買う',
-							width: '127',
-							height: '26',
-						},
-						children: [],
+						type: 'text',
+						value: 'Amazonで買う',
 					},
 				],
 			},
