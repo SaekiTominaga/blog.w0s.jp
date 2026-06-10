@@ -21,15 +21,15 @@ await test('Text', async (t) => {
 await test('link', async (t) => {
 	await t.test('internal', async () => {
 		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('[link1](https://w0s.jp/)')), '<p><a href="https://w0s.jp/">link1</a></p>');
+		assert.equal(await format(await markdown.toHtml('[link1](https://w0s.jp/)text')), '<p><a href="https://w0s.jp/">link1</a>text</p>');
 	});
 
 	await t.test('icon', async () => {
 		const markdown = new Markdown();
 		assert.equal(
-			await format(await markdown.toHtml('[link1](https://github.com/)')),
+			await format(await markdown.toHtml('[link1](https://github.com/)text')),
 			`<p>
-	<a href="https://github.com/" rel="external">link1</a><small class="c-domain"><img src="/image/icon/github.svg" alt="(GitHub)" width="16" height="16" /></small>
+	<a href="https://github.com/" rel="external">link1</a><small class="c-domain"><img src="/image/icon/github.svg" alt="(GitHub)" width="16" height="16" /></small>text
 </p>`,
 		);
 	});
@@ -37,50 +37,50 @@ await test('link', async (t) => {
 	await t.test('URL &', async () => {
 		const markdown = new Markdown();
 		assert.equal(
-			await format(await markdown.toHtml('[link1](https://example.com/?foo=hoge&bar=piyo)')),
-			'<p><a href="https://example.com/?foo=hoge&amp;bar=piyo" rel="external">link1</a><small class="c-domain">(<code>example.com</code>)</small></p>',
+			await format(await markdown.toHtml('[link1](https://example.com/?foo=hoge&bar=piyo)text')),
+			'<p><a href="https://example.com/?foo=hoge&amp;bar=piyo" rel="external">link1</a><small class="c-domain">(<code>example.com</code>)</small>text</p>',
 		);
 	});
 
 	await t.test('URL text (no icon)', async () => {
 		const markdown = new Markdown();
 		assert.equal(
-			await format(await markdown.toHtml('[https://example.com/](https://example.com/)')),
-			'<p><a href="https://example.com/" rel="external">https://example.com/</a></p>',
+			await format(await markdown.toHtml('[https://example.com/](https://example.com/)text')),
+			'<p><a href="https://example.com/" rel="external">https://example.com/</a>text</p>',
 		);
 	});
 
 	await t.test('PDF', async () => {
 		const markdown = new Markdown();
 		assert.equal(
-			await format(await markdown.toHtml('[link1](https://example.com/foo.pdf)')),
-			'<p><a href="https://example.com/foo.pdf" rel="external" type="application/pdf">link1</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon" /><small class="c-domain">(<code>example.com</code>)</small></p>',
+			await format(await markdown.toHtml('[link1](https://example.com/foo.pdf)text')),
+			'<p><a href="https://example.com/foo.pdf" rel="external" type="application/pdf">link1</a><img src="/image/icon/pdf.png" alt="(PDF)" width="16" height="16" class="c-link-icon" /><small class="c-domain">(<code>example.com</code>)</small>text</p>',
 		);
 	});
 
 	await t.test('entry ID', async () => {
 		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('[link1](1)')), '<p><a href="/entry/1">link1</a></p>');
+		assert.equal(await format(await markdown.toHtml('[link1](1)text')), '<p><a href="/entry/1">link1</a>text</p>');
 	});
 
 	await t.test('amazon', async () => {
 		const markdown = new Markdown();
 		assert.equal(
-			await format(await markdown.toHtml('[link1](https://www.amazon.co.jp/dp/4065199816)')),
+			await format(await markdown.toHtml('[link1](https://www.amazon.co.jp/dp/4065199816)text')),
 			`<p>
-	<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=w0s.jp-22" rel="external">link1</a><small class="c-domain"><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" /></small>
+	<a href="https://www.amazon.co.jp/dp/4065199816/ref=nosim?tag=w0s.jp-22" rel="external">link1</a><small class="c-domain"><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" /></small>text
 </p>`,
 		);
 	});
 
 	await t.test('section', async () => {
 		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('[link1](#section-1)')), '<p><a href="#section-1">link1</a></p>');
+		assert.equal(await format(await markdown.toHtml('[link1](#section-1)text')), '<p><a href="#section-1">link1</a>text</p>');
 	});
 
 	await t.test('invalid', async () => {
 		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('[link1](foo)')), '<p><a>link1</a></p>');
+		assert.equal(await format(await markdown.toHtml('[link1](foo)text')), '<p><a>link1</a>text</p>');
 	});
 });
 

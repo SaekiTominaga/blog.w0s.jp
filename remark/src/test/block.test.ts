@@ -284,50 +284,6 @@ await test('ordered list', async (t) => {
 	});
 });
 
-await test('link list', async (t) => {
-	await t.test('normal', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- [list1](http://example.com) text
-- [list2](http://example.com) text
-`,
-				),
-			),
-			`
-<ul class="p-links">
-	<li><a href="http://example.com" rel="external">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li><a href="http://example.com" rel="external">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-</ul>
-`.trim(),
-		);
-	});
-
-	await t.test('mix', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- [list1](http://example.com) text
-- [list2](http://example.com) text
-- list3
-`,
-				),
-			),
-			`
-<ul class="p-list">
-	<li><a href="http://example.com" rel="external">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li><a href="http://example.com" rel="external">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li>list3</li>
-</ul>
-`.trim(),
-		);
-	});
-});
-
 await test('definition list', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
@@ -984,6 +940,14 @@ text1
 `.trim(),
 		);
 	});
+});
+
+await test('Link', async () => {
+	const markdown = new Markdown();
+	assert.equal(
+		await format(await markdown.toHtml('[link](http://example.com)')),
+		'<p class="p-link"><a href="http://example.com" rel="external">link</a><small class="c-domain">(<code>example.com</code>)</small></p>'.trim(),
+	);
 });
 
 await test('Note', async (t) => {
