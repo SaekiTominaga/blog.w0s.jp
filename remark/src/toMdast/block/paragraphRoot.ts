@@ -1,4 +1,4 @@
-import type { Paragraph, PhrasingContent, Root } from 'mdast';
+import type { Link, Paragraph, PhrasingContent, Root } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
@@ -28,7 +28,7 @@ const nameEmbeddedAmazon = 'x-embedded-amazon';
 
 interface XLink extends Parent {
 	type: typeof nameLink;
-	children: PhrasingContent[];
+	children: Link[];
 }
 
 interface XNote extends Parent {
@@ -68,10 +68,10 @@ interface XEmbeddedAmazon extends Node {
 const parseLink = (node: Readonly<Paragraph>): XLink | null => {
 	const { children } = node;
 
-	if (children.length === 1 && children.at(0)?.type === 'link') {
+	if (children.every((child) => child.type === 'link' || (child.type === 'text' && child.value === '\n'))) {
 		return {
 			type: nameLink,
-			children: children,
+			children: children.filter((child) => child.type === 'link'),
 		};
 	}
 

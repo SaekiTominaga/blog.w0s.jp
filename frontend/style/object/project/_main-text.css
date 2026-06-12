@@ -13,7 +13,11 @@
 	margin-inline-start: calc((var(--_icon-inline-size) + var(--_icon-gap)) * pow(var(--font-ratio), 2));
 	line-height: var(--line-height-normal);
 
-	& > a {
+	& > p + p {
+		margin-block-start: 1em;
+	}
+
+	& a {
 		margin-inline-start: calc(0px - var(--_icon-inline-size) - var(--_icon-gap));
 
 		&::before {
@@ -27,7 +31,7 @@
 		}
 	}
 
-	& > :any-link {
+	& :any-link {
 		--_icon-color: var(--link-color-bullet);
 
 		outline-offset: var(--outline-offset-linkonly);
@@ -35,10 +39,6 @@
 		&:hover {
 			--_icon-color: var(--link-color-hover);
 		}
-	}
-
-	.p-entry & + & {
-		margin-block-start: 1em;
 	}
 }
 
