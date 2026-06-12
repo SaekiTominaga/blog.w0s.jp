@@ -284,50 +284,6 @@ await test('ordered list', async (t) => {
 	});
 });
 
-await test('link list', async (t) => {
-	await t.test('normal', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- [list1](http://example.com) text
-- [list2](http://example.com) text
-`,
-				),
-			),
-			`
-<ul class="p-links">
-	<li><a href="http://example.com" rel="external">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li><a href="http://example.com" rel="external">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-</ul>
-`.trim(),
-		);
-	});
-
-	await t.test('mix', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- [list1](http://example.com) text
-- [list2](http://example.com) text
-- list3
-`,
-				),
-			),
-			`
-<ul class="p-list">
-	<li><a href="http://example.com" rel="external">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li><a href="http://example.com" rel="external">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li>list3</li>
-</ul>
-`.trim(),
-		);
-	});
-});
-
 await test('definition list', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
@@ -981,6 +937,33 @@ text1
 			),
 			`
 <p>:::normal text1</p>
+`.trim(),
+		);
+	});
+});
+
+await test('Link', async (t) => {
+	await t.test('single', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(await markdown.toHtml('[link](http://example.com)')),
+			`
+<div class="p-link">
+	<p><a href="http://example.com" rel="external">link</a><small class="c-domain">(<code>example.com</code>)</small></p>
+</div>
+`.trim(),
+		);
+	});
+
+	await t.test('multi', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(await markdown.toHtml('[link](http://example.com)\n[link](http://example.com)')),
+			`
+<div class="p-link">
+	<p><a href="http://example.com" rel="external">link</a><small class="c-domain">(<code>example.com</code>)</small></p>
+	<p><a href="http://example.com" rel="external">link</a><small class="c-domain">(<code>example.com</code>)</small></p>
+</div>
 `.trim(),
 		);
 	});

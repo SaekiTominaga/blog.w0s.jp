@@ -2,7 +2,47 @@
  *   汎用テキスト
  * ============================== */
 
-/* ===== 注釈リスト ===== */
+/* ===== リンク ===== */
+.p-link {
+	--_icon-clip-path: var(--shape-link-triangle);
+	--_icon-block-size: 0.75em;
+	--_icon-inline-size: calc(var(--_icon-block-size) * 0.6);
+	--_icon-color: var(--color-gray);
+	--_icon-gap: 0.5em;
+
+	margin-inline-start: calc((var(--_icon-inline-size) + var(--_icon-gap)) * pow(var(--font-ratio), 2));
+	line-height: var(--line-height-normal);
+
+	& > p + p {
+		margin-block-start: 1em;
+	}
+
+	& a {
+		margin-inline-start: calc(0px - var(--_icon-inline-size) - var(--_icon-gap));
+
+		&::before {
+			display: inline flow-root;
+			margin-inline-end: var(--_icon-gap);
+			border-block-start: var(--_icon-block-size) solid var(--_icon-color);
+			clip-path: var(--_icon-clip-path);
+			inline-size: var(--_icon-inline-size);
+			vertical-align: calc((1cap - var(--_icon-block-size)) / 2);
+			content: "";
+		}
+	}
+
+	& :any-link {
+		--_icon-color: var(--link-color-bullet);
+
+		outline-offset: var(--outline-offset-linkonly);
+
+		&:hover {
+			--_icon-color: var(--link-color-hover);
+		}
+	}
+}
+
+/* ===== 注釈 ===== */
 .p-note {
 	display: block grid;
 	grid-template-columns: auto 1fr;

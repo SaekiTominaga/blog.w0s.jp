@@ -1,4 +1,4 @@
-import type { Paragraph, PhrasingContent, Root } from 'mdast';
+import type { Link, Paragraph, PhrasingContent, Root } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
@@ -19,11 +19,17 @@ export interface AmazonImage {
 	dimensions: Dimensions | undefined;
 }
 
+const nameLink = 'x-link';
 const nameNote = 'x-note';
 const nameInsert = 'x-insert';
 const nameEmbeddedMedia = 'x-embedded-media';
 const nameEmbeddedYouTube = 'x-embedded-youtube';
 const nameEmbeddedAmazon = 'x-embedded-amazon';
+
+interface XLink extends Parent {
+	type: typeof nameLink;
+	children: Link[];
+}
 
 interface XNote extends Parent {
 	type: typeof nameNote;
@@ -58,6 +64,19 @@ interface XEmbeddedAmazon extends Node {
 	title: string;
 	image: AmazonImage | undefined;
 }
+
+const parseLink = (node: Readonly<Paragraph>): XLink | null => {
+	const { children } = node;
+
+	if (children.every((child) => child.type === 'link' || (child.type === 'text' && child.value === '\n'))) {
+		return {
+			type: nameLink,
+			children: children.filter((child) => child.type === 'link'),
+		};
+	}
+
+	return null;
+};
 
 const parseNote = (node: Readonly<Paragraph>, firstChildValue: string): XNote | null => {
 	const NOTE_PREFIX = 'note: ';
@@ -279,27 +298,31 @@ const toMdast: Plugin<[], Root> = () => {
 				return CONTINUE;
 			}
 
+			const parsedLink = parseLink(node);
+			if (parsedLink !== null) {
+				parent.children.splice(index, 1, parsedLink);
+				return CONTINUE;
+			}
+
 			const firstChildContent = node.children.at(0);
-			if (firstChildContent?.type !== 'text') {
-				return CONTINUE;
-			}
+			if (firstChildContent?.type === 'text') {
+				const parsedNote = parseNote(node, firstChildContent.value);
+				if (parsedNote !== null) {
+					parent.children.splice(index, 1, parsedNote);
+					return CONTINUE;
+				}
 
-			const parsedNote = parseNote(node, firstChildContent.value);
-			if (parsedNote !== null) {
-				parent.children.splice(index, 1, parsedNote);
-				return CONTINUE;
-			}
+				const parsedInsert = parseInsert(node, firstChildContent.value);
+				if (parsedInsert !== null) {
+					parent.children.splice(index, 1, parsedInsert);
+					return CONTINUE;
+				}
 
-			const parsedInsert = parseInsert(node, firstChildContent.value);
-			if (parsedInsert !== null) {
-				parent.children.splice(index, 1, parsedInsert);
-				return CONTINUE;
-			}
-
-			const parsedEmbedded = parseEmbedded(node, firstChildContent.value);
-			if (parsedEmbedded !== null) {
-				parent.children.splice(index, 1, parsedEmbedded);
-				return CONTINUE;
+				const parsedEmbedded = parseEmbedded(node, firstChildContent.value);
+				if (parsedEmbedded !== null) {
+					parent.children.splice(index, 1, parsedEmbedded);
+					return CONTINUE;
+				}
 			}
 
 			return CONTINUE;

@@ -55,6 +55,7 @@ import { xHeadingToHast } from './toHast/block/heading.ts';
 import { xInsertToHast } from './toHast/block/insert.ts';
 import { listToHast } from './toHast/block/list.ts';
 import { xNoteToHast } from './toHast/block/note.ts';
+import { linkToHast as blockLinkToHast } from './toHast/block/link.ts';
 import { xSectionToHast } from './toHast/block/section.ts';
 import { tableToHast } from './toHast/block/table.ts';
 import { xTocToHast } from './toHast/block/toc.ts';
@@ -187,6 +188,7 @@ export default class Markdown {
 				'x-embedded-youtube': xEmbeddedYouTubeToHast,
 				'x-heading': xHeadingToHast,
 				'x-insert': xInsertToHast,
+				'x-link': blockLinkToHast,
 				'x-note': xNoteToHast,
 				'x-section': xSectionToHast,
 				'x-table': tableToHast,
