@@ -78,11 +78,17 @@
 							<%_ } _%>
 							<%_ if (postResults.length > 0) { _%>
 							<ul class="p-form-results">
-								<%_ for (const result of postResults) { _%><%_ if (result.success) { _%>
-								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<%_ } else { _%>
-								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<%_ } _%>
+								<%_ for (const result of postResults) { _%>
+								<li class="p-form-results__item">
+									<span class="p-form-results__mark">
+										<%_ if (result.success) { _%>
+										<span class="c-form-result-mark -success">✔</span>
+										<%_ } else { _%>
+										<span class="c-form-result-mark -error">⚠</span>
+										<%_ } _%>
+									</span>
+									<span class="p-form-results__message"><%= result.message %></span>
+								</li>
 								<%_ } _%>
 							</ul>
 							<%_ } _%>
