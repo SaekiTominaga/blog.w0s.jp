@@ -61,6 +61,10 @@
 	grid-area: legend;
 	font-size: calc(100% / pow(var(--font-ratio), 1));
 	font-weight: var(--font-weight-bold);
+
+	& small {
+		font-weight: var(--font-weight-normal);
+	}
 }
 
 .p-header-search__ctrl {
