@@ -120,7 +120,7 @@
 		color: var(--color-darkgray);
 
 		&:hover {
-			text-shadow: oklch(from currentColor l c h / 25%) 0 0 0.05em;
+			text-shadow: 0 0 0.05em oklch(from currentColor l c h / 25%);
 		}
 	}
 }

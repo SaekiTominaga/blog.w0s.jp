@@ -11,7 +11,7 @@
 
 /* サイト名 */
 .p-header-site__name {
-	text-shadow: var(--color-border-light) 0.05em 0.05em 0.1em;
+	text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
 	line-height: var(--line-height-narrow);
 	color: var(--color-red);
 	font-family: var(--font-yu-mincho);
@@ -32,7 +32,7 @@
 		color: inherit;
 
 		&:hover {
-			text-shadow: var(--color-border-dark) 0 0 1em;
+			text-shadow: 0 0 1em var(--color-border-dark);
 		}
 	}
 }
