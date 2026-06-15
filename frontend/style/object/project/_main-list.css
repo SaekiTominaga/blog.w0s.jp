@@ -80,7 +80,7 @@
 
 	border: 1px solid var(--color-border-dark);
 	border-radius: var(--border-radius-normal);
-	background-color: var(--color-bg-superlight);
+	background-color: var(--color-bg-light);
 	padding: 1.25em min(1.25dvi, 1.25em);
 	line-height: var(--line-height-narrow);
 
@@ -132,14 +132,14 @@
 
 /* ===== 脚注リスト ===== */
 .p-footnote {
-	border: 1px solid var(--color-bg-light);
+	border: 1px solid var(--color-bg-dark);
 	border-radius: var(--border-radius-large);
-	background-color: var(--color-bg-light);
+	background-color: var(--color-bg-dark);
 	padding: 1em;
 	font-size: calc(100% / pow(var(--font-ratio), 1));
 
 	.p-entry & {
-		border-color: var(--color-bg-dark);
+		border-color: var(--color-border-light);
 
 		&:last-child {
 			margin-block-start: calc(var(--stack-margin-base) * 6);

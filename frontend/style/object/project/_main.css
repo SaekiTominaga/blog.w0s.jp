@@ -63,9 +63,9 @@
 	}
 
 	&::part(hide-button):hover {
-		--_background-color: var(--color-bg-superlight);
+		--_background-color: var(--color-bg-light);
 
-		outline: 1px solid var(--color-bg-light);
+		outline: 1px solid var(--color-border-light);
 	}
 
 	&::part(hide-button):focus {
@@ -75,7 +75,7 @@
 
 /* ===== Amazon 商品 ===== */
 .p-amazon {
-	--_bg-color: oklch(95% 0.05 66.67deg);
+	--_bg-color: oklch(from var(--color-orange) calc(l + 0.15) calc(c - 0.125) h);
 
 	border: 1px solid var(--_bg-color);
 	border-radius: var(--border-radius-large);
@@ -120,7 +120,7 @@
 		color: var(--color-darkgray);
 
 		&:hover {
-			text-shadow: oklch(from currentColor l c h / 25%) 0 0 0.05em;
+			text-shadow: 0 0 0.05em oklch(from currentColor l c h / 25%);
 		}
 	}
 }
@@ -156,7 +156,7 @@
 	}
 
 	:any-link:hover & {
-		box-shadow: oklch(from var(--_bg-color) calc(l - 0.2) calc(c + 0.1) h) 0 0 5px 1px;
+		box-shadow: 0 0 5px 1px oklch(from var(--_bg-color) calc(l - 0.15) calc(c + 0.15) h);
 	}
 }
 
@@ -199,7 +199,7 @@
 }
 
 .p-code__clipboard-button {
-	--_bg-color: var(--color-bg-superlight);
+	--_bg-color: var(--color-bg-light);
 	--_ripple-color: var(--color-black);
 	--_ripple-opacity: 0.25;
 	--_ripple-transition-duration: 0.5s;
@@ -263,6 +263,7 @@
 	}
 
 	& > code {
+		/* stylelint-disable-next-line color-no-hex */
 		color: #24292e; /* https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css */
 	}
 }
@@ -307,6 +308,6 @@
 	}
 
 	&::backdrop {
-		background-color: rgb(0 0 0 / 80%);
+		background-color: oklch(from var(--color-black) l c h / 80%);
 	}
 }

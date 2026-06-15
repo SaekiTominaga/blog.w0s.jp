@@ -13,7 +13,7 @@
 .p-header-site__name {
 	text-shadow: 0.05em 0.05em 0.1em var(--color-border-light);
 	line-height: var(--line-height-narrow);
-	color: #f00;
+	color: var(--color-red);
 	font-family: var(--font-yu-mincho);
 	font-feature-settings: "palt";
 	font-size: 2rem;

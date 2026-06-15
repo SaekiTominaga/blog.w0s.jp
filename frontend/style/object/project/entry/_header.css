@@ -9,7 +9,7 @@
 /* 記事タイトル */
 .p-entry-header-title {
 	--_border-width: 1px;
-	--_bg-color: #9fc;
+	--_bg-color: oklch(from var(--color-green) calc(l + 0.4) calc(c - 0.05) calc(h + 20));
 
 	border: var(--_border-width) solid var(--_bg-color);
 	background-color: var(--_bg-color);
@@ -21,7 +21,7 @@
 	}
 
 	& > h1 {
-		text-shadow: 0 0 0.05em var(--color-border-light);
+		text-shadow: 0 0 0.05em oklch(from currentColor l c h / 25%);
 		text-wrap-style: pretty;
 		line-height: var(--line-height-narrow);
 		font-size: clamp(calc(100% * pow(var(--font-ratio), 3)), 5svi, calc(100% * pow(var(--font-ratio), 5)));

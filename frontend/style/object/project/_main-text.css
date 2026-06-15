@@ -74,7 +74,7 @@
 
 	.p-entry & {
 		margin-inline: 1em;
-		color: var(--color-note);
+		color: var(--color-entry-note);
 	}
 }
 

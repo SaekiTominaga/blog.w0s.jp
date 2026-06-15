@@ -11,7 +11,7 @@
 		--_entry-padding-block: 3%; /* 左右の余白 */
 
 		box-shadow: 0 0 3px var(--color-border-light);
-		background-color: var(--color-bg-ultralight);
+		background-color: oklch(from var(--color-white) calc(l - 0.01) c h);
 		color: var(--color-darkgray);
 	}
 }

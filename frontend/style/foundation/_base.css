@@ -80,7 +80,7 @@ small {
 
 code {
 	border-radius: var(--border-radius-normal);
-	background-color: var(--color-ultralightgreen);
+	background-color: oklch(from var(--color-green) 100% c h / 5%);
 	padding-block: 0.1lh;
 	color: var(--color-green);
 
@@ -107,7 +107,7 @@ code {
 }
 
 q {
-	background-image: linear-gradient(transparent, transparent 75%, var(--color-yellow) 75%);
+	background-image: linear-gradient(transparent, transparent 75%, oklch(from var(--color-yellow) l c h / 50%) 75%);
 	quotes: "\201C" "\201D" "\2018" "\2019";
 
 	&::before {
@@ -119,8 +119,4 @@ q {
 		padding-inline-end: 0.25em;
 		content: close-quote;
 	}
-}
-
-input:is([type="radio" i], [type="checkbox" i]) {
-	accent-color: var(--color-skyblue);
 }

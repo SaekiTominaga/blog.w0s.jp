@@ -13,21 +13,21 @@
 	& th,
 	& td {
 		border: 1px solid var(--color-border-light);
-		background-color: var(--_bgcolor);
+		background-color: var(--_bg-color);
 		padding: 0.25em 0.5em;
 	}
 
 	& [data-level="info"] {
-		--_bgcolor: var(--color-bg-ultralight);
+		--_bg-color: var(--color-bg-light);
 	}
 
 	& [data-level="warning"] {
-		--_bgcolor: var(--color-verylightred);
+		--_bg-color: var(--color-lightred-bg);
 	}
 }
 
 .p-post-preview__preview {
-	border: 1px solid var(--color-lightgray);
+	border: 1px solid var(--color-border-dark);
 	max-block-size: 75dvb;
 	overflow-y: scroll;
 	resize: block;

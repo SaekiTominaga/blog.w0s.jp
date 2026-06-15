@@ -4,5 +4,5 @@
 
 /* ===== 赤文字 ===== */
 .u-red {
-	color: var(--color-red);
+	color: var(--color-red-text);
 }
