@@ -113,6 +113,11 @@
 	font-weight: var(--font-weight-bold);
 
 	&:enabled {
+		--_loading-spinner-margin-inline-start: 0;
+		--_loading-spinner-border-width: 0;
+		--_loading-spinner-block-size: 1em;
+		--_loading-spinner-inline-size: 0;
+
 		&:hover {
 			background-color: oklch(from var(--form-control-theme-color) calc(l + 0.05) c h); /* 太字の 15pt 以上なのでコントラスト比の基準は 3:1 以上 */
 		}
@@ -136,35 +141,37 @@
 			transition-duration: initial;
 			opacity: 0.25;
 		}
-	}
-
-	&:disabled {
-		background-color: var(--form-control-disabled-bgcolor);
-		color: var(--color-gray);
-	}
-
-	/* JavaScript 処理のロード中状態 */
-	&[data-status="loading"] {
-		cursor: wait;
 
 		/* Loading spinner */
 		&::after {
-			--_block-size: 1em;
-
 			display: inline flow-root;
 			animation-name: spin;
 			animation-duration: 1s;
 			animation-timing-function: linear;
 			animation-iteration-count: infinite;
-			margin-inline-start: calc(var(--_block-size) / 2);
-			border: calc(var(--_block-size) * 3 / 16) solid color-mix(in oklab, var(--form-control-theme-color) 50%, var(--color-white) 50%);
+			margin-inline-start: var(--_loading-spinner-margin-inline-start);
+			border: var(--_loading-spinner-border-width) solid color-mix(in oklab, var(--form-control-theme-color) 50%, var(--color-white) 50%);
 			border-block-start-color: var(--color-white); /* Indicator */
 			border-radius: 50%;
-			block-size: var(--_block-size);
-			inline-size: var(--_block-size);
-			vertical-align: calc((1cap - var(--_block-size)) / 2);
+			block-size: var(--_loading-spinner-block-size);
+			inline-size: var(--_loading-spinner-inline-size);
+			vertical-align: calc((1cap - var(--_loading-spinner-block-size)) / 2);
 			content: "";
 		}
+
+		/* JavaScript 処理のロード中状態 */
+		&[data-status="loading"] {
+			--_loading-spinner-margin-inline-start: calc(var(--_loading-spinner-block-size) / 2);
+			--_loading-spinner-border-width: calc(var(--_loading-spinner-block-size) * 3 / 16);
+			--_loading-spinner-inline-size: var(--_loading-spinner-block-size);
+
+			cursor: wait;
+		}
+	}
+
+	&:disabled {
+		background-color: var(--form-control-disabled-bgcolor);
+		color: var(--color-gray);
 	}
 }
 
