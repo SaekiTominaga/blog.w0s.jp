@@ -52,7 +52,7 @@
 		padding: 0.25em;
 		block-size: 2em;
 		inline-size: 2em;
-		color: var(--color-gray);
+		color: oklch(from var(--color-blue) l calc(c - 0.15) h);
 		fill: currentColor; /* SVG */
 
 		&:focus-visible {
@@ -60,7 +60,7 @@
 		}
 
 		&:hover {
-			color: var(--color-darkgray);
+			background-color: var(--color-bg-dark);
 		}
 
 		& > svg {
