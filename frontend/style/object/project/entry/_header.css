@@ -9,7 +9,7 @@
 /* 記事タイトル */
 .p-entry-header-title {
 	--_border-width: 1px;
-	--_bg-color: oklch(92.386% 0.1198 161.05deg);
+	--_bg-color: oklch(from var(--color-green) calc(l + 0.4) calc(c - 0.05) calc(h + 20));
 
 	border: var(--_border-width) solid var(--_bg-color);
 	background-color: var(--_bg-color);

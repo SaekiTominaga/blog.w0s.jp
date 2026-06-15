@@ -61,7 +61,7 @@
 	&.-feed {
 		--_border-color: var(--color-orange);
 		--_color: var(--color-darkgray);
-		--_bg-color: oklch(100% 0.051 70.67deg); /* TODO: iOS Firefox 強制ダークモード oklch(from var(--color-orange) 100% calc(c - 0.12) h) */
+		--_bg-color: oklch(from var(--color-orange) calc(l + 0.175) calc(c - 0.125) calc(h + 10)); /* TODO: iOS Firefox 強制ダークモード */
 	}
 
 	/* GitHub */
@@ -150,10 +150,12 @@
 
 /* ===== 記事件数 ===== */
 .c-entry-count {
+	--_bg-color: oklch(from var(--color-blue) calc(l + 0.45) calc(c - 0.25) h);
+
 	display: inline flow-root;
-	border: 1px solid oklch(90% 0.03 240deg);
+	border: 1px solid var(--_bg-color);
 	border-radius: var(--border-radius-large);
-	background-color: oklch(90% 0.03 240deg);
+	background-color: var(--_bg-color);
 	padding: 0.15em 0.45em;
 	line-height: var(--line-height-nowrap);
 	text-wrap-mode: nowrap;

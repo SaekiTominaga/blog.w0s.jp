@@ -308,6 +308,6 @@
 	}
 
 	&::backdrop {
-		background-color: oklch(0% 0 0deg / 80%);
+		background-color: oklch(from var(--color-black) l c h / 80%);
 	}
 }

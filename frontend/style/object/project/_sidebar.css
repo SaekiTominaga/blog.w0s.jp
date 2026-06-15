@@ -123,7 +123,7 @@
 	--_padding-block: 0.5em;
 	--_padding-inline: 0.5em;
 	--_min-block-size: auto;
-	--_bg-color: oklch(from var(--color-blue) 100% 25% h);
+	--_bg-color: oklch(from var(--color-blue) 100% calc(c - 0.25) h);
 
 	& a {
 		box-sizing: revert;

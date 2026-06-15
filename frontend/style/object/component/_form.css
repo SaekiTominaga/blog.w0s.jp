@@ -181,18 +181,17 @@
 
 	/* チェックボックス、ラジオボタン */
 	&.-check {
+		--_bg-color: transparent;
+
 		margin-block: calc(var(--form-control-padding-block) / 2);
-		border: 1px solid transparent;
+		border: 1px solid var(--_bg-color);
 		border-radius: var(--border-radius-normal);
 		background-color: var(--_bg-color);
 		padding: calc(var(--form-control-padding-block) / 2) 0.25em;
 
 		:enabled & {
 			&:hover {
-				--_bg-color: oklch(98.874% 0.016 196.9deg);
-
-				border-color: var(--_bg-color);
-				background-color: var(--_bg-color);
+				--_bg-color: oklch(from var(--color-blue) 100% calc(c - 0.25) h);
 			}
 		}
 
