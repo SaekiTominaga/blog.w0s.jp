@@ -157,7 +157,7 @@
 			animation-timing-function: linear;
 			animation-iteration-count: infinite;
 			margin-inline-start: calc(var(--_block-size) / 2);
-			border: calc(var(--_block-size) * 3 / 16) solid color-mix(in oklab, var(--_bg-color) 50%, var(--color-white) 50%);
+			border: calc(var(--_block-size) * 3 / 16) solid color-mix(in oklab, var(--form-control-theme-color) 50%, var(--color-white) 50%);
 			border-block-start-color: var(--color-white); /* Indicator */
 			border-radius: 50%;
 			block-size: var(--_block-size);
