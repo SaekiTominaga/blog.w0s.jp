@@ -4,33 +4,6 @@ import Markdown from '../Markdown.ts';
 import format from './util/format.ts';
 
 await test('heaging', async (t) => {
-	await t.test('h1', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-text
-
-# 見出し1
-
-text
-`,
-				),
-			),
-			`
-<p>text</p>
-<section class="p-entry-section -hdg1" id="見出し1">
-	<div class="p-entry-section__hdg">
-		<h2>見出し1</h2>
-		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%971" class="c-self-link">§</a></p>
-	</div>
-	<p>text</p>
-</section>
-`.trim(),
-		);
-	});
-
 	await t.test('h2', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -39,15 +12,7 @@ text
 					`
 text
 
-# 見出し1
-
-text
-
 ## 見出し2
-
-text
-
-# 見出し*1*
 
 text
 `,
@@ -55,32 +20,10 @@ text
 			),
 			`
 <p>text</p>
-<nav aria-label="目次" class="p-toc">
-	<ol>
-		<li><a href="#%E8%A6%8B%E5%87%BA%E3%81%971">見出し1</a></li>
-		<li>
-			<a href="#%E8%A6%8B%E5%87%BA%E3%81%971-1">見出し<em>1</em></a>
-		</li>
-	</ol>
-</nav>
-<section class="p-entry-section -hdg1" id="見出し1">
+<section class="p-entry-section -hdg1" id="見出し2">
 	<div class="p-entry-section__hdg">
-		<h2>見出し1</h2>
-		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%971" class="c-self-link">§</a></p>
-	</div>
-	<p>text</p>
-	<section class="p-entry-section -hdg2" id="見出し2">
-		<div class="p-entry-section__hdg">
-			<h3>見出し2</h3>
-			<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%972" class="c-self-link">§</a></p>
-		</div>
-		<p>text</p>
-	</section>
-</section>
-<section class="p-entry-section -hdg1" id="見出し1-1">
-	<div class="p-entry-section__hdg">
-		<h2>見出し<em>1</em></h2>
-		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%971-1" class="c-self-link">§</a></p>
+		<h2>見出し2</h2>
+		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%972" class="c-self-link">§</a></p>
 	</div>
 	<p>text</p>
 </section>
@@ -88,14 +31,89 @@ text
 		);
 	});
 
-	await t.test('h3 or higher', async () => {
+	await t.test('h3', async () => {
 		const markdown = new Markdown();
 		assert.equal(
 			await format(
 				await markdown.toHtml(
 					`
+text
+
+## 見出し2
+
+text
+
 ### 見出し3
 
+text
+
+## 見出し*2*
+
+text
+`,
+				),
+			),
+			`
+<p>text</p>
+<nav class="p-toc" aria-labelledby="toc">
+	<h2 id="toc">目次</h2>
+	<ul class="p-toc__list">
+		<li><a href="#%E8%A6%8B%E5%87%BA%E3%81%972">見出し2</a></li>
+		<li>
+			<a href="#%E8%A6%8B%E5%87%BA%E3%81%972-1">見出し<em>2</em></a>
+		</li>
+	</ul>
+</nav>
+<section class="p-entry-section -hdg1" id="見出し2">
+	<div class="p-entry-section__hdg">
+		<h2>見出し2</h2>
+		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%972" class="c-self-link">§</a></p>
+	</div>
+	<p>text</p>
+	<section class="p-entry-section -hdg2" id="見出し3">
+		<div class="p-entry-section__hdg">
+			<h3>見出し3</h3>
+			<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%973" class="c-self-link">§</a></p>
+		</div>
+		<p>text</p>
+	</section>
+</section>
+<section class="p-entry-section -hdg1" id="見出し2-1">
+	<div class="p-entry-section__hdg">
+		<h2>見出し<em>2</em></h2>
+		<p class="p-entry-section__self-link"><a href="#%E8%A6%8B%E5%87%BA%E3%81%972-1" class="c-self-link">§</a></p>
+	</div>
+	<p>text</p>
+</section>
+`.trim(),
+		);
+	});
+
+	await t.test('h1', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+# 見出し1
+
+text
+`,
+				),
+			),
+			`
+<h1>見出し1</h1>
+<p>text</p>
+`.trim(),
+		);
+	});
+
+	await t.test('over h6', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
 #### 見出し4
 
 ##### 見出し5
@@ -109,10 +127,9 @@ text
 				),
 			),
 			`
-<h4>見出し3</h4>
-<h5>見出し4</h5>
-<h6>見出し5</h6>
-<p role="heading" aria-level="7">見出し6</p>
+<h4>見出し4</h4>
+<h5>見出し5</h5>
+<h6>見出し6</h6>
 <p>####### 見出し7</p>
 <p>text</p>
 `.trim(),
@@ -124,11 +141,6 @@ await test('paragraph', async (t) => {
 	await t.test('normal', async () => {
 		const markdown = new Markdown();
 		assert.equal(await format(await markdown.toHtml('text')), '<p>text</p>'.trim());
-	});
-
-	await t.test('blank', async () => {
-		const markdown = new Markdown();
-		assert.equal(await format(await markdown.toHtml('␣')), ''.trim());
 	});
 });
 
@@ -267,116 +279,6 @@ await test('ordered list', async (t) => {
 	<li>list1</li>
 	<li>list2</li>
 </ol>
-`.trim(),
-		);
-	});
-});
-
-await test('link list', async (t) => {
-	await t.test('normal', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- [list1](http://example.com) text
-- [list2](http://example.com) text
-`,
-				),
-			),
-			`
-<ul class="p-links">
-	<li><a href="http://example.com">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li><a href="http://example.com">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-</ul>
-`.trim(),
-		);
-	});
-
-	await t.test('mix', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- [list1](http://example.com) text
-- [list2](http://example.com) text
-- list3
-`,
-				),
-			),
-			`
-<ul class="p-list">
-	<li><a href="http://example.com">list1</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li><a href="http://example.com">list2</a><small class="c-domain">(<code>example.com</code>)</small> text</li>
-	<li>list3</li>
-</ul>
-`.trim(),
-		);
-	});
-});
-
-await test('note', async (t) => {
-	await t.test('normal', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- note: note1
-- note: note*2*
-`,
-				),
-			),
-			`
-<ul class="p-notes">
-	<li>note1</li>
-	<li>note<em>2</em></li>
-</ul>
-`.trim(),
-		);
-	});
-
-	await t.test('mix', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- note: note1
-- note: note*2*
-- note3
-`,
-				),
-			),
-			`
-<ul class="p-list">
-	<li>note: note1</li>
-	<li>note: note<em>2</em></li>
-	<li>note3</li>
-</ul>
-`.trim(),
-		);
-	});
-});
-
-await test('ins', async (t) => {
-	await t.test('normal', async () => {
-		const markdown = new Markdown();
-		assert.equal(
-			await format(
-				await markdown.toHtml(
-					`
-- 2023-01-01: ins1
-- 2023-01-02: ins*2*
-`,
-				),
-			),
-			`
-<p class="p-insert"><span class="p-insert__date">2023年1月1日追記</span><ins datetime="2023-01-01" class="p-insert__text">ins1</ins></p>
-<p class="p-insert">
-	<span class="p-insert__date">2023年1月2日追記</span><ins datetime="2023-01-02" class="p-insert__text">ins<em>2</em></ins>
-</p>
 `.trim(),
 		);
 	});
@@ -545,7 +447,7 @@ await test('blockquote', async (t) => {
 <figure>
 	<blockquote class="p-quote"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta">
-		<span class="c-caption__text"><a href="http://example.com">http://example.com</a></span>
+		<span class="c-caption__text"><a href="http://example.com" rel="external">http://example.com</a></span>
 	</figcaption>
 </figure>
 `.trim(),
@@ -570,7 +472,7 @@ await test('blockquote', async (t) => {
 	<blockquote class="p-quote"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta">
 		<span class="c-caption__text"
-			><a href="https://www.amazon.co.jp/dp/1111111111/ref=nosim?tag=w0s.jp-22">text</a><small class="c-domain"><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" /></small
+			><a href="https://www.amazon.co.jp/dp/1111111111/ref=nosim?tag=w0s.jp-22" rel="external">text</a><small class="c-domain"><img src="/image/icon/amazon.png" alt="(Amazon)" width="16" height="16" /></small
 		></span>
 	</figcaption>
 </figure>
@@ -638,7 +540,7 @@ await test('blockquote', async (t) => {
 <figure>
 	<blockquote class="p-quote" lang="en" cite="urn:ISBN:978-4-06-519981-7"><p>quote</p></blockquote>
 	<figcaption class="c-caption -meta">
-		<span class="c-caption__text"><a href="http://example.com">引用元</a><small class="c-domain">(<code>example.com</code>)</small></span>
+		<span class="c-caption__text"><a href="http://example.com" rel="external">引用元</a><small class="c-domain">(<code>example.com</code>)</small></span>
 	</figcaption>
 </figure>
 `.trim(),
@@ -979,6 +881,28 @@ text1
 		);
 	});
 
+	await t.test('Note', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+:::normal
+note: note*1*
+:::
+`,
+				),
+			),
+			`
+<div class="p-box -normal">
+	<p class="p-note">
+		<span class="p-note__sign">※</span><span class="p-note__text">note<em>1</em></span>
+	</p>
+</div>
+`.trim(),
+		);
+	});
+
 	await t.test('no name', async () => {
 		const markdown = new Markdown();
 		assert.equal(
@@ -1013,6 +937,109 @@ text1
 			),
 			`
 <p>:::normal text1</p>
+`.trim(),
+		);
+	});
+});
+
+await test('Link', async (t) => {
+	await t.test('single', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(await markdown.toHtml('[link](http://example.com)')),
+			`
+<div class="p-link">
+	<p><a href="http://example.com" rel="external">link</a><small class="c-domain">(<code>example.com</code>)</small></p>
+</div>
+`.trim(),
+		);
+	});
+
+	await t.test('multi', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(await markdown.toHtml('[link](http://example.com)\n[link](http://example.com)')),
+			`
+<div class="p-link">
+	<p><a href="http://example.com" rel="external">link</a><small class="c-domain">(<code>example.com</code>)</small></p>
+	<p><a href="http://example.com" rel="external">link</a><small class="c-domain">(<code>example.com</code>)</small></p>
+</div>
+`.trim(),
+		);
+	});
+});
+
+await test('Note', async (t) => {
+	await t.test('normal', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+note: note*1*
+`,
+				),
+			),
+			`
+<p class="p-note">
+	<span class="p-note__sign">※</span><span class="p-note__text">note<em>1</em></span>
+</p>
+`.trim(),
+		);
+	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- note: note*1*
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>note: note<em>1</em></li>
+</ul>
+`.trim(),
+		);
+	});
+});
+
+await test('Insert', async (t) => {
+	await t.test('normal', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
++2023-01-01: ins*1*
+`,
+				),
+			),
+			`
+<p class="p-insert">
+	<span class="p-insert__date">2023年1月1日追記</span><ins datetime="2023-01-01" class="p-insert__text">ins<em>1</em></ins>
+</p>
+`.trim(),
+		);
+	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- +2023-01-01: ins*1*
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>+2023-01-01: ins<em>1</em></li>
+</ul>
 `.trim(),
 		);
 	});
@@ -1235,6 +1262,24 @@ await test('Image', async (t) => {
 `.trim(),
 		);
 	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- @file.jpg: title
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>@file.jpg: title</li>
+</ul>
+`.trim(),
+		);
+	});
 });
 
 await test('YouTube', async (t) => {
@@ -1368,6 +1413,24 @@ await test('YouTube', async (t) => {
 `.trim(),
 		);
 	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- @youtube: 1234567890 title
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>@youtube: 1234567890 title</li>
+</ul>
+`.trim(),
+		);
+	});
 });
 
 await test('Amazon', async (t) => {
@@ -1383,7 +1446,7 @@ await test('Amazon', async (t) => {
 			),
 			`
 <div class="p-amazon">
-	<div class="p-amazon__label"><img src="/image/amazon-buy.png" srcset="/image/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></div>
+	<div class="p-amazon__label">Amazonで買う</div>
 	<p class="p-amazon__item">
 		<a href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
 			><span class="p-amazon__thumb"><img src="/image/amazon-noimage.svg" alt="" width="113" height="160" class="p-amazon__image" /></span><span class="p-amazon__title">title</span></a
@@ -1406,7 +1469,7 @@ await test('Amazon', async (t) => {
 			),
 			`
 <div class="p-amazon">
-	<div class="p-amazon__label"><img src="/image/amazon-buy.png" srcset="/image/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></div>
+	<div class="p-amazon__label">Amazonで買う</div>
 	<p class="p-amazon__item">
 		<a href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
 			><span class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" class="p-amazon__image" /></span><span class="p-amazon__title">title</span></a
@@ -1429,7 +1492,7 @@ await test('Amazon', async (t) => {
 			),
 			`
 <div class="p-amazon">
-	<div class="p-amazon__label"><img src="/image/amazon-buy.png" srcset="/image/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></div>
+	<div class="p-amazon__label">Amazonで買う</div>
 	<p class="p-amazon__item">
 		<a href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
 			><span class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" width="160" height="106" class="p-amazon__image" /></span><span class="p-amazon__title">title</span></a
@@ -1452,7 +1515,7 @@ await test('Amazon', async (t) => {
 			),
 			`
 <div class="p-amazon">
-	<div class="p-amazon__label"><img src="/image/amazon-buy.png" srcset="/image/amazon-buy@2x.png 2x" alt="Amazon で買う" width="127" height="26" /></div>
+	<div class="p-amazon__label">Amazonで買う</div>
 	<p class="p-amazon__item">
 		<a href="https://www.amazon.co.jp/dp/1234567890/ref=nosim?tag=w0s.jp-22"
 			><span class="p-amazon__thumb"><img src="https://m.media-amazon.com/images/I/abcdef._SL160_.jpg" srcset="https://m.media-amazon.com/images/I/abcdef._SL320_.jpg 2x" alt="" width="106" height="160" class="p-amazon__image" /></span><span class="p-amazon__title">title</span></a
@@ -1475,6 +1538,24 @@ await test('Amazon', async (t) => {
 			),
 			`
 <p>@amazon: 1234 title</p>
+`.trim(),
+		);
+	});
+
+	await t.test('in list', async () => {
+		const markdown = new Markdown();
+		assert.equal(
+			await format(
+				await markdown.toHtml(
+					`
+- @amazon: 1234567890 title
+`,
+				),
+			),
+			`
+<ul class="p-list">
+	<li>@amazon: 1234567890 title</li>
+</ul>
 `.trim(),
 		);
 	});

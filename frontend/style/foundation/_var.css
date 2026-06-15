@@ -73,8 +73,7 @@
 
 	/* ===== ページ全体設定 ===== */
 	--page-max-width: 1280px; /* ページの最大幅 */
-	--page-sidebar-width: 230px; /* サイドバーの幅 */
-	--page-content-sidebar-gap: 26px; /* コンテンツエリアとサイドバーの横間隔 */
+	--page-content-width: 1024px; /* コンテンツエリアの最大幅 */
 	--page-padding-inline: 10px; /* ページの左右の余白 */
 	--page-margin-inline: calc((100% - var(--page-max-width)) / 2 - var(--page-padding-inline)); /* ページの左右の余白 */
 	--page-color: var(--color-black); /* ページ文字色 */

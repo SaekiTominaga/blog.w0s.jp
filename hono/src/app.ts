@@ -5,10 +5,9 @@ import { compress } from 'hono/compress';
 import { HTTPException } from 'hono/http-exception';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
-import type { Logger } from 'pino';
+import type { Logger } from 'winston';
 import { env } from '@w0s/env-value-type';
 import { escape } from '@w0s/html-escape';
-import type { Error as ApiResponseError } from '../../@types/api.d.ts';
 import { getLogger } from './logger.ts';
 import config from './config/hono.ts';
 import { adminApp } from './controller/admin.ts';
@@ -31,6 +30,12 @@ export interface Variables {
 }
 
 const app = new Hono<{ Variables: Variables }>();
+
+/* Logger */
+app.use(async (context, next) => {
+	context.set('logger', getLogger(context.req.path.substring(1)));
+	await next();
+});
 
 /* Auth */
 const basicAuthHandler = await basicAuth({
@@ -168,12 +173,6 @@ app.use(
 	}),
 );
 
-/* Logger */
-app.use(async (context, next) => {
-	context.set('logger', getLogger(context.req.path.substring(1)));
-	await next();
-});
-
 /* Redirect */
 config.redirect.forEach((redirect) => {
 	if (!redirect.to.startsWith('/')) {
@@ -264,7 +263,7 @@ app.onError(async (err, context) => {
 			logger.error(err.message);
 		}
 	} else {
-		logger.fatal(err.stack);
+		logger.error(err.stack);
 	}
 
 	const status = err instanceof HTTPException ? err.status : 500;
@@ -276,7 +275,7 @@ app.onError(async (err, context) => {
 				error: {
 					message: message !== undefined && message !== '' ? message : title,
 				},
-			} as ApiResponseError,
+			},
 			status,
 			Object.fromEntries(headers.entries()),
 		);

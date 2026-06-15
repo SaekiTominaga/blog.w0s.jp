@@ -3,13 +3,14 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
+		"dev": "tsc -w",
 		"build": "tsc",
-		"lint": "eslint src/**/*.ts",
+		"lint": "eslint src",
 		"pretest": "tsc --noEmit",
 		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
 	},
 	"dependencies": {
 		"sharp": "0.34.5"
 	},
-	"packageManager": "pnpm@10.28.1"
+	"packageManager": "pnpm@11.1.2"
 }

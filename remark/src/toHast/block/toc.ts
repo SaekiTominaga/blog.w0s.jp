@@ -22,18 +22,35 @@ export const xTocToHast = (state: State, node: XToc): ElementContent | ElementCo
 		return undefined;
 	}
 
+	const headingId = 'toc';
+
 	const element: Element = {
 		type: 'element',
 		tagName: 'nav',
 		properties: {
-			'aria-label': '目次',
 			className: ['p-toc'],
+			'aria-labelledby': headingId,
 		},
 		children: [
 			{
 				type: 'element',
-				tagName: 'ol',
-				properties: {},
+				tagName: 'h2',
+				properties: {
+					id: headingId,
+				},
+				children: [
+					{
+						type: 'text',
+						value: '目次',
+					},
+				],
+			},
+			{
+				type: 'element',
+				tagName: 'ul',
+				properties: {
+					className: ['p-toc__list'],
+				},
 				children: children.map((childNode): ElementContent => {
 					const heading = select(nameXHeading, childNode);
 					if (heading === undefined) {

@@ -1,0 +1,33 @@
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes section-target {
+	0% {
+		background-color: var(--color-lightred-bg);
+	}
+
+	50% {
+		background-color: var(--color-lightred-bg);
+	}
+
+	100% {
+		background-color: transparent;
+	}
+}
+
+@keyframes entry-section-target {
+	0% {
+		background-color: var(--color-lightred-bg);
+	}
+
+	50% {
+		background-color: var(--color-lightred-bg);
+	}
+
+	100% {
+		background-color: transparent;
+	}
+}

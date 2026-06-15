@@ -2,7 +2,7 @@ import { jsToSQLiteAssignment } from '@w0s/sqlite-utility';
 import Database from './Database.ts';
 
 /**
- * DSG キャッシュクリア
+ * Deferred Static Generation キャッシュクリア
  */
 export default class extends Database {
 	/**

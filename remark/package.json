@@ -3,24 +3,25 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
+		"dev": "tsc -w",
 		"build": "tsc",
-		"lint": "eslint src/**/*.ts",
+		"lint": "eslint src",
 		"lint:markdown": "node --env-file=../.env.development src/shell/lint.ts",
 		"pretest": "tsc --noEmit",
 		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
 	},
 	"dependencies": {
-		"@w0s/env-value-type": "1.0.1",
-		"@w0s/html-escape": "4.0.2",
-		"@w0s/isbn-verify": "3.1.2",
-		"@w0s/paapi-item-image-url-parser": "3.2.3",
-		"@w0s/sqlite-utility": "2.0.1",
-		"better-sqlite3": "12.9.0",
+		"@w0s/env-value-type": "2.0.0",
+		"@w0s/html-escape": "5.0.0",
+		"@w0s/isbn-verify": "4.0.0",
+		"@w0s/paapi-item-image-url-parser": "4.0.0",
+		"@w0s/sqlite-utility": "3.0.0",
+		"better-sqlite3": "12.10.0",
 		"dayjs": "1.11.20",
 		"github-slugger": "2.0.0",
 		"hast-util-select": "6.0.4",
 		"highlight.js": "11.11.1",
-		"kysely": "0.28.16",
+		"kysely": "0.28.17",
 		"mdast-util-definition-list": "2.0.0",
 		"mdast-util-gfm-footnote": "2.1.0",
 		"mdast-util-gfm-table": "2.0.0",
@@ -63,7 +64,7 @@
 		"unified": "11.0.5",
 		"unified-lint-rule": "3.0.1",
 		"unist-util-find-after": "5.0.0",
-		"unist-util-find-between-all": "1.1.6",
+		"unist-util-find-between": "^1.2.1",
 		"unist-util-generated": "3.0.0",
 		"unist-util-is": "6.0.1",
 		"unist-util-remove": "4.0.0",
@@ -79,5 +80,5 @@
 		"mdast-util-from-markdown": "2.0.3",
 		"micromark-util-types": "2.0.2"
 	},
-	"packageManager": "pnpm@10.28.1"
+	"packageManager": "pnpm@11.1.2"
 }

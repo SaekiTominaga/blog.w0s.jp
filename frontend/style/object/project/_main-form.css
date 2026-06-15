@@ -86,17 +86,15 @@
 }
 
 .p-form-results__item {
-	&:not([hidden]) {
-		display: block grid;
-		grid-template-columns: subgrid;
-		grid-column: 1 / -1;
-	}
+	display: block grid;
+	grid-template-columns: subgrid;
+	grid-column: 1 / -1;
 
-	&.-success {
+	&:has(.c-form-result-mark.-success:not([hidden])) {
 		color: var(--color-green);
 	}
 
-	&.-error {
+	&:has(.c-form-result-mark.-error:not([hidden])) {
 		color: var(--color-red-text);
 	}
 }

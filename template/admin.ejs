@@ -22,9 +22,7 @@
 						<h1>記事投稿</h1>
 					</div>
 
-					<ul class="p-links">
-						<li><a href="/admin/">新規記事投稿</a></li>
-					</ul>
+					<p class="p-link"><a href="/admin/">新規記事投稿</a></p>
 				</div>
 				<div class="l-content__body">
 					<section class="p-section -hdg-a" id="select">
@@ -78,11 +76,17 @@
 							<%_ } _%>
 							<%_ if (postResults.length > 0) { _%>
 							<ul class="p-form-results">
-								<%_ for (const result of postResults) { _%><%_ if (result.success) { _%>
-								<li class="p-form-results__item -success"><span class="p-form-results__mark">✔</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<%_ } else { _%>
-								<li class="p-form-results__item -error"><span class="p-form-results__mark">⚠</span> <span class="p-form-results__message"><%= result.message %></span></li>
-								<%_ } _%>
+								<%_ for (const result of postResults) { _%>
+								<li class="p-form-results__item">
+									<span class="p-form-results__mark">
+										<%_ if (result.success) { _%>
+										<span class="c-form-result-mark -success">✔</span>
+										<%_ } else { _%>
+										<span class="c-form-result-mark -error">⚠</span>
+										<%_ } _%>
+									</span>
+									<span class="p-form-results__message"><%= result.message %></span>
+								</li>
 								<%_ } _%>
 							</ul>
 							<%_ } _%>
@@ -310,18 +314,17 @@
 							</div>
 
 							<div class="c-form-controls -submit">
-								<p><button class="c-submit">ファイル送信</button></p>
+								<p><button class="c-submit">アップロード</button></p>
 							</div>
 						</form>
 
 						<ul class="p-form-results" hidden="">
 							<template id="media-result">
-								<li class="p-form-results__item -success js-success">
-									<span class="p-form-results__mark">✔</span>
-									<span class="p-form-results__message js-message"></span>
-								</li>
-								<li class="p-form-results__item -error js-error">
-									<span class="p-form-results__mark">⚠</span>
+								<li class="p-form-results__item">
+									<span class="p-form-results__mark">
+										<span class="c-form-result-mark -success js-success">✔</span>
+										<span class="c-form-result-mark -error js-error">⚠</span>
+									</span>
 									<span class="p-form-results__message js-message"></span>
 								</li>
 							</template>
@@ -330,19 +333,22 @@
 
 					<section class="p-section -hdg-a" id="clear">
 						<div class="p-section__hdg">
-							<h2>DSG のキャッシュクリア</h2>
+							<h2>キャッシュクリア</h2>
 						</div>
 
-						<p><button type="button" class="c-submit" id="clear-button">キャッシュクリア</button></p>
+						<form method="post" class="c-stack" id="clear-form">
+							<div class="c-form-controls -submit">
+								<p><button class="c-submit">クリア</button></p>
+							</div>
+						</form>
 
 						<ul class="p-form-results" hidden="">
 							<template id="clear-result">
-								<li class="p-form-results__item -success js-success">
-									<span class="p-form-results__mark">✔</span>
-									<span class="p-form-results__message js-message"></span>
-								</li>
-								<li class="p-form-results__item -error js-error">
-									<span class="p-form-results__mark">⚠</span>
+								<li class="p-form-results__item">
+									<span class="p-form-results__mark">
+										<span class="c-form-result-mark -success js-success">✔</span>
+										<span class="c-form-result-mark -error js-error">⚠</span>
+									</span>
 									<span class="p-form-results__message js-message"></span>
 								</li>
 							</template>
@@ -365,19 +371,39 @@
 								<tr>
 									<th scope="row">注釈</th>
 									<td>
-										<pre><code>-<b class="u-red">␣</b>note:<b class="u-red">␣</b></code></pre>
+										<pre><code>note:<b class="u-red">␣</b></code></pre>
 									</td>
 								</tr>
 								<tr>
 									<th scope="row">追記</th>
 									<td>
-										<pre><code>-<b class="u-red">␣</b>YYYY-MM-DD:<b class="u-red">␣</b></code></pre>
+										<pre><code>+YYYY-MM-DD:<b class="u-red">␣</b></code></pre>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">画像、動画</th>
+									<td>
+										<pre><code>@ファイル名:<b class="u-red">␣</b>キャプション<b class="u-red">␣</b>&lt;幅x高さ<b class="u-red">?</b>&gt;</code></pre>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">YouTube 動画</th>
+									<td>
+										<pre><code>@youtube:<b class="u-red">␣</b>ID<b class="u-red">␣</b>キャプション<b class="u-red">␣</b>&lt;幅x高さ<b class="u-red">?</b><b class="u-red">␣</b>開始秒(-終了秒<b class="u-red">?</b>)s<b class="u-red">?</b>&gt;</code></pre>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">Amazon 商品</th>
+									<td>
+										<pre><code>@amazon:<b class="u-red">␣</b>ASIN<b class="u-red">␣</b>商品タイトル<b class="u-red">␣</b>&lt;画像ID<b class="u-red">?</b><b class="u-red">␣</b>幅x高さ<b class="u-red">?</b>&gt;</code></pre>
 									</td>
 								</tr>
 								<tr>
 									<th scope="row">記述リスト（<code>dl</code>）</th>
 									<td>
-										<pre><code>定義語<br />:<b class="u-red">␣</b>説明文</code></pre>
+										<pre><code>定義語
+:<b class="u-red">␣</b>説明文
+</code></pre>
 									</td>
 								</tr>
 								<tr>
@@ -404,24 +430,6 @@
 										<pre><code>:::normal
 :::
 </code></pre>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">画像、動画</th>
-									<td>
-										<pre><code>@ファイル名:<b class="u-red">␣</b>キャプション<b class="u-red">␣</b>&lt;幅x高さ<b class="u-red">?</b>&gt;</code></pre>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">YouTube 動画</th>
-									<td>
-										<pre><code>@youtube:<b class="u-red">␣</b>ID<b class="u-red">␣</b>キャプション<b class="u-red">␣</b>&lt;幅x高さ<b class="u-red">?</b><b class="u-red">␣</b>開始秒(-終了秒<b class="u-red">?</b>)s<b class="u-red">?</b>&gt;</code></pre>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">Amazon 商品</th>
-									<td>
-										<pre><code>@amazon:<b class="u-red">␣</b>ASIN<b class="u-red">␣</b>商品タイトル<b class="u-red">␣</b>&lt;画像ID<b class="u-red">?</b><b class="u-red">␣</b>幅x高さ<b class="u-red">?</b>&gt;</code></pre>
 									</td>
 								</tr>
 							</tbody>

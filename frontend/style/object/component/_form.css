@@ -98,12 +98,12 @@
 	display: inline flow-root;
 	outline-offset: 1px;
 	outline-width: var(--outline-width-bold);
-	contain: layout; /* ripple effect */
+	contain: layout; /* Ripple effect */
 	border: 1px solid var(--form-control-theme-color);
 	border-radius: var(--border-radius-normal);
 	background-color: var(--form-control-theme-color);
 	padding: var(--form-control-padding-block) 1em;
-	overflow: hidden; /* ripple effect */
+	overflow: hidden; /* Ripple effect */
 	vertical-align: middle;
 	line-height: var(--line-height-nowrap);
 	text-wrap-mode: nowrap;
@@ -117,7 +117,7 @@
 			background-color: oklch(from var(--form-control-theme-color) calc(l + 0.05) c h); /* 太字の 15pt 以上なのでコントラスト比の基準は 3:1 以上 */
 		}
 
-		/* ripple effect */
+		/* Ripple effect */
 		&::before {
 			position: absolute;
 			inset: 0;
@@ -130,7 +130,7 @@
 			content: "";
 		}
 
-		/* ripple effect */
+		/* Ripple effect */
 		&:active::before {
 			transform: scale(0);
 			transition-duration: initial;
@@ -141,6 +141,30 @@
 	&:disabled {
 		background-color: var(--form-control-disabled-bgcolor);
 		color: var(--color-gray);
+	}
+
+	/* JavaScript 処理のロード中状態 */
+	&[data-status="loading"] {
+		cursor: wait;
+
+		/* Loading spinner */
+		&::after {
+			--_block-size: 1em;
+
+			display: inline flow-root;
+			animation-name: spin;
+			animation-duration: 1s;
+			animation-timing-function: linear;
+			animation-iteration-count: infinite;
+			margin-inline-start: calc(var(--_block-size) / 2);
+			border: calc(var(--_block-size) * 3 / 16) solid color-mix(in oklab, var(--_bg-color) 50%, var(--color-white) 50%);
+			border-block-start-color: var(--color-white); /* Indicator */
+			border-radius: 50%;
+			block-size: var(--_block-size);
+			inline-size: var(--_block-size);
+			vertical-align: calc((1cap - var(--_block-size)) / 2);
+			content: "";
+		}
 	}
 }
 

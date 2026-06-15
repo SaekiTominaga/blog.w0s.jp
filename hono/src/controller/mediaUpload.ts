@@ -7,7 +7,7 @@ import { create as createThumbImage } from '../../../media/dist/thumbImage.js';
 import type { Variables } from '../app.ts';
 import configProcess from '../config/process.ts';
 import { form as validatorForm } from '../validator/mediaUpload.ts';
-import type { MediaUploadResult as FileResult, MediaUpload as Result } from '../../../@types/api.d.ts';
+import type { MediaUpload as ApiResponse, MediaUploadData as ApiResponseData } from '../../../@types/api.d.ts';
 
 /**
  * メディア登録
@@ -29,7 +29,7 @@ const upload = async (
 	context: Context<{ Variables: Variables }>,
 	file: File,
 	{ dir, limit, overwrite }: Readonly<{ dir: string; limit: number; overwrite: boolean }>,
-): Promise<Omit<FileResult, 'thumbnails'>> => {
+): Promise<Omit<ApiResponseData, 'thumbnails'>> => {
 	const logger = context.get('logger');
 
 	const filePath = `${dir}/${file.name}`;
@@ -73,12 +73,10 @@ export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validato
 	const { req } = context;
 	const logger = context.get('logger');
 
-	const requestBody = req.valid('form');
-
-	const { files, overwrite } = requestBody;
+	const { files, overwrite } = req.valid('form');
 
 	const fileResults = await Promise.all(
-		files.map(async (file): Promise<FileResult> => {
+		files.map(async (file): Promise<ApiResponseData> => {
 			const mimeType = new MIMEType(file.type);
 			switch (mimeType.type) {
 				case 'image': {
@@ -128,7 +126,5 @@ export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validato
 		}),
 	);
 
-	return context.json({
-		results: fileResults,
-	} as Result);
+	return context.json(fileResults as ApiResponse);
 });

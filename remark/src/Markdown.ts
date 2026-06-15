@@ -41,30 +41,31 @@ import { type Processor, unified } from 'unified';
 import type { VFile } from 'vfile';
 import config from './config.ts';
 import footnoteHast from './hast/footnote.ts';
-import remarkLintHeadingDepthLimit from './lint/headingDepthLimit.ts';
+import remarkLintHeadingLevelRange from './lint/headingLevelRange.ts';
 import remarkLintNoEmptySections from './lint/noEmptySection.ts';
 import remarkLintNoLinkTitle from './lint/noLinkTitle.ts';
 import remarkLintNoLooseList from './lint/noLooseList.ts';
 import remarkLintNoTypes from './lint/noTypes.ts';
-import { xBlankToHast } from './toHast/block/blank.ts';
 import { xBlockquoteToHast } from './toHast/block/blockquote.ts';
 import { xBoxToHast } from './toHast/block/box.ts';
 import { codeToHast } from './toHast/block/code.ts';
 import { defListToHast } from './toHast/block/definitionList.ts';
 import { xEmbeddedAmazonToHast, xEmbeddedMediaToHast, xEmbeddedYouTubeToHast } from './toHast/block/embedded.ts';
-import { headingToHast, xHeadingToHast } from './toHast/block/heading.ts';
+import { xHeadingToHast } from './toHast/block/heading.ts';
+import { xInsertToHast } from './toHast/block/insert.ts';
 import { listToHast } from './toHast/block/list.ts';
+import { xNoteToHast } from './toHast/block/note.ts';
+import { linkToHast as blockLinkToHast } from './toHast/block/link.ts';
 import { xSectionToHast } from './toHast/block/section.ts';
 import { tableToHast } from './toHast/block/table.ts';
 import { xTocToHast } from './toHast/block/toc.ts';
 import { footnoteReferenceToHast } from './toHast/phrasing/footnote.ts';
 import { linkToHast } from './toHast/phrasing/link.ts';
-import blankToMdast from './toMdast/block/blank.ts';
 import blockquoteToMdast from './toMdast/block/blockquote.ts';
 import boxToMdast from './toMdast/block/box.ts';
 import defListToMdast from './toMdast/block/definitionList.ts';
-import embeddedToMdast from './toMdast/block/embedded.ts';
 import headingToMdast from './toMdast/block/heading.ts';
+import paragraphRootToMdast from './toMdast/block/paragraphRoot.ts';
 import sectionToMdast from './toMdast/block/section.ts';
 import tableToMdast from './toMdast/block/table.ts';
 import tocToMdast from './toMdast/block/toc.ts';
@@ -101,9 +102,12 @@ export default class Markdown {
 			/* remark-lint-file-extension: [style-guide] ファイルからの読み込みは使用していないので不要 */
 			/* remark-lint-final-definition: [style-guide] 要検討 */
 			/* remark-lint-final-newline: [recommended] 最終行の空白はむしろ JavaScript で除去しているので競合してしまう */
-			processor.use(remarkLintFirstHeadingLevel, 1); // 最初の見出しは 1
+			processor.use(remarkLintFirstHeadingLevel, config.headingDepth.min); // 最初の見出し
 			/* remark-lint-hard-break-spaces: [style-guide][recommended] break は使用禁止設定にしているので不要 */
-			processor.use(remarkLintHeadingDepthLimit, config.headingDepthLimit); // 見出しレベルの最大値
+			processor.use(remarkLintHeadingLevelRange, {
+				min: config.headingDepth.min,
+				max: config.headingDepth.max,
+			}); // 見出しレベルの最大値
 			processor.use(remarkLintHeadingIncrement); // [style-guide] 見出しの数字飛ばし
 			processor.use(remarkLintHeadingStyle, 'atx'); // [style-guide] 見出し構文
 			/* remark-lint-link-title-style: [style-guide] リンクタイトルは使用禁止設定にしているので不要 */
@@ -150,15 +154,20 @@ export default class Markdown {
 
 		processor.use(remarkParse); // Markdown → mdast
 
-		processor.use(headingToMdast, { maxDepth: config.headingDepthLimit }); // toc 処理より前に実行する必要がある
+		processor.use(headingToMdast, {
+			minDepth: config.headingDepth.min,
+			maxDepth: config.headingDepth.max,
+		}); // toc 処理より前に実行する必要がある
 		processor.use(tocToMdast); // section 処理より前に実行する必要がある
-		processor.use(blankToMdast);
 		processor.use(blockquoteToMdast);
 		processor.use(boxToMdast);
 		processor.use(defListToMdast);
-		processor.use(embeddedToMdast);
 		processor.use(footnoteToMdast);
-		processor.use(sectionToMdast, { maxDepth: config.headingDepthLimit });
+		processor.use(paragraphRootToMdast);
+		processor.use(sectionToMdast, {
+			minDepth: config.headingDepth.min,
+			maxDepth: config.headingDepth.max,
+		});
 		processor.use(tableToMdast);
 
 		processor.use(remarkRehype, {
@@ -170,16 +179,17 @@ export default class Markdown {
 				defListDescription: mdastDefListDescription2hast,
 				defListTerm: mdastDefListTerm2hast,
 				footnoteReference: footnoteReferenceToHast,
-				heading: headingToHast,
 				link: linkToHast,
 				list: listToHast,
-				'x-blank': xBlankToHast,
 				'x-blockquote': xBlockquoteToHast,
 				'x-box': xBoxToHast,
 				'x-embedded-media': xEmbeddedMediaToHast,
 				'x-embedded-amazon': xEmbeddedAmazonToHast,
 				'x-embedded-youtube': xEmbeddedYouTubeToHast,
 				'x-heading': xHeadingToHast,
+				'x-insert': xInsertToHast,
+				'x-link': blockLinkToHast,
+				'x-note': xNoteToHast,
 				'x-section': xSectionToHast,
 				'x-table': tableToHast,
 				'x-toc': xTocToHast,

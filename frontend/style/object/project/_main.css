@@ -75,7 +75,7 @@
 
 /* ===== Amazon 商品 ===== */
 .p-amazon {
-	--_bg-color: oklch(from var(--color-orange) calc(l + 0.1) calc(c - 0.1) h);
+	--_bg-color: oklch(from var(--color-orange) calc(l + 0.15) calc(c - 0.125) h);
 
 	border: 1px solid var(--_bg-color);
 	border-radius: var(--border-radius-large);
@@ -86,12 +86,17 @@
 }
 
 .p-amazon__label {
+	display: inline flow-root;
 	margin-block-start: -1px;
 	margin-inline-start: -1px;
-
-	& > img {
-		display: block flow;
-	}
+	border: 1px solid oklch(from var(--_bg-color) l calc(c + 0.1) h);
+	border-start-start-radius: calc(var(--border-radius-large) - 1px);
+	border-end-end-radius: calc(var(--border-radius-large) - 1px);
+	background-color: oklch(from var(--_bg-color) l calc(c + 0.1) h);
+	padding: 0.5em 0.5lh;
+	vertical-align: top;
+	font-size: calc(100% / pow(var(--font-ratio), 2));
+	font-weight: var(--font-weight-bold);
 }
 
 .p-amazon__item {
@@ -100,12 +105,12 @@
 	--_bullet-block-size: 0.75em;
 	--_bullet-color: var(--link-color-bullet);
 	--_bullet-gap: 0.5em;
-	/* stylelint-disable-next-line logical-css/require-logical-units */
+	/* stylelint-disable-next-line unit-layout-mappings */
 	--_image-width: min(160px, 30dvw);
 	--_image-height: 160px;
 
 	contain: layout;
-	margin: 15px;
+	margin: 1em min(1dvi, 1em);
 	padding-inline: calc(var(--_image-width) + var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap)) 0;
 	/* stylelint-disable-next-line property-layout-mappings */
 	min-height: calc(var(--_image-height));
@@ -120,25 +125,7 @@
 	}
 }
 
-.p-amazon__title {
-	margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
-	font-weight: var(--font-weight-bold);
-
-	:focus & {
-		outline: var(--outline-width) solid var(--outline-color);
-		outline-offset: var(--outline-offset-linkonly);
-	}
-
-	&::before {
-		display: inline flow-root;
-		margin-inline-end: var(--_bullet-gap);
-		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
-		clip-path: var(--shape-link-triangle);
-		inline-size: var(--_bullet-inline-size);
-		content: "";
-	}
-}
-
+/* 画像エリア */
 .p-amazon__thumb {
 	display: inline flex;
 	position: absolute;
@@ -151,6 +138,7 @@
 	pointer-events: none;
 }
 
+/* 商品画像 */
 .p-amazon__image {
 	display: block flow;
 	background-color: var(--color-white);
@@ -169,6 +157,27 @@
 
 	:any-link:hover & {
 		box-shadow: 0 0 5px 1px oklch(from var(--_bg-color) calc(l - 0.15) calc(c + 0.15) h);
+	}
+}
+
+/* 商品タイトル */
+.p-amazon__title {
+	margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
+	font-weight: var(--font-weight-bold);
+
+	:focus & {
+		outline: var(--outline-width) solid var(--outline-color);
+		outline-offset: var(--outline-offset-linkonly);
+	}
+
+	&::before {
+		display: inline flow-root;
+		margin-inline-end: var(--_bullet-gap);
+		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
+		clip-path: var(--shape-link-triangle);
+		inline-size: var(--_bullet-inline-size);
+		vertical-align: calc((1cap - var(--_bullet-block-size)) / 2);
+		content: "";
 	}
 }
 
@@ -196,21 +205,21 @@
 	--_ripple-transition-duration: 0.5s;
 
 	display: block flow;
-	contain: layout; /* ripple effect */
+	contain: layout; /* Ripple effect */
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--color-border-light);
 	border-radius: var(--border-radius-normal);
 	background-color: var(--_bg-color);
 	padding: 0.5em;
-	overflow: hidden; /* ripple effect */
+	overflow: hidden; /* Ripple effect */
 	color: var(--color-black);
 
 	&:hover {
 		--_bg-color: var(--color-white);
 	}
 
-	/* ripple effect */
+	/* Ripple effect */
 	&::before {
 		position: absolute;
 		inset: 0;
@@ -223,7 +232,7 @@
 		content: "";
 	}
 
-	/* ripple effect */
+	/* Ripple effect */
 	&:active::before {
 		transform: scale(0);
 		transition-duration: initial;

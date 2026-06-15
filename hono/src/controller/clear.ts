@@ -1,3 +1,4 @@
+import { inspect } from 'node:util';
 import dayjs from 'dayjs';
 import { Hono } from 'hono';
 import type { Variables } from '../app.ts';
@@ -6,33 +7,37 @@ import { clear } from '../process/dsg.ts';
 import { create as createFeed } from '../process/feed.ts';
 import { create as createNewlyJson } from '../process/newlyJson.ts';
 import { create as createSitemap } from '../process/sitemap.ts';
-import type { ClearProcess as ProcessResult, Clear as Result } from '../../../@types/api.d.ts';
+import { form as validatorForm } from '../validator/clear.ts';
+import type { Post as ApiResponse } from '../../../@types/api.d.ts';
 
 /**
- * Deferred Static Generation キャッシュクリア
+ * キャッシュクリア
  */
-export const clearApp = new Hono<{ Variables: Variables }>().post(async (context) => {
+export const clearApp = new Hono<{ Variables: Variables }>().post(validatorForm, async (context) => {
+	const { req } = context;
 	const logger = context.get('logger');
 
-	const [clearDSGResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.allSettled([
+	const { response } = req.valid('form');
+
+	const [clearResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.allSettled([
 		clear(),
 		createFeed(),
 		createSitemap(),
 		createNewlyJson(),
 	]);
 
-	const results: ProcessResult[] = [];
+	const results: ApiResponse = [];
 
-	if (clearDSGResult.status === 'fulfilled') {
-		logger.info(`Modified date of DB was recorded: ${clearDSGResult.value.toString()}`);
-		results.push({ success: true, message: `${configProcess.dsg.processMessage.success} <${dayjs(clearDSGResult.value).format('HH:mm:ss')}>` });
+	if (clearResult.status === 'fulfilled') {
+		logger.info(`Modified date of DB was recorded: ${clearResult.value.toString()}`);
+		results.push({ success: true, message: `${configProcess.dsg.processMessage.success} <${dayjs(clearResult.value).format('HH:mm:ss')}>` });
 	} else {
-		logger.error(clearDSGResult.reason);
-		results.push({ success: false, message: `${configProcess.dsg.processMessage.failure}: ${String(clearDSGResult.reason)}` });
+		logger.error(clearResult.reason);
+		results.push({ success: false, message: `${configProcess.dsg.processMessage.failure}: ${String(clearResult.reason)}` });
 	}
 
 	if (createFeedResult.status === 'fulfilled') {
-		logger.info(createFeedResult.value, `Feed file created:`);
+		logger.info(`Feed file created: ${inspect(createFeedResult.value)}`);
 		results.push({ success: true, message: `${configProcess.feed.processMessage.success}（${String(createFeedResult.value.length)}ファイル）` });
 	} else {
 		logger.error(createFeedResult.reason);
@@ -40,7 +45,7 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 	}
 
 	if (createSitemapResult.status === 'fulfilled') {
-		logger.info(createSitemapResult.value, `Sitemap file created:`);
+		logger.info(`Sitemap file created: ${inspect(createSitemapResult.value)}`);
 		results.push({ success: true, message: `${configProcess.sitemap.processMessage.success}（${String(createSitemapResult.value.length)}ファイル）` });
 	} else {
 		logger.error(createSitemapResult.reason);
@@ -48,14 +53,16 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(async (context
 	}
 
 	if (createNewlyJsonResult.status === 'fulfilled') {
-		logger.info(createNewlyJsonResult.value, `JSON file created:`);
+		logger.info(`JSON file created: ${inspect(createNewlyJsonResult.value)}`);
 		results.push({ success: true, message: `${configProcess.newlyJson.processMessage.success}（${String(createNewlyJsonResult.value.length)}ファイル）` });
 	} else {
 		logger.error(createNewlyJsonResult.reason);
 		results.push({ success: false, message: `${configProcess.newlyJson.processMessage.failure}: ${String(createNewlyJsonResult.reason)}` });
 	}
 
-	return context.json({
-		processes: results,
-	} as Result);
+	if (response === 'text') {
+		return context.text(`${results.map((result) => `${result.success ? '✅' : '❌'} ${result.message}`).join('\n')}\n\n`);
+	}
+
+	return context.json(results as ApiResponse);
 });
