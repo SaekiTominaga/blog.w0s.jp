@@ -6,14 +6,15 @@
 	--border-radius-full: 1em;
 
 	/* ===== 色 ===== */
-	--color-white: oklch(100% 0 0deg); /* #ffffff */
-	--color-yellow: oklch(96.798% 0.211 109.77deg); /* #ffff00 */
-	--color-orange: oklch(79.269% 0.171 70.67deg); /* #ffa500 */
-	--color-red: oklch(62.8% 0.258 29.234deg); /* #ff0000 */
-	--color-purple: oklch(42.091% 0.1935 328.36deg); /* #800080 */
-	--color-green: oklch(51.975% 0.1769 142.5deg); /* #008000 */
-	--color-blue: oklch(45.201% 0.3132 264.05deg); /* #0000ff */
 	--color-black: oklch(0% 0 0deg); /* #000000 */
+	--color-white: oklch(100% 0 0deg); /* #ffffff */
+	--color-red: oklch(62.8% 0.258 29.234deg); /* #ff0000 */
+	--color-orange: oklch(79.269% 0.171 70.67deg); /* #ffa500 */
+	--color-yellow: oklch(96.798% 0.211 109.77deg); /* #ffff00 */
+	--color-green: oklch(51.975% 0.1769 142.5deg); /* #008000 */
+	--color-aqua: oklch(90.54% 0.1546 194.77deg); /* #00ffff */
+	--color-blue: oklch(45.201% 0.3132 264.05deg); /* #0000ff */
+	--color-purple: oklch(42.091% 0.1935 328.36deg); /* #800080 */
 
 	--color-lightgray: oklch(calc(100% / 4 * 3) 0 0deg);
 	--color-gray: oklch(calc(100% / 4 * 2) 0 0deg);
@@ -46,13 +47,13 @@
 	--link-color: oklch(from var(--color-blue) calc(l + 0.1) c h); /* 未訪問リンクの文字色 */
 	--link-color-visited: oklch(from var(--color-purple) calc(l + 0.05) c h); /* 既訪問リンクの文字色 */
 	--link-color-hover: oklch(from var(--color-red) calc(l - 0.1) c h); /* マウスオーバー時の文字色 */
-	--link-color-bullet: oklch(70.742% 0.1208 194.77deg); /* ビュレット色 */
+	--link-color-bullet: oklch(from var(--color-aqua) calc(l - 0.2) c h); /* ビュレット色 */
 	--link-hover-transition-duration: 0.2s; /* マウスオーバー時の変化時間 */
 
 	/* ===== フォーカスリング ===== */
 	--outline-width: 1px;
 	--outline-width-bold: 2px;
-	--outline-color: oklch(67.471% 0.1726 259.49deg);
+	--outline-color: oklch(from var(--color-blue) calc(l + 0.25) c h);
 	--outline-offset: 1px;
 	--outline-offset-linkonly: 0.125em;
 
