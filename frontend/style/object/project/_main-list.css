@@ -78,9 +78,9 @@
 	--_icon-color: var(--color-gray); /* アイコンの色 */
 	--_icon-gap: 0.5em; /* アイコンと後続テキストの間隔 */
 
-	border: 1px solid var(--color-border-dark);
+	border: 1px solid var(--border-color-dark);
 	border-radius: var(--border-radius-normal);
-	background-color: var(--color-bg-light);
+	background-color: var(--bgcolor-light);
 	padding: 1.25em min(1.25dvi, 1.25em);
 	line-height: var(--line-height-narrow);
 
@@ -132,14 +132,14 @@
 
 /* ===== 脚注リスト ===== */
 .p-footnote {
-	border: 1px solid var(--color-bg-dark);
+	border: 1px solid var(--bgcolor-dark);
 	border-radius: var(--border-radius-large);
-	background-color: var(--color-bg-dark);
+	background-color: var(--bgcolor-dark);
 	padding: 1em;
 	font-size: calc(100% / pow(var(--font-ratio), 1));
 
 	.p-entry & {
-		border-color: var(--color-border-light);
+		border-color: var(--border-color-light);
 
 		&:last-child {
 			margin-block-start: calc(var(--stack-margin-base) * 6);

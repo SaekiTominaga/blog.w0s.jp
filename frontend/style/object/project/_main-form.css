@@ -24,7 +24,7 @@
 
 	/* 複雑なフォームは区切り線を付ける */
 	.p-form-grid.-complex & {
-		border-block-end: 1px solid var(--color-border-light);
+		border-block-end: 1px solid var(--border-color-light);
 		padding-block-end: var(--_gap-block);
 	}
 
@@ -65,7 +65,7 @@
 	outline: none;
 	border: 1px solid var(--color-red);
 	border-radius: var(--border-radius-large);
-	background-color: var(--color-lightred-bg);
+	background-color: var(--bgcolor-lightred);
 	padding: 1em;
 }
 
@@ -123,7 +123,7 @@
 		font-size: calc(100% / pow(var(--font-ratio), 1));
 
 		&:not(:has(> img)) {
-			border: 1px solid var(--color-border-dark);
+			border: 1px solid var(--border-color-dark);
 			padding: 10px;
 		}
 

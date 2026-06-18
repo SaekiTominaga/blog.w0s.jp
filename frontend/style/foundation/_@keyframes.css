@@ -6,11 +6,11 @@
 
 @keyframes section-target {
 	0% {
-		background-color: var(--color-lightred-bg);
+		background-color: var(--bgcolor-lightred);
 	}
 
 	50% {
-		background-color: var(--color-lightred-bg);
+		background-color: var(--bgcolor-lightred);
 	}
 
 	100% {
@@ -20,11 +20,11 @@
 
 @keyframes entry-section-target {
 	0% {
-		background-color: var(--color-lightred-bg);
+		background-color: var(--bgcolor-lightred);
 	}
 
 	50% {
-		background-color: var(--color-lightred-bg);
+		background-color: var(--bgcolor-lightred);
 	}
 
 	100% {

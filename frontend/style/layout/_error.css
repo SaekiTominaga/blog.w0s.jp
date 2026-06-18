@@ -15,7 +15,7 @@
 /* ===== ページヘッダー ===== */
 .l-header {
 	grid-column: header;
-	border-block-end: 1px dashed var(--color-border-dark);
+	border-block-end: 1px dashed var(--border-color-dark);
 	padding-block: 12dvb 8dvb;
 }
 

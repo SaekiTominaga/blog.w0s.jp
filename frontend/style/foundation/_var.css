@@ -1,10 +1,4 @@
 :root {
-	/* ===== border ===== */
-	--border-radius-small: 0.125em;
-	--border-radius-normal: 0.25em;
-	--border-radius-large: 0.5em;
-	--border-radius-full: 1em;
-
 	/* ===== 色 ===== */
 	--color-black: oklch(0% 0 0deg); /* #000000 */
 	--color-white: oklch(100% 0 0deg); /* #ffffff */
@@ -16,19 +10,25 @@
 	--color-blue: oklch(45.201% 0.3132 264.05deg); /* #0000ff */
 	--color-purple: oklch(42.091% 0.1935 328.36deg); /* #800080 */
 
-	--color-lightgray: oklch(calc(100% / 4 * 3) 0 0deg);
-	--color-gray: oklch(calc(100% / 4 * 2) 0 0deg);
-	--color-darkgray: oklch(calc(100% / 4 * 1) 0 0deg);
-	--color-border-light: oklch(calc(100% / 8 * 7) 0 0deg);
-	--color-border-dark: oklch(calc(100% / 8 * 6) 0 0deg);
-	--color-bg-light: oklch(calc(100% / 32 * 31) 0 0deg);
-	--color-bg-dark: oklch(calc(100% / 32 * 30) 0 0deg);
+	--color-lightgray: oklch(from var(--color-white) calc(l - 1 / 4) c h);
+	--color-gray: oklch(from var(--color-white) calc(l - 2 / 4) c h);
+	--color-darkgray: oklch(from var(--color-white) calc(l - 3 / 4) c h);
 
-	--color-lightred-bg: color-mix(in oklch, var(--color-red) 5%, var(--color-white));
-	--color-red-bg: color-mix(in oklch, var(--color-red) 94.99%, var(--color-black)); /* 白文字に対してコントラスト比 4.5:1 を満たす限界値 */
-	--color-red-text: color-mix(in oklch, var(--color-red) 94.99%, var(--color-black)); /* --page-bg-color に対してコントラスト比 4.5:1 を満たす限界値 */
+	--color-red-text: oklch(from var(--color-red) calc(l - 0.044) c h); /* page-bg-color に対してコントラスト比 4.5:1 を満たす限界値 */
 
-	--color-entry-note: color-mix(in oklch, var(--color-yellow) 50%, var(--color-black));
+	/* ===== 背景 ===== */
+	--bgcolor-light: oklch(from var(--color-white) calc(l - 1 / 32) c h);
+	--bgcolor-dark: oklch(from var(--color-white) calc(l - 2 / 32) c h);
+	--bgcolor-lightred: oklch(from var(--color-red) 100% calc(c - 0.2) h);
+	--bgcolor-ed: oklch(from var(--color-red) calc(l - 0.044) c h); /* 白文字に対してコントラスト比 4.5:1 を満たす限界値 */
+
+	/* ===== border ===== */
+	--border-radius-small: 0.125em;
+	--border-radius-normal: 0.25em;
+	--border-radius-large: 0.5em;
+	--border-radius-full: 1em;
+	--border-color-light: oklch(from var(--color-white) calc(l - 1 / 8) c h);
+	--border-color-dark: oklch(from var(--color-white) calc(l - 2 / 8) c h);
 
 	/* ===== フォント ===== */
 	--font-ratio: 1.12;
@@ -78,13 +78,9 @@
 	--page-content-width: 1024px; /* コンテンツエリアの最大幅 */
 	--page-padding-inline: 10px; /* ページの左右の余白 */
 	--page-margin-inline: calc((100% - var(--page-max-width)) / 2 - var(--page-padding-inline)); /* ページの左右の余白 */
-	--page-color: var(--color-black); /* ページ文字色 */
-	--page-bg-color: oklch(
-		99.836% 0.0079 106.54deg
-	); /* ページ背景色（本来の意図は `oklch(from var(--color-yellow) l c h / 2.5%)` だが、iOS Vivaldi の強制ダークテーマのためにアルファチャネルなしの表現で代用） */
-	--page-font-size: 100%; /* デフォルトのフォントサイズ 12px=75%, 13px=81.3%, 14px=87.5%, 15px=93.8%, 16px=100%, 17px=106.3%, 18px=112.5% */
 
 	/* ===== 記事 ===== */
 	--entry-embed-border-width: 1px;
 	--entry-image-width: 640px;
+	--entry-color-note: color-mix(in oklch, var(--color-yellow) 50%, var(--color-black));
 }

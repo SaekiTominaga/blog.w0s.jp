@@ -44,7 +44,7 @@
 	line-height: var(--line-height-narrow);
 
 	.p-entry-section.-hdg1 > & {
-		border-block-end: 1px solid var(--color-border-dark);
+		border-block-end: 1px solid var(--border-color-dark);
 		padding-block-end: 0.375em;
 		font-size: calc(100% * pow(var(--font-ratio), 5));
 	}
@@ -54,9 +54,9 @@
 
 		&::before {
 			transform: scaleY(80%);
-			border: 0.125em solid var(--color-border-dark);
+			border: 0.125em solid var(--border-color-dark);
 			border-radius: var(--border-radius-full);
-			background-color: var(--color-border-dark); /* for Chrome */
+			background-color: var(--border-color-dark); /* for Chrome */
 			content: "";
 		}
 	}

@@ -98,7 +98,7 @@
 	}
 
 	:any-link:hover & {
-		box-shadow: 0 0 5px var(--color-border-dark);
+		box-shadow: 0 0 5px var(--border-color-dark);
 	}
 }
 

@@ -4,7 +4,7 @@
 
 /* ===== サイト内検索 ===== */
 .c-search {
-	--_border-color: var(--color-border-dark);
+	--_border-color: var(--border-color-dark);
 
 	display: block flex;
 	flex-wrap: wrap;
@@ -60,7 +60,7 @@
 		}
 
 		&:hover {
-			background-color: var(--color-bg-dark);
+			background-color: var(--bgcolor-dark);
 		}
 
 		& > svg {
