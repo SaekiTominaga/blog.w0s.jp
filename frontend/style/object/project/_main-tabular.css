@@ -20,12 +20,12 @@
 	}
 
 	& > thead {
-		--_bg-color: var(--color-bg-dark);
+		--_bg-color: var(--bgcolor-dark);
 		--_text-align: center;
 	}
 
 	& > tbody th {
-		--_bg-color: var(--color-bg-light);
+		--_bg-color: var(--bgcolor-light);
 	}
 
 	& > :is(thead + tbody, tbody + tbody) {

@@ -14,10 +14,10 @@
 
 .p-sidebar-categories__item {
 	--_padding-block: 0.6em;
-	--_border-color: var(--color-border-dark);
+	--_border-color: var(--border-color-dark);
 	--_border-radius-top: 0px;
 	--_color: var(--color-black);
-	--_bg-color: var(--color-bg-light);
+	--_bg-color: var(--bgcolor-light);
 	--_font-weight: inherit;
 
 	display: inline flow-root; /* JS 無効環境向け */
@@ -49,7 +49,7 @@
 	}
 
 	&:hover {
-		--_bg-color: var(--color-bg-light);
+		--_bg-color: var(--bgcolor-light);
 	}
 
 	&[aria-selected="true" i] {
@@ -61,7 +61,7 @@
 }
 
 .p-sidebar-categories__panel {
-	border: solid var(--color-border-dark);
+	border: solid var(--border-color-dark);
 	border-width: 0 1px 1px;
 }
 
@@ -86,19 +86,19 @@
 
 	&::before,
 	&::after {
-		border-block-start: var(--_border-width) solid var(--color-border-dark);
+		border-block-start: var(--_border-width) solid var(--border-color-dark);
 		content: "";
 	}
 
 	&::before {
 		grid-area: hleft;
-		border-inline-start: var(--_border-width) solid var(--color-border-dark);
+		border-inline-start: var(--_border-width) solid var(--border-color-dark);
 		border-start-start-radius: var(--border-radius-normal);
 	}
 
 	&::after {
 		grid-area: hright;
-		border-inline-end: var(--_border-width) solid var(--color-border-dark);
+		border-inline-end: var(--_border-width) solid var(--border-color-dark);
 		border-start-end-radius: var(--border-radius-normal);
 	}
 
@@ -109,9 +109,9 @@
 
 	& > :last-child {
 		grid-area: content;
-		border-block-end: var(--_border-width) solid var(--color-border-dark);
-		border-inline-start: var(--_border-width) solid var(--color-border-dark);
-		border-inline-end: var(--_border-width) solid var(--color-border-dark);
+		border-block-end: var(--_border-width) solid var(--border-color-dark);
+		border-inline-start: var(--_border-width) solid var(--border-color-dark);
+		border-inline-end: var(--_border-width) solid var(--border-color-dark);
 	}
 }
 
@@ -165,14 +165,14 @@
 
 	& > li {
 		& + li {
-			border-block-start: 1px dotted var(--color-border-dark);
+			border-block-start: 1px dotted var(--border-color-dark);
 		}
 
 		/* 奇数行 */
 		&:nth-child(2n + 1) {
 			& a {
 				&:any-link {
-					--_bg-color: var(--color-bg-light);
+					--_bg-color: var(--bgcolor-light);
 
 					&:hover {
 						--_bg-color: oklch(from var(--color-yellow) l c h / 25%);

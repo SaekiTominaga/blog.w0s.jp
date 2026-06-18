@@ -33,14 +33,14 @@
 		display: inline flow-root;
 		outline-offset: calc(0px - var(--_tag-border-width));
 		outline-width: var(--outline-width-bold);
-		border: var(--_tag-border-width) solid var(--color-border-light);
+		border: var(--_tag-border-width) solid var(--border-color-light);
 		border-radius: var(--border-radius-normal);
 		background-color: var(--color-white);
 		padding: var(--_tag-pading-row) var(--_tag-pading-col);
 		text-decoration-line: none;
 
 		&:hover {
-			box-shadow: 0 0 3px var(--color-border-light);
+			box-shadow: 0 0 3px var(--border-color-light);
 		}
 	}
 }

@@ -17,7 +17,7 @@
 .c-button {
 	--_padding-block: 0.5em;
 	--_padding-inline: 0.75em;
-	--_border-color: var(--color-border-dark);
+	--_border-color: var(--border-color-dark);
 	--_inline-size: auto;
 	--_color: var(--color-black);
 	--_bg-color: var(--color-white);
@@ -89,7 +89,7 @@
 
 		&:target {
 			border: 1px solid var(--color-red);
-			background-color: var(--color-lightred-bg);
+			background-color: var(--bgcolor-lightred);
 		}
 
 		&[role="button" i] {

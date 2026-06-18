@@ -3,19 +3,11 @@
 }
 
 :root {
-	--_color: var(--page-color);
-	--_bg-color: var(--page-bg-color);
-
 	line-height: var(--line-height-wide);
-	color: var(--_color);
+	color: var(--color-black);
 	font-family: sans-serif;
-	font-size: var(--page-font-size);
+	font-size: 100%;
 	font-weight: var(--font-weight-normal);
-
-	@media print {
-		--_color: var(--color-black);
-		--_bg-color: var(--color-white);
-	}
 
 	@media (prefers-reduced-motion: no-preference) {
 		scroll-behavior: smooth;
@@ -24,8 +16,13 @@
 
 head /* for iOS Vialdi 7.7 (Force a dark theme on all websites) */,
 body {
-	background-color: var(--_bg-color);
+	background-color: oklch(99.836% 0.0079 106.54deg)
+		/* 本来の意図は `oklch(from var(--color-yellow) l c h / 2.5%)` だが、iOS Vivaldi の強制ダークテーマのためにアルファチャネルなしの表現で代用 */;
 	color: inherit;
+
+	@media print {
+		background-color: var(--color-white);
+	}
 }
 
 :focus {

@@ -4,7 +4,7 @@
 
 /* ===== ボックス ===== */
 .p-box {
-	border: 1px solid var(--color-border-dark);
+	border: 1px solid var(--border-color-dark);
 	border-radius: var(--border-radius-normal);
 	background-color: var(--color-white);
 	padding: 1em;
@@ -16,7 +16,7 @@
 
 /* ===== 脚注ポップオーバー ===== */
 .p-footnote-popover {
-	--_border-color: var(--color-border-light);
+	--_border-color: var(--border-color-light);
 	--_hide-button-padding: 6px;
 	--_hide-button-image-size: 24px;
 
@@ -63,9 +63,9 @@
 	}
 
 	&::part(hide-button):hover {
-		--_background-color: var(--color-bg-light);
+		--_background-color: var(--bgcolor-light);
 
-		outline: 1px solid var(--color-border-light);
+		outline: 1px solid var(--border-color-light);
 	}
 
 	&::part(hide-button):focus {
@@ -199,7 +199,7 @@
 }
 
 .p-code__clipboard-button {
-	--_bg-color: var(--color-bg-light);
+	--_bg-color: var(--bgcolor-light);
 	--_ripple-color: var(--color-black);
 	--_ripple-opacity: 0.25;
 	--_ripple-transition-duration: 0.5s;
@@ -208,7 +208,7 @@
 	contain: layout; /* Ripple effect */
 	outline-offset: -1px;
 	outline-width: var(--outline-width-bold);
-	border: 1px solid var(--color-border-light);
+	border: 1px solid var(--border-color-light);
 	border-radius: var(--border-radius-normal);
 	background-color: var(--_bg-color);
 	padding: 0.5em;
@@ -247,7 +247,7 @@
 }
 
 .p-code__code {
-	border: 1px solid var(--color-border-light);
+	border: 1px solid var(--border-color-light);
 	background-color: var(--color-white);
 	padding: 1em;
 	overflow-x: auto;
@@ -278,12 +278,12 @@
 		}
 
 		&:not(:first-child) {
-			border-block-start: 1px solid var(--color-border-light);
+			border-block-start: 1px solid var(--border-color-light);
 		}
 	}
 
 	&.-list {
-		border-block: 1px solid var(--color-border-light);
+		border-block: 1px solid var(--border-color-light);
 	}
 }
 
