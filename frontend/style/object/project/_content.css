@@ -13,6 +13,7 @@
 		padding: 0.75em 1.5%;
 		text-shadow: 0 0 0.05em oklch(from currentColor l c h / 25%);
 		text-wrap-style: pretty;
+		color: var(--color-black); /* for iOS Edge (Force a dark theme on all websites) */
 		font-size: clamp(calc(100% * pow(var(--font-ratio), 1)), 7svi, calc(100% * pow(var(--font-ratio), 5)));
 	}
 }
