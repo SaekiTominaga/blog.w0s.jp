@@ -10,19 +10,20 @@
 }
 
 .p-post-preview__messages {
+	& tr {
+		&:has(.c-form-result-mark.-info:not([hidden])) {
+			background-color: var(--bgcolor-light);
+		}
+
+		&:has(.c-form-result-mark.-warning:not([hidden])) {
+			background-color: var(--bgcolor-lightred);
+		}
+	}
+
 	& th,
 	& td {
-		border: 1px solid var(--border-color-light);
-		background-color: var(--_bg-color);
-		padding: 0.25em 0.5em;
-	}
-
-	& [data-level="info"] {
-		--_bg-color: var(--bgcolor-light);
-	}
-
-	& [data-level="warning"] {
-		--_bg-color: var(--bgcolor-lightred);
+		border: 1px solid var(--border-color-dark);
+		padding: 0.125em 0.5em;
 	}
 }
 
