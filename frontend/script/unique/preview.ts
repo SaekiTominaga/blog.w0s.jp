@@ -15,8 +15,22 @@ const setMessages = (template: HTMLTemplateElement, messages: readonly Readonly<
 			element.remove();
 		});
 
+	/* 行番号でソート */
+	const sortedMessages = messages.toSorted((a, b) => {
+		if (a.line === undefined && b.line === undefined) {
+			return 0;
+		}
+		if (a.line === undefined) {
+			return 1;
+		}
+		if (b.line === undefined) {
+			return -1;
+		}
+		return a.line - b.line;
+	});
+
 	const fragment = document.createDocumentFragment();
-	messages.forEach((message) => {
+	sortedMessages.forEach((message) => {
 		const clone = template.content.cloneNode(true) as HTMLElement;
 
 		if (message.line !== undefined) {
@@ -38,38 +52,28 @@ const setMessages = (template: HTMLTemplateElement, messages: readonly Readonly<
 			reason.textContent = message.reason;
 		}
 
-		if (message.ruleId !== undefined) {
-			const { ruleId } = message;
+		const { ruleId } = message;
 
-			const info = ruleId.startsWith('no-recommended-');
-			const tr = clone.querySelector('tr');
-			if (info) {
-				if (tr !== null) {
-					tr.dataset['level'] = 'info';
-				}
+		const info = ruleId?.startsWith('no-recommended-') ?? false;
 
-				const icon = clone.querySelector<HTMLElement>('.js-icon-info');
-				if (icon !== null) {
-					icon.hidden = false;
-				}
-			} else {
-				if (tr !== null) {
-					tr.dataset['level'] = 'warning';
-				}
+		const infoIcon = clone.querySelector<HTMLElement>('.js-info');
+		if (infoIcon !== null) {
+			infoIcon.hidden = !info;
+		}
 
-				const icon = clone.querySelector<HTMLElement>('.js-icon-warning');
-				if (icon !== null) {
-					icon.hidden = false;
-				}
+		const warningIcon = clone.querySelector<HTMLElement>('.js-warning');
+		if (warningIcon !== null) {
+			warningIcon.hidden = info;
+		}
+
+		const rule = clone.querySelector<HTMLAnchorElement>('.js-rule-id');
+		if (rule !== null) {
+			if (ruleId !== undefined) {
+				rule.textContent = ruleId;
 			}
 
-			const rule = clone.querySelector<HTMLAnchorElement>('.js-rule');
-			if (rule !== null) {
-				rule.textContent = ruleId;
-
-				if (message.url !== undefined) {
-					rule.href = message.url;
-				}
+			if (message.url !== undefined) {
+				rule.href = message.url;
 			}
 		}
 
@@ -86,9 +90,7 @@ const setMessages = (template: HTMLTemplateElement, messages: readonly Readonly<
  */
 const setPreview = (template: HTMLTemplateElement, html: string): void => {
 	/* いったんクリア */
-	if (template.nextElementSibling !== null) {
-		template.nextElementSibling.remove();
-	}
+	template.nextElementSibling?.remove();
 
 	const fragment = document.createDocumentFragment();
 	const clone = template.content.cloneNode(true) as HTMLElement;
