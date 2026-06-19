@@ -3,7 +3,6 @@
 }
 
 :root {
-	line-height: var(--line-height-wide);
 	color: var(--color-black);
 	font-family: sans-serif;
 	font-size: 100%;
@@ -12,6 +11,14 @@
 	@media (prefers-reduced-motion: no-preference) {
 		scroll-behavior: smooth;
 	}
+}
+
+:root,
+input,
+select,
+button,
+textarea {
+	line-height: var(--line-height-wide);
 }
 
 head /* for iOS Vialdi 7.7 (Force a dark theme on all websites) */,
