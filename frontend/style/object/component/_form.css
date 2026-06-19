@@ -102,10 +102,9 @@
 	border: 1px solid var(--form-control-theme-color);
 	border-radius: var(--border-radius-normal);
 	background-color: var(--form-control-theme-color);
-	padding: var(--form-control-padding-block) 1em;
+	padding: calc(var(--form-control-padding-block) - (1lh * (pow(var(--font-ratio), 2) - 1)) / 2) 1em;
 	overflow: hidden; /* Ripple effect */
 	vertical-align: middle;
-	line-height: var(--line-height-nowrap);
 	text-wrap-mode: nowrap;
 	color: var(--color-white);
 	font-family: system-ui, sans-serif; /* Chrome で下側の空きが出てしまう対策 */
