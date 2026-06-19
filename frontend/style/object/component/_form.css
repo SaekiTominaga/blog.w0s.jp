@@ -73,7 +73,7 @@
 	border-radius: var(--border-radius-normal);
 	background-color: var(--color-white);
 	padding: var(--form-control-padding-block);
-	min-block-size: var(--block-size, auto);
+	min-block-size: calc(var(--_block-size, auto) + var(--form-control-padding-block) * 2);
 	inline-size: 100%;
 	color: var(--color-black);
 
