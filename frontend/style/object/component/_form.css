@@ -249,7 +249,7 @@
 
 	&.-required {
 		--color: var(--color-white); /* TODO: contrast-color() に置き換え */
-		--bg-color: var(--bgcolor-ed);
+		--bg-color: var(--bgcolor-red);
 	}
 }
 

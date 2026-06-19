@@ -20,7 +20,7 @@
 	--bgcolor-light: oklch(from var(--color-white) calc(l - 1 / 32) c h);
 	--bgcolor-dark: oklch(from var(--color-white) calc(l - 2 / 32) c h);
 	--bgcolor-lightred: oklch(from var(--color-red) 100% calc(c - 0.2) h);
-	--bgcolor-ed: oklch(from var(--color-red) calc(l - 0.044) c h); /* 白文字に対してコントラスト比 4.5:1 を満たす限界値 */
+	--bgcolor-red: oklch(from var(--color-red) calc(l - 0.044) c h); /* 白文字に対してコントラスト比 4.5:1 を満たす限界値 */
 
 	/* ===== border ===== */
 	--border-radius-small: 0.125em;
