@@ -263,8 +263,7 @@
 	}
 
 	& > code {
-		/* stylelint-disable-next-line color-no-hex */
-		color: #24292e; /* https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css */
+		color: oklch(27.806% 0.012 248.25deg); /* #24292e; https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css */
 	}
 }
 

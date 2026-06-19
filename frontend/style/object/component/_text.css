@@ -169,7 +169,7 @@
 }
 
 /* ===== コードハイライト https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css ===== */
-/* stylelint-disable color-no-hex, selector-class-pattern */
+/* stylelint-disable selector-class-pattern */
 .hljs-doctag,
 .hljs-keyword,
 .hljs-template-tag,
@@ -177,7 +177,7 @@
 .hljs-type,
 .hljs-variable.language_ {
 	/* prettylights-syntax-keyword */
-	color: #d73a49;
+	color: oklch(58.794% 0.193 20.469deg); /* #d73a49 */
 }
 
 .hljs-title,
@@ -185,7 +185,7 @@
 .hljs-title.class_.inherited__,
 .hljs-title.function_ {
 	/* prettylights-syntax-entity */
-	color: #6f42c1;
+	color: oklch(50.152% 0.188 294.99deg); /* #6f42c1 */
 }
 
 .hljs-attr,
@@ -199,26 +199,26 @@
 .hljs-selector-class,
 .hljs-selector-id {
 	/* prettylights-syntax-constant */
-	color: #005cc5;
+	color: oklch(49.49% 0.18 257.601deg); /* #005cc5 */
 }
 
 .hljs-regexp,
 .hljs-string {
 	/* prettylights-syntax-string */
-	color: #032f62;
+	color: oklch(31.077% 0.101 255.87deg); /* #032f62 */
 }
 
 .hljs-built_in,
 .hljs-symbol {
 	/* prettylights-syntax-variable */
-	color: #e36209;
+	color: oklch(64.823% 0.18 45.869deg); /* #e36209 */
 }
 
 .hljs-comment,
 .hljs-code,
 .hljs-formula {
 	/* prettylights-syntax-comment */
-	color: #6a737d;
+	color: oklch(55.137% 0.019 250.98deg); /* #6a737d */
 }
 
 .hljs-name,
@@ -226,47 +226,47 @@
 .hljs-selector-tag,
 .hljs-selector-pseudo {
 	/* prettylights-syntax-entity-tag */
-	color: #22863a;
+	color: oklch(54.635% 0.144 147.32deg); /* #22863a */
 }
 
 .hljs-subst {
 	/* prettylights-syntax-storage-modifier-import */
-	color: #24292e;
+	color: oklch(27.806% 0.012 248.25deg); /* #24292e */
 }
 
 .hljs-section {
 	/* prettylights-syntax-markup-heading */
-	color: #005cc5;
+	color: oklch(49.49% 0.18 257.6deg); /* #005cc5 */
 	font-weight: var(--font-weight-bold);
 }
 
 .hljs-bullet {
 	/* prettylights-syntax-markup-list */
-	color: #735c0f;
+	color: oklch(48.457% 0.093 90.48deg); /* #735c0f */
 }
 
 .hljs-emphasis {
 	/* prettylights-syntax-markup-italic */
-	color: #24292e;
+	color: oklch(27.806% 0.012 248.25deg); /* #24292e */
 	font-style: italic;
 }
 
 .hljs-strong {
 	/* prettylights-syntax-markup-bold */
-	color: #24292e;
+	color: oklch(27.806% 0.012 248.25deg); /* #24292e */
 	font-weight: var(--font-weight-bold);
 }
 
 .hljs-addition {
 	/* prettylights-syntax-markup-inserted */
-	background-color: #f0fff4;
-	color: #22863a;
+	background-color: oklch(98.591% 0.021 154.14deg); /* #f0fff4 */
+	color: oklch(54.635% 0.144 147.32deg); /* #22863a */
 }
 
 .hljs-deletion {
 	/* prettylights-syntax-markup-deleted */
-	background-color: #ffeef0;
-	color: #b31d28;
+	background-color: oklch(96.312% 0.019 9.298deg); /* #ffeef0 */
+	color: oklch(49.595% 0.183 24.187deg); /* #b31d28 */
 }
 
 .hljs-char.escape_,
@@ -277,4 +277,4 @@
 .hljs-tag {
 	/* purposely ignored */
 }
-/* stylelint-enable color-no-hex, selector-class-pattern */
+/* stylelint-enable selector-class-pattern */
