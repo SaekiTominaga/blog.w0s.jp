@@ -58,7 +58,7 @@
 	--outline-offset-linkonly: 0.125em;
 
 	/* ===== フォーム ===== */
-	--form-control-padding-block: 0.5em;
+	--form-control-padding-block: 0.5rem;
 	--form-control-theme-color: oklch(58.851% 0.1602 248.45deg);
 	--form-control-disabled-bgcolor: oklch(calc(100% / 32 * 28) 0 0deg);
 
