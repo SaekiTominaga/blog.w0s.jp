@@ -275,10 +275,10 @@ export default class extends Database {
 	 *
 	 * @returns 記事 ID
 	 */
-	async insertSNSQueue(entryId: number, tags: string[] | undefined): Promise<bigint | undefined> {
+	async insertSNSQueue(entryId: number, tags: readonly string[] | undefined): Promise<bigint | undefined> {
 		const query = this.db.insertInto('d_sns_queue').values({
 			entry_id: jsToSQLiteAssignment(entryId),
-			tags: sql`jsonb(${JSON.stringify(tags)})`,
+			tags: sql`jsonb(${JSON.stringify(tags?.map((tag) => tag.trim().replace(/^#/v, '')))})`,
 			mastodon: jsToSQLiteAssignment(false),
 			bluesky: jsToSQLiteAssignment(false),
 			misskey: jsToSQLiteAssignment(false),
