@@ -103,8 +103,8 @@ importers:
         specifier: 3.0.3
         version: 3.0.3
       '@w0s/form-submit-overlay':
-        specifier: 4.0.4
-        version: 4.0.4
+        specifier: 4.0.5
+        version: 4.0.5
       '@w0s/html-escape':
         specifier: 5.0.0
         version: 5.0.0
@@ -1469,8 +1469,8 @@ packages:
   '@w0s/form-before-unload-confirm@3.0.3':
     resolution: {integrity: sha512-obw0kmRCWVq9SW8iqZIoln0vGeAEmKSTpYEVVoWjxenKHjTrtS6SX2QsBD0iyFeX49ms3Z4gbnYLpdLSjhKzLg==}
 
-  '@w0s/form-submit-overlay@4.0.4':
-    resolution: {integrity: sha512-urqYtH0GPlOsSytkf4a6sqiPQrDOmNzK3pmRqatDFlrhshZNQR/6xbFvflxqYvDOPVJJFUeB8XLAWpMczDdcCg==}
+  '@w0s/form-submit-overlay@4.0.5':
+    resolution: {integrity: sha512-zqIyHD7cL3H9irdWzRejumXuZuAE3AhddngGbDOMGl5djsDrRp42tk8SfvTh1DbQNqesI+MqQ6uQuoTLYosTCw==}
 
   '@w0s/html-escape@4.0.2':
     resolution: {integrity: sha512-zCHeJa8CgyBXK6+ywov6nnju/dagTeLVM68oEVSi6uap2UtT4d9RUQ5BGeh3t2cH37Ngcdr0sHadKGA4tRGprQ==}
@@ -4941,7 +4941,7 @@ snapshots:
 
   '@w0s/form-before-unload-confirm@3.0.3': {}
 
-  '@w0s/form-submit-overlay@4.0.4': {}
+  '@w0s/form-submit-overlay@4.0.5': {}
 
   '@w0s/html-escape@4.0.2': {}
 
