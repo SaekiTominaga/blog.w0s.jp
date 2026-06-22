@@ -233,6 +233,8 @@ export default class Markdown {
 	 * @returns HTML
 	 */
 	async toHtml(markdown: string): Promise<VFile> {
-		return this.#remark.process(markdown);
+		const markdownLineBreakConverted = markdown.replaceAll(`\r\n`, '\n'); // プレビューでは LF、DB 格納データは CRLF なので統一する
+
+		return this.#remark.process(markdownLineBreakConverted);
 	}
 }
