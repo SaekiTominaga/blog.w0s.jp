@@ -11,7 +11,7 @@
 	},
 	"devDependencies": {
 		"@markuplint/ejs-parser": "4.18.0",
-		"@types/node": "26.0.0",
+		"@types/node": "24.13.2",
 		"@w0s/eslint-config": "9.7.0",
 		"@w0s/markuplint-config": "3.13.0",
 		"@w0s/stylelint-config": "4.24.0",
