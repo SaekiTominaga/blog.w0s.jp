@@ -80,11 +80,6 @@
 	}
 
 	&::before,
-	&::after,
-	& > :last-child {
-	}
-
-	&::before,
 	&::after {
 		border-block-start: var(--_border-width) solid var(--border-color-dark);
 		content: "";
