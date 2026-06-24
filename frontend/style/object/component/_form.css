@@ -209,17 +209,6 @@
 			outline: none;
 			block-size: 1em;
 			inline-size: 1em;
-			accent-color: var(--form-control-theme-color); /* :focus-within の背景色に対してコントラスト比 4.5:1 を満たす限界値 */
-		}
-
-		&:has(input.-invalid) {
-			--_border-color: var(--color-red);
-			--_bg-color: var(--bgcolor-lightred);
-
-			&:hover {
-				--_border-color: var(--color-red);
-				--_bg-color: var(--bgcolor-lightred);
-			}
 		}
 	}
 }
