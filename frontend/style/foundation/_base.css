@@ -124,3 +124,7 @@ q {
 		content: close-quote;
 	}
 }
+
+input:is([type="radio" i], [type="checkbox" i]) {
+	accent-color: var(--form-control-theme-color);
+}
