@@ -43,6 +43,7 @@
 	grid-area: image;
 
 	& img {
+		box-sizing: revert;
 		display: block flow;
 		border: 1px solid var(--color-black);
 		block-size: auto;
