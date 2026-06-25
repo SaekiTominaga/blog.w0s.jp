@@ -351,6 +351,7 @@ export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): Ele
 						tagName: 'a',
 						properties: {
 							href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate-program.amazon.com/help/node/topic/GP38PJ6EUR6PFBEC
+							rel: 'external',
 						},
 						children: [
 							{
