@@ -50,22 +50,19 @@
 	}
 
 	&::part(hide-button) {
-		--_background-color: transparent;
-
 		position: absolute;
 		inset-block-start: 1px;
 		inset-inline-end: 1px;
 		outline-offset: -1px;
 		border-style: none;
 		border-radius: var(--border-radius-normal);
-		background-color: var(--_background-color);
+		background-color: transparent;
 		padding: var(--_hide-button-padding);
 	}
 
 	&::part(hide-button):hover {
-		--_background-color: var(--bgcolor-light);
-
 		outline: 1px solid var(--border-color-light);
+		background-color: oklch(from var(--color-white) calc(l - var(--bgcolor-hover-l)) c h);
 	}
 
 	&::part(hide-button):focus {
@@ -216,7 +213,7 @@
 	color: var(--color-black);
 
 	&:hover {
-		--_bg-color: var(--color-white);
+		background-color: oklch(from var(--_bg-color) calc(l + var(--bgcolor-hover-l)) c h);
 	}
 
 	/* Ripple effect */

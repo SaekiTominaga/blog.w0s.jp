@@ -118,7 +118,9 @@
 		--_loading-spinner-inline-size: 0;
 
 		&:hover {
-			background-color: oklch(from var(--form-control-theme-color) calc(l + 0.05) c h); /* 太字の 15pt 以上なのでコントラスト比の基準は 3:1 以上 */
+			background-color: oklch(
+				from var(--form-control-theme-color) calc(l + var(--bgcolor-hover-l)) c h
+			); /* 太字の 15pt 以上なのでコントラスト比の基準は 3:1 以上 */
 		}
 
 		/* Ripple effect */

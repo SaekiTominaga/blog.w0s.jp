@@ -48,8 +48,10 @@
 		outline: none;
 	}
 
-	&:hover {
-		--_bg-color: var(--bgcolor-light);
+	&[aria-selected="false" i] {
+		&:hover {
+			background-color: oklch(from var(--_bg-color) calc(l + var(--bgcolor-hover-l)) c h);
+		}
 	}
 
 	&[aria-selected="true" i] {
