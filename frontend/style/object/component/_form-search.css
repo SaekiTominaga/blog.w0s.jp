@@ -60,7 +60,7 @@
 		}
 
 		&:hover {
-			background-color: var(--bgcolor-dark);
+			background-color: oklch(from var(--color-white) calc(l - var(--bgcolor-hover-l)) c h);
 		}
 
 		& > svg {

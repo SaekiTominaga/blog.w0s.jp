@@ -28,7 +28,6 @@
 }
 
 .p-page-nav__link {
-	--_bg-color: var(--color-white);
 	--_icon-size: 0.75em;
 	--_gap: 0.75em;
 
@@ -39,12 +38,12 @@
 	outline-width: var(--outline-width-bold);
 	border: 1px solid var(--border-color-light);
 	border-radius: var(--border-radius-normal);
-	background-color: var(--_bg-color);
+	background-color: var(--color-white);
 	padding: 0.75em 1em;
 	text-decoration-line: none;
 
 	&:hover {
-		--_bg-color: var(--bgcolor-light);
+		background-color: oklch(from var(--color-white) calc(l - var(--bgcolor-hover-l)) c h);
 	}
 
 	&.-start::before,
