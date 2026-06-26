@@ -114,7 +114,7 @@
 		color: var(--color-darkgray);
 
 		&:hover {
-			text-shadow: 0 0 0.05em oklch(from currentColor l c h / 25%);
+			text-shadow: var(--text-shadow-length) var(--text-shadow-color);
 		}
 	}
 }

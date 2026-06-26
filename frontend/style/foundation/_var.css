@@ -37,6 +37,9 @@
 	--box-shadow-length-standout: 0 0 6px 1px;
 	--box-shadow-color: var(--border-color-light);
 
+	--text-shadow-length: 0 0 0.05em;
+	--text-shadow-color: oklch(from currentColor l c h / 25%);
+
 	/* ===== text ===== */
 	--line-height-wide: 1.8; /* 広い行高さ（本文など） */
 	--line-height-normal: 1.5; /* 通常の行高さ */
