@@ -40,7 +40,7 @@
 		text-decoration-line: none;
 
 		&:hover {
-			box-shadow: 0 0 3px var(--border-color-light);
+			box-shadow: var(--box-shadow-length) var(--box-shadow-color);
 		}
 	}
 }

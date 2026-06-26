@@ -26,6 +26,7 @@
 		outline-offset: -1px;
 		border: 1px solid var(--_border-color);
 		border-radius: var(--border-radius-normal);
+		box-shadow: var(--box-shadow-length-standout) var(--box-shadow-color);
 		background-color: var(--color-white);
 		padding: 15px;
 		max-inline-size: min(30em, 100%);
@@ -35,10 +36,6 @@
 
 	&::part(content):focus {
 		outline: var(--outline-width-bold) solid var(--outline-color);
-	}
-
-	&::part(content):hover {
-		box-shadow: 0 0 0.5em var(--_border-color);
 	}
 
 	&::part(content)::before {
@@ -117,7 +114,7 @@
 		color: var(--color-darkgray);
 
 		&:hover {
-			text-shadow: 0 0 0.05em oklch(from currentColor l c h / 25%);
+			text-shadow: var(--text-shadow-length) var(--text-shadow-color);
 		}
 	}
 }
@@ -153,7 +150,7 @@
 	}
 
 	:any-link:hover & {
-		box-shadow: 0 0 5px 1px oklch(from var(--_bg-color) calc(l - 0.15) calc(c + 0.15) h);
+		box-shadow: var(--box-shadow-length-standout) oklch(from var(--_bg-color) calc(l - 0.1) calc(c + 0.1) h);
 	}
 }
 
