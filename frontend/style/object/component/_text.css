@@ -53,7 +53,7 @@
 	}
 
 	&:hover {
-		box-shadow: 0 0 2px var(--_border-color);
+		box-shadow: var(--box-shadow-length) var(--box-shadow-color);
 		color: var(--_color);
 	}
 

@@ -10,7 +10,7 @@
 	@media not print {
 		--_entry-padding-block: 3%; /* 左右の余白 */
 
-		box-shadow: 0 0 3px var(--border-color-light);
+		box-shadow: var(--box-shadow-length) var(--box-shadow-color);
 		background-color: oklch(from var(--color-white) calc(l - 1 / 64) c h);
 		color: var(--color-darkgray);
 	}

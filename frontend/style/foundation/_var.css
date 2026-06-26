@@ -1,5 +1,5 @@
 :root {
-	/* ===== 色 ===== */
+	/* ===== color ===== */
 	--color-black: oklch(0% 0 0deg); /* #000000 */
 	--color-white: oklch(100% 0 0deg); /* #ffffff */
 	--color-red: oklch(62.8% 0.258 29.234deg); /* #ff0000 */
@@ -16,7 +16,7 @@
 
 	--color-red-text: oklch(from var(--color-red) calc(l - 0.044) c h); /* page-bg-color に対してコントラスト比 4.5:1 を満たす限界値 */
 
-	/* ===== 背景 ===== */
+	/* ===== background ===== */
 	--bgcolor-light: oklch(from var(--color-white) calc(l - 1 / 32) c h);
 	--bgcolor-dark: oklch(from var(--color-white) calc(l - 2 / 32) c h);
 	--bgcolor-lightred: oklch(from var(--color-red) 100% calc(c - 0.2) h);
@@ -32,18 +32,26 @@
 	--border-color-light: oklch(from var(--color-white) calc(l - 1 / 8) c h);
 	--border-color-dark: oklch(from var(--color-white) calc(l - 2 / 8) c h);
 
-	/* ===== フォント ===== */
+	/* ===== shadow ===== */
+	--box-shadow-length: 0 0 3px;
+	--box-shadow-length-standout: 0 0 6px 1px;
+	--box-shadow-color: var(--border-color-light);
+
+	/* ===== text ===== */
+	--line-height-wide: 1.8; /* 広い行高さ（本文など） */
+	--line-height-normal: 1.5; /* 通常の行高さ */
+	--line-height-narrow: 1.25; /* 狭い行高さ（見出しやボタンなど） */
+	--line-height-nowrap: 1; /* 改行しない文の行高さ */
+
+	/* ===== font ===== */
 	--font-ratio: 1.12;
 	--font-yu-gothic: "YuGothic", "Yu Gothic", sans-serif; /* 遊ゴシック */
 	--font-yu-mincho: "YuMincho", "Yu Mincho", serif; /* 遊明朝 */
 	--font-weight-normal: 500; /* Windows + 游ゴシック 対策で 400 より大きな値とする */
 	--font-weight-bold: 700;
 
-	/* ===== テキスト ===== */
-	--line-height-wide: 1.8; /* 広い行高さ（本文など） */
-	--line-height-normal: 1.5; /* 通常の行高さ */
-	--line-height-narrow: 1.25; /* 狭い行高さ（見出しやボタンなど） */
-	--line-height-nowrap: 1; /* 改行しない文の行高さ */
+	/* ===== Stack ===== */
+	--stack-margin-base: 1.5rem;
 
 	/* ===== リンク ===== */
 	--link-color: oklch(from var(--color-blue) calc(l + 0.1) c h); /* 未訪問リンクの文字色 */
@@ -51,6 +59,7 @@
 	--link-color-hover: oklch(from var(--color-red) calc(l - 0.1) c h); /* マウスオーバー時の文字色 */
 	--link-color-bullet: oklch(from var(--color-aqua) calc(l - 0.2) c h); /* ビュレット色 */
 	--link-hover-transition-duration: 0.2s; /* マウスオーバー時の変化時間 */
+	--self-link-size: 2.6ex;
 
 	/* ===== フォーカスリング ===== */
 	--outline-width: 1px;
@@ -63,12 +72,6 @@
 	--form-control-padding-block: 0.5rem;
 	--form-control-theme-color: oklch(58.851% 0.1602 248.45deg);
 	--form-control-disabled-bgcolor: oklch(calc(100% / 32 * 28) 0 0deg);
-
-	/* ===== Stack ===== */
-	--stack-margin-base: 1.5rem;
-
-	/* ===== セルフリンク ===== */
-	--self-link-size: 2.6ex;
 
 	/* ===== 図形 ===== */
 	--shape-link-triangle: polygon(0 0, 100% 50%, 0 100%); /* リンクアイコン ( ▶ ) */
