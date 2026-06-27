@@ -35,10 +35,6 @@
 
 	& > :any-link {
 		outline: none;
-
-		&:focus {
-			text-decoration-line: none;
-		}
 	}
 }
 

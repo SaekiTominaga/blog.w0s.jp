@@ -39,11 +39,15 @@ body {
 :any-link {
 	outline-offset: var(--outline-offset);
 
-	/* for iOS Firefox auto link https://github.com/mozilla-mobile/firefox-ios/issues/8511 */
+	/* for iOS auto link */
 	&[href^="tel:"] {
-		text-decoration-line: none;
-		color: inherit;
+		text-decoration-line: unset;
+		color: unset;
 		pointer-events: none;
+	}
+
+	&:focus {
+		text-decoration-line: unset;
 	}
 
 	&:not([href^="tel:"]):hover {
