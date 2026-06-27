@@ -121,7 +121,7 @@
 	& > img {
 		block-size: calc(1em / var(--_font-size-ratio));
 		inline-size: auto;
-		vertical-align: calc((1cap - 1em) / 2);
+		vertical-align: calc((1cap - 1em / var(--_font-size-ratio)) / 2);
 	}
 }
 
