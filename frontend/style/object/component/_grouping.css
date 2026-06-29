@@ -122,9 +122,13 @@
 }
 
 @container (inline-size <= 20em) {
+	.c-entry-link {
+		min-height: unset;
+	}
+
 	.c-entry-link__thumb {
 		display: inline flow;
-		position: static;
+		position: unset;
 
 		&::before {
 			display: block flow;
