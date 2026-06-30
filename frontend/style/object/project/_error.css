@@ -48,7 +48,7 @@
 	font-weight: var(--font-weight-bold);
 
 	& small {
-		font-weight: var(--font-weight-normal);
+		font-weight: initial;
 	}
 }
 

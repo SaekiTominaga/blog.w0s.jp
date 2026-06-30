@@ -14,7 +14,7 @@
 	text-shadow: 0.05em 0.05em 0.1em oklch(from var(--color-white) calc(l - 0.125) c h);
 	line-height: var(--line-height-narrow);
 	color: var(--color-red);
-	font-family: var(--font-yu-mincho);
+	font-family: "Yu Mincho", YuMincho, serif;
 	font-feature-settings: "palt";
 	font-size: 2rem;
 	font-weight: 700;
@@ -63,7 +63,7 @@
 	font-weight: var(--font-weight-bold);
 
 	& small {
-		font-weight: var(--font-weight-normal);
+		font-weight: initial;
 	}
 }
 
