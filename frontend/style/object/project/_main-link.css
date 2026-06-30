@@ -60,7 +60,7 @@
 	font-size: calc(100% / pow(var(--font-ratio), 1));
 
 	& b {
-		font-weight: var(--font-weight-normal);
+		font-weight: unset;
 	}
 }
 
