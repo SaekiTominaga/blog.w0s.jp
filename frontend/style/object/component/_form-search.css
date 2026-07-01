@@ -9,7 +9,12 @@
 	border: 1px solid var(--border-color-dark);
 	border-radius: var(--border-radius-small);
 	background-color: var(--color-white);
+	line-height: var(--line-height-narrow);
 	color: var(--color-darkgray);
+
+	& :is(input, select, button) {
+		line-height: inherit;
+	}
 }
 
 /* 検索エンジン選択欄 */
@@ -27,7 +32,9 @@
 
 	/* Customizable Select 未対応環境向け */
 	@supports not (appearance: base-select) {
+		font-family: Arial, sans-serif;
 		font-size: calc(100% / pow(var(--font-ratio), 4));
+		font-stretch: condensed;
 		field-sizing: content;
 
 		& > option {
@@ -82,8 +89,13 @@
 .c-search__content {
 	display: inline flex;
 	flex-wrap: nowrap;
-	gap: 0.5em;
+	column-gap: 0.5em;
 	align-items: center;
+
+	selectedcontent & {
+		flex-direction: column;
+		line-height: var(--line-height-nowrap);
+	}
 
 	& img {
 		block-size: 1em;
@@ -94,7 +106,13 @@
 
 .c-search__content-text {
 	selectedcontent & {
-		display: none;
+		font-family: Arial, sans-serif;
+		font-size: calc(100% / pow(var(--font-ratio), 4));
+		font-width: condensed;
+
+		@supports not (font-width) {
+			font-stretch: condensed;
+		}
 	}
 }
 
