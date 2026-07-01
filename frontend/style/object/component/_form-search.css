@@ -4,68 +4,140 @@
 
 /* ===== サイト内検索 ===== */
 .c-search {
-	--_border-color: var(--border-color-dark);
-
 	display: block flex;
 	flex-wrap: wrap;
-	align-items: center;
-	outline-offset: -1px;
-	border: 1px solid var(--_border-color);
+	border: 1px solid var(--border-color-dark);
 	border-radius: var(--border-radius-small);
 	background-color: var(--color-white);
 	color: var(--color-darkgray);
+}
 
-	&:focus-within {
-		outline: var(--outline-width-bold) solid var(--outline-color);
+/* 検索エンジン選択欄 */
+.c-search__select {
+	display: inline flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	outline-offset: -1px;
+	border-block-style: unset;
+	border-inline-start-style: unset;
+	border-inline-end: 1px solid var(--border-color-dark);
+	border-radius: var(--border-radius-small) 0 0 var(--border-radius-small);
+	background-color: var(--color-white);
+	padding: 0 0.5em;
+
+	/* Customizable Select 未対応環境向け */
+	@supports not (appearance: base-select) {
+		font-size: calc(100% / pow(var(--font-ratio), 4));
+		field-sizing: content;
+
+		& > option {
+			font-size: calc(100% * pow(var(--font-ratio), 4));
+		}
+	}
+
+	&:focus {
+		outline-width: var(--outline-width-bold);
 	}
 
 	&:hover {
-		--_border-color: var(--outline-color);
+		background-color: oklch(from var(--color-white) calc(l - var(--bgcolor-hover-l)) c h);
+	}
+
+	&,
+	&::picker(select) {
+		appearance: base-select;
+	}
+
+	&::picker(select) {
+		border-color: var(--border-color-dark);
+	}
+
+	& selectedcontent {
+		display: contents;
+	}
+
+	& > option {
+		outline-offset: calc(0px - var(--outline-width-bold));
+		padding: 0.5em;
+		min-block-size: unset;
+
+		&:focus-visible {
+			outline-width: var(--outline-width-bold);
+		}
+
+		&:focus:not(:focus-visible) {
+			outline: none;
+		}
+
+		&:enabled:hover {
+			background-color: oklch(from var(--color-white) calc(l - var(--bgcolor-hover-l)) c h);
+		}
+
+		&::checkmark {
+			font-weight: 900;
+		}
 	}
 }
 
-/* <input type="hidden"> */
-.c-search__hidden {
+.c-search__content {
+	display: inline flex;
+	flex-wrap: nowrap;
+	gap: 0.5em;
+	align-items: center;
+
+	& img {
+		block-size: 1em;
+		inline-size: 1em;
+		vertical-align: middle;
+	}
+}
+
+.c-search__content-text {
+	selectedcontent & {
+		display: none;
+	}
 }
 
 /* キーワード入力欄 */
 .c-search__query {
+	all: unset;
+	display: block flow;
 	flex-basis: 0;
 	flex-grow: 1;
+	outline-offset: -1px;
+	padding: 0.25em;
+	inline-size: 100%;
 
-	& > input {
-		all: unset;
-		box-sizing: revert;
-		display: block flow;
-		padding: 0.25em;
-		inline-size: 100%;
+	&:focus {
+		outline: var(--outline-width-bold) solid var(--outline-color);
+	}
+
+	&:hover {
+		background-color: oklch(from var(--color-white) calc(l - var(--bgcolor-hover-l)) c h);
 	}
 }
 
 /* 送信ボタン */
 .c-search__submit {
-	& > button {
-		all: unset;
-		box-sizing: revert;
-		display: block flow;
-		margin: var(--outline-width-bold);
-		padding: 0.25em;
-		block-size: 2em;
-		inline-size: 2em;
-		color: oklch(from var(--color-blue) l calc(c - 0.15) h);
-		fill: currentColor; /* SVG */
+	all: unset;
+	outline-offset: -1px;
+	border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0;
+	padding: 0.375em;
+	block-size: 1.5em;
+	inline-size: 1.5em;
+	color: oklch(from var(--color-blue) l calc(c - 0.15) h);
+	fill: currentColor; /* SVG */
 
-		&:focus-visible {
-			outline: var(--outline-width-bold) dotted var(--color-black);
-		}
-
-		&:hover {
-			background-color: oklch(from var(--color-white) calc(l - var(--bgcolor-hover-l)) c h);
-		}
-
-		& > svg {
-			block-size: 100%;
-			inline-size: 100%;
-		} /* for Chrome */
+	&:focus-visible {
+		outline: var(--outline-width-bold) solid var(--outline-color);
 	}
+
+	&:hover {
+		background-color: oklch(from var(--color-white) calc(l - var(--bgcolor-hover-l)) c h);
+	}
+
+	& > svg {
+		block-size: 100%;
+		inline-size: 100%;
+	} /* for Chrome */
 }

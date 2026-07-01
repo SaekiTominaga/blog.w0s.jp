@@ -17,6 +17,7 @@ import { entryApp } from './controller/entry.ts';
 import { listApp, topApp } from './controller/list.ts';
 import { mediaUploadApp } from './controller/mediaUpload.ts';
 import { previewApp } from './controller/preview.ts';
+import { searchApp } from './controller/search.ts';
 import { basicAuth } from './util/auth.ts';
 import {
 	csp as cspHeader,
@@ -211,6 +212,7 @@ app.route('/list/', listApp);
 app.route('/entry/', entryApp);
 app.route('/category/', categoryApp);
 app.route('/admin/', adminApp);
+app.route('/search', searchApp);
 app.route(`/${config.api.dir}/preview`, previewApp);
 app.route(`/${config.api.dir}/media`, mediaUploadApp);
 app.route(`/${config.api.dir}/clear`, clearApp);

@@ -25,26 +25,36 @@
 				</a>
 			</div>
 			<search class="l-header__search" role="search" aria-label="サイト">
-				<form action="https://www.google.com/search" class="p-header-search">
+				<form action="/search" class="p-header-search">
 					<fieldset>
-						<legend class="p-header-search__legend">サイト内検索<small>（Google 検索）</small></legend>
+						<legend class="p-header-search__legend">サイト内検索</legend>
 						<div class="p-header-search__ctrl">
-							<div class="c-search">
-								<span class="c-search__hidden">
-									<input type="hidden" name="as_sitesearch" value="blog.w0s.jp" />
-								</span>
-								<span class="c-search__query">
-									<input type="search" name="q" required="" title="キーワード" />
-								</span>
-								<span class="c-search__submit">
+							<p class="c-search">
+								<select name="engine" class="c-search__select" title="検索エンジン">
 									<button>
-										<svg role="img" aria-labelledby="header-search-button">
-											<title id="header-search-button">検索</title>
-											<use href="/image/icon/search.svg#icon"></use>
-										</svg>
+										<selectedcontent></selectedcontent>
 									</button>
-								</span>
-							</div>
+									<option value="google">
+										<span class="c-search__content"><img src="/image/icon/google.png" alt="" width="16" height="16" /><span class="c-search__content-text">Google</span></span>
+									</option>
+									<option value="bing">
+										<span class="c-search__content"><img src="/image/icon/bing.png" alt="" width="16" height="16" /><span class="c-search__content-text">Bing</span></span>
+									</option>
+									<option value="yahoo">
+										<span class="c-search__content"><img src="/image/icon/yahoo.png" alt="" width="16" height="16" /><span class="c-search__content-text">Yahoo! JAPAN</span></span>
+									</option>
+									<option value="ddg">
+										<span class="c-search__content"><img src="/image/icon/duckduckgo.svg" alt="" width="16" height="16" /><span class="c-search__content-text">DuckDuckGo</span></span>
+									</option>
+								</select>
+								<input type="search" name="q" required="" title="キーワード" class="c-search__query" />
+								<button class="c-search__submit">
+									<svg role="img" aria-labelledby="header-search-button">
+										<title id="header-search-button">検索</title>
+										<use href="/image/icon/search.svg#icon"></use>
+									</svg>
+								</button>
+							</p>
 						</div>
 					</fieldset>
 				</form>

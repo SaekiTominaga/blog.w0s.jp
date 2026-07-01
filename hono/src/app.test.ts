@@ -9,7 +9,7 @@ await test('headers', async () => {
 	assert.equal(res.headers.get('Strict-Transport-Security'), 'max-age=31536000');
 	assert.equal(
 		res.headers.get('Content-Security-Policy'),
-		"base-uri 'none';form-action 'self' https://www.google.com;frame-ancestors 'self';report-uri https://report.w0s.jp/report/csp;report-to default",
+		"base-uri 'none';form-action 'self';frame-ancestors 'self';report-uri https://report.w0s.jp/report/csp;report-to default",
 	);
 	assert.equal(res.headers.get('Reporting-Endpoints'), 'default="https://report.w0s.jp/report/csp"');
 	assert.equal(res.headers.get('X-Content-Type-Options'), 'nosniff');
