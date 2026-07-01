@@ -69,7 +69,7 @@ const config: HonoConfig = {
 			},
 			cspHtml: {
 				'base-uri': ["'none'"],
-				'form-action': ["'self'"],
+				'form-action': ["'self'", 'https://www.google.com', 'https://www.bing.com', 'https://search.yahoo.co.jp', 'https://duckduckgo.com'],
 				'frame-ancestors': ["'self'"],
 				'report-uri': ['https://report.w0s.jp/report/csp'],
 				'report-to': ['default'],
