@@ -62,6 +62,14 @@ export default {
 				'no-empty-palpable-content': false,
 			},
 		},
+		{
+			/* Customizable Select */
+			selector: '.c-search__select',
+			inheritance: true,
+			rules: {
+				'character-reference': false,
+			},
+		},
 	],
 	overrideMode: 'merge',
 	overrides: {
@@ -69,6 +77,21 @@ export default {
 			rules: {
 				'permitted-contents': false,
 				'label-has-control': false,
+			},
+		},
+		'.html/**/*.html': {
+			rules: {
+				'permitted-contents': false, // Customizable Select
+			},
+		},
+		'template/4xx.html': {
+			rules: {
+				'permitted-contents': false, // Customizable Select
+			},
+		},
+		'template/404.html': {
+			rules: {
+				'permitted-contents': false, // Customizable Select
 			},
 		},
 		'template/list.ejs': {

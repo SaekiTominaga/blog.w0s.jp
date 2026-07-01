@@ -46,10 +46,6 @@
 .p-err-search__legend {
 	grid-area: legend;
 	font-weight: var(--font-weight-bold);
-
-	& small {
-		font-weight: initial;
-	}
 }
 
 .p-err-search__ctrl {
