@@ -24,7 +24,7 @@
 		"hono": "4.12.22",
 		"kysely": "0.28.17",
 		"nodemailer": "9.0.1",
-		"sharp": "0.34.5",
+		"sharp": "0.35.2",
 		"whatwg-mimetype": "5.0.0",
 		"winston": "3.19.0",
 		"winston-transport": "4.9.0"
