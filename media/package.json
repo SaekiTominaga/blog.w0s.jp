@@ -10,7 +10,7 @@
 		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
 	},
 	"dependencies": {
-		"sharp": "0.34.5"
+		"sharp": "0.35.2"
 	},
 	"packageManager": "pnpm@11.8.0"
 }
