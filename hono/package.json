@@ -19,7 +19,7 @@
 		"@w0s/sqlite-utility": "3.0.0",
 		"better-sqlite3": "12.10.0",
 		"dayjs": "1.11.20",
-		"ejs": "4.0.1",
+		"ejs": "6.0.1",
 		"filenamify": "7.0.1",
 		"hono": "4.12.22",
 		"kysely": "0.28.17",
