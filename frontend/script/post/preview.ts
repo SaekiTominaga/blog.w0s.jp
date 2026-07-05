@@ -113,7 +113,7 @@ const preview = async (
 		messages: HTMLTemplateElement; // Markdown 変換結果のメッセージを表示する要素
 		preview: HTMLTemplateElement; // 本文プレビューを表示する要素
 	}>,
-) => {
+): Promise<void> => {
 	const { ctrl: ctrlElement, messages: messagesTemplate, preview: previewTemplate } = element;
 
 	const response = await fetch('/api/preview', {

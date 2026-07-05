@@ -78,15 +78,17 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 		selectImageElement !== null
 	) {
 		const exec = async (): Promise<void> => {
+			messageTitle({
+				title: titleCtrlElement,
+				message: messageCtrlElement,
+			});
+
 			await preview({
 				ctrl: messageCtrlElement,
 				messages: markdownMessagesElement,
 				preview: messagePreviewElement,
 			});
-			messageTitle({
-				title: titleCtrlElement,
-				message: messageCtrlElement,
-			});
+
 			messageImage({
 				preview: messagePreviewElement,
 				image: selectImageElement,
