@@ -4,8 +4,9 @@ import { escape } from '@w0s/html-escape';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
 import type { MediaUploadData as ApiMediaUploadData, Post as ApiPost, PostData as ApiPostData } from '../../@types/api.d.ts';
-import messageImage from './unique/messageImage.ts';
-import preview from './unique/preview.ts';
+import messageImage from './post/messageImage.ts';
+import messageTitle from './post/messageTitle.ts';
+import preview from './post/preview.ts';
 import reportJsError from './util/reportJsError.ts';
 import trustedTypes from './util/trustedTypes.ts';
 import { clear as templateClear, update as updateTemplate } from './util/template.ts';
@@ -61,19 +62,30 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 	);
 });
 
-/* 本文プレビュー */
+/* 本文 */
 {
+	const titleCtrlElement = document.getElementById('fc-title') as HTMLInputElement | null; // タイトルの入力コントロール
 	const messageCtrlElement = document.getElementById('fc-message') as HTMLTextAreaElement | null; // 本文の入力コントロール
 	const markdownMessagesElement = document.getElementById('markdown-messages') as HTMLTemplateElement | null; // Markdown 変換結果のメッセージを表示する要素
 	const messagePreviewElement = document.getElementById('message-preview') as HTMLTemplateElement | null; // 本文プレビューを表示する要素
 	const selectImageElement = document.getElementById('select-image') as HTMLTemplateElement | null;
 
-	if (messageCtrlElement !== null && markdownMessagesElement !== null && messagePreviewElement !== null && selectImageElement !== null) {
+	if (
+		titleCtrlElement !== null &&
+		messageCtrlElement !== null &&
+		markdownMessagesElement !== null &&
+		messagePreviewElement !== null &&
+		selectImageElement !== null
+	) {
 		const exec = async (): Promise<void> => {
 			await preview({
 				ctrl: messageCtrlElement,
 				messages: markdownMessagesElement,
 				preview: messagePreviewElement,
+			});
+			messageTitle({
+				title: titleCtrlElement,
+				message: messageCtrlElement,
 			});
 			messageImage({
 				preview: messagePreviewElement,
