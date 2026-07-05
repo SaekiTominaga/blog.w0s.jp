@@ -35,7 +35,7 @@ const messageImage = (
 		preview: HTMLTemplateElement; // 本文プレビューを表示する要素
 		image: HTMLTemplateElement; // 選択画像を表示する要素
 	}>,
-) => {
+): void => {
 	const { preview: previewTemplate, image: selectImageTemplate } = element;
 
 	const selectedImage = pre(selectImageTemplate);

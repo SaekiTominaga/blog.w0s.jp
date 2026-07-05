@@ -8,7 +8,7 @@ const messageTitle = (
 		title: HTMLInputElement; // タイトルの入力コントロール
 		message: HTMLTextAreaElement; // 本文の入力コントロール
 	}>,
-) => {
+): void => {
 	const { title: titleCtrlElement, message: messageCtrlElement } = element;
 
 	const lines = messageCtrlElement.value.trim().split('\n');

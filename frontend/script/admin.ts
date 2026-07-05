@@ -82,11 +82,13 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 				title: titleCtrlElement,
 				message: messageCtrlElement,
 			});
+
 			await preview({
 				ctrl: messageCtrlElement,
 				messages: markdownMessagesElement,
 				preview: messagePreviewElement,
 			});
+
 			messageImage({
 				preview: messagePreviewElement,
 				image: selectImageElement,
