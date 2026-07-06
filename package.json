@@ -7,7 +7,7 @@
 		"lint:template": "markuplint template/**/*.{ejs,html}"
 	},
 	"dependencies": {
-		"prettier": "3.8.5"
+		"prettier": "3.9.3"
 	},
 	"devDependencies": {
 		"@markuplint/ejs-parser": "4.18.0",
