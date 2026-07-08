@@ -49,12 +49,7 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 			targetIds?.forEach((targetId) => {
 				(
 					document.getElementById(targetId) as
-						| HTMLButtonElement
-						| HTMLFieldSetElement
-						| HTMLInputElement
-						| HTMLOptGroupElement
-						| HTMLSelectElement
-						| HTMLTextAreaElement
+						HTMLButtonElement | HTMLFieldSetElement | HTMLInputElement | HTMLOptGroupElement | HTMLSelectElement | HTMLTextAreaElement
 				).disabled = !element.checked;
 			});
 		},
