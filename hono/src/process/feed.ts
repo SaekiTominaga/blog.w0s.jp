@@ -22,16 +22,14 @@ export const create = async (): Promise<string[]> => {
 	const entriesDto = await dao.getEntries(configProcess.feed.limit);
 
 	const entriesView = await Promise.all(
-		entriesDto.map(
-			async (entry): Promise<FeedEntry> => ({
-				id: entry.id,
-				title: entry.title,
-				description: entry.description,
-				message: (await new Markdown().toHtml(entry.message)).value.toString(),
-				updatedAt: dayjs(entry.updated_at ?? entry.registed_at),
-				update: Boolean(entry.updated_at),
-			}),
-		),
+		entriesDto.map(async (entry): Promise<FeedEntry> => ({
+			id: entry.id,
+			title: entry.title,
+			description: entry.description,
+			message: (await new Markdown().toHtml(entry.message)).value.toString(),
+			updatedAt: dayjs(entry.updated_at ?? entry.registed_at),
+			update: Boolean(entry.updated_at),
+		})),
 	);
 
 	const feed = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configProcess.feed.template}`, {

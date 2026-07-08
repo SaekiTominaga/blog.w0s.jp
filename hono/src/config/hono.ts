@@ -135,9 +135,7 @@ const config: HonoConfig = {
 		index: 'index.html',
 		extensions: ['.html'], // URL 上で省略できる拡張子
 		headers: {
-			contentType: {
-				/* hono 公式で規定されていないもの https://github.com/honojs/hono/blob/main/src/utils/mime.ts */
-			},
+			contentType: {/* hono 公式で規定されていないもの https://github.com/honojs/hono/blob/main/src/utils/mime.ts */},
 			cacheControl: {
 				default: 'max-age=600',
 				extension: [
