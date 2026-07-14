@@ -6,6 +6,15 @@ export type Error = {
 	};
 };
 
+/* 記事概要 */
+export type EntrySummaryData = {
+	id: number;
+	title: string | undefined;
+	registedAt: Date | undefined;
+	updatedAt: Date | undefined;
+};
+export type EntriesSummary = { data: EntrySummaryData[] } | Error;
+
 /* 本文プレビュー */
 export type PreviewData = {
 	html: string;

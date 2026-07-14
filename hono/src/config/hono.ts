@@ -175,7 +175,7 @@ const config: HonoConfig = {
 	},
 	api: {
 		dir: 'api', // API を示すディレクトリ
-		allowMethods: ['POST'],
+		allowMethods: ['GET', 'POST'],
 	},
 };
 

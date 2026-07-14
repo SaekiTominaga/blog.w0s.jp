@@ -12,12 +12,13 @@ import { getLogger } from './logger.ts';
 import config from './config/hono.ts';
 import { adminApp } from './controller/admin.ts';
 import { categoryApp } from './controller/category.ts';
-import { clearApp } from './controller/clear.ts';
 import { entryApp } from './controller/entry.ts';
 import { listApp, topApp } from './controller/list.ts';
-import { mediaUploadApp } from './controller/mediaUpload.ts';
-import { previewApp } from './controller/preview.ts';
 import { searchApp } from './controller/search.ts';
+import { clearApp as apiClearApp } from './controller/api/clear.ts';
+import { entriesSummaryApp as apiEntriesApp } from './controller/api/entriesSummary.ts';
+import { mediaUploadApp as apiMediaUploadApp } from './controller/api/mediaUpload.ts';
+import { previewApp as apiPreviewApp } from './controller/api/preview.ts';
 import { basicAuth } from './util/auth.ts';
 import {
 	csp as cspHeader,
@@ -213,9 +214,10 @@ app.route('/entry/', entryApp);
 app.route('/category/', categoryApp);
 app.route('/admin/', adminApp);
 app.route('/search', searchApp);
-app.route(`/${config.api.dir}/preview`, previewApp);
-app.route(`/${config.api.dir}/media`, mediaUploadApp);
-app.route(`/${config.api.dir}/clear`, clearApp);
+app.route(`/${config.api.dir}/summary`, apiEntriesApp);
+app.route(`/${config.api.dir}/preview`, apiPreviewApp);
+app.route(`/${config.api.dir}/media`, apiMediaUploadApp);
+app.route(`/${config.api.dir}/clear`, apiClearApp);
 
 /* Error pages */
 app.notFound(async (context) => {
