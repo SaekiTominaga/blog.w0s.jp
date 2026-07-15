@@ -4,13 +4,13 @@ import type { Preview as ApiResponsePreview } from '../../../@types/api.d.ts';
 /**
  * Markdown 変換に際してのメッセージを表示
  *
- * @param template - Markdown 変換結果のメッセージを表示する要素
+ * @param $template - Markdown 変換結果のメッセージを表示する要素
  * @param messages - メッセージ
  */
-const setMessages = (template: HTMLTemplateElement, messages: readonly Readonly<VFileMessage>[]): void => {
+const setMessages = ($template: HTMLTemplateElement, messages: readonly Readonly<VFileMessage>[]): void => {
 	/* いったんクリア */
-	Array.from(template.parentNode?.children ?? [])
-		.filter((element) => element !== template)
+	Array.from($template.parentNode?.children ?? [])
+		.filter((element) => element !== $template)
 		.forEach((element) => {
 			element.remove();
 		});
@@ -31,7 +31,7 @@ const setMessages = (template: HTMLTemplateElement, messages: readonly Readonly<
 
 	const fragment = document.createDocumentFragment();
 	sortedMessages.forEach((message) => {
-		const clone = template.content.cloneNode(true) as HTMLElement;
+		const clone = $template.content.cloneNode(true) as HTMLElement;
 
 		if (message.line !== undefined) {
 			const line = clone.querySelector<HTMLElement>('.js-line');
@@ -79,27 +79,27 @@ const setMessages = (template: HTMLTemplateElement, messages: readonly Readonly<
 
 		fragment.appendChild(clone);
 	});
-	template.parentNode?.appendChild(fragment);
+	$template.parentNode?.appendChild(fragment);
 };
 
 /**
  * 本文のプレビューを実施
  *
- * @param template - 本文プレビューを表示する要素
+ * @param $template - 本文プレビューを表示する要素
  * @param html - 本文の HTML
  */
-const setPreview = (template: HTMLTemplateElement, html: string): void => {
+const setPreview = ($template: HTMLTemplateElement, html: string): void => {
 	/* いったんクリア */
-	template.nextElementSibling?.remove();
+	$template.nextElementSibling?.remove();
 
 	const fragment = document.createDocumentFragment();
-	const clone = template.content.cloneNode(true) as HTMLElement;
+	const clone = $template.content.cloneNode(true) as HTMLElement;
 
 	const $preview = clone.querySelector('div');
 	$preview?.setHTMLUnsafe(html);
 
 	fragment.appendChild(clone);
-	template.parentNode?.appendChild(fragment);
+	$template.parentNode?.appendChild(fragment);
 };
 
 /**

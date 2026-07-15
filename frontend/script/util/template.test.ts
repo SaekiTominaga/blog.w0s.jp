@@ -17,12 +17,12 @@ await test('clear', () => {
 </div>
 `).window;
 
-	const template = document.querySelector('template')!;
-	const templateParentChildren = template.parentNode?.children;
+	const $template = document.querySelector('template')!;
+	const templateParentChildren = $template.parentNode?.children;
 
 	assert.equal(templateParentChildren?.length, 3);
 
-	clear(template);
+	clear($template);
 
 	assert.equal(templateParentChildren.length, 1);
 	assert.equal(templateParentChildren.item(0)?.tagName, 'TEMPLATE');
@@ -39,12 +39,12 @@ await test('update', () => {
 </div>
 `).window;
 
-	const template = document.querySelector('template')!;
-	const templateParentChildren = template.parentNode?.children;
+	const $template = document.querySelector('template')!;
+	const templateParentChildren = $template.parentNode?.children;
 
 	assert.equal(templateParentChildren?.length, 1);
 
-	update(template, template.content.cloneNode(true) as HTMLElement);
+	update($template, $template.content.cloneNode(true) as HTMLElement);
 
 	assert.equal(templateParentChildren.length, 3);
 	assert.equal(templateParentChildren.item(0)?.tagName, 'TEMPLATE');
