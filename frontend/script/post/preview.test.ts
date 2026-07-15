@@ -9,7 +9,7 @@ before(() => {
 	const { window } = new JSDOM(`
 <!DOCTYPE html>
 <textarea></textarea>
-<div>
+<div hidden>
 	<template id="markdown-messages">
 		<tr>
 			<td>
@@ -22,7 +22,7 @@ before(() => {
 		</tr>
 	</template>
 </div>
-<div>
+<div hidden>
 	<template id="message-preview">
 		<div></div>
 	</template>
@@ -65,8 +65,9 @@ await test('fetch error', async () => {
 		preview: $previewTemplate,
 	});
 
-	const $parent = $previewTemplate.parentElement!;
+	const $parent = $previewTemplate.parentElement;
 
+	assert.equal($parent?.hidden, true);
 	assert.equal($parent.querySelector(':scope > div')?.innerHTML, '<strong>404 Not Found: message</strong>');
 });
 
