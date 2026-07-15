@@ -34,15 +34,19 @@ await test('no error', async () => {
 		const data1 = json.data.at(0);
 		assert.equal(data1?.id, 1);
 		assert.equal(data1.title, undefined);
+		assert.equal(data1.registed, undefined);
+		assert.equal(data1.updated, undefined);
 
 		const data2 = json.data.at(1);
 		assert.equal(data2?.id, 784);
 		assert.match(data2.title!, /.+/v);
-		assert.equal(typeof data2.registedAt, 'string');
-		assert.equal(typeof data2.updatedAt, 'string');
+		assert.match(data2.registed!, /[0-9]{4}-[0-9]{2}-[0-9]{2}/v);
+		assert.match(data2.updated!, /[0-9]{4}-[0-9]{2}-[0-9]{2}/v);
 
 		const data3 = json.data.at(2);
 		assert.equal(data3?.id, 9999);
 		assert.equal(data3.title, undefined);
+		assert.equal(data3.registed, undefined);
+		assert.equal(data3.updated, undefined);
 	}
 });

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Hono } from 'hono';
 import { env } from '@w0s/env-value-type';
 import type { Variables } from '../../app.ts';
@@ -26,8 +27,8 @@ export const entriesSummaryApp = new Hono<{ Variables: Variables }>().get(valida
 		return {
 			id: id,
 			title: entryDto?.title,
-			registedAt: entryDto?.registed_at,
-			updatedAt: entryDto?.updated_at,
+			registed: entryDto?.registed_at !== undefined ? dayjs(entryDto.registed_at).format('YYYY-MM-DD') : undefined,
+			updated: entryDto?.updated_at !== undefined ? dayjs(entryDto.updated_at).format('YYYY-MM-DD') : undefined,
 		};
 	});
 

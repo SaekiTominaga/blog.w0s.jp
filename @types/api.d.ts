@@ -10,8 +10,8 @@ export type Error = {
 export type EntrySummaryData = {
 	id: number;
 	title: string | undefined;
-	registedAt: Date | undefined;
-	updatedAt: Date | undefined;
+	registed: string | undefined;
+	updated: string | undefined;
 };
 export type EntriesSummary = { data: EntrySummaryData[] } | Error;
 
