@@ -4,6 +4,7 @@ import { escape } from '@w0s/html-escape';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
 import type { MediaUploadData as ApiMediaUploadData, Post as ApiPost, PostData as ApiPostData } from '../../@types/api.d.ts';
+import entrySummary from './post/entrySummary.ts';
 import messageImage from './post/messageImage.ts';
 import messageTitle from './post/messageTitle.ts';
 import preview from './post/preview.ts';
@@ -18,11 +19,11 @@ reportJsError();
 trustedTypes();
 
 /* 入力値の変換 */
-document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim').forEach((formCtrlElement) => {
-	formCtrlElement.addEventListener(
+document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim').forEach(($formCtrl) => {
+	$formCtrl.addEventListener(
 		'change',
 		() => {
-			formCtrlElement.value = convert(formCtrlElement.value, {
+			$formCtrl.value = convert($formCtrl.value, {
 				trim: true,
 			});
 		},
@@ -57,145 +58,170 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 	);
 });
 
-/* 本文 */
-{
-	const titleCtrlElement = document.getElementById('fc-title') as HTMLInputElement | null; // タイトルの入力コントロール
-	const messageCtrlElement = document.getElementById('fc-message') as HTMLTextAreaElement | null; // 本文の入力コントロール
-	const markdownMessagesElement = document.getElementById('markdown-messages') as HTMLTemplateElement | null; // Markdown 変換結果のメッセージを表示する要素
-	const messagePreviewElement = document.getElementById('message-preview') as HTMLTemplateElement | null; // 本文プレビューを表示する要素
-	const selectImageElement = document.getElementById('select-image') as HTMLTemplateElement | null;
-
-	if (
-		titleCtrlElement !== null &&
-		messageCtrlElement !== null &&
-		markdownMessagesElement !== null &&
-		messagePreviewElement !== null &&
-		selectImageElement !== null
-	) {
-		const exec = async (): Promise<void> => {
-			messageTitle({
-				title: titleCtrlElement,
-				message: messageCtrlElement,
-			});
-
-			await preview({
-				ctrl: messageCtrlElement,
-				messages: markdownMessagesElement,
-				preview: messagePreviewElement,
-			});
-
-			messageImage({
-				preview: messagePreviewElement,
-				image: selectImageElement,
-			});
-		};
-
-		await exec();
-		messageCtrlElement.addEventListener(
-			'change',
-			() => {
-				exec().catch((e: unknown) => {
-					throw e;
-				});
-			},
-			{ passive: true },
-		);
+/**
+ * 本文に関する処理
+ *
+ * @param elementSelector - 要素のセレクター
+ * @param elementSelector.titleCtrl - タイトルの入力コントロール
+ * @param elementSelector.messageCtrl - 本文の入力コントロール
+ * @param elementSelector.markdownMessages - Markdown 変換結果のメッセージを表示する要素
+ * @param elementSelector.preview - 本文プレビューを表示する要素
+ * @param elementSelector.selectImage - 記事画像
+ */
+const messageCtrl = async (elementSelector: { titleCtrl: string; messageCtrl: string; markdownMessages: string; preview: string; selectImage: string }) => {
+	const $titleCtrl = document.querySelector(elementSelector.titleCtrl);
+	if ($titleCtrl === null || !($titleCtrl instanceof HTMLInputElement)) {
+		throw new Error(`\`${elementSelector.titleCtrl}\` is not HTMLInputElement`);
 	}
-}
+
+	const $messageCtrl = document.querySelector(elementSelector.messageCtrl);
+	if ($messageCtrl === null || !($messageCtrl instanceof HTMLTextAreaElement)) {
+		throw new Error(`\`${elementSelector.messageCtrl}\` is not HTMLTextAreaElement`);
+	}
+
+	const $markdownMessages = document.querySelector(elementSelector.markdownMessages);
+	if ($markdownMessages === null || !($markdownMessages instanceof HTMLTemplateElement)) {
+		throw new Error(`\`${elementSelector.markdownMessages}\` is not HTMLTemplateElement`);
+	}
+
+	const $messagePreview = document.querySelector(elementSelector.preview);
+	if ($messagePreview === null || !($messagePreview instanceof HTMLTemplateElement)) {
+		throw new Error(`\`${elementSelector.preview}\` is not HTMLTemplateElement`);
+	}
+
+	const $selectImage = document.querySelector(elementSelector.selectImage);
+	if ($selectImage === null || !($selectImage instanceof HTMLTemplateElement)) {
+		throw new Error(`\`${elementSelector.selectImage}\` is not HTMLTemplateElement`);
+	}
+
+	const exec = async (): Promise<void> => {
+		messageTitle({
+			title: $titleCtrl,
+			message: $messageCtrl,
+		});
+
+		messageImage({
+			preview: $messagePreview,
+			image: $selectImage,
+		});
+
+		await preview({
+			ctrl: $messageCtrl,
+			messages: $markdownMessages,
+			preview: $messagePreview,
+		});
+	};
+
+	await exec();
+	$messageCtrl.addEventListener(
+		'change',
+		() => {
+			exec().catch((e: unknown) => {
+				throw e;
+			});
+		},
+		{ passive: true },
+	);
+};
 
 /**
- * フォーム送信
+ * JavaScript からのフォーム送信
  *
- * @param options -
- * @param options.formSelector - 送信フォームのセレクター
- * @param options.resultSelector - 実行結果を表示する要素のセレクター
- * @param options.endpoint - エンドポイント
- * @param options.successMessageCallback - 正常時のメッセージを返す関数
+ * @param endpoint - エンドポイント
+ * @param elementSelector - 要素のセレクター
+ * @param elementSelector.form - 送信フォーム
+ * @param elementSelector.result - 実行結果を表示する要素
+ * @param callback - コールバック関数
+ * @param callback.successMessage - 正常時のメッセージを返す関数
  */
-const formSubmitHook = <T extends ApiPostData>(options: {
-	formSelector: string;
-	resultSelector: string;
-	endpoint: string;
-	successMessageCallback?: (response: Readonly<T>) => string;
-}): void => {
-	const submitterStatus = (submitterElement: HTMLElement | null, status?: 'loading'): void => {
-		if (submitterElement !== null) {
-			submitterElement.dataset['status'] = status ?? '';
+const formSubmitHook = <T extends ApiPostData>(
+	endpoint: string,
+	elementSelector: {
+		form: string;
+		result: string;
+	},
+	callback?: {
+		successMessage?: (response: Readonly<T>) => string;
+	},
+): void => {
+	const submitterStatus = ($submitter: HTMLElement | null, status?: 'loading'): void => {
+		if ($submitter !== null) {
+			$submitter.dataset['status'] = status ?? '';
 		}
 	};
 
-	const error = (template: HTMLTemplateElement, message: string): void => {
-		const templateFragment = template.content.cloneNode(true) as HTMLElement;
+	const error = ($template: HTMLTemplateElement, message: string): void => {
+		const $templateContent = $template.content.cloneNode(true) as HTMLElement;
 
-		const successElement = templateFragment.querySelector<HTMLElement>('.js-success');
-		if (successElement !== null) {
-			successElement.hidden = true;
+		const $success = $templateContent.querySelector<HTMLElement>('.js-success');
+		if ($success !== null) {
+			$success.hidden = true;
 		}
 
-		const messageElement = templateFragment.querySelector<HTMLElement>('.js-message');
-		if (messageElement !== null) {
-			messageElement.textContent = message;
+		const $message = $templateContent.querySelector<HTMLElement>('.js-message');
+		if ($message !== null) {
+			$message.textContent = message;
 		}
 
-		updateTemplate(template, templateFragment);
+		updateTemplate($template, $templateContent);
 	};
 
-	const formElement = document.querySelector(options.formSelector); // 送信フォーム
-	if (!(formElement instanceof HTMLFormElement)) {
-		throw new Error(`\`${options.formSelector}\` is not HTMLFormElement`);
+	const $form = document.querySelector(elementSelector.form); // 送信フォーム
+	if (!($form instanceof HTMLFormElement)) {
+		throw new Error(`\`${elementSelector.form}\` is not HTMLFormElement`);
 	}
 
-	const resultTemplate = document.querySelector(options.resultSelector); // 実行結果を表示する要素
-	if (!(resultTemplate instanceof HTMLTemplateElement)) {
-		throw new Error(`\`${options.resultSelector}\` is not HTMLTemplateElement`);
+	const $result = document.querySelector(elementSelector.result); // 実行結果を表示する要素
+	if (!($result instanceof HTMLTemplateElement)) {
+		throw new Error(`\`${elementSelector.result}\` is not HTMLTemplateElement`);
 	}
 
-	formElement.addEventListener('submit', (ev: SubmitEvent) => {
+	$form.addEventListener('submit', (ev: SubmitEvent) => {
 		ev.preventDefault();
 
-		const targetElement = ev.target as HTMLFormElement;
-		const submitterElement = ev.submitter;
+		const $target = ev.target as HTMLFormElement;
+		const $submitter = ev.submitter;
 
 		/* submit イベントを発生させた要素のステータスを変更 */
-		submitterStatus(submitterElement, 'loading');
+		submitterStatus($submitter, 'loading');
 
 		/* いったんクリア */
-		templateClear(resultTemplate);
+		templateClear($result);
 
-		fetch(options.endpoint, {
-			method: targetElement.method,
-			body: new FormData(targetElement),
+		fetch(endpoint, {
+			method: $target.method,
+			body: new FormData($target),
 		})
 			.then(async (response) => {
 				if (!response.ok) {
-					error(resultTemplate, `${String(response.status)} ${response.statusText}`.trim());
+					error($result, `${String(response.status)} ${response.statusText}`.trim());
 					return;
 				}
 
 				const responseJson = (await response.json()) as ApiPost;
 
 				if ('error' in responseJson) {
-					error(resultTemplate, response.statusText);
+					error($result, response.statusText);
 					return;
 				}
 
 				responseJson.forEach((result) => {
-					const templateFragment = resultTemplate.content.cloneNode(true) as HTMLElement;
+					const $templateContent = $result.content.cloneNode(true) as HTMLElement;
 
-					const successElement = templateFragment.querySelector<HTMLElement>('.js-success');
-					if (successElement !== null) {
-						successElement.hidden = !result.success;
+					const $success = $templateContent.querySelector<HTMLElement>('.js-success');
+					if ($success !== null) {
+						$success.hidden = !result.success;
 					}
 
-					const errorElement = templateFragment.querySelector<HTMLElement>('.js-error');
-					if (errorElement !== null) {
-						errorElement.hidden = result.success;
+					const $error = $templateContent.querySelector<HTMLElement>('.js-error');
+					if ($error !== null) {
+						$error.hidden = result.success;
 					}
 
-					const messageElement = templateFragment.querySelector<HTMLElement>('.js-message');
-					messageElement?.setHTMLUnsafe(options.successMessageCallback?.(result as Readonly<T>) ?? result.message);
+					const $message = $templateContent.querySelector<HTMLElement>('.js-message');
+					$message?.setHTMLUnsafe(callback?.successMessage !== undefined ? callback.successMessage(result as Readonly<T>) : result.message);
 
-					updateTemplate(resultTemplate, templateFragment);
+					updateTemplate($result, $templateContent);
 				});
 			})
 			.catch((err: unknown) => {
@@ -203,23 +229,45 @@ const formSubmitHook = <T extends ApiPostData>(options: {
 			})
 			.finally(() => {
 				/* submit イベントを発生させた要素のステータスをリセットする */
-				submitterStatus(submitterElement);
+				submitterStatus($submitter);
 			});
 	});
 };
 
 /* メディア登録 */
-formSubmitHook({
-	formSelector: '#media-form',
-	resultSelector: '#media-result',
-	endpoint: '/api/media',
-	successMessageCallback: (result: Readonly<ApiMediaUploadData>): string =>
-		`${escape(result.message)}: <code>${escape(result.filename)}</code>（サムネイル生成 ${escape(String(result.thumbnails?.length ?? 0))} 件）`,
-});
+formSubmitHook(
+	'/api/media',
+	{
+		form: '#js-media-form',
+		result: '#js-media-result',
+	},
+	{
+		successMessage: (result: Readonly<ApiMediaUploadData>): string =>
+			`${escape(result.message)}: <code>${escape(result.filename)}</code>（サムネイル生成 ${escape(String(result.thumbnails?.length ?? 0))} 件）`,
+	},
+);
 
 /* キャッシュクリア */
-formSubmitHook({
-	formSelector: '#clear-form',
-	resultSelector: '#clear-result',
-	endpoint: '/api/clear',
+formSubmitHook('/api/clear', {
+	form: '#js-clear-form',
+	result: '#js-clear-result',
 });
+
+await Promise.all([
+	/* 本文に関する処理 */
+	messageCtrl({
+		titleCtrl: '#fc-title',
+		messageCtrl: '#fc-message',
+		markdownMessages: '#js-markdown-messages',
+		preview: '#js-preview',
+		selectImage: '#js-select-image',
+	}),
+
+	/* 記事概要表示 */
+	entrySummary(document.querySelectorAll('.js-entry-summary'), {
+		load: false,
+	}),
+	entrySummary(document.querySelectorAll('.js-entry-summary-load'), {
+		load: true,
+	}),
+]);

@@ -29,7 +29,15 @@ export default [
 							action: 'ignore',
 						},
 						{
+							pattern: '../../../../media/dist/**',
+							action: 'ignore',
+						},
+						{
 							pattern: '../../../remark/dist/**',
+							action: 'ignore',
+						},
+						{
+							pattern: '../../../../remark/dist/**',
 							action: 'ignore',
 						},
 					],

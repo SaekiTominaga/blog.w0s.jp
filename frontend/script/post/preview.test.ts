@@ -9,7 +9,7 @@ before(() => {
 	const { window } = new JSDOM(`
 <!DOCTYPE html>
 <textarea></textarea>
-<div>
+<div hidden>
 	<template id="markdown-messages">
 		<tr>
 			<td>
@@ -22,7 +22,7 @@ before(() => {
 		</tr>
 	</template>
 </div>
-<div>
+<div hidden>
 	<template id="message-preview">
 		<div></div>
 	</template>
@@ -55,19 +55,20 @@ await test('fetch error', async () => {
 		);
 	});
 
-	const ctrlElement = document.querySelector('textarea')!;
-	const messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
-	const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+	const $ctrl = document.querySelector('textarea')!;
+	const $messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
+	const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 
 	await preview({
-		ctrl: ctrlElement,
-		messages: messagesTemplate,
-		preview: previewTemplate,
+		ctrl: $ctrl,
+		messages: $messagesTemplate,
+		preview: $previewTemplate,
 	});
 
-	const parent = previewTemplate.parentElement!;
+	const $parent = $previewTemplate.parentElement;
 
-	assert.equal(parent.querySelector(':scope > div')?.innerHTML, '<strong>404 Not Found: message</strong>');
+	assert.equal($parent?.hidden, true);
+	assert.equal($parent.querySelector(':scope > div')?.innerHTML, '<strong>404 Not Found: message</strong>');
 });
 
 await test('preview HTML', async (t) => {
@@ -81,18 +82,18 @@ await test('preview HTML', async (t) => {
 		);
 	});
 
-	const ctrlElement = document.querySelector('textarea')!;
-	const messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
-	const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+	const $ctrl = document.querySelector('textarea')!;
+	const $messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
+	const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 
 	await preview({
-		ctrl: ctrlElement,
-		messages: messagesTemplate,
-		preview: previewTemplate,
+		ctrl: $ctrl,
+		messages: $messagesTemplate,
+		preview: $previewTemplate,
 	});
 
 	await t.test('html', () => {
-		assert.equal(previewTemplate.parentElement?.querySelector(':scope > div')?.innerHTML, '<p>text</p>');
+		assert.equal($previewTemplate.parentElement?.querySelector(':scope > div')?.innerHTML, '<p>text</p>');
 	});
 });
 
@@ -121,17 +122,17 @@ await test('messages', async (t) => {
 			);
 		});
 
-		const ctrlElement = document.querySelector('textarea')!;
-		const messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $ctrl = document.querySelector('textarea')!;
+		const $messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 
 		await preview({
-			ctrl: ctrlElement,
-			messages: messagesTemplate,
-			preview: previewTemplate,
+			ctrl: $ctrl,
+			messages: $messagesTemplate,
+			preview: $previewTemplate,
 		});
 
-		const parent = messagesTemplate.parentElement!;
+		const parent = $messagesTemplate.parentElement!;
 
 		assert.equal(parent.querySelectorAll('tr').length, 1);
 		assert.equal(parent.querySelector<HTMLElement>('.js-info')?.hidden, false);
@@ -167,17 +168,17 @@ await test('messages', async (t) => {
 			);
 		});
 
-		const ctrlElement = document.querySelector('textarea')!;
-		const messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $ctrl = document.querySelector('textarea')!;
+		const $messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 
 		await preview({
-			ctrl: ctrlElement,
-			messages: messagesTemplate,
-			preview: previewTemplate,
+			ctrl: $ctrl,
+			messages: $messagesTemplate,
+			preview: $previewTemplate,
 		});
 
-		const parent = messagesTemplate.parentElement!;
+		const parent = $messagesTemplate.parentElement!;
 
 		assert.equal(parent.querySelectorAll('tr').length, 1);
 		assert.equal(parent.querySelector<HTMLElement>('.js-info')?.hidden, true);
@@ -214,17 +215,17 @@ await test('messages', async (t) => {
 			);
 		});
 
-		const ctrlElement = document.querySelector('textarea')!;
-		const messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $ctrl = document.querySelector('textarea')!;
+		const $messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 
 		await preview({
-			ctrl: ctrlElement,
-			messages: messagesTemplate,
-			preview: previewTemplate,
+			ctrl: $ctrl,
+			messages: $messagesTemplate,
+			preview: $previewTemplate,
 		});
 
-		const parent = messagesTemplate.parentElement!;
+		const parent = $messagesTemplate.parentElement!;
 
 		assert.equal(parent.querySelector('.js-rule-id')?.getAttribute('href'), 'http://example.com/');
 	});
@@ -263,17 +264,17 @@ await test('messages', async (t) => {
 			);
 		});
 
-		const ctrlElement = document.querySelector('textarea')!;
-		const messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $ctrl = document.querySelector('textarea')!;
+		const $messagesTemplate = document.querySelector<HTMLTemplateElement>('#markdown-messages')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
 
 		await preview({
-			ctrl: ctrlElement,
-			messages: messagesTemplate,
-			preview: previewTemplate,
+			ctrl: $ctrl,
+			messages: $messagesTemplate,
+			preview: $previewTemplate,
 		});
 
-		const parent = messagesTemplate.parentElement!;
+		const parent = $messagesTemplate.parentElement!;
 
 		const trs = parent.querySelectorAll('tr');
 

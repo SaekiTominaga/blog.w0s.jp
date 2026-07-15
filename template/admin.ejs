@@ -48,11 +48,17 @@
 								<p>
 									<label class="c-label -input">
 										<span class="c-label__text">記事 ID</span>
-										<input type="number" class="c-input" id="fc-idselect" name="id" value="<%= requestQuery.id ?? latestId %>" min="1" max="<%= latestId %>" required="" style="--inline-size: 4.5em"
+										<input type="number" class="c-input js-entry-summary" id="fc-idselect" name="id" value="<%= requestQuery.id ?? latestId %>" min="1" max="<%= latestId %>" required="" data-output="js-idselect-entry" style="--inline-size: 4.5em"
 									/></label>
 								</p>
 								<p><button class="c-submit">選択</button></p>
 							</div>
+
+							<ul class="p-form-entry-summary" hidden="">
+								<template id="js-idselect-entry">
+									<li><a class="js-anchor"></a>（<span class="js-registed"></span>）</li>
+								</template>
+							</ul>
 						</form>
 					</section>
 
@@ -128,7 +134,7 @@
 											<div class="p-post-preview">
 												<table class="p-post-preview__messages" lang="en">
 													<tbody>
-														<template id="markdown-messages">
+														<template id="js-markdown-messages">
 															<tr>
 																<td class="u-cell -center">
 																	<span class="c-form-result-mark -info js-info">⚠</span>
@@ -143,7 +149,7 @@
 												</table>
 												<div class="p-post-preview__preview">
 													<article aria-label="本文プレビュー" class="p-entry">
-														<template id="message-preview">
+														<template id="js-preview">
 															<div class="p-entry__body"></div>
 														</template>
 													</article>
@@ -178,7 +184,7 @@
 										<legend class="p-form-grid__legend" id="label-image">画像</legend>
 										<div class="p-form-grid__contents">
 											<ul class="c-form-controls" role="radiogroup" aria-labelledby="label-image">
-												<template id="select-image" data-selected="<%= entryData.imageInternal ?? entryData.imageExternal?.toString() %>">
+												<template id="js-select-image" data-selected="<%= entryData.imageInternal ?? entryData.imageExternal?.toString() %>">
 													<li class="p-post-select-image">
 														<label>
 															<input type="radio" name="image" value="" />
@@ -196,10 +202,16 @@
 										<div class="p-form-grid__contents">
 											<div class="c-form-controls">
 												<span>
-													<input id="fc-relation" class="c-input js-convert-trim" name="relation" value="<%= entryData.relationIds?.join(',') %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" title="記事 ID のカンマ区切り" style="--inline-size: 15em" />
+													<input id="fc-relation" class="c-input js-convert-trim js-entry-summary-load" name="relation" value="<%= entryData.relationIds?.join(',') %>" maxlength="23" pattern="[1-9]{1}[0-9]*(,[1-9]{1}[0-9]*)*" title="記事 ID のカンマ区切り" data-output="js-relation-entry" style="--inline-size: 15em" />
 													<small>（カンマ区切り）</small>
 												</span>
 											</div>
+
+											<ul class="p-form-entry-summary" hidden="">
+												<template id="js-relation-entry">
+													<li><a class="js-anchor"></a>（<span class="js-registed"></span>）</li>
+												</template>
+											</ul>
 										</div>
 									</fieldset>
 								</div>
@@ -281,7 +293,7 @@
 							<h2>メディア登録</h2>
 						</div>
 
-						<form method="post" enctype="multipart/form-data" class="c-stack" id="media-form">
+						<form method="post" enctype="multipart/form-data" class="c-stack" id="js-media-form">
 							<div class="p-form-grid">
 								<div class="p-form-grid__group">
 									<fieldset>
@@ -313,7 +325,7 @@
 						</form>
 
 						<ul class="p-form-results" hidden="">
-							<template id="media-result">
+							<template id="js-media-result">
 								<li class="p-form-results__item">
 									<span class="p-form-results__mark">
 										<span class="c-form-result-mark -success js-success">✔</span>
@@ -330,14 +342,14 @@
 							<h2>キャッシュクリア</h2>
 						</div>
 
-						<form method="post" class="c-stack" id="clear-form">
+						<form method="post" class="c-stack" id="js-clear-form">
 							<div class="c-form-controls -submit">
 								<p><button class="c-submit">クリア</button></p>
 							</div>
 						</form>
 
 						<ul class="p-form-results" hidden="">
-							<template id="clear-result">
+							<template id="js-clear-result">
 								<li class="p-form-results__item">
 									<span class="p-form-results__mark">
 										<span class="c-form-result-mark -success js-success">✔</span>

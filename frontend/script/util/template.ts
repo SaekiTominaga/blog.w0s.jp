@@ -1,24 +1,24 @@
-export const clear = (template: HTMLTemplateElement): void => {
-	const { parentElement } = template;
-	if (parentElement !== null) {
-		parentElement.hidden = true;
+export const clear = ($template: HTMLTemplateElement): void => {
+	const $parent = $template.parentElement;
+	if ($parent !== null) {
+		$parent.hidden = true;
 	}
 
-	Array.from(template.parentNode?.children ?? [])
-		.filter((element) => element !== template)
+	Array.from($template.parentNode?.children ?? [])
+		.filter((element) => element !== $template)
 		.forEach((element) => {
 			element.remove();
 		});
 };
 
-export const update = (template: HTMLTemplateElement, templateFragment: HTMLElement): void => {
+export const update = ($template: HTMLTemplateElement, $templateContent: HTMLElement): void => {
 	const fragment = document.createDocumentFragment();
-	fragment.appendChild(templateFragment);
+	fragment.appendChild($templateContent);
 
-	template.parentNode?.appendChild(fragment);
+	$template.parentNode?.appendChild(fragment);
 
-	const { parentElement } = template;
-	if (parentElement !== null) {
-		parentElement.hidden = false;
+	const $parent = $template.parentElement;
+	if ($parent !== null) {
+		$parent.hidden = false;
 	}
 };

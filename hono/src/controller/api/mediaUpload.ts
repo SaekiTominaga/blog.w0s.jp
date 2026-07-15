@@ -3,11 +3,11 @@ import { type Context, Hono } from 'hono';
 import { MIMEType } from 'whatwg-mimetype';
 import { env } from '@w0s/env-value-type';
 import { iec } from '@w0s/file-size-format';
-import { create as createThumbImage } from '../../../media/dist/thumbImage.js';
-import type { Variables } from '../app.ts';
-import configProcess from '../config/process.ts';
-import { form as validatorForm } from '../validator/mediaUpload.ts';
-import type { MediaUpload as ApiResponse, MediaUploadData as ApiResponseData } from '../../../@types/api.d.ts';
+import { create as createThumbImage } from '../../../../media/dist/thumbImage.js';
+import type { Variables } from '../../app.ts';
+import configProcess from '../../config/process.ts';
+import { form as validatorForm } from '../../validator/mediaUpload.ts';
+import type { MediaUpload as ApiResponse, MediaUploadData as ApiResponseData } from '../../../../@types/api.d.ts';
 
 /**
  * メディア登録

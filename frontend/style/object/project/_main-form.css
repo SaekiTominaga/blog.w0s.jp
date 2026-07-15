@@ -108,6 +108,19 @@
 .p-form-results__message {
 }
 
+/* ===== 記事概要 ===== */
+.p-form-entry-summary {
+	line-height: var(--line-height-narrow);
+
+	* + & {
+		margin-block-start: 1em;
+	}
+
+	& > li + li {
+		margin-block-start: 0.5em;
+	}
+}
+
 /* ===== 投稿画像プレビュー ===== */
 .p-image-preview {
 	display: block flex;
