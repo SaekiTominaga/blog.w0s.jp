@@ -7,14 +7,14 @@ declare global {
 /**
  * Google AdSense
  *
- * @param targetElementOrElements - 広告を表示する要素
+ * @param $target - 広告を表示する要素
  * @param intersectionObserverOptions - IntersectionObserver に渡すオプション
  */
 const adsense = (
-	targetElementOrElements: NodeListOf<Element> | HTMLCollectionOf<Element> | Element | null,
+	$target: NodeListOf<Element> | HTMLCollectionOf<Element> | Element | null,
 	intersectionObserverOptions?: Readonly<IntersectionObserverInit>,
 ): void => {
-	if (targetElementOrElements === null) {
+	if ($target === null) {
 		return;
 	}
 
@@ -25,21 +25,21 @@ const adsense = (
 			observer.disconnect();
 
 			if (document.getElementById(SCRIPT_ID) === null) {
-				const scriptElement = document.createElement('script');
-				scriptElement.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3297715785193216';
-				scriptElement.crossOrigin = 'anonymous';
-				scriptElement.async = true;
-				scriptElement.id = SCRIPT_ID;
-				document.head.append(scriptElement);
+				const $script = document.createElement('script');
+				$script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3297715785193216';
+				$script.crossOrigin = 'anonymous';
+				$script.async = true;
+				$script.id = SCRIPT_ID;
+				document.head.append($script);
 			}
 			(window.adsbygoogle ??= []).push({});
 		}
 	}, intersectionObserverOptions);
 
-	if (targetElementOrElements instanceof Element) {
-		observer.observe(targetElementOrElements);
+	if ($target instanceof Element) {
+		observer.observe($target);
 	} else {
-		[...targetElementOrElements].forEach((element) => {
+		[...$target].forEach((element) => {
 			observer.observe(element);
 		});
 	}

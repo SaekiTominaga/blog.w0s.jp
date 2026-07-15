@@ -1,7 +1,7 @@
 export const clear = (template: HTMLTemplateElement): void => {
-	const { parentElement } = template;
-	if (parentElement !== null) {
-		parentElement.hidden = true;
+	const $parent = template.parentElement;
+	if ($parent !== null) {
+		$parent.hidden = true;
 	}
 
 	Array.from(template.parentNode?.children ?? [])
@@ -17,8 +17,8 @@ export const update = (template: HTMLTemplateElement, templateFragment: HTMLElem
 
 	template.parentNode?.appendChild(fragment);
 
-	const { parentElement } = template;
-	if (parentElement !== null) {
-		parentElement.hidden = false;
+	const $parent = template.parentElement;
+	if ($parent !== null) {
+		$parent.hidden = false;
 	}
 };

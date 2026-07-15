@@ -128,7 +128,7 @@
 											<div class="p-post-preview">
 												<table class="p-post-preview__messages" lang="en">
 													<tbody>
-														<template id="markdown-messages">
+														<template id="js-markdown-messages">
 															<tr>
 																<td class="u-cell -center">
 																	<span class="c-form-result-mark -info js-info">⚠</span>
@@ -143,7 +143,7 @@
 												</table>
 												<div class="p-post-preview__preview">
 													<article aria-label="本文プレビュー" class="p-entry">
-														<template id="message-preview">
+														<template id="js-preview">
 															<div class="p-entry__body"></div>
 														</template>
 													</article>
@@ -178,7 +178,7 @@
 										<legend class="p-form-grid__legend" id="label-image">画像</legend>
 										<div class="p-form-grid__contents">
 											<ul class="c-form-controls" role="radiogroup" aria-labelledby="label-image">
-												<template id="select-image" data-selected="<%= entryData.imageInternal ?? entryData.imageExternal?.toString() %>">
+												<template id="js-select-image" data-selected="<%= entryData.imageInternal ?? entryData.imageExternal?.toString() %>">
 													<li class="p-post-select-image">
 														<label>
 															<input type="radio" name="image" value="" />
@@ -281,7 +281,7 @@
 							<h2>メディア登録</h2>
 						</div>
 
-						<form method="post" enctype="multipart/form-data" class="c-stack" id="media-form">
+						<form method="post" enctype="multipart/form-data" class="c-stack" id="js-media-form">
 							<div class="p-form-grid">
 								<div class="p-form-grid__group">
 									<fieldset>
@@ -313,7 +313,7 @@
 						</form>
 
 						<ul class="p-form-results" hidden="">
-							<template id="media-result">
+							<template id="js-media-result">
 								<li class="p-form-results__item">
 									<span class="p-form-results__mark">
 										<span class="c-form-result-mark -success js-success">✔</span>
@@ -330,14 +330,14 @@
 							<h2>キャッシュクリア</h2>
 						</div>
 
-						<form method="post" class="c-stack" id="clear-form">
+						<form method="post" class="c-stack" id="js-clear-form">
 							<div class="c-form-controls -submit">
 								<p><button class="c-submit">クリア</button></p>
 							</div>
 						</form>
 
 						<ul class="p-form-results" hidden="">
-							<template id="clear-result">
+							<template id="js-clear-result">
 								<li class="p-form-results__item">
 									<span class="p-form-results__mark">
 										<span class="c-form-result-mark -success js-success">✔</span>

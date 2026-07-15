@@ -9,9 +9,9 @@ const messageTitle = (
 		message: HTMLTextAreaElement; // 本文の入力コントロール
 	}>,
 ): void => {
-	const { title: titleCtrlElement, message: messageCtrlElement } = element;
+	const { title: $titleCtrl, message: $messageCtrl } = element;
 
-	const lines = messageCtrlElement.value.trim().split('\n');
+	const lines = $messageCtrl.value.trim().split('\n');
 
 	const firstLine = lines.at(0);
 	if (firstLine === undefined) {
@@ -30,7 +30,7 @@ const messageTitle = (
 
 	const otherTitle = lines.toSpliced(0, 1).join('\n').trim(); // タイトル以外
 
-	titleCtrlElement.value = title;
-	messageCtrlElement.value = otherTitle;
+	$titleCtrl.value = title;
+	$messageCtrl.value = otherTitle;
 };
 export default messageTitle;

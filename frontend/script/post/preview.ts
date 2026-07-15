@@ -95,8 +95,8 @@ const setPreview = (template: HTMLTemplateElement, html: string): void => {
 	const fragment = document.createDocumentFragment();
 	const clone = template.content.cloneNode(true) as HTMLElement;
 
-	const previewElement = clone.querySelector('div');
-	previewElement?.setHTMLUnsafe(html);
+	const $preview = clone.querySelector('div');
+	$preview?.setHTMLUnsafe(html);
 
 	fragment.appendChild(clone);
 	template.parentNode?.appendChild(fragment);
@@ -114,24 +114,24 @@ const preview = async (
 		preview: HTMLTemplateElement; // 本文プレビューを表示する要素
 	}>,
 ): Promise<void> => {
-	const { ctrl: ctrlElement, messages: messagesTemplate, preview: previewTemplate } = element;
+	const { ctrl: $ctrl, messages: $messagesTemplate, preview: $previewTemplate } = element;
 
 	const response = await fetch('/api/preview', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			md: ctrlElement.value,
+			md: $ctrl.value,
 		}),
 	});
 
 	const responseJson = (await response.json()) as ApiResponsePreview;
 
 	if ('error' in responseJson) {
-		setPreview(previewTemplate, `<strong>${String(response.status)} ${response.statusText}: ${responseJson.error.message}</strong>`);
+		setPreview($previewTemplate, `<strong>${String(response.status)} ${response.statusText}: ${responseJson.error.message}</strong>`);
 	}
 	if ('data' in responseJson) {
-		setMessages(messagesTemplate, responseJson.data.messages);
-		setPreview(previewTemplate, responseJson.data.html);
+		setMessages($messagesTemplate, responseJson.data.messages);
+		setPreview($previewTemplate, responseJson.data.html);
 	}
 };
 export default preview;
