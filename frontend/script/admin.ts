@@ -4,6 +4,7 @@ import { escape } from '@w0s/html-escape';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
 import type { MediaUploadData as ApiMediaUploadData, Post as ApiPost, PostData as ApiPostData } from '../../@types/api.d.ts';
+import entrySummary from './post/entrySummary.ts';
 import messageImage from './post/messageImage.ts';
 import messageTitle from './post/messageTitle.ts';
 import preview from './post/preview.ts';
@@ -60,37 +61,37 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((ele
 /**
  * 本文に関する処理
  *
- * @param elementsSelector - 要素のセレクター
- * @param elementsSelector.titleCtrl - タイトルの入力コントロール
- * @param elementsSelector.messageCtrl - 本文の入力コントロール
- * @param elementsSelector.markdownMessages - Markdown 変換結果のメッセージを表示する要素
- * @param elementsSelector.preview - 本文プレビューを表示する要素
- * @param elementsSelector.selectImage - 記事画像
+ * @param elementSelector - 要素のセレクター
+ * @param elementSelector.titleCtrl - タイトルの入力コントロール
+ * @param elementSelector.messageCtrl - 本文の入力コントロール
+ * @param elementSelector.markdownMessages - Markdown 変換結果のメッセージを表示する要素
+ * @param elementSelector.preview - 本文プレビューを表示する要素
+ * @param elementSelector.selectImage - 記事画像
  */
-const messageCtrl = async (elementsSelector: { titleCtrl: string; messageCtrl: string; markdownMessages: string; preview: string; selectImage: string }) => {
-	const $titleCtrl = document.querySelector(elementsSelector.titleCtrl);
+const messageCtrl = async (elementSelector: { titleCtrl: string; messageCtrl: string; markdownMessages: string; preview: string; selectImage: string }) => {
+	const $titleCtrl = document.querySelector(elementSelector.titleCtrl);
 	if ($titleCtrl === null || !($titleCtrl instanceof HTMLInputElement)) {
-		throw new Error(`\`${elementsSelector.titleCtrl}\` is not HTMLInputElement`);
+		throw new Error(`\`${elementSelector.titleCtrl}\` is not HTMLInputElement`);
 	}
 
-	const $messageCtrl = document.querySelector(elementsSelector.messageCtrl);
+	const $messageCtrl = document.querySelector(elementSelector.messageCtrl);
 	if ($messageCtrl === null || !($messageCtrl instanceof HTMLTextAreaElement)) {
-		throw new Error(`\`${elementsSelector.messageCtrl}\` is not HTMLTextAreaElement`);
+		throw new Error(`\`${elementSelector.messageCtrl}\` is not HTMLTextAreaElement`);
 	}
 
-	const $markdownMessages = document.querySelector(elementsSelector.markdownMessages);
+	const $markdownMessages = document.querySelector(elementSelector.markdownMessages);
 	if ($markdownMessages === null || !($markdownMessages instanceof HTMLTemplateElement)) {
-		throw new Error(`\`${elementsSelector.markdownMessages}\` is not HTMLTemplateElement`);
+		throw new Error(`\`${elementSelector.markdownMessages}\` is not HTMLTemplateElement`);
 	}
 
-	const $messagePreview = document.querySelector(elementsSelector.preview);
+	const $messagePreview = document.querySelector(elementSelector.preview);
 	if ($messagePreview === null || !($messagePreview instanceof HTMLTemplateElement)) {
-		throw new Error(`\`${elementsSelector.preview}\` is not HTMLTemplateElement`);
+		throw new Error(`\`${elementSelector.preview}\` is not HTMLTemplateElement`);
 	}
 
-	const $selectImage = document.querySelector(elementsSelector.selectImage);
+	const $selectImage = document.querySelector(elementSelector.selectImage);
 	if ($selectImage === null || !($selectImage instanceof HTMLTemplateElement)) {
-		throw new Error(`\`${elementsSelector.selectImage}\` is not HTMLTemplateElement`);
+		throw new Error(`\`${elementSelector.selectImage}\` is not HTMLTemplateElement`);
 	}
 
 	const exec = async (): Promise<void> => {
@@ -123,31 +124,23 @@ const messageCtrl = async (elementsSelector: { titleCtrl: string; messageCtrl: s
 	);
 };
 
-await messageCtrl({
-	titleCtrl: '#fc-title',
-	messageCtrl: '#fc-message',
-	markdownMessages: '#js-markdown-messages',
-	preview: '#js-preview',
-	selectImage: '#js-select-image',
-});
-
 /**
  * JavaScript からのフォーム送信
  *
  * @param endpoint - エンドポイント
- * @param elementsSelector - 要素のセレクター
- * @param elementsSelector.form - 送信フォーム
- * @param elementsSelector.result - 実行結果を表示する要素
- * @param callbacks - コールバック関数
- * @param callbacks.successMessage - 正常時のメッセージを返す関数
+ * @param elementSelector - 要素のセレクター
+ * @param elementSelector.form - 送信フォーム
+ * @param elementSelector.result - 実行結果を表示する要素
+ * @param callback - コールバック関数
+ * @param callback.successMessage - 正常時のメッセージを返す関数
  */
 const formSubmitHook = <T extends ApiPostData>(
 	endpoint: string,
-	elementsSelector: {
+	elementSelector: {
 		form: string;
 		result: string;
 	},
-	callbacks?: {
+	callback?: {
 		successMessage?: (response: Readonly<T>) => string;
 	},
 ): void => {
@@ -158,29 +151,29 @@ const formSubmitHook = <T extends ApiPostData>(
 	};
 
 	const error = ($template: HTMLTemplateElement, message: string): void => {
-		const templateFragment = $template.content.cloneNode(true) as HTMLElement;
+		const $templateContent = $template.content.cloneNode(true) as HTMLElement;
 
-		const $success = templateFragment.querySelector<HTMLElement>('.js-success');
+		const $success = $templateContent.querySelector<HTMLElement>('.js-success');
 		if ($success !== null) {
 			$success.hidden = true;
 		}
 
-		const $message = templateFragment.querySelector<HTMLElement>('.js-message');
+		const $message = $templateContent.querySelector<HTMLElement>('.js-message');
 		if ($message !== null) {
 			$message.textContent = message;
 		}
 
-		updateTemplate($template, templateFragment);
+		updateTemplate($template, $templateContent);
 	};
 
-	const $form = document.querySelector(elementsSelector.form); // 送信フォーム
+	const $form = document.querySelector(elementSelector.form); // 送信フォーム
 	if (!($form instanceof HTMLFormElement)) {
-		throw new Error(`\`${elementsSelector.form}\` is not HTMLFormElement`);
+		throw new Error(`\`${elementSelector.form}\` is not HTMLFormElement`);
 	}
 
-	const $result = document.querySelector(elementsSelector.result); // 実行結果を表示する要素
+	const $result = document.querySelector(elementSelector.result); // 実行結果を表示する要素
 	if (!($result instanceof HTMLTemplateElement)) {
-		throw new Error(`\`${elementsSelector.result}\` is not HTMLTemplateElement`);
+		throw new Error(`\`${elementSelector.result}\` is not HTMLTemplateElement`);
 	}
 
 	$form.addEventListener('submit', (ev: SubmitEvent) => {
@@ -213,22 +206,22 @@ const formSubmitHook = <T extends ApiPostData>(
 				}
 
 				responseJson.forEach((result) => {
-					const templateFragment = $result.content.cloneNode(true) as HTMLElement;
+					const $templateContent = $result.content.cloneNode(true) as HTMLElement;
 
-					const $success = templateFragment.querySelector<HTMLElement>('.js-success');
+					const $success = $templateContent.querySelector<HTMLElement>('.js-success');
 					if ($success !== null) {
 						$success.hidden = !result.success;
 					}
 
-					const $error = templateFragment.querySelector<HTMLElement>('.js-error');
+					const $error = $templateContent.querySelector<HTMLElement>('.js-error');
 					if ($error !== null) {
 						$error.hidden = result.success;
 					}
 
-					const $message = templateFragment.querySelector<HTMLElement>('.js-message');
-					$message?.setHTMLUnsafe(callbacks?.successMessage !== undefined ? callbacks.successMessage(result as Readonly<T>) : result.message);
+					const $message = $templateContent.querySelector<HTMLElement>('.js-message');
+					$message?.setHTMLUnsafe(callback?.successMessage !== undefined ? callback.successMessage(result as Readonly<T>) : result.message);
 
-					updateTemplate($result, templateFragment);
+					updateTemplate($result, $templateContent);
 				});
 			})
 			.catch((err: unknown) => {
@@ -259,3 +252,22 @@ formSubmitHook('/api/clear', {
 	form: '#js-clear-form',
 	result: '#js-clear-result',
 });
+
+await Promise.all([
+	/* 本文に関する処理 */
+	messageCtrl({
+		titleCtrl: '#fc-title',
+		messageCtrl: '#fc-message',
+		markdownMessages: '#js-markdown-messages',
+		preview: '#js-preview',
+		selectImage: '#js-select-image',
+	}),
+
+	/* 記事概要表示 */
+	entrySummary(document.querySelectorAll('.js-entry-summary'), {
+		load: false,
+	}),
+	entrySummary(document.querySelectorAll('.js-entry-summary-load'), {
+		load: true,
+	}),
+]);
