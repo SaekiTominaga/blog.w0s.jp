@@ -16,8 +16,8 @@
 	--_padding-block: 0.6em;
 	--_border-color: var(--border-color-dark);
 	--_border-radius-top: 0px;
-	--_color: var(--color-black);
 	--_bg-color: var(--bgcolor-light);
+	--_color: var(--color-black);
 	--_font-weight: inherit;
 
 	display: inline flow-root; /* JS 無効環境向け */
@@ -113,6 +113,9 @@
 }
 
 .p-sidebar-entries__hdg {
+	& + * {
+		padding-block-start: 0.125em;
+	}
 }
 
 /* ===== リンクリスト ===== */
@@ -120,7 +123,6 @@
 	--_padding-block: 0.5em;
 	--_padding-inline: 0.5em;
 	--_min-block-size: auto;
-	--_bg-color: oklch(from var(--color-aqua) l c h / 12.5%);
 
 	& a {
 		box-sizing: revert;
@@ -128,18 +130,18 @@
 		contain: content;
 		outline-offset: -1px;
 		outline-width: var(--outline-width-bold);
-		background-color: var(--_bg-color);
+		background-color: oklch(from var(--color-aqua) l c h / 12.5%);
 		padding: var(--_padding-block) var(--_padding-inline);
 		min-block-size: var(--_min-block-size);
 		font-size: calc(100% / pow(var(--font-ratio), 1));
 
 		&:any-link {
-			--_bg-color: var(--color-white);
 			--_icon-color: var(--color-lightgray); /* アイコンの色 */
 			--_icon-inline-size: 0.67em; /* アイコンの幅 */
 			--_icon-block-size: 1em; /* アイコンの高さ */
 			--_icon-gap: 0.75em; /* テキストとアイコンの間隔 */
 
+			background-color: var(--color-white);
 			padding-inline-end: calc(var(--_icon-gap) + var(--_icon-inline-size) + var(--_padding-inline));
 			text-decoration-line: none;
 
@@ -154,8 +156,9 @@
 			}
 
 			&:hover {
-				--_bg-color: oklch(from var(--color-yellow) l c h / 25%);
 				--_icon-color: var(--color-gray);
+
+				background-color: oklch(from var(--color-yellow) l c h / 25%);
 			}
 		}
 	}
@@ -169,10 +172,10 @@
 		&:nth-child(2n + 1) {
 			& a {
 				&:any-link {
-					--_bg-color: var(--bgcolor-light);
+					background-color: var(--bgcolor-light);
 
 					&:hover {
-						--_bg-color: oklch(from var(--color-yellow) l c h / 25%);
+						background-color: oklch(from var(--color-yellow) l c h / 25%);
 					}
 				}
 			}
