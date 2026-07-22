@@ -40,13 +40,18 @@ app.use(async (context, next) => {
 });
 
 /* Auth */
-const basicAuthHandler = await basicAuth({
-	authPath: `${env('ROOT')}/${env('AUTH_DIR')}/${env('AUTH_ADMIN')}`,
-	invalidUserMessage: config.basicAuth.unauthorizedMessage,
-});
-app.use(`/admin/*`, basicAuthHandler);
-app.use(`/${config.api.dir}/clear`, basicAuthHandler);
-app.use(`/${config.api.dir}/media`, basicAuthHandler);
+await Promise.all(
+	config.basicAuth.map(async ({ paths, realm, env: envKey }) => {
+		const basicAuthHandler = await basicAuth({
+			authFilePath: `${env('ROOT')}/${env('AUTH_DIR')}/${env(envKey)}`,
+			realm: realm,
+		});
+
+		paths.forEach((routingPath) => {
+			app.use(routingPath, basicAuthHandler);
+		});
+	}),
+);
 
 /* Compress */
 app.use(

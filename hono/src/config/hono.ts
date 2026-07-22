@@ -32,8 +32,10 @@ interface HonoConfig {
 		};
 	};
 	basicAuth: {
-		unauthorizedMessage: string;
-	};
+		paths: string[];
+		realm: string;
+		env: string;
+	}[];
 	cacheControl: string;
 	errorpage: {
 		unauthorized: string;
@@ -152,9 +154,13 @@ const config: HonoConfig = {
 			sourceMap: ['.js', '.mjs'],
 		},
 	},
-	basicAuth: {
-		unauthorizedMessage: 'Unauthorized',
-	},
+	basicAuth: [
+		{
+			paths: ['/admin/*', '/api/clear', '/api/media'],
+			realm: 'Admin',
+			env: 'AUTH_FILE_ADMIN',
+		},
+	],
 	cacheControl: 'max-age=600',
 	errorpage: {
 		unauthorized: '401.html', // 401
