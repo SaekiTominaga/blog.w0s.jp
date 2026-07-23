@@ -45,8 +45,8 @@ export const create = async (): Promise<string[]> => {
 				fileNameType === ''
 					? configProcess.newlyJson.filename.prefix
 					: `${configProcess.newlyJson.filename.prefix}${configProcess.newlyJson.filename.separator}${fileNameType}`;
-			const filePath = `${configHono.static.root}/${configProcess.newlyJson.directory}/${fileName}${configHono.extension.json}`;
-			const brotliFilePath = `${filePath}${configHono.extension.brotli}`;
+			const filePath = `${configHono.static.root}/${configProcess.newlyJson.directory}/${fileName}.json`;
+			const brotliFilePath = `${filePath}.br`;
 
 			await Promise.all([fs.promises.writeFile(filePath, newlyJson), fs.promises.writeFile(brotliFilePath, newlyJsonBrotli)]);
 

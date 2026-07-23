@@ -47,7 +47,14 @@ const { srcDir, distDir, svgoConfig: svgoConfigFilePath, watch } = argsParsedVal
 
 const svgoConfig = await svgoLoadConfig(svgoConfigFilePath);
 
-const getDistFilePath = (srcFilePath: string): string => srcFilePath.replace(new RegExp(`^${srcDir}`, 'v'), distDir);
+const getDistFilePath = (srcFilePath: string): string => {
+	if (srcFilePath === `${srcDir}/favicon.svg`) {
+		/* `favicon.svg` のみ `favicon.ico` にリネームする */
+		return `${distDir}/favicon.ico`;
+	}
+
+	return srcFilePath.replace(new RegExp(`^${srcDir}`, 'v'), distDir);
+};
 
 const exec = async (srcFilePath: string): Promise<void> => {
 	const distFilePath = getDistFilePath(srcFilePath);

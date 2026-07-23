@@ -3,7 +3,6 @@ import { strict as assert } from 'node:assert';
 import { before, test } from 'node:test';
 import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
-import configHono from '../config/hono.ts';
 import configEntry from '../config/entry.ts';
 
 await test('no param', async () => {
@@ -29,8 +28,8 @@ await test('private entry', async () => {
 
 await test('public entry', async (t) => {
 	const entryId = 100;
-	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
-	const htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configEntry.html.directory}/${String(entryId)}.html`;
+	const htmlBrotliFilePath = `${htmlFilePath}.br`;
 
 	before(async () => {
 		if (fs.existsSync(htmlFilePath)) {

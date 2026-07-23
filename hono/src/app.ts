@@ -20,11 +20,7 @@ import { entriesSummaryApp as apiEntriesApp } from './controller/api/entriesSumm
 import { mediaUploadApp as apiMediaUploadApp } from './controller/api/mediaUpload.ts';
 import { previewApp as apiPreviewApp } from './controller/api/preview.ts';
 import { basicAuth } from './util/auth.ts';
-import {
-	csp as cspHeader,
-	reportingEndpoints as reportingEndpointsHeader,
-	supportCompressionEncoding as supportCompressEncodingHeader,
-} from './util/httpHeader.ts';
+import { csp as cspHeader, reportingEndpoints as reportingEndpointsHeader } from './util/httpHeader.ts';
 import { isApi } from './util/request.ts';
 
 export interface Variables {
@@ -39,19 +35,36 @@ app.use(async (context, next) => {
 	await next();
 });
 
-/* Auth */
-await Promise.all(
-	config.basicAuth.map(async ({ paths, realm, env: envKey }) => {
-		const basicAuthHandler = await basicAuth({
-			authFilePath: `${env('ROOT')}/${env('AUTH_DIR')}/${env(envKey)}`,
-			realm: realm,
-		});
+/* Redirect */
+config.redirect.forEach(({ from, to }) => {
+	if (!to.startsWith('/') && !URL.canParse(to)) {
+		throw new Error(`The path of the redirect destination must begin with a URL or U+002F (slash): ${to}`);
+	}
 
-		paths.forEach((routingPath) => {
-			app.use(routingPath, basicAuthHandler);
+	app.get(from, (context) => {
+		const { req } = context;
+		const logger = context.get('logger');
+
+		let redirectPath = to;
+		Object.entries(req.param()).forEach(([, paramValue], index) => {
+			if (typeof paramValue !== 'string') {
+				throw new Error('Parameter value is not of type `string`');
+			}
+			redirectPath = redirectPath.replace(`$${String(index + 1)}`, paramValue);
 		});
-	}),
-);
+		logger.debug(`redirect: ${req.url} → ${redirectPath}`);
+
+		return context.html(
+			`<!DOCTYPE html>
+<html lang=ja>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>ページ移動</title>
+<p>このページは <a href="${escape(redirectPath)}"><code>${escape(redirectPath)}</code></a> に移動しました。`,
+			301,
+			{ Location: redirectPath },
+		);
+	});
+});
 
 /* Compress */
 app.use(
@@ -77,46 +90,19 @@ app.use(async (context, next) => {
 	await next();
 });
 
-/* Favicon */
-app.get('/favicon.ico', async (context) => {
-	const { req } = context;
+/* Auth */
+await Promise.all(
+	config.basicAuth.map(async ({ paths, realm, env: envKey }) => {
+		const basicAuthHandler = await basicAuth({
+			authFilePath: `${env('ROOT')}/${env('AUTH_DIR')}/${env(envKey)}`,
+			realm: realm,
+		});
 
-	let compressExtension: string | undefined;
-	let responseContentEncoding: string | undefined;
-
-	if (supportCompressEncodingHeader(req.header('Accept-Encoding'), 'br')) {
-		compressExtension = '.br';
-		responseContentEncoding = 'br';
-	}
-
-	const file = await fs.promises.readFile(`${config.static.root}/favicon.svg${compressExtension ?? ''}`);
-
-	context.header('Content-Type', 'image/svg+xml;charset=utf-8');
-	context.header('Content-Encoding', responseContentEncoding);
-	context.header('Cache-Control', 'max-age=604800');
-	context.header('Vary', 'Accept-Encoding', { append: true });
-	return context.body(Buffer.from(file));
-});
-
-/* Feed */
-app.get('/feed', async (context) => {
-	const { req } = context;
-
-	let compressExtension: string | undefined;
-	let responseContentEncoding: string | undefined;
-
-	if (supportCompressEncodingHeader(req.header('Accept-Encoding'), 'br')) {
-		compressExtension = '.br';
-		responseContentEncoding = 'br';
-	}
-
-	const file = await fs.promises.readFile(`${config.static.root}/feed.atom${compressExtension ?? ''}`);
-
-	context.header('Content-Type', 'application/atom+xml;charset=utf-8');
-	context.header('Content-Encoding', responseContentEncoding);
-	context.header('Vary', 'Accept-Encoding', { append: true });
-	return context.body(Buffer.from(file));
-});
+		paths.forEach((routingPath) => {
+			app.use(routingPath, basicAuthHandler);
+		});
+	}),
+);
 
 /* Static files */
 app.use(
@@ -138,30 +124,41 @@ app.use(
 		onFound: (localPath, context) => {
 			const { req, res } = context;
 
-			const urlPath = path.normalize(localPath).substring(path.normalize(config.static.root).length).replaceAll(path.sep, '/'); // URL のパス部分 e.g. ('/foo.html')
+			const urlPath = localPath.substring(config.static.root.length).replace(/\.br$/v, '').replaceAll(path.sep, '/'); // URL のパス部分 e.g. ('/foo.html')
 			const urlExtension = path.extname(urlPath); // URL の拡張子部分 (e.g. '.html')
 
 			/* Content-Type; hono 公式に登録されていない MIME タイプを設定 */
-			const addedContentType = Object.entries(config.static.headers.contentType).find(([ext]) => ext === urlExtension);
-			if (addedContentType !== undefined) {
-				const [, contentType] = addedContentType;
+			const contentTypeRecord =
+				Object.entries(config.static.headers.contentType.path).find(([ctPath]) => ctPath === urlPath) ??
+				Object.entries(config.static.headers.contentType.extension).find(([ctExt]) => ctExt === urlExtension);
+			if (contentTypeRecord !== undefined) {
+				const [, contentType] = contentTypeRecord;
 				res.headers.set('Content-Type', contentType);
 			}
 
 			/* Cache-Control */
 			const cacheControl =
 				process.env['NODE_ENV'] === 'production'
-					? (config.static.headers.cacheControl.extension.find((ccExt) => ccExt.extensions.includes(urlExtension))?.value ??
+					? (config.static.headers.cacheControl.path?.find((ccPath) => ccPath.paths.includes(urlPath))?.value ??
+						config.static.headers.cacheControl.extension.find((ccExt) => ccExt.extensions.includes(urlExtension))?.value ??
 						config.static.headers.cacheControl.default)
 					: 'no-cache';
 			res.headers.set('Cache-Control', cacheControl);
 
 			/* SourceMap */
 			if (config.static.headers.sourceMap.includes(urlExtension)) {
-				const mapPath = `${urlPath}${config.extension.map}`;
+				const mapPath = `${urlPath}.map`;
 
 				res.headers.set('SourceMap', path.basename(mapPath));
 			}
+
+			/* CSP */
+			/* TODO: 現状は静的な HTML ファイルが存在しない
+			if (['.html'].includes(urlExtension)) {
+				res.headers.set('Content-Security-Policy', cspHeader(config.response.header.cspHtml));
+				res.headers.set('Content-Security-Policy-Report-Only', cspHeader(config.response.header.csproHtml));
+			}
+			*/
 
 			/* CORS */
 			if (urlPath.startsWith('/json/')) {
@@ -174,43 +171,9 @@ app.use(
 				}
 				res.headers.append('Vary', 'Origin');
 			}
-
-			/* TODO: HTML ファイルの CSP */
 		},
 	}),
 );
-
-/* Redirect */
-config.redirect.forEach((redirect) => {
-	if (!redirect.to.startsWith('/')) {
-		throw new Error('The path to the redirect must begin with a U+002F slash');
-	}
-
-	app.get(redirect.from, (context) => {
-		const { req } = context;
-		const logger = context.get('logger');
-
-		let redirectPath = redirect.to;
-		Object.entries(req.param()).forEach(([, paramValue], index) => {
-			if (typeof paramValue !== 'string') {
-				throw new Error('Parameter value is not of type `string`');
-			}
-			redirectPath = redirectPath.replace(`$${String(index + 1)}`, paramValue);
-		});
-
-		logger.debug(`redirect: ${req.url} → ${redirectPath}`);
-
-		return context.html(
-			`<!DOCTYPE html>
-<html lang=ja>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>ページ移動</title>
-<p>このページは <a href="${escape(redirectPath)}"><code>${escape(redirectPath)}</code></a> に移動しました。`,
-			301,
-			{ Location: redirectPath },
-		);
-	});
-});
 
 /* Routes */
 app.route('/', topApp);
@@ -259,6 +222,7 @@ app.onError(async (err, context) => {
 					break;
 				}
 				case 404: {
+					/* new HTTPException(404) が指定された場合 */
 					htmlFilePath = config.errorpage.notfound;
 					logger.info(err.message);
 					break;

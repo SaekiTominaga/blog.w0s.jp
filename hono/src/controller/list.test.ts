@@ -3,7 +3,6 @@ import { strict as assert } from 'node:assert';
 import { before, test } from 'node:test';
 import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
-import configHono from '../config/hono.ts';
 import configList from '../config/list.ts';
 
 await test('top page', async () => {
@@ -36,8 +35,8 @@ await test('excessive page', async () => {
 
 await test('exist page', async (t) => {
 	const page = 1;
-	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configList.html.directory}/${String(page)}${configHono.extension.html}`;
-	const htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configList.html.directory}/${String(page)}.html`;
+	const htmlBrotliFilePath = `${htmlFilePath}.br`;
 
 	before(async () => {
 		if (fs.existsSync(htmlFilePath)) {

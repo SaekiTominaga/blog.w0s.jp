@@ -3,7 +3,6 @@ import { strict as assert } from 'node:assert';
 import { before, test } from 'node:test';
 import { env } from '@w0s/env-value-type';
 import app from '../app.ts';
-import configHono from '../config/hono.ts';
 import configCategory from '../config/category.ts';
 
 await test('no param', async () => {
@@ -22,8 +21,8 @@ await test('no exit category', async () => {
 
 await test('exit category', async (t) => {
 	const categoryName = 'HTML';
-	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configCategory.html.directory}/${categoryName}${configHono.extension.html}`;
-	const htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configCategory.html.directory}/${categoryName}.html`;
+	const htmlBrotliFilePath = `${htmlFilePath}.br`;
 
 	before(async () => {
 		if (fs.existsSync(htmlFilePath)) {
