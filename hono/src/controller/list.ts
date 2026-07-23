@@ -25,7 +25,7 @@ const commonProcess = async (context: Context<{ Variables: Variables }>, page = 
 		readonly: true,
 	});
 
-	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configList.html.directory}/${String(page)}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configList.html.directory}/${String(page)}.html`;
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();

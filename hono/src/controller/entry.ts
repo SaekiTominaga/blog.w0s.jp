@@ -27,7 +27,7 @@ export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9
 		readonly: true,
 	});
 
-	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configEntry.html.directory}/${String(entryId)}.html`;
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();

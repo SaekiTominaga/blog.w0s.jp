@@ -28,7 +28,7 @@ export const categoryApp = new Hono<{ Variables: Variables }>().get('/:categoryN
 		readonly: true,
 	});
 
-	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configCategory.html.directory}/${filenamify(categoryName)}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configCategory.html.directory}/${filenamify(categoryName)}.html`;
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();

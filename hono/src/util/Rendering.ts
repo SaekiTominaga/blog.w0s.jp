@@ -27,7 +27,7 @@ export default class Rendering {
 
 		this.#htmlFilePath = htmlFilePath;
 
-		this.#htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
+		this.#htmlBrotliFilePath = `${htmlFilePath}.br`;
 	}
 
 	/**
@@ -43,7 +43,7 @@ export default class Rendering {
 		if (ifModifiedSince !== undefined && this.#lastModified <= new Date(ifModifiedSince)) {
 			logger.debug('304 Not Modified');
 
-			res.headers.set('Cache-Control', configHono.cacheControl);
+			res.headers.set('Cache-Control', configHono.response.header.cacheControl);
 
 			return new Response(null, {
 				status: 304,
@@ -132,7 +132,7 @@ export default class Rendering {
 	 */
 	static #setHeaders(headers: Headers): void {
 		headers.set('Content-Type', 'text/html; charset=utf-8');
-		headers.set('Cache-Control', configHono.cacheControl);
+		headers.set('Cache-Control', configHono.response.header.cacheControl);
 		headers.set('Content-Security-Policy', cspHeader(configHono.response.header.cspHtml));
 		headers.set('Content-Security-Policy-Report-Only', cspHeader(configHono.response.header.csproHtml));
 		headers.append('Vary', 'Accept-Encoding');

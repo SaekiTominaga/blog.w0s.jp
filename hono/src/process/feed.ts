@@ -41,7 +41,7 @@ export const create = async (): Promise<string[]> => {
 
 	/* ファイル出力 */
 	const filePath = `${configHono.static.root}/${configProcess.feed.path}`;
-	const brotliFilePath = `${filePath}${configHono.extension.brotli}`;
+	const brotliFilePath = `${filePath}.br`;
 
 	await Promise.all([fs.promises.writeFile(filePath, feed), fs.promises.writeFile(brotliFilePath, feedXmlBrotli)]);
 
