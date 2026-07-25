@@ -11,7 +11,7 @@
 		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/**/*.test.ts"
 	},
 	"dependencies": {
-		"@hono/node-server": "2.0.3",
+		"@hono/node-server": "2.0.10",
 		"@w0s/env-value-type": "2.0.0",
 		"@w0s/file-size-format": "4.0.0",
 		"@w0s/html-escape": "5.0.0",
