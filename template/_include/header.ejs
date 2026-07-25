@@ -25,12 +25,13 @@
 				</a>
 			</div>
 			<search class="l-header__search" role="search" aria-label="サイト">
-				<form action="/search" class="p-header-search">
+				<form action="https://w0s.jp/search" class="p-header-search">
 					<fieldset>
 						<legend class="p-header-search__legend">サイト内検索</legend>
 						<div class="p-header-search__ctrl">
 							<p class="c-search">
-								<select name="engine" class="c-search__select" title="検索エンジン">
+								<input type="hidden" name="site" value="blog" />
+								<select name="engine" class="c-search__engine" title="検索エンジン">
 									<button>
 										<selectedcontent></selectedcontent>
 									</button>
