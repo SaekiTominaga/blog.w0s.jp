@@ -64,7 +64,7 @@ export default {
 		},
 		{
 			/* Customizable Select */
-			selector: '.c-search__select',
+			selector: '.c-search__engine',
 			inheritance: true,
 			rules: {
 				'character-reference': false,

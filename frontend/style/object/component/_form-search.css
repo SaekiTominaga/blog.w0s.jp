@@ -18,7 +18,7 @@
 }
 
 /* 検索エンジン選択欄 */
-.c-search__select {
+.c-search__engine {
 	display: inline flex;
 	flex-wrap: nowrap;
 	align-items: center;
@@ -157,5 +157,5 @@
 	& > svg {
 		block-size: 100%;
 		inline-size: 100%;
-	} /* for Chrome */
+	}
 }

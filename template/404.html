@@ -23,12 +23,13 @@
 				</div>
 
 				<search role="search">
-					<form action="/search" class="p-err-search">
+					<form action="https://w0s.jp/search" class="p-err-search">
 						<fieldset>
 							<legend class="p-err-search__legend">サイト内検索</legend>
 							<div class="p-err-search__ctrl">
 								<p class="c-search">
-									<select name="engine" class="c-search__select" title="検索エンジン">
+									<input type="hidden" name="site" value="blog" />
+									<select name="engine" class="c-search__engine" title="検索エンジン">
 										<button>
 											<selectedcontent></selectedcontent>
 										</button>
