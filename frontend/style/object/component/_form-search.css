@@ -15,6 +15,10 @@
 	& :is(input, select, button) {
 		line-height: inherit;
 	}
+
+	& :focus {
+		z-index: 0;
+	}
 }
 
 /* 検索エンジン選択欄 */
@@ -106,13 +110,22 @@
 
 .c-search__content-text {
 	selectedcontent & {
-		font-family: Arial, sans-serif;
+		text-wrap-mode: nowrap;
 		font-size: calc(100% / pow(var(--font-ratio), 4));
-		font-width: condensed;
 
-		@supports not (font-width) {
-			font-stretch: condensed;
+		@media (prefers-reduced-motion: no-preference) {
+			transition-duration: 0.1s;
+			transition-property: all;
+			transition-behavior: allow-discrete;
+			interpolate-size: allow-keywords;
 		}
+	}
+
+	.c-search:has(.c-search__query:focus) & {
+		block-size: 0;
+		inline-size: 0;
+		overflow: hidden;
+		font-size: 0;
 	}
 }
 
