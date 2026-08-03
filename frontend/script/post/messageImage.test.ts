@@ -24,12 +24,12 @@ await test('init clear', () => {
 
 	assert.equal(document.querySelectorAll('#target').length, 1);
 
-	const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-	const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
+	const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+	const $selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 	messageImage({
-		preview: previewTemplate,
-		image: selectImageTemplate,
+		$preview: $previewTemplate,
+		$image: $selectImageTemplate,
 	});
 
 	assert.equal(document.querySelectorAll('#target').length, 0);
@@ -57,22 +57,22 @@ await test('message analysis', async (t) => {
 			{ url: 'http://example.com' },
 		).window;
 
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: previewTemplate,
-			image: selectImageTemplate,
+			$preview: $previewTemplate,
+			$image: $selectImageTemplate,
 		});
 
-		const parent = selectImageTemplate.parentElement!;
-		const radio = parent.querySelector<HTMLInputElement>('input[type=radio]')!;
-		const image = parent.querySelector<HTMLImageElement>('img')!;
+		const $parent = $selectImageTemplate.parentElement!;
+		const $radio = $parent.querySelector<HTMLInputElement>('input[type=radio]')!;
+		const $image = $parent.querySelector<HTMLImageElement>('img')!;
 
-		assert.equal(radio.value, 'foo.jpg');
-		assert.equal(image.src, 'http://example.com/entry/image/thumb/foo.jpg@d=1280x960;q=30.avif');
-		assert.equal(image.alt, 'foo.jpg');
-		assert.equal(image.title, 'foo.jpg');
+		assert.equal($radio.value, 'foo.jpg');
+		assert.equal($image.src, 'http://example.com/entry/image/thumb/foo.jpg@d=1280x960;q=30.avif');
+		assert.equal($image.alt, 'foo.jpg');
+		assert.equal($image.title, 'foo.jpg');
 	});
 
 	await t.test('YouTube', () => {
@@ -93,22 +93,22 @@ await test('message analysis', async (t) => {
 </div>
 `).window;
 
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: previewTemplate,
-			image: selectImageTemplate,
+			$preview: $previewTemplate,
+			$image: $selectImageTemplate,
 		});
 
-		const parent = selectImageTemplate.parentElement!;
-		const radio = parent.querySelector<HTMLInputElement>('input[type=radio]')!;
-		const image = parent.querySelector<HTMLImageElement>('img')!;
+		const $parent = $selectImageTemplate.parentElement!;
+		const $radio = $parent.querySelector<HTMLInputElement>('input[type=radio]')!;
+		const $image = $parent.querySelector<HTMLImageElement>('img')!;
 
-		assert.equal(radio.value, 'https://i1.ytimg.com/vi/foo/hqdefault.jpg');
-		assert.equal(image.src, 'https://i1.ytimg.com/vi/foo/hqdefault.jpg');
-		assert.equal(image.alt, 'https://i1.ytimg.com/vi/foo/hqdefault.jpg');
-		assert.equal(image.title, 'https://i1.ytimg.com/vi/foo/hqdefault.jpg');
+		assert.equal($radio.value, 'https://i1.ytimg.com/vi/foo/hqdefault.jpg');
+		assert.equal($image.src, 'https://i1.ytimg.com/vi/foo/hqdefault.jpg');
+		assert.equal($image.alt, 'https://i1.ytimg.com/vi/foo/hqdefault.jpg');
+		assert.equal($image.title, 'https://i1.ytimg.com/vi/foo/hqdefault.jpg');
 	});
 
 	await t.test('Amazon', () => {
@@ -129,22 +129,22 @@ await test('message analysis', async (t) => {
 </div>
 `).window;
 
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: previewTemplate,
-			image: selectImageTemplate,
+			$preview: $previewTemplate,
+			$image: $selectImageTemplate,
 		});
 
-		const parent = selectImageTemplate.parentElement!;
-		const radio = parent.querySelector<HTMLInputElement>('input[type=radio]')!;
-		const image = parent.querySelector<HTMLImageElement>('img')!;
+		const $parent = $selectImageTemplate.parentElement!;
+		const $radio = $parent.querySelector<HTMLInputElement>('input[type=radio]')!;
+		const $image = $parent.querySelector<HTMLImageElement>('img')!;
 
-		assert.equal(radio.value, 'https://m.media-amazon.com/images/I/foo.jpg');
-		assert.equal(image.src, 'https://m.media-amazon.com/images/I/foo.jpg');
-		assert.equal(image.alt, 'https://m.media-amazon.com/images/I/foo.jpg');
-		assert.equal(image.title, 'https://m.media-amazon.com/images/I/foo.jpg');
+		assert.equal($radio.value, 'https://m.media-amazon.com/images/I/foo.jpg');
+		assert.equal($image.src, 'https://m.media-amazon.com/images/I/foo.jpg');
+		assert.equal($image.alt, 'https://m.media-amazon.com/images/I/foo.jpg');
+		assert.equal($image.title, 'https://m.media-amazon.com/images/I/foo.jpg');
 	});
 });
 
@@ -170,18 +170,18 @@ await test('selected', async (t) => {
 			{ url: 'http://example.com' },
 		).window;
 
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: previewTemplate,
-			image: selectImageTemplate,
+			$preview: $previewTemplate,
+			$image: $selectImageTemplate,
 		});
 
-		const radio = selectImageTemplate.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
+		const $radio = $selectImageTemplate.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
 
-		assert.equal(radio.value, 'foo.jpg');
-		assert.equal(radio.checked, false);
+		assert.equal($radio.value, 'foo.jpg');
+		assert.equal($radio.checked, false);
 	});
 
 	await t.test('same file name', () => {
@@ -205,18 +205,18 @@ await test('selected', async (t) => {
 			{ url: 'http://example.com' },
 		).window;
 
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: previewTemplate,
-			image: selectImageTemplate,
+			$preview: $previewTemplate,
+			$image: $selectImageTemplate,
 		});
 
-		const radio = selectImageTemplate.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
+		const $radio = $selectImageTemplate.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
 
-		assert.equal(radio.value, 'foo.jpg');
-		assert.equal(radio.checked, true);
+		assert.equal($radio.value, 'foo.jpg');
+		assert.equal($radio.checked, true);
 	});
 
 	await t.test('same file name', () => {
@@ -243,17 +243,17 @@ await test('selected', async (t) => {
 			{ url: 'http://example.com' },
 		).window;
 
-		const previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
-		const selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
+		const $previewTemplate = document.querySelector<HTMLTemplateElement>('#message-preview')!;
+		const $selectImageTemplate = document.querySelector<HTMLTemplateElement>('#select-image')!;
 
 		messageImage({
-			preview: previewTemplate,
-			image: selectImageTemplate,
+			$preview: $previewTemplate,
+			$image: $selectImageTemplate,
 		});
 
-		const radio = selectImageTemplate.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
+		const $radio = $selectImageTemplate.parentElement!.querySelector<HTMLInputElement>('input[type=radio]')!;
 
-		assert.equal(radio.value, 'foo.jpg');
-		assert.equal(radio.checked, true);
+		assert.equal($radio.value, 'foo.jpg');
+		assert.equal($radio.checked, true);
 	});
 });

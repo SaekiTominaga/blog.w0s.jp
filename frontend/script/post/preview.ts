@@ -10,9 +10,9 @@ import type { Preview as ApiResponsePreview } from '../../../@types/api.d.ts';
 const setMessages = ($template: HTMLTemplateElement, messages: readonly Readonly<VFileMessage>[]): void => {
 	/* いったんクリア */
 	Array.from($template.parentNode?.children ?? [])
-		.filter((element) => element !== $template)
-		.forEach((element) => {
-			element.remove();
+		.filter(($element) => $element !== $template)
+		.forEach(($element) => {
+			$element.remove();
 		});
 
 	/* 行番号でソート */
@@ -29,57 +29,57 @@ const setMessages = ($template: HTMLTemplateElement, messages: readonly Readonly
 		return a.line - b.line;
 	});
 
-	const fragment = document.createDocumentFragment();
+	const $fragment = document.createDocumentFragment();
 	sortedMessages.forEach((message) => {
-		const clone = $template.content.cloneNode(true) as HTMLElement;
+		const $clone = $template.content.cloneNode(true) as HTMLElement;
 
 		if (message.line !== undefined) {
-			const line = clone.querySelector<HTMLElement>('.js-line');
-			if (line !== null) {
-				line.textContent = String(message.line);
+			const $line = $clone.querySelector<HTMLElement>('.js-line');
+			if ($line !== null) {
+				$line.textContent = String(message.line);
 			}
 		}
 
 		if (message.column !== undefined) {
-			const column = clone.querySelector<HTMLElement>('.js-column');
-			if (column !== null) {
-				column.textContent = String(message.column);
+			const $column = $clone.querySelector<HTMLElement>('.js-column');
+			if ($column !== null) {
+				$column.textContent = String(message.column);
 			}
 		}
 
-		const reason = clone.querySelector<HTMLElement>('.js-reason');
-		if (reason !== null) {
-			reason.textContent = message.reason;
+		const $reason = $clone.querySelector<HTMLElement>('.js-reason');
+		if ($reason !== null) {
+			$reason.textContent = message.reason;
 		}
 
 		const { ruleId } = message;
 
 		const info = ruleId?.startsWith('no-recommended-') ?? false;
 
-		const infoIcon = clone.querySelector<HTMLElement>('.js-info');
-		if (infoIcon !== null) {
-			infoIcon.hidden = !info;
+		const $infoIcon = $clone.querySelector<HTMLElement>('.js-info');
+		if ($infoIcon !== null) {
+			$infoIcon.hidden = !info;
 		}
 
-		const warningIcon = clone.querySelector<HTMLElement>('.js-warning');
-		if (warningIcon !== null) {
-			warningIcon.hidden = info;
+		const $warningIcon = $clone.querySelector<HTMLElement>('.js-warning');
+		if ($warningIcon !== null) {
+			$warningIcon.hidden = info;
 		}
 
-		const rule = clone.querySelector<HTMLAnchorElement>('.js-rule-id');
-		if (rule !== null) {
+		const $rule = $clone.querySelector<HTMLAnchorElement>('.js-rule-id');
+		if ($rule !== null) {
 			if (ruleId !== undefined) {
-				rule.textContent = ruleId;
+				$rule.textContent = ruleId;
 			}
 
 			if (message.url !== undefined) {
-				rule.href = message.url;
+				$rule.href = message.url;
 			}
 		}
 
-		fragment.appendChild(clone);
+		$fragment.appendChild($clone);
 	});
-	$template.parentNode?.appendChild(fragment);
+	$template.parentNode?.appendChild($fragment);
 };
 
 /**
@@ -92,14 +92,14 @@ const setPreview = ($template: HTMLTemplateElement, html: string): void => {
 	/* いったんクリア */
 	$template.nextElementSibling?.remove();
 
-	const fragment = document.createDocumentFragment();
-	const clone = $template.content.cloneNode(true) as HTMLElement;
+	const $fragment = document.createDocumentFragment();
+	const $clone = $template.content.cloneNode(true) as HTMLElement;
 
-	const $preview = clone.querySelector('div');
+	const $preview = $clone.querySelector('div');
 	$preview?.setHTMLUnsafe(html);
 
-	fragment.appendChild(clone);
-	$template.parentNode?.appendChild(fragment);
+	$fragment.appendChild($clone);
+	$template.parentNode?.appendChild($fragment);
 };
 
 /**
