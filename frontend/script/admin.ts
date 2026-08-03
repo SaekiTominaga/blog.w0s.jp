@@ -41,17 +41,17 @@ formBeforeUnloadConfirm(document.querySelectorAll('.js-form-beforeunload-confirm
 formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 
 /* disabled 制御 */
-document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach((element) => {
-	const targetIds = element.dataset['targets']?.split(' ');
+document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach(($element) => {
+	const targetIds = $element.dataset['targets']?.split(' ');
 
-	element.addEventListener(
+	$element.addEventListener(
 		'change',
 		() => {
 			targetIds?.forEach((targetId) => {
 				(
 					document.getElementById(targetId) as
 						HTMLButtonElement | HTMLFieldSetElement | HTMLInputElement | HTMLOptGroupElement | HTMLSelectElement | HTMLTextAreaElement
-				).disabled = !element.checked;
+				).disabled = !$element.checked;
 			});
 		},
 		{ passive: true },
@@ -101,8 +101,8 @@ const messageCtrl = async (elementSelector: { titleCtrl: string; messageCtrl: st
 		});
 
 		messageImage({
-			preview: $messagePreview,
-			image: $selectImage,
+			$preview: $messagePreview,
+			$image: $selectImage,
 		});
 
 		await preview({

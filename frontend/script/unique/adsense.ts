@@ -7,14 +7,14 @@ declare global {
 /**
  * Google AdSense
  *
- * @param $target - 広告を表示する要素
+ * @param $$target - 広告を表示する要素
  * @param intersectionObserverOptions - IntersectionObserver に渡すオプション
  */
 const adsense = (
-	$target: NodeListOf<Element> | HTMLCollectionOf<Element> | Element | null,
+	$$target: NodeListOf<Element> | HTMLCollectionOf<Element> | Element | null,
 	intersectionObserverOptions?: Readonly<IntersectionObserverInit>,
 ): void => {
-	if ($target === null) {
+	if ($$target === null) {
 		return;
 	}
 
@@ -36,11 +36,11 @@ const adsense = (
 		}
 	}, intersectionObserverOptions);
 
-	if ($target instanceof Element) {
-		observer.observe($target);
+	if ($$target instanceof Element) {
+		observer.observe($$target);
 	} else {
-		[...$target].forEach((element) => {
-			observer.observe(element);
+		[...$$target].forEach(($element) => {
+			observer.observe($element);
 		});
 	}
 };

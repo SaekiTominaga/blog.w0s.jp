@@ -11,15 +11,15 @@ const pre = ($template: HTMLTemplateElement): string | undefined => {
 	let selectedImage: string | undefined;
 
 	Array.from($template.parentNode?.children ?? [])
-		.filter((element) => element !== $template)
-		.forEach((element) => {
-			const $radioChecked = element.querySelector<HTMLInputElement>('input[type="radio"]:checked');
+		.filter(($element) => $element !== $template)
+		.forEach(($element) => {
+			const $radioChecked = $element.querySelector<HTMLInputElement>('input[type="radio"]:checked');
 			if ($radioChecked !== null) {
 				selectedImage = $radioChecked.value;
 			}
 
 			/* いったんクリア */
-			element.remove();
+			$element.remove();
 		});
 
 	return selectedImage;
@@ -32,11 +32,11 @@ const pre = ($template: HTMLTemplateElement): string | undefined => {
  */
 const messageImage = (
 	elements: Readonly<{
-		preview: HTMLTemplateElement; // 本文プレビューを表示する要素
-		image: HTMLTemplateElement; // 選択画像を表示する要素
+		$preview: HTMLTemplateElement; // 本文プレビューを表示する要素
+		$image: HTMLTemplateElement; // 選択画像を表示する要素
 	}>,
 ): void => {
-	const { preview: $previewTemplate, image: $selectImageTemplate } = elements;
+	const { $preview: $previewTemplate, $image: $selectImageTemplate } = elements;
 
 	const selectedImage = pre($selectImageTemplate);
 
@@ -64,7 +64,7 @@ const messageImage = (
 	const originalImage = $selectImageTemplate.dataset['selected']; // 既存記事でもともと指定されていた画像（ファイル名 or 外部サービス URL）
 
 	/* 画像を選択するラジオボタンを表示する */
-	const fragment = document.createDocumentFragment();
+	const $fragment = document.createDocumentFragment();
 	images.forEach((image) => {
 		const $templateClone = $selectImageTemplate.content.cloneNode(true) as HTMLElement;
 		const $radio = $templateClone.querySelector<HTMLInputElement>('input[type="radio"]');
@@ -84,8 +84,8 @@ const messageImage = (
 			$image.title = image;
 		}
 
-		fragment.appendChild($templateClone);
+		$fragment.appendChild($templateClone);
 	});
-	$selectImageTemplate.parentNode?.appendChild(fragment);
+	$selectImageTemplate.parentNode?.appendChild($fragment);
 };
 export default messageImage;
