@@ -10,7 +10,7 @@ declare global {
  * @param $$target - 広告を表示する要素
  * @param intersectionObserverOptions - IntersectionObserver に渡すオプション
  */
-const adsense = (
+export default (
 	$$target: NodeListOf<Element> | HTMLCollectionOf<Element> | Element | null,
 	intersectionObserverOptions?: Readonly<IntersectionObserverInit>,
 ): void => {
@@ -44,4 +44,3 @@ const adsense = (
 		});
 	}
 };
-export default adsense;
