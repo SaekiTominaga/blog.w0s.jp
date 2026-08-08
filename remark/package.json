@@ -16,7 +16,7 @@
 		"@w0s/isbn-verify": "4.0.0",
 		"@w0s/paapi-item-image-url-parser": "4.0.0",
 		"@w0s/sqlite-utility": "3.0.0",
-		"better-sqlite3": "13.0.3",
+		"better-sqlite3": "12.11.1",
 		"dayjs": "1.11.20",
 		"github-slugger": "2.0.0",
 		"hast-util-select": "6.0.4",
