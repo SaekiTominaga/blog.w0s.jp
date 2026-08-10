@@ -20,7 +20,7 @@ importers:
         version: 24.13.2
       '@w0s/eslint-config':
         specifier: 9.8.0
-        version: 9.8.0(@eslint/js@9.39.5)(eslint-plugin-functional@10.0.0(eslint@9.39.5)(typescript@6.0.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5))(eslint-plugin-jsdoc@63.3.2(eslint@9.39.5))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.5))(eslint@9.39.5)(globals@17.7.0)(typescript-eslint@8.62.0(eslint@9.39.5)(typescript@6.0.3))
+        version: 9.8.0(@eslint/js@9.39.5)(eslint-plugin-functional@10.0.0(eslint@9.39.5)(typescript@6.0.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5))(eslint-plugin-jsdoc@63.3.3(eslint@9.39.5))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.5))(eslint@9.39.5)(globals@17.7.0)(typescript-eslint@8.62.0(eslint@9.39.5)(typescript@6.0.3))
       '@w0s/markuplint-config':
         specifier: 3.13.0
         version: 3.13.0(markuplint@4.18.3(typescript@6.0.3))
@@ -40,8 +40,8 @@ importers:
         specifier: 2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5)
       eslint-plugin-jsdoc:
-        specifier: 63.3.2
-        version: 63.3.2(eslint@9.39.5)
+        specifier: 63.3.3
+        version: 63.3.3(eslint@9.39.5)
       eslint-plugin-safely-storage:
         specifier: 1.1.0
         version: 1.1.0(eslint@9.39.5)
@@ -2096,8 +2096,8 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-jsdoc@63.3.2:
-    resolution: {integrity: sha512-5B3oO23iqbNJC/ru7uqIY80wmY66De1Q0+5kXQGHuLrGze/rL0Zw/YktMcqgYQ+kdHmgvY1q5TpRgl3yZMLmhQ==}
+  eslint-plugin-jsdoc@63.3.3:
+    resolution: {integrity: sha512-xI4IeVRzRFA2DGHrPLIxF3U+oJHU3FE+P9Zb27fVs5dPHgfcpoAs0PyCbznVhK7pwR+9BPUztFeXSgpw/CL4Yg==}
     engines: {node: ^22.13.0 || >=24}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -4799,7 +4799,7 @@ snapshots:
   '@typescript-eslint/project-service@8.61.1(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.61.1(typescript@6.0.3)
-      '@typescript-eslint/types': 8.66.0
+      '@typescript-eslint/types': 8.61.1
       debug: 4.4.3
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -4934,13 +4934,13 @@ snapshots:
 
   '@w0s/env-value-type@2.0.0': {}
 
-  '@w0s/eslint-config@9.8.0(@eslint/js@9.39.5)(eslint-plugin-functional@10.0.0(eslint@9.39.5)(typescript@6.0.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5))(eslint-plugin-jsdoc@63.3.2(eslint@9.39.5))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.5))(eslint@9.39.5)(globals@17.7.0)(typescript-eslint@8.62.0(eslint@9.39.5)(typescript@6.0.3))':
+  '@w0s/eslint-config@9.8.0(@eslint/js@9.39.5)(eslint-plugin-functional@10.0.0(eslint@9.39.5)(typescript@6.0.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5))(eslint-plugin-jsdoc@63.3.3(eslint@9.39.5))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.5))(eslint@9.39.5)(globals@17.7.0)(typescript-eslint@8.62.0(eslint@9.39.5)(typescript@6.0.3))':
     dependencies:
       '@eslint/js': 9.39.5
       eslint: 9.39.5
       eslint-plugin-functional: 10.0.0(eslint@9.39.5)(typescript@6.0.3)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5)
-      eslint-plugin-jsdoc: 63.3.2(eslint@9.39.5)
+      eslint-plugin-jsdoc: 63.3.3(eslint@9.39.5)
       eslint-plugin-safely-storage: 1.1.0(eslint@9.39.5)
       globals: 17.7.0
       typescript-eslint: 8.62.0(eslint@9.39.5)(typescript@6.0.3)
@@ -5645,7 +5645,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-jsdoc@63.3.2(eslint@9.39.5):
+  eslint-plugin-jsdoc@63.3.3(eslint@9.39.5):
     dependencies:
       '@es-joy/jsdoccomment': 0.91.0
       '@es-joy/resolve.exports': 1.2.0
