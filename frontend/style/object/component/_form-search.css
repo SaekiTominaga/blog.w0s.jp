@@ -4,6 +4,8 @@
 
 /* ===== サイト内検索 ===== */
 .c-search {
+	--_animation-duration: 0.1s;
+
 	display: block flex;
 	flex-wrap: wrap;
 	border: 1px solid var(--border-color-dark);
@@ -26,6 +28,8 @@
 	display: inline flex;
 	flex-wrap: nowrap;
 	align-items: center;
+	transition-duration: var(--_animation-duration);
+	transition-property: background-color;
 	outline-offset: -1px;
 	border-block-style: unset;
 	border-inline-start-style: unset;
@@ -114,8 +118,7 @@
 		font-size: calc(100% / pow(var(--font-ratio), 4));
 
 		@media (prefers-reduced-motion: no-preference) {
-			transition-duration: 0.1s;
-			transition-property: all;
+			transition-duration: var(--_animation-duration);
 			transition-behavior: allow-discrete;
 			interpolate-size: allow-keywords;
 		}
@@ -135,6 +138,8 @@
 	display: block flow;
 	flex-basis: 0;
 	flex-grow: 1;
+	transition-duration: var(--_animation-duration);
+	transition-property: background-color;
 	outline-offset: -1px;
 	padding: 0.25em;
 	inline-size: 100%;
@@ -151,6 +156,8 @@
 /* 送信ボタン */
 .c-search__submit {
 	all: unset;
+	transition-duration: var(--_animation-duration);
+	transition-property: background-color;
 	outline-offset: -1px;
 	border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0;
 	padding: 0.375em;
