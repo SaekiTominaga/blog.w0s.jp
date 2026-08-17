@@ -57,6 +57,7 @@ config.redirect.forEach(({ from, to }) => {
 			`<!DOCTYPE html>
 <html lang=ja>
 <meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=text-scale content=scale>
 <title>ページ移動</title>
 <p>このページは <a href="${escape(redirectPath)}"><code>${escape(redirectPath)}</code></a> に移動しました。`,
 			301,
