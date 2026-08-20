@@ -20,7 +20,7 @@ importers:
         version: 24.13.2
       '@w0s/eslint-config':
         specifier: 9.9.1
-        version: 9.9.1(@eslint/js@9.39.5)(eslint-plugin-functional@10.0.0(eslint@9.39.5)(typescript@6.0.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5))(eslint-plugin-jsdoc@63.3.2(eslint@9.39.5))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.5))(eslint@9.39.5)(globals@17.7.0)(typescript-eslint@8.62.0(eslint@9.39.5)(typescript@6.0.3))
+        version: 9.9.1(@eslint/js@9.39.5)(eslint-plugin-functional@10.0.0(eslint@9.39.5)(typescript@6.0.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5))(eslint-plugin-jsdoc@63.3.2(eslint@9.39.5))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.5))(eslint@9.39.5)(globals@17.11.0)(typescript-eslint@8.62.0(eslint@9.39.5)(typescript@6.0.3))
       '@w0s/markuplint-config':
         specifier: 3.13.0
         version: 3.13.0(markuplint@4.18.3(typescript@6.0.3))
@@ -46,8 +46,8 @@ importers:
         specifier: 1.1.0
         version: 1.1.0(eslint@9.39.5)
       globals:
-        specifier: 17.7.0
-        version: 17.7.0
+        specifier: 17.11.0
+        version: 17.11.0
       prettier-plugin-ejs:
         specifier: 1.0.3
         version: 1.0.3(prettier@3.9.6)
@@ -2308,8 +2308,8 @@ packages:
     resolution: {integrity: sha512-w9UMqWwJxHNOvoNzSJ2oPF5wvYcvP7jUvYzhp67yEhTi17ZDBBC1z9pTdGuzjD+EFIqLSYRweZjqfiPzQ06Ebg==}
     engines: {node: '>= 0.4'}
 
-  get-tsconfig@4.14.2:
-    resolution: {integrity: sha512-XpwZALwwl/BaKTAyC6+c5T8y6kCg2jk+XGqOVrKIQmW49pNypYLMRjCUXqa28tQgJlhS2RlzP7sc+Rx7W6qsfw==}
+  get-tsconfig@4.14.3:
+    resolution: {integrity: sha512-++QEw4DIY7WGoukz+/+A/8dGYPT9l9yIadnmSgZ8Rjr3YVSVDipQSO9CdnJo9ePqFqUUqh+wk9uIaoiAwsiPkA==}
 
   github-from-package@0.0.0:
     resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
@@ -2349,8 +2349,8 @@ packages:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
     engines: {node: '>=18'}
 
-  globals@17.7.0:
-    resolution: {integrity: sha512-Czmyns5dUsq4seFBR/Kdydhmo8y9kC79hiSkPn0YcGtNnYWnrgt0vjrSjx9tspoDGWm2CMarffRuLjM4xUz8xg==}
+  globals@17.11.0:
+    resolution: {integrity: sha512-Z2I8hM+PbJDXQDq3Icgpzv+mPdwr68iZUU9d5WW4FuXfDUQfkZaZuvjMv42/5crNyw154+9+VWXbYrUgDXbxNw==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -4934,7 +4934,7 @@ snapshots:
 
   '@w0s/env-value-type@2.0.0': {}
 
-  '@w0s/eslint-config@9.9.1(@eslint/js@9.39.5)(eslint-plugin-functional@10.0.0(eslint@9.39.5)(typescript@6.0.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5))(eslint-plugin-jsdoc@63.3.2(eslint@9.39.5))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.5))(eslint@9.39.5)(globals@17.7.0)(typescript-eslint@8.62.0(eslint@9.39.5)(typescript@6.0.3))':
+  '@w0s/eslint-config@9.9.1(@eslint/js@9.39.5)(eslint-plugin-functional@10.0.0(eslint@9.39.5)(typescript@6.0.3))(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5))(eslint-plugin-jsdoc@63.3.2(eslint@9.39.5))(eslint-plugin-safely-storage@1.1.0(eslint@9.39.5))(eslint@9.39.5)(globals@17.11.0)(typescript-eslint@8.62.0(eslint@9.39.5)(typescript@6.0.3))':
     dependencies:
       '@eslint/js': 9.39.5
       eslint: 9.39.5
@@ -4942,7 +4942,7 @@ snapshots:
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.62.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5)
       eslint-plugin-jsdoc: 63.3.2(eslint@9.39.5)
       eslint-plugin-safely-storage: 1.1.0(eslint@9.39.5)
-      globals: 17.7.0
+      globals: 17.11.0
       typescript-eslint: 8.62.0(eslint@9.39.5)(typescript@6.0.3)
 
   '@w0s/file-size-format@4.0.0': {}
@@ -5892,7 +5892,7 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.3.0
 
-  get-tsconfig@4.14.2:
+  get-tsconfig@4.14.3:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
@@ -5940,7 +5940,7 @@ snapshots:
 
   globals@14.0.0: {}
 
-  globals@17.7.0: {}
+  globals@17.11.0: {}
 
   globalthis@1.0.4:
     dependencies:
@@ -7909,7 +7909,7 @@ snapshots:
   tsx@4.21.0:
     dependencies:
       esbuild: 0.27.7
-      get-tsconfig: 4.14.2
+      get-tsconfig: 4.14.3
     optionalDependencies:
       fsevents: 2.3.3
 
