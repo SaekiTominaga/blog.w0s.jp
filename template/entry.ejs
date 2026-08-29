@@ -20,6 +20,7 @@
 		<%_ if (structuredData.description !== undefined) { _%>
 		<meta name="description" content="<%= structuredData.description %>" />
 		<%_ } _%>
+
 		<%_ if (structuredData.image !== undefined) { _%>
 		<meta property="og:title" content="<%= structuredData.title %>" />
 		<meta property="og:type" content="article" />
@@ -31,6 +32,9 @@
 		<meta property="og:description" content="<%= structuredData.description %>" />
 		<%_ } _%>
 		<%_ } _%>
+
+		<meta name="fediverse:creator" content="@SaekiTominaga@fedibird.com" />
+
 		<script type="application/ld+json">
 			<%- JSON.stringify(jsonLd, undefined, '\t') %>
 		</script>
