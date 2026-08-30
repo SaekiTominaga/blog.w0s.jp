@@ -104,15 +104,15 @@ const messageCtrl = async (elementSelector: { titleCtrl: string; messageCtrl: st
 			message: $messageCtrl,
 		});
 
-		messageImage({
-			$preview: $messagePreview,
-			$image: $selectImage,
-		});
-
 		await preview({
 			ctrl: $messageCtrl,
 			messages: $markdownMessages,
 			preview: $messagePreview,
+		});
+
+		messageImage({
+			$preview: $messagePreview,
+			$image: $selectImage,
 		});
 	};
 
