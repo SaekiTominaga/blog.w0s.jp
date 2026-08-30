@@ -9,7 +9,7 @@ import path from 'node:path';
  *
  * @returns ファイル名
  */
-export const getFileNames = async (dir: string, extentions?: string[]): Promise<string[]> => {
+const getFileNames = async (dir: string, extentions?: string[]): Promise<string[]> => {
 	const fileNames = (await fs.promises.readdir(dir, { withFileTypes: true })).filter((resource) => resource.isFile()).map((file) => file.name);
 
 	if (extentions === undefined) {
@@ -25,7 +25,7 @@ export const getFileNames = async (dir: string, extentions?: string[]): Promise<
  *
  * @returns 削除したファイルパス
  */
-export const clearFiles = async (dir: string): Promise<string[]> => {
+const clearFiles = async (dir: string): Promise<string[]> => {
 	const resources = await fs.promises.readdir(dir, { withFileTypes: true });
 	const filePaths = resources.filter((resource) => resource.isFile()).map((file) => `${file.parentPath}/${file.name}`);
 
@@ -33,3 +33,5 @@ export const clearFiles = async (dir: string): Promise<string[]> => {
 
 	return filePaths;
 };
+
+export { getFileNames, clearFiles };

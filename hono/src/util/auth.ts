@@ -37,7 +37,7 @@ const verifyPassword = async (
  *
  * @returns 認証データ
  */
-export const getAuthFile = async (authFilePath: string): Promise<Auth[]> => JSON.parse((await fs.promises.readFile(authFilePath)).toString()) as Auth[];
+const getAuthFile = async (authFilePath: string): Promise<Auth[]> => JSON.parse((await fs.promises.readFile(authFilePath)).toString()) as Auth[];
 
 /**
  * 認証
@@ -48,7 +48,7 @@ export const getAuthFile = async (authFilePath: string): Promise<Auth[]> => JSON
  *
  * @returns 認証ファイルの内容
  */
-export const basicAuth = async (
+const basicAuth = async (
 	options: Readonly<{
 		authFilePath: string;
 		realm: string;
@@ -72,3 +72,5 @@ export const basicAuth = async (
 		realm: options.realm,
 	});
 };
+
+export { getAuthFile, basicAuth };

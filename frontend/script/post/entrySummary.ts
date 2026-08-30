@@ -79,7 +79,7 @@ const entrySummary = async (
 	},
 ): Promise<void> => {
 	await Promise.all(
-		Array.from($ctrls).map(async ($ctrl) => {
+		[...$ctrls].map(async ($ctrl) => {
 			if (!($ctrl instanceof HTMLInputElement)) {
 				throw new Error('Element must be a `HTMLInputElement`');
 			}
@@ -88,7 +88,7 @@ const entrySummary = async (
 			if (outputId === undefined) {
 				throw new Error('The `data-output` attribute is not set');
 			}
-			const $output = document.getElementById(outputId);
+			const $output = document.querySelector(`#${outputId}`);
 			if ($output === null) {
 				throw new Error(`Element \`#${outputId}\` not found`);
 			}
@@ -102,8 +102,8 @@ const entrySummary = async (
 			$ctrl.addEventListener(
 				'change',
 				() => {
-					exec($ctrl, $output).catch((e: unknown) => {
-						throw e;
+					exec($ctrl, $output).catch((error: unknown) => {
+						throw error;
 					});
 				},
 				{ passive: true },

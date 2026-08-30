@@ -50,7 +50,7 @@ const toMdast: Plugin<[], Root> = () => {
 				if (metaExist) {
 					listItems.forEach((listItem) => {
 						visit(listItem, 'text', (text: Text): boolean => {
-							text.value = text.value.substring(META_START.length); // 先頭記号文字を除去
+							text.value = text.value.slice(META_START.length); // 先頭記号文字を除去
 
 							return EXIT;
 						});

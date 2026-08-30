@@ -6,8 +6,8 @@ import searchEngine from './searchEngine.ts';
 before(() => {
 	const { window } = new JSDOM();
 
-	global.document = window.document;
-	global.HTMLSelectElement = window.HTMLSelectElement;
+	globalThis.document = window.document;
+	globalThis.HTMLSelectElement = window.HTMLSelectElement;
 });
 
 await test('validator', async (t) => {

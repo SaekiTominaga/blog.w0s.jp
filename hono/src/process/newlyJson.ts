@@ -5,6 +5,7 @@ import configProcess from '../config/process.ts';
 import NewlyJson from '../db/NewlyJson.ts';
 import { brotliCompressText } from '../util/compress.ts';
 import type { NewlyEntry } from '../../@types/view.d.ts';
+// oxlint-disable-next-line import/extensions
 import MarkdownTitle from '../../../remark/dist/Title.js';
 
 /**
@@ -17,9 +18,7 @@ export const create = async (): Promise<string[]> => {
 		readonly: true,
 	});
 
-	const datasCatgroup = new Map<string, readonly NewlyEntry[]>();
-
-	datasCatgroup.set('', await dao.getEntries(configProcess.newlyJson.limit));
+	const datasCatgroup = new Map<string, readonly NewlyEntry[]>([['', await dao.getEntries(configProcess.newlyJson.limit)]]);
 
 	await Promise.all(
 		(await dao.getCategoryGroupMasterFileName()).map(async (fileName) => {

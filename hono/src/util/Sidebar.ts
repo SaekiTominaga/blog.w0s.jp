@@ -1,3 +1,4 @@
+// oxlint-disable-next-line import/extensions
 import MarkdownTitle from '../../../remark/dist/Title.js';
 import type Dao from '../db/Database.ts';
 import type { NewlyEntry } from '../../@types/view.d.ts';

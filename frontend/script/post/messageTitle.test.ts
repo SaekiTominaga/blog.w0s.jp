@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 import messageTitle from './messageTitle.ts';
 
 before(() => {
-	global.document = new JSDOM().window.document;
+	globalThis.document = new JSDOM().window.document;
 });
 
 await test('empty', async (t) => {

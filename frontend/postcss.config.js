@@ -17,7 +17,7 @@ export default {
 				comment.startsWith('*') || comment.startsWith('TODO:') || comment.startsWith('stylelint-') || comment.startsWith('prettylights-syntax-'),
 		}),
 		pluginDiscardEmpty(),
-		pluginImport(),
+		pluginImport,
 		pluginNesting(),
 	],
 };

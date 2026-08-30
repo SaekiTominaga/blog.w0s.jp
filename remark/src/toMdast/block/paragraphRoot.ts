@@ -9,12 +9,12 @@ import config from '../../config.ts';
  * Paragraph
  */
 
-export interface Dimensions {
+interface Dimensions {
 	width: number;
 	height: number;
 }
 
-export interface AmazonImage {
+interface AmazonImage {
 	id: string;
 	dimensions: Dimensions | undefined;
 }
@@ -90,7 +90,7 @@ const parseNote = (node: Readonly<Paragraph>, firstChildValue: string): XNote | 
 		children: [
 			{
 				type: 'text',
-				value: firstChildValue.substring(NOTE_PREFIX.length),
+				value: firstChildValue.slice(NOTE_PREFIX.length),
 			},
 			...node.children.slice(1),
 		],
@@ -106,11 +106,11 @@ const parseInsert = (node: Readonly<Paragraph>, firstChildValue: string): XInser
 
 	return {
 		type: nameInsert,
-		date: new Date(Number(firstChildValue.substring(1, 5)), Number(firstChildValue.substring(6, 8)) - 1, Number(firstChildValue.substring(9, 11))),
+		date: new Date(Number(firstChildValue.slice(1, 5)), Number(firstChildValue.slice(6, 8)) - 1, Number(firstChildValue.slice(9, 11))),
 		children: [
 			{
 				type: 'text',
-				value: firstChildValue.substring(13),
+				value: firstChildValue.slice(13),
 			},
 			...node.children.slice(1),
 		],
@@ -133,12 +133,12 @@ const parseEmbedded = (node: Readonly<Paragraph>, firstChildValue: string): XEmb
 		return null;
 	}
 
-	const name = firstChildValue.substring(EMBEDDED_PREFIX_SIGN.length, nameMetaSeparatorIndex);
+	const name = firstChildValue.slice(EMBEDDED_PREFIX_SIGN.length, nameMetaSeparatorIndex);
 
 	const metaContents: PhrasingContent[] = [
 		{
 			type: 'text',
-			value: firstChildValue.substring(nameMetaSeparatorIndex + NAME_META_SEPARATOR.length),
+			value: firstChildValue.slice(nameMetaSeparatorIndex + NAME_META_SEPARATOR.length),
 		},
 		...node.children.slice(1),
 	]; // 接頭辞と区切り文字を除いたデータ
@@ -168,8 +168,8 @@ const parseEmbedded = (node: Readonly<Paragraph>, firstChildValue: string): XEmb
 		let requireLastChildValue = lastChildValue;
 		let optionValue: string | undefined;
 		if (optionOpenIndex !== -1 && optionCloseIndex === lastChildValue.length - OPTION_CLOSE.length) {
-			requireLastChildValue = lastChildValue.substring(0, optionOpenIndex).trimEnd();
-			optionValue = lastChildValue.substring(optionOpenIndex + OPTION_OPEN.length, lastChildValue.length - OPTION_CLOSE.length);
+			requireLastChildValue = lastChildValue.slice(0, optionOpenIndex).trimEnd();
+			optionValue = lastChildValue.slice(optionOpenIndex + OPTION_OPEN.length, lastChildValue.length - OPTION_CLOSE.length);
 		}
 
 		if (lastChildContent.type === 'html') {
@@ -181,7 +181,7 @@ const parseEmbedded = (node: Readonly<Paragraph>, firstChildValue: string): XEmb
 
 		return {
 			require: [
-				...contents.slice(0, contents.length - 1),
+				...contents.slice(0, -1),
 				{
 					type: lastChildContent.type,
 					value: requireLastChildValue,
@@ -215,8 +215,12 @@ const parseEmbedded = (node: Readonly<Paragraph>, firstChildValue: string): XEmb
 		const metaRequireString = toString(metaRequiredContent);
 
 		const requireSeparator1Index = metaRequireString.indexOf(META_SEPARATOR);
-		const id = metaRequireString.substring(0, requireSeparator1Index);
-		const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
+		if (requireSeparator1Index === -1) {
+			return null;
+		}
+
+		const id = metaRequireString.slice(0, requireSeparator1Index);
+		const title = metaRequireString.slice(requireSeparator1Index + META_SEPARATOR.length);
 
 		if (!new RegExp(`^${config.regexp.youtubeId}$`, 'v').test(id)) {
 			return null;
@@ -236,7 +240,7 @@ const parseEmbedded = (node: Readonly<Paragraph>, firstChildValue: string): XEmb
 				};
 			} else if (/^[1-9][0-9]*(-[1-9][0-9]*)?s$/v.test(meta)) {
 				/* 開始・終了位置（秒） */
-				const [metaStart, metaEnd] = meta.substring(0, meta.length - 1).split('-');
+				const [metaStart, metaEnd] = meta.slice(0, -1).split('-');
 
 				start = Number(metaStart);
 				if (metaEnd !== undefined) {
@@ -257,8 +261,12 @@ const parseEmbedded = (node: Readonly<Paragraph>, firstChildValue: string): XEmb
 		const metaRequireString = toString(metaRequiredContent);
 
 		const requireSeparator1Index = metaRequireString.indexOf(META_SEPARATOR);
-		const asin = metaRequireString.substring(0, requireSeparator1Index);
-		const title = metaRequireString.substring(requireSeparator1Index + META_SEPARATOR.length);
+		if (requireSeparator1Index === -1) {
+			return null;
+		}
+
+		const asin = metaRequireString.slice(0, requireSeparator1Index);
+		const title = metaRequireString.slice(requireSeparator1Index + META_SEPARATOR.length);
 
 		if (!new RegExp(`^${config.regexp.asin}$`, 'v').test(asin)) {
 			return null;
@@ -329,4 +337,7 @@ const toMdast: Plugin<[], Root> = () => {
 		});
 	};
 };
+
+export type { Dimensions, AmazonImage };
+
 export default toMdast;

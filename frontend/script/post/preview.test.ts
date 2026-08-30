@@ -3,7 +3,7 @@ import { afterEach, before, mock, test } from 'node:test';
 import { JSDOM } from 'jsdom';
 import preview from './preview.ts';
 
-const originalFetch = global.fetch;
+const originalFetch = globalThis.fetch;
 
 before(() => {
 	const { window } = new JSDOM(`
@@ -29,22 +29,22 @@ before(() => {
 </div>
 `);
 
-	global.document = window.document;
+	globalThis.document = window.document;
 
-	// eslint-disable-next-line func-names
+	// oxlint-disable-next-line func-names
 	window.HTMLElement.prototype.setHTMLUnsafe = function (str: string): void {
 		this.innerHTML = str;
 	};
 });
 
 afterEach(() => {
-	global.fetch = originalFetch;
+	globalThis.fetch = originalFetch;
 });
 
 await test('fetch error', async () => {
 	before(() => {
 		// @ts-expect-error: ts(2322)
-		global.fetch = mock.fn(() =>
+		globalThis.fetch = mock.fn(() =>
 			Promise.resolve({
 				ok: false,
 				url: 'http://example.com/sample',
@@ -74,7 +74,7 @@ await test('fetch error', async () => {
 await test('preview HTML', async (t) => {
 	before(() => {
 		// @ts-expect-error: ts(2322)
-		global.fetch = mock.fn(() =>
+		globalThis.fetch = mock.fn(() =>
 			Promise.resolve({
 				ok: true,
 				json: () => Promise.resolve({ data: { html: '<p>text</p>', messages: [] } }),
@@ -101,7 +101,7 @@ await test('messages', async (t) => {
 	await t.test('info', async () => {
 		before(() => {
 			// @ts-expect-error: ts(2322)
-			global.fetch = mock.fn(() =>
+			globalThis.fetch = mock.fn(() =>
 				Promise.resolve({
 					ok: true,
 					json: () =>
@@ -147,7 +147,7 @@ await test('messages', async (t) => {
 	await t.test('warning', async () => {
 		before(() => {
 			// @ts-expect-error: ts(2322)
-			global.fetch = mock.fn(() =>
+			globalThis.fetch = mock.fn(() =>
 				Promise.resolve({
 					ok: true,
 					json: () =>
@@ -193,7 +193,7 @@ await test('messages', async (t) => {
 	await t.test('URL', async () => {
 		before(() => {
 			// @ts-expect-error: ts(2322)
-			global.fetch = mock.fn(() =>
+			globalThis.fetch = mock.fn(() =>
 				Promise.resolve({
 					ok: true,
 					json: () =>
@@ -233,7 +233,7 @@ await test('messages', async (t) => {
 	await t.test('sort', async () => {
 		before(() => {
 			// @ts-expect-error: ts(2322)
-			global.fetch = mock.fn(() =>
+			globalThis.fetch = mock.fn(() =>
 				Promise.resolve({
 					ok: true,
 					json: () =>

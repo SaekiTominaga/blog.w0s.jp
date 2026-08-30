@@ -6,7 +6,7 @@
  *
  * @returns サムネイル画像のファイル名
  */
-export const getDimensions = (
+const getDimensions = (
 	base: Readonly<{ width: number; height: number }>,
 	thumb: Readonly<{ maxWidth: number; maxHeight: number; density: number | undefined }>,
 ): { width: number; height: number } => {
@@ -42,7 +42,7 @@ export const getDimensions = (
  *
  * @returns サムネイル画像のファイル名
  */
-export const getFileName = (
+const getFileName = (
 	baseFileName: string,
 	thumb: Readonly<{ width: number; height: number; density?: number | undefined; quality?: number | undefined; extension: string }>,
 ): string => {
@@ -87,3 +87,5 @@ export const getFileName = (
 
 	return `${baseFileName}@${[paramDimensions, paramQuality].filter((param) => param !== undefined).join(';')}${thumb.extension}`; // e.g `path/to.jpg@d=100x200;q=80.avif`
 };
+
+export { getDimensions, getFileName };

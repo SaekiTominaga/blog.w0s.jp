@@ -48,10 +48,14 @@ document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach(($el
 		'change',
 		() => {
 			targetIds?.forEach((targetId) => {
-				(
-					document.getElementById(targetId) as
-						HTMLButtonElement | HTMLFieldSetElement | HTMLInputElement | HTMLOptGroupElement | HTMLSelectElement | HTMLTextAreaElement
-				).disabled = !$element.checked;
+				const $target = document.querySelector<
+					HTMLButtonElement | HTMLFieldSetElement | HTMLInputElement | HTMLOptGroupElement | HTMLSelectElement | HTMLTextAreaElement
+				>(`#${targetId}`);
+				if ($target === null) {
+					return;
+				}
+
+				$target.disabled = !$element.checked;
 			});
 		},
 		{ passive: true },
@@ -116,8 +120,8 @@ const messageCtrl = async (elementSelector: { titleCtrl: string; messageCtrl: st
 	$messageCtrl.addEventListener(
 		'change',
 		() => {
-			exec().catch((e: unknown) => {
-				throw e;
+			exec().catch((error: unknown) => {
+				throw error;
 			});
 		},
 		{ passive: true },
@@ -144,13 +148,15 @@ const formSubmitHook = <T extends ApiPostData>(
 		successMessage?: (response: Readonly<T>) => string;
 	},
 ): void => {
+	// oxlint-disable-next-line unicorn/consistent-function-scoping
 	const submitterStatus = ($submitter: HTMLElement | null, status?: 'loading'): void => {
 		if ($submitter !== null) {
 			$submitter.dataset['status'] = status ?? '';
 		}
 	};
 
-	const error = ($template: HTMLTemplateElement, message: string): void => {
+	// oxlint-disable-next-line unicorn/consistent-function-scoping
+	const errorDisplay = ($template: HTMLTemplateElement, message: string): void => {
 		const $templateContent = $template.content.cloneNode(true) as HTMLElement;
 
 		const $success = $templateContent.querySelector<HTMLElement>('.js-success');
@@ -194,14 +200,14 @@ const formSubmitHook = <T extends ApiPostData>(
 		})
 			.then(async (response) => {
 				if (!response.ok) {
-					error($result, `${String(response.status)} ${response.statusText}`.trim());
+					errorDisplay($result, `${String(response.status)} ${response.statusText}`.trim());
 					return;
 				}
 
 				const responseJson = (await response.json()) as ApiPost;
 
 				if ('error' in responseJson) {
-					error($result, response.statusText);
+					errorDisplay($result, response.statusText);
 					return;
 				}
 
@@ -224,8 +230,8 @@ const formSubmitHook = <T extends ApiPostData>(
 					updateTemplate($result, $templateContent);
 				});
 			})
-			.catch((err: unknown) => {
-				throw err;
+			.catch((error: unknown) => {
+				throw error;
 			})
 			.finally(() => {
 				/* submit イベントを発生させた要素のステータスをリセットする */

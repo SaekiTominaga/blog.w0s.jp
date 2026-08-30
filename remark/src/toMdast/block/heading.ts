@@ -9,9 +9,9 @@ import { CONTINUE, visit } from 'unist-util-visit';
  * <hn>
  */
 
-export const name = 'x-heading';
+const name = 'x-heading';
 
-export interface XHeading extends Parent {
+interface XHeading extends Parent {
 	type: typeof name;
 	depth: Heading['depth'];
 	id?: string;
@@ -43,7 +43,7 @@ const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
 				depth: node.depth,
 				children: node.children,
 			};
-			if (node.children.length >= 1) {
+			if (node.children.length > 0) {
 				heading.id = slugger.slug(toString(node));
 			}
 			parent.children.splice(index, 1, heading);
@@ -52,4 +52,7 @@ const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
 		});
 	};
 };
+
 export default toMdast;
+
+export { name, type XHeading };

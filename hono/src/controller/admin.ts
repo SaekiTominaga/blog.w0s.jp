@@ -37,9 +37,7 @@ interface EntryData {
 	timestampUpdate?: boolean;
 }
 
-/**
- * 記事投稿
- */
+/* ===== 記事投稿 ===== */
 
 /**
  * 初期画面表示
@@ -128,7 +126,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 
 		if (requestQuery.id === undefined) {
 			/* 初期表示 */
-			return await rendering(context, {
+			return rendering(context, {
 				requestQuery: requestQuery,
 				entrySubmitMode: 'insert',
 			});
@@ -142,7 +140,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 		const reviseData = await dao.getReviseData(requestQuery.id);
 		if (reviseData === undefined) {
 			/* 存在しない記事 ID を指定した場合 */
-			return await rendering(context, {
+			return rendering(context, {
 				requestQuery: requestQuery,
 				entrySubmitMode: 'insert',
 				validate: {
@@ -152,7 +150,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 		}
 
 		/* 既存記事の修正 */
-		return await rendering(context, {
+		return rendering(context, {
 			requestQuery: requestQuery,
 			entryData: {
 				id: reviseData.id,
@@ -197,7 +195,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 			/* 新規記事追加 */
 			if (await dao.isExistsTitle(requestForm.title)) {
 				/* 既存記事と同じタイトルが指定された場合 */
-				return await rendering(context, {
+				return rendering(context, {
 					entryData: entryData,
 					entrySubmitMode: 'insert',
 					validate: {
@@ -229,7 +227,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 
 			if (await dao.isExistsTitle(requestForm.title, requestForm.id)) {
 				/* 既存記事と同じタイトルが指定された場合 */
-				return await rendering(context, {
+				return rendering(context, {
 					entryData: entryData,
 					entrySubmitMode: 'update',
 					validate: {
@@ -262,7 +260,8 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 		const [clearDSGResult, insertSNSQueue, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.allSettled([
 			clear(),
 			entryData.public && entryData.social
-				? (async (entryId) => ({ insertId: await dao.insertSNSQueue(entryId, entryData.socialTags) }))(entryData.id)
+				? // oxlint-disable-next-line unicorn/no-unreadable-iife
+					(async (entryId) => ({ insertId: await dao.insertSNSQueue(entryId, entryData.socialTags) }))(entryData.id)
 				: undefined,
 			createFeed(),
 			createSitemap(),
@@ -317,7 +316,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 			postResults.push({ success: false, message: `${configProcess.newlyJson.processMessage.failure}: ${String(createNewlyJsonResult.reason)}` });
 		}
 
-		return await rendering(context, {
+		return rendering(context, {
 			entryData: entryData,
 			entrySubmitMode: 'update',
 			results: {

@@ -12,11 +12,10 @@ import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/list.ts';
 import type { Entries } from '../../@types/view.d.ts';
+// oxlint-disable-next-line import/extensions
 import MarkdownTitle from '../../../remark/dist/Title.js';
 
-/**
- * 記事リスト
- */
+/* ===== 記事リスト ===== */
 
 const commonProcess = async (context: Context<{ Variables: Variables }>, page = 1): Promise<Response> => {
 	const { req } = context;
@@ -29,7 +28,7 @@ const commonProcess = async (context: Context<{ Variables: Variables }>, page = 
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
-	if (response !== null) {
+	if (response !== undefined) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
 		return response;
 	}
@@ -89,15 +88,17 @@ const commonProcess = async (context: Context<{ Variables: Variables }>, page = 
 	});
 
 	/* レンダリング、ファイル出力 */
-	return await rendering.generation(html);
+	return rendering.generation(html);
 };
 
-export const topApp = new Hono<{ Variables: Variables }>().get('/', async (context) => commonProcess(context));
+const topApp = new Hono<{ Variables: Variables }>().get('/', async (context) => commonProcess(context));
 
-export const listApp = new Hono<{ Variables: Variables }>().get('/:page{[1-9][0-9]*}', validatorParam, async (context) => {
+const listApp = new Hono<{ Variables: Variables }>().get('/:page{[1-9][0-9]*}', validatorParam, async (context) => {
 	const { req } = context;
 
 	const { page } = req.valid('param');
 
 	return commonProcess(context, page);
 });
+
+export { topApp, listApp };

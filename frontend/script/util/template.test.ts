@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 import { clear, update } from './template.ts';
 
 before(() => {
-	global.document = new JSDOM().window.document;
+	globalThis.document = new JSDOM().window.document;
 });
 
 await test('clear', () => {

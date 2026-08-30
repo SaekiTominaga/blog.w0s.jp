@@ -22,7 +22,7 @@ import { basicAuth } from './util/auth.ts';
 import { csp as cspHeader, reportingEndpoints as reportingEndpointsHeader } from './util/httpHeader.ts';
 import { isApi } from './util/request.ts';
 
-export interface Variables {
+interface Variables {
 	logger: Logger;
 }
 
@@ -30,7 +30,7 @@ const app = new Hono<{ Variables: Variables }>();
 
 /* Logger */
 app.use(async (context, next) => {
-	context.set('logger', getLogger(context.req.path.substring(1)));
+	context.set('logger', getLogger(context.req.path.slice(1)));
 	await next();
 });
 
@@ -47,7 +47,7 @@ config.redirect.forEach(({ from, to }) => {
 		let redirectPath = to;
 		Object.entries(req.param()).forEach(([, paramValue], index) => {
 			if (typeof paramValue !== 'string') {
-				throw new Error('Parameter value is not of type `string`');
+				throw new TypeError('Parameter value is not of type `string`');
 			}
 			redirectPath = redirectPath.replace(`$${String(index + 1)}`, paramValue);
 		});
@@ -124,7 +124,7 @@ app.use(
 		onFound: (localPath, context) => {
 			const { req, res } = context;
 
-			const urlPath = localPath.substring(config.static.root.length).replace(/\.br$/v, '').replaceAll(path.sep, '/'); // URL のパス部分 e.g. ('/foo.html')
+			const urlPath = localPath.slice(config.static.root.length).replace(/\.br$/v, '').replaceAll(path.sep, '/'); // URL のパス部分 e.g. ('/foo.html')
 			const urlExtension = path.extname(urlPath); // URL の拡張子部分 (e.g. '.html')
 
 			/* Content-Type; hono 公式に登録されていない MIME タイプを設定 */
@@ -272,3 +272,5 @@ if (process.env['TEST'] !== 'test') {
 }
 
 export default app;
+
+export type { Variables };

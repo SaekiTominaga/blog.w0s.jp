@@ -44,8 +44,9 @@ const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
 						case 'x-heading': {
 							return (testNode as XHeading).depth <= node.depth;
 						}
-						default:
+						default: {
 							return false;
+						}
 					}
 				});
 
