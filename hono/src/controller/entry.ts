@@ -11,12 +11,12 @@ import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/entry.ts';
 import type { Entries } from '../../@types/view.d.ts';
+// oxlint-disable-next-line import/extensions
 import Markdown from '../../../remark/dist/Markdown.js';
+// oxlint-disable-next-line import/extensions
 import MarkdownTitle from '../../../remark/dist/Title.js';
 
-/**
- * 記事
- */
+/* ===== 記事 ===== */
 
 export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9][0-9]*}', validatorParam, async (context) => {
 	const { req } = context;
@@ -31,7 +31,7 @@ export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
-	if (response !== null) {
+	if (response !== undefined) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
 		return response;
 	}
@@ -81,8 +81,8 @@ export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9
 	const jsonLd = new Map<string, string | string[] | object>([
 		['@context', 'https://schema.org/'],
 		['@type', 'BlogPosting'],
+		['datePublished', structuredData.datePublished.format('YYYY-MM-DDTHH:mm:ssZ')],
 	]);
-	jsonLd.set('datePublished', structuredData.datePublished.format('YYYY-MM-DDTHH:mm:ssZ'));
 	if (structuredData.dateModified !== undefined) {
 		jsonLd.set('dateModified', structuredData.dateModified.format('YYYY-MM-DDTHH:mm:ssZ'));
 	}
@@ -112,5 +112,5 @@ export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9
 	});
 
 	/* レンダリング、ファイル出力 */
-	return await rendering.generation(html);
+	return rendering.generation(html);
 });

@@ -79,7 +79,7 @@ await test('getFilename', async (t) => {
 		await t2.test('最大超過', () => {
 			assert.throws(
 				() => {
-					getFileName('path/to.jpg', { width: 10000, height: 8, extension: '.avif' });
+					getFileName('path/to.jpg', { width: 10_000, height: 8, extension: '.avif' });
 				},
 				{ name: 'RangeError', message: 'The value of the `width` must be between 1 and 9999' },
 			);
@@ -99,7 +99,7 @@ await test('getFilename', async (t) => {
 		await t2.test('最大超過', () => {
 			assert.throws(
 				() => {
-					getFileName('path/to.jpg', { width: 10, height: 10000, extension: '.avif' });
+					getFileName('path/to.jpg', { width: 10, height: 10_000, extension: '.avif' });
 				},
 				{ name: 'RangeError', message: 'The value of the `height` must be between 1 and 9999' },
 			);

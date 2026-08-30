@@ -40,8 +40,8 @@ const toMdast: Plugin<[], Root> = () => {
 			const startNodefirstChildFirstLfIndex = startNodefirstChildValue.indexOf('\n');
 			const boxName =
 				startNodefirstChildFirstLfIndex === -1
-					? startNodefirstChildValue.substring(BOX_OPEN.length)
-					: startNodefirstChildValue.substring(BOX_OPEN.length, startNodefirstChildFirstLfIndex);
+					? startNodefirstChildValue.slice(BOX_OPEN.length)
+					: startNodefirstChildValue.slice(BOX_OPEN.length, startNodefirstChildFirstLfIndex);
 			if (boxName === '') {
 				return CONTINUE;
 			}
@@ -63,12 +63,12 @@ const toMdast: Plugin<[], Root> = () => {
 				return CONTINUE;
 			}
 
-			startNodefirstChild.value = startNodefirstChildValue.substring(BOX_OPEN.length + boxName.length).trimStart();
+			startNodefirstChild.value = startNodefirstChildValue.slice(BOX_OPEN.length + boxName.length).trimStart();
 
 			const endNodelastChild = endNode.children.at(-1) as Text;
 			const endNodelastChildValue = endNodelastChild.value;
 			const endNodelastChildLastLfIndex = endNodelastChildValue.lastIndexOf('\n');
-			endNodelastChild.value = endNodelastChildValue.substring(0, endNodelastChildLastLfIndex).trimEnd();
+			endNodelastChild.value = endNodelastChildLastLfIndex !== -1 ? endNodelastChildValue.slice(0, endNodelastChildLastLfIndex).trimEnd() : '';
 
 			let replaceSize = 0;
 			const boxChildren: Node[] = [];

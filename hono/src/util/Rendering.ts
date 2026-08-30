@@ -35,7 +35,7 @@ export default class Rendering {
 	 *
 	 * @returns レスポンス
 	 */
-	checkLastModified(): Response | null {
+	checkLastModified(): Response | undefined {
 		const { req, res } = this.#context;
 		const logger = this.#context.get('logger');
 
@@ -45,13 +45,13 @@ export default class Rendering {
 
 			res.headers.set('Cache-Control', configHono.response.header.cacheControl);
 
-			return new Response(null, {
+			return new Response(undefined, {
 				status: 304,
 			});
 		}
 
 		res.headers.set('Last-Modified', this.#lastModified.toUTCString());
-		return null;
+		return undefined;
 	}
 
 	/**
@@ -59,11 +59,11 @@ export default class Rendering {
 	 *
 	 * @returns レスポンス
 	 */
-	async serverCache(): Promise<Response | null> {
+	async serverCache(): Promise<Response | undefined> {
 		const { req, res } = this.#context;
 
 		const response304 = this.checkLastModified();
-		if (response304 !== null) {
+		if (response304 !== undefined) {
 			return response304;
 		}
 
@@ -84,7 +84,7 @@ export default class Rendering {
 			return this.#context.body(responseBody);
 		}
 
-		return null;
+		return undefined;
 	}
 
 	/**

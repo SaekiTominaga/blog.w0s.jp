@@ -51,7 +51,11 @@ export default class extends Database {
 		const query = this.db
 			.selectFrom('d_entry')
 			.select(['id', 'title', 'description', 'message', 'image_internal', 'image_external', 'registed_at', 'updated_at'])
-			.where('id', 'in', ids.map(jsToSQLiteComparison))
+			.where(
+				'id',
+				'in',
+				ids.map((id) => jsToSQLiteComparison(id)),
+			)
 			.where('public', '=', jsToSQLiteComparison(true));
 
 		const rows = await query.execute();

@@ -6,6 +6,7 @@ import { watch as chokidarWatch } from 'chokidar';
 import slash from 'slash';
 import { type Output as SvgoOutput, optimize as svgOptimize, loadConfig as svgoLoadConfig } from 'svgo';
 import { iec } from '@w0s/file-size-format';
+// oxlint-disable-next-line import/extensions
 import { create as createThumbImage } from '../../media/dist/thumbImage.js';
 
 /**
@@ -104,14 +105,13 @@ const exec = async (srcFilePath: string): Promise<void> => {
 						.replace(' id="レイヤー_1"', ''),
 					svgoConfig,
 				);
-			} catch (e) {
-				if (e instanceof Error && e.name === 'SvgoParserError') {
+			} catch (error) {
+				if (error instanceof Error && error.name === 'SvgoParserError') {
 					// @ts-expect-error: ts(2339)
-					// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-					console.warn(`[${e.name}] ${e.reason} <${srcFilePath}>`);
+					console.warn(`[${error.name}] ${error.reason} <${srcFilePath}>`);
 					return;
 				}
-				throw e;
+				throw error;
 			}
 
 			/* 出力 */
@@ -136,11 +136,11 @@ if (watch) {
 
 	chokidarWatch(srcDir)
 		.on('add', (srcFilePath) => {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			// oxlint-disable-next-line @typescript-eslint/no-floating-promises
 			exec(srcFilePath);
 		})
 		.on('change', (srcFilePath) => {
-			// eslint-disable-next-line @typescript-eslint/no-floating-promises
+			// oxlint-disable-next-line @typescript-eslint/no-floating-promises
 			exec(srcFilePath);
 		});
 } else {

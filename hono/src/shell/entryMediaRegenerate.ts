@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import { env } from '@w0s/env-value-type';
 import { iec } from '@w0s/file-size-format';
+// oxlint-disable-next-line import/extensions
 import { create as createThumbImage } from '../../../media/dist/thumbImage.js';
 import configProcess from '../config/process.ts';
 import { clearFiles, getFileNames } from '../util/file.ts';

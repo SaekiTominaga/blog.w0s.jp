@@ -44,7 +44,7 @@ export default function toMdast() {
 
 			const firstColfirstRowCellFirstNode = node.children.at(0)?.children.at(0)?.children.at(0); // 一行目の一列目のセル（もっとも左上のセル）の最初のノード
 			if (firstColfirstRowCellFirstNode?.type === 'text' && firstColfirstRowCellFirstNode.value.startsWith(FIRST_ROW_HEADER_SIGN)) {
-				firstColfirstRowCellFirstNode.value = firstColfirstRowCellFirstNode.value.substring(FIRST_ROW_HEADER_SIGN.length);
+				firstColfirstRowCellFirstNode.value = firstColfirstRowCellFirstNode.value.slice(FIRST_ROW_HEADER_SIGN.length);
 				firstRowHeaderCell = true;
 			}
 

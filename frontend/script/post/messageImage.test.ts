@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 import messageImage from './messageImage.ts';
 
 before(() => {
-	global.document = new JSDOM().window.document;
+	globalThis.document = new JSDOM().window.document;
 });
 
 await test('init clear', () => {

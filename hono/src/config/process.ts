@@ -21,7 +21,7 @@ export default {
 	media: {
 		image: {
 			dir: 'public/entry/image',
-			limit: 3072000,
+			limit: 3_072_000,
 			thumb: {
 				dir: 'public/entry/image/thumb',
 				dimensions: [
@@ -36,7 +36,7 @@ export default {
 		},
 		video: {
 			dir: 'public/entry/video',
-			limit: 30720000,
+			limit: 30_720_000,
 		},
 		processMessageUpload: {
 			success: 'ファイルアップロードに成功しました。',
@@ -63,7 +63,7 @@ export default {
 	sitemap: {
 		path: 'sitemap.xml',
 		template: 'xml/sitemap.ejs',
-		limit: 50000,
+		limit: 50_000,
 		processMessage: {
 			success: 'サイトマップ生成に成功',
 			failure: 'サイトマップ生成に失敗',

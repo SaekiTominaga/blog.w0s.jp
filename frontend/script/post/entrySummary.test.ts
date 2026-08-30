@@ -3,23 +3,23 @@ import { afterEach, before, mock, test } from 'node:test';
 import { JSDOM } from 'jsdom';
 import entrySummary from './entrySummary.ts';
 
-const originalFetch = global.fetch;
+const originalFetch = globalThis.fetch;
 
 before(() => {
 	const { window } = new JSDOM();
 
-	global.document = window.document;
-	global.HTMLInputElement = window.HTMLInputElement;
-	global.HTMLTemplateElement = window.HTMLTemplateElement;
+	globalThis.document = window.document;
+	globalThis.HTMLInputElement = window.HTMLInputElement;
+	globalThis.HTMLTemplateElement = window.HTMLTemplateElement;
 
-	// eslint-disable-next-line func-names
+	// oxlint-disable-next-line func-names
 	window.HTMLElement.prototype.setHTMLUnsafe = function (str: string): void {
 		this.innerHTML = str;
 	};
 });
 
 afterEach(() => {
-	global.fetch = originalFetch;
+	globalThis.fetch = originalFetch;
 });
 
 await test('validator', async (t) => {
@@ -101,7 +101,7 @@ await test('empty value', async () => {
 await test('fetch error', async () => {
 	before(() => {
 		// @ts-expect-error: ts(2322)
-		global.fetch = mock.fn(() =>
+		globalThis.fetch = mock.fn(() =>
 			Promise.resolve({
 				ok: false,
 				url: 'http://example.com/sample',
@@ -165,7 +165,7 @@ await test('load event', async (t) => {
 	await t.test('single id', async () => {
 		before(() => {
 			// @ts-expect-error: ts(2322)
-			global.fetch = mock.fn(() =>
+			globalThis.fetch = mock.fn(() =>
 				Promise.resolve({
 					ok: true,
 					json: () => Promise.resolve({ data: [{ id: 1 }] }),
@@ -188,7 +188,7 @@ await test('load event', async (t) => {
 	await t.test('multi id', async () => {
 		before(() => {
 			// @ts-expect-error: ts(2322)
-			global.fetch = mock.fn(() =>
+			globalThis.fetch = mock.fn(() =>
 				Promise.resolve({
 					ok: true,
 					json: () => Promise.resolve({ data: [{ id: 1 }, { id: 2, title: 'title', registed: '2001-02-03' }] }),

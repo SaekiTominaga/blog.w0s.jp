@@ -13,11 +13,10 @@ import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/category.ts';
 import type { Entries } from '../../@types/view.d.ts';
+// oxlint-disable-next-line import/extensions
 import MarkdownTitle from '../../../remark/dist/Title.js';
 
-/**
- * カテゴリー
- */
+/* ===== カテゴリー ===== */
 
 export const categoryApp = new Hono<{ Variables: Variables }>().get('/:categoryName', validatorParam, async (context) => {
 	const { req } = context;
@@ -32,7 +31,7 @@ export const categoryApp = new Hono<{ Variables: Variables }>().get('/:categoryN
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
-	if (response !== null) {
+	if (response !== undefined) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
 		return response;
 	}
@@ -88,5 +87,5 @@ export const categoryApp = new Hono<{ Variables: Variables }>().get('/:categoryN
 	});
 
 	/* レンダリング、ファイル出力 */
-	return await rendering.generation(html);
+	return rendering.generation(html);
 });

@@ -10,7 +10,7 @@ import PaapiItemImageUrlParser from '@w0s/paapi-item-image-url-parser';
 const pre = ($template: HTMLTemplateElement): string | undefined => {
 	let selectedImage: string | undefined;
 
-	Array.from($template.parentNode?.children ?? [])
+	[...($template.parentNode?.children ?? [])]
 		.filter(($element) => $element !== $template)
 		.forEach(($element) => {
 			const $radioChecked = $element.querySelector<HTMLInputElement>('input[type="radio"]:checked');
@@ -46,9 +46,9 @@ const messageImage = (
 	}
 
 	/* 本文内のテキストから画像情報を抜き出す */
-	const imageFileNames = [...$preview.querySelectorAll<HTMLImageElement>('img[src^="/entry/image/thumb/"]')].map((image) => {
-		const { pathname } = new URL(image.src);
-		return pathname.substring(pathname.lastIndexOf('/') + 1, pathname.lastIndexOf('@')); // path/to/foo.jpg@d=640x480;q=60.avif → foo.jpg を抜き出す
+	const imageFileNames = [...$preview.querySelectorAll<HTMLImageElement>('img[src^="/entry/image/thumb/"]')].map(($image) => {
+		const { pathname } = new URL($image.src);
+		return pathname.slice(pathname.lastIndexOf('/') + 1, pathname.lastIndexOf('@')); // path/to/foo.jpg@d=640x480;q=60.avif → foo.jpg を抜き出す
 	});
 	const youtubeImageUrls = [...$preview.querySelectorAll<HTMLAnchorElement>('a[href^="https://www.youtube.com/watch?v="]')].map(
 		(anchor) => `https://i1.ytimg.com/vi/${new URL(anchor.href).searchParams.get('v') ?? ''}/hqdefault.jpg`,
@@ -75,17 +75,13 @@ const messageImage = (
 
 		const $image = $templateClone.querySelector('img');
 		if ($image !== null) {
-			if (image.startsWith('https://')) {
-				$image.src = image;
-			} else {
-				$image.src = `/entry/image/thumb/${image}@d=1280x960;q=30.avif`;
-			}
+			$image.src = image.startsWith('https://') ? image : `/entry/image/thumb/${image}@d=1280x960;q=30.avif`;
 			$image.alt = image;
 			$image.title = image;
 		}
 
-		$fragment.appendChild($templateClone);
+		$fragment.append($templateClone);
 	});
-	$selectImageTemplate.parentNode?.appendChild($fragment);
+	$selectImageTemplate.parentNode?.append($fragment);
 };
 export default messageImage;

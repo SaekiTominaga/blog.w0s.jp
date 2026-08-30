@@ -7,6 +7,7 @@ import configProcess from '../config/process.ts';
 import FeedDao from '../db/Feed.ts';
 import { brotliCompressText } from '../util/compress.ts';
 import type { FeedEntry } from '../../@types/view.d.ts';
+// oxlint-disable-next-line import/extensions
 import Markdown from '../../../remark/dist/Markdown.js';
 
 /**

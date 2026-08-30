@@ -24,7 +24,7 @@ export default (
 		if (entries.some((entry) => entry.isIntersecting)) {
 			observer.disconnect();
 
-			if (document.getElementById(SCRIPT_ID) === null) {
+			if (document.querySelector(`#${SCRIPT_ID}`) === null) {
 				const $script = document.createElement('script');
 				$script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3297715785193216';
 				$script.crossOrigin = 'anonymous';
@@ -32,6 +32,7 @@ export default (
 				$script.id = SCRIPT_ID;
 				document.head.append($script);
 			}
+			// oxlint-disable-next-line unicorn/prefer-global-this
 			(window.adsbygoogle ??= []).push({});
 		}
 	}, intersectionObserverOptions);

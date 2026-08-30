@@ -33,7 +33,7 @@ const IMAGE_MAX_DIMENSIONS = { width: 640, height: 480 };
 const YOUTUBE_BASE_DIMENSIONS = { width: 640, height: 360 };
 const AMAZON_IMAGE_DIMENSIONS = 160;
 
-export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): ElementContent | ElementContent[] | undefined => {
+const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): ElementContent | ElementContent[] | undefined => {
 	const { filename, dimensions } = node;
 
 	const extension = path.extname(filename);
@@ -172,7 +172,7 @@ export const xEmbeddedMediaToHast = (state: State, node: XEmbeddedMedia): Elemen
 	};
 };
 
-export const xEmbeddedYouTubeToHast = (_state: State, node: XEmbeddedYouTube): ElementContent | ElementContent[] | undefined => {
+const xEmbeddedYouTubeToHast = (_state: State, node: XEmbeddedYouTube): ElementContent | ElementContent[] | undefined => {
 	const { id, title, dimensions, start, end } = node;
 
 	const width = dimensions?.width ?? YOUTUBE_BASE_DIMENSIONS.width;
@@ -281,7 +281,7 @@ export const xEmbeddedYouTubeToHast = (_state: State, node: XEmbeddedYouTube): E
 	};
 };
 
-export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): ElementContent | ElementContent[] | undefined => {
+const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): ElementContent | ElementContent[] | undefined => {
 	const { asin, title, image } = node;
 
 	const imageElementProperties: Properties = {};
@@ -389,3 +389,5 @@ export const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): Ele
 		],
 	};
 };
+
+export { xEmbeddedMediaToHast, xEmbeddedYouTubeToHast, xEmbeddedAmazonToHast };

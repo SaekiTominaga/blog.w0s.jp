@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import type { Variables } from '../../app.ts';
 import { json as validatorJson } from '../../validator/preview.ts';
 import type { PreviewData, Preview as Result } from '../../../../@types/api.d.ts';
+// oxlint-disable-next-line import/extensions
 import Markdown from '../../../../remark/dist/Markdown.js';
 
 /**

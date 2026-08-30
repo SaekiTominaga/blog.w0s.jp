@@ -92,13 +92,14 @@ export const xBlockquoteToHast = (state: State, node: XBlockquote): ElementConte
 		];
 	}
 
-	const figureChild: Element[] = [];
-	figureChild.push({
-		type: 'element',
-		tagName: 'blockquote',
-		properties: blockquoteAttribute,
-		children: childElements,
-	});
+	const figureChild: Element[] = [
+		{
+			type: 'element',
+			tagName: 'blockquote',
+			properties: blockquoteAttribute,
+			children: childElements,
+		},
+	];
 	if (figcaptionChild !== undefined) {
 		figureChild.push({
 			type: 'element',

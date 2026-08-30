@@ -1,4 +1,4 @@
-import util from 'node:util';
+import { promisify } from 'node:util';
 import zlib from 'node:zlib';
 
 /**
@@ -9,7 +9,7 @@ import zlib from 'node:zlib';
  * @returns Compressed data
  */
 export const brotliCompressText = async (text: string): Promise<Buffer> => {
-	const brotliCompress = util.promisify(zlib.brotliCompress);
+	const brotliCompress = promisify(zlib.brotliCompress);
 
 	return brotliCompress(text, {
 		params: {

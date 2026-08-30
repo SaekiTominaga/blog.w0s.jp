@@ -9,7 +9,7 @@ import type { Preview as ApiResponsePreview } from '../../../@types/api.d.ts';
  */
 const setMessages = ($template: HTMLTemplateElement, messages: readonly Readonly<VFileMessage>[]): void => {
 	/* いったんクリア */
-	Array.from($template.parentNode?.children ?? [])
+	[...($template.parentNode?.children ?? [])]
 		.filter(($element) => $element !== $template)
 		.forEach(($element) => {
 			$element.remove();
@@ -77,9 +77,9 @@ const setMessages = ($template: HTMLTemplateElement, messages: readonly Readonly
 			}
 		}
 
-		$fragment.appendChild($clone);
+		$fragment.append($clone);
 	});
-	$template.parentNode?.appendChild($fragment);
+	$template.parentNode?.append($fragment);
 };
 
 /**
@@ -98,8 +98,8 @@ const setPreview = ($template: HTMLTemplateElement, html: string): void => {
 	const $preview = $clone.querySelector('div');
 	$preview?.setHTMLUnsafe(html);
 
-	$fragment.appendChild($clone);
-	$template.parentNode?.appendChild($fragment);
+	$fragment.append($clone);
+	$template.parentNode?.append($fragment);
 };
 
 /**

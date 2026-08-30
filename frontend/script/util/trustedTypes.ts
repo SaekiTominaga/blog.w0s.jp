@@ -3,8 +3,8 @@
  */
 export default (): void => {
 	// @ts-expect-error: ts(2339)
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-	window.trustedTypes?.createPolicy('default', {
+	// oxlint-disable-next-line typescript/no-unsafe-call, typescript/no-unsafe-member-access
+	globalThis.trustedTypes?.createPolicy('default', {
 		createHTML: (inputText: string): string => inputText,
 		createURL: (inputUrl: string): string => {
 			if (!URL.canParse(inputUrl)) {

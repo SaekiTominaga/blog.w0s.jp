@@ -3,6 +3,7 @@ import { type Context, Hono } from 'hono';
 import { MIMEType } from 'whatwg-mimetype';
 import { env } from '@w0s/env-value-type';
 import { iec } from '@w0s/file-size-format';
+// oxlint-disable-next-line import/extensions
 import { create as createThumbImage } from '../../../../media/dist/thumbImage.js';
 import type { Variables } from '../../app.ts';
 import configProcess from '../../config/process.ts';
@@ -106,7 +107,7 @@ export const mediaUploadApp = new Hono<{ Variables: Variables }>().post(validato
 						return createdFile.name;
 					});
 
-					return { ...fileResult, ...{ thumbnails: createdFileNames } };
+					return Object.assign(fileResult, { thumbnails: createdFileNames });
 				}
 				case 'video': {
 					return upload(context, file, {
