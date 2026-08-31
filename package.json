@@ -15,7 +15,7 @@
 		"@w0s/markuplint-config": "3.13.0",
 		"@w0s/oxlint-config": "^1.0.3",
 		"@w0s/stylelint-config": "4.24.0",
-		"@w0s/tsconfig": "3.0.0",
+		"@w0s/tsconfig": "3.1.1",
 		"eslint-plugin-safely-storage": "1.1.0",
 		"oxlint": "^1.80.0",
 		"oxlint-tsgolint": "^7.0.2001",
