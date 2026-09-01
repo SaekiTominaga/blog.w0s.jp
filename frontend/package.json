@@ -5,20 +5,16 @@
 	"scripts": {
 		"predev": "rimraf -g \"../public/{script,style}/*.br\"",
 		"dev": "pnpm run /^dev:.*/",
-		"dev:css": "postcss style/*.css --base style -d ../public/style -w",
+		"dev:css": "postcss css/*.css --base css -d ../public/style -w",
 		"dev:js": "rollup -c -w --environment build:development",
-		"dev:static": "node build/static.ts -s static -d ../public --svgoConfig svgo.config.js -w",
-		"prebuild": "pnpm -F frontend lint && rimraf -g \"../public/{script,style}/*\"",
+		"dev:static": "node build/src/static.ts -s static -d ../public --svgoConfig svgo.config.js -w",
+		"prebuild": "rimraf -g \"../public/{script,style}/*\"",
 		"build": "pnpm run /^build:.*/",
-		"build:css": "postcss style/*.css --base style -d ../public/style",
+		"build:css": "postcss css/*.css --base css -d ../public/style",
 		"build:js": "rollup -c --environment build:production",
-		"build:static": "node build/static.ts -s static -d ../public --svgoConfig svgo.config.js",
+		"build:static": "node build/src/static.ts -s static -d ../public --svgoConfig svgo.config.js",
 		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" && brotli-cli compress -g \"../public/.well-known/*.json\" \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/image/**/*.svg\" \"../public/*.svg\" \"../public/favicon.ico\" -m text",
-		"lint": "pnpm run /^lint:.*/",
-		"lint:css": "stylelint -f verbose style",
-		"lint:js": "oxlint",
-		"pretest": "tsc --project build & tsc --project script",
-		"test": "node --experimental-test-coverage --test script/**/*.test.ts"
+		"test": "node --experimental-test-coverage --test javascript/src/**/*.test.ts"
 	},
 	"dependencies": {
 		"@w0s/base.css": "1.4.0",
@@ -54,8 +50,7 @@
 		"postcss-discard-empty": "8.0.2",
 		"postcss-import": "16.1.1",
 		"postcss-nesting": "14.0.1",
-		"rollup": "4.62.4",
-		"vfile-message": "4.0.3"
+		"rollup": "4.62.4"
 	},
 	"packageManager": "pnpm@11.8.0"
 }

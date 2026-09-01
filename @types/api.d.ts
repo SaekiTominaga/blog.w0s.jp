@@ -1,32 +1,32 @@
 import type { VFileMessage } from 'vfile-message';
 
-export type Error = {
+export interface Error {
 	error: {
 		message: string;
 	};
-};
+}
 
 /* 記事概要 */
-export type EntrySummaryData = {
+export interface EntrySummaryData {
 	id: number;
 	title: string | undefined;
 	registed: string | undefined;
 	updated: string | undefined;
-};
+}
 export type EntriesSummary = { data: EntrySummaryData[] } | Error;
 
 /* 本文プレビュー */
-export type PreviewData = {
+export interface PreviewData {
 	html: string;
 	messages: VFileMessage[];
-};
+}
 export type Preview = { data: PreviewData } | Error;
 
 /* POST 送信の共通オブジェクト */
-export type PostData = {
+export interface PostData {
 	success: boolean;
 	message: string;
-};
+}
 export type Post = PostData[] | Error;
 
 /* メディア登録 */

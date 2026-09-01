@@ -9,7 +9,7 @@ import pluginNesting from 'postcss-nesting';
 export default {
 	plugins: [
 		pluginGlobalData({
-			files: ['style/foundation/_@custom-media.css'],
+			files: ['css/foundation/_@custom-media.css'],
 		}), // `postcss-custom-media` より先に定義する必要がある
 		pluginCustomMedia(),
 		pluginDiscardComments({

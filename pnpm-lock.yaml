@@ -72,6 +72,9 @@ importers:
       typescript:
         specifier: 7.0.2
         version: 7.0.2
+      vfile-message:
+        specifier: ^4.0.3
+        version: 4.0.3
 
   frontend:
     dependencies:
@@ -172,9 +175,6 @@ importers:
       rollup:
         specifier: 4.62.4
         version: 4.62.4
-      vfile-message:
-        specifier: 4.0.3
-        version: 4.0.3
 
   hono:
     dependencies:

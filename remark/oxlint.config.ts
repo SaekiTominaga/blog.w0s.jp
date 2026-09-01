@@ -3,10 +3,6 @@ import config from '@w0s/oxlint-config/node';
 
 export default defineConfig({
 	extends: [config],
-	options: {
-		typeAware: true,
-		typeCheck: true,
-	},
 	overrides: [
 		{
 			files: ['src/hast/**/*.ts', 'src/toHast/**/*.ts', 'src/toMdast/**/*.ts'],

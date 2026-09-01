@@ -15,12 +15,12 @@ export default {
 		'function-disallowed-list': ['rgb', 'hsl', 'hwb', 'lab', 'lch'], // `color-function` parameter accepts only `oklab()` or `oklch()` <https://drafts.csswg.org/css-color/#typedef-color-function>
 	},
 	referenceFiles: {
-		files: ['style/foundation/_@custom-media.css', 'style/foundation/_@keyframes.css', 'style/foundation/_var.css', 'style/object/project/entry/_entry.css'],
+		files: ['css/foundation/_@custom-media.css', 'css/foundation/_@keyframes.css', 'css/foundation/_var.css', 'css/object/project/entry/_entry.css'],
 	},
 	extends: ['@w0s/stylelint-config'],
 	overrides: [
 		{
-			files: ['style/foundation/_var.css'],
+			files: ['css/foundation/_var.css'],
 			rules: {
 				'custom-property-empty-line-before': null,
 			},

@@ -3,7 +3,7 @@ import formSubmitOverlay from '@w0s/form-submit-overlay';
 import { escape } from '@w0s/html-escape';
 import inputFilePreview from '@w0s/input-file-preview';
 import { convert } from '@w0s/string-convert';
-import type { MediaUploadData as ApiMediaUploadData, Post as ApiPost, PostData as ApiPostData } from '../../@types/api.d.ts';
+import type { MediaUploadData as ApiMediaUploadData, Post as ApiPost, PostData as ApiPostData } from '../../../@types/api.d.ts';
 import entrySummary from './post/entrySummary.ts';
 import messageImage from './post/messageImage.ts';
 import messageTitle from './post/messageTitle.ts';

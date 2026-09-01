@@ -7,7 +7,7 @@ import slash from 'slash';
 import { type Output as SvgoOutput, optimize as svgOptimize, loadConfig as svgoLoadConfig } from 'svgo';
 import { iec } from '@w0s/file-size-format';
 // oxlint-disable-next-line import/extensions
-import { create as createThumbImage } from '../../media/dist/thumbImage.js';
+import { create as createThumbImage } from '../../../media/dist/thumbImage.js';
 
 /**
  * SVG ビルド
