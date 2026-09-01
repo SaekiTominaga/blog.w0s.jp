@@ -11,6 +11,7 @@ packages:
 minimumReleaseAgeExclude:
   - '@types/*'
   - '@w0s/*'
+  - oxlint-plugin-safely-storage
 trustPolicy: no-downgrade
 blockExoticSubdeps: true
 

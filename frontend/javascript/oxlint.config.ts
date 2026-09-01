@@ -3,33 +3,19 @@ import config from '@w0s/oxlint-config/browser';
 
 export default defineConfig({
 	extends: [config],
-	options: {
-		typeAware: true,
-		typeCheck: true,
+	rules: {
+		'import/unambiguous': 'off',
 	},
 	overrides: [
 		{
-			files: ['build/**/*.ts'],
-			rules: {
-				'no-console': 'off',
-				'import/no-nodejs-modules': 'off',
-			},
-		},
-		{
-			files: ['script/**/*.ts'],
-			rules: {
-				'import/unambiguous': 'off',
-			},
-		},
-		{
-			files: ['script/admin.ts'],
+			files: ['src/admin.ts'],
 			rules: {
 				'promise/prefer-await-to-callbacks': 'off', // TODO: 暫定
 				'promise/prefer-await-to-then': 'off', // TODO: 暫定
 			},
 		},
 		{
-			files: ['script/analytics.ts'],
+			files: ['src/analytics.ts'],
 			rules: {
 				'no-implicit-globals': 'off',
 				'no-multi-assign': 'off',

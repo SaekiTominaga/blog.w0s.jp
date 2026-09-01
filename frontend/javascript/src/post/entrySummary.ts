@@ -1,4 +1,4 @@
-import type { EntriesSummary as ApiResponseEntriesSummary, EntrySummaryData as ApiResponseEntrySummaryData } from '../../../@types/api';
+import type { EntriesSummary as ApiResponseEntriesSummary, EntrySummaryData as ApiResponseEntrySummaryData } from '../../../../@types/api.d.ts';
 import { clear as templateClear, update as updateTemplate } from '../util/template.ts';
 
 /**

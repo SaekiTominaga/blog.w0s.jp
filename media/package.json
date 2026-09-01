@@ -5,8 +5,6 @@
 	"scripts": {
 		"dev": "tsc -w",
 		"build": "tsc",
-		"lint": "oxlint",
-		"pretest": "tsc --noEmit",
 		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
 	},
 	"dependencies": {

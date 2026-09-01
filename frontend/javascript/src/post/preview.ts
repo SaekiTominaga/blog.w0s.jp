@@ -1,5 +1,5 @@
 import type { VFileMessage } from 'vfile-message';
-import type { Preview as ApiResponsePreview } from '../../../@types/api.d.ts';
+import type { Preview as ApiResponsePreview } from '../../../../@types/api.d.ts';
 
 /**
  * Markdown 変換に際してのメッセージを表示

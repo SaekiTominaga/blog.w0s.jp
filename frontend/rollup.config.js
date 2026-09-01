@@ -2,7 +2,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import sucrase from '@rollup/plugin-sucrase';
 
-const inputDir = 'script';
+const inputDir = 'javascript/src';
 const outputDir = '../public/script';
 
 const moduleFiles = ['blog.ts', 'error.ts', 'admin.ts'];

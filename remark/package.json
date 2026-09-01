@@ -5,9 +5,7 @@
 	"scripts": {
 		"dev": "tsc -w",
 		"build": "tsc",
-		"lint": "oxlint",
 		"lint:markdown": "node --env-file=../.env.development src/shell/lint.ts",
-		"pretest": "tsc --noEmit",
 		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
 	},
 	"dependencies": {

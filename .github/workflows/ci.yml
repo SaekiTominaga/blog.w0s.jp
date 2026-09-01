@@ -1,10 +1,7 @@
-name: Media
+name: CI
 
 on:
   pull_request:
-    paths:
-      - 'media/**'
-      - 'package.json'
   workflow_dispatch:
 
 permissions: {}
@@ -14,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  quality:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,8 +31,15 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
+      - name: Check formatting
+        run: pnpm exec prettier . -c
+
+      - name: Run build
+        run: pnpm -F media -F remark build
+
       - name: Run lint
-        run: pnpm -F media lint
+        run: pnpm lint
+
   test:
     runs-on: ubuntu-latest
     permissions:
@@ -57,4 +61,4 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: Run test
-        run: pnpm -F media test
+        run: pnpm -F frontend -F media -F remark test
