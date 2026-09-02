@@ -5,6 +5,5 @@ export default defineConfig({
 	extends: [config],
 	rules: {
 		'no-console': 'off',
-		'import/no-nodejs-modules': 'off',
 	},
 });
