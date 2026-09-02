@@ -85,8 +85,8 @@ importers:
         specifier: 3.0.7
         version: 3.0.7
       '@w0s/file-size-format':
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 4.0.1
+        version: 4.0.1
       '@w0s/footnote-reference-popover':
         specifier: 7.4.0
         version: 7.4.0
@@ -185,8 +185,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       '@w0s/file-size-format':
-        specifier: 4.0.0
-        version: 4.0.0
+        specifier: 4.0.1
+        version: 4.0.1
       '@w0s/html-escape':
         specifier: 5.0.0
         version: 5.0.0
@@ -1540,8 +1540,8 @@ packages:
     resolution: {integrity: sha512-ii6VpWUGatKIBb5bLY3TG/Js5VR8n+peldTM8tXF8WpobXJVON+mbp2G8A8a/qeoS91FskbmsTbo+pynECRAKg==}
     engines: {node: '>=22'}
 
-  '@w0s/file-size-format@4.0.0':
-    resolution: {integrity: sha512-fHFzzwmAMz1Ap+oISslEkL/7HjudoBS6BQbF+qw764RRpSv0Xyb3XopcwbtiODXz8uYuJ9M28BVBtR/xL6nkKA==}
+  '@w0s/file-size-format@4.0.1':
+    resolution: {integrity: sha512-nyZIJSXwUMfBg7+JXaTePFKcGHV3617olOdsu90ypA3v4dnnhnlcQ7EiwG0TuaRPsRj8aS9RkimRj3ivA/pIYg==}
     engines: {node: '>=22'}
 
   '@w0s/footnote-reference-popover@7.4.0':
@@ -4206,7 +4206,7 @@ snapshots:
 
   '@w0s/env-value-type@2.0.0': {}
 
-  '@w0s/file-size-format@4.0.0': {}
+  '@w0s/file-size-format@4.0.1': {}
 
   '@w0s/footnote-reference-popover@7.4.0': {}
 
