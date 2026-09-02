@@ -22,8 +22,8 @@ importers:
         specifier: 3.13.0
         version: 3.13.0(markuplint@4.18.3(typescript@7.0.2))
       '@w0s/oxlint-config':
-        specifier: ^1.0.6
-        version: 1.0.6(oxlint-plugin-safely-storage@1.0.0(@oxlint/plugins@1.80.0)(oxlint@1.80.0(oxlint-tsgolint@7.0.2001)))(oxlint-tsgolint@7.0.2001)(oxlint@1.80.0(oxlint-tsgolint@7.0.2001))
+        specifier: ^1.0.7
+        version: 1.0.7(oxlint-plugin-safely-storage@1.0.0(@oxlint/plugins@1.80.0)(oxlint@1.80.0(oxlint-tsgolint@7.0.2001)))(oxlint-tsgolint@7.0.2001)(oxlint@1.80.0(oxlint-tsgolint@7.0.2001))
       '@w0s/stylelint-config':
         specifier: 4.24.0
         version: 4.24.0(stylelint-attribute-case-sensitivity@3.1.0(stylelint@17.14.1(typescript@7.0.2)))(stylelint-config-concentric-order@5.5.0(stylelint@17.14.1(typescript@7.0.2)))(stylelint-config-standard@40.0.0(stylelint@17.14.1(typescript@7.0.2)))(stylelint-no-default-viewport@2.0.1(stylelint@17.14.1(typescript@7.0.2)))(stylelint-plugin-defensive-css@2.9.6(stylelint@17.14.1(typescript@7.0.2)))(stylelint-root-colors@3.0.1(stylelint@17.14.1(typescript@7.0.2)))(stylelint@17.14.1(typescript@7.0.2))
@@ -1572,8 +1572,8 @@ packages:
     peerDependencies:
       markuplint: ^4.14.1
 
-  '@w0s/oxlint-config@1.0.6':
-    resolution: {integrity: sha512-gyvyTHDQdQiGYGsjHR4zwW12YiG/BPeb9ylHelq6DzXgie1buB6D629r60rfutLt6eRv2eePS+86LYEYzW/cuw==}
+  '@w0s/oxlint-config@1.0.7':
+    resolution: {integrity: sha512-OVVN44qD/uwpcFBuHBxl/w6WdeWlPHlYCiROdHZiFC1r/lW9gQsa/1JaMGdrJZI2ID67j/VfOoRWnPHsQ5o/Cw==}
     peerDependencies:
       oxlint: ^1.80.0
       oxlint-plugin-safely-storage: ^1.0.0
@@ -4229,7 +4229,7 @@ snapshots:
     dependencies:
       markuplint: 4.18.3(typescript@7.0.2)
 
-  '@w0s/oxlint-config@1.0.6(oxlint-plugin-safely-storage@1.0.0(@oxlint/plugins@1.80.0)(oxlint@1.80.0(oxlint-tsgolint@7.0.2001)))(oxlint-tsgolint@7.0.2001)(oxlint@1.80.0(oxlint-tsgolint@7.0.2001))':
+  '@w0s/oxlint-config@1.0.7(oxlint-plugin-safely-storage@1.0.0(@oxlint/plugins@1.80.0)(oxlint@1.80.0(oxlint-tsgolint@7.0.2001)))(oxlint-tsgolint@7.0.2001)(oxlint@1.80.0(oxlint-tsgolint@7.0.2001))':
     dependencies:
       oxlint: 1.80.0(oxlint-tsgolint@7.0.2001)
       oxlint-plugin-safely-storage: 1.0.0(@oxlint/plugins@1.80.0)(oxlint@1.80.0(oxlint-tsgolint@7.0.2001))
