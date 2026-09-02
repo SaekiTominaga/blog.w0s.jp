@@ -88,8 +88,8 @@ importers:
         specifier: 4.0.1
         version: 4.0.1
       '@w0s/footnote-reference-popover':
-        specifier: 7.4.0
-        version: 7.4.0
+        specifier: 7.4.1
+        version: 7.4.1
       '@w0s/form-before-unload-confirm':
         specifier: 3.0.3
         version: 3.0.3
@@ -1544,8 +1544,8 @@ packages:
     resolution: {integrity: sha512-nyZIJSXwUMfBg7+JXaTePFKcGHV3617olOdsu90ypA3v4dnnhnlcQ7EiwG0TuaRPsRj8aS9RkimRj3ivA/pIYg==}
     engines: {node: '>=22'}
 
-  '@w0s/footnote-reference-popover@7.4.0':
-    resolution: {integrity: sha512-FkF2qce7TDYVjuFx9c08nMo21RDsqqWuH822iSUmG6sYhezEkMgN6T9pJmycV7UpzxcfhPuaHgWRKmu0u+IoHQ==}
+  '@w0s/footnote-reference-popover@7.4.1':
+    resolution: {integrity: sha512-H9RiNAPW1c76YUtSJSUls+FuNyhiujtTFEbKGfNCxYzwa4/CqQcxBlmNxqYU12/1eKLHr3MVobfUcUmy0hAdPw==}
 
   '@w0s/form-before-unload-confirm@3.0.3':
     resolution: {integrity: sha512-obw0kmRCWVq9SW8iqZIoln0vGeAEmKSTpYEVVoWjxenKHjTrtS6SX2QsBD0iyFeX49ms3Z4gbnYLpdLSjhKzLg==}
@@ -4208,7 +4208,7 @@ snapshots:
 
   '@w0s/file-size-format@4.0.1': {}
 
-  '@w0s/footnote-reference-popover@7.4.0': {}
+  '@w0s/footnote-reference-popover@7.4.1': {}
 
   '@w0s/form-before-unload-confirm@3.0.3': {}
 
