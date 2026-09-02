@@ -3,9 +3,6 @@ import config from '@w0s/oxlint-config/browser';
 
 export default defineConfig({
 	extends: [config],
-	rules: {
-		'import/unambiguous': 'off',
-	},
 	overrides: [
 		{
 			files: ['src/admin.ts'],
