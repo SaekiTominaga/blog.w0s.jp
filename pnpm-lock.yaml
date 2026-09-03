@@ -91,8 +91,8 @@ importers:
         specifier: 7.4.1
         version: 7.4.1
       '@w0s/form-before-unload-confirm':
-        specifier: 3.0.3
-        version: 3.0.3
+        specifier: 3.0.4
+        version: 3.0.4
       '@w0s/form-submit-overlay':
         specifier: 4.0.6
         version: 4.0.6
@@ -1547,8 +1547,8 @@ packages:
   '@w0s/footnote-reference-popover@7.4.1':
     resolution: {integrity: sha512-H9RiNAPW1c76YUtSJSUls+FuNyhiujtTFEbKGfNCxYzwa4/CqQcxBlmNxqYU12/1eKLHr3MVobfUcUmy0hAdPw==}
 
-  '@w0s/form-before-unload-confirm@3.0.3':
-    resolution: {integrity: sha512-obw0kmRCWVq9SW8iqZIoln0vGeAEmKSTpYEVVoWjxenKHjTrtS6SX2QsBD0iyFeX49ms3Z4gbnYLpdLSjhKzLg==}
+  '@w0s/form-before-unload-confirm@3.0.4':
+    resolution: {integrity: sha512-b5YZhKq8/tU0rIRKrlQFS6UIFUzSAo9BThsj2/mZk8OmeURpNSzodAfGlmxlI3eJ6x7kSpM+DUCg3rkX8tcxSg==}
 
   '@w0s/form-submit-overlay@4.0.6':
     resolution: {integrity: sha512-0tm90vom7J+pQn9m1QRGBlQaKkSvM71dWAZyZv5Pc6vYvRmxCSq45dgTAJS+eKZaItqNrTri7Hr0tgZXf9tyVA==}
@@ -4210,7 +4210,7 @@ snapshots:
 
   '@w0s/footnote-reference-popover@7.4.1': {}
 
-  '@w0s/form-before-unload-confirm@3.0.3': {}
+  '@w0s/form-before-unload-confirm@3.0.4': {}
 
   '@w0s/form-submit-overlay@4.0.6': {}
 
