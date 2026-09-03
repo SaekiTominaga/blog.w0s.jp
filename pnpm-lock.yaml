@@ -97,8 +97,8 @@ importers:
         specifier: 4.0.6
         version: 4.0.6
       '@w0s/html-escape':
-        specifier: 5.0.0
-        version: 5.0.0
+        specifier: 5.0.1
+        version: 5.0.1
       '@w0s/input-file-preview':
         specifier: 3.0.7
         version: 3.0.7
@@ -188,8 +188,8 @@ importers:
         specifier: 4.0.1
         version: 4.0.1
       '@w0s/html-escape':
-        specifier: 5.0.0
-        version: 5.0.0
+        specifier: 5.0.1
+        version: 5.0.1
       '@w0s/paapi-item-image-url-parser':
         specifier: 4.0.0
         version: 4.0.0
@@ -258,8 +258,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       '@w0s/html-escape':
-        specifier: 5.0.0
-        version: 5.0.0
+        specifier: 5.0.1
+        version: 5.0.1
       '@w0s/isbn-verify':
         specifier: 4.0.0
         version: 4.0.0
@@ -1556,8 +1556,8 @@ packages:
   '@w0s/html-escape@4.0.2':
     resolution: {integrity: sha512-zCHeJa8CgyBXK6+ywov6nnju/dagTeLVM68oEVSi6uap2UtT4d9RUQ5BGeh3t2cH37Ngcdr0sHadKGA4tRGprQ==}
 
-  '@w0s/html-escape@5.0.0':
-    resolution: {integrity: sha512-5Z8MZQxcO5fVdD31jAdPsudfOzYJgkpmacJnFdA2yngRDN6NxnDNXuD86g97sN9g5Ntuc54ykUPcOpxA3gHSwA==}
+  '@w0s/html-escape@5.0.1':
+    resolution: {integrity: sha512-PDwAdR3oFfhRFcC/Ycp+CHRA2+lDD+FO56Hg+jjzHJBkJ+3jK+j5p0QQQJTZDDYkISAJIFL5ZAwRQ83TfcUKnA==}
     engines: {node: '>=22'}
 
   '@w0s/input-file-preview@3.0.7':
@@ -4216,7 +4216,7 @@ snapshots:
 
   '@w0s/html-escape@4.0.2': {}
 
-  '@w0s/html-escape@5.0.0': {}
+  '@w0s/html-escape@5.0.1': {}
 
   '@w0s/input-file-preview@3.0.7':
     dependencies:
