@@ -13,13 +13,13 @@
 		"prettier": "3.9.6"
 	},
 	"devDependencies": {
-		"@markuplint/ejs-parser": "5.0.0-alpha.2",
+		"@markuplint/ejs-parser": "5.0.0-rc.7",
 		"@types/node": "24.13.2",
-		"@w0s/markuplint-config": "4.0.0-alpha.2",
+		"@w0s/markuplint-config": "4.0.0-rc.1",
 		"@w0s/oxlint-config": "^1.0.7",
 		"@w0s/stylelint-config": "4.24.0",
 		"@w0s/tsconfig": "3.1.1",
-		"markuplint": "5.0.0-alpha.2",
+		"markuplint": "5.0.0-rc.7",
 		"oxlint": "^1.80.0",
 		"oxlint-plugin-safely-storage": "^1.0.0",
 		"oxlint-tsgolint": "^7.0.2001",
