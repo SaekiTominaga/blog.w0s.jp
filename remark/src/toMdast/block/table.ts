@@ -1,10 +1,10 @@
-import type { Table, AlignType, TableContent } from 'mdast';
+import type { AlignType, Table, TableContent } from 'mdast';
 import type { Extension as FromMarkdownExtension } from 'mdast-util-from-markdown';
 import { gfmTableFromMarkdown } from 'mdast-util-gfm-table';
 import { gfmTable } from 'micromark-extension-gfm-table';
 import type { Extension } from 'micromark-util-types';
 import type { Parent } from 'unist';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { CONTINUE, visit } from 'unist-util-visit';
 
 /**
  * <table>
@@ -44,7 +44,7 @@ export default function toMdast() {
 
 			const firstColfirstRowCellFirstNode = node.children.at(0)?.children.at(0)?.children.at(0); // 一行目の一列目のセル（もっとも左上のセル）の最初のノード
 			if (firstColfirstRowCellFirstNode?.type === 'text' && firstColfirstRowCellFirstNode.value.startsWith(FIRST_ROW_HEADER_SIGN)) {
-				firstColfirstRowCellFirstNode.value = firstColfirstRowCellFirstNode.value.substring(FIRST_ROW_HEADER_SIGN.length);
+				firstColfirstRowCellFirstNode.value = firstColfirstRowCellFirstNode.value.slice(FIRST_ROW_HEADER_SIGN.length);
 				firstRowHeaderCell = true;
 			}
 

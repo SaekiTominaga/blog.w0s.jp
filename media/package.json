@@ -1,0 +1,14 @@
+{
+	"name": "media",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "tsc -w",
+		"build": "tsc",
+		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
+	},
+	"dependencies": {
+		"sharp": "0.35.2"
+	},
+	"packageManager": "pnpm@11.8.0"
+}

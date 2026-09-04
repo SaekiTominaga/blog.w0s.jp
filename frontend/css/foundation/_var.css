@@ -1,0 +1,91 @@
+:root {
+	/* ===== color ===== */
+	--color-black: oklch(0% 0 0deg); /* #000000 */
+	--color-white: oklch(100% 0 0deg); /* #ffffff */
+	--color-red: oklch(62.8% 0.258 29.234deg); /* #ff0000 */
+	--color-orange: oklch(79.269% 0.171 70.67deg); /* #ffa500 */
+	--color-yellow: oklch(96.798% 0.211 109.77deg); /* #ffff00 */
+	--color-green: oklch(51.975% 0.1769 142.5deg); /* #008000 */
+	--color-aqua: oklch(90.54% 0.1546 194.77deg); /* #00ffff */
+	--color-blue: oklch(45.201% 0.3132 264.05deg); /* #0000ff */
+	--color-purple: oklch(42.091% 0.1935 328.36deg); /* #800080 */
+
+	--color-lightgray: oklch(from var(--color-white) calc(l - 1 / 4) c h);
+	--color-gray: oklch(from var(--color-white) calc(l - 2 / 4) c h);
+	--color-darkgray: oklch(from var(--color-white) calc(l - 3 / 4) c h);
+
+	--color-red-text: oklch(from var(--color-red) calc(l - 0.044) c h); /* page-bg-color に対してコントラスト比 4.5:1 を満たす限界値 */
+
+	/* ===== background ===== */
+	--bgcolor-light: oklch(from var(--color-white) calc(l - 1 / 32) c h);
+	--bgcolor-dark: oklch(from var(--color-white) calc(l - 2 / 32) c h);
+	--bgcolor-lightred: oklch(from var(--color-red) 100% calc(c - 0.2) h);
+	--bgcolor-red: oklch(from var(--color-red) calc(l - 0.044) c h); /* 白文字に対してコントラスト比 4.5:1 を満たす限界値 */
+
+	--bgcolor-hover-l: calc(1 / 32); /* マウスオーバー時の明度（L値）変化 */
+
+	/* ===== border ===== */
+	--border-radius-small: 0.125em;
+	--border-radius-normal: 0.25em;
+	--border-radius-large: 0.5em;
+	--border-radius-full: 1em;
+	--border-color-light: oklch(from var(--color-white) calc(l - 1 / 8) c h);
+	--border-color-dark: oklch(from var(--color-white) calc(l - 2 / 8) c h);
+
+	/* ===== shadow ===== */
+	--box-shadow-length: 0 0 3px;
+	--box-shadow-length-standout: 0 0 6px 1px;
+	--box-shadow-color: var(--border-color-light);
+
+	--text-shadow-length: 0 0 0.05em;
+	--text-shadow-color: oklch(from currentColor l c h / 25%);
+
+	/* ===== text ===== */
+	--line-height-wide: 1.8; /* 広い行高さ（本文など） */
+	--line-height-normal: 1.5; /* 通常の行高さ */
+	--line-height-narrow: 1.25; /* 狭い行高さ（見出しやボタンなど） */
+	--line-height-nowrap: 1; /* 改行しない文の行高さ */
+
+	/* ===== font ===== */
+	--font-ratio: 1.12;
+	--font-weight-bold: 700;
+
+	/* ===== Stack ===== */
+	--stack-margin-base: 1.5rem;
+
+	/* ===== リンク ===== */
+	--link-color: oklch(from var(--color-blue) calc(l + 0.1) c h); /* 未訪問リンクの文字色 */
+	--link-color-visited: oklch(from var(--color-purple) calc(l + 0.05) c h); /* 既訪問リンクの文字色 */
+	--link-color-hover: oklch(from var(--color-red) calc(l - 0.1) c h); /* マウスオーバー時の文字色 */
+	--link-color-bullet: oklch(from var(--color-aqua) calc(l - 0.2) c h); /* ビュレット色 */
+	--link-hover-transition-duration: 0.2s; /* マウスオーバー時の変化時間 */
+	--self-link-size: 2.6ex;
+
+	/* ===== フォーカスリング ===== */
+	--outline-width: 1px;
+	--outline-width-bold: 2px;
+	--outline-color: oklch(from var(--color-blue) calc(l + 0.25) c h);
+	--outline-offset: 1px;
+	--outline-offset-linkonly: 0.125em;
+
+	/* ===== フォーム ===== */
+	--form-control-padding-block: 0.5rem;
+	--form-control-theme-color: oklch(58.851% 0.1602 248.45deg);
+	--form-control-disabled-bgcolor: oklch(calc(100% / 32 * 28) 0 0deg);
+
+	/* ===== 図形 ===== */
+	--shape-link-triangle: polygon(0 0, 100% 50%, 0 100%); /* リンクアイコン ( ▶ ) */
+	--shape-pagelink-triangle: polygon(0 0, 100% 0, 50% 100%); /* リンクアイコン ( ▼ ) */
+	--shape-link-arrow: polygon(17.68% 0, 100% 50%, 17.68% 100%, 0 88.21%, 64.64% 50%, 0 11.79%); /* リンクアイコン ( > ) */
+
+	/* ===== ページ全体設定 ===== */
+	--page-max-width: 1280px; /* ページの最大幅 */
+	--page-content-width: 1024px; /* コンテンツエリアの最大幅 */
+	--page-padding-inline: 10px; /* ページの左右の余白 */
+	--page-margin-inline: calc((100% - var(--page-max-width)) / 2 - var(--page-padding-inline)); /* ページの左右の余白 */
+
+	/* ===== 記事 ===== */
+	--entry-embed-border-width: 1px;
+	--entry-image-width: 640px;
+	--entry-color-note: color-mix(in oklch, var(--color-yellow) 50%, var(--color-black));
+}

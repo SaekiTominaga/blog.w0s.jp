@@ -12,7 +12,10 @@ export default {
 		amazonImageId: '[a-zA-Z0-9\\-_+%]+',
 		youtubeId: '[a-zA-Z0-9\\-_]+',
 	},
-	headingDepthLimit: 2 as Heading['depth'],
+	headingDepth: {
+		min: 2 as Heading['depth'],
+		max: 3 as Heading['depth'],
+	},
 	linkHostIcon: [
 		{
 			host: 'bsky.app',

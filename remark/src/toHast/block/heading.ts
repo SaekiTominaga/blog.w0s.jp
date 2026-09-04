@@ -1,7 +1,6 @@
 import type { ElementContent } from 'hast';
 import type { Heading } from 'mdast';
 import type { State } from 'mdast-util-to-hast';
-import { hn } from '../../lib/hast.ts';
 
 /**
  * <hn>
@@ -10,14 +9,6 @@ import { hn } from '../../lib/hast.ts';
 interface XHeading extends Heading {
 	id?: string;
 }
-
-export const headingToHast = (state: State, node: Heading): ElementContent | ElementContent[] | undefined => {
-	const { depth } = node;
-
-	const heading = hn(depth, state.all(node));
-
-	return heading;
-};
 
 export const xHeadingToHast = (state: State, node: XHeading): ElementContent | ElementContent[] | undefined => {
 	const { depth, id } = node;
@@ -33,8 +24,6 @@ export const xHeadingToHast = (state: State, node: XHeading): ElementContent | E
 		};
 	}
 
-	const heading = hn(depth, state.all(node));
-
 	return {
 		type: 'element',
 		tagName: 'div',
@@ -42,7 +31,12 @@ export const xHeadingToHast = (state: State, node: XHeading): ElementContent | E
 			className: ['p-entry-section__hdg'],
 		},
 		children: [
-			heading,
+			{
+				type: 'element',
+				tagName: `h${String(depth)}`,
+				properties: {},
+				children: state.all(node),
+			},
 			{
 				type: 'element',
 				tagName: 'p',

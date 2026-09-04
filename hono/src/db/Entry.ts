@@ -1,6 +1,6 @@
 import type { Selectable } from 'kysely';
 import { jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
-import type { DEntry } from '../../../@types/db_blog.d.ts';
+import type { DEntry } from '../../../@types/dbBlog.d.ts';
 import Database from './Database.ts';
 
 /**
@@ -8,7 +8,7 @@ import Database from './Database.ts';
  */
 export default class extends Database {
 	/**
-	 * 記事データを取得する
+	 * 指定された1件の記事データを取得する
 	 *
 	 * @param id - 記事 ID
 	 *
@@ -38,6 +38,38 @@ export default class extends Database {
 			registed_at: sqliteToJS(row.registed_at, 'date'),
 			updated_at: sqliteToJS(row.updated_at, 'date'),
 		};
+	}
+
+	/**
+	 * 指定された複数件の記事データを取得する
+	 *
+	 * @param ids - 記事 ID
+	 *
+	 * @returns 記事データ
+	 */
+	async findEntries(ids: readonly number[]): Promise<Omit<Selectable<DEntry>, 'public'>[]> {
+		const query = this.db
+			.selectFrom('d_entry')
+			.select(['id', 'title', 'description', 'message', 'image_internal', 'image_external', 'registed_at', 'updated_at'])
+			.where(
+				'id',
+				'in',
+				ids.map((id) => jsToSQLiteComparison(id)),
+			)
+			.where('public', '=', jsToSQLiteComparison(true));
+
+		const rows = await query.execute();
+
+		return rows.map((row) => ({
+			id: sqliteToJS(row.id),
+			title: sqliteToJS(row.title),
+			description: sqliteToJS(row.description),
+			message: sqliteToJS(row.message),
+			image_internal: sqliteToJS(row.image_internal),
+			image_external: sqliteToJS(row.image_external, 'url'),
+			registed_at: sqliteToJS(row.registed_at, 'date'),
+			updated_at: sqliteToJS(row.updated_at, 'date'),
+		}));
 	}
 
 	/**

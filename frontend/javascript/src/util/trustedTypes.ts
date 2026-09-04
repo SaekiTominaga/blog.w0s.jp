@@ -1,0 +1,28 @@
+/**
+ * Trusted Types
+ */
+export default (): void => {
+	// @ts-expect-error: ts(2339)
+	// oxlint-disable-next-line typescript/no-unsafe-call, typescript/no-unsafe-member-access
+	globalThis.trustedTypes?.createPolicy('default', {
+		createHTML: (inputText: string): string => inputText,
+		createURL: (inputUrl: string): string => {
+			if (!URL.canParse(inputUrl)) {
+				throw new TypeError(`[Trusted Types] Invalid URL format: ${inputUrl}`);
+			}
+			if (new URL(inputUrl).origin !== new URL(location.href).origin) {
+				throw new TypeError(`[Trusted Types] URL with different origin are not allowed: ${inputUrl}`);
+			}
+
+			return inputUrl;
+		},
+		createScriptURL: (inputUrl: string): string => {
+			const ALLOW_URLS: readonly string[] = ['https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3297715785193216'];
+			if (!ALLOW_URLS.includes(inputUrl)) {
+				throw new TypeError(`[Trusted Types] This script URL is not allowed: ${inputUrl}`);
+			}
+
+			return inputUrl;
+		},
+	});
+};

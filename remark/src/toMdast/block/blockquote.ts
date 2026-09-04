@@ -3,7 +3,7 @@ import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
 import { remove } from 'unist-util-remove';
-import { visit, CONTINUE, EXIT } from 'unist-util-visit';
+import { CONTINUE, EXIT, visit } from 'unist-util-visit';
 import { classifyMeta } from '../../lib/quote.ts';
 
 /**
@@ -50,7 +50,7 @@ const toMdast: Plugin<[], Root> = () => {
 				if (metaExist) {
 					listItems.forEach((listItem) => {
 						visit(listItem, 'text', (text: Text): boolean => {
-							text.value = text.value.substring(META_START.length); // 先頭記号文字を除去
+							text.value = text.value.slice(META_START.length); // 先頭記号文字を除去
 
 							return EXIT;
 						});

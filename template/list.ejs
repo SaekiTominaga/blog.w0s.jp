@@ -2,6 +2,7 @@
 <html lang="ja">
 	<head>
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="text-scale" content="scale" />
 
 		<link rel="alternate" href="/feed" type="application/atom+xml" title="「富永日記帳」の新着フィード" />
 
@@ -31,17 +32,15 @@
 
 			<main id="content" class="l-content">
 				<div class="l-content__header">
-					<nav aria-label="前後記事">
-						<ul class="p-page-nav">
-							<%_ if (page > 2) { _%>
-							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
-							<li><a href="/list/<%= page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<%_ } else if (page === 2) { _%>
-							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<%_ } _%><%_ if (page < totalPage) { _%>
-							<li><a href="/list/<%= page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
-							<%_ } _%>
-						</ul>
+					<nav class="p-page-nav" aria-label="前後記事">
+						<%_ if (page > 2) { _%>
+						<a href="/" class="p-page-nav__link -start">最新</a>
+						<a href="/list/<%= page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a>
+						<%_ } else if (page === 2) { _%>
+						<a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a>
+						<%_ } _%><%_ if (page < totalPage) { _%>
+						<a href="/list/<%= page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a>
+						<%_ } _%>
 					</nav>
 				</div>
 				<div class="l-content__body">
@@ -53,11 +52,7 @@
 									<span class="c-entry-link__title"><%- entry.title %></span>
 									<span class="c-entry-link__thumb">
 										<%_ if (entry.imageInternal !== undefined) { _%>
-										<picture>
-											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=avif;w=360;h=240;quality=30 2x" />
-											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=webp;w=360;h=240;quality=30 2x" />
-											<img src="https://media.w0s.jp/thumbimage/blog/<%= entry.imageInternal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
-										</picture>
+										<img src="/entry/image/thumb/<%= entry.imageInternal %>@d=180x120;q=60.avif" srcset="/entry/image/thumb/<%= entry.imageInternal %>@d=360x240;q=30.avif 2x" alt="" class="c-entry-link__image" />
 										<%_ } else if (entry.imageExternal !== undefined) { _%>
 										<img src="<%= entry.imageExternal.toString() %>" alt="" class="c-entry-link__image" />
 										<%_ } else { _%>
@@ -87,17 +82,15 @@
 					</ul>
 				</div>
 				<div class="l-content__footer">
-					<nav aria-label="前後記事">
-						<ul class="p-page-nav">
-							<%_ if (page > 2) { _%>
-							<li><a href="/" class="p-page-nav__link -start">最新</a></li>
-							<li><a href="/list/<%= page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a></li>
-							<%_ } else if (page === 2) { _%>
-							<li><a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a></li>
-							<%_ } _%><%_ if (page < totalPage) { _%>
-							<li><a href="/list/<%= page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a></li>
-							<%_ } _%>
-						</ul>
+					<nav class="p-page-nav" aria-label="前後記事">
+						<%_ if (page > 2) { _%>
+						<a href="/" class="p-page-nav__link -start">最新</a>
+						<a href="/list/<%= page - 1 %>" rel="prev" class="p-page-nav__link -prev">新しい記事</a>
+						<%_ } else if (page === 2) { _%>
+						<a href="/" rel="prev" class="p-page-nav__link -prev">新しい記事（最新）</a>
+						<%_ } _%><%_ if (page < totalPage) { _%>
+						<a href="/list/<%= page + 1 %>" rel="next" class="p-page-nav__link -next">古い記事</a>
+						<%_ } _%>
 					</nav>
 				</div>
 			</main>

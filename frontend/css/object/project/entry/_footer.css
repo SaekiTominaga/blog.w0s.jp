@@ -1,0 +1,57 @@
+/** ==============================
+ *   記事フッター
+ * ============================== */
+
+.p-entry__footer {
+	padding: 30px var(--_entry-padding-block);
+}
+
+/* カテゴリー */
+.p-entry-footer-category {
+	--_tag-border-width: 1px;
+	--_tag-pading-row: 0.75em;
+	--_tag-pading-col: 0.5em;
+
+	display: block flex;
+	flex-wrap: nowrap;
+	column-gap: 0.5em;
+	justify-content: flex-end;
+	line-height: var(--line-height-nowrap);
+}
+
+.p-entry-footer-category__hdg {
+	padding-block: calc(var(--_tag-border-width) + var(--_tag-pading-row));
+	text-wrap-mode: nowrap;
+}
+
+.p-entry-footer-category__list {
+	display: block flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+
+	& a {
+		display: inline flow-root;
+		outline-offset: calc(0px - var(--_tag-border-width));
+		outline-width: var(--outline-width-bold);
+		border: var(--_tag-border-width) solid var(--border-color-light);
+		border-radius: var(--border-radius-normal);
+		background-color: var(--color-white);
+		padding: var(--_tag-pading-row) var(--_tag-pading-col);
+		text-decoration-line: none;
+
+		&:hover {
+			box-shadow: var(--box-shadow-length) var(--box-shadow-color);
+		}
+	}
+}
+
+/* ソーシャルボタン */
+.p-entry-footer-action {
+}
+
+/* 関連記事 */
+.p-entry-footer-relation {
+	.p-entry__footer > & {
+		margin-block-start: calc(var(--stack-margin-base) * 3);
+	}
+}

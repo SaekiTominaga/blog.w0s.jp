@@ -1,0 +1,59 @@
+/** ==============================
+ *   セクション
+ * ============================== */
+
+.p-section {
+	--_margin-block: 1rem;
+
+	&:target {
+		animation-name: section-target;
+		animation-duration: 1s;
+	}
+
+	&:not(:first-child) {
+		:not(.p-section__hdg) + & {
+			margin-block-start: var(--_margin-block);
+		}
+	}
+
+	&:not(:last-child) {
+		margin-block-end: var(--_margin-block);
+	}
+
+	&.-hdg-a {
+		--_margin-block: 4.5rem;
+	}
+
+	&.-hdg-b {
+		--_margin-block: 3.75rem;
+	}
+
+	&.-hdg-c {
+		--_margin-block: 3rem;
+	}
+}
+
+.p-section__hdg {
+	display: block flex;
+	flex-wrap: nowrap;
+	gap: 0.5em;
+	line-height: var(--line-height-narrow);
+
+	.p-section.-hdg-a > & {
+		border-block-end: 1px solid var(--border-color-dark);
+		padding-block-end: 0.375em;
+		font-size: calc(100% * pow(var(--font-ratio), 6));
+
+		&::before {
+			transform: scaleY(75%);
+			border: 0.125em solid var(--color-gray);
+			border-radius: var(--border-radius-full);
+			background-color: var(--color-gray); /* for Chrome */
+			content: "";
+		}
+
+		& + * {
+			margin-block-start: 2rem;
+		}
+	}
+}

@@ -1,0 +1,279 @@
+/** ==============================
+ *   テキスト
+ * ============================== */
+
+/* ===== セルフリンク <a href="#foo">§</a> ===== */
+.c-self-link {
+	display: inline flex;
+	flex-wrap: nowrap;
+	justify-content: center;
+	outline-width: var(--outline-width-bold);
+	min-inline-size: var(--self-link-size);
+	text-decoration-line: unset;
+}
+
+/* ===== ボタン ===== */
+.c-button {
+	--_padding-block: 0.5em;
+	--_padding-inline: 0.75em;
+	--_border-color: var(--border-color-dark);
+	--_inline-size: auto;
+	--_color: var(--color-black);
+	--_bg-color: var(--color-white);
+	--_icon-size: 1.25em;
+
+	display: inline flex;
+	flex-wrap: nowrap;
+	gap: 0.5em;
+	align-items: center;
+	justify-content: center;
+	outline-offset: -1px;
+	outline-width: var(--outline-width-bold);
+	border: 1px solid var(--_border-color);
+	border-radius: var(--border-radius-normal);
+	background-color: var(--_bg-color);
+	padding: var(--_padding-block) var(--_padding-inline);
+	inline-size: var(--_inline-size);
+	text-decoration-line: none;
+	line-height: var(--line-height-narrow);
+	color: var(--_color);
+	font-weight: var(--font-weight-bold);
+
+	:is(button[type="button" i]&):focus:not(:focus-visible) {
+		outline: none;
+	}
+
+	.p-entry-footer-action & {
+		font-size: calc(100% * pow(var(--font-ratio), 1));
+	}
+
+	&:disabled {
+		display: none;
+	}
+
+	&:hover {
+		box-shadow: var(--box-shadow-length) var(--box-shadow-color);
+		color: var(--_color);
+	}
+
+	/* Feed */
+	&.-feed {
+		--_border-color: var(--color-orange);
+		--_color: var(--color-darkgray);
+		--_bg-color: oklch(from var(--color-orange) calc(l + 0.175) calc(c - 0.125) calc(h + 10)); /* TODO: iOS Firefox 強制ダークモード */
+	}
+
+	/* GitHub */
+	&.-github {
+		--_border-color: var(--color-black);
+		--_bg-color: var(--color-white);
+	}
+}
+
+.c-button__icon {
+	block-size: var(--_icon-size);
+	inline-size: var(--_icon-size);
+}
+
+/* ===== 脚注リンク ===== */
+.c-footnote-ref {
+	vertical-align: super;
+	font-size: calc(100% / pow(var(--font-ratio), 2));
+
+	& > a {
+		outline-offset: calc(0px - var(--outline-width-bold));
+		outline-width: var(--outline-width-bold);
+		padding: 0.375em;
+		text-decoration-skip-ink: none; /* JS 無効環境向け */
+
+		&:target {
+			border: 1px solid var(--color-red);
+			background-color: var(--bgcolor-lightred);
+		}
+
+		&[role="button" i] {
+			/* JS 有効時のみ */
+			text-decoration-line: none;
+			color: var(--link-color);
+			cursor: default;
+
+			&:focus:not(:focus-visible) {
+				outline: none;
+			}
+		}
+	}
+}
+
+/* ===== ドメイン表記 ===== */
+.c-domain {
+	--_font-size-ratio: calc(1 / pow(var(--font-ratio), 1));
+
+	word-break: break-all;
+	color: var(--color-gray);
+	font-size: calc(100% * var(--_font-size-ratio));
+
+	&::before,
+	&::after {
+		content: " ";
+	}
+
+	& > img {
+		block-size: calc(1em / var(--_font-size-ratio));
+		inline-size: auto;
+		vertical-align: calc((1cap - 1em / var(--_font-size-ratio)) / 2);
+	}
+}
+
+/* ===== 記事メタデータ ===== */
+.c-entry-meta {
+	display: block grid;
+	grid-template-columns: auto max-content 1fr;
+	gap: 0.125em 0.25em;
+	line-height: var(--line-height-narrow);
+
+	& > * {
+		display: block grid;
+		grid-template-columns: subgrid;
+		grid-column: 1 / -1;
+	}
+}
+
+.c-entry-meta__name {
+}
+
+.c-entry-meta__separator {
+}
+
+.c-entry-meta__value {
+}
+
+/* ===== 記事件数 ===== */
+.c-entry-count {
+	--_bg-color: oklch(from var(--color-blue) calc(l + 0.45) calc(c - 0.25) h);
+
+	display: inline flow-root;
+	border: 1px solid var(--_bg-color);
+	border-radius: var(--border-radius-large);
+	background-color: var(--_bg-color);
+	padding: 0.15em 0.45em;
+	line-height: var(--line-height-nowrap);
+	text-wrap-mode: nowrap;
+	color: var(--color-black);
+	font-size: calc(100% / pow(var(--font-ratio), 4));
+}
+
+/* 件数の数字部分 */
+.c-entry-count__num {
+	font-size: calc(100% * pow(var(--font-ratio), 3));
+}
+
+/* ===== コードハイライト https://github.com/highlightjs/highlight.js/blob/main/src/styles/github.css ===== */
+/* stylelint-disable selector-class-pattern */
+.hljs-doctag,
+.hljs-keyword,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-variable.language_ {
+	/* prettylights-syntax-keyword */
+	color: oklch(58.794% 0.193 20.469deg); /* #d73a49 */
+}
+
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+	/* prettylights-syntax-entity */
+	color: oklch(50.152% 0.188 294.99deg); /* #6f42c1 */
+}
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-literal,
+.hljs-meta,
+.hljs-number,
+.hljs-operator,
+.hljs-variable,
+.hljs-selector-attr,
+.hljs-selector-class,
+.hljs-selector-id {
+	/* prettylights-syntax-constant */
+	color: oklch(49.49% 0.18 257.601deg); /* #005cc5 */
+}
+
+.hljs-regexp,
+.hljs-string {
+	/* prettylights-syntax-string */
+	color: oklch(31.077% 0.101 255.87deg); /* #032f62 */
+}
+
+.hljs-built_in,
+.hljs-symbol {
+	/* prettylights-syntax-variable */
+	color: oklch(64.823% 0.18 45.869deg); /* #e36209 */
+}
+
+.hljs-comment,
+.hljs-code,
+.hljs-formula {
+	/* prettylights-syntax-comment */
+	color: oklch(55.137% 0.019 250.98deg); /* #6a737d */
+}
+
+.hljs-name,
+.hljs-quote,
+.hljs-selector-tag,
+.hljs-selector-pseudo {
+	/* prettylights-syntax-entity-tag */
+	color: oklch(54.635% 0.144 147.32deg); /* #22863a */
+}
+
+.hljs-subst {
+	/* prettylights-syntax-storage-modifier-import */
+	color: oklch(27.806% 0.012 248.25deg); /* #24292e */
+}
+
+.hljs-section {
+	/* prettylights-syntax-markup-heading */
+	color: oklch(49.49% 0.18 257.6deg); /* #005cc5 */
+	font-weight: var(--font-weight-bold);
+}
+
+.hljs-bullet {
+	/* prettylights-syntax-markup-list */
+	color: oklch(48.457% 0.093 90.48deg); /* #735c0f */
+}
+
+.hljs-emphasis {
+	/* prettylights-syntax-markup-italic */
+	color: oklch(27.806% 0.012 248.25deg); /* #24292e */
+	font-style: italic;
+}
+
+.hljs-strong {
+	/* prettylights-syntax-markup-bold */
+	color: oklch(27.806% 0.012 248.25deg); /* #24292e */
+	font-weight: var(--font-weight-bold);
+}
+
+.hljs-addition {
+	/* prettylights-syntax-markup-inserted */
+	background-color: oklch(98.591% 0.021 154.14deg); /* #f0fff4 */
+	color: oklch(54.635% 0.144 147.32deg); /* #22863a */
+}
+
+.hljs-deletion {
+	/* prettylights-syntax-markup-deleted */
+	background-color: oklch(96.312% 0.019 9.298deg); /* #ffeef0 */
+	color: oklch(49.595% 0.183 24.187deg); /* #b31d28 */
+}
+
+.hljs-char.escape_,
+.hljs-link,
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-tag {
+	/* purposely ignored */
+}
+/* stylelint-enable selector-class-pattern */

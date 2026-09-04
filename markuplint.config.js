@@ -4,7 +4,7 @@ export default {
 	parser: {
 		'.ejs$': '@markuplint/ejs-parser',
 	},
-	excludeFiles: ['template/feed', 'template/sns', 'template/xml'],
+	excludeFiles: ['template/sns', 'template/xml'],
 	rules: {
 		'disallowed-element': ['noscript', 'embed', 'base', 'style', 'h5', 'h6', 's', 'i', 'u', 'wbr', 'area'],
 		'class-naming': [
@@ -78,6 +78,14 @@ export default {
 				'no-empty-palpable-content': false,
 			},
 		},
+		{
+			/* Customizable Select */
+			selector: '.c-search__engine',
+			inheritance: true,
+			rules: {
+				'character-reference': false,
+			},
+		},
 	],
 	overrideMode: 'merge',
 	overrides: {
@@ -87,9 +95,19 @@ export default {
 				'label-has-control': false,
 			},
 		},
-		'template/error.ejs': {
+		'.html/**/*.html': {
 			rules: {
-				'required-h1': false,
+				'permitted-contents': false, // Customizable Select
+			},
+		},
+		'template/4xx.html': {
+			rules: {
+				'permitted-contents': false, // Customizable Select
+			},
+		},
+		'template/404.html': {
+			rules: {
+				'permitted-contents': false, // Customizable Select
 			},
 		},
 		'template/list.ejs': {

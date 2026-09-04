@@ -3,15 +3,15 @@ import type { Heading, PhrasingContent, Root } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import type { Plugin } from 'unified';
 import type { Parent } from 'unist';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { CONTINUE, visit } from 'unist-util-visit';
 
 /**
  * <hn>
  */
 
-export const name = 'x-heading';
+const name = 'x-heading';
 
-export interface XHeading extends Parent {
+interface XHeading extends Parent {
 	type: typeof name;
 	depth: Heading['depth'];
 	id?: string;
@@ -19,10 +19,12 @@ export interface XHeading extends Parent {
 }
 
 interface Options {
+	minDepth?: Heading['depth'];
 	maxDepth?: Heading['depth'];
 }
 
 const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
+	const minDepth = options?.minDepth ?? 1;
 	const maxDepth = options?.maxDepth ?? 6;
 
 	const slugger = new GithubSlugger();
@@ -32,7 +34,7 @@ const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
 			if (index === null || parent === null) {
 				return CONTINUE;
 			}
-			if (node.depth > maxDepth) {
+			if (node.depth < minDepth || node.depth > maxDepth) {
 				return CONTINUE;
 			}
 
@@ -41,7 +43,7 @@ const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
 				depth: node.depth,
 				children: node.children,
 			};
-			if (node.children.length >= 1) {
+			if (node.children.length > 0) {
 				heading.id = slugger.slug(toString(node));
 			}
 			parent.children.splice(index, 1, heading);
@@ -50,4 +52,7 @@ const toMdast: Plugin<Options[], Root> = (options?: Readonly<Options>) => {
 		});
 	};
 };
+
 export default toMdast;
+
+export { name, type XHeading };

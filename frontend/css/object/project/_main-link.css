@@ -1,0 +1,93 @@
+/** ==============================
+ *   リンク
+ * ============================== */
+
+/* ===== 本 ===== */
+.p-book-item {
+	--_stack-margin-base: 1rem;
+
+	container: book-item / inline-size;
+	line-height: var(--line-height-narrow);
+}
+
+.p-book-item__inner {
+	display: block grid;
+	grid-template-areas: "image text";
+	grid-template-columns: auto 1fr;
+	gap: 15px;
+
+	@container book-item (inline-size <= calc(160px + 1px * 2 + 15px + 8em)) {
+		grid-template-areas:
+			"text"
+			"image";
+	}
+}
+
+.p-book-item__text {
+	grid-area: text;
+
+	& > * + .p-book-item__summary {
+		margin-block-start: calc(var(--_stack-margin-base) / 4);
+	}
+
+	& > * + :where(.p-book-item__details, .p-book-item__link) {
+		margin-block-start: var(--_stack-margin-base);
+	}
+
+	& > .p-book-item__details + .p-book-item__link {
+		margin-block-start: calc(var(--_stack-margin-base) / 2);
+	}
+}
+
+.p-book-item__image {
+	grid-area: image;
+
+	& img {
+		box-sizing: revert;
+		display: block flow;
+		border: 1px solid var(--color-black);
+		block-size: auto;
+		max-inline-size: 100%;
+	}
+}
+
+.p-book-item__title {
+	font-size: calc(100% * pow(var(--font-ratio), 1));
+	font-weight: var(--font-weight-bold);
+}
+
+.p-book-item__summary {
+	font-size: calc(100% / pow(var(--font-ratio), 1));
+
+	& b {
+		font-weight: unset;
+	}
+}
+
+.p-book-item__link {
+	--_bullet-inline-size: 0.45em;
+	--_bullet-block-size: 0.75em;
+	--_bullet-color: var(--link-color-bullet);
+	--_bullet-gap: 0.5em;
+
+	margin-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
+
+	& :any-link {
+		margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
+		outline-offset: var(--outline-offset-linkonly);
+
+		&:hover {
+			--_bullet-color: var(--link-color-hover);
+		}
+
+		&::before {
+			display: inline flow-root;
+			margin-inline-end: var(--_bullet-gap);
+			border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
+			clip-path: var(--shape-link-triangle);
+			inline-size: var(--_bullet-inline-size);
+			vertical-align: calc((1cap - var(--_bullet-block-size)) / 2);
+			content: "";
+		}
+	}
+}

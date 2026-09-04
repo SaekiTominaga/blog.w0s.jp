@@ -48,9 +48,9 @@ export default class MarkdownTitle {
 				return undefined;
 			}
 
-			const beforeCodeValue = this.#value.substring(0, codeOpenIndex);
-			const codeValue = this.#value.substring(codeOpenIndex + CODE_OPEN.length, codeCloseIndex);
-			const afterCodeValue = this.#value.substring(codeCloseIndex + CODE_CLOSE.length);
+			const beforeCodeValue = this.#value.slice(0, codeOpenIndex);
+			const codeValue = this.#value.slice(codeOpenIndex + CODE_OPEN.length, codeCloseIndex);
+			const afterCodeValue = this.#value.slice(codeCloseIndex + CODE_CLOSE.length);
 
 			const converted = `${beforeCodeValue}<code>${codeValue}</code>`;
 			const unconvertedIndex = converted.length;

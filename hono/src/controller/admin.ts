@@ -1,54 +1,48 @@
-import crypto from 'node:crypto';
-import fs from 'node:fs';
-import path from 'node:path';
+import { inspect } from 'node:util';
+import dayjs from 'dayjs';
 import ejs from 'ejs';
-import { Hono, type Context } from 'hono';
-import Log4js from 'log4js';
+import { type Context, Hono } from 'hono';
 import { env } from '@w0s/env-value-type';
+import type { Variables } from '../app.ts';
 import configHono from '../config/hono.ts';
-import configAdmin from '../config/admin.ts';
+import configProcess from '../config/process.ts';
 import PostDao from '../db/Post.ts';
-import clear from '../process/dsg.ts';
-import createFeed from '../process/feed.ts';
-import createNewlyJson from '../process/newlyJson.ts';
-import createSitemap from '../process/sitemap.ts';
-import postBluesky from '../process/snsBluesky.ts';
-import postMastodon from '../process/snsMastodon.ts';
-import postMisskey from '../process/snsMisskey.ts';
+import { clear } from '../process/dsg.ts';
+import { create as createFeed } from '../process/feed.ts';
+import { create as createNewlyJson } from '../process/newlyJson.ts';
+import { create as createSitemap } from '../process/sitemap.ts';
 import { getEntryUrl } from '../util/blogUrl.ts';
 import { csp as cspHeader } from '../util/httpHeader.ts';
-import { query as validatorQuery, type RequestQuery } from '../validator/admin.ts';
+import { type RequestQuery, query as validatorQuery } from '../validator/admin.ts';
 import { form as validatorPostForm } from '../validator/adminPost.ts';
-import { form as validatorUploadForm } from '../validator/adminUpload.ts';
-import type { Upload } from '../../../@types/api.d.ts';
-import type { Normal as ProcessResult, Media as ProcessMediaResult } from '../../@types/process.d.ts';
-import type { EntryData as SocialEntryData } from '../../@types/social.d.ts';
 import type { Categories } from '../../@types/view.d.ts';
+
+interface ProcessResult {
+	success: boolean;
+	message: string;
+}
 
 interface EntryData {
 	id?: number;
 	title: string;
 	description: string | undefined;
 	message: string;
-	categoryIds: readonly string[] | undefined;
+	categoryIds: string[] | undefined;
 	imageInternal: string | undefined;
 	imageExternal: URL | undefined;
-	relationIds: readonly string[] | undefined;
+	relationIds: string[] | undefined;
 	public: boolean;
 	social?: boolean;
-	socialTags?: readonly string[] | undefined;
+	socialTags?: string[] | undefined;
 	timestampUpdate?: boolean;
 }
 
-/**
- * 記事投稿
- */
-const logger = Log4js.getLogger('entry');
+/* ===== 記事投稿 ===== */
 
 /**
  * 初期画面表示
  *
- * @param context - Context
+ * @param context - Hono Context
  * @param arg1 -
  * @param arg1.requestQuery - URL クエリー情報
  * @param arg1.entryData - 記事データ
@@ -71,15 +65,11 @@ const rendering = async (
 		entryData?: Readonly<EntryData>;
 		entrySubmitMode?: 'insert' | 'update';
 		validate?: Readonly<{
-			entrySelect?: readonly string[]; // 記事選択
-			entryPost?: readonly string[]; // 記事投稿
-			viewUpdate?: readonly string[]; // View アップデート反映
-			media?: readonly string[]; // メディアアップロード
+			entrySelect?: string[]; // 記事選択
+			entryPost?: string[]; // 記事投稿
 		}>;
 		results?: Readonly<{
-			entryPost?: readonly ProcessResult[]; // 記事投稿
-			viewUpdate?: readonly ProcessResult[]; // View アップデート反映
-			media?: readonly ProcessMediaResult[]; // メディアアップロード
+			entryPost?: ProcessResult[]; // 記事投稿
 		}>;
 	}>,
 ): Promise<Response> => {
@@ -109,7 +99,7 @@ const rendering = async (
 	});
 
 	/* レンダリング */
-	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configAdmin.template}`, {
+	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configProcess.post.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		requestQuery: requestQuery ?? {},
 		entryData: entryData ?? {},
@@ -117,8 +107,6 @@ const rendering = async (
 		selectValidates: validate?.entrySelect ?? [],
 		postValidates: validate?.entryPost ?? [],
 		postResults: results?.entryPost ?? [],
-		updateResults: results?.viewUpdate ?? [],
-		uploadResults: results?.media ?? [],
 		latestId: latestId, // 最新記事 ID
 		categoryMaster: categoryMasterView, // カテゴリー情報
 	});
@@ -130,7 +118,7 @@ const rendering = async (
 	return context.html(html);
 };
 
-export const adminApp = new Hono()
+export const adminApp = new Hono<{ Variables: Variables }>()
 	.get(validatorQuery, async (context) => {
 		const { req } = context;
 
@@ -138,7 +126,7 @@ export const adminApp = new Hono()
 
 		if (requestQuery.id === undefined) {
 			/* 初期表示 */
-			return await rendering(context, {
+			return rendering(context, {
 				requestQuery: requestQuery,
 				entrySubmitMode: 'insert',
 			});
@@ -152,17 +140,17 @@ export const adminApp = new Hono()
 		const reviseData = await dao.getReviseData(requestQuery.id);
 		if (reviseData === undefined) {
 			/* 存在しない記事 ID を指定した場合 */
-			return await rendering(context, {
+			return rendering(context, {
 				requestQuery: requestQuery,
 				entrySubmitMode: 'insert',
 				validate: {
-					entrySelect: [configAdmin.validator.entryNotFound],
+					entrySelect: [configProcess.post.validator.entryNotFound],
 				},
 			});
 		}
 
 		/* 既存記事の修正 */
-		return await rendering(context, {
+		return rendering(context, {
 			requestQuery: requestQuery,
 			entryData: {
 				id: reviseData.id,
@@ -181,6 +169,7 @@ export const adminApp = new Hono()
 	.post('/post', validatorPostForm, async (context) => {
 		/* 記事投稿 */
 		const { req } = context;
+		const logger = context.get('logger');
 
 		const requestForm = req.valid('form');
 
@@ -201,17 +190,16 @@ export const adminApp = new Hono()
 		};
 
 		const postResults: ProcessResult[] = [];
-		let entryUrl: string;
 
 		if (requestForm.id === undefined) {
 			/* 新規記事追加 */
 			if (await dao.isExistsTitle(requestForm.title)) {
 				/* 既存記事と同じタイトルが指定された場合 */
-				return await rendering(context, {
+				return rendering(context, {
 					entryData: entryData,
 					entrySubmitMode: 'insert',
 					validate: {
-						entryPost: [configAdmin.validator.titleUnique],
+						entryPost: [configProcess.post.validator.titleUnique],
 					},
 				});
 			}
@@ -230,22 +218,20 @@ export const adminApp = new Hono()
 					relationIds: entryData.relationIds,
 				},
 			);
-			logger.info('新規記事追加', entryData.id);
+			logger.info(`新規記事追加: ${String(entryData.id)}`);
 
-			entryUrl = getEntryUrl(entryData.id);
-
-			postResults.push({ success: true, message: `${configAdmin.processMessage.insert.success} ${entryUrl}` });
+			postResults.push({ success: true, message: `${configProcess.post.processMessage.insert.success} ${getEntryUrl(entryData.id)}` });
 		} else {
 			/* 既存記事更新 */
 			entryData.id = requestForm.id;
 
 			if (await dao.isExistsTitle(requestForm.title, requestForm.id)) {
 				/* 既存記事と同じタイトルが指定された場合 */
-				return await rendering(context, {
+				return rendering(context, {
 					entryData: entryData,
 					entrySubmitMode: 'update',
 					validate: {
-						entryPost: [configAdmin.validator.titleUnique],
+						entryPost: [configProcess.post.validator.titleUnique],
 					},
 				});
 			}
@@ -266,184 +252,75 @@ export const adminApp = new Hono()
 					timestampUpdate: entryData.timestampUpdate,
 				},
 			);
-			logger.info('既存記事更新', entryData.id);
+			logger.info(`既存記事更新: ${String(entryData.id)}`);
 
-			entryUrl = getEntryUrl(entryData.id);
-
-			postResults.push({ success: true, message: `${configAdmin.processMessage.update.success} ${entryUrl}` });
+			postResults.push({ success: true, message: `${configProcess.post.processMessage.update.success} ${getEntryUrl(entryData.id)}` });
 		}
 
-		const [cacheClearResult, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.all([
+		const [clearDSGResult, insertSNSQueue, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.allSettled([
 			clear(),
+			entryData.public && entryData.social
+				? // oxlint-disable-next-line unicorn/no-unreadable-iife
+					(async (entryId) => ({ insertId: await dao.insertSNSQueue(entryId, entryData.socialTags) }))(entryData.id)
+				: undefined,
 			createFeed(),
 			createSitemap(),
 			createNewlyJson(),
 		]);
-		postResults.push(cacheClearResult);
-		postResults.push(createFeedResult);
-		postResults.push(createSitemapResult);
-		postResults.push(createNewlyJsonResult);
 
-		if (entryData.public && entryData.social) {
-			const socialEntryData: SocialEntryData = {
-				url: entryUrl,
-				title: entryData.title,
-				description: entryData.description,
-				tags: entryData.socialTags,
-			};
-
-			const [postMastodonResult, postBlueskyResult, postMisskeyResult] = await Promise.all([
-				postMastodon(socialEntryData),
-				postBluesky(socialEntryData),
-				postMisskey(socialEntryData),
-			]);
-			postResults.push(postMastodonResult);
-			postResults.push(postBlueskyResult);
-			postResults.push(postMisskeyResult);
+		if (clearDSGResult.status === 'fulfilled') {
+			logger.info(`Modified date of DB was recorded: ${clearDSGResult.value.toString()}`);
+			postResults.push({ success: true, message: `${configProcess.dsg.processMessage.success} <${dayjs(clearDSGResult.value).format('HH:mm:ss')}>` });
+		} else {
+			logger.error(clearDSGResult.reason);
+			postResults.push({ success: false, message: `${configProcess.dsg.processMessage.failure}: ${String(clearDSGResult.reason)}` });
 		}
 
-		return await rendering(context, {
+		if (insertSNSQueue.status === 'fulfilled') {
+			if (insertSNSQueue.value !== undefined) {
+				logger.info(`SNS queue date of DB was recorded (Column ID: ${String(insertSNSQueue.value.insertId)})`);
+				postResults.push({
+					success: true,
+					message: configProcess.post.processMessage.insertSNSQueue.success,
+				});
+			}
+		} else {
+			logger.error(insertSNSQueue.reason);
+			postResults.push({ success: false, message: `${configProcess.post.processMessage.insertSNSQueue.failure}: ${String(insertSNSQueue.reason)}` });
+		}
+
+		if (createFeedResult.status === 'fulfilled') {
+			logger.info(`Feed file created: ${inspect(createFeedResult.value)}`);
+			postResults.push({ success: true, message: `${configProcess.feed.processMessage.success}（${String(createFeedResult.value.length)}ファイル）` });
+		} else {
+			logger.error(createFeedResult.reason);
+			postResults.push({ success: false, message: `${configProcess.feed.processMessage.failure}: ${String(createFeedResult.reason)}` });
+		}
+
+		if (createSitemapResult.status === 'fulfilled') {
+			logger.info(`Sitemap file created: ${inspect(createSitemapResult.value)}`);
+			postResults.push({ success: true, message: `${configProcess.sitemap.processMessage.success}（${String(createSitemapResult.value.length)}ファイル）` });
+		} else {
+			logger.error(createSitemapResult.reason);
+			postResults.push({ success: false, message: `${configProcess.sitemap.processMessage.failure}: ${String(createSitemapResult.reason)}` });
+		}
+
+		if (createNewlyJsonResult.status === 'fulfilled') {
+			logger.info(`JSON file created: ${inspect(createNewlyJsonResult.value)}`);
+			postResults.push({
+				success: true,
+				message: `${configProcess.newlyJson.processMessage.success}（${String(createNewlyJsonResult.value.length)}ファイル）`,
+			});
+		} else {
+			logger.error(createNewlyJsonResult.reason);
+			postResults.push({ success: false, message: `${configProcess.newlyJson.processMessage.failure}: ${String(createNewlyJsonResult.reason)}` });
+		}
+
+		return rendering(context, {
 			entryData: entryData,
 			entrySubmitMode: 'update',
 			results: {
 				entryPost: postResults,
-			},
-		});
-	})
-	.post('/upload', validatorUploadForm, async (context) => {
-		/* メディアアップロード */
-		const { req } = context;
-
-		const requestForm = req.valid('form');
-
-		const uploadFiles = await Promise.all(
-			requestForm.files.map(async (file) => {
-				/* 一時ファイルとしてアップロードする */
-				const tempFileName = crypto.randomBytes(16).toString('hex'); // Multer と同じ処理 https://github.com/expressjs/multer/blob/master/storage/disk.js#L8-L10
-				const tempFilePath = `${env('ROOT')}/${env('NODE_TEMP_DIR')}/${tempFileName}`;
-
-				await fs.promises.writeFile(tempFilePath, file.stream());
-				logger.info('Temp file upload success', tempFilePath);
-
-				return { file, tempFilePath };
-			}),
-		);
-
-		const endpoint = env('MEDIA_UPLOAD_URL');
-
-		const results: ProcessMediaResult[] = [];
-
-		try {
-			await Promise.all(
-				uploadFiles.map(async ({ file, tempFilePath }) => {
-					const bodyObject: Readonly<Record<string, string | number | boolean>> = {
-						name: file.name,
-						size: file.size,
-						type: file.type,
-						temp: path.resolve(tempFilePath),
-						overwrite: requestForm.overwrite,
-					};
-					logger.info('Fetch', endpoint, file.name);
-
-					try {
-						const response = await fetch(endpoint, {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(bodyObject),
-						});
-						if (!response.ok) {
-							logger.error('Fetch error', endpoint);
-
-							results.push({
-								success: false,
-								message: configAdmin.mediaUpload.apiResponse.otherMessageFailure,
-								filename: file.name,
-							});
-							return;
-						}
-
-						const responseFile = (await response.json()) as Upload;
-						switch (responseFile.code) {
-							case configAdmin.mediaUpload.apiResponse.success.code:
-								/* 成功 */
-								logger.info('File upload success', responseFile.name);
-
-								results.push({
-									success: true,
-									message: configAdmin.mediaUpload.apiResponse.success.message,
-									filename: file.name,
-								});
-								break;
-							case configAdmin.mediaUpload.apiResponse.type.code:
-								/* MIME エラー */
-								logger.warn('File upload failure', responseFile.name);
-
-								results.push({
-									success: false,
-									message: configAdmin.mediaUpload.apiResponse.type.message,
-									filename: file.name,
-								});
-								break;
-							case configAdmin.mediaUpload.apiResponse.overwrite.code:
-								/* 上書きエラー */
-								logger.warn('File upload failure', responseFile.name);
-
-								results.push({
-									success: false,
-									message: configAdmin.mediaUpload.apiResponse.overwrite.message,
-									filename: file.name,
-								});
-								break;
-							case configAdmin.mediaUpload.apiResponse.size.code:
-								/* サイズ超過エラー */
-								logger.warn('File upload failure', responseFile.name);
-
-								results.push({
-									success: false,
-									message: configAdmin.mediaUpload.apiResponse.size.message,
-									filename: file.name,
-								});
-								break;
-							default:
-								logger.warn('File upload failure', responseFile.name);
-
-								results.push({
-									success: false,
-									message: configAdmin.mediaUpload.apiResponse.otherMessageFailure,
-									filename: file.name,
-								});
-						}
-					} catch (e) {
-						logger.warn(e);
-
-						results.push({
-							success: false,
-							message: configAdmin.mediaUpload.apiResponse.otherMessageFailure,
-							filename: file.name,
-						});
-					}
-				}),
-			);
-		} finally {
-			await Promise.all(
-				uploadFiles.map(async ({ tempFilePath }) => {
-					/* 一時ファイルを削除する */
-					if (!fs.existsSync(tempFilePath)) {
-						logger.info('Temp file have already been deleted', tempFilePath);
-						return;
-					}
-
-					await fs.promises.unlink(tempFilePath);
-					logger.info('Temp file delete success', tempFilePath);
-				}),
-			);
-		}
-
-		return await rendering(context, {
-			results: {
-				media: results,
 			},
 		});
 	});

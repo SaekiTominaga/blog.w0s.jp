@@ -1,8 +1,8 @@
 import type { Paragraph, Root, Text } from 'mdast';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
-import { findAllBetween } from 'unist-util-find-between-all';
-import { visit, CONTINUE } from 'unist-util-visit';
+import { findBetween } from 'unist-util-find-between';
+import { CONTINUE, visit } from 'unist-util-visit';
 import { isEmptyParagraph } from '../../lib/mdast.ts';
 import { findAfter } from '../../lib/unist.ts';
 
@@ -23,7 +23,7 @@ const toMdast: Plugin<[], Root> = () => {
 
 	return (tree: Parent): void => {
 		visit(tree, 'paragraph', (startNode: Paragraph, index: number | null, parent: Parent | null): boolean => {
-			if (index === null || parent === null) {
+			if (index === null || parent?.type !== 'root') {
 				return CONTINUE;
 			}
 
@@ -40,8 +40,8 @@ const toMdast: Plugin<[], Root> = () => {
 			const startNodefirstChildFirstLfIndex = startNodefirstChildValue.indexOf('\n');
 			const boxName =
 				startNodefirstChildFirstLfIndex === -1
-					? startNodefirstChildValue.substring(BOX_OPEN.length)
-					: startNodefirstChildValue.substring(BOX_OPEN.length, startNodefirstChildFirstLfIndex);
+					? startNodefirstChildValue.slice(BOX_OPEN.length)
+					: startNodefirstChildValue.slice(BOX_OPEN.length, startNodefirstChildFirstLfIndex);
 			if (boxName === '') {
 				return CONTINUE;
 			}
@@ -63,12 +63,12 @@ const toMdast: Plugin<[], Root> = () => {
 				return CONTINUE;
 			}
 
-			startNodefirstChild.value = startNodefirstChildValue.substring(BOX_OPEN.length + boxName.length).trimStart();
+			startNodefirstChild.value = startNodefirstChildValue.slice(BOX_OPEN.length + boxName.length).trimStart();
 
 			const endNodelastChild = endNode.children.at(-1) as Text;
 			const endNodelastChildValue = endNodelastChild.value;
 			const endNodelastChildLastLfIndex = endNodelastChildValue.lastIndexOf('\n');
-			endNodelastChild.value = endNodelastChildValue.substring(0, endNodelastChildLastLfIndex).trimEnd();
+			endNodelastChild.value = endNodelastChildLastLfIndex !== -1 ? endNodelastChildValue.slice(0, endNodelastChildLastLfIndex).trimEnd() : '';
 
 			let replaceSize = 0;
 			const boxChildren: Node[] = [];
@@ -79,7 +79,7 @@ const toMdast: Plugin<[], Root> = () => {
 			replaceSize += 1;
 
 			if (!Object.is(startNode, endNode)) {
-				const between = findAllBetween(parent, startNode, endNode);
+				const between = findBetween(parent, startNode, endNode);
 
 				boxChildren.push(...between);
 				replaceSize += between.length;

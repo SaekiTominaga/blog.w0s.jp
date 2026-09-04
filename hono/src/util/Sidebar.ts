@@ -1,5 +1,6 @@
+// oxlint-disable-next-line import/extensions
 import MarkdownTitle from '../../../remark/dist/Title.js';
-import Dao from '../db/Database.ts';
+import type Dao from '../db/Database.ts';
 import type { NewlyEntry } from '../../@types/view.d.ts';
 
 interface EntryCountOfCategory {
@@ -51,12 +52,10 @@ export default class Sidebar {
 	async getNewlyEntries(limit: number): Promise<readonly NewlyEntry[]> {
 		const entriesDto = await this.#dao.getNewlyEntries(limit);
 
-		const entries = entriesDto.map(
-			(entryDto): NewlyEntry => ({
-				id: entryDto.id,
-				title: new MarkdownTitle(entryDto.title).mark(),
-			}),
-		);
+		const entries = entriesDto.map((entryDto): NewlyEntry => ({
+			id: entryDto.id,
+			title: new MarkdownTitle(entryDto.title).mark(),
+		}));
 
 		return entries;
 	}

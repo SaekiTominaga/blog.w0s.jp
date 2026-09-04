@@ -1,15 +1,13 @@
 import fs from 'node:fs';
 import type { Context } from 'hono';
-import Log4js from 'log4js';
 import { format, resolveConfig } from 'prettier';
+import type { Variables } from '../app.ts';
 import configHono from '../config/hono.ts';
 import { brotliCompressText } from './compress.ts';
 import { csp as cspHeader, supportCompressionEncoding } from './httpHeader.ts';
 
 export default class Rendering {
-	readonly #logger: Log4js.Logger;
-
-	readonly #context: Context;
+	readonly #context: Context<{ Variables: Variables }>;
 
 	readonly #lastModified: Date;
 
@@ -18,20 +16,18 @@ export default class Rendering {
 	readonly #htmlBrotliFilePath: string;
 
 	/**
-	 * @param context - Context
+	 * @param context - Hono Context
 	 * @param lastModified - 今回のアクセスに対して発行する最終更新日時
 	 * @param htmlFilePath - HTML ファイルパス
 	 */
-	constructor(context: Context, lastModified: Date, htmlFilePath: string) {
-		this.#logger = Log4js.getLogger('rendering');
-
+	constructor(context: Context<{ Variables: Variables }>, lastModified: Date, htmlFilePath: string) {
 		this.#context = context;
 
 		this.#lastModified = lastModified;
 
 		this.#htmlFilePath = htmlFilePath;
 
-		this.#htmlBrotliFilePath = `${htmlFilePath}${configHono.extension.brotli}`;
+		this.#htmlBrotliFilePath = `${htmlFilePath}.br`;
 	}
 
 	/**
@@ -39,22 +35,23 @@ export default class Rendering {
 	 *
 	 * @returns レスポンス
 	 */
-	checkLastModified(): Response | null {
+	checkLastModified(): Response | undefined {
 		const { req, res } = this.#context;
+		const logger = this.#context.get('logger');
 
 		const ifModifiedSince = req.header('If-Modified-Since');
 		if (ifModifiedSince !== undefined && this.#lastModified <= new Date(ifModifiedSince)) {
-			this.#logger.debug('304 Not Modified');
+			logger.debug('304 Not Modified');
 
-			res.headers.set('Cache-Control', configHono.cacheControl);
+			res.headers.set('Cache-Control', configHono.response.header.cacheControl);
 
-			return new Response(null, {
+			return new Response(undefined, {
 				status: 304,
 			});
 		}
 
 		res.headers.set('Last-Modified', this.#lastModified.toUTCString());
-		return null;
+		return undefined;
 	}
 
 	/**
@@ -62,11 +59,11 @@ export default class Rendering {
 	 *
 	 * @returns レスポンス
 	 */
-	async serverCache(): Promise<Response | null> {
+	async serverCache(): Promise<Response | undefined> {
 		const { req, res } = this.#context;
 
 		const response304 = this.checkLastModified();
-		if (response304 !== null) {
+		if (response304 !== undefined) {
 			return response304;
 		}
 
@@ -87,7 +84,7 @@ export default class Rendering {
 			return this.#context.body(responseBody);
 		}
 
-		return null;
+		return undefined;
 	}
 
 	/**
@@ -99,6 +96,7 @@ export default class Rendering {
 	 */
 	async generation(htmlData: string): Promise<Response> {
 		const { req, res } = this.#context;
+		const logger = this.#context.get('logger');
 
 		const prettierOptions = await resolveConfig(this.#htmlFilePath, { editorconfig: true });
 
@@ -106,15 +104,15 @@ export default class Rendering {
 		if (prettierOptions !== null) {
 			htmlFormatted = await format(htmlData, prettierOptions);
 		} else {
-			this.#logger.warn('Failed to resolve prettier config');
+			logger.warn('Failed to resolve prettier config');
 		}
 
 		const brotliData = await brotliCompressText(htmlFormatted);
 
 		/* キャッシュ HTML ファイル出力 */
 		await Promise.all([fs.promises.writeFile(this.#htmlFilePath, htmlFormatted), fs.promises.writeFile(this.#htmlBrotliFilePath, brotliData)]);
-		this.#logger.info('HTML file created', this.#htmlFilePath);
-		this.#logger.info('HTML Brotli file created', this.#htmlBrotliFilePath);
+		logger.info(`HTML file created: ${this.#htmlFilePath}`);
+		logger.info(`HTML Brotli file created: ${this.#htmlBrotliFilePath}`);
 
 		/* レンダリング */
 		if (supportCompressionEncoding(req.header('Accept-Encoding'), 'br')) {
@@ -134,7 +132,7 @@ export default class Rendering {
 	 */
 	static #setHeaders(headers: Headers): void {
 		headers.set('Content-Type', 'text/html; charset=utf-8');
-		headers.set('Cache-Control', configHono.cacheControl);
+		headers.set('Cache-Control', configHono.response.header.cacheControl);
 		headers.set('Content-Security-Policy', cspHeader(configHono.response.header.cspHtml));
 		headers.set('Content-Security-Policy-Report-Only', cspHeader(configHono.response.header.csproHtml));
 		headers.append('Vary', 'Accept-Encoding');

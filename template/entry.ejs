@@ -2,6 +2,7 @@
 <html lang="ja" prefix="og: https://ogp.me/ns#">
 	<head>
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta name="text-scale" content="scale" />
 
 		<link rel="alternate" href="/feed" type="application/atom+xml" title="「富永日記帳」の新着フィード" />
 
@@ -19,6 +20,7 @@
 		<%_ if (structuredData.description !== undefined) { _%>
 		<meta name="description" content="<%= structuredData.description %>" />
 		<%_ } _%>
+
 		<%_ if (structuredData.image !== undefined) { _%>
 		<meta property="og:title" content="<%= structuredData.title %>" />
 		<meta property="og:type" content="article" />
@@ -30,6 +32,9 @@
 		<meta property="og:description" content="<%= structuredData.description %>" />
 		<%_ } _%>
 		<%_ } _%>
+
+		<meta name="fediverse:creator" content="@SaekiTominaga@fedibird.com" />
+
 		<script type="application/ld+json">
 			<%- JSON.stringify(jsonLd, undefined, '\t') %>
 		</script>
@@ -80,20 +85,20 @@
 							<%_ } _%>
 
 							<section class="p-entry-footer-action">
-								<ul class="c-flex -buttons">
-									<li class="c-flex__item">
+								<div class="c-flex -buttons">
+									<p class="c-flex__item">
 										<a href="/feed" type="application/atom+xml" class="c-button -feed">
 											<img src="/image/icon/feed.svg" alt="" width="16" height="16" class="c-button__icon" />
 											<span class="c-button__text">新着フィード</span>
 										</a>
-									</li>
-									<li class="c-flex__item">
-										<a href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new/choose" class="c-button -github">
+									</p>
+									<p class="c-flex__item">
+										<a href="https://github.com/SaekiTominaga/blog.w0s.jp/issues/new/choose" rel="external" class="c-button -github">
 											<img src="/image/icon/github.svg" alt="GitHub" width="16" height="16" class="c-button__icon" />
 											<span class="c-button__text">コメント <small>(Issue)</small></span>
 										</a>
-									</li>
-								</ul>
+									</p>
+								</div>
 							</section>
 
 							<%_ if (relations.length > 0) { _%>
@@ -108,11 +113,7 @@
 												<span class="c-entry-link__title"><%- relation.title %></span>
 												<span class="c-entry-link__thumb">
 													<%_ if (relation.imageInternal !== undefined) { _%>
-													<picture>
-														<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=avif;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=avif;w=360;h=240;quality=30 2x" />
-														<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=webp;w=180;h=120;quality=60, https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=webp;w=360;h=240;quality=30 2x" />
-														<img src="https://media.w0s.jp/thumbimage/blog/<%= relation.imageInternal %>?type=jpeg;w=180;h=120;quality=60" alt="" crossorigin="" class="c-entry-link__image" />
-													</picture>
+													<img src="/entry/image/thumb/<%= relation.imageInternal %>@d=180x120;q=60.avif" srcset="/entry/image/thumb/<%= relation.imageInternal %>@d=360x240;q=30.avif 2x" alt="" class="c-entry-link__image" />
 													<%_ } else if (relation.imageExternal !== undefined) { _%>
 													<img src="<%= relation.imageExternal.toString() %>" alt="" class="c-entry-link__image" />
 													<%_ } else { _%>
@@ -169,13 +170,11 @@
 										<div class="p-book-item__details">
 											<p>資料や写真が少なく謎に包まれている玉川電気鉄道の狭軌時代の車両について、公文書や統計資料などをもとに解明を試みました。</p>
 										</div>
-										<p class="p-book-item__link"><a href="https://w0s.jp/tokyu/book/tamagawa1067" rel="external" id="cm-tamagawa-link" aria-labelledby="cm-tamagawa-link cm-tamagawa-hdg">紹介ページ</a></p>
+										<p class="p-book-item__link"><a href="https://w0s.jp/tokyu/book/tamagawa1067" id="cm-tamagawa-link" aria-labelledby="cm-tamagawa-link cm-tamagawa-hdg">紹介ページ</a></p>
 									</div>
 									<figure class="p-book-item__image">
 										<picture>
-											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/tamagawa1067_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/tamagawa1067_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
-											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/tamagawa1067_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/tamagawa1067_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
-											<img src="https://media.w0s.jp/thumbimage/blog/book/tamagawa1067_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="表紙: クリーム色の背景に縦書きの書名、左下に公文書の本文（一部分）と青焼き図面の写真が1枚ずつ" width="114" height="160" crossorigin="" loading="lazy" />
+											<img src="/image/book/tamagawa1067_cover.jpg@d=160x160;q=60.avif" srcset="/image/book/tamagawa1067_cover.jpg@d=320x320;q=30.avif 2x" alt="表紙: クリーム色の背景に縦書きの書名、左下に公文書の本文（一部分）と青焼き図面の写真が1枚ずつ" width="112" height="160" crossorigin="" loading="lazy" />
 										</picture>
 									</figure>
 								</div>
@@ -190,13 +189,11 @@
 										<div class="p-book-item__details">
 											<p>池上線、東急多摩川線で活躍した東急7700系の形態バリエーションについて、2010年時点の在籍車36両を徹底解析しました。</p>
 										</div>
-										<p class="p-book-item__link"><a href="https://w0s.jp/tokyu/book/7700" rel="external" id="cm-7700-link" aria-labelledby="cm-7700-link cm-7700-hdg">紹介ページ</a></p>
+										<p class="p-book-item__link"><a href="https://w0s.jp/tokyu/book/7700" id="cm-7700-link" aria-labelledby="cm-7700-link cm-7700-hdg">紹介ページ</a></p>
 									</div>
 									<figure class="p-book-item__image">
 										<picture>
-											<source type="image/avif" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=avif;w=320;h=320;quality=30 2x" />
-											<source type="image/webp" srcset="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=160;h=160;quality=50, https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=webp;w=320;h=320;quality=30 2x" />
-											<img src="https://media.w0s.jp/thumbimage/blog/book/7700_cover.jpg?type=jpeg;w=160;h=160;quality=50" alt="表紙: 上部に赤文字で書名、下部に7700系の正面写真が12枚並んでいる" width="114" height="160" crossorigin="" loading="lazy" />
+											<img src="/image/book/7700_cover.jpg@d=160x160;q=60.avif" srcset="/image/book/7700_cover.jpg@d=320x320;q=30.avif 2x" alt="表紙: 上部に赤文字で書名、下部に7700系の正面写真が12枚並んでいる" width="114" height="160" crossorigin="" loading="lazy" />
 										</picture>
 									</figure>
 								</div>

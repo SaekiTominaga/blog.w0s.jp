@@ -1,0 +1,196 @@
+/** ==============================
+ *   グルーピングコンテンツ
+ * ============================== */
+
+/* ===== 記事リンク ===== */
+/* stylelint-disable property-layout-mappings, unit-layout-mappings */
+.c-entry-link {
+	--_gap: 15px;
+	--_title-font-expand-ratio: 1;
+	--_bullet-inline-size: 0.45em;
+	--_bullet-block-size: 0.75em;
+	--_bullet-color: var(--link-color-bullet);
+	--_bullet-gap: 0.5em;
+	--_image-border-width: 1px;
+	--_image-width: min(180px, 30dvw);
+	--_image-height: 120px;
+	--_padding-inline-start: calc(var(--_image-width) + var(--_image-border-width) * 2 + var(--_gap) + var(--_bullet-inline-size) + var(--_bullet-gap));
+	--_padding-inline-end: 0;
+
+	contain: layout;
+	padding-inline: var(--_padding-inline-start) var(--_padding-inline-end);
+	min-height: calc(var(--_image-height) + var(--_image-border-width) * 2);
+	line-height: var(--line-height-narrow);
+	font-size: calc(100% * var(--_title-font-expand-ratio));
+
+	.p-title-list & {
+		--_gap: 25px;
+		--_title-font-expand-ratio: pow(var(--font-ratio), 3);
+	}
+
+	*:has(> &) {
+		container-type: inline-size;
+	}
+
+	& > :any-link {
+		outline: none;
+	}
+}
+
+.c-entry-link__title {
+	margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
+
+	:focus & {
+		outline: var(--outline-width) solid var(--outline-color);
+		outline-offset: var(--outline-offset-linkonly);
+	}
+
+	:any-link:hover & {
+		--_bullet-color: var(--link-color-hover);
+	}
+
+	&::before {
+		display: inline flow-root;
+		margin-inline-end: var(--_bullet-gap);
+		border-block-start: var(--_bullet-block-size) solid var(--_bullet-color);
+		clip-path: var(--shape-link-triangle);
+		inline-size: var(--_bullet-inline-size);
+		vertical-align: calc((1cap - var(--_bullet-block-size)) / 2);
+		content: "";
+	}
+}
+
+.c-entry-link__thumb {
+	--_inset-inline: 0 auto;
+
+	display: inline flex;
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline: var(--_inset-inline);
+	flex-wrap: nowrap;
+	justify-content: center;
+	width: calc(var(--_image-width) + var(--_image-border-width) * 2);
+	pointer-events: none;
+}
+
+.c-entry-link__image {
+	box-sizing: revert;
+	display: block flow;
+	border: var(--_image-border-width) solid;
+	background-color: var(--color-white);
+	max-width: var(--_image-width);
+	height: auto;
+	max-height: var(--_image-height);
+	color: var(--color-black);
+	pointer-events: auto;
+
+	:focus & {
+		outline: var(--outline-width-bold) solid var(--outline-color);
+		outline-offset: -1px;
+	}
+
+	:any-link:hover & {
+		box-shadow: var(--box-shadow-length-standout) var(--box-shadow-color);
+	}
+}
+
+.c-entry-link__date {
+	margin-block-start: 0.5em;
+	font-size: calc(100% / var(--_title-font-expand-ratio));
+}
+
+@container (inline-size <= 40em) {
+	.c-entry-link {
+		--_padding-inline-start: calc(var(--_bullet-inline-size) + var(--_bullet-gap));
+	}
+}
+
+@container (20em < inline-size <= 40em) {
+	.c-entry-link {
+		--_padding-inline-end: calc(var(--_image-width) + var(--_image-border-width) * 2 + var(--_gap));
+	}
+
+	.c-entry-link__thumb {
+		--_inset-inline: auto 0;
+	}
+}
+
+@container (20em < inline-size <= 22em) {
+	.c-entry-link__date {
+		margin-inline-start: calc(0px - var(--_bullet-inline-size) - var(--_bullet-gap));
+	}
+}
+
+@container (inline-size <= 20em) {
+	.c-entry-link {
+		min-height: unset;
+	}
+
+	.c-entry-link__thumb {
+		display: inline flow;
+		position: unset;
+
+		&::before {
+			display: block flow;
+			block-size: 0.5em;
+			content: "";
+		}
+	}
+}
+/* stylelint-enable property-layout-mappings, unit-layout-mappings */
+
+/* ===== キャプション ===== */
+.c-caption {
+	display: block flex;
+	flex-wrap: wrap;
+	gap: 0.5em 1.5em;
+	inline-size: fit-content;
+	line-height: var(--line-height-narrow);
+	color: var(--color-gray);
+	font-size: calc(100% / pow(var(--font-ratio), 1));
+	font-weight: var(--font-weight-bold);
+
+	.p-embed + & {
+		max-inline-size: calc(var(--entry-image-width) + var(--entry-embed-border-width) * 2);
+	}
+
+	:is(figure)/* is() は PostCSS のビルドの都合 */ > &:first-child {
+		margin-block-end: 0.5em;
+	}
+
+	:is(figure)/* is() は PostCSS のビルドの都合 */ > &:last-child {
+		margin-block-start: 0.5em;
+	}
+
+	/* メタデータ */
+	&.-meta {
+		margin-inline-start: auto;
+		padding-inline-start: 10%;
+	}
+}
+
+/* キャプションテキスト */
+.c-caption__text {
+}
+
+/* 画像拡大アイコン */
+.c-caption__media-expansion {
+	--_image-size: 0.8lh;
+
+	display: block flex;
+	flex-wrap: nowrap;
+	column-gap: 0.25em;
+
+	& > img {
+		position: relative;
+		transition-duration: 0.05s;
+		transition-property: margin, block-size;
+		margin: calc((1lh - var(--_image-size)) / 2);
+		block-size: var(--_image-size);
+		inline-size: auto;
+	}
+
+	&:hover {
+		--_image-size: 0.9lh;
+	}
+}

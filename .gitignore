@@ -1,25 +1,17 @@
 **/node_modules
 .env
 .env.*
-log4js.*.json
 *.tsbuildinfo
 
 /.html
-/.vscode/launch.json
 
 /frontend/.rollup.cache
 
 /hono/dist
 
-/public/**/*.atom
-/public/**/*.br
-/public/**/*.map
-/public/**/*.svg
-/public/favicon.ico
-/public/sitemap.xml
-/public/json
-/public/script
-/public/style
+/media/dist
+
+/public
 
 /remark/dist
 /remark/src/shell/config

@@ -3,8 +3,7 @@ import ejs from 'ejs';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { env } from '@w0s/env-value-type';
-import Markdown from '../../../remark/dist/Markdown.js';
-import MarkdownTitle from '../../../remark/dist/Title.js';
+import type { Variables } from '../app.ts';
 import configEntry from '../config/entry.ts';
 import configHono from '../config/hono.ts';
 import EntryDao from '../db/Entry.ts';
@@ -12,12 +11,14 @@ import Rendering from '../util/Rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/entry.ts';
 import type { Entries } from '../../@types/view.d.ts';
+// oxlint-disable-next-line import/extensions
+import Markdown from '../../../remark/dist/Markdown.js';
+// oxlint-disable-next-line import/extensions
+import MarkdownTitle from '../../../remark/dist/Title.js';
 
-/**
- * 記事
- */
+/* ===== 記事 ===== */
 
-export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam, async (context) => {
+export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9][0-9]*}', validatorParam, async (context) => {
 	const { req } = context;
 
 	const { entryId } = req.valid('param');
@@ -26,11 +27,11 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 		readonly: true,
 	});
 
-	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configEntry.html.directory}/${String(entryId)}${configHono.extension.html}`;
+	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configEntry.html.directory}/${String(entryId)}.html`;
 
 	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
 	const response = await rendering.serverCache();
-	if (response !== null) {
+	if (response !== undefined) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
 		return response;
 	}
@@ -55,7 +56,7 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 
 	let imageUrl: URL | undefined;
 	if (entryDto.image_internal !== undefined) {
-		imageUrl = new URL(`https://media.w0s.jp/image/blog/${entryDto.image_internal}`);
+		imageUrl = new URL(`https://blog.w0s.jp/entry/image/${entryDto.image_internal}`);
 	} else if (entryDto.image_external !== undefined) {
 		imageUrl = entryDto.image_external;
 	}
@@ -80,8 +81,8 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 	const jsonLd = new Map<string, string | string[] | object>([
 		['@context', 'https://schema.org/'],
 		['@type', 'BlogPosting'],
+		['datePublished', structuredData.datePublished.format('YYYY-MM-DDTHH:mm:ssZ')],
 	]);
-	jsonLd.set('datePublished', structuredData.datePublished.format('YYYY-MM-DDTHH:mm:ssZ'));
 	if (structuredData.dateModified !== undefined) {
 		jsonLd.set('dateModified', structuredData.dateModified.format('YYYY-MM-DDTHH:mm:ssZ'));
 	}
@@ -111,5 +112,5 @@ export const entryApp = new Hono().get('/:entryId{[1-9][0-9]*}', validatorParam,
 	});
 
 	/* レンダリング、ファイル出力 */
-	return await rendering.generation(html);
+	return rendering.generation(html);
 });

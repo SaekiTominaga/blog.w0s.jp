@@ -1,0 +1,133 @@
+@view-transition {
+	navigation: auto;
+}
+
+:root {
+	color: var(--color-black);
+	font-family: sans-serif;
+	font-size: 100%;
+
+	@media (prefers-reduced-motion: no-preference) {
+		scroll-behavior: smooth;
+	}
+}
+
+:root,
+input,
+select,
+button,
+textarea {
+	line-height: var(--line-height-wide);
+}
+
+head /* for iOS Vialdi 7.7 (Force a dark theme on all websites) */,
+body {
+	background-color: oklch(99.836% 0.0079 106.54deg)
+		/* 本来の意図は `oklch(from var(--color-yellow) l c h / 2.5%)` だが、iOS Vivaldi の強制ダークテーマのためにアルファチャネルなしの表現で代用 */;
+	color: inherit;
+
+	@media print {
+		background-color: var(--color-white);
+	}
+}
+
+:focus {
+	outline: var(--outline-width) solid var(--outline-color);
+}
+
+:any-link {
+	outline-offset: var(--outline-offset);
+
+	/* for iOS auto link */
+	&[href^="tel:"] {
+		text-decoration-line: unset;
+		color: unset;
+		pointer-events: none;
+	}
+
+	&:focus {
+		text-decoration-line: unset;
+	}
+
+	&:not([href^="tel:"]):hover {
+		color: var(--link-color-hover);
+	}
+}
+
+:link {
+	color: var(--link-color);
+}
+
+:visited {
+	color: var(--link-color-visited);
+}
+
+::placeholder {
+	opacity: 0.54;
+	color: var(--color-black);
+}
+
+pre {
+	tab-size: 2;
+
+	@media print {
+		text-wrap-mode: wrap; /* default value: `white-space: pre` */
+	}
+}
+
+em {
+	&:lang(ja) {
+		font-weight: var(--font-weight-bold);
+	}
+}
+
+small {
+	font-size: calc(100% / pow(var(--font-ratio), 2));
+}
+
+code {
+	border-radius: var(--border-radius-normal);
+	background-color: oklch(from var(--color-green) 100% c h / 5%);
+	padding-block: 0.1lh;
+	color: var(--color-green);
+
+	:is(h1, h2, h3, h4, h5, h6, hgroup, pre, a, .c-domain) & {
+		border-radius: initial;
+		background-color: initial;
+		padding-block: initial;
+		color: inherit;
+	}
+
+	.c-domain & {
+		font-family: inherit;
+	}
+
+	/* for Chrome, Safari */
+	:visited & {
+		color: var(--link-color-visited);
+	}
+
+	/* for Chrome, Safari */
+	:visited:hover & {
+		color: var(--link-color-hover);
+	}
+}
+
+q {
+	background-image: linear-gradient(transparent, transparent 75%, oklch(from var(--color-yellow) l c h / 50%) 75%);
+	quotes: "\201C" "\201D" "\2018" "\2019";
+
+	&::before {
+		padding-inline-start: 0.25em;
+		content: open-quote;
+	}
+
+	&::after {
+		padding-inline-end: 0.25em;
+		content: close-quote;
+	}
+}
+
+input:is([type="radio" i], [type="checkbox" i]) {
+	accent-color: var(--form-control-theme-color);
+}

@@ -1,0 +1,71 @@
+/** ==============================
+ *   ページフッター
+ * ============================== */
+
+/* ===== サイトナビゲーション ===== */
+.p-footer-nav {
+	--_flex-direction: column;
+
+	display: block flex;
+	flex-direction: var(--_flex-direction);
+	flex-wrap: wrap;
+	gap: 1em 2em;
+	justify-content: flex-start;
+
+	@container footer-nav (inline-size >= 30em) {
+		--_flex-direction: row;
+	}
+
+	& :any-link {
+		outline-offset: var(--outline-offset-linkonly);
+	}
+}
+
+/* ===== ソーシャルメディア ===== */
+.p-footer-social {
+	display: block flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 24px;
+	font-size: calc(100% / pow(var(--font-ratio), 2));
+
+	@container footer-social (inline-size >= 600px) {
+		justify-content: flex-end;
+	}
+
+	& > li {
+		text-align: center;
+	}
+
+	& :any-link {
+		outline-offset: var(--outline-offset-linkonly);
+	}
+}
+
+.p-footer-social__image {
+	display: inline flex;
+	flex-wrap: nowrap;
+	padding-block-end: 0.5em;
+}
+
+.p-footer-social__text {
+	inline-size: fit-content;
+
+	&::before {
+		display: block flow;
+		content: "";
+	}
+}
+
+/* ===== アドセンス ===== */
+.p-footer-ads {
+	margin-inline: auto;
+	inline-size: min(100%, 960px);
+
+	& .adsbygoogle {
+		display: block flow;
+	}
+}
+
+.p-footer-ads__hdg {
+}

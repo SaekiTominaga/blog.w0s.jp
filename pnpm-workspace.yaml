@@ -1,28 +1,37 @@
 packages:
   - frontend
   - hono
+  - media
   - remark
 
 # Settings <https://pnpm.io/settings>
 
 ## Dependency Resolution
 
+minimumReleaseAgeExclude:
+  - '@types/*'
+  - '@w0s/*'
+  - oxlint-plugin-safely-storage
 trustPolicy: no-downgrade
-trustPolicyExclude:
-  - chokidar@4.0.3
-  - semver@6.3.1
 blockExoticSubdeps: true
 
 ## Dependency Hoisting Settings
 
 publicHoistPattern:
-  - 'eslint'
   - 'markuplint'
   - 'stylelint'
+
+## Peer Dependency Settings
+
+strictPeerDependencies: true
+
+## CLI Settings
+
+engineStrict: true
 
 ## Build Settings
 
 strictDepBuilds: true
-onlyBuiltDependencies:
-  - better-sqlite3
-  - esbuild
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true

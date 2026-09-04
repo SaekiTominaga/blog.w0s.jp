@@ -1,0 +1,182 @@
+/** ==============================
+ *   リスト
+ * ============================== */
+
+/* ===== 通常リスト ===== */
+.p-list {
+	& > li {
+		margin-inline-start: 1em;
+		list-style-type: disc;
+
+		& + li {
+			margin-block-start: 0.5em;
+		}
+
+		& > .p-list {
+			& > li {
+				margin-block-start: 0.25em;
+				list-style-type: circle;
+			}
+		}
+	}
+}
+
+/* ===== 番号リスト ===== */
+.p-list-num {
+	--_digit: attr(data-digit ch, 1ch);
+
+	margin-inline-start: calc(var(--_digit) + 2ch);
+
+	@supports not (x: attr(x ch)) {
+		&[data-digit="1"] {
+			--_digit: 1ch;
+		}
+
+		&[data-digit="2"] {
+			--_digit: 2ch;
+		}
+
+		&[data-digit="3"] {
+			--_digit: 3ch;
+		}
+	}
+
+	& > li {
+		list-style-type: decimal; /* for Safari https://bugs.webkit.org/show_bug.cgi?id=204163 */
+		counter-increment: item;
+
+		&::marker {
+			font-family: monospace;
+			content: counter(item) ". ";
+		}
+
+		& + li {
+			margin-block-start: 0.5em;
+		}
+	}
+}
+
+/* ===== 記述リスト ===== */
+.p-list-description {
+	& > dt {
+		font-weight: var(--font-weight-bold);
+	}
+
+	& > dd + dt {
+		margin-block-start: 0.5em;
+	}
+
+	& > dd {
+		margin-inline-start: 1em;
+	}
+}
+
+/* ===== 目次 ===== */
+.p-toc {
+	--_icon-inline-size: 0.75em; /* アイコンの幅 */
+	--_icon-block-size: calc(var(--_icon-inline-size) * 0.75); /* アイコンの高さ */
+	--_icon-color: var(--color-gray); /* アイコンの色 */
+	--_icon-gap: 0.5em; /* アイコンと後続テキストの間隔 */
+
+	border: 1px solid var(--border-color-dark);
+	border-radius: var(--border-radius-normal);
+	background-color: var(--bgcolor-light);
+	padding: 1.25em min(1.25dvi, 1.25em);
+	line-height: var(--line-height-narrow);
+
+	.p-entry & {
+		&:not(:first-child) {
+			margin-block-start: calc(var(--stack-margin-base) * 3);
+		}
+
+		&:not(:last-child) {
+			margin-block-end: calc(var(--stack-margin-base) * 3);
+		}
+	}
+
+	& > * + * {
+		margin-block-start: 1em;
+	}
+}
+
+.p-toc__list {
+	display: block flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	gap: 0.75em 1.5em;
+	font-size: calc(100% * pow(var(--font-ratio), 1));
+
+	& > li:has(> :any-link) {
+		margin-inline-start: calc(var(--_icon-inline-size) + var(--_icon-gap));
+	}
+
+	& :any-link {
+		margin-inline-start: calc(0px - var(--_icon-inline-size) - var(--_icon-gap));
+		outline-offset: var(--outline-offset-linkonly);
+
+		&::before {
+			display: inline flow-root;
+			margin-inline-end: var(--_icon-gap);
+			border-block-start: var(--_icon-block-size) solid var(--_icon-color);
+			clip-path: var(--shape-pagelink-triangle);
+			inline-size: var(--_icon-inline-size);
+			vertical-align: calc((1cap - var(--_icon-block-size)) / 2);
+			content: "";
+		}
+
+		&:hover {
+			--_icon-color: var(--link-color-hover);
+		}
+	}
+}
+
+/* ===== 脚注リスト ===== */
+.p-footnote {
+	border: 1px solid var(--bgcolor-dark);
+	border-radius: var(--border-radius-large);
+	background-color: var(--bgcolor-dark);
+	padding: 1em;
+	font-size: calc(100% / pow(var(--font-ratio), 1));
+
+	.p-entry & {
+		border-color: var(--border-color-light);
+
+		&:last-child {
+			margin-block-start: calc(var(--stack-margin-base) * 6);
+		}
+	}
+
+	& > * + * {
+		margin-block-start: 1em;
+	}
+}
+
+.p-footnote__hdg {
+}
+
+.p-footnote__list {
+	display: block grid;
+	grid-template-columns: auto 1fr;
+	gap: 1em 0.5em;
+
+	& > li {
+		display: block grid;
+		grid-template-columns: subgrid;
+		grid-column: 1 / -1;
+	}
+}
+
+.p-footnote__no {
+	text-align: end;
+}
+
+.p-footnote__content {
+}
+
+.p-footnote__backref {
+	font-size: calc(100% / pow(var(--font-ratio), 2));
+
+	&:not(.p-footnote__content > &) {
+		margin-inline-start: 0.5em;
+	}
+}

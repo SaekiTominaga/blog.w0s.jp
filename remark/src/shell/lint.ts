@@ -31,7 +31,7 @@ const markdown = new Markdown({
 const promised = entryiesDto.map(async ({ id, message }) => {
 	const { messages: vMessages } = await markdown.toHtml(message);
 
-	if (vMessages.length >= 1) {
+	if (vMessages.length > 0) {
 		vMessages.forEach((vMessage) => {
 			const { reason, line, column, ruleId } = vMessage;
 

@@ -43,6 +43,7 @@ export const footnoteReferenceToHast = (state: State, node: FootnoteReference): 
 					href: `#${clobberPrefix}fn-${safeId}`,
 					id: `${clobberPrefix}fnref-${safeId}${reuseCounter > 1 ? `-${String(reuseCounter)}` : ''}`,
 					className: ['js-footnote-reference-popover'],
+					'data-ignore': '.p-footnote__backref',
 					'data-popover-label': '脚注',
 					'data-popover-class': 'p-footnote-popover',
 					'data-popover-hide-text': '閉じる',

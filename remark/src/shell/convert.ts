@@ -1,6 +1,4 @@
 import fs from 'node:fs';
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { env } from '@w0s/env-value-type';
 import Dao from '../db/Entry.ts';
@@ -25,7 +23,7 @@ const convert = async (entryId: number, message: string): Promise<string> => {
 	const CRLF = '\r\n';
 	const LF = '\n';
 
-	const rule = JSON.parse((await fs.promises.readFile(`${dirname(fileURLToPath(import.meta.url))}/config/convert.json`)).toString()) as {
+	const rule = JSON.parse((await fs.promises.readFile(`${import.meta.dirname}/config/convert.json`)).toString()) as {
 		from: string;
 		to: string;
 	};
@@ -48,7 +46,7 @@ const convert = async (entryId: number, message: string): Promise<string> => {
 		return convertd;
 	});
 
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	// oxlint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!exec) {
 		console.info(entryId, `記事本文に ${from.toString()} は存在しない`);
 	}
