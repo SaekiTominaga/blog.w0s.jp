@@ -17,7 +17,7 @@
 		"@types/node": "24.13.2",
 		"@w0s/markuplint-config": "3.13.0",
 		"@w0s/oxlint-config": "^1.0.7",
-		"@w0s/stylelint-config": "4.24.0",
+		"@w0s/stylelint-config": "4.25.0",
 		"@w0s/tsconfig": "3.1.1",
 		"oxlint": "^1.80.0",
 		"oxlint-plugin-safely-storage": "^1.0.0",
