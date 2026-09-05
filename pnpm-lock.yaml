@@ -100,8 +100,8 @@ importers:
         specifier: 5.0.1
         version: 5.0.1
       '@w0s/input-file-preview':
-        specifier: 3.0.7
-        version: 3.0.7
+        specifier: 3.0.8
+        version: 3.0.8
       '@w0s/paapi-item-image-url-parser':
         specifier: 4.0.0
         version: 4.0.0
@@ -1553,15 +1553,12 @@ packages:
   '@w0s/form-submit-overlay@4.0.6':
     resolution: {integrity: sha512-0tm90vom7J+pQn9m1QRGBlQaKkSvM71dWAZyZv5Pc6vYvRmxCSq45dgTAJS+eKZaItqNrTri7Hr0tgZXf9tyVA==}
 
-  '@w0s/html-escape@4.0.2':
-    resolution: {integrity: sha512-zCHeJa8CgyBXK6+ywov6nnju/dagTeLVM68oEVSi6uap2UtT4d9RUQ5BGeh3t2cH37Ngcdr0sHadKGA4tRGprQ==}
-
   '@w0s/html-escape@5.0.1':
     resolution: {integrity: sha512-PDwAdR3oFfhRFcC/Ycp+CHRA2+lDD+FO56Hg+jjzHJBkJ+3jK+j5p0QQQJTZDDYkISAJIFL5ZAwRQ83TfcUKnA==}
     engines: {node: '>=22'}
 
-  '@w0s/input-file-preview@3.0.7':
-    resolution: {integrity: sha512-aDKl1swGXm+uZA41Y08A2cYJ3o7rMI5OZAPQS65EyATgqvTaLMoTW09g6cD5ErCxJQW9Fx31G1JodaiNCPYIlQ==}
+  '@w0s/input-file-preview@3.0.8':
+    resolution: {integrity: sha512-0JV3ykfgTeXP9yZ5TAOecRudilLTDuuVRjZxR+fjWDCaFdZhCluGsqKqcO8T7aUWUQI2B0tx1WDWWfV0VlqFSw==}
 
   '@w0s/isbn-verify@4.0.0':
     resolution: {integrity: sha512-6CcSgIBfZJX80U2/CkhHtLgJAUolHqFcLT5GuWMT+uKrasT2pw/C64osfvozgty7hyYJuccY5Uxqr5/DcWbL8Q==}
@@ -4214,13 +4211,11 @@ snapshots:
 
   '@w0s/form-submit-overlay@4.0.6': {}
 
-  '@w0s/html-escape@4.0.2': {}
-
   '@w0s/html-escape@5.0.1': {}
 
-  '@w0s/input-file-preview@3.0.7':
+  '@w0s/input-file-preview@3.0.8':
     dependencies:
-      '@w0s/html-escape': 4.0.2
+      '@w0s/html-escape': 5.0.1
       whatwg-mimetype: 5.0.0
 
   '@w0s/isbn-verify@4.0.0': {}
