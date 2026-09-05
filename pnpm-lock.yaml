@@ -212,8 +212,8 @@ importers:
         specifier: 4.12.22
         version: 4.12.22
       kysely:
-        specifier: 0.28.17
-        version: 0.28.17
+        specifier: 0.29.4
+        version: 0.29.4
       nodemailer:
         specifier: 9.0.1
         version: 9.0.1
@@ -285,8 +285,8 @@ importers:
         specifier: 11.11.1
         version: 11.11.1
       kysely:
-        specifier: 0.28.17
-        version: 0.28.17
+        specifier: 0.29.4
+        version: 0.29.4
       mdast-util-definition-list:
         specifier: 2.0.0
         version: 2.0.0
@@ -2336,9 +2336,9 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  kysely@0.28.17:
-    resolution: {integrity: sha512-nbD8lB9EB3wNdMhOCdx5Li8DxnLbvKByylRLcJ1h+4SkrowVeECAyZlyiKMThF7xFdRz0jSQ2MoJr+wXux2y0Q==}
-    engines: {node: '>=20.0.0'}
+  kysely@0.29.4:
+    resolution: {integrity: sha512-y5mVgQNkMbs1eK9Xyc0pmNdabN2wHhRYY/5r4W5HrUT1rYCEPeVNSj1RUJeSDKT3U0p+mXCvLgkrFuIafYI6BA==}
+    engines: {node: '>=22.0.0'}
 
   lcid@3.1.1:
     resolution: {integrity: sha512-M6T051+5QCGLBQb8id3hdvIW8+zeFV2FyBGFS9IEK5H9Wt4MueD4bW1eWikpHgZp+5xR3l5c8pZUkQsIA0BFZg==}
@@ -4979,7 +4979,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  kysely@0.28.17: {}
+  kysely@0.29.4: {}
 
   lcid@3.1.1:
     dependencies:
