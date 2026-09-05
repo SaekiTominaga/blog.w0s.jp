@@ -106,8 +106,8 @@ importers:
         specifier: 4.0.0
         version: 4.0.0
       '@w0s/report-js-error':
-        specifier: 4.0.2
-        version: 4.0.2
+        specifier: 4.0.3
+        version: 4.0.3
       '@w0s/report-same-referrer':
         specifier: 5.0.1
         version: 5.0.1
@@ -1580,8 +1580,8 @@ packages:
     resolution: {integrity: sha512-Bs/GHRan6BVSBTB7Z/ZVJRgDp7wgPDYAXT57ZBkuu1lyvDxQFLFixrqiXirLK2R1hjVjAK+frQ+CDC9jpnHAyQ==}
     engines: {node: '>=22'}
 
-  '@w0s/report-js-error@4.0.2':
-    resolution: {integrity: sha512-hnU6li82z4J2bWEuWivX2ARpFaj7PhCXIXWLA8KQOu0e7JyVgZDhZcMoIiVyaZeQih/+fU8zvuDsif/FHhkK/w==}
+  '@w0s/report-js-error@4.0.3':
+    resolution: {integrity: sha512-BaZczOEZjOYBn8EnahYErI/lb5NPCPPCi4ZFsolodyHmCqt+QVHPQmTuzI9PpeDtywQb3gMYBOQ1ZvHafZ2jRg==}
 
   '@w0s/report-same-referrer@5.0.1':
     resolution: {integrity: sha512-TNGFZ4PFi/YetO2bcum7BT8U8lPj/rNWeHQYNLTlxTFHIdMU1Fsk0LGY6qu5hqBnzxlbWuA7G6zpG1WN1pX1Cw==}
@@ -4232,7 +4232,7 @@ snapshots:
 
   '@w0s/paapi-item-image-url-parser@4.0.0': {}
 
-  '@w0s/report-js-error@4.0.2': {}
+  '@w0s/report-js-error@4.0.3': {}
 
   '@w0s/report-same-referrer@5.0.1': {}
 
