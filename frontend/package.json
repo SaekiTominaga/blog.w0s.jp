@@ -38,7 +38,7 @@
 		"@csstools/postcss-global-data": "4.0.0",
 		"@rollup/plugin-commonjs": "29.0.3",
 		"@rollup/plugin-node-resolve": "16.0.3",
-		"@rollup/plugin-sucrase": "^5.1.0",
+		"@rollup/plugin-sucrase": "5.1.0",
 		"@types/jsdom": "30.0.0",
 		"@types/trusted-types": "2.0.7",
 		"brotli-cli": "2.1.1",
