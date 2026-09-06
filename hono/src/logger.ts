@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { type Transporter, createTransport } from 'nodemailer';
 import winston from 'winston';
 import TransportStream from 'winston-transport';
 import { env } from '@w0s/env-value-type';
@@ -6,12 +6,12 @@ import { env } from '@w0s/env-value-type';
 const development = process.env['NODE_ENV'] !== 'production';
 
 class EmailTransport extends TransportStream {
-	readonly #transporter: nodemailer.Transporter;
+	readonly #transporter: Transporter;
 
 	constructor(options: TransportStream.TransportStreamOptions) {
 		super(options);
 
-		this.#transporter = nodemailer.createTransport({
+		this.#transporter = createTransport({
 			port: env('MAIL_PORT', 'number'),
 			host: env('MAIL_SMTP'),
 			auth: {
