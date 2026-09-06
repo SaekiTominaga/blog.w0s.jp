@@ -13,7 +13,7 @@
 		"@w0s/env-value-type": "2.0.0",
 		"@w0s/file-size-format": "4.0.1",
 		"@w0s/html-escape": "5.0.1",
-		"@w0s/paapi-item-image-url-parser": "4.0.0",
+		"@w0s/paapi-item-image-url-parser": "4.0.1",
 		"@w0s/sqlite-utility": "3.0.0",
 		"better-sqlite3": "12.11.1",
 		"dayjs": "1.11.20",
@@ -21,7 +21,7 @@
 		"filenamify": "7.0.1",
 		"hono": "4.12.22",
 		"kysely": "0.28.17",
-		"nodemailer": "9.0.1",
+		"nodemailer": "10.0.0",
 		"sharp": "0.35.2",
 		"whatwg-mimetype": "5.0.0",
 		"winston": "3.19.0",
@@ -30,9 +30,8 @@
 	"devDependencies": {
 		"@types/better-sqlite3": "9.6.0",
 		"@types/ejs": "3.1.5",
-		"@types/nodemailer": "8.0.0",
 		"@types/whatwg-mimetype": "5.0.0",
 		"tsx": "4.21.0"
 	},
-	"packageManager": "pnpm@11.8.0"
+	"packageManager": "pnpm@12.3.4"
 }

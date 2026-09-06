@@ -10,5 +10,5 @@
 	"dependencies": {
 		"sharp": "0.35.2"
 	},
-	"packageManager": "pnpm@11.8.0"
+	"packageManager": "pnpm@12.3.4"
 }
