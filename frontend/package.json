@@ -52,5 +52,5 @@
 		"postcss-nesting": "14.0.1",
 		"rollup": "4.62.4"
 	},
-	"packageManager": "pnpm@11.8.0"
+	"packageManager": "pnpm@12.3.4"
 }

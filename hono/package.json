@@ -33,5 +33,5 @@
 		"@types/whatwg-mimetype": "5.0.0",
 		"tsx": "4.21.0"
 	},
-	"packageManager": "pnpm@11.8.0"
+	"packageManager": "pnpm@12.3.4"
 }
