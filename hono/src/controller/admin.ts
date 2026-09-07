@@ -1,5 +1,4 @@
 import { inspect } from 'node:util';
-import dayjs from 'dayjs';
 import ejs from 'ejs';
 import { type Context, Hono } from 'hono';
 import { env } from '@w0s/env-value-type';
@@ -7,7 +6,7 @@ import type { Variables } from '../app.ts';
 import configHono from '../config/hono.ts';
 import configProcess from '../config/process.ts';
 import PostDao from '../db/Post.ts';
-import { clear } from '../process/dsg.ts';
+import { clear } from '../process/clear.ts';
 import { create as createFeed } from '../process/feed.ts';
 import { create as createNewlyJson } from '../process/newlyJson.ts';
 import { create as createSitemap } from '../process/sitemap.ts';
@@ -257,7 +256,7 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 			postResults.push({ success: true, message: `${configProcess.post.processMessage.update.success} ${getEntryUrl(entryData.id)}` });
 		}
 
-		const [clearDSGResult, insertSNSQueue, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.allSettled([
+		const [clearResult, insertSNSQueue, createFeedResult, createSitemapResult, createNewlyJsonResult] = await Promise.allSettled([
 			clear(),
 			entryData.public && entryData.social
 				? // oxlint-disable-next-line unicorn/no-unreadable-iife
@@ -268,12 +267,14 @@ export const adminApp = new Hono<{ Variables: Variables }>()
 			createNewlyJson(),
 		]);
 
-		if (clearDSGResult.status === 'fulfilled') {
-			logger.info(`Modified date of DB was recorded: ${clearDSGResult.value.toString()}`);
-			postResults.push({ success: true, message: `${configProcess.dsg.processMessage.success} <${dayjs(clearDSGResult.value).format('HH:mm:ss')}>` });
+		if (clearResult.status === 'fulfilled') {
+			if (clearResult.value.length > 0) {
+				logger.info(`Cache file removed: ${inspect(clearResult.value)}`);
+				postResults.push({ success: true, message: `${configProcess.clear.processMessage.success}（${clearResult.value.length}ファイル）` });
+			}
 		} else {
-			logger.error(clearDSGResult.reason);
-			postResults.push({ success: false, message: `${configProcess.dsg.processMessage.failure}: ${String(clearDSGResult.reason)}` });
+			logger.error(clearResult.reason);
+			postResults.push({ success: false, message: `${configProcess.clear.processMessage.failure}: ${String(clearResult.reason)}` });
 		}
 
 		if (insertSNSQueue.status === 'fulfilled') {
