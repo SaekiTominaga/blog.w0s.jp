@@ -29,21 +29,6 @@ export default class {
 	}
 
 	/**
-	 * 最終更新日時を取得する
-	 *
-	 * @returns 最終更新日時
-	 */
-	async getLastModified(): Promise<Date> {
-		let query = this.db.selectFrom('d_info').selectAll();
-
-		query = query.orderBy('modified', 'desc');
-
-		const row = await query.executeTakeFirstOrThrow();
-
-		return sqliteToJS(row.modified, 'date');
-	}
-
-	/**
 	 * 記事件数（非表示記事を除く）を取得
 	 *
 	 * @returns 記事件数

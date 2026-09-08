@@ -7,7 +7,7 @@ import type { Variables } from '../app.ts';
 import configEntry from '../config/entry.ts';
 import configHono from '../config/hono.ts';
 import EntryDao from '../db/Entry.ts';
-import Rendering from '../util/Rendering.ts';
+import { createCache, readCache } from '../util/rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/entry.ts';
 import type { Entries } from '../../@types/view.d.ts';
@@ -29,8 +29,7 @@ export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9
 
 	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configEntry.html.directory}/${String(entryId)}.html`;
 
-	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
-	const response = await rendering.serverCache();
+	const response = await readCache(context, htmlFilePath);
 	if (response !== undefined) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
 		return response;
@@ -95,7 +94,7 @@ export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9
 	}
 
 	/* HTML 生成 */
-	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configEntry.template}`, {
+	const htmlData = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configEntry.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		entryId: entryId,
 		structuredData: structuredData,
@@ -111,6 +110,9 @@ export const entryApp = new Hono<{ Variables: Variables }>().get('/:entryId{[1-9
 		newlyEntries: newlyEntries,
 	});
 
-	/* レンダリング、ファイル出力 */
-	return rendering.generation(html);
+	/* キャッシュファイル出力、レンダリング */
+	return createCache(context, {
+		path: htmlFilePath,
+		data: htmlData,
+	});
 });

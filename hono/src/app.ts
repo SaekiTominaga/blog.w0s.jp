@@ -19,7 +19,7 @@ import { entriesSummaryApp as apiEntriesApp } from './controller/api/entriesSumm
 import { mediaUploadApp as apiMediaUploadApp } from './controller/api/mediaUpload.ts';
 import { previewApp as apiPreviewApp } from './controller/api/preview.ts';
 import { basicAuth } from './util/auth.ts';
-import { csp as cspHeader, reportingEndpoints as reportingEndpointsHeader } from './util/httpHeader.ts';
+import { getCsp as cspHeader, getReportingEndpoints as reportingEndpointsHeader } from './util/httpHeader.ts';
 import { isApi } from './util/request.ts';
 
 interface Variables {

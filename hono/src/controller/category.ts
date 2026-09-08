@@ -9,7 +9,7 @@ import type { Variables } from '../app.ts';
 import configCategory from '../config/category.ts';
 import configHono from '../config/hono.ts';
 import CategoryDao from '../db/Category.ts';
-import Rendering from '../util/Rendering.ts';
+import { createCache, readCache } from '../util/rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/category.ts';
 import type { Entries } from '../../@types/view.d.ts';
@@ -29,8 +29,7 @@ export const categoryApp = new Hono<{ Variables: Variables }>().get('/:categoryN
 
 	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configCategory.html.directory}/${filenamify(categoryName)}.html`;
 
-	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
-	const response = await rendering.serverCache();
+	const response = await readCache(context, htmlFilePath);
 	if (response !== undefined) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
 		return response;
@@ -38,7 +37,6 @@ export const categoryApp = new Hono<{ Variables: Variables }>().get('/:categoryN
 
 	/* DB からデータ取得 */
 	const entriesDto = await dao.getEntries(categoryName);
-
 	if (entriesDto.length === 0) {
 		throw new HTTPException(404, { message: `無効なカテゴリが指定: ${categoryName}` });
 	}
@@ -77,7 +75,7 @@ export const categoryApp = new Hono<{ Variables: Variables }>().get('/:categoryN
 	});
 
 	/* HTML 生成 */
-	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configCategory.template}`, {
+	const htmlData = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configCategory.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		categoryName: categoryName,
 		count: entries.length,
@@ -86,6 +84,9 @@ export const categoryApp = new Hono<{ Variables: Variables }>().get('/:categoryN
 		newlyEntries: newlyEntries,
 	});
 
-	/* レンダリング、ファイル出力 */
-	return rendering.generation(html);
+	/* キャッシュファイル出力、レンダリング */
+	return createCache(context, {
+		path: htmlFilePath,
+		data: htmlData,
+	});
 });

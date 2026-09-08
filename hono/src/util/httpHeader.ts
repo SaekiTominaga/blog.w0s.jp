@@ -1,4 +1,6 @@
-type CompressionCcoding = 'gzip' | 'compress' | 'deflate' | 'br' | 'zstd'; // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding#directives
+import type fs from 'node:fs';
+
+type CompressionCoding = 'gzip' | 'deflate' | 'br' | 'zstd'; // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding#directives
 
 /**
  * 指定されたエンコーディングをサポートしているかどうか
@@ -8,7 +10,7 @@ type CompressionCcoding = 'gzip' | 'compress' | 'deflate' | 'br' | 'zstd'; // ht
  *
  * @returns サポートしていれば true
  */
-const supportCompressionEncoding = (acceptEncoding: string | undefined, searchCoding: CompressionCcoding): boolean => {
+const supportCompressionEncoding = (acceptEncoding: string | undefined, searchCoding: CompressionCoding): boolean => {
 	if (acceptEncoding === undefined) {
 		return false;
 	}
@@ -21,27 +23,37 @@ const supportCompressionEncoding = (acceptEncoding: string | undefined, searchCo
 };
 
 /**
- * `Content-Security-Policy`, `Content-Security-Policy-Report-Only`
+ * `Content-Security-Policy`, `Content-Security-Policy-Report-Only` フィールドの値を生成する
  *
  * @param object - オブジェクトで構造化されたデータ
  *
- * @returns ヘッダー値
+ * @returns フィールド値
  */
-const csp = (object: Readonly<Record<string, readonly string[]>>): string =>
+const getCsp = (object: Readonly<Record<string, readonly string[]>>): string =>
 	Object.entries(object)
 		.map(([key, values]) => `${key} ${values.join(' ')}`)
 		.join(';');
 
 /**
- * `Reporting-Endpoints`
+ * `ETag` フィールドの値を生成する（弱いバリデーター）
+ *
+ * @param stat - fs.Stats
+ *
+ * @returns フィールド値（ファイルが存在しない場合は undefined）
+ */
+const getEntityTagWeak = (stat: fs.Stats): string => `W/"${stat.size.toString(16)}-${stat.mtimeMs.toString(16)}"`;
+
+/**
+ * `Reporting-Endpoints` フィールドの値を生成する
  *
  * @param object - オブジェクトで構造化されたデータ
  *
- * @returns ヘッダー値
+ * @returns フィールド値
  */
-const reportingEndpoints = (object: Readonly<Record<string, string>>): string =>
+const getReportingEndpoints = (object: Readonly<Record<string, string>>): string =>
 	Object.entries(object)
 		.map(([key, value]) => `${key}="${value}"`)
 		.join(',');
 
-export { supportCompressionEncoding, csp, reportingEndpoints };
+export type { CompressionCoding as CompressionCcoding };
+export { supportCompressionEncoding, getCsp, getEntityTagWeak, getReportingEndpoints };
