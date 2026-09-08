@@ -4,6 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "tsc -w",
+		"prebuild": "rimraf dist/* -g",
 		"build": "tsc",
 		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
 	},
