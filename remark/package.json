@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "tsc -w",
-		"prebuild": "rimraf dist/* -g",
+		"prebuild": "rimraf dist tsconfig.tsbuildinfo",
 		"build": "tsc",
 		"lint:markdown": "node --env-file=../.env.development src/shell/lint.ts",
 		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
