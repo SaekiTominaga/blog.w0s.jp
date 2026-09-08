@@ -1,6 +1,7 @@
 import { strict as assert } from 'node:assert';
+import fs from 'node:fs';
 import { test } from 'node:test';
-import { csp, reportingEndpoints, supportCompressionEncoding } from './httpHeader.ts';
+import { getCsp, getEntityTagWeak, getReportingEndpoints, supportCompressionEncoding } from './httpHeader.ts';
 
 await test('supportCompressionEncoding', async (t) => {
 	await t.test('undefined', () => {
@@ -28,10 +29,10 @@ await test('supportCompressionEncoding', async (t) => {
 	});
 });
 
-await test('csp', async (t) => {
+await test('getCsp', async (t) => {
 	await t.test('no type', () => {
 		assert.equal(
-			csp({
+			getCsp({
 				'frame-ancestors': ["'self'"],
 				'report-to': ['default'],
 			}),
@@ -40,9 +41,15 @@ await test('csp', async (t) => {
 	});
 });
 
-await test('reportingEndpoints', () => {
+await test('getEntityTagWeak', async () => {
+	const stats = await fs.promises.stat('package.json');
+
+	assert.match(getEntityTagWeak(stats)!, /^W\/"[0-9a-f]+-[0-9a-f]+\.[0-9a-f]+"$/u);
+});
+
+await test('getReportingEndpoints', () => {
 	assert.equal(
-		reportingEndpoints({
+		getReportingEndpoints({
 			default: 'http://report.example.com/report',
 			report1: 'http://report.example.com/report1',
 		}),

@@ -8,7 +8,7 @@ import type { Variables } from '../app.ts';
 import configHono from '../config/hono.ts';
 import configList from '../config/list.ts';
 import ListDao from '../db/List.ts';
-import Rendering from '../util/Rendering.ts';
+import { createCache, readCache } from '../util/rendering.ts';
 import Sidebar from '../util/Sidebar.ts';
 import { param as validatorParam } from '../validator/list.ts';
 import type { Entries } from '../../@types/view.d.ts';
@@ -26,8 +26,7 @@ const commonProcess = async (context: Context<{ Variables: Variables }>, page = 
 
 	const htmlFilePath = `${env('ROOT')}/${env('HTML_DIR')}/${configList.html.directory}/${String(page)}.html`;
 
-	const rendering = new Rendering(context, await dao.getLastModified(), htmlFilePath);
-	const response = await rendering.serverCache();
+	const response = await readCache(context, htmlFilePath);
 	if (response !== undefined) {
 		/* サーバーのキャッシュファイルがあればそれをレスポンスで返す */
 		return response;
@@ -78,7 +77,7 @@ const commonProcess = async (context: Context<{ Variables: Variables }>, page = 
 	const totalPage = Math.ceil(entryCount / configList.maximum);
 
 	/* HTML 生成 */
-	const html = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configList.template}`, {
+	const htmlData = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configList.template}`, {
 		pagePathAbsoluteUrl: req.path, // U+002F (/) から始まるパス絶対 URL
 		page: page,
 		totalPage: totalPage,
@@ -87,8 +86,11 @@ const commonProcess = async (context: Context<{ Variables: Variables }>, page = 
 		newlyEntries: newlyEntries,
 	});
 
-	/* レンダリング、ファイル出力 */
-	return rendering.generation(html);
+	/* キャッシュファイル出力、レンダリング */
+	return createCache(context, {
+		path: htmlFilePath,
+		data: htmlData,
+	});
 };
 
 const topApp = new Hono<{ Variables: Variables }>().get('/', async (context) => commonProcess(context));

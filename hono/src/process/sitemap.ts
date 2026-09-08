@@ -17,17 +17,13 @@ export const create = async (): Promise<string[]> => {
 		readonly: true,
 	});
 
-	const [updated, entriesDto] = await Promise.all([
-		dao.getLastModified(),
-		dao.getEntries(configProcess.sitemap.limit /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要がある */),
-	]);
+	const entriesDto = await dao.getEntries(configProcess.sitemap.limit); /* TODO: 厳密にはこの上限数から個別記事以外の URL 数を差し引いた数にする必要がある */
 
 	const entriesView = entriesDto.map((entry): SitemapEntry => ({
 		id: entry.id,
 		updatedAt: dayjs(entry.updated_at ?? entry.registed_at),
 	}));
 	const sitemapXml = await ejs.renderFile(`${env('ROOT')}/${env('TEMPLATE_DIR')}/${configProcess.sitemap.template}`, {
-		updatedAt: dayjs(updated),
 		entries: entriesView,
 	});
 
