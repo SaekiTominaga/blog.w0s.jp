@@ -8,19 +8,23 @@ import reportJsError from './util/reportJsError.ts';
 /* JS エラーレポート */
 reportJsError();
 
-/* リファラーレポート */
-await reportSameReferrer({
-	fetch: {
-		endpoint: 'https://report.w0s.jp/report/referrer',
-		param: {
-			documentURL: 'documentURL',
-			referrer: 'referrer',
+try {
+	/* リファラーレポート */
+	await reportSameReferrer({
+		fetch: {
+			endpoint: 'https://report.w0s.jp/report/referrer',
+			param: {
+				documentURL: 'documentURL',
+				referrer: 'referrer',
+			},
+			contentType: 'application/json',
 		},
-		contentType: 'application/json',
-	},
-	validate: {
-		referrer: {
-			sames: ['https://w0s.jp'],
+		validate: {
+			referrer: {
+				sames: ['https://w0s.jp'],
+			},
 		},
-	},
-});
+	});
+} catch (error) {
+	console.error(error);
+}

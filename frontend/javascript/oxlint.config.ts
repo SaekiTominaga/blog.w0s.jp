@@ -5,6 +5,17 @@ export default defineConfig({
 	extends: [config],
 	overrides: [
 		{
+			files: ['src/*.ts'],
+			rules: {
+				'no-console': [
+					'error',
+					{
+						allow: ['error'],
+					},
+				],
+			},
+		},
+		{
 			files: ['src/admin.ts'],
 			rules: {
 				'promise/prefer-await-to-callbacks': 'off', // TODO: 暫定

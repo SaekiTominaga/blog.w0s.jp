@@ -17,14 +17,30 @@ if (document.querySelector('w0s-tab') !== null) {
 	customElements.define('w0s-tab', Tab);
 }
 
-/* ツールチップ */
-footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popover'));
+try {
+	/* ツールチップ */
+	footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popover'));
+} catch (error) {
+	console.error(error);
+}
 
-/* クリップボード書き込みボタン */
-buttonClipboard(document.querySelectorAll('.js-button-clipboard'));
+try {
+	/* クリップボード書き込みボタン */
+	buttonClipboard(document.querySelectorAll('.js-button-clipboard'));
+} catch (error) {
+	console.error(error);
+}
 
-/* 検索エンジン選択 */
-searchEngine(document.querySelector('.js-search-engine'));
+try {
+	/* 検索エンジン選択 */
+	searchEngine(document.querySelector('.js-search-engine'));
+} catch (error) {
+	console.error(error);
+}
 
-/* Google AdSense */
-adsense(document.querySelectorAll('.js-ads-google'), { rootMargin: '100px' });
+try {
+	/* Google AdSense */
+	adsense(document.querySelectorAll('.js-ads-google'), { rootMargin: '100px' });
+} catch (error) {
+	console.error(error);
+}
