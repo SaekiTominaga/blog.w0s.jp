@@ -41,6 +41,7 @@ import { type Processor, unified } from 'unified';
 import type { VFile } from 'vfile';
 import config from './config.ts';
 import footnoteHast from './hast/footnote.ts';
+import remarkLintFootnoteReferenceIdentifier from './lint/footnoteReferenceIdentifier.ts';
 import remarkLintHeadingLevelRange from './lint/headingLevelRange.ts';
 import remarkLintNoEmptySections from './lint/noEmptySection.ts';
 import remarkLintNoLinkTitle from './lint/noLinkTitle.ts';
@@ -103,6 +104,7 @@ export default class Markdown {
 			/* remark-lint-final-definition: [style-guide] 要検討 */
 			/* remark-lint-final-newline: [recommended] 最終行の空白はむしろ JavaScript で除去しているので競合してしまう */
 			processor.use(remarkLintFirstHeadingLevel, config.headingDepth.min); // 最初の見出し
+			processor.use(remarkLintFootnoteReferenceIdentifier); // 脚注参照 ID
 			/* remark-lint-hard-break-spaces: [style-guide][recommended] break は使用禁止設定にしているので不要 */
 			processor.use(remarkLintHeadingLevelRange, {
 				min: config.headingDepth.min,
@@ -134,7 +136,7 @@ export default class Markdown {
 			processor.use(remarkLintNoLinkTitle); // リンクの title 禁止
 			processor.use(remarkLintNoLooseList); // Loose list 禁止
 			processor.use(remarkLintNoMissingBlankLines, { exceptTightLists: true }); // ブロック間の空行必須
-			/* remark-lint-no-multiple-toplevel-headings: [style-guide] # を見出しレベル2の扱いにしているので当然複数出現は許容する */
+			/* remark-lint-no-multiple-toplevel-headings: [style-guide] 見出しレベル1は使用しないので不要 */
 			/* remark-lint-no-shell-dollars: [style-guide] 不要 */
 			/* remark-lint-no-shortcut-reference-image: [style-guide][recommended] image は使用禁止設定にしているので不要 */
 			processor.use(remarkLintNoShortcutReferenceLink); // [style-guide][recommended] 参照リンクでは末尾の [] が必須
