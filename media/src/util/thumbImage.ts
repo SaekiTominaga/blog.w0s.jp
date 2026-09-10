@@ -4,7 +4,7 @@
  * @param base - 元画像の寸法
  * @param thumb - サムネイル画像の最大寸法
  *
- * @returns サムネイル画像のファイル名
+ * @returns サムネイル画像の寸法
  */
 const getDimensions = (
 	base: Readonly<{ width: number; height: number }>,

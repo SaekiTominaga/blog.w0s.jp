@@ -6,11 +6,12 @@ import { create } from './thumbImage.ts';
 
 const tempBaseDirNamePrefix = '.temp-base-';
 const tempThumbDirNamePrefix = '.temp-thumb-';
-const testFileName = 'test1.jpg';
+const baseFileName = 'test1.jpg';
 
-await test('createThumbnailImage', async (t) => {
+await test('create', async (t) => {
 	let tempBaseDir: string;
 	let tempThumbDir: string;
+
 	before(async () => {
 		[tempBaseDir, tempThumbDir] = await Promise.all([fs.promises.mkdtemp(tempBaseDirNamePrefix), fs.promises.mkdtemp(tempThumbDirNamePrefix)]);
 
@@ -22,20 +23,21 @@ await test('createThumbnailImage', async (t) => {
 			},
 		}).jpeg({ quality: 1 });
 
-		await image.toFile(`${tempBaseDir}/${testFileName}`);
+		await image.toFile(`${tempBaseDir}/${baseFileName}`);
 	});
 
 	after(async () => {
-		await Promise.all([fs.promises.rm(tempBaseDir, { recursive: true }), fs.promises.rm(tempThumbDir, { recursive: true })]);
+		const tempDirectories = [tempBaseDir, tempThumbDir];
+		await Promise.all(tempDirectories.map((dir) => fs.promises.rm(dir, { recursive: true })));
 	});
 
 	await t.test('正常系', async () => {
-		const baseFile = await fs.promises.readFile(`${tempBaseDir}/${testFileName}`);
+		const baseFile = await fs.promises.readFile(`${tempBaseDir}/${baseFileName}`);
 
-		const createdFiles = await create(
+		const createdFileInfos = await create(
 			{
 				buffer: baseFile,
-				fileName: testFileName,
+				fileName: baseFileName,
 			},
 			{
 				dir: tempThumbDir,
@@ -50,6 +52,23 @@ await test('createThumbnailImage', async (t) => {
 			},
 		);
 
-		assert.equal(createdFiles.length, 4);
+		assert.equal(createdFileInfos.length, 4);
+		assert.equal(createdFileInfos.at(0)?.name, 'test1.jpg@d=200x100;q=20.avif');
+		assert.match(createdFileInfos.at(0)!.size.toString(), /^[1-9][0-9]*$/u);
+		assert.equal(createdFileInfos.at(1)?.name, 'test1.jpg@d=400x200;q=10.avif');
+		assert.match(createdFileInfos.at(1)!.size.toString(), /^[1-9][0-9]*$/u);
+		assert.equal(createdFileInfos.at(2)?.name, 'test1.jpg@d=100x200;q=20.avif');
+		assert.match(createdFileInfos.at(2)!.size.toString(), /^[1-9][0-9]*$/u);
+		assert.equal(createdFileInfos.at(3)?.name, 'test1.jpg@d=200x400;q=10.avif');
+		assert.match(createdFileInfos.at(3)!.size.toString(), /^[1-9][0-9]*$/u);
+
+		const createdFiles = await fs.promises.readdir(tempThumbDir, { recursive: true });
+
+		assert.deepEqual(createdFiles, [
+			'test1.jpg@d=100x200;q=20.avif',
+			'test1.jpg@d=200x100;q=20.avif',
+			'test1.jpg@d=200x400;q=10.avif',
+			'test1.jpg@d=400x200;q=10.avif',
+		]);
 	});
 });
