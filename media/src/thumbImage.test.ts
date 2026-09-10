@@ -34,7 +34,7 @@ await test('create', async (t) => {
 	await t.test('正常系', async () => {
 		const baseFile = await fs.promises.readFile(`${tempBaseDir}/${baseFileName}`);
 
-		const createdFiles = await create(
+		const createdFileInfos = await create(
 			{
 				buffer: baseFile,
 				fileName: baseFileName,
@@ -52,14 +52,23 @@ await test('create', async (t) => {
 			},
 		);
 
-		assert.equal(createdFiles.length, 4);
-		assert.equal(createdFiles.at(0)?.name, 'test1.jpg@d=200x100;q=20.avif');
-		assert.match(createdFiles.at(0)!.size.toString(), /^[1-9][0-9]*$/u);
-		assert.equal(createdFiles.at(1)?.name, 'test1.jpg@d=400x200;q=10.avif');
-		assert.match(createdFiles.at(1)!.size.toString(), /^[1-9][0-9]*$/u);
-		assert.equal(createdFiles.at(2)?.name, 'test1.jpg@d=100x200;q=20.avif');
-		assert.match(createdFiles.at(2)!.size.toString(), /^[1-9][0-9]*$/u);
-		assert.equal(createdFiles.at(3)?.name, 'test1.jpg@d=200x400;q=10.avif');
-		assert.match(createdFiles.at(3)!.size.toString(), /^[1-9][0-9]*$/u);
+		assert.equal(createdFileInfos.length, 4);
+		assert.equal(createdFileInfos.at(0)?.name, 'test1.jpg@d=200x100;q=20.avif');
+		assert.match(createdFileInfos.at(0)!.size.toString(), /^[1-9][0-9]*$/u);
+		assert.equal(createdFileInfos.at(1)?.name, 'test1.jpg@d=400x200;q=10.avif');
+		assert.match(createdFileInfos.at(1)!.size.toString(), /^[1-9][0-9]*$/u);
+		assert.equal(createdFileInfos.at(2)?.name, 'test1.jpg@d=100x200;q=20.avif');
+		assert.match(createdFileInfos.at(2)!.size.toString(), /^[1-9][0-9]*$/u);
+		assert.equal(createdFileInfos.at(3)?.name, 'test1.jpg@d=200x400;q=10.avif');
+		assert.match(createdFileInfos.at(3)!.size.toString(), /^[1-9][0-9]*$/u);
+
+		const createdFiles = await fs.promises.readdir(tempThumbDir, { recursive: true });
+
+		assert.deepEqual(createdFiles, [
+			'test1.jpg@d=100x200;q=20.avif',
+			'test1.jpg@d=200x100;q=20.avif',
+			'test1.jpg@d=200x400;q=10.avif',
+			'test1.jpg@d=400x200;q=10.avif',
+		]);
 	});
 });
