@@ -35,21 +35,21 @@ try {
 	/* ファイルアップロードでプレビュー画像を表示 */
 	inputFilePreview(document.querySelectorAll('.js-input-file-preview'));
 } catch (error) {
-	console.error(error);
+	reportError(error);
 }
 
 try {
 	/* フォーム入力中にページが閉じられようとしたら確認メッセージを表示 */
 	formBeforeUnloadConfirm(document.querySelectorAll('.js-form-beforeunload-confirm'));
 } catch (error) {
-	console.error(error);
+	reportError(error);
 }
 
 try {
 	/* 送信ボタン2度押し防止 */
 	formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
 } catch (error) {
-	console.error(error);
+	reportError(error);
 }
 
 /* disabled 制御 */

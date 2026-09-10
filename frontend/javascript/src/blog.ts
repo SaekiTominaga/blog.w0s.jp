@@ -21,26 +21,26 @@ try {
 	/* ツールチップ */
 	footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popover'));
 } catch (error) {
-	console.error(error);
+	reportError(error);
 }
 
 try {
 	/* クリップボード書き込みボタン */
 	buttonClipboard(document.querySelectorAll('.js-button-clipboard'));
 } catch (error) {
-	console.error(error);
+	reportError(error);
 }
 
 try {
 	/* 検索エンジン選択 */
 	searchEngine(document.querySelector('.js-search-engine'));
 } catch (error) {
-	console.error(error);
+	reportError(error);
 }
 
 try {
 	/* Google AdSense */
 	adsense(document.querySelectorAll('.js-ads-google'), { rootMargin: '100px' });
 } catch (error) {
-	console.error(error);
+	reportError(error);
 }
