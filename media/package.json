@@ -6,7 +6,7 @@
 		"dev": "tsc -w",
 		"prebuild": "rimraf dist tsconfig.tsbuildinfo",
 		"build": "tsc",
-		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
+		"test": "node --experimental-test-coverage --test \"src/**/*.test.ts\""
 	},
 	"dependencies": {
 		"sharp": "0.35.4"
