@@ -4,9 +4,9 @@
 	"type": "module",
 	"scripts": {
 		"lint": "pnpm run /^lint:.*/",
-		"lint:html-template": "markuplint template/**/*.{ejs,html}",
-		"lint:html-output": "markuplint .html/**/*.html",
-		"lint:css": "stylelint -f verbose frontend/css",
+		"lint:html-template": "markuplint \"template/**/*.{ejs,html}\"",
+		"lint:html-output": "markuplint \".html/**/*.html\"",
+		"lint:css": "stylelint -f verbose \"frontend/css\"",
 		"lint:js": "oxlint"
 	},
 	"dependencies": {

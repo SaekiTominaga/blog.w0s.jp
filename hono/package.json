@@ -7,7 +7,7 @@
 		"prebuild": "rimraf dist tsconfig.tsbuildinfo",
 		"build": "tsc",
 		"pretest": "pnpm -F media -F remark build",
-		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test src/**/*.test.ts"
+		"test": "node --experimental-test-coverage --env-file=../.env.development --env-file=../.env.test --test \"src/**/*.test.ts\""
 	},
 	"dependencies": {
 		"@hono/node-server": "2.0.10",

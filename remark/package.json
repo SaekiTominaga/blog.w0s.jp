@@ -7,7 +7,7 @@
 		"prebuild": "rimraf dist tsconfig.tsbuildinfo",
 		"build": "tsc",
 		"lint:markdown": "node --env-file=../.env.development src/shell/lint.ts",
-		"test": "node --experimental-test-coverage --test src/**/*.test.ts"
+		"test": "node --experimental-test-coverage --test \"src/**/*.test.ts\""
 	},
 	"dependencies": {
 		"@w0s/env-value-type": "2.0.0",
