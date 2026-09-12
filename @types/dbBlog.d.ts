@@ -32,10 +32,6 @@ export interface DSnsQueue {
 	misskey: boolean;
 }
 
-export interface DInfo {
-	modified: Date;
-}
-
 export interface MCategory {
 	id: string;
 	name: string;
@@ -55,7 +51,6 @@ export interface DB {
 	d_entry_category: { [K in keyof DEntryCategory]: Transform<DEntryCategory[K]> };
 	d_entry_relation: { [K in keyof DEntryRelation]: Transform<DEntryRelation[K]> };
 	d_sns_queue: { [K in keyof DSnsQueue]: Transform<DSnsQueue[K]> };
-	d_info: { [K in keyof DInfo]: Transform<DInfo[K]> };
 	m_category: { [K in keyof MCategory]: Transform<MCategory[K]> };
 	m_catgroup: { [K in keyof MCatgroup]: Transform<MCatgroup[K]> };
 }

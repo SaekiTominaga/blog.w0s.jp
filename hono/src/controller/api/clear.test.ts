@@ -1,8 +1,8 @@
 import { strict as assert } from 'node:assert';
+import fs from 'node:fs';
 import { test } from 'node:test';
 import { env } from '@w0s/env-value-type';
 import app from '../../app.ts';
-import PostDao from '../../db/Post.ts';
 import { getAuthFile } from '../../util/auth.ts';
 import type { Post } from '../../../../@types/api.d.ts';
 
@@ -79,19 +79,13 @@ await test('validator', async (t) => {
 });
 
 await test('no error', async () => {
-	const dao = new PostDao(`${env('ROOT')}/${env('SQLITE_DIR')}/${env('SQLITE_BLOG')}`);
-	const lastModifiledBefore = await dao.getLastModified();
-
 	const res = await app.request('/api/clear', {
 		method: 'post',
 		headers: { Authorization: authorization },
 	});
 
-	const lastModifiledAfter = await dao.getLastModified();
-
 	assert.equal(res.status, 200);
 	assert.equal(res.headers.get('Content-Type'), 'application/json');
-	assert.equal(lastModifiledBefore < lastModifiledAfter, true);
 });
 
 await test('response', async (t) => {
@@ -116,6 +110,8 @@ await test('response', async (t) => {
 		const formData = new FormData();
 		formData.append('response', 'text');
 
+		await fs.promises.writeFile(`${env('ROOT')}/${env('HTML_DIR')}/__test`, '');
+
 		const res = await app.request('/api/clear', {
 			method: 'post',
 			headers: { Authorization: authorization },
@@ -126,7 +122,7 @@ await test('response', async (t) => {
 
 		assert.match(
 			text,
-			/^✅ DB 最終更新日時の記録に成功 <[0-9]{2}:[0-9]{2}:[0-9]{2}>\n✅ フィード生成に成功（[0-9]+ファイル）\n✅ サイトマップ生成に成功（[0-9]+ファイル）\n✅ 新着 JSON ファイル生成に成功（[0-9]+ファイル）\n\n$/v,
+			/^✅ キャッシュファイル削除に成功（[0-9]+ファイル）\n✅ フィード生成に成功（[0-9]+ファイル）\n✅ サイトマップ生成に成功（[0-9]+ファイル）\n✅ 新着 JSON ファイル生成に成功（[0-9]+ファイル）\n\n$/v,
 		);
 	});
 });

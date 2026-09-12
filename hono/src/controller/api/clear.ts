@@ -1,9 +1,8 @@
 import { inspect } from 'node:util';
-import dayjs from 'dayjs';
 import { Hono } from 'hono';
 import type { Variables } from '../../app.ts';
 import configProcess from '../../config/process.ts';
-import { clear } from '../../process/dsg.ts';
+import { clear } from '../../process/clear.ts';
 import { create as createFeed } from '../../process/feed.ts';
 import { create as createNewlyJson } from '../../process/newlyJson.ts';
 import { create as createSitemap } from '../../process/sitemap.ts';
@@ -29,11 +28,13 @@ export const clearApp = new Hono<{ Variables: Variables }>().post(validatorForm,
 	const results: ApiResponse = [];
 
 	if (clearResult.status === 'fulfilled') {
-		logger.info(`Modified date of DB was recorded: ${clearResult.value.toString()}`);
-		results.push({ success: true, message: `${configProcess.dsg.processMessage.success} <${dayjs(clearResult.value).format('HH:mm:ss')}>` });
+		if (clearResult.value.length > 0) {
+			logger.info(`Cache file removed: ${inspect(clearResult.value)}`);
+			results.push({ success: true, message: `${configProcess.clear.processMessage.success}（${clearResult.value.length}ファイル）` });
+		}
 	} else {
 		logger.error(clearResult.reason);
-		results.push({ success: false, message: `${configProcess.dsg.processMessage.failure}: ${String(clearResult.reason)}` });
+		results.push({ success: false, message: `${configProcess.clear.processMessage.failure}: ${String(clearResult.reason)}` });
 	}
 
 	if (createFeedResult.status === 'fulfilled') {

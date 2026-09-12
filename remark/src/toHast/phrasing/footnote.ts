@@ -10,7 +10,7 @@ import { normalizeUri } from 'micromark-util-sanitize-uri';
  */
 
 export const footnoteReferenceToHast = (state: State, node: FootnoteReference): ElementContent | ElementContent[] | undefined => {
-	const clobberPrefix = typeof state.options.clobberPrefix === 'string' ? state.options.clobberPrefix : 'user-content-';
+	const clobberPrefix = state.options.clobberPrefix ?? 'user-content-';
 	const id = node.identifier.toUpperCase();
 	const safeId = normalizeUri(id.toLowerCase());
 	const index = state.footnoteOrder.indexOf(id);

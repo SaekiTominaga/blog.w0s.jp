@@ -45,10 +45,10 @@ export default {
 			size: 'ファイルサイズが大きすぎます。',
 		},
 	},
-	dsg: {
+	clear: {
 		processMessage: {
-			success: 'DB 最終更新日時の記録に成功',
-			failure: 'DB 最終更新日時の記録に失敗',
+			success: 'キャッシュファイル削除に成功',
+			failure: 'キャッシュファイル削除に失敗',
 		},
 	},
 	feed: {

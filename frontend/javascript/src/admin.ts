@@ -31,14 +31,26 @@ document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-t
 	);
 });
 
-/* ファイルアップロードでプレビュー画像を表示 */
-inputFilePreview(document.querySelectorAll('.js-input-file-preview'));
+try {
+	/* ファイルアップロードでプレビュー画像を表示 */
+	inputFilePreview(document.querySelectorAll('.js-input-file-preview'));
+} catch (error) {
+	reportError(error);
+}
 
-/* フォーム入力中にページが閉じられようとしたら確認メッセージを表示 */
-formBeforeUnloadConfirm(document.querySelectorAll('.js-form-beforeunload-confirm'));
+try {
+	/* フォーム入力中にページが閉じられようとしたら確認メッセージを表示 */
+	formBeforeUnloadConfirm(document.querySelectorAll('.js-form-beforeunload-confirm'));
+} catch (error) {
+	reportError(error);
+}
 
-/* 送信ボタン2度押し防止 */
-formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
+try {
+	/* 送信ボタン2度押し防止 */
+	formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
+} catch (error) {
+	reportError(error);
+}
 
 /* disabled 制御 */
 document.querySelectorAll<HTMLInputElement>('.js-disabled-control').forEach(($element) => {
