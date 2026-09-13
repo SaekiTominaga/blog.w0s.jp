@@ -6,7 +6,7 @@ export default {
 	},
 	excludeFiles: ['template/sns', 'template/xml'],
 	rules: {
-		'disallowed-element': ['base', 'style', 'h5', 'h6', 's', 'i', 'u', 'wbr', 'area'],
+		'no-restricted-element': ['noscript', 'embed', 'base', 'style', 'h5', 'h6', 's', 'i', 'u', 'wbr', 'area'],
 		'class-naming': [
 			'/^[lcpu]-([a-z][a-z0-9]*)(-[a-z0-9]+)*(?:__[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*)?(?:--[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*){0,2}$/',
 			'/^-([a-z][a-z0-9]*)(-[a-z0-9]+)*$/',
@@ -28,32 +28,37 @@ export default {
 			},
 		},
 		{
+			selector: 'button > svg[role="img"]',
+			rules: {
+				'no-aria-on-presentational-children': false,
+			},
+		},
+		{
+			selector: '.p-book-item__link > a[aria-labelledby]',
+			rules: {
+				'no-redundant-accessible-name': false,
+			},
+		},
+		{
 			selector: '.p-entry__body dl',
 			rules: {
-				'required-element': false,
+				'require-element': false,
 			},
 		},
 		{
 			selector: '.p-entry__body table',
 			rules: {
-				'required-element': ['thead'],
+				'require-element': ['thead'],
 			},
 		},
 		{
 			selector: '.p-post-preview__messages',
 			rules: {
-				'wai-aria': false,
+				'require-owned-elements': false,
 			},
 		},
 	],
 	childNodeRules: [
-		{
-			selector: '.p-entry__body',
-			inheritance: true,
-			rules: {
-				'character-reference': false,
-			},
-		},
 		{
 			selector: '.p-code__code',
 			inheritance: true,
@@ -67,7 +72,7 @@ export default {
 			selector: '.c-search__engine',
 			inheritance: true,
 			rules: {
-				'character-reference': false,
+				'no-unescaped-char': false,
 			},
 		},
 	],
@@ -76,6 +81,7 @@ export default {
 		'**/*.ejs': {
 			rules: {
 				'permitted-contents': false,
+				'label-no-multiple-controls': false,
 				'label-has-control': false,
 			},
 		},
@@ -96,7 +102,7 @@ export default {
 		},
 		'template/list.ejs': {
 			rules: {
-				'required-h1': false,
+				'require-h1': false,
 			},
 		},
 	},
