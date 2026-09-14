@@ -88,7 +88,7 @@ const entrySummary = async (
 			if (outputId === undefined) {
 				throw new Error('The `data-output` attribute is not set');
 			}
-			const $output = document.querySelector(`#${outputId}`);
+			const $output = document.querySelector(`#${CSS.escape(outputId)}`);
 			if ($output === null) {
 				throw new Error(`Element \`#${outputId}\` not found`);
 			}
