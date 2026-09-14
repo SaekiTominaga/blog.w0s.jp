@@ -8,6 +8,8 @@ const originalFetch = globalThis.fetch;
 before(() => {
 	const { window } = new JSDOM();
 
+	// oxlint-disable-next-line typescript/no-unsafe-assignment
+	globalThis.CSS = window['CSS'];
 	globalThis.document = window.document;
 	globalThis.HTMLInputElement = window.HTMLInputElement;
 	globalThis.HTMLTemplateElement = window.HTMLTemplateElement;
