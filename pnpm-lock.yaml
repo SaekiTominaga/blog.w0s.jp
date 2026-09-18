@@ -129,8 +129,8 @@ importers:
         specifier: '=4.26.1'
         version: 4.26.1(stylelint-attribute-case-sensitivity@3.1.1(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-concentric-order@5.5.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-standard@40.0.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-no-default-viewport@2.0.2(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-plugin-defensive-css@2.9.7(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-root-colors@3.0.2(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2))
       '@w0s/tsconfig':
-        specifier: '=3.1.1'
-        version: 3.1.1(typescript@7.0.2)
+        specifier: '=3.2.0'
+        version: 3.2.0(typescript@7.0.2)
       markuplint:
         specifier: '=5.0.0'
         version: 5.0.0(@typescript-eslint/types@8.70.0)(eslint@10.10.0(supports-color@10.2.2))(supports-color@10.2.2)(typescript@7.0.2)
@@ -1807,8 +1807,8 @@ packages:
   '@w0s/tab@5.0.3':
     resolution: {integrity: sha512-Clwqnow8amQPvw6WbkOwPPzhEYilCzsHTcXD3C175T35JM74dOI0bnOpVGOj0jBOktf9DYMozZjiEhIRmWz8bg==}
 
-  '@w0s/tsconfig@3.1.1':
-    resolution: {integrity: sha512-vXdvOvBBJ6PLsi+StATyAQyZOWLdOKCENq8n71wAAyI50v9IApRvrs8WwFORzQ5GIa5Q/HJXb27irFlaAv3GKQ==}
+  '@w0s/tsconfig@3.2.0':
+    resolution: {integrity: sha512-xD/Im/+T1zt6jLwfEzRYswO2Inzkc12IDcsROKbMSZrzQqw87Ite7zxZgDSENVH+gjfKPrJwwn6lt4rycjYtdQ==}
     peerDependencies:
       typescript: ^6.0.0 || ^7.0.0
 
@@ -4800,7 +4800,7 @@ snapshots:
 
   '@w0s/tab@5.0.3': {}
 
-  '@w0s/tsconfig@3.1.1(typescript@7.0.2)':
+  '@w0s/tsconfig@3.2.0(typescript@7.0.2)':
     dependencies:
       typescript: 7.0.2
 
