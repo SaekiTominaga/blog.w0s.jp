@@ -16,7 +16,7 @@
 		"@markuplint/ejs-parser": "=5.0.0",
 		"@types/node": "=24.13.2",
 		"@w0s/markuplint-config": "=4.0.3",
-		"@w0s/oxlint-config": "=1.0.8",
+		"@w0s/oxlint-config": "=1.0.9",
 		"@w0s/stylelint-config": "=4.26.1",
 		"@w0s/tsconfig": "=3.1.1",
 		"markuplint": "=5.0.0",
