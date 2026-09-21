@@ -12,7 +12,7 @@ try {
 	/* リファラーレポート */
 	await reportSameReferrer({
 		fetch: {
-			endpoint: 'https://report.w0s.jp/report/referrer',
+			endpoint: 'https://api.w0s.jp/report/referrer',
 			param: {
 				documentURL: 'documentURL',
 				referrer: 'referrer',

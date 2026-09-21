@@ -6,7 +6,7 @@ import reportJsError from '@w0s/report-js-error';
 export default (): void => {
 	reportJsError({
 		fetch: {
-			endpoint: 'https://report.w0s.jp/report/js',
+			endpoint: 'https://api.w0s.jp/report/js',
 			param: {
 				documentURL: 'documentURL',
 				message: 'message',
