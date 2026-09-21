@@ -48,8 +48,8 @@ await test('headers', async () => {
 	const res = await app.request('/robots.txt');
 
 	assert.equal(res.headers.get('Strict-Transport-Security'), 'max-age=31536000');
-	assert.equal(res.headers.get('Content-Security-Policy'), "frame-ancestors 'self';report-uri https://report.w0s.jp/report/csp;report-to default");
-	assert.equal(res.headers.get('Reporting-Endpoints'), 'default="https://report.w0s.jp/report/csp"');
+	assert.equal(res.headers.get('Content-Security-Policy'), "frame-ancestors 'self';report-uri https://api.w0s.jp/report/csp;report-to default");
+	assert.equal(res.headers.get('Reporting-Endpoints'), 'default="https://api.w0s.jp/report/csp"');
 	assert.equal(res.headers.get('X-Content-Type-Options'), 'nosniff');
 });
 
@@ -129,11 +129,11 @@ await test('serveStatic', async (t) => {
 
 		assert.equal(
 			res.headers.get('Content-Security-Policy'),
-			"base-uri 'none';form-action 'self' https://w0s.jp https://www.google.com https://www.bing.com https://search.yahoo.co.jp https://duckduckgo.com;frame-ancestors 'self';report-uri https://report.w0s.jp/report/csp;report-to default",
+			"base-uri 'none';form-action 'self' https://w0s.jp https://www.google.com https://www.bing.com https://search.yahoo.co.jp https://duckduckgo.com;frame-ancestors 'self';report-uri https://api.w0s.jp/report/csp;report-to default",
 		);
 		assert.equal(
 			res.headers.get('Content-Security-Policy-Report-Only'),
-			"default-src 'self';connect-src 'self' https://w0s.jp https://*.w0s.jp https://pagead2.googlesyndication.com https://csi.gstatic.com https://ep1.adtrafficquality.google;font-src 'self' data:;frame-src 'self' https://www.youtube-nocookie.com https://www.google.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google;img-src 'self' data: https://m.media-amazon.com https://*.ytimg.com https://pagead2.googlesyndication.com https://ep1.adtrafficquality.google;media-src 'self';script-src-elem 'self' https://analytics.w0s.jp https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://ep2.adtrafficquality.google;style-src 'self' 'unsafe-inline';trusted-types default goog#html google#safe 'allow-duplicates';require-trusted-types-for 'script';report-uri https://report.w0s.jp/report/csp;report-to default",
+			"default-src 'self';connect-src 'self' https://w0s.jp https://*.w0s.jp https://pagead2.googlesyndication.com https://csi.gstatic.com https://ep1.adtrafficquality.google;font-src 'self' data:;frame-src 'self' https://www.youtube-nocookie.com https://www.google.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google;img-src 'self' data: https://m.media-amazon.com https://*.ytimg.com https://pagead2.googlesyndication.com https://ep1.adtrafficquality.google;media-src 'self';script-src-elem 'self' https://analytics.w0s.jp https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://ep2.adtrafficquality.google;style-src 'self' 'unsafe-inline';trusted-types default goog#html google#safe 'allow-duplicates';require-trusted-types-for 'script';report-uri https://api.w0s.jp/report/csp;report-to default",
 		);
 	});
 
