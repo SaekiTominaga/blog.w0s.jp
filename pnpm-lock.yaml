@@ -183,8 +183,8 @@ importers:
   frontend:
     dependencies:
       '@w0s/base.css':
-        specifier: '=1.4.1'
-        version: 1.4.1
+        specifier: '=1.4.2'
+        version: 1.4.2
       '@w0s/button-clipboard':
         specifier: '=3.0.7'
         version: 3.0.7
@@ -1729,8 +1729,8 @@ packages:
   '@ungap/structured-clone@1.4.0':
     resolution: {integrity: sha512-1mEZtMKPM09vDmQt5y7YvmN2+DFTP7Tg0EWXdic8/C6VRnpb33e4ghisCIE3WZjsE2N8mf+QV1Zqh7ZFYLWInQ==}
 
-  '@w0s/base.css@1.4.1':
-    resolution: {integrity: sha512-HrzHNx/Cdd/cHGHuH/qXXKfeUG/wZnCXG/FLyRXzGVFDk3Ie2uLz7hoWxtH+JlOHE8ViM1DFusoIstltbvIcJg==}
+  '@w0s/base.css@1.4.2':
+    resolution: {integrity: sha512-pL0wSnr8rtaxNKCTiSqmHP7GvTN432oZEX2flzYMuWu2CsySg9HErh1Lfd2ytOPzexhPPYdCWsPmZAxlwLbIgQ==}
 
   '@w0s/button-clipboard@3.0.7':
     resolution: {integrity: sha512-TSvecb6LV/O1Mr0gD2hQhtw5xj8n2cXhSKPxPqGlpOLAOswfg98duWiSAl0+VFyP+F/bE0b/eH0ej7FGZuGoLg==}
@@ -4745,7 +4745,7 @@ snapshots:
 
   '@ungap/structured-clone@1.4.0': {}
 
-  '@w0s/base.css@1.4.1': {}
+  '@w0s/base.css@1.4.2': {}
 
   '@w0s/button-clipboard@3.0.7': {}
 
