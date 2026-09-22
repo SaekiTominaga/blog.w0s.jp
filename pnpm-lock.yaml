@@ -204,8 +204,8 @@ importers:
         specifier: '=5.0.2'
         version: 5.0.2
       '@w0s/input-file-preview':
-        specifier: '=3.0.8'
-        version: 3.0.8
+        specifier: '=3.0.9'
+        version: 3.0.9
       '@w0s/paapi-item-image-url-parser':
         specifier: '=4.0.2'
         version: 4.0.2
@@ -1760,8 +1760,8 @@ packages:
     resolution: {integrity: sha512-nlKss3JZ2RxtHVFZ5kshc+1CHi7pmdcW8D2hKAPe9Y9iTHVshTk5mfWkGNklSHSrAyPWBFmZf0lbWsc0UY4Xyg==}
     engines: {node: '>=22'}
 
-  '@w0s/input-file-preview@3.0.8':
-    resolution: {integrity: sha512-0JV3ykfgTeXP9yZ5TAOecRudilLTDuuVRjZxR+fjWDCaFdZhCluGsqKqcO8T7aUWUQI2B0tx1WDWWfV0VlqFSw==}
+  '@w0s/input-file-preview@3.0.9':
+    resolution: {integrity: sha512-E55ybQtC604RiC4yDISecvp8rEklxBtdALmhSRRhy2q5BmYOxnxa9v73OmU+rMv8cmS7fb9vsXn7coccxZX9ZQ==}
 
   '@w0s/isbn-verify@4.0.0':
     resolution: {integrity: sha512-6CcSgIBfZJX80U2/CkhHtLgJAUolHqFcLT5GuWMT+uKrasT2pw/C64osfvozgty7hyYJuccY5Uxqr5/DcWbL8Q==}
@@ -4767,7 +4767,7 @@ snapshots:
 
   '@w0s/html-escape@5.0.2': {}
 
-  '@w0s/input-file-preview@3.0.8':
+  '@w0s/input-file-preview@3.0.9':
     dependencies:
       '@w0s/html-escape': 5.0.1
       whatwg-mimetype: 5.0.0
