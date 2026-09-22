@@ -20,7 +20,7 @@
 		"@w0s/stylelint-config": "=4.26.1",
 		"@w0s/tsconfig": "=3.1.1",
 		"markuplint": "=5.0.0",
-		"oxlint": "=1.82.0",
+		"oxlint": "=1.83.0",
 		"oxlint-plugin-safely-storage": "=1.0.0",
 		"oxlint-tsgolint": "=7.0.2001",
 		"prettier-plugin-ejs": "=1.0.3",
