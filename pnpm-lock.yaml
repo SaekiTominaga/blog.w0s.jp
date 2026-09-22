@@ -201,8 +201,8 @@ importers:
         specifier: '=4.0.7'
         version: 4.0.7
       '@w0s/html-escape':
-        specifier: '=5.0.1'
-        version: 5.0.1
+        specifier: '=5.0.2'
+        version: 5.0.2
       '@w0s/input-file-preview':
         specifier: '=3.0.8'
         version: 3.0.8
@@ -292,8 +292,8 @@ importers:
         specifier: '=4.0.2'
         version: 4.0.2
       '@w0s/html-escape':
-        specifier: '=5.0.1'
-        version: 5.0.1
+        specifier: '=5.0.2'
+        version: 5.0.2
       '@w0s/paapi-item-image-url-parser':
         specifier: '=4.0.1'
         version: 4.0.1
@@ -359,8 +359,8 @@ importers:
         specifier: '=2.0.0'
         version: 2.0.0
       '@w0s/html-escape':
-        specifier: '=5.0.1'
-        version: 5.0.1
+        specifier: '=5.0.2'
+        version: 5.0.2
       '@w0s/isbn-verify':
         specifier: '=4.0.0'
         version: 4.0.0
@@ -1754,6 +1754,10 @@ packages:
 
   '@w0s/html-escape@5.0.1':
     resolution: {integrity: sha512-PDwAdR3oFfhRFcC/Ycp+CHRA2+lDD+FO56Hg+jjzHJBkJ+3jK+j5p0QQQJTZDDYkISAJIFL5ZAwRQ83TfcUKnA==}
+    engines: {node: '>=22'}
+
+  '@w0s/html-escape@5.0.2':
+    resolution: {integrity: sha512-nlKss3JZ2RxtHVFZ5kshc+1CHi7pmdcW8D2hKAPe9Y9iTHVshTk5mfWkGNklSHSrAyPWBFmZf0lbWsc0UY4Xyg==}
     engines: {node: '>=22'}
 
   '@w0s/input-file-preview@3.0.8':
@@ -4760,6 +4764,8 @@ snapshots:
   '@w0s/form-submit-overlay@4.0.7': {}
 
   '@w0s/html-escape@5.0.1': {}
+
+  '@w0s/html-escape@5.0.2': {}
 
   '@w0s/input-file-preview@3.0.8':
     dependencies:
