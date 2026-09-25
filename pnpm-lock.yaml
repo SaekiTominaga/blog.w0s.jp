@@ -216,8 +216,8 @@ importers:
         specifier: '=5.0.2'
         version: 5.0.2
       '@w0s/string-convert':
-        specifier: '=4.0.0'
-        version: 4.0.0
+        specifier: '=4.0.2'
+        version: 4.0.2
       '@w0s/tab':
         specifier: '=5.0.4'
         version: 5.0.4
@@ -1793,8 +1793,8 @@ packages:
     resolution: {integrity: sha512-W91HrAcpgvW75rodJarM/Dn+AQOGZKDmefYv6jjDd5bNu29h+8ElLdCMp16eacQwy3ikT8awBI1F3VFGQ26M6g==}
     engines: {node: '>=22'}
 
-  '@w0s/string-convert@4.0.0':
-    resolution: {integrity: sha512-DIB7EnpCUmvpW7GyFmpbSWza493vjcj98AUA0lveWQKabmiDJkDMi0OlRVnWzVXGyXUNBraD08Sbcxneq7DuWw==}
+  '@w0s/string-convert@4.0.2':
+    resolution: {integrity: sha512-uFF80xDhcGJTOnq1sfb5/mSTF/sEZ/LRgpKnuGwnQOzUkQp9lrj5wAj1KkMPIMfMgIXz3BFOsprAP/dSIQ/mlg==}
     engines: {node: '>=22'}
 
   '@w0s/stylelint-config@4.26.1':
@@ -4792,7 +4792,7 @@ snapshots:
 
   '@w0s/sqlite-utility@3.0.0': {}
 
-  '@w0s/string-convert@4.0.0': {}
+  '@w0s/string-convert@4.0.2': {}
 
   '@w0s/stylelint-config@4.26.1(stylelint-attribute-case-sensitivity@3.1.1(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-concentric-order@5.5.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-standard@40.0.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-no-default-viewport@2.0.2(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-plugin-defensive-css@2.9.7(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-root-colors@3.0.2(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2))':
     dependencies:
