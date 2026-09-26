@@ -124,7 +124,7 @@ importers:
         version: 4.0.3(markuplint@5.0.0(@typescript-eslint/types@8.70.0)(eslint@10.10.0(supports-color@10.2.2))(supports-color@10.2.2)(typescript@7.0.2))
       '@w0s/oxlint-config':
         specifier: '=1.0.9'
-        version: 1.0.9(oxlint-plugin-safely-storage@1.0.0(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002)))(oxlint-tsgolint@7.0.2002)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002))
+        version: 1.0.9(oxlint-plugin-safely-storage@1.0.2(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002)))(oxlint-tsgolint@7.0.2002)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002))
       '@w0s/stylelint-config':
         specifier: '=4.26.1'
         version: 4.26.1(stylelint-attribute-case-sensitivity@3.1.2(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-concentric-order@5.5.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-standard@40.0.0(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-no-default-viewport@2.0.2(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-plugin-defensive-css@2.9.7(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-root-colors@3.0.2(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint@17.15.0(supports-color@10.2.2)(typescript@7.0.2))
@@ -138,8 +138,8 @@ importers:
         specifier: '=1.83.0'
         version: 1.83.0(oxlint-tsgolint@7.0.2002)
       oxlint-plugin-safely-storage:
-        specifier: '=1.0.0'
-        version: 1.0.0(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002))
+        specifier: '=1.0.2'
+        version: 1.0.2(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002))
       oxlint-tsgolint:
         specifier: '=7.0.2002'
         version: 7.0.2002
@@ -2963,8 +2963,8 @@ packages:
     resolution: {integrity: sha512-0hdyXRn0wSKMTHCo2CkPJdTKzIhg1Wb7DxJtkeD8M8rRXSwP2ZFRu4UiWBnkjPdRbL5X+AnUVXBE2SZOmkm3dg==}
     engines: {node: '>=20'}
 
-  oxlint-plugin-safely-storage@1.0.0:
-    resolution: {integrity: sha512-B/b4RrFKhbjae5cLMoEcMznL1/yrnapVR+DMEuZl21PDeEbvqUIMu56nXApYOJDq82T45hg5Ba3Hpsq0z/zAew==}
+  oxlint-plugin-safely-storage@1.0.2:
+    resolution: {integrity: sha512-ow0OE6j0vdzTWCwtWxpfIjM0CKjujq153nr3LL3k6JftWRAKPE2OdmE/Vx10fSnoGwq467Ap+CHuwHP/PCD6ng==}
     peerDependencies:
       '@oxlint/plugins': ^1.80.0
       oxlint: ^1.80.0
@@ -4778,10 +4778,10 @@ snapshots:
     dependencies:
       markuplint: 5.0.0(@typescript-eslint/types@8.70.0)(eslint@10.10.0(supports-color@10.2.2))(supports-color@10.2.2)(typescript@7.0.2)
 
-  '@w0s/oxlint-config@1.0.9(oxlint-plugin-safely-storage@1.0.0(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002)))(oxlint-tsgolint@7.0.2002)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002))':
+  '@w0s/oxlint-config@1.0.9(oxlint-plugin-safely-storage@1.0.2(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002)))(oxlint-tsgolint@7.0.2002)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002))':
     dependencies:
       oxlint: 1.83.0(oxlint-tsgolint@7.0.2002)
-      oxlint-plugin-safely-storage: 1.0.0(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002))
+      oxlint-plugin-safely-storage: 1.0.2(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002))
       oxlint-tsgolint: 7.0.2002
 
   '@w0s/paapi-item-image-url-parser@4.0.2': {}
@@ -6216,7 +6216,7 @@ snapshots:
 
   os-locale@8.0.0: {}
 
-  oxlint-plugin-safely-storage@1.0.0(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002)):
+  oxlint-plugin-safely-storage@1.0.2(@oxlint/plugins@1.82.0)(oxlint@1.83.0(oxlint-tsgolint@7.0.2002)):
     dependencies:
       '@oxlint/plugins': 1.82.0
       oxlint: 1.83.0(oxlint-tsgolint@7.0.2002)
