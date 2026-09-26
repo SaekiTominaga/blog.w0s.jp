@@ -13,7 +13,7 @@
 		"build:css": "postcss \"css/*.css\" --base css -d ../public/style",
 		"build:js": "rollup -c --environment build:production",
 		"build:static": "node build/src/static.ts -s static -d ../public --svgoConfig svgo.config.js",
-		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" && brotli-cli compress -g \"../public/.well-known/*.json\" \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/image/**/*.svg\" \"../public/*.svg\" \"../public/favicon.ico\" -m text",
+		"postbuild": "prettier --config ../.prettierrc.mjs -w \"../public/style/*.css\" && brotli-cli compress -g \"../public/.well-known/*.json\" \"../public/script/*.{js,mjs}\" \"../public/style/*.css\" \"../public/image/**/*.svg\" \"../public/*.svg\" \"../public/favicon.ico\" -m text",
 		"test": "node --experimental-test-coverage --test \"javascript/src/**/*.test.ts\""
 	},
 	"dependencies": {
@@ -50,7 +50,8 @@
 		"postcss-discard-empty": "=8.0.2",
 		"postcss-import": "=16.1.1",
 		"postcss-nesting": "=14.0.1",
-		"rollup": "=4.62.4"
+		"rollup": "=4.62.4",
+		"rollup-plugin-prettier": "=4.2.0"
 	},
 	"packageManager": "pnpm@12.3.4"
 }

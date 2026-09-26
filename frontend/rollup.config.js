@@ -1,6 +1,7 @@
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import sucrase from '@rollup/plugin-sucrase';
+import prettier from 'rollup-plugin-prettier';
 
 const inputDir = 'javascript/src';
 const outputDir = '../public/script';
@@ -9,6 +10,9 @@ const moduleFiles = ['blog.ts', 'error.ts', 'admin.ts'];
 const legacyFiles = ['analytics.ts'];
 
 const pluginCommonjs = commonjs();
+const pluginPrettier = prettier({
+	parser: 'espree',
+});
 const pluginResolve = nodeResolve();
 const pluginSucrase = sucrase({
 	disableESTransforms: true,
@@ -20,7 +24,7 @@ const moduleConfigs = moduleFiles.map(
 		/** @type {import('rollup').RollupOptions} */
 		({
 			input: `${inputDir}/${file}`,
-			plugins: [pluginCommonjs, pluginResolve, pluginSucrase],
+			plugins: [pluginCommonjs, pluginResolve, pluginSucrase, pluginPrettier],
 			output: {
 				dir: outputDir,
 				format: 'es',
