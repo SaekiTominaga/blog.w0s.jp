@@ -40,7 +40,7 @@ const moduleConfigs = moduleFiles.map(
 /** @type {import('rollup').RollupOptions} */
 const legacyConfig = {
 	input: legacyFiles.map((file) => `${inputDir}/${file}`),
-	plugins: [pluginSucrase],
+	plugins: [pluginSucrase, pluginPrettier],
 	output: {
 		dir: outputDir,
 		format: 'es',
