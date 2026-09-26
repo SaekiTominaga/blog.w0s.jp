@@ -1,4 +1,7 @@
+/** @type {import("prettier").Config} */
 const config = {
+	printWidth: 160, // rollup-plugin-prettier は .editorconfig の設定が適用されないためここで指定する
+	useTabs: true, // rollup-plugin-prettier は .editorconfig の設定が適用されないためここで指定する
 	singleQuote: true,
 	plugins: ['prettier-plugin-ejs'],
 

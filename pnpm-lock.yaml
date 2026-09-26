@@ -279,6 +279,9 @@ importers:
       rollup:
         specifier: '=4.62.4'
         version: 4.62.4
+      rollup-plugin-prettier:
+        specifier: '=4.2.0'
+        version: 4.2.0(prettier@3.9.8)(rollup@4.62.4)
 
   hono:
     dependencies:
@@ -2148,6 +2151,10 @@ packages:
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
 
+  diff@9.0.0:
+    resolution: {integrity: sha512-svtcdpS8CgJyqAjEQIXdb3OjhFVVYjzGAPO8WGCmRbrml64SPw/jJD4GoE98aR7r25A0XcgrK3F02yw9R/vhQw==}
+    engines: {node: '>=0.3.1'}
+
   direction@2.0.1:
     resolution: {integrity: sha512-9S6m9Sukh1cZNknO1CWAr2QAWsbKLafQiyM5gZ7VgXHeuaoUwffKN4q6NC4A/Mf9iiPlOXQEKW/Mv/mh9/3YFA==}
     hasBin: true
@@ -3329,6 +3336,13 @@ packages:
     resolution: {integrity: sha512-LKg+Cr2ZF61fkcaK1UdkH2yEBBKnYjTyWzTJT6KNPcSPaiT7HSdhtMXQuN5wkTX0Xu72KQ1l8S42rlmexS2hSA==}
     engines: {node: 20 || >=22}
     hasBin: true
+
+  rollup-plugin-prettier@4.2.0:
+    resolution: {integrity: sha512-rEhjo/fqlieTZRPI7+1ljK4l7u6h0zPHlUZzWdQASqrHucrQCB+B5JCecm2RQervaxJIt8mNtdVdFYWfJ0iC2A==}
+    engines: {node: '>=6.0.0'}
+    peerDependencies:
+      prettier: ^1.0.0 || ^2.0.0 || ^3.0.0
+      rollup: ^1.0.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
 
   rollup@4.62.4:
     resolution: {integrity: sha512-RXOqwaPsBGjMNMa4sQjDjHieHEZDFoj/Rdr46l2MU5DfEs16wHJPC2RPTPHWhNl+M3aI472LLqFkFKut4SblOg==}
@@ -5139,6 +5153,8 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
+  diff@9.0.0: {}
+
   direction@2.0.1: {}
 
   dom-serializer@2.0.0:
@@ -6786,6 +6802,13 @@ snapshots:
     dependencies:
       glob: 13.0.6
       package-json-from-dist: 1.0.1
+
+  rollup-plugin-prettier@4.2.0(prettier@3.9.8)(rollup@4.62.4):
+    dependencies:
+      diff: 9.0.0
+      magic-string: 0.30.21
+      prettier: 3.9.8
+      rollup: 4.62.4
 
   rollup@4.62.4:
     dependencies:
