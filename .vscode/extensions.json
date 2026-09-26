@@ -4,8 +4,8 @@
 		"editorconfig.editorconfig",
 		"esbenp.prettier-vscode",
 		"github.vscode-github-actions",
+		"markuplint.markuplint-vscode",
 		"oxc.oxc-vscode",
-		"stylelint.vscode-stylelint",
-		"yusukehirao.vscode-markuplint"
+		"stylelint.vscode-stylelint"
 	]
 }
