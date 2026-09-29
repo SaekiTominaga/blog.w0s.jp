@@ -265,8 +265,8 @@ importers:
         specifier: '=12.0.1'
         version: 12.0.1(postcss@8.5.28)
       postcss-discard-comments:
-        specifier: '=8.0.2'
-        version: 8.0.2(postcss@8.5.28)
+        specifier: '=8.0.4'
+        version: 8.0.4(postcss@8.5.28)
       postcss-discard-empty:
         specifier: '=8.0.2'
         version: 8.0.2(postcss@8.5.28)
@@ -3073,11 +3073,11 @@ packages:
     peerDependencies:
       postcss: ^8.4
 
-  postcss-discard-comments@8.0.2:
-    resolution: {integrity: sha512-tQk36szZkG9ngZM9bKrUp3hM2SxdclYJVnMtAMKyi0RqY7IQpx67TJ3+0thRMV47niKBw9Y/1auGkBeCfPC97A==}
+  postcss-discard-comments@8.0.4:
+    resolution: {integrity: sha512-SU1uLYRQPKLJJmqEmqzu+Ze+9xDurBm7m/LOzXG/ANBAfAGLjbQF+oIyZnf3jV3F155q5rRMYXsoTNEJsPyHng==}
     engines: {node: ^22.11.0 || ^24.11.0 || >=26.0}
     peerDependencies:
-      postcss: ^8.5.25
+      postcss: ^8.5.26
 
   postcss-discard-empty@8.0.2:
     resolution: {integrity: sha512-fGHTnqg2S4fBudyd+tCE+qT57R4YRUaYLannCrKYsE8u/rCMGCBMPwIM4jcNWJLP5vMEBitGrXa5mGB7VKA+Eg==}
@@ -6362,7 +6362,7 @@ snapshots:
       '@csstools/media-query-list-parser': 5.0.0(@csstools/css-parser-algorithms@4.0.0(@csstools/css-tokenizer@4.0.0))(@csstools/css-tokenizer@4.0.0)
       postcss: 8.5.28
 
-  postcss-discard-comments@8.0.2(postcss@8.5.28):
+  postcss-discard-comments@8.0.4(postcss@8.5.28):
     dependencies:
       postcss: 8.5.28
       postcss-selector-parser: 7.1.6
