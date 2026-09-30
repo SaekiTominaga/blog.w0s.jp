@@ -15,7 +15,7 @@
 		"@w0s/file-size-format": "=4.0.2",
 		"@w0s/html-escape": "=5.0.2",
 		"@w0s/paapi-item-image-url-parser": "=4.0.2",
-		"@w0s/sqlite-utility": "=3.0.0",
+		"@w0s/sqlite-utility": "=3.0.2",
 		"better-sqlite3": "=12.11.1",
 		"dayjs": "=1.11.20",
 		"ejs": "=6.0.1",
