@@ -12,9 +12,11 @@ reportJsError();
 /* Trusted Types */
 trustedTypes();
 
-/* タブ */
-if (document.querySelector('w0s-tab') !== null) {
+try {
+	/* タブ */
 	customElements.define('w0s-tab', Tab);
+} catch (error) {
+	reportError(error);
 }
 
 try {
