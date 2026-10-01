@@ -313,8 +313,8 @@ importers:
         specifier: '=6.0.1'
         version: 6.0.1
       filenamify:
-        specifier: '=7.0.1'
-        version: 7.0.1
+        specifier: '=7.0.3'
+        version: 7.0.3
       hono:
         specifier: '=4.12.22'
         version: 4.12.22
@@ -2382,8 +2382,8 @@ packages:
     resolution: {integrity: sha512-qUet2faQFKvtvVUsEf7wCrTURwxBOIZpspsLHGifw9QCWk55ITE2FrG8XhfQqG/uxMA1xEGFVQbL+Yfm0O94+Q==}
     engines: {node: '>=20'}
 
-  filenamify@7.0.1:
-    resolution: {integrity: sha512-9b4rfnaX2MkJCgp27wypV6DAMvj4WMOSgJ+TdcpJIO84Dql+Cv6iJjdG4XDTLubOWkfNiBv3joO59sau/TXw+Q==}
+  filenamify@7.0.3:
+    resolution: {integrity: sha512-Pf0dwHrWs1GcIK15ps304fmxp2AOcfNR6vOIMvCPEy6ZztKYxzRQHlOuPVWo2HRjbCLHaRTY+kD8n3RbQ0A/fw==}
     engines: {node: '>=20'}
 
   fill-range@7.1.1:
@@ -5423,7 +5423,7 @@ snapshots:
 
   filename-reserved-regex@4.0.1: {}
 
-  filenamify@7.0.1:
+  filenamify@7.0.3:
     dependencies:
       filename-reserved-regex: 4.0.1
 
