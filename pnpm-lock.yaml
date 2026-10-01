@@ -289,8 +289,8 @@ importers:
         specifier: '=2.0.10'
         version: 2.0.10(hono@4.12.22)
       '@w0s/env-value-type':
-        specifier: '=2.0.0'
-        version: 2.0.0
+        specifier: '=2.0.2'
+        version: 2.0.2
       '@w0s/file-size-format':
         specifier: '=4.0.2'
         version: 4.0.2
@@ -359,8 +359,8 @@ importers:
   remark:
     dependencies:
       '@w0s/env-value-type':
-        specifier: '=2.0.0'
-        version: 2.0.0
+        specifier: '=2.0.2'
+        version: 2.0.2
       '@w0s/html-escape':
         specifier: '=5.0.2'
         version: 5.0.2
@@ -1755,8 +1755,8 @@ packages:
   '@w0s/button-clipboard@3.0.7':
     resolution: {integrity: sha512-TSvecb6LV/O1Mr0gD2hQhtw5xj8n2cXhSKPxPqGlpOLAOswfg98duWiSAl0+VFyP+F/bE0b/eH0ej7FGZuGoLg==}
 
-  '@w0s/env-value-type@2.0.0':
-    resolution: {integrity: sha512-ii6VpWUGatKIBb5bLY3TG/Js5VR8n+peldTM8tXF8WpobXJVON+mbp2G8A8a/qeoS91FskbmsTbo+pynECRAKg==}
+  '@w0s/env-value-type@2.0.2':
+    resolution: {integrity: sha512-0pQpVF6gSkTxijQghYpBOVtTpBBGlaHm9+fZtoLk17GGc3XNPNEH/Pevl4RdkA/WQ1xlBzGKHd0l6kURlpkC2A==}
     engines: {node: '>=22'}
 
   '@w0s/file-size-format@4.0.2':
@@ -4796,7 +4796,7 @@ snapshots:
 
   '@w0s/button-clipboard@3.0.7': {}
 
-  '@w0s/env-value-type@2.0.0': {}
+  '@w0s/env-value-type@2.0.2': {}
 
   '@w0s/file-size-format@4.0.2': {}
 
