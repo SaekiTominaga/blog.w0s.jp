@@ -301,8 +301,8 @@ importers:
         specifier: '=4.0.2'
         version: 4.0.2
       '@w0s/sqlite-utility':
-        specifier: '=3.0.0'
-        version: 3.0.0
+        specifier: '=3.0.2'
+        version: 3.0.2
       better-sqlite3:
         specifier: '=12.11.1'
         version: 12.11.1
@@ -371,8 +371,8 @@ importers:
         specifier: '=4.0.2'
         version: 4.0.2
       '@w0s/sqlite-utility':
-        specifier: '=3.0.0'
-        version: 3.0.0
+        specifier: '=3.0.2'
+        version: 3.0.2
       better-sqlite3:
         specifier: '=12.11.1'
         version: 12.11.1
@@ -1809,8 +1809,8 @@ packages:
   '@w0s/report-same-referrer@5.0.2':
     resolution: {integrity: sha512-9X0+Gh9Lhbbj16Fk2Sa7lbwmTIiYKvUqjoc6KhKwd7uCjPFqDgfJCMOGwbHmbk7+ELEroM69kmYXx4ngAgsHPg==}
 
-  '@w0s/sqlite-utility@3.0.0':
-    resolution: {integrity: sha512-W91HrAcpgvW75rodJarM/Dn+AQOGZKDmefYv6jjDd5bNu29h+8ElLdCMp16eacQwy3ikT8awBI1F3VFGQ26M6g==}
+  '@w0s/sqlite-utility@3.0.2':
+    resolution: {integrity: sha512-IQppiK4bfLnFZtsem9amL7VSDId5aQUjBlUfMMC/jESbYRtz6YCYelHYKN2Rksvfe9+ecY3M3wvJZoy8OjCxVA==}
     engines: {node: '>=22'}
 
   '@w0s/string-convert@4.0.2':
@@ -4833,7 +4833,7 @@ snapshots:
 
   '@w0s/report-same-referrer@5.0.2': {}
 
-  '@w0s/sqlite-utility@3.0.0': {}
+  '@w0s/sqlite-utility@3.0.2': {}
 
   '@w0s/string-convert@4.0.2': {}
 
