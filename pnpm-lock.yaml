@@ -365,8 +365,8 @@ importers:
         specifier: '=5.0.2'
         version: 5.0.2
       '@w0s/isbn-verify':
-        specifier: '=4.0.0'
-        version: 4.0.0
+        specifier: '=4.0.2'
+        version: 4.0.2
       '@w0s/paapi-item-image-url-parser':
         specifier: '=4.0.2'
         version: 4.0.2
@@ -1783,8 +1783,8 @@ packages:
   '@w0s/input-file-preview@3.0.9':
     resolution: {integrity: sha512-E55ybQtC604RiC4yDISecvp8rEklxBtdALmhSRRhy2q5BmYOxnxa9v73OmU+rMv8cmS7fb9vsXn7coccxZX9ZQ==}
 
-  '@w0s/isbn-verify@4.0.0':
-    resolution: {integrity: sha512-6CcSgIBfZJX80U2/CkhHtLgJAUolHqFcLT5GuWMT+uKrasT2pw/C64osfvozgty7hyYJuccY5Uxqr5/DcWbL8Q==}
+  '@w0s/isbn-verify@4.0.2':
+    resolution: {integrity: sha512-kHKGZJnBjgFKmHyU/utUk2HsLAMieDdxqT9+FnI+I2atzARYsz/w+v7jbf0XDoFA9I6QEsXAz/UidBOC6sgZiA==}
     engines: {node: '>=22'}
 
   '@w0s/markuplint-config@4.0.3':
@@ -4815,7 +4815,7 @@ snapshots:
       '@w0s/html-escape': 5.0.1
       whatwg-mimetype: 5.0.0
 
-  '@w0s/isbn-verify@4.0.0': {}
+  '@w0s/isbn-verify@4.0.2': {}
 
   '@w0s/markuplint-config@4.0.3(markuplint@5.0.1(@typescript-eslint/types@8.70.0)(eslint@10.10.0(supports-color@10.2.2))(supports-color@10.2.2)(typescript@7.0.2))':
     dependencies:
