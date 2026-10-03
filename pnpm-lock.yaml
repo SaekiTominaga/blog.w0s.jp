@@ -386,8 +386,8 @@ importers:
         specifier: '=6.0.4'
         version: 6.0.4
       highlight.js:
-        specifier: '=11.11.1'
-        version: 11.11.1
+        specifier: '=11.12.0'
+        version: 11.12.0
       kysely:
         specifier: '=0.28.17'
         version: 0.28.17
@@ -2519,6 +2519,10 @@ packages:
 
   highlight.js@11.11.1:
     resolution: {integrity: sha512-Xwwo44whKBVCYoliBQwaPvtd/2tYFkRQtXDWj1nackaV2JPXx3L0+Jvd8/qCJ2p+ML0/XVkJ2q+Mr+UVdpJK5w==}
+    engines: {node: '>=12.0.0'}
+
+  highlight.js@11.12.0:
+    resolution: {integrity: sha512-nbfWpyRMcMrPMmDwJB+dhX/eiaPKtc2RB+0QZskqJ3WjRA/FDS0e9hZrx8EC/lbEv8gXy98FcDbNa/dspAaJMg==}
     engines: {node: '>=12.0.0'}
 
   homedir-polyfill@1.0.3:
@@ -5601,6 +5605,8 @@ snapshots:
       '@types/hast': 3.0.4
 
   highlight.js@11.11.1: {}
+
+  highlight.js@11.12.0: {}
 
   homedir-polyfill@1.0.3:
     dependencies:
