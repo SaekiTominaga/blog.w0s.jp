@@ -6,43 +6,45 @@ import searchEngine from './component/searchEngine.ts';
 import reportJsError from './util/reportJsError.ts';
 import trustedTypes from './util/trustedTypes.ts';
 
-/* JS エラーレポート */
-reportJsError();
+if ('reportError' in globalThis) {
+	/* JS エラーレポート */
+	reportJsError();
 
-/* Trusted Types */
-trustedTypes();
+	/* Trusted Types */
+	trustedTypes();
 
-try {
-	/* タブ */
-	customElements.define('w0s-tab', Tab);
-} catch (error) {
-	reportError(error);
-}
+	try {
+		/* タブ */
+		customElements.define('w0s-tab', Tab);
+	} catch (error) {
+		reportError(error);
+	}
 
-try {
-	/* ツールチップ */
-	footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popover'));
-} catch (error) {
-	reportError(error);
-}
+	try {
+		/* ツールチップ */
+		footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popover'));
+	} catch (error) {
+		reportError(error);
+	}
 
-try {
-	/* クリップボード書き込みボタン */
-	buttonClipboard(document.querySelectorAll('.js-button-clipboard'));
-} catch (error) {
-	reportError(error);
-}
+	try {
+		/* クリップボード書き込みボタン */
+		buttonClipboard(document.querySelectorAll('.js-button-clipboard'));
+	} catch (error) {
+		reportError(error);
+	}
 
-try {
-	/* 検索エンジン選択 */
-	searchEngine(document.querySelector('.js-search-engine'));
-} catch (error) {
-	reportError(error);
-}
+	try {
+		/* 検索エンジン選択 */
+		searchEngine(document.querySelector('.js-search-engine'));
+	} catch (error) {
+		reportError(error);
+	}
 
-try {
-	/* Google AdSense */
-	adsense(document.querySelectorAll('.js-ads-google'), { rootMargin: '100px' });
-} catch (error) {
-	reportError(error);
+	try {
+		/* Google AdSense */
+		adsense(document.querySelectorAll('.js-ads-google'), { rootMargin: '100px' });
+	} catch (error) {
+		reportError(error);
+	}
 }
