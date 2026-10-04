@@ -12,44 +12,46 @@ import reportJsError from './util/reportJsError.ts';
 import trustedTypes from './util/trustedTypes.ts';
 import { clear as templateClear, update as updateTemplate } from './util/template.ts';
 
-/* JS エラーレポート */
-reportJsError();
+if ('reportError' in globalThis) {
+	/* JS エラーレポート */
+	reportJsError();
 
-/* Trusted Types */
-trustedTypes();
+	/* Trusted Types */
+	trustedTypes();
 
-/* 入力値の変換 */
-document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim').forEach(($formCtrl) => {
-	$formCtrl.addEventListener(
-		'change',
-		() => {
-			$formCtrl.value = convert($formCtrl.value, {
-				trim: true,
-			});
-		},
-		{ passive: true },
-	);
-});
+	/* 入力値の変換 */
+	document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.js-convert-trim').forEach(($formCtrl) => {
+		$formCtrl.addEventListener(
+			'change',
+			() => {
+				$formCtrl.value = convert($formCtrl.value, {
+					trim: true,
+				});
+			},
+			{ passive: true },
+		);
+	});
 
-try {
-	/* ファイルアップロードでプレビュー画像を表示 */
-	inputFilePreview(document.querySelectorAll('.js-input-file-preview'));
-} catch (error) {
-	reportError(error);
-}
+	try {
+		/* ファイルアップロードでプレビュー画像を表示 */
+		inputFilePreview(document.querySelectorAll('.js-input-file-preview'));
+	} catch (error) {
+		reportError(error);
+	}
 
-try {
-	/* フォーム入力中にページが閉じられようとしたら確認メッセージを表示 */
-	formBeforeUnloadConfirm(document.querySelectorAll('.js-form-beforeunload-confirm'));
-} catch (error) {
-	reportError(error);
-}
+	try {
+		/* フォーム入力中にページが閉じられようとしたら確認メッセージを表示 */
+		formBeforeUnloadConfirm(document.querySelectorAll('.js-form-beforeunload-confirm'));
+	} catch (error) {
+		reportError(error);
+	}
 
-try {
-	/* 送信ボタン2度押し防止 */
-	formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
-} catch (error) {
-	reportError(error);
+	try {
+		/* 送信ボタン2度押し防止 */
+		formSubmitOverlay(document.querySelectorAll('.js-submit-overlay'));
+	} catch (error) {
+		reportError(error);
+	}
 }
 
 /* disabled 制御 */
