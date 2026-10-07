@@ -20,10 +20,12 @@ export const codeToHast = (_state: State, node: Code): ElementContent | ElementC
 
 	const hash = crypto.createHash('md5');
 	hash.update(`${positionString}${value}`);
-	const id = `code-${hash.digest('hex')}`; // コード ID（記事内でのユニークさを保つためにコード文字列と位置情報を組み合わせた文字列を元にする）
+	const id = hash.digest('hex'); // ID のベースとなる文字列（記事内でのユニークさを保つためにコード文字列と位置情報を組み合わせた文字列を元にする）
+	const codeId = `code-${id}`; // コード ID
+	const feedbackId = `fb-${id}`; // フィードバック ID
 
 	const codeProperties: Properties = {
-		id: id,
+		id: codeId,
 	};
 	if (lang !== null && lang !== undefined && config.codeLanguages.includes(lang)) {
 		codeProperties['className'] = [`lang-${lang}`];
@@ -45,7 +47,10 @@ export const codeToHast = (_state: State, node: Code): ElementContent | ElementC
 					properties: {
 						type: 'button',
 						className: ['p-code__clipboard-button', 'js-button-clipboard'],
-						'data-target': id,
+						'data-target': codeId,
+						'data-feedbacked-by': feedbackId,
+						'data-feedback-text': 'コピーしました',
+						'data-feedback-duration': '3s',
 					},
 					children: [
 						{
@@ -60,6 +65,15 @@ export const codeToHast = (_state: State, node: Code): ElementContent | ElementC
 							children: [],
 						},
 					],
+				},
+				{
+					type: 'element',
+					tagName: 'output',
+					properties: {
+						className: ['p-code__clipboard-feedback'],
+						id: feedbackId,
+					},
+					children: [],
 				},
 			],
 		});

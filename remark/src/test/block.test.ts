@@ -585,7 +585,7 @@ code*2*
 			`
 <div class="p-code">
 	<div class="p-code__clipboard">
-		<button type="button" class="p-code__clipboard-button js-button-clipboard" data-target="code-3247df396b0e96d79af9ae67b7500fea"><img src="/image/copy.svg" alt="コピー" width="16" height="16" /></button>
+		<button type="button" class="p-code__clipboard-button js-button-clipboard" data-target="code-3247df396b0e96d79af9ae67b7500fea" data-feedbacked-by="fb-3247df396b0e96d79af9ae67b7500fea" data-feedback-text="コピーしました" data-feedback-duration="3s"><img src="/image/copy.svg" alt="コピー" width="16" height="16" /></button><output class="p-code__clipboard-feedback" id="fb-3247df396b0e96d79af9ae67b7500fea"></output>
 	</div>
 	<pre class="p-code__code"><code id="code-3247df396b0e96d79af9ae67b7500fea">code1
 code*2*</code></pre>
@@ -610,7 +610,7 @@ code*2*</code></pre>
 			`
 <div class="p-code">
 	<div class="p-code__clipboard">
-		<button type="button" class="p-code__clipboard-button js-button-clipboard" data-target="code-e29e42be83cd7ab3e69a92ec404915c8"><img src="/image/copy.svg" alt="コピー" width="16" height="16" /></button>
+		<button type="button" class="p-code__clipboard-button js-button-clipboard" data-target="code-e29e42be83cd7ab3e69a92ec404915c8" data-feedbacked-by="fb-e29e42be83cd7ab3e69a92ec404915c8" data-feedback-text="コピーしました" data-feedback-duration="3s"><img src="/image/copy.svg" alt="コピー" width="16" height="16" /></button><output class="p-code__clipboard-feedback" id="fb-e29e42be83cd7ab3e69a92ec404915c8"></output>
 	</div>
 	<pre class="p-code__code"><code id="code-e29e42be83cd7ab3e69a92ec404915c8" class="hljs lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>></span>code1<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>></span>
 <span class="hljs-tag">&lt;<span class="hljs-name">p</span>></span>code*2*<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>></span></code></pre>
