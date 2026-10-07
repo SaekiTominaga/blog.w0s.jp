@@ -195,8 +195,8 @@ importers:
         specifier: '=7.4.3'
         version: 7.4.3
       '@w0s/form-before-unload-confirm':
-        specifier: '=3.0.4'
-        version: 3.0.4
+        specifier: '=3.0.5'
+        version: 3.0.5
       '@w0s/form-submit-overlay':
         specifier: '=4.0.8'
         version: 4.0.8
@@ -1928,8 +1928,8 @@ packages:
   '@w0s/footnote-reference-popover@7.4.3':
     resolution: {integrity: sha512-0fmq9jEs2dkPKZgpYIKhXiGXhFXqygpSvEfB26ktNVWfNvUyYXIz90syM6y7cPu+/WW0/4i0RHBBYdRHXkvPKA==}
 
-  '@w0s/form-before-unload-confirm@3.0.4':
-    resolution: {integrity: sha512-b5YZhKq8/tU0rIRKrlQFS6UIFUzSAo9BThsj2/mZk8OmeURpNSzodAfGlmxlI3eJ6x7kSpM+DUCg3rkX8tcxSg==}
+  '@w0s/form-before-unload-confirm@3.0.5':
+    resolution: {integrity: sha512-SM3hKBIcqO/MqjCmja/kiua/vcHq0i5MdzYP4eMCTxexEU3Im9B3L5z97DV4YYaAUwETZypow2ez6MswWeK8jw==}
 
   '@w0s/form-submit-overlay@4.0.8':
     resolution: {integrity: sha512-WBlpr8pb7iP5fjktEdHMnGOb/ySosUynNL/0z+9TttTYaN5UQkxwYsOXk4IC5tHbnk1awZn+6IAaE0qGP1EFbQ==}
@@ -5060,7 +5060,7 @@ snapshots:
 
   '@w0s/footnote-reference-popover@7.4.3': {}
 
-  '@w0s/form-before-unload-confirm@3.0.4': {}
+  '@w0s/form-before-unload-confirm@3.0.5': {}
 
   '@w0s/form-submit-overlay@4.0.8': {}
 
