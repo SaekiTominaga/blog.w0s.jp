@@ -213,8 +213,8 @@ importers:
         specifier: '=4.0.3'
         version: 4.0.3
       '@w0s/report-same-referrer':
-        specifier: '=5.0.2'
-        version: 5.0.2
+        specifier: '=5.0.3'
+        version: 5.0.3
       '@w0s/string-convert':
         specifier: '=4.0.2'
         version: 4.0.2
@@ -1968,8 +1968,8 @@ packages:
   '@w0s/report-js-error@4.0.3':
     resolution: {integrity: sha512-BaZczOEZjOYBn8EnahYErI/lb5NPCPPCi4ZFsolodyHmCqt+QVHPQmTuzI9PpeDtywQb3gMYBOQ1ZvHafZ2jRg==}
 
-  '@w0s/report-same-referrer@5.0.2':
-    resolution: {integrity: sha512-9X0+Gh9Lhbbj16Fk2Sa7lbwmTIiYKvUqjoc6KhKwd7uCjPFqDgfJCMOGwbHmbk7+ELEroM69kmYXx4ngAgsHPg==}
+  '@w0s/report-same-referrer@5.0.3':
+    resolution: {integrity: sha512-r96XmGubg9QSO20EkcXTcBHp9n2a+0p6FA5bHyvdK8bEHwU43ZtOv8sYX7bYsDn28T/Uj8eF6rlP6KaAv5Kjaw==}
 
   '@w0s/sqlite-utility@3.0.2':
     resolution: {integrity: sha512-IQppiK4bfLnFZtsem9amL7VSDId5aQUjBlUfMMC/jESbYRtz6YCYelHYKN2Rksvfe9+ecY3M3wvJZoy8OjCxVA==}
@@ -5089,7 +5089,7 @@ snapshots:
 
   '@w0s/report-js-error@4.0.3': {}
 
-  '@w0s/report-same-referrer@5.0.2': {}
+  '@w0s/report-same-referrer@5.0.3': {}
 
   '@w0s/sqlite-utility@3.0.2': {}
 
