@@ -50,7 +50,7 @@
 		"postcss-discard-empty": "=8.0.5",
 		"postcss-import": "=16.2.0",
 		"postcss-nesting": "=14.0.2",
-		"rollup": "=4.63.6",
+		"rollup": "=4.64.0",
 		"rollup-plugin-prettier": "=4.2.0"
 	},
 	"packageManager": "pnpm@12.3.4"
