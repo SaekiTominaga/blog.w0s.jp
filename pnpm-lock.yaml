@@ -126,8 +126,8 @@ importers:
         specifier: '=1.0.9'
         version: 1.0.9(oxlint-plugin-safely-storage@1.0.2(@oxlint/plugins@1.82.0)(oxlint@1.86.0(oxlint-tsgolint@7.0.2003)))(oxlint-tsgolint@7.0.2003)(oxlint@1.86.0(oxlint-tsgolint@7.0.2003))
       '@w0s/stylelint-config':
-        specifier: '=4.26.1'
-        version: 4.26.1(stylelint-attribute-case-sensitivity@3.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-concentric-order@5.5.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-standard@40.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-no-default-viewport@2.0.3(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-plugin-defensive-css@2.9.7(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-root-colors@3.0.3(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2))
+        specifier: '=4.26.2'
+        version: 4.26.2(stylelint-attribute-case-sensitivity@3.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-concentric-order@5.5.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-standard@40.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-no-default-viewport@2.0.3(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-plugin-defensive-css@2.9.7(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-root-colors@3.0.3(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2))
       '@w0s/tsconfig':
         specifier: '=3.2.2'
         version: 3.2.2(typescript@7.0.2)
@@ -1965,10 +1965,10 @@ packages:
     resolution: {integrity: sha512-uFF80xDhcGJTOnq1sfb5/mSTF/sEZ/LRgpKnuGwnQOzUkQp9lrj5wAj1KkMPIMfMgIXz3BFOsprAP/dSIQ/mlg==}
     engines: {node: '>=22'}
 
-  '@w0s/stylelint-config@4.26.1':
-    resolution: {integrity: sha512-DnrPkHeNDVImxlWrHBUJcPaBQAx0k057FVcw84f1dsulUlbQj1Hs1s0ZGnyKkmMbKqcfWa5IH3clqHvFWuFMEw==}
+  '@w0s/stylelint-config@4.26.2':
+    resolution: {integrity: sha512-yDiThQrbzsQzVCq21gv/u/fJ+NO4nJbUtijQpjxi7WPl+3YlJHizYUYdKjRs1rjlnyMLFZX/+79yRtsAe6VnzQ==}
     peerDependencies:
-      stylelint: ^17.15.0
+      stylelint: ^17.16.0
       stylelint-attribute-case-sensitivity: ^3.0.0
       stylelint-config-concentric-order: ^5.3.0
       stylelint-config-standard: ^40.0.0
@@ -5073,7 +5073,7 @@ snapshots:
 
   '@w0s/string-convert@4.0.2': {}
 
-  '@w0s/stylelint-config@4.26.1(stylelint-attribute-case-sensitivity@3.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-concentric-order@5.5.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-standard@40.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-no-default-viewport@2.0.3(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-plugin-defensive-css@2.9.7(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-root-colors@3.0.3(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2))':
+  '@w0s/stylelint-config@4.26.2(stylelint-attribute-case-sensitivity@3.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-concentric-order@5.5.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-config-standard@40.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-no-default-viewport@2.0.3(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-plugin-defensive-css@2.9.7(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint-root-colors@3.0.3(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2)))(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2))':
     dependencies:
       stylelint: 17.16.0(supports-color@10.2.2)(typescript@7.0.2)
       stylelint-attribute-case-sensitivity: 3.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2))
