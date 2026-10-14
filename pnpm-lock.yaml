@@ -392,8 +392,8 @@ importers:
         specifier: '=0.28.17'
         version: 0.28.17
       mdast-util-definition-list:
-        specifier: '=2.0.0'
-        version: 2.0.0(supports-color@10.2.2)
+        specifier: '=2.0.1'
+        version: 2.0.1(supports-color@10.2.2)
       mdast-util-gfm-footnote:
         specifier: '=2.1.0'
         version: 2.1.0(supports-color@10.2.2)
@@ -2935,8 +2935,8 @@ packages:
   mathml-tag-names@4.0.0:
     resolution: {integrity: sha512-aa6AU2Pcx0VP/XWnh8IGL0SYSgQHDT6Ucror2j2mXeFAlN3ahaNs8EZtG1YiticMkSLj3Gt6VPFfZogt7G5iFQ==}
 
-  mdast-util-definition-list@2.0.0:
-    resolution: {integrity: sha512-aFWuASQs77BJndNSDcNdvB1HRqWZBptcEjwv67mnPbaAZsfwMHxI8MwoQxAz4I2bHx41hft/HDRC57ZkhpayOQ==}
+  mdast-util-definition-list@2.0.1:
+    resolution: {integrity: sha512-o3bsHwKEentTj5LtRpKJfGNFH1FCq7igzdxRlPxNJGwOotICE4A7ZHiExd5B9d5rrEB02hrsZHZm0tVSJnpB6Q==}
 
   mdast-util-directive@3.1.0:
     resolution: {integrity: sha512-I3fNFt+DHmpWCYAT7quoM6lHf9wuqtI+oCOfvILnoicNIqjh5E3dEJWiXuYME2gNe8vl1iMQwyUHa7bgFmak6Q==}
@@ -6136,7 +6136,7 @@ snapshots:
 
   mathml-tag-names@4.0.0: {}
 
-  mdast-util-definition-list@2.0.0(supports-color@10.2.2):
+  mdast-util-definition-list@2.0.1(supports-color@10.2.2):
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
