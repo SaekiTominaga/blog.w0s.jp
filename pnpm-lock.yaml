@@ -407,8 +407,8 @@ importers:
         specifier: '=4.0.0'
         version: 4.0.0
       micromark-extension-definition-list:
-        specifier: '=2.0.1'
-        version: 2.0.1
+        specifier: '=2.0.2'
+        version: 2.0.2
       micromark-extension-gfm-footnote:
         specifier: '=2.1.0'
         version: 2.1.0
@@ -3012,8 +3012,8 @@ packages:
   micromark-core-commonmark@2.0.3:
     resolution: {integrity: sha512-RDBrHEMSxVFLg6xvnXmb1Ayr2WzLAWjeSATAoxwKYJV94TeNavgoIdA0a9ytzDSVzBy2YKFK+emCPOEibLeCrg==}
 
-  micromark-extension-definition-list@2.0.1:
-    resolution: {integrity: sha512-lQSkVTWNR0f9qzUbM4p0chJSecIRYvZBjnI+cWqN0k2zDSvzpduGJifWJj4SpCWF4TlpNV9amCF8Y1VEXdJubQ==}
+  micromark-extension-definition-list@2.0.2:
+    resolution: {integrity: sha512-475nroY7fOVNMVs36i8R9K8Nuy4ZJABYupKpQS3MR/83ijbG8PMltxLeCPkPyUrJqgUrXpQ86vm0K02qYMfB6g==}
 
   micromark-extension-gfm-footnote@2.1.0:
     resolution: {integrity: sha512-/yPhxI1ntnDNsiHtzLKYnE3vf9JZ6cAisqVDauhp4CEHxlb4uoOTxOCJ+9s51bIB8U1N1FJ1RXOKTIlD5B/gqw==}
@@ -6148,7 +6148,7 @@ snapshots:
       mdast-util-from-markdown: 2.0.3(supports-color@10.2.2)
       mdast-util-to-hast: 13.2.1
       mdast-util-to-markdown: 2.1.2
-      micromark-extension-definition-list: 2.0.1
+      micromark-extension-definition-list: 2.0.2
       unist-builder: 4.0.0
     transitivePeerDependencies:
       - supports-color
@@ -6329,7 +6329,7 @@ snapshots:
       micromark-util-symbol: 2.0.1
       micromark-util-types: 2.0.2
 
-  micromark-extension-definition-list@2.0.1:
+  micromark-extension-definition-list@2.0.2:
     dependencies:
       micromark-core-commonmark: 2.0.3
       micromark-factory-space: 2.0.1
