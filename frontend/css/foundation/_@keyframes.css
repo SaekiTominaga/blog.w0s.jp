@@ -31,3 +31,21 @@
 		background-color: transparent;
 	}
 }
+
+@keyframes clipboard-fb {
+	0% {
+		opacity: 0;
+	}
+
+	6.25% {
+		opacity: 0.9;
+	}
+
+	87.5% {
+		opacity: 0.9;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}

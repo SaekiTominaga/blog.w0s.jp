@@ -182,6 +182,10 @@
 }
 
 .p-code__clipboard {
+	--_button-block-size: 2em;
+	--_button-inline-size: 2em;
+	--_fb-tail-block-size: 0.75em;
+	--_fb-tail-inline-size: 1em;
 }
 
 .p-code__clipboard-button {
@@ -199,6 +203,8 @@
 	border-radius: var(--border-radius-normal);
 	background-color: var(--_bg-color);
 	padding: 0.5em;
+	block-size: var(--_button-block-size);
+	inline-size: var(--_button-inline-size);
 	contain: layout; /* Ripple effect */
 	overflow: hidden; /* Ripple effect */
 	line-height: var(--line-height-nowrap);
@@ -239,8 +245,8 @@
 
 	& > img {
 		display: block flow;
-		block-size: 1em;
-		inline-size: 1em;
+		block-size: 100%;
+		inline-size: 100%;
 	}
 }
 
@@ -249,8 +255,7 @@
 	position-anchor: --clipboard-button;
 	position-area: block-end span-all;
 	justify-self: anchor-center;
-	opacity: 0.9;
-	margin-block-start: 1px;
+	margin-block-start: var(--_fb-tail-block-size);
 	margin-inline: calc(0.5em * pow(var(--font-ratio), 4));
 	border-radius: var(--border-radius-normal);
 	background-color: var(--color-gray);
@@ -259,7 +264,21 @@
 	font-size: calc(100% / pow(var(--font-ratio), 4));
 
 	&:not(:empty) {
+		animation-name: clipboard-fb;
+		animation-duration: 3s;
+		animation-fill-mode: forwards;
 		padding: 0.5em;
+
+		&::before {
+			position: absolute;
+			inset-block-start: calc(1px - var(--_fb-tail-block-size));
+			inset-inline-end: calc((var(--_button-inline-size) * pow(var(--font-ratio), 4) - var(--_fb-tail-inline-size)) / 2);
+			clip-path: polygon(50% 0, 100% 100%, 0 100%);
+			background-color: var(--color-gray);
+			block-size: calc(var(--_fb-tail-block-size));
+			inline-size: calc(var(--_fb-tail-inline-size));
+			content: "";
+		}
 	}
 }
 
