@@ -28,7 +28,7 @@
 		"mdast-util-to-string": "=4.0.0",
 		"micromark-extension-definition-list": "=2.0.2",
 		"micromark-extension-gfm-footnote": "=2.1.0",
-		"micromark-extension-gfm-table": "=2.1.1",
+		"micromark-extension-gfm-table": "=2.1.2",
 		"micromark-util-sanitize-uri": "=2.0.1",
 		"rehype-highlight": "=7.0.2",
 		"rehype-stringify": "=10.0.1",
