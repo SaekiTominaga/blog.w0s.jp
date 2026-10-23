@@ -219,8 +219,8 @@ importers:
         specifier: '=4.0.2'
         version: 4.0.2
       '@w0s/tab':
-        specifier: '=5.0.5'
-        version: 5.0.5
+        specifier: '=6.0.0'
+        version: 6.0.0
       chokidar:
         specifier: '=5.0.0'
         version: 5.0.0
@@ -2006,8 +2006,8 @@ packages:
       stylelint-plugin-defensive-css: ^2.9.6
       stylelint-root-colors: ^3.0.0
 
-  '@w0s/tab@5.0.5':
-    resolution: {integrity: sha512-MOSbDhz7RYjhtfH4dqBv8DQiR9arT7eJLGzxr+LYPczL9RNg1AT/hObgk7Vz2wCYEVS9TKrlcSxFWXKLGpYTiA==}
+  '@w0s/tab@6.0.0':
+    resolution: {integrity: sha512-NwTtsWLl09ho+nukuFo30q/36rGy07eghP9/7F2HvftiYaQFcRJj4AGbTBSQAyo39Gea6oJ17hlDSoqShANWPQ==}
 
   '@w0s/tsconfig@3.2.2':
     resolution: {integrity: sha512-NjQCa941NlAHj0JtTRMy6RqlTTQ+gus3UX7+wIwlKPu+hbmuQvT9wUEljPgBEeTDvTaIRP5qkA7iyPKK3fBZnA==}
@@ -5111,7 +5111,7 @@ snapshots:
       stylelint-plugin-defensive-css: 2.9.7(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2))
       stylelint-root-colors: 3.0.3(stylelint@17.16.0(supports-color@10.2.2)(typescript@7.0.2))
 
-  '@w0s/tab@5.0.5': {}
+  '@w0s/tab@6.0.0': {}
 
   '@w0s/tsconfig@3.2.2(typescript@7.0.2)':
     dependencies:
