@@ -21,8 +21,8 @@ if ('reportError' in globalThis) {
 	}
 
 	try {
-		/* ツールチップ */
-		footnoteReferencePopover(document.querySelectorAll('.js-footnote-reference-popover'));
+		/* 脚注ポップオーバー */
+		footnoteReferencePopover('footnote-reference');
 	} catch (error) {
 		reportError(error);
 	}

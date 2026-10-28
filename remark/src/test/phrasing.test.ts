@@ -98,7 +98,8 @@ text[^1]text
 				),
 			),
 			`<p>
-	text<span class="c-footnote-ref"><a href="#fn-1" id="fnref-1" class="js-footnote-reference-popover" data-ignore=".p-footnote__backref" data-popover-label="脚注" data-popover-class="p-footnote-popover" data-popover-hide-text="閉じる" data-popover-hide-image-src="/image/footnote-popover-close.svg" data-popover-hide-image-width="24" data-popover-hide-image-height="24">[1]</a></span
+	text<footnote-reference ignore=".p-footnote__backref" popover-label="脚注" class="c-footnote-ref"
+		><a href="#fn-1" id="fnref-1" slot="anchor">[1]</a><template slot="popover__hide"><img src="/image/footnote-popover-close.svg" alt="閉じる" width="12" height="12" /></template></footnote-reference
 	>text
 </p>
 <section class="p-footnote">
