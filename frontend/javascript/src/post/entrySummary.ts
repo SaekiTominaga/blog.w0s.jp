@@ -81,7 +81,7 @@ const entrySummary = async (
 	await Promise.all(
 		[...$ctrls].map(async ($ctrl) => {
 			if (!($ctrl instanceof HTMLInputElement)) {
-				throw new Error('Element must be a `HTMLInputElement`');
+				throw new TypeError('Element must be a `HTMLInputElement`');
 			}
 
 			const outputId = $ctrl.dataset['output'];
@@ -93,7 +93,7 @@ const entrySummary = async (
 				throw new Error(`Element \`#${outputId}\` not found`);
 			}
 			if (!($output instanceof HTMLTemplateElement)) {
-				throw new Error(`Element \`#${outputId}\` must be a \`HTMLTemplateElement\``);
+				throw new TypeError(`Element \`#${outputId}\` must be a \`HTMLTemplateElement\``);
 			}
 
 			if (options.load) {

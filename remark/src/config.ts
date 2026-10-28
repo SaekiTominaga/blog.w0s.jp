@@ -4,13 +4,13 @@ export default {
 	lang: 'ja',
 	regexp: {
 		lang: '[a-z]{2}',
-		absoluteUrl: "https?:\\/\\/[\\-_.!~*'\\(\\)a-zA-Z0-9;\\/?:@&=+$,%#]+",
+		absoluteUrl: String.raw`https?:\/\/[\-_.!~*'\(\)a-zA-Z0-9;\/?:@&=+$,%#]+`,
 		isbn: '(978|979)-[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9]|[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,7}-[0-9X]',
 		entryId: '[1-9][0-9]*',
-		footnoteId: '[a-zA-Z0-9\\-_]+',
+		footnoteId: String.raw`[a-zA-Z0-9\-_]+`,
 		asin: '[0-9A-Z]{10}',
-		amazonImageId: '[a-zA-Z0-9\\-_+%]+',
-		youtubeId: '[a-zA-Z0-9\\-_]+',
+		amazonImageId: String.raw`[a-zA-Z0-9\-_+%]+`,
+		youtubeId: String.raw`[a-zA-Z0-9\-_]+`,
 	},
 	headingDepth: {
 		min: 2 as Heading['depth'],
