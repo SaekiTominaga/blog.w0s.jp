@@ -32,7 +32,7 @@ await test('validator', async (t) => {
 `;
 
 		await assert.rejects(entrySummary(document.querySelectorAll('p'), { load: true }), {
-			name: 'Error',
+			name: 'TypeError',
 			message: 'Element must be a `HTMLInputElement`',
 		});
 	});
@@ -69,7 +69,7 @@ await test('validator', async (t) => {
 `;
 
 		await assert.rejects(entrySummary(document.querySelectorAll('input'), { load: true }), {
-			name: 'Error',
+			name: 'TypeError',
 			message: 'Element `#foo` must be a `HTMLTemplateElement`',
 		});
 	});
