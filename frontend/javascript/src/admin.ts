@@ -188,12 +188,12 @@ const formSubmitHook = <T extends ApiPostData>(
 
 	const $form = document.querySelector(elementSelector.form); // 送信フォーム
 	if (!($form instanceof HTMLFormElement)) {
-		throw new Error(`\`${elementSelector.form}\` is not HTMLFormElement`);
+		throw new TypeError(`\`${elementSelector.form}\` is not HTMLFormElement`);
 	}
 
 	const $result = document.querySelector(elementSelector.result); // 実行結果を表示する要素
 	if (!($result instanceof HTMLTemplateElement)) {
-		throw new Error(`\`${elementSelector.result}\` is not HTMLTemplateElement`);
+		throw new TypeError(`\`${elementSelector.result}\` is not HTMLTemplateElement`);
 	}
 
 	$form.addEventListener('submit', (ev: SubmitEvent) => {
