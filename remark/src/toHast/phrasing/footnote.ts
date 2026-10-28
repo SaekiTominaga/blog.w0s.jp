@@ -31,8 +31,10 @@ export const footnoteReferenceToHast = (state: State, node: FootnoteReference): 
 
 	return {
 		type: 'element',
-		tagName: 'span',
+		tagName: 'footnote-reference',
 		properties: {
+			ignore: '.p-footnote__backref',
+			'popover-label': '脚注',
 			className: ['c-footnote-ref'],
 		},
 		children: [
@@ -42,14 +44,7 @@ export const footnoteReferenceToHast = (state: State, node: FootnoteReference): 
 				properties: {
 					href: `#${clobberPrefix}fn-${safeId}`,
 					id: `${clobberPrefix}fnref-${safeId}${reuseCounter > 1 ? `-${String(reuseCounter)}` : ''}`,
-					className: ['js-footnote-reference-popover'],
-					'data-ignore': '.p-footnote__backref',
-					'data-popover-label': '脚注',
-					'data-popover-class': 'p-footnote-popover',
-					'data-popover-hide-text': '閉じる',
-					'data-popover-hide-image-src': '/image/footnote-popover-close.svg',
-					'data-popover-hide-image-width': '24',
-					'data-popover-hide-image-height': '24',
+					slot: 'anchor',
 				},
 				children: [
 					{
@@ -57,6 +52,30 @@ export const footnoteReferenceToHast = (state: State, node: FootnoteReference): 
 						value: `[${String(counter)}]`,
 					},
 				],
+			},
+			{
+				type: 'element',
+				tagName: 'template',
+				properties: {
+					slot: 'popover__hide',
+				},
+				children: [],
+				content: {
+					type: 'root',
+					children: [
+						{
+							type: 'element',
+							tagName: 'img',
+							properties: {
+								src: '/image/footnote-popover-close.svg',
+								alt: '閉じる',
+								width: '12',
+								height: '12',
+							},
+							children: [],
+						},
+					],
+				},
 			},
 		],
 	};

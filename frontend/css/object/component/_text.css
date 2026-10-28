@@ -77,30 +77,108 @@
 
 /* ===== 脚注リンク ===== */
 .c-footnote-ref {
-	vertical-align: super;
-	font-size: calc(100% / pow(var(--font-ratio), 2));
+	&:focus {
+		outline-style: none;
+	}
 
-	& > a {
+	& > [slot="anchor"] {
 		outline-offset: calc(0px - var(--outline-width-bold));
 		outline-width: var(--outline-width-bold);
 		padding: 0.375em;
-		text-decoration-skip-ink: none; /* JS 無効環境向け */
-
-		&:target {
-			border: 1px solid var(--color-red);
-			background-color: var(--bgcolor-lightred);
-		}
+		vertical-align: super;
+		font-size: calc(100% / pow(var(--font-ratio), 2));
 
 		&[role="button" i] {
 			/* JS 有効時のみ */
-			text-decoration-line: none;
 			color: var(--link-color);
 			cursor: default;
+
+			&[aria-expanded="true" i] {
+				text-decoration-line: none;
+			}
 
 			&:focus:not(:focus-visible) {
 				outline: none;
 			}
 		}
+
+		&:target {
+			border: 1px solid var(--color-red);
+			background-color: var(--bgcolor-lightred);
+		}
+	}
+
+	&::part(popover) {
+		--tail-block-size: 9px;
+		--tail-inline-size: 16px;
+		--tail-inline-start: 0.5em;
+		--content-inset: 0em;
+
+		margin: unset;
+		outline-offset: -1px;
+		border: unset;
+		background-color: unset;
+		padding: unset;
+		max-inline-size: min(30em, 100%);
+		color: unset;
+
+		@supports (container-type: anchored) {
+			--content-inset: calc(var(--tail-block-size) - 1px);
+
+			inset-inline-start: calc(0px - var(--tail-inline-start));
+		}
+	}
+
+	&::part(popover)::before {
+		@supports (container-type: anchored) {
+			position: absolute;
+			block-size: var(--tail-block-size);
+			inline-size: var(--tail-inline-size);
+			line-height: 0;
+			content: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="9" viewBox="0 0 16 9"%3E%3Cpolyline points="1,9 8,1 15,9" fill="oklch(100% 0 0deg)" stroke="oklch(87.5% 0 0deg)" stroke-width="1" stroke-linejoin="round"/%3E%3C/svg%3E');
+
+			@container anchored(fallback: none) {
+				inset-inline-start: calc(var(--tail-inline-start) - var(--tail-inline-size) / 2 + attr(data-anchor-width px) / 2);
+			}
+
+			@container anchored(fallback: flip-inline) {
+				inset-inline-end: calc(var(--tail-inline-start) - var(--tail-inline-size) / 2 + attr(data-anchor-width px) / 2);
+			}
+		}
+	}
+
+	&::part(popover__content) {
+		margin-block-start: var(--content-inset);
+		border: 1px solid var(--border-color-light);
+		border-radius: var(--border-radius-normal);
+		box-shadow: var(--box-shadow-length-standout) var(--box-shadow-color);
+		background-color: var(--color-white);
+		padding: 18px;
+		line-height: var(--line-height-wide);
+		color: var(--color-black);
+		font-size: calc(100% / pow(var(--font-ratio), 1));
+	}
+
+	&::part(popover__hide) {
+		display: inline flex;
+		position: absolute;
+		inset-block-start: 1px;
+		inset-inline-end: 1px;
+		flex-wrap: wrap;
+		margin-block-start: var(--content-inset);
+		outline-offset: -1px;
+		border-style: none;
+		border-radius: var(--border-radius-normal);
+		background-color: transparent;
+		padding: 6px;
+	}
+
+	&::part(popover__hide):hover {
+		background-color: oklch(from var(--color-black) l c h / 10%);
+	}
+
+	&::part(popover__hide):focus {
+		outline: var(--outline-width-bold) solid var(--outline-color);
 	}
 }
 
