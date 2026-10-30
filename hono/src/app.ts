@@ -4,6 +4,7 @@ import { Hono } from 'hono';
 import { compress } from 'hono/compress';
 import { HTTPException } from 'hono/http-exception';
 import { serve } from '@hono/node-server';
+import { getConnInfo } from '@hono/node-server/conninfo';
 import { serveStatic } from '@hono/node-server/serve-static';
 import type { Logger } from 'winston';
 import { env } from '@w0s/env-value-type';
@@ -31,6 +32,38 @@ const app = new Hono<{ Variables: Variables }>();
 /* Logger */
 app.use(async (context, next) => {
 	context.set('logger', getLogger(context.req.path.slice(1)));
+	await next();
+});
+
+/* Access control */
+app.use(async (context, next) => {
+	const { req } = context;
+
+	const { address: ipAddress } = getConnInfo(context).remote;
+	if (ipAddress !== undefined) {
+		if (env('ACCESS_IPS', 'string[]').includes(ipAddress)) {
+			throw new HTTPException(403, { message: `Disallowed IP address: ${ipAddress}` });
+		}
+	}
+
+	const userAgent = req.header('User-agent');
+	if (userAgent !== undefined) {
+		if (env('ACCESS_UAS', 'string[]').some((ignoreUa) => ignoreUa !== '' && new RegExp(ignoreUa, 'u').test(userAgent))) {
+			throw new HTTPException(403, { message: `Disallowed \`User-agent\` header: ${userAgent}` });
+		}
+	}
+
+	const referrer = req.header('Referer');
+	if (referrer !== undefined) {
+		if (!URL.canParse(referrer)) {
+			throw new HTTPException(403, { message: `Invalid \`referer\` header: ${referrer}` });
+		}
+
+		if (env('ACCESS_REFERRER_ORIGINS', 'string[]').includes(new URL(referrer).origin)) {
+			throw new HTTPException(403, { message: `Disallowed \`Referer\` header: ${referrer}` });
+		}
+	}
+
 	await next();
 });
 
@@ -218,6 +251,12 @@ app.onError(async (err, context) => {
 					if (wwwAuthenticate !== null && wwwAuthenticate !== undefined) {
 						headers.set('WWW-Authenticate', wwwAuthenticate);
 					}
+					break;
+				}
+				case 403: {
+					/* new HTTPException(403) が指定された場合 */
+					htmlFilePath = config.errorpage.forbidden;
+					logger.info(err.message);
 					break;
 				}
 				case 404: {
