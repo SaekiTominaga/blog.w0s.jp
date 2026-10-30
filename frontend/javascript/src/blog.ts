@@ -1,6 +1,6 @@
 import buttonClipboard from '@w0s/button-clipboard';
 import footnoteReferencePopover from '@w0s/footnote-reference-popover';
-import Tab from '@w0s/tab';
+import tab from '@w0s/tab';
 import adsense from './component/adsense.ts';
 import searchEngine from './component/searchEngine.ts';
 import reportJsError from './util/reportJsError.ts';
@@ -15,7 +15,7 @@ if ('reportError' in globalThis) {
 
 	try {
 		/* タブ */
-		customElements.define('w0s-tab', Tab);
+		tab('w0s-tab');
 	} catch (error) {
 		reportError(error);
 	}

@@ -2,7 +2,7 @@
 	<aside class="p-sidebar-categories" aria-labelledby="landmark-category-label">
 		<h2 class="p-sidebar-categories__hdg" id="landmark-category-label">記事カテゴリー</h2>
 
-		<w0s-tab storage-key="sidebar-category-tab">
+		<w0s-tab tablist-label="記事カテゴリー" tabpanel-focus="false" storage-key="sidebar-category-tab">
 			<%_ for (const [groupName, ] of entryCountOfCategoryList) { _%>
 			<a href="#category-tab-<%= groupName %>" slot="tab" class="p-sidebar-categories__item"><%= groupName %></a>
 			<%_ } _%><%_ for (const [groupName, countDataList] of entryCountOfCategoryList) { _%>
