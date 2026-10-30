@@ -46,6 +46,7 @@ interface HonoConfig {
 	}[];
 	errorpage: {
 		unauthorized: string;
+		forbidden: string;
 		notfound: string;
 		clientError: string;
 		serverError: string;
@@ -180,6 +181,7 @@ const config: HonoConfig = {
 	],
 	errorpage: {
 		unauthorized: '401.html', // 401
+		forbidden: '403.html', // 403
 		notfound: '404.html', // 404
 		clientError: '4xx.html', // 4xx
 		serverError: '5xx.html', // 5xx
