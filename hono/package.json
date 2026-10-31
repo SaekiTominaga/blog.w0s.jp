@@ -23,7 +23,7 @@
 		"hono": "=4.12.22",
 		"ip-range-check": "=0.2.1",
 		"kysely": "=0.28.17",
-		"nodemailer": "=10.2.0",
+		"nodemailer": "=10.2.1",
 		"sharp": "=0.35.5",
 		"whatwg-mimetype": "=5.0.0",
 		"winston": "=3.19.0",
