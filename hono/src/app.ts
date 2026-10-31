@@ -6,6 +6,7 @@ import { HTTPException } from 'hono/http-exception';
 import { serve } from '@hono/node-server';
 import { getConnInfo } from '@hono/node-server/conninfo';
 import { serveStatic } from '@hono/node-server/serve-static';
+import ipRangeCheck from 'ip-range-check';
 import type { Logger } from 'winston';
 import { env } from '@w0s/env-value-type';
 import { escape } from '@w0s/html-escape';
@@ -41,14 +42,14 @@ app.use(async (context, next) => {
 
 	const { address: ipAddress } = getConnInfo(context).remote;
 	if (ipAddress !== undefined) {
-		if (env('ACCESS_IPS', 'string[]').includes(ipAddress)) {
+		if (ipRangeCheck(ipAddress, env('ACCESS_IPS', 'string[]'))) {
 			throw new HTTPException(403, { message: `Disallowed IP address: ${ipAddress}` });
 		}
 	}
 
 	const userAgent = req.header('User-agent');
 	if (userAgent !== undefined) {
-		if (env('ACCESS_UAS', 'string[]').some((ignoreUa) => ignoreUa !== '' && new RegExp(ignoreUa, 'u').test(userAgent))) {
+		if (env('ACCESS_UAS', 'string[]').some((ignoreUserAgent) => ignoreUserAgent !== '' && new RegExp(ignoreUserAgent, 'u').test(userAgent))) {
 			throw new HTTPException(403, { message: `Disallowed \`User-agent\` header: ${userAgent}` });
 		}
 	}
@@ -56,7 +57,7 @@ app.use(async (context, next) => {
 	const referrer = req.header('Referer');
 	if (referrer !== undefined) {
 		if (!URL.canParse(referrer)) {
-			throw new HTTPException(403, { message: `Invalid \`referer\` header: ${referrer}` });
+			throw new HTTPException(403, { message: `Invalid \`Referer\` header: ${referrer}` });
 		}
 
 		if (env('ACCESS_REFERRER_ORIGINS', 'string[]').includes(new URL(referrer).origin)) {
