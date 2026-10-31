@@ -322,8 +322,8 @@ importers:
         specifier: '=0.2.1'
         version: 0.2.1
       kysely:
-        specifier: '=0.28.17'
-        version: 0.28.17
+        specifier: '=0.29.7'
+        version: 0.29.7
       nodemailer:
         specifier: '=10.2.1'
         version: 10.2.1
@@ -392,8 +392,8 @@ importers:
         specifier: '=11.12.0'
         version: 11.12.0
       kysely:
-        specifier: '=0.28.17'
-        version: 0.28.17
+        specifier: '=0.29.7'
+        version: 0.29.7
       mdast-util-definition-list:
         specifier: '=2.0.1'
         version: 2.0.1(supports-color@10.2.2)
@@ -3015,9 +3015,9 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  kysely@0.28.17:
-    resolution: {integrity: sha512-nbD8lB9EB3wNdMhOCdx5Li8DxnLbvKByylRLcJ1h+4SkrowVeECAyZlyiKMThF7xFdRz0jSQ2MoJr+wXux2y0Q==}
-    engines: {node: '>=20.0.0'}
+  kysely@0.29.7:
+    resolution: {integrity: sha512-fmIq+7kv4WbFm2tcfznRzikqB4cuNpgZ40PSU2fAJ2/OO5XhojqnTPrmgrCjYSRJVwBln03XcRXJGnw9H099IQ==}
+    engines: {node: '>=22.0.0'}
 
   language-subtag-registry@0.4.2:
     resolution: {integrity: sha512-d0zcIgHLTw18Z8GB3f3isK8Z6mM5bE0JmGEbzORsC7keOwe5Ex5ifAUBlHey7P7yEVFDyxQHN5+I/oCKKHAJag==}
@@ -6420,7 +6420,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  kysely@0.28.17: {}
+  kysely@0.29.7: {}
 
   language-subtag-registry@0.4.2: {}
 
