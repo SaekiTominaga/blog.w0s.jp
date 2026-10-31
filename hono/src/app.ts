@@ -42,7 +42,7 @@ app.use(async (context, next) => {
 
 	const { address: ipAddress } = getConnInfo(context).remote;
 	if (ipAddress !== undefined) {
-		if (ipRangeCheck(ipAddress, env('ACCESS_IPS', 'string[]'))) {
+		if (ipRangeCheck(ipAddress, env('ACCESS_IPS', 'string[]', { separator: '\n' }))) {
 			throw new HTTPException(403, { message: `Disallowed IP address: ${ipAddress}` });
 		}
 	}
