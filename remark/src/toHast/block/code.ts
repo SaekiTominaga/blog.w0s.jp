@@ -28,7 +28,7 @@ export const codeToHast = (_state: State, node: Code): ElementContent | ElementC
 		id: codeId,
 	};
 	if (lang !== null && lang !== undefined && config.codeLanguages.includes(lang)) {
-		codeProperties['className'] = [`lang-${lang}`];
+		codeProperties.className = [`lang-${lang}`];
 	}
 
 	const codeChildren: ElementContent[] = [];

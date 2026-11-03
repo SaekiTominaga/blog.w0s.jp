@@ -257,7 +257,7 @@ const xEmbeddedYouTubeToHast = (_state: State, node: XEmbeddedYouTube): ElementC
 								type: 'element',
 								tagName: 'small',
 								properties: {
-									className: 'c-domain',
+									className: ['c-domain'],
 								},
 								children: [
 									{
@@ -293,9 +293,9 @@ const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): ElementCon
 		paapi5ItemImageUrlParser.setSizeMultiply(2);
 		const url2x = paapi5ItemImageUrlParser.getURL();
 
-		imageElementProperties['src'] = url1x.toString();
+		imageElementProperties.src = url1x.toString();
 		imageElementProperties['srcset'] = `${url2x.toString()} 2x`;
-		imageElementProperties['alt'] = '';
+		imageElementProperties.alt = '';
 
 		if (image.dimensions !== undefined) {
 			let width: number;
@@ -308,16 +308,16 @@ const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): ElementCon
 				height = AMAZON_IMAGE_DIMENSIONS;
 			}
 
-			imageElementProperties['width'] = String(width);
-			imageElementProperties['height'] = String(height);
+			imageElementProperties.width = String(width);
+			imageElementProperties.height = String(height);
 		}
 	} else {
-		imageElementProperties['src'] = '/image/amazon-noimage.svg';
-		imageElementProperties['alt'] = '';
-		imageElementProperties['width'] = '113';
-		imageElementProperties['height'] = '160';
+		imageElementProperties.src = '/image/amazon-noimage.svg';
+		imageElementProperties.alt = '';
+		imageElementProperties.width = '113';
+		imageElementProperties.height = '160';
 	}
-	imageElementProperties['className'] = ['p-amazon__image'];
+	imageElementProperties.className = ['p-amazon__image'];
 
 	return {
 		type: 'element',
@@ -351,7 +351,7 @@ const xEmbeddedAmazonToHast = (_state: State, node: XEmbeddedAmazon): ElementCon
 						tagName: 'a',
 						properties: {
 							href: `https://www.amazon.co.jp/dp/${asin}/ref=nosim?tag=${config.amazonTrackingId}`, // https://affiliate-program.amazon.com/help/node/topic/GP38PJ6EUR6PFBEC
-							rel: 'external',
+							rel: ['external'],
 						},
 						children: [
 							{

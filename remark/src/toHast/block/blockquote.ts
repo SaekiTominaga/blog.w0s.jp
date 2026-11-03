@@ -31,7 +31,7 @@ export const xBlockquoteToHast = (state: State, node: XBlockquote): ElementConte
 						className: ['p-quote__omit'],
 					};
 					if (lang !== undefined && lang !== config.lang) {
-						omitAttribute['lang'] = config.lang;
+						omitAttribute.lang = config.lang;
 					}
 
 					childElements.push({
@@ -73,10 +73,10 @@ export const xBlockquoteToHast = (state: State, node: XBlockquote): ElementConte
 		className: ['p-quote'],
 	};
 	if (lang !== undefined && lang !== config.lang) {
-		blockquoteAttribute['lang'] = lang;
+		blockquoteAttribute.lang = lang;
 	}
 	if (metaIsbn !== undefined) {
-		blockquoteAttribute['cite'] = `urn:ISBN:${metaIsbn}`;
+		blockquoteAttribute.cite = `urn:ISBN:${metaIsbn}`;
 	}
 
 	let figcaptionChild: ElementContent[] | undefined;
