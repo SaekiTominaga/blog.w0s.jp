@@ -33,11 +33,11 @@ const tableRowToHast = (state: State, tableRows: TableRow[], table: XTable): Ele
 					if (rowIndex === 0) {
 						/* in <thead> */
 						tagName = 'th';
-						attributes['scope'] = 'col';
+						attributes.scope = 'col';
 					} else if (colIndex === 0 && firstRowHeaderCell) {
 						/* in <tbody> */
 						tagName = 'th';
-						attributes['scope'] = 'row';
+						attributes.scope = 'row';
 					}
 				}
 
@@ -55,7 +55,7 @@ const tableRowToHast = (state: State, tableRows: TableRow[], table: XTable): Ele
 						default:
 					}
 
-					attributes['style'] = `text-align: ${alignValueLogical}`;
+					attributes.style = `text-align: ${alignValueLogical}`;
 				}
 
 				cells.push({

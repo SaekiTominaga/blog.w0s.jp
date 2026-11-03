@@ -16,7 +16,7 @@ export const listToHast = (state: State, node: List): ElementContent | ElementCo
 			'data-digit': listItems.length.toString().length,
 		};
 		if (node.start !== null && node.start !== undefined && node.start !== 1) {
-			attributes['start'] = node.start;
+			attributes.start = node.start;
 		}
 
 		return {

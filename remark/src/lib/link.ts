@@ -150,7 +150,7 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 			tagName: 'a',
 			properties: {
 				href: info?.href,
-				rel: info?.external ? 'external' : undefined,
+				rel: info?.external ? ['external'] : undefined,
 				type: info?.type?.mimeType,
 			},
 			children:
@@ -174,7 +174,7 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 				alt: `(${info.type.icon.alt})`,
 				width: '16',
 				height: '16',
-				className: 'c-link-icon',
+				className: ['c-link-icon'],
 			},
 			children: [],
 		});
@@ -186,7 +186,7 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 				type: 'element',
 				tagName: 'small',
 				properties: {
-					className: 'c-domain',
+					className: ['c-domain'],
 				},
 				children: [
 					{
@@ -215,7 +215,7 @@ export const getLinkElements = (content: Readonly<ElementContent>[] | string, md
 				type: 'element',
 				tagName: 'small',
 				properties: {
-					className: 'c-domain',
+					className: ['c-domain'],
 				},
 				children: [
 					{
