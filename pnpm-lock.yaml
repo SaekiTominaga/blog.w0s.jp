@@ -382,8 +382,8 @@ importers:
         specifier: '=0.28.17'
         version: 0.28.17
       nodemailer:
-        specifier: '=10.2.1'
-        version: 10.2.1
+        specifier: '=10.3.1'
+        version: 10.3.1
       sharp:
         specifier: '=0.35.5'
         version: 0.35.5(@types/node@26.6.6)
@@ -3159,8 +3159,8 @@ packages:
     resolution: {integrity: sha512-OmO8+GM1JUZqXET720VrJCwkjUCXmCMQm0Z3UDDRbfNLHS4NEAvY60j5jiFv0tkKw2PNNlqOLhahVmwJIOLDIQ==}
     engines: {node: '>=18'}
 
-  nodemailer@10.2.1:
-    resolution: {integrity: sha512-ZrDNsPFoDMwefNs7sJwrYiEJ/CG4ClJWDZv05iNJsEBWa8GRDry1QJHTJxsuTAY9eDDKjX4k+q3SxslXJOao7w==}
+  nodemailer@10.3.1:
+    resolution: {integrity: sha512-uF0AFsJC07Y1vdW7p580DKAnh7rAO+4UPSSB3mDCPNDufoiaOebV6JmrzpxB14OjEEEiBsNdYoM2Y+fN8M7BBA==}
     engines: {node: '>=20.0.0'}
 
   normalize-path@3.0.0:
@@ -5611,7 +5611,7 @@ snapshots:
       '@humanfs/node': 0.16.8
       '@humanwhocodes/module-importer': 1.0.1
       '@humanwhocodes/retry': 0.4.3
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
       ajv: 6.15.0
       cross-spawn: 7.0.6
       debug: 4.4.3(supports-color@10.2.2)
@@ -6697,7 +6697,7 @@ snapshots:
 
   node-releases@2.0.60: {}
 
-  nodemailer@10.2.1: {}
+  nodemailer@10.3.1: {}
 
   normalize-path@3.0.0: {}
 
