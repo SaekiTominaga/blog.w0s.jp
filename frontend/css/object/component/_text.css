@@ -88,8 +88,7 @@
 		vertical-align: super;
 		font-size: calc(100% / pow(var(--font-ratio), 2));
 
-		&[role="button" i] {
-			/* JS 有効時のみ */
+		&[role="button" i] /* JavaScript で popover のアンカーになった時のみ */ {
 			color: var(--link-color);
 			cursor: default;
 
