@@ -88,8 +88,7 @@
 		vertical-align: super;
 		font-size: calc(100% / pow(var(--font-ratio), 2));
 
-		&[role="button" i] {
-			/* JS 有効時のみ */
+		&[role="button" i] /* JavaScript で popover のアンカーになった時のみ */ {
 			color: var(--link-color);
 			cursor: default;
 
@@ -122,27 +121,36 @@
 		max-inline-size: min(30em, 100%);
 		color: unset;
 
-		@supports (container-type: anchored) {
-			--content-inset: calc(var(--tail-block-size) - 1px);
+		@media (width > 30em) {
+			@supports (container-type: anchored) {
+				--content-inset: calc(var(--tail-block-size) - 1px);
 
-			inset-inline-start: calc(0px - var(--tail-inline-start));
+				inset-inline-start: calc(0px - var(--tail-inline-start));
+			}
+		}
+
+		@media (width <= 30em) {
+			position-area: block-end span-all;
+			margin-inline: min(3dvi, 2em);
 		}
 	}
 
 	&::part(popover)::before {
-		@supports (container-type: anchored) {
-			position: absolute;
-			block-size: var(--tail-block-size);
-			inline-size: var(--tail-inline-size);
-			line-height: 0;
-			content: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="9" viewBox="0 0 16 9"%3E%3Cpolyline points="1,9 8,1 15,9" fill="oklch(100% 0 0deg)" stroke="oklch(87.5% 0 0deg)" stroke-width="1" stroke-linejoin="round"/%3E%3C/svg%3E');
+		@media (width > 30em) {
+			@supports (container-type: anchored) {
+				position: absolute;
+				block-size: var(--tail-block-size);
+				inline-size: var(--tail-inline-size);
+				line-height: 0;
+				content: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="9" viewBox="0 0 16 9"%3E%3Cpolyline points="1,9 8,1 15,9" fill="oklch(100% 0 0deg)" stroke="oklch(87.5% 0 0deg)" stroke-width="1" stroke-linejoin="round"/%3E%3C/svg%3E');
 
-			@container anchored(fallback: none) {
-				inset-inline-start: calc(var(--tail-inline-start) - var(--tail-inline-size) / 2 + attr(data-anchor-width px) / 2);
-			}
+				@container anchored(fallback: none) {
+					inset-inline-start: calc(var(--tail-inline-start) - var(--tail-inline-size) / 2 + attr(data-anchor-width px) / 2);
+				}
 
-			@container anchored(fallback: flip-inline) {
-				inset-inline-end: calc(var(--tail-inline-start) - var(--tail-inline-size) / 2 + attr(data-anchor-width px) / 2);
+				@container anchored(fallback: flip-inline) {
+					inset-inline-end: calc(var(--tail-inline-start) - var(--tail-inline-size) / 2 + attr(data-anchor-width px) / 2);
+				}
 			}
 		}
 	}
