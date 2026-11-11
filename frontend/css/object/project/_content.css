@@ -10,7 +10,8 @@
 		border: 1px solid;
 		border-radius: var(--border-radius-small);
 		background-color: var(--bgcolor-light);
-		padding: 0.75em 1.5%;
+		padding-block: 0.75em;
+		padding-inline: 1.5%;
 		text-shadow: var(--text-shadow-length) var(--text-shadow-color);
 		text-wrap-style: pretty;
 		color: var(--color-black); /* for iOS Edge (Force a dark theme on all websites) */
@@ -39,7 +40,8 @@
 	border: 1px solid var(--border-color-light);
 	border-radius: var(--border-radius-normal);
 	background-color: var(--color-white);
-	padding: 0.75em 1em;
+	padding-block: 0.75em;
+	padding-inline: 1em;
 	text-decoration-line: none;
 
 	&:hover {

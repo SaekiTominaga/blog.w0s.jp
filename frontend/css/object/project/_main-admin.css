@@ -23,7 +23,8 @@
 	& th,
 	& td {
 		border: 1px solid var(--border-color-dark);
-		padding: 0.125em 0.5em;
+		padding-block: 0.125em;
+		padding-inline: 0.5em;
 	}
 }
 

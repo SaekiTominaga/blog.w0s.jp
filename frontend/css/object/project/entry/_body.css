@@ -3,7 +3,8 @@
  * ============================== */
 
 .p-entry__body {
-	padding: 30px var(--_entry-padding-block);
+	padding-block: 30px;
+	padding-inline: var(--_entry-padding-inline);
 }
 
 .p-entry-section {

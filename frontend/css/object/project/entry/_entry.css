@@ -3,12 +3,12 @@
  * ============================== */
 
 .p-entry {
-	--_entry-padding-block: 0;
+	--_entry-padding-inline: 0;
 
 	font-family: arial, sans-serif;
 
 	@media not print {
-		--_entry-padding-block: 3%; /* 左右の余白 */
+		--_entry-padding-inline: 3%; /* 左右の余白 */
 
 		box-shadow: var(--box-shadow-length) var(--box-shadow-color);
 		background-color: oklch(from var(--color-white) calc(l - 1 / 64) c h);

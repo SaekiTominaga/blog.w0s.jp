@@ -13,11 +13,13 @@
 
 	border: var(--_border-width) solid var(--_bg-color);
 	background-color: var(--_bg-color);
-	padding: calc(15px - var(--_border-width)) calc(var(--_entry-padding-block) - var(--_border-width));
+	padding-block: calc(15px - var(--_border-width));
+	padding-inline: calc(var(--_entry-padding-inline) - var(--_border-width));
 	color: var(--color-black);
 
 	@media print {
-		padding: 10px;
+		padding-block: 10px;
+		padding-inline: 10px;
 	}
 
 	& > h1 {
@@ -31,6 +33,6 @@
 /* 公開日、更新日 */
 .p-entry-header-date {
 	margin-inline-start: auto;
-	padding-inline: var(--_entry-padding-block);
+	padding-inline: var(--_entry-padding-inline);
 	inline-size: fit-content;
 }

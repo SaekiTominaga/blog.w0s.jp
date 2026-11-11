@@ -36,7 +36,8 @@
 	border-inline-end: 1px solid var(--border-color-dark);
 	border-radius: var(--border-radius-small) 0 0 var(--border-radius-small);
 	background-color: var(--color-white);
-	padding: 0 0.5em;
+	padding-block: 0;
+	padding-inline: 0.5em;
 
 	/* Customizable Select 未対応環境向け */
 	@supports not (appearance: base-select) {

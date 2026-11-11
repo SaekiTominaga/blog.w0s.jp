@@ -28,6 +28,9 @@ publicHoistPattern:
 ## Peer Dependency Settings
 
 strictPeerDependencies: true
+peerDependencyRules:
+  allowedVersions:
+    stylelint-order>stylelint: '18'
 
 ## CLI Settings
 
