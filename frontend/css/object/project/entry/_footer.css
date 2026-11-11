@@ -3,7 +3,8 @@
  * ============================== */
 
 .p-entry__footer {
-	padding: 30px var(--_entry-padding-block);
+	padding-block: 30px;
+	padding-inline: var(--_entry-padding-inline);
 }
 
 /* カテゴリー */
@@ -36,7 +37,8 @@
 		border: var(--_tag-border-width) solid var(--border-color-light);
 		border-radius: var(--border-radius-normal);
 		background-color: var(--color-white);
-		padding: var(--_tag-pading-row) var(--_tag-pading-col);
+		padding-block: var(--_tag-pading-row);
+		padding-inline: var(--_tag-pading-col);
 		text-decoration-line: none;
 
 		&:hover {
