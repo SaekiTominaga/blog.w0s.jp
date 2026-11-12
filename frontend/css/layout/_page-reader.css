@@ -2,12 +2,12 @@
  *   リーダー表示
  * ============================== */
 .l-page {
-	grid-template-areas: "content";
-	grid-template-columns: 1fr;
+	grid-template: "content" auto / 1fr;
 }
 
 .l-header,
 .l-sidebar,
+.l-cm,
 .l-footer {
 	display: none;
 }

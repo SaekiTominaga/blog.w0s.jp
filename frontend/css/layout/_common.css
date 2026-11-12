@@ -10,23 +10,13 @@
 .l-header {
 	display: block grid;
 	container: header / inline-size;
-	grid-template-columns:
-		[full-start] var(--page-margin-inline) var(--page-padding-inline) [content-start] 1fr [content-end] var(--page-padding-inline) var(--page-margin-inline)
-		[full-end];
+	grid-template-areas: "site utility";
 	grid-column: header;
+	gap: 20px;
 	padding-block: 10px 40px;
 	line-height: var(--line-height-narrow);
-}
 
-/* ヘッダーメイン */
-.l-header__main {
-	display: block grid;
-	grid-template-areas: "site utility";
-	grid-column: content;
-	gap: 20px;
-	align-items: flex-end;
-
-	@container header (inline-size <= 54em) {
+	@media (width <= 54em) {
 		grid-template-areas:
 			"site   "
 			"utility";
@@ -40,18 +30,12 @@
 
 /* ユーティリティー */
 .l-header__utility {
-	--_justify-content: flex-end;
-
 	display: block flex;
 	flex-wrap: wrap;
 	grid-column: utility;
 	gap: 10px 20px;
 	align-items: flex-end;
-	justify-content: var(--_justify-content);
-
-	@container header (inline-size <= 36em) {
-		--_justify-content: flex-start;
-	}
+	justify-content: flex-end;
 }
 
 /* フィードリンク */
@@ -68,9 +52,8 @@
 	container: content / inline-size;
 	grid-column: content;
 
-	@media screen and (--breakpoint) {
-		/* 印刷時は _page-reader.css にて grid-template-areas を変更しているため、スクリーン時のみ適用されるようにする */
-		grid-column: padding-left / padding-right;
+	@media (--breakpoint) {
+		margin-inline: calc(0px - var(--page-padding-inline));
 	}
 
 	/* サイドバーがない場合は全幅で表示 */
@@ -114,16 +97,18 @@
 
 /* ===== ページフッター ===== */
 .l-footer {
+	--_padding-inline: max(calc((100dvi - var(--page-max-width)) / 2), var(--page-padding-inline));
+
 	display: block grid;
 	container: footer / inline-size;
-	grid-template-columns:
-		[full-start] var(--page-margin-inline) var(--page-padding-inline) [content-start] 1fr [content-end] var(--page-padding-inline) var(--page-margin-inline)
-		[full-end];
+	grid-template: "content" auto / 1fr;
 	grid-column: footer;
 	margin-block-start: 80px;
+	margin-inline: calc(0px - var(--_padding-inline));
 	border-block-start: 1px solid var(--border-color-light);
 	background-color: var(--bgcolor-light);
 	padding-block: 50px;
+	padding-inline: var(--_padding-inline);
 	line-height: var(--line-height-narrow);
 }
 
