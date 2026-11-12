@@ -64,9 +64,10 @@
 }
 
 .p-sidebar-categories__panel {
-	border: solid var(--border-color-dark);
 	border-block-width: 0 1px;
 	border-inline-width: 1px;
+	border-style: solid;
+	border-color: var(--border-color-dark);
 }
 
 /* ===== 記事一覧 ===== */
