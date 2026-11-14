@@ -27,7 +27,7 @@ export default defineConfig({
 			},
 		},
 		{
-			files: ['src/util/domEvent.ts'],
+			files: ['src/blog.ts'],
 			rules: {
 				'typescript/no-misused-promises': 'off',
 				'typescript/strict-void-return': 'off',
