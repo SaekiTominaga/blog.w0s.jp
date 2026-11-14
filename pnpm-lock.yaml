@@ -216,8 +216,8 @@ importers:
         specifier: '=7.0.2'
         version: 7.0.2
       vfile-message:
-        specifier: '=4.0.3'
-        version: 4.0.3
+        specifier: '=4.0.4'
+        version: 4.0.4
 
   frontend:
     dependencies:
@@ -3744,6 +3744,9 @@ packages:
   vfile-message@4.0.3:
     resolution: {integrity: sha512-QTHzsGd1EhbZs4AsQ20JX1rC3cOlt/IWJruk893DfLRr57lcnOeMaWG4K0JrRta4mIJZKth2Au3mM3u03/JWKw==}
 
+  vfile-message@4.0.4:
+    resolution: {integrity: sha512-66ycRswIkNmHH9PHku7ADtv5RVwgIrOcuv3J8Svz6h4qgGRrKVa+9/neuKyJZUXyOpYwLTvS+whZ4R2urHHgQg==}
+
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
@@ -6769,7 +6772,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-definition-case@4.0.1:
     dependencies:
@@ -6784,7 +6787,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-fenced-code-flag@4.2.0:
     dependencies:
@@ -6802,7 +6805,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-first-heading-level@4.0.1(supports-color@10.2.2):
     dependencies:
@@ -6820,7 +6823,7 @@ snapshots:
       mdast-util-mdx: 3.0.0(supports-color@10.2.2)
       unified-lint-rule: 3.0.1
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
     transitivePeerDependencies:
       - supports-color
 
@@ -6832,7 +6835,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-list-item-bullet-indent@5.0.1:
     dependencies:
@@ -6849,7 +6852,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-list-item-indent@4.0.1:
     dependencies:
@@ -6881,7 +6884,7 @@ snapshots:
       mdast-util-phrasing: 4.1.0
       unified-lint-rule: 3.0.1
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-no-heading-content-indent@5.0.1:
     dependencies:
@@ -6948,7 +6951,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-ordered-list-marker-value@4.0.1:
     dependencies:
@@ -6959,7 +6962,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-strong-marker@4.0.1:
     dependencies:
@@ -6967,7 +6970,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-table-cell-padding@5.1.1:
     dependencies:
@@ -6979,7 +6982,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-lint-table-pipes@5.0.1:
     dependencies:
@@ -6997,7 +7000,7 @@ snapshots:
       unified-lint-rule: 3.0.1
       unist-util-position: 5.0.0
       unist-util-visit-parents: 6.0.2
-      vfile-message: 4.0.3
+      vfile-message: 4.0.4
 
   remark-mdx@3.1.1(supports-color@10.2.2):
     dependencies:
@@ -7523,6 +7526,11 @@ snapshots:
       vfile: 6.0.3
 
   vfile-message@4.0.3:
+    dependencies:
+      '@types/unist': 3.0.3
+      unist-util-stringify-position: 4.0.0
+
+  vfile-message@4.0.4:
     dependencies:
       '@types/unist': 3.0.3
       unist-util-stringify-position: 4.0.0
