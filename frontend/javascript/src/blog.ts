@@ -3,6 +3,7 @@ import footnoteReferencePopover from '@w0s/footnote-reference-popover';
 import tab from '@w0s/tab';
 import adsense from './component/adsense.ts';
 import searchEngine from './component/searchEngine.ts';
+import domEvent from './util/domEvent.ts';
 import reportJsError from './util/reportJsError.ts';
 import trustedTypes from './util/trustedTypes.ts';
 
@@ -47,4 +48,8 @@ if ('reportError' in globalThis) {
 	} catch (error) {
 		reportError(error);
 	}
+
+	/* DOM event */
+	globalThis.addEventListener('beforeprint', domEvent, { passive: true });
+	globalThis.addEventListener('afterprint', domEvent, { passive: true });
 }
