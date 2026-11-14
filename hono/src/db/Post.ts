@@ -1,4 +1,4 @@
-import { type Insertable, type Selectable, type Updateable, sql } from 'kysely';
+import { type Insertable, type Selectable, sql } from 'kysely';
 import { jsToSQLiteAssignment, jsToSQLiteComparison, sqliteToJS } from '@w0s/sqlite-utility';
 import type { DEntry } from '../../../@types/dbBlog.d.ts';
 import Database from './Database.ts';
@@ -194,7 +194,7 @@ export default class extends Database {
 	 * @param otherData.timestampUpdate - 更新日時を変更する
 	 */
 	async update(
-		entryData: Readonly<Omit<Required<Updateable<DEntry>>, 'registed_at' | 'updated_at'>>,
+		entryData: Readonly<Omit<DEntry, 'registed_at' | 'updated_at'>>,
 		otherData: Readonly<{
 			categoryIds: readonly string[] | undefined;
 			relationIds: readonly string[] | undefined;
