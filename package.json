@@ -22,7 +22,7 @@
 		"markuplint": "=5.4.0",
 		"oxlint": "=1.92.0",
 		"oxlint-plugin-safely-storage": "=1.0.2",
-		"oxlint-tsgolint": "=7.0.2005",
+		"oxlint-tsgolint": "=7.0.2006",
 		"prettier-plugin-ejs": "=1.0.3",
 		"rimraf": "=6.1.4",
 		"stylelint": "=18.0.0",
