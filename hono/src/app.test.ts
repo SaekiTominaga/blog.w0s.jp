@@ -142,7 +142,7 @@ await test('serveStatic', async (t) => {
 			const res = await app.request('/json/newly.json');
 
 			assert.equal(res.headers.get('Access-Control-Allow-Origin'), null);
-			assert.equal(res.headers.get('Vary'), 'Origin');
+			assert.equal(res.headers.get('Vary'), 'Origin, Accept-Encoding');
 		});
 
 		await t2.test('not allow origin', async () => {
@@ -151,7 +151,7 @@ await test('serveStatic', async (t) => {
 			});
 
 			assert.equal(res.headers.get('Access-Control-Allow-Origin'), null);
-			assert.equal(res.headers.get('Vary'), 'Origin');
+			assert.equal(res.headers.get('Vary'), 'Origin, Accept-Encoding');
 		});
 
 		await t2.test('allow origin', async () => {
@@ -162,7 +162,7 @@ await test('serveStatic', async (t) => {
 			});
 
 			assert.equal(res.headers.get('Access-Control-Allow-Origin'), origin);
-			assert.equal(res.headers.get('Vary'), 'Origin');
+			assert.equal(res.headers.get('Vary'), 'Origin, Accept-Encoding');
 		});
 	});
 });
