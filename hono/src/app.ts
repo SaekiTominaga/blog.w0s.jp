@@ -6,6 +6,7 @@ import { HTTPException } from 'hono/http-exception';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import ipRangeCheck from 'ip-range-check';
+import maxmind, { type CountryResponse } from 'maxmind';
 import type { Logger } from 'winston';
 import { env } from '@w0s/env-value-type';
 import { escape } from '@w0s/html-escape';
@@ -39,22 +40,30 @@ app.use(async (context, next) => {
 app.use(async (context, next) => {
 	const { req } = context;
 
+	const referrer = req.header('Referer');
+	const userAgent = req.header('User-agent');
 	const forwarded = req.header('X-Forwarded-For');
+
 	const ipAddress = parseXForwardedFor(forwarded)?.pop();
+
+	/* IP アドレス */
 	if (ipAddress !== undefined) {
 		if (ipRangeCheck(ipAddress, env('ACCESS_IPS', 'string[]', { separator: '\n' }))) {
 			throw new HTTPException(403, { message: `Disallowed IP address: ${ipAddress}` });
 		}
-	}
 
-	const userAgent = req.header('User-agent');
-	if (userAgent !== undefined) {
-		if (env('ACCESS_UAS', 'string[]').some((ignoreUserAgent) => ignoreUserAgent !== '' && new RegExp(ignoreUserAgent, 'u').test(userAgent))) {
-			throw new HTTPException(403, { message: `Disallowed \`User-agent\` header: ${userAgent}` });
+		/* 接続地域 */
+		if (req.path.startsWith('/category/') && referrer === undefined && userAgent === env('ACCESS_UA_CATEGORY_CHINA')) {
+			const lookup = await maxmind.open<CountryResponse>(`${env('ROOT')}/${env('DB_DIR')}/${env('GEOLITE2_COUNTRY')}`);
+			const result = lookup.get(ipAddress);
+
+			if (result?.country?.iso_code === 'CN') {
+				throw new HTTPException(403, { message: `Disallowed IP address: ${ipAddress} (${result.country.names.en})` });
+			}
 		}
 	}
 
-	const referrer = req.header('Referer');
+	/* リファラー */
 	if (referrer !== undefined) {
 		if (!URL.canParse(referrer)) {
 			throw new HTTPException(403, { message: `Invalid \`Referer\` header: ${referrer}` });
@@ -62,6 +71,13 @@ app.use(async (context, next) => {
 
 		if (env('ACCESS_REFERRER_ORIGINS', 'string[]').includes(new URL(referrer).origin)) {
 			throw new HTTPException(403, { message: `Disallowed \`Referer\` header: ${referrer}` });
+		}
+	}
+
+	/* UA 文字列 */
+	if (userAgent !== undefined) {
+		if (env('ACCESS_UAS', 'string[]').some((ignoreUserAgent) => ignoreUserAgent !== '' && new RegExp(ignoreUserAgent, 'u').test(userAgent))) {
+			throw new HTTPException(403, { message: `Disallowed \`User-agent\` header: ${userAgent}` });
 		}
 	}
 
