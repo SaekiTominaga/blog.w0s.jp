@@ -4,7 +4,6 @@ import { Hono } from 'hono';
 import { compress } from 'hono/compress';
 import { HTTPException } from 'hono/http-exception';
 import { serve } from '@hono/node-server';
-import { getConnInfo } from '@hono/node-server/conninfo';
 import { serveStatic } from '@hono/node-server/serve-static';
 import ipRangeCheck from 'ip-range-check';
 import type { Logger } from 'winston';
@@ -21,7 +20,7 @@ import { entriesSummaryApp as apiEntriesApp } from './controller/api/entriesSumm
 import { mediaUploadApp as apiMediaUploadApp } from './controller/api/mediaUpload.ts';
 import { previewApp as apiPreviewApp } from './controller/api/preview.ts';
 import { basicAuth } from './util/auth.ts';
-import { getCsp as cspHeader, getReportingEndpoints as reportingEndpointsHeader } from './util/httpHeader.ts';
+import { getCsp as cspHeader, parseXForwardedFor, getReportingEndpoints as reportingEndpointsHeader } from './util/httpHeader.ts';
 import { isApi } from './util/request.ts';
 
 interface Variables {
@@ -40,7 +39,8 @@ app.use(async (context, next) => {
 app.use(async (context, next) => {
 	const { req } = context;
 
-	const { address: ipAddress } = getConnInfo(context).remote;
+	const forwarded = req.header('X-Forwarded-For');
+	const ipAddress = parseXForwardedFor(forwarded)?.pop();
 	if (ipAddress !== undefined) {
 		if (ipRangeCheck(ipAddress, env('ACCESS_IPS', 'string[]', { separator: '\n' }))) {
 			throw new HTTPException(403, { message: `Disallowed IP address: ${ipAddress}` });

@@ -4,7 +4,7 @@ import { format, resolveConfig } from 'prettier';
 import type { Variables } from '../app.ts';
 import configHono from '../config/hono.ts';
 import { brotliCompressText } from './compress.ts';
-import { type CompressionCcoding, getCsp, getEntityTagWeak, supportCompressionEncoding } from './httpHeader.ts';
+import { type CompressionCoding, getCsp, getEntityTagWeak, supportCompressionEncoding } from './httpHeader.ts';
 
 /**
  * 条件付きリクエストを検証する
@@ -52,7 +52,7 @@ const setHeaders = (
 	headers: Headers,
 	options: {
 		stats: fs.Stats;
-		encoding: CompressionCcoding | undefined;
+		encoding: CompressionCoding | undefined;
 	},
 ): void => {
 	headers.set('Content-Type', 'text/html; charset=utf-8');
@@ -78,7 +78,7 @@ const readCache = async (context: Context<{ Variables: Variables }>, htmlPath: s
 	const { req, res } = context;
 
 	let filePath: string;
-	let encoding: CompressionCcoding | undefined;
+	let encoding: CompressionCoding | undefined;
 	if (supportCompressionEncoding(req.header('Accept-Encoding'), 'br')) {
 		/* Brotli */
 		filePath = getBrotliPath(htmlPath);
@@ -172,7 +172,7 @@ const createCache = async (
 	/* レンダリング */
 	let filePath: string;
 	let data: string | Uint8Array<ArrayBuffer>;
-	let encoding: CompressionCcoding | undefined;
+	let encoding: CompressionCoding | undefined;
 	if (supportCompressionEncoding(req.header('Accept-Encoding'), 'br')) {
 		/* Brotli */
 		filePath = brotliFilePath;
