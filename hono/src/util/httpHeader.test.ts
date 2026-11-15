@@ -1,7 +1,7 @@
 import { strict as assert } from 'node:assert';
 import fs from 'node:fs';
 import { test } from 'node:test';
-import { getCsp, getEntityTagWeak, getReportingEndpoints, supportCompressionEncoding } from './httpHeader.ts';
+import { getCsp, getEntityTagWeak, getReportingEndpoints, parseXForwardedFor, supportCompressionEncoding } from './httpHeader.ts';
 
 await test('supportCompressionEncoding', async (t) => {
 	await t.test('undefined', () => {
@@ -45,6 +45,20 @@ await test('getEntityTagWeak', async () => {
 	const stats = await fs.promises.stat('package.json');
 
 	assert.match(getEntityTagWeak(stats)!, /^W\/"[0-9a-f]+-[0-9a-f]+\.[0-9a-f]+"$/u);
+});
+
+await test('parseXForwardedFor', async (t) => {
+	await t.test('client only', () => {
+		assert.deepEqual(parseXForwardedFor('1.2.3.4'), ['1.2.3.4']);
+	});
+
+	await t.test('proxy address', () => {
+		assert.deepEqual(parseXForwardedFor('1.2.3.4, 5.6.7.8'), ['1.2.3.4', '5.6.7.8']);
+	});
+
+	await t.test('empty value', () => {
+		assert.deepEqual(parseXForwardedFor('1.2.3.4, 5.6.7.8,'), ['1.2.3.4', '5.6.7.8']);
+	});
 });
 
 await test('getReportingEndpoints', () => {

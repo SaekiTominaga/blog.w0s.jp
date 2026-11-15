@@ -23,7 +23,25 @@ const supportCompressionEncoding = (acceptEncoding: string | undefined, searchCo
 };
 
 /**
- * `Content-Security-Policy`, `Content-Security-Policy-Report-Only` フィールドの値を生成する
+ * [リクエストヘッダー] `X-Forwarded-For` フィールドの値を解析する
+ *
+ * @param value - `X-Forwarded-For` フィールドの値
+ *
+ * @returns `X-Forwarded-For` フィールドの値
+ */
+const parseXForwardedFor = (value: string | undefined): string[] | undefined => {
+	if (value === undefined) {
+		return undefined;
+	}
+
+	return value
+		.split(',')
+		.map((ip) => ip.trim())
+		.filter((ip) => ip.length > 0);
+};
+
+/**
+ * [レスポンスヘッダー] `Content-Security-Policy`, `Content-Security-Policy-Report-Only` フィールドの値を生成する
  *
  * @param object - オブジェクトで構造化されたデータ
  *
@@ -35,7 +53,7 @@ const getCsp = (object: Readonly<Record<string, readonly string[]>>): string =>
 		.join(';');
 
 /**
- * `ETag` フィールドの値を生成する（弱いバリデーター）
+ * [レスポンスヘッダー] `ETag` フィールドの値を生成する（弱いバリデーター）
  *
  * @param stat - fs.Stats
  *
@@ -44,7 +62,7 @@ const getCsp = (object: Readonly<Record<string, readonly string[]>>): string =>
 const getEntityTagWeak = (stat: fs.Stats): string => `W/"${stat.size.toString(16)}-${stat.mtimeMs.toString(16)}"`;
 
 /**
- * `Reporting-Endpoints` フィールドの値を生成する
+ * [レスポンスヘッダー] `Reporting-Endpoints` フィールドの値を生成する
  *
  * @param object - オブジェクトで構造化されたデータ
  *
@@ -55,5 +73,5 @@ const getReportingEndpoints = (object: Readonly<Record<string, string>>): string
 		.map(([key, value]) => `${key}="${value}"`)
 		.join(',');
 
-export type { CompressionCoding as CompressionCcoding };
-export { supportCompressionEncoding, getCsp, getEntityTagWeak, getReportingEndpoints };
+export type { CompressionCoding };
+export { supportCompressionEncoding, parseXForwardedFor, getCsp, getEntityTagWeak, getReportingEndpoints };
