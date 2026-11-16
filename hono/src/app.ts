@@ -53,7 +53,12 @@ app.use(async (context, next) => {
 		}
 
 		/* 接続地域 */
-		if (req.path.startsWith('/category/') && referrer === undefined && userAgent === env('ACCESS_UA_CATEGORY_CHINA')) {
+		if (
+			req.path.startsWith('/category/') &&
+			referrer === undefined &&
+			userAgent !== undefined &&
+			env('ACCESS_UAS_CATEGORY_CHINA', 'string[]', { separator: '\n' }).includes(userAgent)
+		) {
 			const lookup = await maxmind.open<CountryResponse>(`${env('ROOT')}/${env('DB_DIR')}/${env('GEOLITE2_COUNTRY')}`);
 			const result = lookup.get(ipAddress);
 
