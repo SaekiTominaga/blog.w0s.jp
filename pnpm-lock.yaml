@@ -367,8 +367,8 @@ importers:
         specifier: '=5.1.0'
         version: 5.1.0
       nodemailer:
-        specifier: '=10.3.1'
-        version: 10.3.1
+        specifier: '=10.4.0'
+        version: 10.4.0
       sharp:
         specifier: '=0.35.5'
         version: 0.35.5(@types/node@26.6.6)
@@ -3028,8 +3028,8 @@ packages:
     resolution: {integrity: sha512-OmO8+GM1JUZqXET720VrJCwkjUCXmCMQm0Z3UDDRbfNLHS4NEAvY60j5jiFv0tkKw2PNNlqOLhahVmwJIOLDIQ==}
     engines: {node: '>=18'}
 
-  nodemailer@10.3.1:
-    resolution: {integrity: sha512-uF0AFsJC07Y1vdW7p580DKAnh7rAO+4UPSSB3mDCPNDufoiaOebV6JmrzpxB14OjEEEiBsNdYoM2Y+fN8M7BBA==}
+  nodemailer@10.4.0:
+    resolution: {integrity: sha512-fyy6r4Q5euRJ9Qr3Cts9K7SZrfe9zmz9oLOYiAR02MEJRDRci+99y0OoYBYBgpLffOqkkjXrB/d26VfiMje/kA==}
     engines: {node: '>=20.0.0'}
 
   nth-check@2.1.1:
@@ -6486,7 +6486,7 @@ snapshots:
 
   node-releases@2.0.60: {}
 
-  nodemailer@10.3.1: {}
+  nodemailer@10.4.0: {}
 
   nth-check@2.1.1:
     dependencies:
