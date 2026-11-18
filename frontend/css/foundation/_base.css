@@ -69,10 +69,6 @@ body {
 
 pre {
 	tab-size: 2;
-
-	@media print {
-		text-wrap-mode: wrap; /* default value: `white-space: pre` */
-	}
 }
 
 em {
