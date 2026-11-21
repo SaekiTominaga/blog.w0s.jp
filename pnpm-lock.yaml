@@ -167,8 +167,8 @@ importers:
   .:
     dependencies:
       prettier:
-        specifier: '=3.9.10'
-        version: 3.9.10
+        specifier: '=3.10.0'
+        version: 3.10.0
     devDependencies:
       '@markuplint/ejs-parser':
         specifier: '=5.4.0'
@@ -202,7 +202,7 @@ importers:
         version: 7.0.2006
       prettier-plugin-ejs:
         specifier: '=1.0.3'
-        version: 1.0.3(prettier@3.9.10)
+        version: 1.0.3(prettier@3.10.0)
       rimraf:
         specifier: '=6.1.4'
         version: 6.1.4
@@ -320,7 +320,7 @@ importers:
         version: 4.68.0
       rollup-plugin-prettier:
         specifier: '=4.2.0'
-        version: 4.2.0(prettier@3.9.10)(rollup@4.68.0)
+        version: 4.2.0(prettier@3.10.0)(rollup@4.68.0)
 
   hono:
     dependencies:
@@ -3238,8 +3238,8 @@ packages:
     peerDependencies:
       prettier: 2.x - 3.x
 
-  prettier@3.9.10:
-    resolution: {integrity: sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==}
+  prettier@3.10.0:
+    resolution: {integrity: sha512-mBi4765LgjO1PFjlEs7pUeK0nb1bw71c+N4/ItfeUWNdY5cV2pRKaFpbbFRYmDJMO+5ZwzGxHRqHxFZna7iv5w==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -6706,11 +6706,11 @@ snapshots:
   prelude-ls@1.2.1:
     optional: true
 
-  prettier-plugin-ejs@1.0.3(prettier@3.9.10):
+  prettier-plugin-ejs@1.0.3(prettier@3.10.0):
     dependencies:
-      prettier: 3.9.10
+      prettier: 3.10.0
 
-  prettier@3.9.10: {}
+  prettier@3.10.0: {}
 
   pretty-hrtime@1.0.3: {}
 
@@ -7079,11 +7079,11 @@ snapshots:
       glob: 14.0.3
       package-json-from-dist: 1.0.1
 
-  rollup-plugin-prettier@4.2.0(prettier@3.9.10)(rollup@4.68.0):
+  rollup-plugin-prettier@4.2.0(prettier@3.10.0)(rollup@4.68.0):
     dependencies:
       diff: 9.0.0
       magic-string: 0.30.21
-      prettier: 3.9.10
+      prettier: 3.10.0
       rollup: 4.68.0
 
   rollup@4.68.0:
