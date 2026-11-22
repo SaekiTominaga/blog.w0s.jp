@@ -78,10 +78,6 @@
 
 /* ===== 脚注リンク ===== */
 .c-footnote-ref {
-	&:focus {
-		outline-style: none;
-	}
-
 	& > [slot="anchor"] {
 		outline-offset: calc(0px - var(--outline-width-bold));
 		outline-width: var(--outline-width-bold);
@@ -91,7 +87,6 @@
 
 		&[role="button" i] /* JavaScript で popover のアンカーになった時のみ */ {
 			color: var(--link-color);
-			cursor: default;
 
 			&[aria-expanded="true" i] {
 				text-decoration-line: none;
