@@ -177,8 +177,8 @@ importers:
         specifier: '=26.6.6'
         version: 26.6.6
       '@w0s/markuplint-config':
-        specifier: '=4.0.3'
-        version: 4.0.3(markuplint@5.4.0(@typescript-eslint/types@8.70.0)(eslint@10.10.0(supports-color@10.2.2))(supports-color@10.2.2))
+        specifier: '=4.0.4'
+        version: 4.0.4(markuplint@5.4.0(@typescript-eslint/types@8.70.0)(eslint@10.10.0(supports-color@10.2.2))(supports-color@10.2.2))
       '@w0s/oxlint-config':
         specifier: '=1.0.9'
         version: 1.0.9(oxlint-plugin-safely-storage@1.0.2(@oxlint/plugins@1.82.0)(oxlint@1.93.0(oxlint-tsgolint@7.0.2007)))(oxlint-tsgolint@7.0.2007)(oxlint@1.93.0(oxlint-tsgolint@7.0.2007))
@@ -1932,8 +1932,8 @@ packages:
     resolution: {integrity: sha512-kHKGZJnBjgFKmHyU/utUk2HsLAMieDdxqT9+FnI+I2atzARYsz/w+v7jbf0XDoFA9I6QEsXAz/UidBOC6sgZiA==}
     engines: {node: '>=22'}
 
-  '@w0s/markuplint-config@4.0.3':
-    resolution: {integrity: sha512-UNVLq8YEVoszHy8U9oh4JEskyVTO5TGCpArIsx/We1xVwlRgunlzdt79L1BC3zMIDLNh+08F9FOQS942Ehwyhw==}
+  '@w0s/markuplint-config@4.0.4':
+    resolution: {integrity: sha512-o+vRtYC2tWT4BWI/y6GyYV9dhC5g3efsfq6qZHjvSwFtUHIsVWIom1/wuiHX7E0w2C2Rv3b8pPt37pVIMvYnAA==}
     peerDependencies:
       markuplint: ^5.0.0
 
@@ -5011,7 +5011,7 @@ snapshots:
 
   '@w0s/isbn-verify@4.0.2': {}
 
-  '@w0s/markuplint-config@4.0.3(markuplint@5.4.0(@typescript-eslint/types@8.70.0)(eslint@10.10.0(supports-color@10.2.2))(supports-color@10.2.2))':
+  '@w0s/markuplint-config@4.0.4(markuplint@5.4.0(@typescript-eslint/types@8.70.0)(eslint@10.10.0(supports-color@10.2.2))(supports-color@10.2.2))':
     dependencies:
       markuplint: 5.4.0(@typescript-eslint/types@8.70.0)(eslint@10.10.0(supports-color@10.2.2))(supports-color@10.2.2)
 
