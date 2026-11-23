@@ -343,8 +343,8 @@ importers:
         specifier: '=3.0.2'
         version: 3.0.2
       better-sqlite3:
-        specifier: '=13.1.1'
-        version: 13.1.1
+        specifier: '=13.2.0'
+        version: 13.2.0
       dayjs:
         specifier: '=1.11.23'
         version: 1.11.23
@@ -419,8 +419,8 @@ importers:
         specifier: '=3.0.2'
         version: 3.0.2
       better-sqlite3:
-        specifier: '=13.1.1'
-        version: 13.1.1
+        specifier: '=13.2.0'
+        version: 13.2.0
       dayjs:
         specifier: '=1.11.23'
         version: 1.11.23
@@ -2054,8 +2054,8 @@ packages:
   bcp-47@2.1.1:
     resolution: {integrity: sha512-KLw+H/gd2p4zly1X7Yh/qziuyae5/w/QFnvTng9eZL5fvszL7Whl3MBoWF8yxL7ksUjBfOD+OxkytiqbBpG+Fw==}
 
-  better-sqlite3@13.1.1:
-    resolution: {integrity: sha512-JjyLCATp+VLxZVFyWkicyzKYwpEFLCrV4MmshW97xv3JXdhw5jBDcsbEWRGm2L/96E+k7rtjON8q9nml05h3Pw==}
+  better-sqlite3@13.2.0:
+    resolution: {integrity: sha512-Z8Q/9x/uNyKxA1v4FNodyItRVRw1TeKBrmj32JhxhR0ceNcBY+wMobt/Bv7M7TzwPAXjnZRtNaEsATnUZSKWZQ==}
     engines: {node: '>=22'}
 
   bidi-js@1.1.0:
@@ -5115,7 +5115,7 @@ snapshots:
       is-alphanumerical: 2.0.1
       is-decimal: 2.0.1
 
-  better-sqlite3@13.1.1:
+  better-sqlite3@13.2.0:
     dependencies:
       node-addon-api: 8.9.2
 
