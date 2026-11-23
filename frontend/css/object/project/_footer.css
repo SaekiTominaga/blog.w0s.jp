@@ -33,28 +33,25 @@
 		justify-content: flex-end;
 	}
 
-	& > li {
-		text-align: center;
-	}
-
 	& :any-link {
-		outline-offset: var(--outline-offset-linkonly);
+		display: block grid;
+		justify-items: center;
+		outline-offset: 0.5em;
+		max-inline-size: 72px;
+		pointer-events: none;
+
+		& > * {
+			pointer-events: auto;
+		}
 	}
 }
 
-.p-footer-social__image {
-	display: inline flex;
-	flex-wrap: nowrap;
+.p-footer-social__icon {
 	padding-block-end: 0.5em;
 }
 
-.p-footer-social__text {
-	inline-size: fit-content;
-
-	&::before {
-		display: block flow;
-		content: "";
-	}
+.p-footer-social__title {
+	word-break: auto-phrase;
 }
 
 /* ===== アドセンス ===== */
