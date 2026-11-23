@@ -100,8 +100,6 @@
 }
 
 .p-form-results__mark {
-	min-inline-size: 1em;
-	text-align: center;
 	font-weight: var(--font-weight-bold);
 }
 

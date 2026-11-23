@@ -168,7 +168,7 @@
 }
 
 .p-footnote__no {
-	text-align: end;
+	justify-self: end;
 }
 
 .p-footnote__content {
