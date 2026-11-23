@@ -10,7 +10,7 @@
 		"lint:js": "oxlint"
 	},
 	"dependencies": {
-		"prettier": "=3.10.0"
+		"prettier": "=3.10.1"
 	},
 	"devDependencies": {
 		"@markuplint/ejs-parser": "=5.4.0",
