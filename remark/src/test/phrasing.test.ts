@@ -106,7 +106,7 @@ text[^1]text
 	<h2 class="p-footnote__hdg">脚注</h2>
 	<ul class="p-footnote__list">
 		<li>
-			<span class="p-footnote__no">1.</span>
+			<data value="1" class="p-footnote__no">1.</data>
 			<div id="fn-1" class="p-footnote__content">
 				<p>ref1 <a href="#fnref-1" class="p-footnote__backref">↩ 戻る</a></p>
 			</div>

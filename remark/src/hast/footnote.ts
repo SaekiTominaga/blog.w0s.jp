@@ -20,7 +20,7 @@ import type { Plugin } from 'unified';
  * 	<h2 class="p-footnote__hdg">脚注</h2>
  * 	<ul class="p-footnote__list">
  * 		<li>
- * 			<span class="p-footnote__no">1.</span>
+ * 			<data value="1" class="p-footnote__no">1.</data>
  * 			<div id="fn-1" class="p-footnote__content">
  * 				<p>Footnote text. <a href="#fnref-1" class="p-footnote__backref">↩ 戻る</a></p>
  * 			</div>
@@ -68,8 +68,9 @@ const hast: Plugin<[], Root> = () => {
 			listItem.children = [
 				{
 					type: 'element',
-					tagName: 'span',
+					tagName: 'data',
 					properties: {
+						value: String(index + 1),
 						className: ['p-footnote__no'],
 					},
 					children: [
