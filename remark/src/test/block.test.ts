@@ -1298,7 +1298,7 @@ await test('YouTube', async (t) => {
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media; fullscreen; gyroscope; picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
 	<figcaption class="c-caption">
 		<span class="c-caption__text"
-			><a href="https://www.youtube.com/watch?v=1234567890">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
+			><a href="https://www.youtube.com/watch?v=1234567890" rel="external">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
 		></span>
 	</figcaption>
 </figure>
@@ -1321,7 +1321,7 @@ await test('YouTube', async (t) => {
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1" allow="encrypted-media; fullscreen; gyroscope; picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe></div>
 	<figcaption class="c-caption">
 		<span class="c-caption__text"
-			><a href="https://www.youtube.com/watch?v=1234567890">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
+			><a href="https://www.youtube.com/watch?v=1234567890" rel="external">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
 		></span>
 	</figcaption>
 </figure>
@@ -1344,7 +1344,7 @@ await test('YouTube', async (t) => {
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10" allow="encrypted-media; fullscreen; gyroscope; picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
 	<figcaption class="c-caption">
 		<span class="c-caption__text"
-			><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
+			><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s" rel="external">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
 		></span>
 	</figcaption>
 </figure>
@@ -1367,7 +1367,7 @@ await test('YouTube', async (t) => {
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10&amp;end=20" allow="encrypted-media; fullscreen; gyroscope; picture-in-picture" title="YouTube 動画" width="640" height="360" class="p-embed__frame" style="--aspect-ratio: 640/360"></iframe></div>
 	<figcaption class="c-caption">
 		<span class="c-caption__text"
-			><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
+			><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s" rel="external">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
 		></span>
 	</figcaption>
 </figure>
@@ -1390,7 +1390,7 @@ await test('YouTube', async (t) => {
 	<div class="p-embed"><iframe src="https://www.youtube-nocookie.com/embed/1234567890?cc_load_policy=1&amp;start=10&amp;end=20" allow="encrypted-media; fullscreen; gyroscope; picture-in-picture" title="YouTube 動画" width="100" height="150" class="p-embed__frame" style="--aspect-ratio: 100/150"></iframe></div>
 	<figcaption class="c-caption">
 		<span class="c-caption__text"
-			><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
+			><a href="https://www.youtube.com/watch?v=1234567890&amp;t=10s" rel="external">title</a><small class="c-domain"><img src="/image/icon/youtube.svg" alt="(YouTube)" width="16" height="16" /></small
 		></span>
 	</figcaption>
 </figure>
