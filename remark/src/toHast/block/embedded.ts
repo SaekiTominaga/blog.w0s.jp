@@ -245,6 +245,7 @@ const xEmbeddedYouTubeToHast = (_state: State, node: XEmbeddedYouTube): ElementC
 								tagName: 'a',
 								properties: {
 									href: `https://www.youtube.com/watch?${linkSearchParams.toString()}`,
+									rel: ['external'],
 								},
 								children: [
 									{
