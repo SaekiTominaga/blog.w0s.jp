@@ -222,8 +222,8 @@ importers:
   frontend:
     dependencies:
       '@w0s/base.css':
-        specifier: '=1.8.0'
-        version: 1.8.0
+        specifier: '=1.9.0'
+        version: 1.9.0
       '@w0s/button-clipboard':
         specifier: '=4.1.0'
         version: 4.1.0
@@ -1915,8 +1915,8 @@ packages:
   '@vue/shared@3.5.44':
     resolution: {integrity: sha512-H82XLH0DjmSOdbEwO15x3QTo1f5PWEtv237eLpYKc0mqLu+B8hnq16lFWmuBmNurkeiG3wr+oM1FhOll/YVFRg==}
 
-  '@w0s/base.css@1.8.0':
-    resolution: {integrity: sha512-N8wpfbaHZ1la099D5lYKSykjukPAw1QPSNsDlFSuHMg5/gpmPmg5NIwwUGcUAr61xc9yNmeklsKITi4KO2sLug==}
+  '@w0s/base.css@1.9.0':
+    resolution: {integrity: sha512-vJaujRh7aE6LzVS07haJ6DcnaAagp4CNMcS+ZfHFFYBdiVDIgU83AGlMUZ3NMgJXz9HBjzue1h+DVishZeCq8w==}
 
   '@w0s/button-clipboard@4.1.0':
     resolution: {integrity: sha512-zAh0xX4Ru4V5KuE17NK1+ySqH24HY6ISnpH4g6aeMRGD6m5fNOA5F/iyPT3+WBXM62makfDId/E7rDuvu8XKGg==}
@@ -5016,7 +5016,7 @@ snapshots:
   '@vue/shared@3.5.44':
     optional: true
 
-  '@w0s/base.css@1.8.0': {}
+  '@w0s/base.css@1.9.0': {}
 
   '@w0s/button-clipboard@4.1.0': {}
 
