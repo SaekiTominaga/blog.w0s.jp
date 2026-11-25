@@ -19,6 +19,10 @@
 	& > * + * {
 		margin-block-start: calc(var(--stack-margin-base) * 1.5);
 	}
+
+	& > hr {
+		margin-block: calc(var(--stack-margin-base) * 3);
+	}
 }
 
 /* ===== グリッド ===== */

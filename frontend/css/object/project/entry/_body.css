@@ -73,22 +73,3 @@
 	align-items: center;
 	font-size: calc(100% / pow(var(--font-ratio), 3));
 }
-
-/* ===== セクション終了 ===== */
-.p-section-break {
-	margin-inline: auto;
-	border-block-start: 2px solid;
-	border-image: linear-gradient(to right, transparent 0%, var(--color-lightgray) 50%, transparent 100%) 1 / 1px;
-	block-size: 0;
-	inline-size: min(30em, 100%);
-
-	.p-entry & {
-		&:not(:first-child) {
-			margin-block-start: calc(var(--stack-margin-base) * 4);
-		}
-
-		&:not(:last-child) {
-			margin-block-end: calc(var(--stack-margin-base) * 4);
-		}
-	}
-}
