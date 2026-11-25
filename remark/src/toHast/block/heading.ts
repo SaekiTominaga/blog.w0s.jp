@@ -17,9 +17,7 @@ export const xHeadingToHast = (state: State, node: XHeading): ElementContent | E
 		return {
 			type: 'element',
 			tagName: 'hr',
-			properties: {
-				className: ['p-section-break'],
-			},
+			properties: {},
 			children: [],
 		};
 	}

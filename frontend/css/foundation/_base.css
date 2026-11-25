@@ -67,6 +67,14 @@ body {
 	color: var(--color-black);
 }
 
+hr {
+	margin-inline: auto;
+	border-block-start: 2px solid;
+	border-image: linear-gradient(to right, transparent 0%, var(--color-lightgray) 50%, transparent 100%) 1 / 1px;
+	block-size: 0;
+	inline-size: min(30em, 100%);
+}
+
 pre {
 	tab-size: 2;
 }

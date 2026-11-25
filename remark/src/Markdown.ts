@@ -141,7 +141,7 @@ export default class Markdown {
 			/* remark-lint-no-shortcut-reference-image: [style-guide][recommended] image は使用禁止設定にしているので不要 */
 			processor.use(remarkLintNoShortcutReferenceLink); // [style-guide][recommended] 参照リンクでは末尾の [] が必須
 			processor.use(remarkLintNoTableIndentation); // [style-guide] <table> のインデント禁止
-			processor.use(remarkLintNoTypes, ['break', 'definition', 'image', 'thematicBreak']); // 使用禁止要素
+			processor.use(remarkLintNoTypes, ['break', 'definition', 'image']); // 使用禁止要素
 			processor.use(remarkLintNoUndefinedReferences); // [recommended] 参照先が存在すること
 			processor.use(remarkLintNoUnusedDefinitions); // [recommended] 参照元が存在すること
 			processor.use(remarkLintOrderedListMarkerStyle, '.'); // [style-guide][recommended] <ol> のマーカー表記
