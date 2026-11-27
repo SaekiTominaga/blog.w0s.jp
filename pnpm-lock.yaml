@@ -325,8 +325,8 @@ importers:
   hono:
     dependencies:
       '@hono/node-server':
-        specifier: '=2.1.9'
-        version: 2.1.9(hono@4.13.18)
+        specifier: '=2.1.11'
+        version: 2.1.11(hono@4.13.18)
       '@w0s/env-value-type':
         specifier: '=2.0.2'
         version: 2.0.2
@@ -1008,8 +1008,8 @@ packages:
   '@ezez/utils@1.9.0':
     resolution: {integrity: sha512-pIuKqUxf+U13Xc49x9k9WbIpGSVqzgmvTrNHEMOKS1XUpwT2F/dDxUjadJmwRLprXRmkDfTtOBU03v9b0+WqAw==}
 
-  '@hono/node-server@2.1.9':
-    resolution: {integrity: sha512-Sk4NQd3GFY0WZWCzndwFMPwJhtD0y9qjsQ+pjID0/03nK9pxyBCUoUHCho8QYBLBVhi0ssL8UkNPHqbgSOFPIQ==}
+  '@hono/node-server@2.1.11':
+    resolution: {integrity: sha512-KzKz9vl4vvr1vgLHamj+g5uonbrj5NwAdO3yzOS6cd2HjALVeOgTgeZOyAzNxejbkfOOPIcvuf/Tg8l1pEFLog==}
     engines: {node: '>=20'}
     peerDependencies:
       hono: ^4 || ^5.0.0-0
@@ -4187,7 +4187,7 @@ snapshots:
 
   '@ezez/utils@1.9.0': {}
 
-  '@hono/node-server@2.1.9(hono@4.13.18)':
+  '@hono/node-server@2.1.11(hono@4.13.18)':
     dependencies:
       hono: 4.13.18
 
